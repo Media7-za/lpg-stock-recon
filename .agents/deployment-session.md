@@ -54,14 +54,14 @@ REPOSITORY:
 - Fix branch pattern: fix/[ticket-id]-[description]
 
 VERCEL:
-- Project name: [vercel-project-name]
+- Project name: lpg-stock-recon
 - Team slug: [team_xxxxxxxxxxxxxxxx]
-- Deploy hook URL: [PLACEHOLDER]
-- Live URL: https://[project-name].vercel.app
+- Deploy hook URL: https://api.vercel.com/v1/integrations/deploy/prj_Q2bp8YfnAzQbz7Xwnk9EWwvJSvlL
+- Live URL: https://lpg-stock-recon.vercel.app
 
 SUPABASE:
-- Project ref: [xxxxxxxxxxxxxxxx]
-- Region: [e.g. ap-southeast-1]
+- Project ref: movixifclapeprdemgwk
+- Region: eu-west-2 (London)
 - Database URL: [stored in .env — do not hardcode]
 
 GIT IDENTITY (required for all commits):
