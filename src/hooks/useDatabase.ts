@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { db } from '../lib/db';
 import type { ERPSnapshot, PhysicalCountSession, MovementData } from '../types';
 
@@ -48,7 +48,7 @@ export function usePhysicalCountSessions() {
     loadSessions();
   }, []);
 
-  const loadSessions = async () => {
+  const loadSessions = useCallback(async () => {
     try {
       const all = await db.physicalCounts.orderBy('timestamp').reverse().toArray();
       setSessions(all);
@@ -57,9 +57,9 @@ export function usePhysicalCountSessions() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const addSession = async (session: Omit<PhysicalCountSession, 'id' | 'timestamp'>) => {
+  const addSession = useCallback(async (session: Omit<PhysicalCountSession, 'id' | 'timestamp'>) => {
     const id = crypto.randomUUID();
     const newSession: PhysicalCountSession = {
       ...session,
@@ -69,21 +69,21 @@ export function usePhysicalCountSessions() {
     await db.physicalCounts.add(newSession);
     await loadSessions();
     return id;
-  };
+  }, [loadSessions]);
 
-  const updateSession = async (id: string, updates: Partial<PhysicalCountSession>) => {
+  const updateSession = useCallback(async (id: string, updates: Partial<PhysicalCountSession>) => {
     await db.physicalCounts.update(id, updates);
     await loadSessions();
-  };
+  }, [loadSessions]);
 
-  const getSession = async (id: string): Promise<PhysicalCountSession | undefined> => {
+  const getSession = useCallback(async (id: string): Promise<PhysicalCountSession | undefined> => {
     return await db.physicalCounts.get(id);
-  };
+  }, []);
 
-  const deleteSession = async (id: string) => {
+  const deleteSession = useCallback(async (id: string) => {
     await db.physicalCounts.delete(id);
     await loadSessions();
-  };
+  }, [loadSessions]);
 
   return {
     sessions,

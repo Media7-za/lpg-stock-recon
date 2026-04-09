@@ -1,0 +1,268 @@
+openapi: 3.0.3
+info:
+  title: LPG Stock Recon Domain API
+  description: State-driven, idempotent API for managing LPG depot stock reconciliation sessions.
+  version: 1.0.0
+
+servers:
+  - url: https://<supabase-project-id>.supabase.co/functions/v1
+    description: Supabase Edge Functions
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    SessionID:
+      type: string
+      format: uuid
+    
+    SessionState:
+      type: string
+      enum: [OPEN, COUNTING, SYNCED, RECONCILING, RECONCILED, REVIEWED, FAILED, CLOSED]
+    
+    IdempotencyKey:
+      type: string
+      format: uuid
+      description: Mandatory UUID for all write operations.
+
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          example: INVALID_TRANSITION
+        message:
+          type: string
+          example: Cannot transition from OPEN to RECONCILED directly.
+        context:
+          type: object
+
+    SessionSummary:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/SessionID'
+        status:
+          $ref: '#/components/schemas/SessionState'
+        date:
+          type: string
+          format: date
+        locked:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+
+    CountPayload:
+      type: array
+      items:
+        type: object
+        properties:
+          sku:
+            type: string
+          quantity:
+            type: number
+          brand:
+            type: string
+          zone:
+            type: string
+
+    PipelineStatus:
+      type: object
+      properties:
+        stage:
+          type: string
+          enum: [FETCHING_ERP, AGGREGATING_PHYSICAL, T1_SOH, T2_MOVEMENT, T3_TIMELINE, FINALIZING]
+        progress:
+          type: integer
+          minimum: 0
+          maximum: 100
+        errors:
+          type: array
+          items:
+            type: string
+
+security:
+  - bearerAuth: []
+
+paths:
+  /sessions:
+    post:
+      summary: Start a new count session
+      description: Initializes a session for a specific date. Idempotent by key.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [date, idempotencyKey]
+              properties:
+                date:
+                  type: string
+                  format: date
+                idempotencyKey:
+                  $ref: '#/components/schemas/IdempotencyKey'
+      responses:
+        '201':
+          description: Session created
+          content:
+            application/json:
+              schema:
+                properties:
+                  sessionId:
+                    $ref: '#/components/schemas/SessionID'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  /sessions/{sessionId}:
+    get:
+      summary: Get session status and details
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/SessionID'
+      responses:
+        '200':
+          description: Session details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionSummary'
+    
+    patch:
+      summary: Finalize/Close a session
+      description: Transitions session to CLOSED. Immutability enforced after this call.
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/SessionID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [idempotencyKey]
+              properties:
+                idempotencyKey:
+                  $ref: '#/components/schemas/IdempotencyKey'
+      responses:
+        '204':
+          description: Session closed
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  /inventory/snapshot:
+    get:
+      summary: Fetch ERP inventory snapshot
+      parameters:
+        - name: date
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Snapshot data
+    
+  /inventory/counts:
+    post:
+      summary: Submit physical count entries
+      description: Appends counts to a session. Idempotent by key.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [sessionId, payload, idempotencyKey]
+              properties:
+                sessionId:
+                  $ref: '#/components/schemas/SessionID'
+                payload:
+                  $ref: '#/components/schemas/CountPayload'
+                idempotencyKey:
+                  $ref: '#/components/schemas/IdempotencyKey'
+      responses:
+        '202':
+          description: Counts accepted
+        '423':
+          description: Session Locked
+
+  /reconciliation/start:
+    post:
+      summary: Trigger reconciliation pipeline
+      description: Starts the T1-T3 calculation process. Locks the session.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [sessionId, idempotencyKey]
+              properties:
+                sessionId:
+                  $ref: '#/components/schemas/SessionID'
+                idempotencyKey:
+                  $ref: '#/components/schemas/IdempotencyKey'
+      responses:
+        '202':
+          description: Pipeline started
+    
+  /reconciliation/status/{sessionId}:
+    get:
+      summary: Get pipeline progress
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/SessionID'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PipelineStatus'
+
+  /discrepancies/notes:
+    post:
+      summary: Upsert discrepancy investigation note
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [sessionId, sku, note, idempotencyKey]
+              properties:
+                sessionId:
+                  $ref: '#/components/schemas/SessionID'
+                sku:
+                  type: string
+                note:
+                  type: string
+                idempotencyKey:
+                  $ref: '#/components/schemas/IdempotencyKey'
+      responses:
+        '200':
+          description: Note updated
+
+components:
+  responses:
+    BadRequest:
+      description: Client error (e.g., INVALID_TRANSITION)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'

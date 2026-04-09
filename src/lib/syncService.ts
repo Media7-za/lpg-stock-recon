@@ -9,7 +9,8 @@
  */
 
 import { db } from './db';
-import { supabase, isCloudEnabled } from './supabase';
+import { isCloudEnabled } from './supabase';
+import * as gateway from './toolGateway';
 
 // Maximum retries before marking a sync attempt as failed
 const MAX_RETRIES = 3;
@@ -19,29 +20,37 @@ const MAX_RETRIES = 3;
  * The session's `syncedAt` field is set on success.
  */
 async function syncCountSession(sessionId: string, attempt = 1): Promise<boolean> {
-    if (!isCloudEnabled || !supabase) return false;
+    if (!isCloudEnabled) return false;
 
     const session = await db.physicalCounts.get(sessionId);
     if (!session) return false;
     if (session.syncedAt) return true; // Already synced
 
     try {
-        const { error } = await supabase.from('physical_count_sessions').upsert({
-            id: session.id,
-            timestamp: session.timestamp,
-            session_type: session.sessionType,
-            status: session.status,
-            zones: session.zones,
-            counter_name: session.counterName ?? null,
-            notes: session.notes ?? null,
-            synced_at: new Date().toISOString(),
-        });
+        // 1. Ensure session exists on server
+        let serverSession = await gateway.getSession(sessionId);
+        if (serverSession.error && serverSession.error.code === 'SESSION_NOT_FOUND') {
+            const startRes = await gateway.startCountSession(session.timestamp?.toISOString().split('T')[0] || new Date().toISOString().split('T')[0]);
+            if (startRes.error) throw new Error(startRes.error.message);
+        }
 
-        if (error) throw error;
+        // 2. Map local zones to flattened count payload
+        const payload = session.zones.flatMap(zone => 
+            zone.entries.map(entry => ({
+                sku: entry.sku,
+                quantity: entry.quantity,
+                brand: entry.brand,
+                zone: zone.name
+            }))
+        );
+
+        // 3. Submit counts via gateway (idempotency handled inside gateway)
+        const countsRes = await gateway.submitPhysicalCount(sessionId, payload);
+        if (countsRes.error) throw new Error(countsRes.error.message);
 
         // Mark as synced locally
         await db.physicalCounts.update(sessionId, { syncedAt: new Date() });
-        console.log(`[Sync] ✅ Session ${sessionId} synced to cloud.`);
+        console.log(`[Sync] ✅ Session ${sessionId} synced to cloud via Domain API.`);
         return true;
     } catch (err) {
         console.error(`[Sync] ❌ Session ${sessionId} sync failed (attempt ${attempt}):`, err);
@@ -57,21 +66,14 @@ async function syncCountSession(sessionId: string, attempt = 1): Promise<boolean
  * Attempt to sync a single ERPSnapshot to Supabase.
  */
 async function syncErpSnapshot(snapshotId: string): Promise<boolean> {
-    if (!isCloudEnabled || !supabase) return false;
+    if (!isCloudEnabled) return false;
 
     const snapshot = await db.erpSnapshots.get(snapshotId);
     if (!snapshot) return false;
 
     try {
-        const { error } = await supabase.from('erp_snapshots').upsert({
-            id: snapshot.id,
-            timestamp: snapshot.timestamp,
-            export_time: snapshot.exportTime,
-            snapshot_type: snapshot.snapshotType,
-            data: snapshot.data,
-        });
-
-        if (error) throw error;
+        const { error } = await gateway.submitErpSnapshot(snapshot);
+        if (error) throw new Error(error.message);
         console.log(`[Sync] ✅ ERP Snapshot ${snapshotId} synced.`);
         return true;
     } catch (err) {
@@ -84,21 +86,14 @@ async function syncErpSnapshot(snapshotId: string): Promise<boolean> {
  * Attempt to sync a single MovementData record to Supabase.
  */
 async function syncMovementData(movementId: string): Promise<boolean> {
-    if (!isCloudEnabled || !supabase) return false;
+    if (!isCloudEnabled) return false;
 
     const movement = await db.movementData.get(movementId);
     if (!movement) return false;
 
     try {
-        const { error } = await supabase.from('movement_data').upsert({
-            id: movement.id,
-            timestamp: movement.timestamp,
-            period: movement.period,
-            movements: movement.movements,
-            synced_at: new Date().toISOString(),
-        });
-
-        if (error) throw error;
+        const { error } = await gateway.submitMovementData(movement);
+        if (error) throw new Error(error.message);
         console.log(`[Sync] ✅ Movement ${movementId} synced.`);
         return true;
     } catch (err) {
@@ -124,7 +119,7 @@ export async function syncAllPending(): Promise<void> {
 
     // Only sync completed sessions that haven't been synced yet
     const unsyncedSessions = allSessions.filter(
-        s => s.status === 'completed' && !s.syncedAt
+        s => (s.status === 'completed' || s.current_state === 'OPEN' || s.current_state === 'COUNTING') && !s.syncedAt
     );
 
     await Promise.all([

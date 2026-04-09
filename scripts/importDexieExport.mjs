@@ -63,28 +63,24 @@ await prisma.$transaction(async (tx) => {
   }
 
   for (const cs of parsed.countSessions) {
-    await tx.countSession.upsert({
+    await tx.physicalCountSession.upsert({
       where: { id: cs.id },
       update: {
         timestamp: cs.timestamp,
         sessionType: cs.sessionType,
-        erpSnapshotId: cs.erpSnapshotId,
-        physicalCounts: cs.physicalCounts,
-        reconciliation: cs.reconciliation,
+        status: cs.status,
+        zones: cs.physicalCounts ?? [], // Map and handle field renaming
         counterName: cs.counterName ?? null,
         notes: cs.notes ?? null,
-        status: cs.status,
       },
       create: {
         id: cs.id,
         timestamp: cs.timestamp,
         sessionType: cs.sessionType,
-        erpSnapshotId: cs.erpSnapshotId,
-        physicalCounts: cs.physicalCounts,
-        reconciliation: cs.reconciliation,
+        status: cs.status,
+        zones: cs.physicalCounts ?? [],
         counterName: cs.counterName ?? null,
         notes: cs.notes ?? null,
-        status: cs.status,
       },
     });
   }

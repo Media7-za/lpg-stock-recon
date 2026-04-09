@@ -9,15 +9,22 @@ import TrendsDashboard from './components/trends/TrendsDashboard';
 function App() {
   return (
     <BrowserRouter>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/upload" element={<CSVUpload />} />
-          <Route path="/count/:sessionId?" element={<CountSession />} />
-          <Route path="/results" element={<ReconciliationResults />} />
-          <Route path="/trends" element={<TrendsDashboard />} />
-        </Routes>
-      </Layout>
+      <Routes>
+        <Route path="/count/:sessionId?" element={<CountSession />} />
+        <Route
+          path="*"
+          element={
+            <Layout>
+              <Routes>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/upload" element={<CSVUpload />} />
+                <Route path="/results" element={<ReconciliationResults />} />
+                <Route path="/trends" element={<TrendsDashboard />} />
+              </Routes>
+            </Layout>
+          }
+        />
+      </Routes>
     </BrowserRouter>
   );
 }

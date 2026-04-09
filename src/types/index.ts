@@ -40,6 +40,7 @@ export interface PhysicalCountSession {
   timestamp: Date;
   sessionType: 'AM' | 'PM';
   status: 'in_progress' | 'completed';
+  current_state?: 'OPEN' | 'COUNTING' | 'SYNCED' | 'RECONCILING' | 'RECONCILED' | 'REVIEWED' | 'FAILED' | 'CLOSED';
   zones: ZoneCount[];
   counterName?: string;
   notes?: string;
