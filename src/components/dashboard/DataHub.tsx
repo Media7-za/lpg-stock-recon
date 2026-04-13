@@ -47,12 +47,12 @@ export default function DataHub() {
             
             if (type === 'headers') {
                 const headers = await engine.parseHeaders(content, file.name);
-                setFileStats(prev => ({ ...prev, headers: headers.length }));
+
                 setState('syncing');
                 await SyncService.syncHeaders(headers, setProgress, abortController.signal);
             } else {
                 const items = await engine.parseItems(content, file.name);
-                setFileStats(prev => ({ ...prev, items: items.length }));
+
                 setState('syncing');
                 await SyncService.syncItems(items, setProgress, abortController.signal);
             }
