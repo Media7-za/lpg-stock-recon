@@ -39,7 +39,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-*Pending changes slated for the next minor release.*
+
+### Added (Stock Recon Cloud Engine)
+- **Upload History Tracking**: Implemented persistent database logging (`sync_logs`) to track data ingestion events in real-time.
+- **Data Hub Integration**: Added a "Recent Uploads" widget to surface recent ingestion events directly in the UI.
+
+### Changed (Stock Recon Cloud Engine)
+- **Account Dropdown UI**: Implemented strict ascending sort on `unique_accounts` to fix randomized account ordering.
+- **Database Architecture**: Altered `reconciliation_summary` View to safely sum payment allocation splits so they match the legacy ERP expectation of exactly 1 summary row per document.
+- **Database Architecture**: Altered `unique_accounts` View to group by `account_no`, masking thousands of duplicate accounts caused by legacy corrupted CSV references.
+
+### Fixed (Stock Recon Cloud Engine)
+- **Ingestion Engine**: Fixed a critical parser bug in `erpImportEngine.ts` where the `account_name` was mapping to legacy CSV Column 10 (Reference strings) instead of Column 3 (Actual Names).
+
+---
+
+*Legacy Project (Dispatcher App) changes slated for the next minor release:*
 
 ### Added
 - **Dispatcher PWA:** New mobile-responsive layout for the Trips overview, replacing the desktop table with a touch-friendly card layout.
