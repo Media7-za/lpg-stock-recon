@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Upload, Database, FileText, CheckCircle2, AlertCircle, Loader2, Info, Clock, History } from 'lucide-react';
-import { ERPImportEngine, ProcessedTransactionHeader, ProcessedTransactionItem } from '../../lib/erpImportEngine';
+import { Database, FileText, CheckCircle2, AlertCircle, Loader2, Info, Clock, History } from 'lucide-react';
+import { ERPImportEngine } from '../../lib/erpImportEngine';
 import { SyncService, SyncProgress } from '../../lib/syncService';
 import { supabase } from '../../lib/supabase';
 import { format } from 'date-fns';
@@ -11,7 +11,7 @@ type UploadState = 'idle' | 'parsing' | 'syncing' | 'complete' | 'error' | 'canc
 export default function DataHub() {
     const [state, setState] = useState<UploadState>('idle');
     const [progress, setProgress] = useState<SyncProgress | null>(null);
-    const [fileStats, setFileStats] = useState<{ headers?: number, items?: number }>({});
+
     const [errors, setErrors] = useState<string[]>([]);
     const [controller, setController] = useState<AbortController | null>(null);
     const [recentLogs, setRecentLogs] = useState<any[]>([]);

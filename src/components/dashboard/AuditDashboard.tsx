@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { 
-    Search, Filter, ChevronRight, CheckCircle2, AlertTriangle, 
-    FileText, Calculator, Info, Loader2, Database, Eye, Download
+    Search, ChevronRight, CheckCircle2, AlertTriangle, 
+    Calculator, Info, Loader2, Database, Eye, Download
 } from 'lucide-react';
-import { format, parseISO } from 'date-fns';
 import clsx from 'clsx';
 
 interface AuditRow {
@@ -46,7 +45,7 @@ export default function AuditDashboard() {
     useEffect(() => {
         async function fetchAccounts() {
             if (!supabase) return;
-            const { data, error } = await supabase
+            const { data } = await supabase
                 .from('unique_accounts')
                 .select('*')
                 .order('account_no', { ascending: true });
@@ -66,7 +65,7 @@ export default function AuditDashboard() {
                 return;
             }
             setLoading(true);
-            const { data, error } = await supabase
+            const { data } = await supabase
                 .from('reconciliation_summary')
                 .select('*')
                 .eq('account_no', selectedAcc)
@@ -84,7 +83,7 @@ export default function AuditDashboard() {
         setItemLoading(true);
         if (!supabase) return;
 
-        const { data, error } = await supabase
+        const { data } = await supabase
             .from('transaction_items')
             .select('stock_no, description, qty, retail_price')
             .eq('doc_no', row.doc_no)
