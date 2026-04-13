@@ -3,57 +3,248 @@
  *
  * Handles bidirectional sync between the local Dexie (IndexedDB) store
  * and the Supabase PostgreSQL cloud database.
- *
- * Strategy: Offline-first. Local DB is always written to first.
- * Sync is triggered automatically when the browser detects it is online.
  */
 
 import { db } from './db';
-import { isCloudEnabled } from './supabase';
-import * as gateway from './toolGateway';
+import { supabase, isCloudEnabled } from './supabase';
+import type { ProcessedTransactionHeader, ProcessedTransactionItem } from './erpImportEngine';
 
 // Maximum retries before marking a sync attempt as failed
 const MAX_RETRIES = 3;
+const BATCH_SIZE = 100; // Further reduced to 100 for maximum reliability
+
+export interface SyncProgress {
+    total: number;
+    synced: number;
+    errors: string[];
+    hints: string[];
+}
 
 /**
- * Attempt to sync a single completed PhysicalCountSession to Supabase.
- * The session's `syncedAt` field is set on success.
+ * NEW: Logic for the Data Agent Hub (ERP-to-Cloud sync)
  */
+export class SyncService {
+    /**
+     * Check which fingerprints already exist in Supabase
+     */
+    private static async filterNewRecords<T extends { fingerprint: string }>(
+        table: string,
+        records: T[],
+        signal?: AbortSignal
+    ): Promise<T[]> {
+        if (!supabase) return records;
+        
+        const existingFingerprints = new Set<string>();
+        const fingerprints = records.map(r => r.fingerprint);
+        
+        // Maintain safe URL lengths (~6.4KB) by chunking 100 hashes at a time
+        const ANALYZE_BATCH = 100;
+        const batches = [];
+        
+        for (let i = 0; i < fingerprints.length; i += ANALYZE_BATCH) {
+            batches.push(fingerprints.slice(i, i + ANALYZE_BATCH));
+        }
+
+        // Process batches in parallel chunks of 5 to speed up the analysis drastically
+        const CONCURRENCY = 5;
+        let completed = 0;
+
+        for (let i = 0; i < batches.length; i += CONCURRENCY) {
+            if (signal?.aborted) return [];
+
+            const currentBatches = batches.slice(i, i + CONCURRENCY);
+            const promises = currentBatches.map(async (batch) => {
+                const { data, error } = await supabase!
+                    .from(table)
+                    .select('fingerprint')
+                    .in('fingerprint', batch);
+                
+                if (data) {
+                    data.forEach(d => existingFingerprints.add(d.fingerprint));
+                }
+                if (error) {
+                    console.error(`[SyncService] Filter query error:`, error);
+                }
+            });
+
+            await Promise.all(promises);
+            completed += currentBatches.length;
+            console.log(`[SyncService] Analyzing ${table} batch ${completed}/${batches.length}...`);
+        }
+
+        return records.filter(r => !existingFingerprints.has(r.fingerprint));
+    }
+
+    /**
+     * Upsert a batch of Headers to transaction_headers
+     */
+    static async syncHeaders(
+        headers: ProcessedTransactionHeader[], 
+        onProgress?: (p: SyncProgress) => void,
+        signal?: AbortSignal
+    ): Promise<void> {
+        if (!supabase) throw new Error("Supabase client not initialized");
+
+        // Step 1: Delta Analysis
+        if (onProgress) onProgress({ total: headers.length, synced: 0, errors: [], hints: ["Step 1/2: Analyzing cloud for existing records..."] });
+        const newHeadersRaw = await this.filterNewRecords('transaction_headers', headers, signal);
+        
+        if (signal?.aborted) return;
+
+        // Step 1.5: Local Deduplication (Prevents "ON CONFLICT" batch errors)
+        const newHeaders = Array.from(
+            new Map(newHeadersRaw.map(h => [h.fingerprint, h])).values()
+        );
+
+        const skipped = headers.length - newHeaders.length;
+        const progress: SyncProgress = { total: newHeaders.length, synced: 0, errors: [], hints: [] };
+        if (skipped > 0) progress.hints.push(`${skipped} existing or duplicate records skipped.`);
+        
+        if (newHeaders.length === 0) {
+            if (onProgress) onProgress({ ...progress, synced: 0 });
+            return;
+        }
+
+        // Step 2: Upload Delta
+        for (let i = 0; i < newHeaders.length; i += BATCH_SIZE) {
+            if (signal?.aborted) break;
+
+            const batch = newHeaders.slice(i, i + BATCH_SIZE);
+            let success = false;
+            let retries = 0;
+
+            while (!success && retries < MAX_RETRIES) {
+                if (signal?.aborted) break;
+
+                const { error } = await supabase
+                    .from('transaction_headers')
+                    .upsert(batch, { onConflict: 'fingerprint' });
+
+                if (error) {
+                    console.error(`[SyncService] Header batch error (Attempt ${retries + 1}):`, error);
+                    retries++;
+                    if (retries < MAX_RETRIES) await delay(1000 * retries);
+                    else progress.errors.push(`Batch error: ${error.message}`);
+                } else {
+                    progress.synced += batch.length;
+                    success = true;
+                }
+            }
+            
+            if (onProgress) onProgress({ ...progress });
+            await delay(200);
+        }
+
+        // Step 3: Log to History
+        if (!signal?.aborted && progress.errors.length === 0) {
+            const fileName = headers.length > 0 ? headers[0].source_file : 'Unknown';
+            await supabase.from('sync_logs').insert({
+                filename: fileName,
+                file_type: 'HEADERS',
+                records_synced: newHeaders.length
+            });
+        }
+    }
+
+    /**
+     * Upsert a batch of Items to transaction_items
+     */
+    static async syncItems(
+        items: ProcessedTransactionItem[], 
+        onProgress?: (p: SyncProgress) => void,
+        signal?: AbortSignal
+    ): Promise<void> {
+        if (!supabase) throw new Error("Supabase client not initialized");
+
+        // Step 1: Delta Analysis
+        if (onProgress) onProgress({ total: items.length, synced: 0, errors: [], hints: ["Step 1/2: Analyzing cloud for existing records..."] });
+        const newItemsRaw = await this.filterNewRecords('transaction_items', items, signal);
+        
+        if (signal?.aborted) return;
+
+        // Step 1.5: Local Deduplication (Prevents "ON CONFLICT" batch errors)
+        const newItems = Array.from(
+            new Map(newItemsRaw.map(i => [i.fingerprint, i])).values()
+        );
+
+        const skipped = items.length - newItems.length;
+        const progress: SyncProgress = { total: newItems.length, synced: 0, errors: [], hints: [] };
+        if (skipped > 0) progress.hints.push(`${skipped} existing or duplicate records skipped.`);
+
+        if (newItems.length === 0) {
+            if (onProgress) onProgress({ ...progress, synced: 0 });
+            return;
+        }
+
+        // Step 2: Upload Delta
+        for (let i = 0; i < newItems.length; i += BATCH_SIZE) {
+            if (signal?.aborted) break;
+
+            const batch = newItems.slice(i, i + BATCH_SIZE);
+            let success = false;
+            let retries = 0;
+
+            while (!success && retries < MAX_RETRIES) {
+                if (signal?.aborted) break;
+
+                const { error } = await supabase
+                    .from('transaction_items')
+                    .upsert(batch, { onConflict: 'fingerprint' });
+
+                if (error) {
+                    console.error(`[SyncService] Item batch error (Attempt ${retries + 1}):`, error);
+                    retries++;
+                    if (retries < MAX_RETRIES) await delay(1000 * retries);
+                    else progress.errors.push(`Batch error: ${error.message}`);
+                } else {
+                    progress.synced += batch.length;
+                    success = true;
+                }
+            }
+            
+            if (onProgress) onProgress({ ...progress });
+            await delay(200);
+        }
+
+        // Step 3: Log to History
+        if (!signal?.aborted && progress.errors.length === 0) {
+            const fileName = items.length > 0 ? items[0].source_file : 'Unknown';
+            await supabase.from('sync_logs').insert({
+                filename: fileName,
+                file_type: 'ITEMS',
+                records_synced: newItems.length
+            });
+        }
+    }
+}
+
+/**
+ * EXISTING: Logic for the Mobile App (Offline-First sync)
+ */
+
 async function syncCountSession(sessionId: string, attempt = 1): Promise<boolean> {
-    if (!isCloudEnabled) return false;
+    if (!isCloudEnabled || !supabase) return false;
 
     const session = await db.physicalCounts.get(sessionId);
     if (!session) return false;
-    if (session.syncedAt) return true; // Already synced
+    if (session.syncedAt) return true;
 
     try {
-        // 1. Ensure session exists on server
-        let serverSession = await gateway.getSession(sessionId);
-        if (serverSession.error && serverSession.error.code === 'SESSION_NOT_FOUND') {
-            const startRes = await gateway.startCountSession(session.timestamp?.toISOString().split('T')[0] || new Date().toISOString().split('T')[0]);
-            if (startRes.error) throw new Error(startRes.error.message);
-        }
+        const { error } = await supabase.from('physical_count_sessions').upsert({
+            id: session.id,
+            timestamp: session.timestamp,
+            session_type: session.sessionType,
+            status: session.status,
+            zones: session.zones,
+            counter_name: session.counterName ?? null,
+            notes: session.notes ?? null,
+            synced_at: new Date().toISOString(),
+        });
 
-        // 2. Map local zones to flattened count payload
-        const payload = session.zones.flatMap(zone => 
-            zone.entries.map(entry => ({
-                sku: entry.sku,
-                quantity: entry.quantity,
-                brand: entry.brand,
-                zone: zone.name
-            }))
-        );
-
-        // 3. Submit counts via gateway (idempotency handled inside gateway)
-        const countsRes = await gateway.submitPhysicalCount(sessionId, payload);
-        if (countsRes.error) throw new Error(countsRes.error.message);
-
-        // Mark as synced locally
+        if (error) throw error;
         await db.physicalCounts.update(sessionId, { syncedAt: new Date() });
-        console.log(`[Sync] ✅ Session ${sessionId} synced to cloud via Domain API.`);
         return true;
     } catch (err) {
-        console.error(`[Sync] ❌ Session ${sessionId} sync failed (attempt ${attempt}):`, err);
         if (attempt < MAX_RETRIES) {
             await delay(1000 * attempt);
             return syncCountSession(sessionId, attempt + 1);
@@ -62,97 +253,67 @@ async function syncCountSession(sessionId: string, attempt = 1): Promise<boolean
     }
 }
 
-/**
- * Attempt to sync a single ERPSnapshot to Supabase.
- */
 async function syncErpSnapshot(snapshotId: string): Promise<boolean> {
-    if (!isCloudEnabled) return false;
-
+    if (!isCloudEnabled || !supabase) return false;
     const snapshot = await db.erpSnapshots.get(snapshotId);
     if (!snapshot) return false;
-
     try {
-        const { error } = await gateway.submitErpSnapshot(snapshot);
-        if (error) throw new Error(error.message);
-        console.log(`[Sync] ✅ ERP Snapshot ${snapshotId} synced.`);
+        const { error } = await supabase.from('erp_snapshots').upsert({
+            id: snapshot.id,
+            timestamp: snapshot.timestamp,
+            export_time: snapshot.exportTime,
+            snapshot_type: snapshot.snapshotType,
+            data: snapshot.data,
+        });
+        if (error) throw error;
         return true;
     } catch (err) {
-        console.error(`[Sync] ❌ ERP Snapshot ${snapshotId} sync failed:`, err);
         return false;
     }
 }
 
-/**
- * Attempt to sync a single MovementData record to Supabase.
- */
 async function syncMovementData(movementId: string): Promise<boolean> {
-    if (!isCloudEnabled) return false;
-
+    if (!isCloudEnabled || !supabase) return false;
     const movement = await db.movementData.get(movementId);
     if (!movement) return false;
-
     try {
-        const { error } = await gateway.submitMovementData(movement);
-        if (error) throw new Error(error.message);
-        console.log(`[Sync] ✅ Movement ${movementId} synced.`);
+        const { error } = await supabase.from('movement_data').upsert({
+            id: movement.id,
+            timestamp: movement.timestamp,
+            period: movement.period,
+            movements: movement.movements,
+            synced_at: new Date().toISOString(),
+        });
+        if (error) throw error;
         return true;
     } catch (err) {
-        console.error(`[Sync] ❌ Movement ${movementId} sync failed:`, err);
         return false;
     }
 }
 
-/**
- * Sync all unsynced local records to Supabase.
- * Called automatically when the browser goes online.
- */
 export async function syncAllPending(): Promise<void> {
     if (!isCloudEnabled) return;
-
-    console.log('[Sync] Starting full pending sync...');
-
     const [allSessions, allSnapshots, allMovements] = await Promise.all([
         db.physicalCounts.toArray(),
         db.erpSnapshots.toArray(),
         db.movementData.toArray(),
     ]);
 
-    // Only sync completed sessions that haven't been synced yet
-    const unsyncedSessions = allSessions.filter(
-        s => (s.status === 'completed' || s.current_state === 'OPEN' || s.current_state === 'COUNTING') && !s.syncedAt
-    );
+    const unsyncedSessions = allSessions.filter(s => s.status === 'completed' && !s.syncedAt);
 
     await Promise.all([
         ...unsyncedSessions.map(s => syncCountSession(s.id)),
         ...allSnapshots.map(s => syncErpSnapshot(s.id)),
         ...allMovements.map(m => syncMovementData(m.id)),
     ]);
-
-    console.log('[Sync] Full sync complete.');
 }
 
-/**
- * Listen for browser online/offline events and trigger auto-sync.
- * Call this once at app startup.
- */
 export function registerSyncListener(): void {
-    if (!isCloudEnabled) {
-        console.log('[Sync] Cloud disabled — running in fully offline mode.');
-        return;
-    }
-
-    window.addEventListener('online', () => {
-        console.log('[Sync] Browser came online. Triggering auto-sync...');
-        syncAllPending();
-    });
-
-    // Also attempt sync on startup if already online
-    if (navigator.onLine) {
-        syncAllPending();
-    }
+    if (!isCloudEnabled) return;
+    window.addEventListener('online', () => syncAllPending());
+    if (navigator.onLine) syncAllPending();
 }
 
-// Helper
 function delay(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }

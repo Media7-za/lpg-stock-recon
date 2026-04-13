@@ -191,7 +191,7 @@ export default function CountSession() {
             <h1 className="text-xl font-bold text-gray-900">Physical Stock Count</h1>
           </div>
           <select
-            className="text-sm border-gray-300 rounded-md bg-gray-50 font-medium py-1 px-2"
+            className="text-sm border-gray-300 rounded-md bg-gray-50 font-medium py-1 px-2 text-gray-900"
             value={sessionType}
             onChange={e => setSessionType(e.target.value as 'AM' | 'PM')}>
             <option value="AM">AM</option>
@@ -202,7 +202,7 @@ export default function CountSession() {
         {/* Toggle */}
         <div className="flex bg-gray-100 p-1 rounded-lg mb-4">
           <button
-            className={clsx("flex-1 py-2 text-sm font-bold rounded-md transition-colors", category === 'fulls' ? 'bg-white text-green-600 shadow' : 'text-gray-500')}
+            className={clsx("flex-1 py-2 text-sm font-bold rounded-md transition-colors", category === 'fulls' ? 'bg-white text-green-600 shadow' : 'text-gray-600')}
             onClick={() => {
               setCategory('fulls');
               setSize('9kg');
@@ -211,7 +211,7 @@ export default function CountSession() {
             Fulls
           </button>
           <button
-            className={clsx("flex-1 py-2 text-sm font-bold rounded-md transition-colors", category === 'empties' ? 'bg-white text-green-600 shadow' : 'text-gray-500')}
+            className={clsx("flex-1 py-2 text-sm font-bold rounded-md transition-colors", category === 'empties' ? 'bg-white text-green-600 shadow' : 'text-gray-600')}
             onClick={() => {
               setCategory('empties');
               setSize('9kg');
@@ -229,7 +229,7 @@ export default function CountSession() {
               onClick={() => setSize(s)}
               className={clsx(
                 "pb-3 pt-2 px-3 text-base sm:text-lg font-bold whitespace-nowrap transition-colors border-b-4 touch-manipulation",
-                size === s ? 'border-green-500 text-gray-900' : 'border-transparent text-gray-400 hover:text-gray-600'
+                size === s ? 'border-green-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700'
               )}
             >
               {s}

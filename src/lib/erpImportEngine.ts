@@ -1,240 +1,207 @@
 import Papa from 'papaparse';
 import { parse } from 'date-fns';
 
-export interface RawDetransRow {
-    ENTRY: string;
-    PERIOD: string;
-    ACCNO: string;
-    NAME: string;
-    DOCNO: string;
-    INVNO: string;
-    DEBORDER: string;
-    ORDERNO: string;
-    DEPREF: string;
-    DATE: string;
-    REF: string;
-    AMOUNT: string;
-    TAX: string;
-    EXCODE: string;
-    FAMOUNT: string;
-    PAID: string;
-}
-
-export interface RawSttransRow {
-    ENTRY: string;
-    PERIOD: string;
-    ACCNO: string;
-    DOCNO: string;
-    STOCKNO: string;
-    DESC: string;
-    CAT: string;
-    GROUP: string;
-    BRAND: string;
-    ORDERNO: string;
-    DATE: string;
-    QTY: string;
-    RETAIL: string;
-    COST: string;
-    REP: string;
-    REP_NAME: string;
-    NAME: string;
-    // ... other fields as needed
-}
-
-export interface ProcessedAccount {
-    accountNo: string;
-    currentName: string;
-}
-
-export interface ProcessedProduct {
-    stockNo: string;
-    description: string;
-    category: string;
-    group: string;
-    brand: string;
-}
-
-export interface ProcessedSalesRep {
-    repCode: string;
-    name: string;
-}
+export interface RawHeaderRow extends Array<string> { }
+export interface RawItemRow extends Array<string> { }
 
 export interface ProcessedTransactionHeader {
-    entryType: string;
+    entry_type: string;
     period: number;
-    accountNo: string;
-    accountName: string;
-    docNo: string;
-    invNo: string;
-    date: Date;
-    ref: string;
-    amount: number;
-    taxAmount: number;
-    fAmount: number;
-    isPaid: boolean;
-}
-
-export interface ProcessedLineItem {
-    docNo: string;
-    accountNo: string;
-    stockNo: string;
+    account_no: string;
+    account_name: string;
+    doc_no: string;
+    ref_no: string;
     description: string;
-    quantity: number;
-    retailPrice: number;
-    costPrice: number;
-    category: string;
-    repCode: string;
+    order_no: string;
+    batch_ref: string;
+    tx_date: string; // ISO format
+    amount_excl: number;
+    tax_amount: number;
+    tax_code: string;
+    discount: number;
+    flag: string;
+    source_file: string;
+    fingerprint: string;
 }
 
-export interface ProcessedAllocation {
-    sourceDocNo: string;
-    targetDocNo: string;
-    amount: number;
-    eventType: string;
+export interface ProcessedTransactionItem {
+    entry_type: string;
+    period: number;
+    account_no: string;
+    doc_no: string;
+    stock_no: string;
+    description: string;
+    category: string;
+    product_group: string;
+    brand: string;
+    order_no: string;
+    tx_date: string; // ISO format
+    qty: number;
+    retail_price: number;
+    cost_price: number;
+    reference: string;
+    rep_code: string;
+    user_code: string;
+    location: string;
+    tax_code: number;
+    line_tax: number;
+    rep_name: string;
+    account_name: string;
+    source_file: string;
+    fingerprint: string;
 }
 
 export class ERPImportEngine {
-    private accounts = new Map<string, ProcessedAccount>();
-    private products = new Map<string, ProcessedProduct>();
-    private salesReps = new Map<string, ProcessedSalesRep>();
-
-    private transactions: ProcessedTransactionHeader[] = [];
-    private allocations: ProcessedAllocation[] = [];
-    private lineItems: ProcessedLineItem[] = [];
-
     constructor() { }
 
-    /**
-   * Parse STTRANS.TXT content
-   */
-    async parseSttrans(csvContent: string) {
-        return new Promise((resolve, reject) => {
-            Papa.parse<RawSttransRow>(csvContent, {
-                header: true,
-                skipEmptyLines: true,
-                complete: (results) => {
-                    this.processSttransRows(results.data);
-                    resolve(true);
-                },
-                error: (err: Error) => reject(err),
-            });
-        });
+    private clean(v: string | undefined): string {
+        if (!v) return "";
+        return v.trim().replace(/"/g, '');
     }
 
-    private processSttransRows(rows: RawSttransRow[]) {
-        for (const row of rows) {
-            // 1. Normalize Product
-            if (row.STOCKNO && !this.products.has(row.STOCKNO)) {
-                this.products.set(row.STOCKNO, {
-                    stockNo: row.STOCKNO,
-                    description: row.DESC,
-                    category: row.CAT,
-                    group: row.GROUP,
-                    brand: row.BRAND,
-                });
-            }
-
-            // 2. Normalize SalesRep
-            if (row.REP && !this.salesReps.has(row.REP)) {
-                this.salesReps.set(row.REP, {
-                    repCode: row.REP,
-                    name: row.REP_NAME,
-                });
-            }
-
-            // 3. Prepare Line Item
-            const lineItem = {
-                docNo: row.DOCNO,
-                accountNo: row.ACCNO,
-                stockNo: row.STOCKNO,
-                description: row.DESC, // Snapshot (1B)
-                quantity: parseFloat(row.QTY) || 0,
-                retailPrice: parseFloat(row.RETAIL) || 0,
-                costPrice: parseFloat(row.COST) || 0,
-                category: row.CAT,
-                repCode: row.REP,
-            };
-
-            this.lineItems.push(lineItem);
-        }
-    }
-
-    /**
-     * Parse DETRANS.TXT content
-     */
-    async parseDetrans(csvContent: string) {
-        return new Promise((resolve, reject) => {
-            Papa.parse<RawDetransRow>(csvContent, {
-                header: true,
-                skipEmptyLines: true,
-                complete: (results) => {
-                    this.processDetransRows(results.data);
-                    resolve(true);
-                },
-                error: (err: Error) => reject(err),
-            });
-        });
-    }
-
-    private processDetransRows(rows: RawDetransRow[]) {
-        for (const row of rows) {
-            // 1. Normalize Account
-            if (!this.accounts.has(row.ACCNO)) {
-                this.accounts.set(row.ACCNO, {
-                    accountNo: row.ACCNO,
-                    currentName: row.NAME,
-                });
-            }
-
-            // 2. Prepare Transaction Header
-            const header = {
-                entryType: row.ENTRY,
-                period: parseInt(row.PERIOD) || 0,
-                accountNo: row.ACCNO,
-                accountName: row.NAME, // Snapshot (1B)
-                docNo: row.DOCNO,
-                invNo: row.INVNO,
-                date: this.parseERPDate(row.DATE),
-                ref: row.REF,
-                amount: parseFloat(row.AMOUNT) || 0,
-                taxAmount: parseFloat(row.TAX) || 0,
-                fAmount: parseFloat(row.FAMOUNT) || 0,
-                isPaid: row.PAID === 'Y',
-            };
-
-            this.transactions.push(header);
-
-            // 3. Derive Allocation Event (2A)
-            // If it's a payment/credit hitting a different invoice
-            if ((row.ENTRY === 'Payment' || row.ENTRY === 'Crd Note') &&
-                row.INVNO && row.INVNO !== row.DOCNO && row.INVNO !== 'Alloc') {
-                this.allocations.push({
-                    sourceDocNo: row.DOCNO,
-                    targetDocNo: row.INVNO,
-                    amount: Math.abs(parseFloat(row.AMOUNT)) || 0,
-                    eventType: 'ALLOCATE',
-                });
-            }
-        }
-    }
-
-    private parseERPDate(dateStr: string): Date {
+    private parseDate(s: string): string | null {
+        if (!s) return null;
         try {
-            // Format is DD/MM/YYYY
-            return parse(dateStr, 'dd/MM/yyyy', new Date());
-        } catch (e) {
-            console.error(`Failed to parse date: ${dateStr}`);
-            return new Date();
+            const d = parse(s.trim(), 'dd/MM/yyyy', new Date());
+            return d.toISOString().split('T')[0];
+        } catch {
+            return null;
         }
     }
 
-    getProcessedData() {
-        return {
-            accounts: Array.from(this.accounts.values()),
-            products: Array.from(this.products.values()),
-            salesReps: Array.from(this.salesReps.values()),
-            transactions: this.transactions,
-            allocations: this.allocations,
-        };
+    /**
+     * Compute SHA-256 fingerprint in the browser
+     */
+    private async computeFingerprint(parts: any[]): Promise<string> {
+        const raw = parts.join('|');
+        const msgUint8 = new TextEncoder().encode(raw);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    /**
+     * Parse DRTXS Header file (16-col)
+     */
+    async parseHeaders(csvContent: string, fileName: string): Promise<ProcessedTransactionHeader[]> {
+        return new Promise((resolve, reject) => {
+            Papa.parse<string[]>(csvContent, {
+                header: false,
+                skipEmptyLines: true,
+                complete: async (results) => {
+                    const processed: ProcessedTransactionHeader[] = [];
+                    // Skip header row if it contains non-numeric data in index 1 (period)
+                    const data = results.data[0][1].match(/\d+/) ? results.data : results.data.slice(1);
+
+                    for (const row of data) {
+                        if (row.length < 13) continue;
+                        
+                        const excl = parseFloat(this.clean(row[11])) || 0;
+                        const tax = parseFloat(this.clean(row[12])) || 0;
+                        const date = this.parseDate(this.clean(row[9]));
+                        if (!date) continue;
+
+                        const fp = await this.computeFingerprint([
+                            this.clean(row[0]), // type
+                            this.clean(row[2]), // account
+                            this.clean(row[4]), // doc
+                            this.clean(row[5]), // ref (inv)
+                            this.clean(row[8]), // batch
+                            date,
+                            excl,
+                            tax
+                        ]);
+
+                        processed.push({
+                            entry_type: this.clean(row[0]),
+                            period: parseInt(this.clean(row[1])) || 0,
+                            account_no: this.clean(row[2]),
+                            account_name: this.clean(row[3]),
+                            doc_no: this.clean(row[4]),
+                            ref_no: this.clean(row[5]),
+                            description: this.clean(row[6]),
+                            order_no: this.clean(row[7]),
+                            batch_ref: this.clean(row[8]),
+                            tx_date: date,
+                            amount_excl: excl,
+                            tax_amount: tax,
+                            tax_code: this.clean(row[13]),
+                            discount: parseFloat(this.clean(row[14])) || 0,
+                            flag: this.clean(row[15]),
+                            source_file: fileName,
+                            fingerprint: fp
+                        });
+                    }
+                    resolve(processed);
+                },
+                error: (err: Error) => reject(err),
+            });
+        });
+    }
+
+    /**
+     * Parse STDatabase Item file (37-col)
+     */
+    async parseItems(csvContent: string, fileName: string): Promise<ProcessedTransactionItem[]> {
+        return new Promise((resolve, reject) => {
+            Papa.parse<string[]>(csvContent, {
+                header: false,
+                skipEmptyLines: true,
+                complete: async (results) => {
+                    const processed: ProcessedTransactionItem[] = [];
+                    const data = results.data[0][1].match(/\d+/) ? results.data : results.data.slice(1);
+
+                    for (const row of data) {
+                        if (row.length < 23) continue;
+
+                        const qty = parseFloat(this.clean(row[11])) || 0;
+                        const retail = parseFloat(this.clean(row[12])) || 0;
+                        const date = this.parseDate(this.clean(row[10]));
+                        if (!date) continue;
+
+                        const fp = await this.computeFingerprint([
+                            this.clean(row[0]), // type
+                            this.clean(row[2]), // account
+                            this.clean(row[3]), // doc
+                            this.clean(row[4]), // stock
+                            this.clean(row[5]), // desc
+                            this.clean(row[14]), // ref
+                            date,
+                            qty,
+                            retail
+                        ]);
+
+                        processed.push({
+                            entry_type: this.clean(row[0]),
+                            period: parseInt(this.clean(row[1])) || 0,
+                            account_no: this.clean(row[2]),
+                            doc_no: this.clean(row[3]),
+                            stock_no: this.clean(row[4]),
+                            description: this.clean(row[5]),
+                            category: this.clean(row[6]),
+                            product_group: this.clean(row[7]),
+                            brand: this.clean(row[8]),
+                            order_no: this.clean(row[9]),
+                            tx_date: date,
+                            qty,
+                            retail_price: retail,
+                            cost_price: parseFloat(this.clean(row[13])) || 0,
+                            reference: this.clean(row[14]),
+                            rep_code: this.clean(row[15]),
+                            user_code: this.clean(row[16]),
+                            location: this.clean(row[17]),
+                            tax_code: parseInt(this.clean(row[21])) || 0,
+                            line_tax: Math.abs(parseFloat(this.clean(row[22]))) || 0,
+                            rep_name: this.clean(row[31]),
+                            account_name: this.clean(row[32]),
+                            source_file: fileName,
+                            fingerprint: fp
+                        });
+                    }
+                    resolve(processed);
+                },
+                error: (err: Error) => reject(err),
+            });
+        });
     }
 }

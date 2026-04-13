@@ -5,6 +5,8 @@ import CSVUpload from './components/csv/CSVUpload';
 import CountSession from './components/count/CountSession';
 import ReconciliationResults from './components/reconciliation/ReconciliationResults';
 import TrendsDashboard from './components/trends/TrendsDashboard';
+import DataHub from './components/dashboard/DataHub';
+import AuditDashboard from './components/dashboard/AuditDashboard';
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
                 <Route path="/upload" element={<CSVUpload />} />
                 <Route path="/results" element={<ReconciliationResults />} />
                 <Route path="/trends" element={<TrendsDashboard />} />
+                <Route path="/data-agent" element={<DataHub />} />
+                <Route path="/audit" element={<AuditDashboard />} />
               </Routes>
             </Layout>
           }

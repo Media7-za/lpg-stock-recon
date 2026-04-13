@@ -53,4 +53,41 @@ test.describe('Mobile Count Workflow', () => {
     // CustomNumpad should appear
     await expect(page.locator('text=Stock Entry')).toBeVisible();
   });
+
+  test('should navigate through Review and Submit flow successfully', async ({ page }) => {
+    // 1. Add some counts
+    const row = page.locator('.py-4.border-b').filter({ hasText: /Oryx/i }).filter({ hasText: /9kg/i }).first();
+    const plusButton = row.locator('button').filter({ has: page.locator('svg') }).last();
+    
+    await plusButton.click();
+    await plusButton.click();
+
+    // Navigate to next sizes to reach the review button
+    // The sizes are 9kg, 14kg, 19kg, SV, DV. 
+    // We are at 9kg. We need to click "Next: 14kg", "Next: 19kg", "Next: SV", "Next: DV", "Next: Empties"
+    // Wait, the "Review & Submit" button appears when `isLastSize` is true. `isLastSize` is true when `size === 'DV'`.
+    await page.getByRole('button', { name: /Next: 14kg/i }).click();
+    await page.getByRole('button', { name: /Next: 19kg/i }).click();
+    await page.getByRole('button', { name: /Next: SV/i }).click();
+    await page.getByRole('button', { name: /Next: DV/i }).click();
+
+    // Click Review & Submit (it appears when at DV)
+    await page.getByRole('button', { name: /Review & Submit/i }).click();
+
+    // 2. Verify Review Summary Screen renders correctly
+    await expect(page.getByRole('heading', { name: 'Review Your Count' })).toBeVisible();
+    
+    // Total items should be 2
+    await expect(page.locator('text=Total Items').locator('..').locator('p').last()).toHaveText('2');
+
+    // 3. Confirm & Submit
+    
+    // We need to bypass the alert that occurs in CountSession.tsx when submitting
+    page.on('dialog', dialog => dialog.accept());
+
+    await page.getByRole('button', { name: /Confirm & Submit/i }).click();
+
+    // 4. Verification that it routes correctly to the results page
+    await expect(page).toHaveURL(/\/results\?countId=/);
+  });
 });

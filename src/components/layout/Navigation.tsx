@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Upload, ClipboardList, TrendingUp } from 'lucide-react';
+import { Home, Upload, ClipboardList, TrendingUp, Database, Calculator } from 'lucide-react';
 import clsx from 'clsx';
 
 export default function Navigation() {
@@ -10,6 +10,8 @@ export default function Navigation() {
     { path: '/upload', label: 'Upload CSV', icon: Upload },
     { path: '/count', label: 'New Count', icon: ClipboardList },
     { path: '/trends', label: 'Trends', icon: TrendingUp },
+    { path: '/data-agent', label: 'Data Agent', icon: Database },
+    { path: '/audit', label: 'Audit Hub', icon: Calculator },
   ];
 
   return (
