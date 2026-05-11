@@ -5,12 +5,14 @@ import { SyncService, SyncProgress } from '../../lib/syncService';
 import { supabase } from '../../lib/supabase';
 import { format } from 'date-fns';
 import clsx from 'clsx';
+import CustomerImport from './CustomerImport';
 
 type UploadState = 'idle' | 'parsing' | 'syncing' | 'complete' | 'error' | 'cancelled';
 
 export default function DataHub() {
     const [state, setState] = useState<UploadState>('idle');
     const [progress, setProgress] = useState<SyncProgress | null>(null);
+    const [activeTab, setActiveTab] = useState<'erp' | 'customers'>('erp');
 
     const [errors, setErrors] = useState<string[]>([]);
     const [controller, setController] = useState<AbortController | null>(null);
@@ -95,7 +97,30 @@ export default function DataHub() {
                 </p>
             </header>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="flex items-center gap-2 border-b border-border mb-8">
+                <button 
+                    onClick={() => setActiveTab('erp')}
+                    className={clsx(
+                        "px-6 py-3 text-sm font-bold transition-all border-b-2",
+                        activeTab === 'erp' ? "border-blue-500 text-blue-600" : "border-transparent text-text-secondary hover:text-text-primary"
+                    )}
+                >
+                    ERP Upload
+                </button>
+                <button 
+                    onClick={() => setActiveTab('customers')}
+                    className={clsx(
+                        "px-6 py-3 text-sm font-bold transition-all border-b-2",
+                        activeTab === 'customers' ? "border-blue-500 text-blue-600" : "border-transparent text-text-secondary hover:text-text-primary"
+                    )}
+                >
+                    Customer Contacts
+                </button>
+            </div>
+
+            {activeTab === 'erp' ? (
+                <>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Headers Upload Card */}
                 <div className="bg-surface border border-border rounded-xl p-8 hover:border-blue-500/50 transition-all group relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 blur-3xl rounded-full -mr-16 -mt-16" />
@@ -272,6 +297,10 @@ export default function DataHub() {
                     </div>
                 </div>
             )}
-        </div>
+        </>
+    ) : (
+        <CustomerImport />
+    )}
+</div>
     );
 }

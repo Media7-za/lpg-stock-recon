@@ -7,6 +7,7 @@ import ReconciliationResults from './components/reconciliation/ReconciliationRes
 import TrendsDashboard from './components/trends/TrendsDashboard';
 import DataHub from './components/dashboard/DataHub';
 import AuditDashboard from './components/dashboard/AuditDashboard';
+import DispatchDashboard from './components/dispatch/DispatchDashboard';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
                 <Route path="/trends" element={<TrendsDashboard />} />
                 <Route path="/data-agent" element={<DataHub />} />
                 <Route path="/audit" element={<AuditDashboard />} />
+                <Route path="/dispatch" element={<DispatchDashboard />} />
               </Routes>
             </Layout>
           }

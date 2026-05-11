@@ -180,3 +180,32 @@ export interface AllocationEvent {
   eventType: AllocationEventType;
   createdAt: Date;
 }
+
+// --- Dispatch Models ---
+export interface DispatchEligibleInvoice {
+  doc_no: string;
+  tx_date: string;
+  account_no: string;
+  account_name: string;
+  amount_inc: number;
+  whatsapp_number: string | null;
+  last_status: 'PENDING' | 'SENT' | 'FAILED' | 'DELIVERED' | null;
+  last_sent_at: string | null;
+}
+
+export interface DispatchLogEntry {
+  id: string;
+  doc_no: string;
+  sent_at: string;
+  status: 'PENDING' | 'SENT' | 'FAILED' | 'DELIVERED';
+  error_details?: string;
+  signed_doc_url?: string;
+  merged_doc_url?: string;
+  actor_id?: string;
+}
+
+export interface Customer {
+  account_code: string;
+  name: string;
+  whatsapp_number: string;
+}

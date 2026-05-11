@@ -1,24 +1,28 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Upload, ClipboardList, TrendingUp, Database, Calculator } from 'lucide-react';
+import { Home, Upload, ClipboardList, TrendingUp, Database, Calculator, Truck } from 'lucide-react';
 import clsx from 'clsx';
+import { useAuth } from '../../hooks/useAuth';
 
 export default function Navigation() {
   const location = useLocation();
 
   const navItems = [
-    { path: '/', label: 'Dashboard', icon: Home },
-    { path: '/upload', label: 'Upload CSV', icon: Upload },
-    { path: '/count', label: 'New Count', icon: ClipboardList },
-    { path: '/trends', label: 'Trends', icon: TrendingUp },
-    { path: '/data-agent', label: 'Data Agent', icon: Database },
-    { path: '/audit', label: 'Audit Hub', icon: Calculator },
+    { path: '/', label: 'Dashboard', icon: Home, roles: ['Yard Counter', 'Depot Manager', 'Invoice Clerk'] },
+    { path: '/upload', label: 'Upload CSV', icon: Upload, roles: ['Depot Manager'] },
+    { path: '/count', label: 'New Count', icon: ClipboardList, roles: ['Yard Counter', 'Depot Manager'] },
+    { path: '/trends', label: 'Trends', icon: TrendingUp, roles: ['Depot Manager'] },
+    { path: '/data-agent', label: 'Data Hub', icon: Database, roles: ['Depot Manager'] },
+    { path: '/audit', label: 'Audit Hub', icon: Calculator, roles: ['Depot Manager', 'Invoice Clerk'] },
+    { path: '/dispatch', label: 'Invoice Dispatch', icon: Truck, roles: ['Depot Manager', 'Invoice Clerk'] },
   ];
+
+  const { userRole, loading } = useAuth();
 
   return (
     <nav className="bg-surface border-b border-border">
       <div className="container mx-auto px-4">
         <div className="flex gap-1">
-          {navItems.map((item) => {
+          {navItems.filter(item => !loading && userRole && item.roles.includes(userRole)).map((item) => {
             const Icon = item.icon;
             const isActive = location.pathname === item.path;
             return (
