@@ -69,3 +69,13 @@ CREATE TABLE IF NOT EXISTS unmatched_credits (
     created_at     TIMESTAMPTZ DEFAULT now(),
     updated_at     TIMESTAMPTZ DEFAULT now()
 );
+
+-- RPC to atomicly decrement available balance (LSR-5)
+CREATE OR REPLACE FUNCTION decrement_available_balance(doc_id BIGINT, amount_to_dec NUMERIC)
+RETURNS VOID AS $$
+BEGIN
+    UPDATE transaction_headers
+    SET available_balance = available_balance - amount_to_dec
+    WHERE id = doc_id;
+END;
+$$ LANGUAGE plpgsql;

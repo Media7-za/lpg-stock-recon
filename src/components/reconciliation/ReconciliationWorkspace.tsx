@@ -24,6 +24,8 @@ import {
   Database,
   CheckCircle
 } from 'lucide-react';
+import { supabase } from '../../lib/supabase';
+import { AllocationReasonModal } from './AllocationReasonModal';
 
 export default function ReconciliationWorkspace() {
   const { accountNo } = useParams<{ accountNo: string }>();
@@ -38,11 +40,16 @@ export default function ReconciliationWorkspace() {
     loading, 
     error, 
     nextInvoice, 
-    prevInvoice
+    prevInvoice,
+    session,
+    refresh
   } = useAllocationEngine(accountNo || '');
 
   const [activeId, setActiveId] = useState<string | null>(null);
   const [activeDoc, setActiveDoc] = useState<NormalizedDocument | null>(null);
+  const [pendingAllocation, setPendingAllocation] = useState<{ source: NormalizedDocument, target: NormalizedDocument } | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAllocating, setIsAllocating] = useState(false);
 
   // --- Drag & Drop Handlers ---
 
@@ -52,6 +59,73 @@ export default function ReconciliationWorkspace() {
     setActiveDoc(active.data.current as NormalizedDocument);
   };
 
+  const performAllocation = async (source: NormalizedDocument, target: NormalizedDocument, reasonCode?: string) => {
+    if (!session || !supabase) return;
+    setIsAllocating(true);
+
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      const actorId = user?.id;
+      const isAutoAccepted = (source.score || 0) >= 80;
+      const allocationAmount = Math.min(source.available_balance, target.available_balance);
+
+      // 1. Create Allocation Record
+      const { data: allocation, error: allocErr } = await supabase
+        .from('allocations')
+        .insert([{
+          session_id: session.id,
+          credit_doc_id: source.id,
+          invoice_doc_id: target.id,
+          amount: allocationAmount,
+          is_auto_accepted: isAutoAccepted,
+          actor_id: actorId
+        }])
+        .select()
+        .single();
+
+      if (allocErr) throw allocErr;
+
+      // 2. Create Impact Records (for audit)
+      if (source.raw_items && source.raw_items.length > 0) {
+        const impactRows = source.raw_items.map(item => ({
+          allocation_id: allocation.id,
+          stock_no: item.stock_no,
+          qty_covered: item.qty,
+          amount_covered: (item.qty / (source.raw_items?.reduce((acc, i) => acc + i.qty, 0) || 1)) * allocationAmount
+        }));
+        
+        await supabase.from('allocation_item_impact').insert(impactRows);
+      }
+
+      // 3. Update Document Balances
+      await Promise.all([
+        supabase.rpc('decrement_available_balance', { doc_id: source.id, amount_to_dec: allocationAmount }),
+        supabase.rpc('decrement_available_balance', { doc_id: target.id, amount_to_dec: allocationAmount })
+      ]);
+
+      // 4. Create Training Record if manual override
+      if (!isAutoAccepted && reasonCode) {
+        await supabase.from('training_records').insert([{
+          allocation_id: allocation.id,
+          reason_code: reasonCode,
+          score_at_time: source.score,
+          recommended_doc_id: source.id // In a real recommender, this would be the top-scored doc ID
+        }]);
+      }
+
+      // 5. Update Local State & Refresh
+      await refresh();
+      
+    } catch (err: any) {
+      console.error('[LSR-5] Allocation failed:', err);
+      alert(`Allocation failed: ${err.message}`);
+    } finally {
+      setIsAllocating(false);
+      setIsModalOpen(false);
+      setPendingAllocation(null);
+    }
+  };
+
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
     
@@ -59,10 +133,14 @@ export default function ReconciliationWorkspace() {
       const sourceDoc = active.data.current as NormalizedDocument;
       const targetDoc = over.data.current as NormalizedDocument;
       
-      console.log(`[LSR-5] Allocating ${sourceDoc.doc_no} to ${targetDoc.doc_no}`);
-      // Implementation of actual allocation persistence will follow in next phase
-      // For MVP UI feedback, we just refresh or trigger a mock update
-      alert(`Allocating R${sourceDoc.available_balance} from ${sourceDoc.doc_no} to ${targetDoc.doc_no}`);
+      const score = sourceDoc.score || 0;
+
+      if (score >= 80) {
+        performAllocation(sourceDoc, targetDoc);
+      } else {
+        setPendingAllocation({ source: sourceDoc, target: targetDoc });
+        setIsModalOpen(true);
+      }
     }
 
     setActiveId(null);
@@ -203,6 +281,29 @@ export default function ReconciliationWorkspace() {
             </div>
           ) : null}
         </DragOverlay>
+
+        {pendingAllocation && (
+          <AllocationReasonModal
+            isOpen={isModalOpen}
+            onClose={() => {
+              setIsModalOpen(false);
+              setPendingAllocation(null);
+            }}
+            onConfirm={(reasonCode) => performAllocation(pendingAllocation.source, pendingAllocation.target, reasonCode)}
+            docNo={pendingAllocation.source.doc_no}
+            targetNo={pendingAllocation.target.doc_no}
+            amount={Math.min(pendingAllocation.source.available_balance, pendingAllocation.target.available_balance)}
+          />
+        )}
+
+        {isAllocating && (
+          <div className="fixed inset-0 z-[200] bg-slate-950/40 backdrop-blur-[2px] flex items-center justify-center">
+            <div className="bg-slate-900 border border-slate-700 px-8 py-4 rounded-2xl flex items-center gap-4 shadow-2xl">
+              <Loader2 className="w-6 h-6 animate-spin text-blue-500" />
+              <span className="text-sm font-black uppercase tracking-widest text-white">Persisting Allocation...</span>
+            </div>
+          </div>
+        )}
 
       </div>
     </DndContext>

@@ -35,22 +35,42 @@ export function useAllocationEngine(accountNo: string) {
       classRes.data?.forEach(c => { classMap[c.stock_no] = c.business_bucket; });
 
       // 2. Fetch Session or create DRAFT
-      const { data: activeSession } = await supabase
+      let { data: activeSession, error: sessionFetchErr } = await supabase
         .from('reconciliation_sessions')
         .select('*')
         .eq('account_no', accountNo)
         .neq('status', 'FINALIZED')
-        .single();
+        .maybeSingle();
+
+      if (sessionFetchErr) {
+        throw sessionFetchErr;
+      }
 
       if (activeSession) {
         setSession(activeSession);
       } else {
-        const { data: newSession } = await supabase
+        const { data: newSession, error: insertErr } = await supabase
           .from('reconciliation_sessions')
           .insert([{ account_no: accountNo, status: 'OPEN' }])
           .select()
-          .single();
-        setSession(newSession);
+          .maybeSingle();
+        
+        if (insertErr) {
+          // Handle race condition: if someone else inserted it between our maybeSingle and INSERT
+          if (insertErr.code === '23505') { // Unique violation
+            const { data: retrySession } = await supabase
+              .from('reconciliation_sessions')
+              .select('*')
+              .eq('account_no', accountNo)
+              .neq('status', 'FINALIZED')
+              .maybeSingle();
+            setSession(retrySession);
+          } else {
+            throw insertErr;
+          }
+        } else if (newSession) {
+          setSession(newSession);
+        }
       }
 
       // 3. Fetch Transaction Headers (Unallocated)
@@ -85,7 +105,8 @@ export function useAllocationEngine(accountNo: string) {
         entry_type: h.entry_type as EntryType,
         total_amount: h.amount_excl + h.tax_amount,
         available_balance: h.available_balance,
-        item_signature: buildItemSignature(itemsByDoc[h.doc_no] || [], classMap)
+        item_signature: buildItemSignature(itemsByDoc[h.doc_no] || [], classMap),
+        raw_items: (itemsByDoc[h.doc_no] || []).map(item => ({ stock_no: item.stock_no, qty: item.qty }))
       }));
 
       setInvoices(normalized.filter(d => d.entry_type === 'Invoice'));

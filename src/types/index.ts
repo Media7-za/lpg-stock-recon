@@ -240,6 +240,7 @@ export interface NormalizedDocument {
   total_amount: number;
   available_balance: number;
   item_signature: Record<string, number>; // bucket -> quantity
+  raw_items?: { stock_no: string, qty: number }[];
   score?: number;
   is_high_confidence?: boolean;
 }

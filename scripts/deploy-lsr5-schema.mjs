@@ -119,6 +119,21 @@ CREATE INDEX IF NOT EXISTS idx_unmatched_credits_acc ON unmatched_credits(accoun
     await client.query(step4);
     console.log('Step 4 successful.');
 
+    // Step 5: Create RPCs
+    console.log('Running Step 5: Create RPCs...');
+    const step5 = `
+CREATE OR REPLACE FUNCTION decrement_available_balance(doc_id BIGINT, amount_to_dec NUMERIC)
+RETURNS VOID AS $$
+BEGIN
+    UPDATE transaction_headers
+    SET available_balance = available_balance - amount_to_dec
+    WHERE id = doc_id;
+END;
+$$ LANGUAGE plpgsql;
+    `;
+    await client.query(step5);
+    console.log('Step 5 successful.');
+
     console.log('LSR-5 Schema Deployment Complete!');
     
   } catch (err) {
