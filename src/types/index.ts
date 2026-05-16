@@ -209,3 +209,64 @@ export interface Customer {
   name: string;
   whatsapp_number: string;
 }
+
+// --- Item-Aware Reconciliation (LSR-5) ---
+
+export type ReconciliationSessionStatus = 'OPEN' | 'DRAFT' | 'FINALIZED';
+
+export interface ReconciliationSession {
+  id: string;
+  account_no: string;
+  status: ReconciliationSessionStatus;
+  started_by?: string;
+  finalized_by?: string;
+  started_at: string;
+  finalized_at?: string;
+  updated_at: string;
+}
+
+export interface ItemClassification {
+  stock_no: string;
+  business_bucket: 'CYL_DEPOSIT' | 'LPG_CONTENT' | 'ACCESSORIES';
+  logical_group: 'Shell' | 'Gas' | 'Other';
+}
+
+export interface NormalizedDocument {
+  id: number;
+  doc_no: string;
+  account_no: string;
+  tx_date: string;
+  entry_type: EntryType;
+  total_amount: number;
+  available_balance: number;
+  item_signature: Record<string, number>; // bucket -> quantity
+  score?: number;
+  is_high_confidence?: boolean;
+}
+
+export interface Allocation {
+  id: string;
+  session_id: string;
+  credit_doc_id: number;
+  invoice_doc_id: number;
+  amount: number;
+  is_auto_accepted: boolean;
+  actor_id?: string;
+  created_at: string;
+}
+
+export interface TrainingRecord {
+  id: string;
+  allocation_id?: string;
+  reason_code: string;
+  score_at_time?: number;
+  recommended_doc_id?: number;
+  created_at: string;
+}
+
+export interface ReconScoringWeights {
+  EXACT_AMOUNT: number;
+  ITEM_OVERLAP: number;
+  DATE_PROXIMITY: number;
+  NAME_SIMILARITY: number;
+}

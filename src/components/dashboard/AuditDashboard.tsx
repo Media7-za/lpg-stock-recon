@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { 
     Search, ChevronRight, CheckCircle2, AlertTriangle, 
@@ -32,6 +33,7 @@ interface ItemDetail {
 }
 
 export default function AuditDashboard() {
+    const navigate = useNavigate();
     const [accounts, setAccounts] = useState<{account_no: string, account_name: string}[]>([]);
     const [selectedAcc, setSelectedAcc] = useState<string>('');
     const [auditData, setAuditData] = useState<AuditRow[]>([]);
@@ -280,6 +282,13 @@ export default function AuditDashboard() {
                         >
                             <Download className="w-4 h-4" />
                             Detailed CSV
+                        </button>
+                        <button 
+                            onClick={() => navigate(`/debtors-recon/${selectedAcc}`)}
+                            className="flex items-center gap-2 px-6 py-2 bg-emerald-600 border border-emerald-500 rounded-lg text-sm font-black shadow-lg shadow-emerald-900/20 text-white hover:bg-emerald-500 transition-all uppercase tracking-widest ml-4"
+                        >
+                            <Calculator className="w-4 h-4" />
+                            Reconcile Account
                         </button>
                     </div>
 
