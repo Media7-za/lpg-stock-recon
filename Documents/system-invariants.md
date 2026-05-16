@@ -19,3 +19,15 @@ These rules are **non-negotiable** and enforced across the system via API valida
 - **Invalid Transitions:** Return `400 BAD REQUEST (INVALID_STATE_TRANSITION)`.
 - **Locked Sessions:** Return `423 LOCKED (SESSION_LOCKED)`.
 - **Duplicate Requests:** Return cached response via `idempotency_keys` table.
+
+---
+
+## 📈 Post-Fix Financial Verification Contract
+
+Every financial fix MUST validate:
+
+1. **Ledger Stability:** Ledger totals remain unchanged (unless explicitly corrected in the spec).
+2. **Operational Recon:** Operational totals (LPG/CYL) now reconcile exactly.
+3. **Allocation Integrity:** No new allocation breaks introduced (check `allocation_events`).
+4. **Historical Continuity:** Prior-period balances remain stable and unaffected by current-period fixes.
+5. **Integrity Rules:** All automated integrity rules pass (VAT consistency, Gross/Net validation).

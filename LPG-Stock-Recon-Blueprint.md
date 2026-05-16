@@ -65,6 +65,19 @@ Instead of just checking raw stock, the system calculates discrepancies across t
 - **Task 4.2**: Save finalized reconciliation reports to the Prisma database for historical auditing.
 - **Task 4.3**: Create aggregated summary views on the Home Dashboard (Last AM vs PM trends).
 
+### 📝 EPIC 5: Dispatcher Gate Log (PWA Slice)
+*Goal: Replace manual gate spreadsheets with a rapid, offline-capable PWA logging tool for the yard dispatcher.*
+- **Task 5.1**: Build the Dispatcher Entry UI with rapid `[- 0 +]` counters separated by FULLS and EMPTIES.
+- **Task 5.2**: Include inputs for Direction (In/Out), Customer Reference, Payment Method, and Delivery Note / Doc #.
+- **Task 5.3**: Define the Prisma/Dexie schema for `DispatcherMovementRecord` to ensure smooth offline-first saving.
+- **Task 5.4**: Build the sync layer to push recorded gate movements up to the central database in real-time.
+
+### ⚖️ EPIC 6: Standalone Movement & Paperwork Recon
+*Goal: Provide Admin with a dedicated tool to audit Gate Flows against ERP Invoicing, ensuring every physical movement is billed.*
+- **Task 6.1**: Build a dedicated Dashboard tab: "Gate vs Office Audit".
+- **Task 6.2**: Implement an algorithm that cross-references `DispatcherMovementRecord` line items against `CURRENT.TXT` ERP records matching by Document/Reference Number.
+- **Task 6.3**: Surface Exception Reports specifically flagging: Missing ERP Documents, Quantity Mismatches, and Unauthorized Ghost ERP entries.
+
 ---
 
 ## 5. Next Immediate Steps (Engineering Phase)

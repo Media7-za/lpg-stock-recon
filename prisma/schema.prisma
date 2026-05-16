@@ -8,22 +8,345 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-// ==================================================
-// SYSTEM MODELS
-// ==================================================
-
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  name      String?
-  role      UserRole @default(USER)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  matchDecisions MatchDecision[]
+  id             String            @id @default(cuid())
+  email          String            @unique
+  name           String?
+  role           UserRole          @default(USER)
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
   allocations    AllocationEvent[] @relation("user_allocations")
+  matchDecisions MatchDecision[]
 
   @@map("users")
+}
+
+model Account {
+  id                String   @id @default(cuid())
+  accountNo         String   @unique @map("accno")
+  currentName       String
+  accountType       String?  @map("account_type")
+  typicalReturnDays Int?     @map("typical_return_days")
+  partialReturnProb Float?   @map("partial_return_prob")
+  commonPatterns    String[] @map("common_patterns")
+  specialRules      String?  @map("special_rules")
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@map("accounts")
+}
+
+model Product {
+  id          String                @id @default(cuid())
+  stockNo     String                @unique @map("stockno")
+  description String
+  category    String?
+  group       String?
+  brand       String?
+  createdAt   DateTime              @default(now())
+  updatedAt   DateTime              @updatedAt
+  lineItems   TransactionLineItem[]
+
+  @@map("products")
+}
+
+model SalesRep {
+  id        String                @id @default(cuid())
+  repCode   String                @unique @map("rep")
+  name      String?
+  lineItems TransactionLineItem[]
+
+  @@map("sales_reps")
+}
+
+model TransactionHeader {
+  id           BigInt    @id @default(autoincrement())
+  entry_type   String?
+  period       Int?
+  account_no   String?
+  account_name String?
+  doc_no       String?
+  ref_no       String?
+  description  String?
+  order_no     String?
+  batch_ref    String?
+  tx_date      DateTime? @db.Date
+  amount_excl  Decimal?  @db.Decimal
+  tax_amount   Decimal?  @db.Decimal
+  tax_code     String?
+  discount     Decimal?  @db.Decimal
+  flag         String?
+  source_file  String?
+  fingerprint  String?   @unique
+  created_at   DateTime? @default(now()) @db.Timestamptz(6)
+
+  @@index([account_no], map: "idx_headers_account_no")
+  @@index([doc_no], map: "idx_headers_doc_no")
+  @@map("transaction_headers")
+}
+
+model TransactionLineItem {
+  id            String    @id @default(cuid())
+  transactionId String    @map("transaction_id")
+  docNo         String    @map("docno")
+  accountNo     String    @map("accno")
+  entryType     EntryType @map("entry")
+  period        Int
+  date          DateTime
+  productId     String?   @map("product_id")
+  stockNo       String?   @map("stockno")
+  description   String?
+  category      String?
+  group         String?
+  brand         String?
+  quantity      Decimal   @db.Decimal(18, 3)
+  retailPrice   Decimal   @map("retail") @db.Decimal(18, 4)
+  costPrice     Decimal   @map("cost") @db.Decimal(18, 4)
+  orderNo       String?   @map("orderno")
+  repId         String?   @map("rep_id")
+  repCode       String?   @map("rep")
+  ref           String?
+  user          String?
+  location      String?
+  contract      String?
+  comms         Decimal   @db.Decimal(18, 4)
+  lineComms     Decimal   @map("linecomms") @db.Decimal(18, 4)
+  taxCode       Int       @map("taxcode")
+  lineTax       Decimal   @map("linetax") @db.Decimal(18, 2)
+  projNo        String?   @map("projno")
+  department    String?
+  retail1       Decimal?  @map("sretail1") @db.Decimal(18, 4)
+  retail2       Decimal?  @map("sretail2") @db.Decimal(18, 4)
+  retail3       Decimal?  @map("sretail3") @db.Decimal(18, 4)
+  retail4       Decimal?  @map("sretail4") @db.Decimal(18, 4)
+  retail5       Decimal?  @map("sretail5") @db.Decimal(18, 4)
+  retail6       Decimal?  @map("sretail6") @db.Decimal(18, 4)
+  product       Product?  @relation(fields: [productId], references: [id])
+  salesRep      SalesRep? @relation(fields: [repId], references: [id])
+
+  @@index([transactionId])
+  @@index([docNo])
+  @@index([stockNo])
+  @@map("transaction_line_items")
+}
+
+model AllocationEvent {
+  id             String              @id @default(cuid())
+  sourceId       String              @map("source_id")
+  targetId       String              @map("target_id")
+  amount         Decimal             @db.Decimal(18, 2)
+  eventType      AllocationEventType @map("event_type")
+  allocationType AllocationType      @map("allocation_type")
+  matchMethod    MatchMethod         @map("match_method")
+  reason         String?
+  notes          String?
+  createdById    String?             @map("created_by_id")
+  createdAt      DateTime            @default(now())
+  createdBy      User?               @relation("user_allocations", fields: [createdById], references: [id])
+
+  @@index([sourceId])
+  @@index([targetId])
+  @@index([createdAt])
+  @@map("allocation_events")
+}
+
+model MatchDecision {
+  id               String       @id @default(cuid())
+  sourceId         String       @map("source_id")
+  targetId         String       @map("target_id")
+  decision         DecisionType
+  systemConfidence Int          @map("system_confidence")
+  humanConfidence  Int?         @map("human_confidence")
+  reasonCodes      String[]     @map("reason_codes")
+  notes            String?
+  createdById      String?      @map("created_by_id")
+  createdAt        DateTime     @default(now())
+  createdBy        User?        @relation(fields: [createdById], references: [id])
+
+  @@map("match_decisions")
+}
+
+model PatternLibrary {
+  id          String   @id @default(cuid())
+  patternKey  String   @unique @map("pattern_key")
+  patternType String
+  confidence  Int
+  matchCount  Int      @default(0)
+  acceptRate  Float    @default(0)
+  lastSeen    DateTime @map("last_seen")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("pattern_library")
+}
+
+model ReasonCode {
+  id          String  @id @default(cuid())
+  code        String  @unique
+  description String
+  category    String
+  isActive    Boolean @default(true)
+
+  @@map("reason_codes")
+}
+
+model ErpSnapshot {
+  id           String   @id
+  timestamp    DateTime
+  exportTime   DateTime
+  snapshotType String
+  data         Json
+
+  @@index([timestamp])
+  @@map("erp_snapshots")
+}
+
+model PhysicalCountSession {
+  id                    String                 @id
+  timestamp             DateTime
+  sessionType           String
+  status                String
+  zones                 Json
+  counterName           String?
+  notes                 String?
+  syncedAt              DateTime?
+  reconciliationReports ReconciliationReport[]
+
+  @@index([timestamp])
+  @@map("physical_count_sessions")
+}
+
+model MovementData {
+  id        String    @id
+  timestamp DateTime
+  period    String
+  movements Json
+  syncedAt  DateTime?
+
+  @@index([timestamp])
+  @@map("movement_data")
+}
+
+model ReconciliationReport {
+  id               String               @id
+  timestamp        DateTime
+  status           String
+  pmPhysicalId     String
+  amPhysicalId     String?
+  pmErpId          String
+  movementDataId   String?
+  results          Json
+  discrepancyNotes DiscrepancyNote[]
+  pmPhysical       PhysicalCountSession @relation(fields: [pmPhysicalId], references: [id])
+
+  @@index([timestamp])
+  @@map("reconciliation_reports")
+}
+
+model DiscrepancyNote {
+  id                     String               @id @default(cuid())
+  reconciliationReportId String
+  sku                    String
+  note                   String
+  resolutionStatus       String               @default("open")
+  createdAt              DateTime             @default(now())
+  updatedAt              DateTime             @updatedAt
+  reconciliationReport   ReconciliationReport @relation(fields: [reconciliationReportId], references: [id])
+
+  @@index([reconciliationReportId])
+  @@index([sku])
+  @@map("discrepancy_notes")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model audit_log {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  session_id   String?  @db.Uuid
+  action       String
+  from_state   String?
+  to_state     String?
+  performed_by String?
+  metadata     Json?
+  created_at   DateTime @default(now()) @db.Timestamptz(6)
+
+  @@index([created_at])
+  @@index([session_id])
+}
+
+model counts {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  session_id String   @db.Uuid
+  data       Json
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  sessions   sessions @relation(fields: [session_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model idempotency_keys {
+  key        String   @id
+  response   Json?
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+
+  @@index([created_at])
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model reconciliation_pipeline {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  session_id String   @unique @db.Uuid
+  stage      String
+  progress   Int      @default(0)
+  updated_at DateTime @default(now()) @db.Timestamptz(6)
+}
+
+model sessions {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  date          DateTime @db.Date
+  current_state String   @default("OPEN")
+  locked        Boolean  @default(false)
+  created_at    DateTime @default(now()) @db.Timestamptz(6)
+  updated_at    DateTime @default(now()) @db.Timestamptz(6)
+  counts        counts[]
+}
+
+model sync_logs {
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  filename       String
+  file_type      String
+  records_synced Int
+  created_at     DateTime @default(now()) @db.Timestamptz(6)
+}
+
+model transaction_items {
+  id            BigInt    @id @default(autoincrement())
+  entry_type    String?
+  period        Int?
+  account_no    String?
+  doc_no        String?
+  stock_no      String?
+  description   String?
+  category      String?
+  product_group String?
+  brand         String?
+  order_no      String?
+  tx_date       DateTime? @db.Date
+  qty           Decimal?  @db.Decimal
+  retail_price  Decimal?  @db.Decimal
+  cost_price    Decimal?  @db.Decimal
+  reference     String?
+  rep_code      String?
+  user_code     String?
+  location      String?
+  tax_code      Int?
+  line_tax      Decimal?  @db.Decimal
+  rep_name      String?
+  account_name  String?
+  source_file   String?
+  fingerprint   String?   @unique
+  created_at    DateTime? @default(now()) @db.Timestamptz(6)
+
+  @@index([doc_no], map: "idx_items_doc_no")
+  @@index([stock_no], map: "idx_items_stock_no")
 }
 
 enum UserRole {
@@ -32,200 +355,6 @@ enum UserRole {
   SUPERVISOR
   ADMIN
 }
-
-// ==================================================
-// CORE ENTITIES (Normalization 1B)
-// ==================================================
-
-model Account {
-  id          String   @id @default(cuid())
-  accountNo   String   @unique @map("accno")
-  currentName String
-  accountType String?  @map("account_type") // RETAIL, WHOLESALE, COUNTER
-  
-  // Learning patterns
-  typicalReturnDays Int? @map("typical_return_days")
-  partialReturnProb Float? @map("partial_return_prob")
-  commonPatterns    String[] @map("common_patterns")
-  specialRules      String?  @map("special_rules")
-
-  transactions    TransactionHeader[]
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-
-  @@map("accounts")
-}
-
-model Product {
-  id          String   @id @default(cuid())
-  stockNo     String   @unique @map("stockno")
-  description String
-  category    String?
-  group       String?
-  brand       String?
-  
-  lineItems   TransactionLineItem[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@map("products")
-}
-
-model SalesRep {
-  id          String   @id @default(cuid())
-  repCode     String   @unique @map("rep")
-  name        String?
-  
-  transactions TransactionHeader[]
-  lineItems    TransactionLineItem[]
-
-  @@map("sales_reps")
-}
-
-// ==================================================
-// TRANSACTION MODELS (3A Standardized)
-// ==================================================
-
-model TransactionHeader {
-  id               String    @id @default(cuid())
-  entryType        EntryType @map("entry")
-  period           Int
-  
-  // Relations & Snapshots (1B)
-  accountId        String?   @map("account_id")
-  accountNo        String    @map("accno")
-  accountName      String    // Snapshot at time of transaction
-  
-  docNo            String    @map("docno")
-  invNo            String?   @map("invno")
-  debOrder         String?   @map("deb_oder")
-  orderNo          String?   @map("orderno")
-  depRef           String?   @map("dep_ref")
-  date             DateTime
-  ref              String?
-  amount           Decimal   @db.Decimal(18,2)
-  taxAmount        Decimal   @db.Decimal(18,2) @map("tax")
-  exCode           String?   @map("excode")
-  fAmount          Decimal   @db.Decimal(18,2) @map("famount")
-  isPaid           Boolean   @map("paid") @default(false)
-  
-  repId            String?   @map("rep_id")
-  repCode          String?   @map("rep") 
-
-  // Sync fields
-  syncStatus       SyncStatus @default(PENDING) @map("sync_status")
-  syncVersion      Int        @default(1) @map("sync_version")
-  lastSyncedAt     DateTime?  @map("last_synced_at")
-
-  // Relations
-  account          Account?  @relation(fields: [accountId], references: [id])
-  salesRep         SalesRep? @relation(fields: [repId], references: [id])
-  lineItems        TransactionLineItem[]
-  
-  // Allocation Engine (2A)
-  allocationEventsSource AllocationEvent[] @relation("source_events")
-  allocationEventsTarget AllocationEvent[] @relation("target_events")
-  
-  matchDecisionsSource MatchDecision[] @relation("source_decisions")
-  matchDecisionsTarget MatchDecision[] @relation("target_decisions")
-
-  @@index([accountNo])
-  @@index([date])
-  @@index([docNo])
-  @@index([syncStatus])
-  @@map("transaction_headers")
-}
-
-model TransactionLineItem {
-  id              String   @id @default(cuid())
-  transactionId   String   @map("transaction_id")
-  
-  // Transaction Context Snapshot
-  docNo           String   @map("docno")
-  accountNo       String   @map("accno")
-  entryType       EntryType @map("entry")
-  period          Int
-  date            DateTime
-
-  // Product Link & Snapshot (1B)
-  productId       String?  @map("product_id")
-  stockNo         String?  @map("stockno")
-  description     String?  
-  category        String?
-  group           String?
-  brand           String?
-
-  quantity        Decimal  @db.Decimal(18,3)
-  retailPrice     Decimal  @db.Decimal(18,4) @map("retail")
-  costPrice       Decimal  @db.Decimal(18,4) @map("cost")
-  
-  orderNo         String?  @map("orderno")
-  repId           String?  @map("rep_id")
-  repCode         String?  @map("rep")
-  
-  ref             String?
-  user            String?
-  location        String?
-  contract        String?
-  comms           Decimal  @db.Decimal(18,4)
-  lineComms       Decimal  @db.Decimal(18,4) @map("linecomms")
-  taxCode         Int      @map("taxcode")
-  lineTax         Decimal  @db.Decimal(18,2) @map("linetax")
-  projNo          String?  @map("projno")
-  department      String?
-  
-  // Retail levels (from STTRANS)
-  retail1         Decimal? @db.Decimal(18,4) @map("sretail1")
-  retail2         Decimal? @db.Decimal(18,4) @map("sretail2")
-  retail3         Decimal? @db.Decimal(18,4) @map("sretail3")
-  retail4         Decimal? @db.Decimal(18,4) @map("sretail4")
-  retail5         Decimal? @db.Decimal(18,4) @map("sretail5")
-  retail6         Decimal? @db.Decimal(18,4) @map("sretail6")
-
-  // Relations
-  transaction     TransactionHeader @relation(fields: [transactionId], references: [id])
-  product         Product?          @relation(fields: [productId], references: [id])
-  salesRep         SalesRep?         @relation(fields: [repId], references: [id])
-
-  @@index([transactionId])
-  @@index([docNo])
-  @@index([stockNo])
-  @@map("transaction_line_items")
-}
-
-// ==================================================
-// ALLOCATION ENGINE (Event Sourcing 2A)
-// ==================================================
-
-model AllocationEvent {
-  id              String   @id @default(cuid())
-  sourceId        String   @map("source_id") 
-  targetId        String   @map("target_id") 
-  amount          Decimal  @db.Decimal(18,2)
-  
-  eventType       AllocationEventType @map("event_type")
-  allocationType  AllocationType      @map("allocation_type")
-  matchMethod     MatchMethod         @map("match_method")
-  
-  reason          String?
-  notes           String?
-  
-  createdById     String?   @map("created_by_id")
-  createdAt       DateTime  @default(now())
-  
-  source          TransactionHeader @relation("source_events", fields: [sourceId], references: [id])
-  target          TransactionHeader @relation("target_events", fields: [targetId], references: [id])
-  createdBy       User?             @relation("user_allocations", fields: [createdById], references: [id])
-
-  @@index([sourceId])
-  @@index([targetId])
-  @@index([createdAt])
-  @@map("allocation_events")
-}
-
-// ==================================================
-// ENUMS
-// ==================================================
 
 enum EntryType {
   Invoice
@@ -264,133 +393,9 @@ enum SyncStatus {
   DELETED
 }
 
-// ==================================================
-// LEARNING & METADATA
-// ==================================================
-
-model MatchDecision {
-  id                 String       @id @default(cuid())
-  sourceId           String       @map("source_id")
-  targetId           String       @map("target_id")
-  decision           DecisionType
-  systemConfidence   Int          @map("system_confidence")
-  humanConfidence    Int?         @map("human_confidence")
-  reasonCodes        String[]     @map("reason_codes")
-  notes              String?
-  createdById        String?      @map("created_by_id")
-  createdAt          DateTime     @default(now())
-
-  source             TransactionHeader @relation("source_decisions", fields: [sourceId], references: [id])
-  target             TransactionHeader @relation("target_decisions", fields: [targetId], references: [id])
-  createdBy          User?             @relation(fields: [createdById], references: [id])
-
-  @@map("match_decisions")
-}
-
 enum DecisionType {
   ACCEPT
   REJECT
   MODIFY
   ESCALATE
-}
-
-model PatternLibrary {
-  id              String   @id @default(cuid())
-  patternKey      String   @unique @map("pattern_key")
-  patternType     String
-  confidence      Int
-  matchCount      Int      @default(0)
-  acceptRate      Float    @default(0)
-  lastSeen        DateTime @map("last_seen")
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-
-  @@map("pattern_library")
-}
-
-model ReasonCode {
-  id              String   @id @default(cuid())
-  code            String   @unique
-  description     String
-  category        String
-  isActive        Boolean  @default(true)
-
-  @@map("reason_codes")
-}
-
-// ==================================================
-// EXISTING RECON MODELS (Hydrated from snaps)
-// ==================================================
-
-model ErpSnapshot {
-  id           String   @id
-  timestamp    DateTime
-  exportTime   DateTime
-  snapshotType String   // "AM" | "PM"
-  data         Json
-
-  @@index([timestamp])
-  @@map("erp_snapshots")
-}
-
-model PhysicalCountSession {
-  id          String   @id
-  timestamp   DateTime
-  sessionType String   
-  status      String   
-  zones       Json     
-  counterName String?
-  notes       String?
-  syncedAt    DateTime? 
-
-  reconciliationReports ReconciliationReport[]
-
-  @@index([timestamp])
-  @@map("physical_count_sessions")
-}
-
-model MovementData {
-  id        String   @id
-  timestamp DateTime
-  period    String   
-  movements Json     
-  syncedAt  DateTime?
-
-  @@index([timestamp])
-  @@map("movement_data")
-}
-
-model ReconciliationReport {
-  id                  String   @id
-  timestamp           DateTime
-  status              String   
-
-  pmPhysicalId        String
-  amPhysicalId        String?
-  pmErpId             String
-  movementDataId      String?
-
-  results             Json     
-
-  pmPhysical          PhysicalCountSession @relation(fields: [pmPhysicalId], references: [id])
-  discrepancyNotes    DiscrepancyNote[]
-
-  @@index([timestamp])
-  @@map("reconciliation_reports")
-}
-
-model DiscrepancyNote {
-  id                     String   @id @default(cuid())
-  reconciliationReportId String
-  sku                    String
-  note                   String
-  resolutionStatus       String   @default("open") 
-  createdAt              DateTime @default(now())
-  updatedAt              DateTime @updatedAt
-
-  reconciliationReport ReconciliationReport @relation(fields: [reconciliationReportId], references: [id])
-
-  @@index([reconciliationReportId])
-  @@index([sku])
-  @@map("discrepancy_notes")
 }

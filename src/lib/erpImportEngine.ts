@@ -51,8 +51,64 @@ export interface ProcessedTransactionItem {
     fingerprint: string;
 }
 
+export interface IntegrityFinding {
+    id: string;
+    rule: string;
+    severity: 'CRITICAL' | 'WARNING';
+    message: string;
+    value?: number;
+}
+
 export class ERPImportEngine {
     constructor() { }
+
+    /**
+     * Financial Control Layer: Enforces integrity before data is accepted
+     */
+    public validateIntegrity(header: ProcessedTransactionHeader): IntegrityFinding[] {
+        const findings: IntegrityFinding[] = [];
+
+        // 1. VAT Consistency Check (Standard rate ~15%)
+        if (header.tax_code === '1' || header.tax_code === 'Standard') {
+            const expectedTax = Math.round(header.amount_excl * 0.15 * 100) / 100;
+            const actualTax = Math.abs(header.tax_amount);
+            if (Math.abs(expectedTax - actualTax) > 0.05) {
+                findings.push({
+                    id: header.doc_no,
+                    rule: 'VAT_CONSISTENCY',
+                    severity: 'WARNING',
+                    message: `Expected VAT R${expectedTax}, found R${actualTax}`,
+                    value: actualTax
+                });
+            }
+        }
+
+        // 2. Gross/Net Validation
+        const total = header.amount_excl + header.tax_amount;
+        if (isNaN(total)) {
+            findings.push({
+                id: header.doc_no,
+                rule: 'GROSS_NET_VALIDATION',
+                severity: 'CRITICAL',
+                message: 'Invalid numeric value in amount or tax'
+            });
+        }
+
+        // 3. Period Alignment
+        const dateObj = new Date(header.tx_date);
+        const txMonth = dateObj.getUTCMonth() + 1;
+        // Period 1 = Jan, etc. Allow 1-month window for batch overlaps
+        if (header.period !== txMonth && header.period !== (txMonth % 12) + 1) {
+            findings.push({
+                id: header.doc_no,
+                rule: 'PERIOD_ALIGNMENT',
+                severity: 'WARNING',
+                message: `Transaction date ${header.tx_date} does not align with period ${header.period}`
+            });
+        }
+
+        return findings;
+    }
 
     private clean(v: string | undefined): string {
         if (!v) return "";

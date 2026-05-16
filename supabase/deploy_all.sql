@@ -189,3 +189,46 @@ LEFT JOIN customers c ON h.account_no = c.account_code
 LEFT JOIN invoice_dispatch_logs l ON h.doc_no = l.doc_no
 WHERE h.entry_type = 'Invoice'
 ORDER BY h.doc_no, l.sent_at DESC;
+
+-- 6. STORAGE BUCKETS (Managed via storage schema)
+-- Note: Bucket creation via SQL requires the storage schema extensions.
+INSERT INTO storage.buckets (id, name, public)
+VALUES ('invoice-documents', 'invoice-documents', true)
+ON CONFLICT (id) DO NOTHING;
+
+-- RLS for Storage
+CREATE POLICY "Clerks can upload invoices"
+ON storage.objects FOR INSERT
+TO authenticated
+WITH CHECK (bucket_id = 'invoice-documents');
+
+CREATE POLICY "Clerks and Managers can view invoices"
+ON storage.objects FOR SELECT
+TO authenticated
+USING (bucket_id = 'invoice-documents');
+
+CREATE POLICY "Managers can delete invoices"
+ON storage.objects FOR DELETE
+TO authenticated
+USING (bucket_id = 'invoice-documents' AND (auth.jwt() ->> 'role') = 'Depot Manager');
+
+-- 7. FINANCIAL CONTROL & AUDIT TABLES
+CREATE TABLE IF NOT EXISTS financial_corrections (
+    id                UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    correction_id     TEXT NOT NULL UNIQUE, -- e.g., 'LSR-4'
+    type              TEXT NOT NULL,        -- e.g., 'ERP_MAPPING_FIX'
+    severity          TEXT NOT NULL,        -- e.g., 'CRITICAL'
+    affected_module   TEXT NOT NULL,        -- e.g., 'erpImportEngine'
+    financial_impact  NUMERIC,              -- e.g., 1657.40
+    root_cause        TEXT NOT NULL,        -- e.g., 'INCLUSIVE_AMOUNT_TREATED_AS_EXCLUSIVE'
+    fix_branch        TEXT NOT NULL,        -- e.g., 'fix/LSR-4'
+    status            TEXT NOT NULL CHECK (status IN ('PENDING', 'DEPLOYED', 'REVERTED')),
+    date_detected     TEXT,                 -- e.g., '2026-04'
+    date_fixed        TIMESTAMPTZ DEFAULT now(),
+    validation_required BOOLEAN DEFAULT true,
+    before_snapshot   JSONB,                -- Financial snapshot before fix
+    after_snapshot    JSONB,                -- Financial snapshot after fix
+    created_at        TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_corrections_id ON financial_corrections(correction_id);

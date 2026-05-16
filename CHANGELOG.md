@@ -40,6 +40,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added (Invoice Dispatch Module - LSR-3)
+- **Dispatch Dashboard**: New interface for Invoice Clerks to track and manage outbound invoices by date.
+- **POD Integration**: Added capability to upload hand-signed Proof of Delivery (POD) notes (JPG/PNG/PDF).
+- **Automated PDF Merging**: Implemented browser-side logic to merge system-generated invoices with uploaded PODs.
+- **WhatsApp Dispatch**: Integrated Whapi.Cloud via Supabase Edge Functions for secure document delivery.
+- **Audit Logging**: Added persistent tracking of dispatch attempts in `invoice_dispatch_logs` with actor attribution.
+- **Customer Management**: Added `CustomerImport` utility to seed and update WhatsApp contact data.
+
 ### Added (Stock Recon Cloud Engine)
 - **Upload History Tracking**: Implemented persistent database logging (`sync_logs`) to track data ingestion events in real-time.
 - **Data Hub Integration**: Added a "Recent Uploads" widget to surface recent ingestion events directly in the UI.

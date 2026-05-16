@@ -22,8 +22,10 @@ function getSkuForEntry(entry: CountEntry): string | null {
         return SKU_CONFIG.depositSkus[entry.size as keyof typeof SKU_CONFIG.depositSkus] || null;
     } else {
         // It's a full cylinder. Map to content SKU based on size and brand.
-        let mappedBrand: 'Oryx' | 'Multibrand' = 'Multibrand';
-        if (entry.brand.toLowerCase() === 'oryx') mappedBrand = 'Oryx';
+        let mappedBrand: 'Oryx' | 'Multibrand' | 'Easigas' = 'Multibrand';
+        const brandLower = entry.brand.toLowerCase();
+        if (brandLower === 'oryx') mappedBrand = 'Oryx';
+        else if (brandLower === 'easigas') mappedBrand = 'Easigas';
 
         // Find matching SKU in mapping
         for (const [sku, brand] of Object.entries(SKU_CONFIG.contentSkuToBrand)) {

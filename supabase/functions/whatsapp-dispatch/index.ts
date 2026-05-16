@@ -79,6 +79,23 @@ serve(async (req) => {
 
   } catch (err: any) {
     console.error("[Dispatch] Unexpected Error:", err);
+    
+    // Attempt to update log if we have the ID
+    try {
+      const { logId } = await req.clone().json();
+      if (logId) {
+        await supabase
+          .from("invoice_dispatch_logs")
+          .update({ 
+            status: "FAILED", 
+            error_details: `Internal Error: ${err.message}`
+          })
+          .eq("id", logId);
+      }
+    } catch (e) {
+      console.error("[Dispatch] Could not update log in catch block:", e);
+    }
+
     return new Response(JSON.stringify({ error: err.message }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 500,
