@@ -104,8 +104,18 @@ SELECT
     h.doc_no,
     h.tx_date,
     h.entry_type,
-    h.amount_excl,
-    (h.amount_excl + h.tax_amount) as amount_inc,
+    h.amount_excl as ledger_excl,
+    h.tax_amount as ledger_tax,
+    (h.amount_excl + h.tax_amount) as ledger_total,
+    i.calc_total as operational_total,
+    CASE 
+        WHEN h.entry_type = 'Invoice' 
+             AND ABS((h.amount_excl + h.tax_amount) - i.calc_total) > 0.01 
+             AND ABS(h.amount_excl - i.calc_total) < 0.01 
+        THEN true 
+        ELSE false 
+    END as is_double_taxed,
+    (h.amount_excl + h.tax_amount - i.calc_total) as tax_distortion_amount,
     i.calc_lpg,
     i.calc_cyl,
     i.calc_total,

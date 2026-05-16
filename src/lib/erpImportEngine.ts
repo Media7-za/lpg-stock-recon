@@ -152,8 +152,9 @@ export class ERPImportEngine {
                     for (const row of data) {
                         if (row.length < 13) continue;
                         
-                        const excl = parseFloat(this.clean(row[11])) || 0;
+                        const totalInc = parseFloat(this.clean(row[11])) || 0;
                         const tax = parseFloat(this.clean(row[12])) || 0;
+                        const excl = totalInc - tax; 
                         const date = this.parseDate(this.clean(row[9]));
                         if (!date) continue;
 
