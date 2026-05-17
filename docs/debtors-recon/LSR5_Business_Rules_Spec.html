@@ -597,7 +597,7 @@
   <div class="sb-header">
     <div class="sb-logo">LSR-5 · Recon Engine</div>
     <div class="sb-title">Business Rules<br>Specification</div>
-    <div class="sb-ver">v2.4.0 · 2026-05-17</div>
+    <div class="sb-ver">v2.4.1 · 2026-05-17</div>
   </div>
   <div class="sb-nav">
     <div class="sb-group">Overview</div>
@@ -651,7 +651,7 @@
 <!-- MAIN -->
 <div id="main">
   <div class="topbar">
-    <div class="tb-crumb">LSR-5 / <span>Business Rules Spec v2.4.0</span></div>
+    <div class="tb-crumb">LSR-5 / <span>Business Rules Spec v2.4.1</span></div>
     <div class="tb-right">
       <span class="status-pill">Locked — Engineering</span>
       <span>2026-05-17</span>
@@ -667,7 +667,7 @@
       <h1 class="cover-title">Debtor Reconciliation Workbench<br>Business Rules &amp; Engineering Specification</h1>
       <p class="cover-sub">Authoritative source-of-truth for the MVP internal reconciliation workbench replacing spreadsheet-based debtor reconciliation workflows.</p>
       <div class="meta-grid">
-        <div class="meta-card"><div class="meta-label">Version</div><div class="meta-value">v2.4.0</div></div>
+        <div class="meta-card"><div class="meta-label">Version</div><div class="meta-value">v2.4.1</div></div>
         <div class="meta-card"><div class="meta-label">Status</div><div class="meta-value" style="color:var(--green)">Engineering Review</div></div>
         <div class="meta-card"><div class="meta-label">Scope</div><div class="meta-value">MVP Business Rules</div></div>
         <div class="meta-card"><div class="meta-label">Last Updated</div><div class="meta-value" style="font-family:var(--mono)">2026-05-17</div></div>
@@ -887,7 +887,7 @@ invoice_cyl_qty {
       <h2>Dual Settlement States — Independent Tracking</h2>
       <div class="callout rule">
         <div class="callout-label">Hard Rule — Invoice Settlement</div>
-        Financial settlement and custody settlement are <strong>independent but coupled</strong>. An invoice carries two separate settlement states. Neither requires the other to be resolved first. A customer who pays commercially for cylinders achieves <code>financial_state = SETTLED</code> while <code>custody_state</code> remains <code>OUTSTANDING</code> — that is a valid and complete financial outcome.
+        Financial settlement and custody settlement are <strong>completely independent (decoupled) in tracking, but coupled during a Commercial CYL Settlement (coupling event)</strong>. An invoice carries two separate settlement states. Neither requires the other to be resolved first. A customer who has settled their commercial bill achieves <code>financial_state = SETTLED</code> while physical cylinders remain outstanding (<code>custody_state = OUTSTANDING</code>) — that is a valid and complete financial outcome.
       </div>
       <div class="table-wrap"><table>
         <thead><tr><th>State</th><th>Tracks</th><th>Settled When</th></tr></thead>
@@ -932,6 +932,7 @@ invoice_cyl_qty {
         <li>Operational CYL CRNs (<code>HDR_TOTAL = 0</code>) reduce <code>invoice_cyl_qty</code> record balances only. Applied deterministically on session load <strong>only when an exact SKU match to a prior-dated invoice exists</strong>. Ambiguous or unmatched operational CRNs route to the operational exception queue for operator manual assignment — never blindly auto-applied.</li>
         <li>CYL pricing is <strong>static across all customers</strong>. Value = qty × static_price per SKU.</li>
         <li>Customers with <code>pays_for_cyl = true</code> settle CYL liability by cash payment instead of physical return.</li>
+        <li><strong>Partial CYL Commercial Settlement:</strong> If a cash payment or financial CRN is partially allocated to the CYL value component under commercial settlement semantics (coupling event), the system must reduce the corresponding cylinder quantity in <code>invoice_cyl_qty</code> by <code>allocated_value / static_price</code> for that SKU. The UI must preview the before/after of both monetary and quantity balances.</li>
         <li>A dedicated CYL Custody Engine will handle full operational reconciliation post-MVP using <code>erp_snapshots</code> and <code>movement_data</code>.</li>
       </ul>
       <div class="callout note">
@@ -1164,7 +1165,7 @@ Operator selects : LPG component
         <li>Load CYL qty data from <code>transaction_items</code> — seed normalized <code>invoice_cyl_qty</code> records per invoice.</li>
         <li>Split CRNs: <code>HDR_TOTAL ≠ 0</code> → financial queue; <code>HDR_TOTAL = 0</code> → operational queue.</li>
         <li>Apply operational CRNs to <code>invoice_cyl_qty</code> records <strong>deterministically — only when an exact SKU match exists on a prior-dated invoice</strong>. Any operational CRN without an unambiguous match routes to the operational exception queue for operator assignment. No blind auto-apply.</li>
-        <li>Sign-split OBs: positive → INV lane (epoch anchor); negative → credit pool.</li>
+        <li>Sign-split OBs: positive → INV lane (ranks before all dated invoices); negative → credit pool.</li>
         <li>Route all JNL and Bank UD to UNCLASSIFIED_EXCEPTION queue. Neither enters any financial lane until operator classification is complete.</li>
         <li>Seed all invoice sub-ledgers from detail lines (LPG / CYL / OTHER splits).</li>
         <li>Display session. Engine surfaces suggestions. Operator proceeds.</li>
@@ -1304,7 +1305,7 @@ CUSTODY-ONLY LANE (does not block financial session completion)
           <tr><td>Incomplete ERP export</td><td>Balance mismatch is informational only. Operator may complete session with noted discrepancy.</td></tr>
           <tr><td>Bank UD correction artifacts</td><td>Routes to UNCLASSIFIED_EXCEPTION on session load — never to Suspense-PMT. Suspense-PMT is reserved for confirmed cash receipts only. Bank UD does not imply cash received until operator classifies it. Blocks session completion until resolved.</td></tr>
           <tr><td>Rounding residuals ≤ R1.00</td><td>ROUNDING_WRITE_OFF eligible. Operator one-click approval. Record created for traceability.</td></tr>
-          <tr><td>Customer pays cash for CYL (pays_for_cyl)</td><td><code>cyl_value_balance = 0</code> but <code>cyl_qty</code> remains open. Invoice shows <code>financially_settled_custody_open</code>. Alert fires. Operator marks qty as "cash resolved".</td></tr>
+          <tr><td>Customer pays cash for CYL (pays_for_cyl)</td><td>Commercial CYL Settlement (coupling event) is the default. Cash payment reduces both <code>cyl_value_balance</code> and <code>qty_balance</code>. If flag is false, the operator is prompted to choose between financial-only and commercial purchase semantics.</td></tr>
           <tr><td>Operational CRN with no matching invoice</td><td>Routes to operational exception queue. Operator assigns manually. Deferred to CYL engine for full automation.</td></tr>
           <tr><td>Same-date invoices (date tie in scoring)</td><td>Amount proximity acts as effective tiebreaker in composite scorer.</td></tr>
         </tbody>
@@ -1426,30 +1427,30 @@ AND this is the first cross-bucket attempt in this session</pre>
       </ul>
 
       <h2>25.2 — <code>pays_for_cyl</code> Flow</h2>
-      <p>Triggered on the first attempt to apply a PMT to a CYL value sub-ledger component in any session where the flag is not already set.</p>
+      <p>Triggered on any attempt to apply a PMT to a CYL value sub-ledger component when the customer flag is not already set to true.</p>
 
       <h3>Trigger condition</h3>
-      <pre><span class="c">// Flag prompt fires when ALL of the following are true:</span>
+      <pre><span class="c">// Choice prompt fires when ALL of the following are true:</span>
 operator directs a PMT allocation to the cyl_value_balance component of an invoice
-AND customer_config.pays_for_cyl IS NULL or false
-AND this is the first PMT→CYL attempt in this session</pre>
+AND customer_config.pays_for_cyl IS NULL or false</pre>
 
       <h3>Alert modal — operator choices</h3>
       <div class="table-wrap"><table>
-        <thead><tr><th>Action</th><th>Effect</th><th>Persists?</th></tr></thead>
+        <thead><tr><th>Option</th><th>Effect</th><th>Persists?</th></tr></thead>
         <tbody>
-          <tr><td><strong>Proceed once</strong></td><td>PMT applied to CYL balance. custody_state remains OUTSTANDING. Alert fires again next PMT→CYL attempt.</td><td>No</td></tr>
-          <tr><td><strong>Mark customer as pays for cylinders</strong></td><td>PMT applied. <code>pays_for_cyl = true</code> saved. custody_state transitions to COMMERCIALIZED on operator confirmation. Future PMT→CYL alerts softened to informational.</td><td class="good">Yes — customer level</td></tr>
-          <tr><td><strong>Cancel</strong></td><td>Allocation cancelled. No config change.</td><td>No</td></tr>
+          <tr><td><strong>Financial settlement only</strong></td><td>PMT applied to <code>cyl_value_balance</code>. Quantity balance is unchanged; <code>custody_state</code> remains <code>OUTSTANDING</code>. Prompt will trigger on the next PMT→CYL attempt.</td><td>No</td></tr>
+          <tr><td><strong>Commercial cylinder purchase</strong></td><td>PMT applied. Quantity balance (in <code>invoice_cyl_qty</code>) is reduced. <code>custody_state</code> transitions to <code>COMMERCIALIZED</code>. Operator is offered a checkbox to "Mark customer as pays for cylinders" to persist this behavior.</td><td>If checkbox ticked, updates <code>pays_for_cyl = true</code></td></tr>
+          <tr><td><strong>Cancel</strong></td><td>Allocation cancelled. No state changes.</td><td>No</td></tr>
         </tbody>
       </table></div>
 
       <h3>Behaviour once flag = true</h3>
       <ul>
-        <li>PMT→CYL allocations show soft informational badge: <em>"Cash CYL settlement — commercial account"</em></li>
-        <li>custody_state transitions to COMMERCIALIZED (not OUTSTANDING) when CYL value balance reaches zero</li>
-        <li>No blocking confirmation modal for subsequent PMT→CYL allocations</li>
-        <li>Flag visible and editable from session header customer info panel</li>
+        <li>PMT→CYL allocations automatically apply Commercial CYL Settlement semantics (reducing both value and quantity).</li>
+        <li>Show soft informational badge: <em>"Cash CYL settlement — commercial account"</em></li>
+        <li><code>custody_state</code> transitions to <code>COMMERCIALIZED</code> (not <code>OUTSTANDING</code>) when quantity balance reaches zero.</li>
+        <li>No blocking choice prompt for subsequent PMT→CYL allocations.</li>
+        <li>Flag is visible and editable from the session header customer info panel.</li>
       </ul>
 
       <h2>25.3 — Customer Config Schema</h2>
@@ -1539,9 +1540,23 @@ AND this is the first PMT→CYL attempt in this session</pre>
 
         <div class="vc-entry current">
           <div class="vc-head">
-            <span class="vc-ver">v2.4.0</span>
+            <span class="vc-ver">v2.4.1</span>
             <span class="vc-date">2026-05-17</span>
             <span class="vc-tag current">Current</span>
+            <span class="vc-author">AI Developer · Coupling, Anchor, and Warning Refinements</span>
+          </div>
+          <div class="vc-body">
+            <div class="vc-change"><span class="vc-type fixed">Fixed</span><span>Aligned PMT→CYL warning logic and choice branches in Section 25.2 with the operator workflow spec.</span></div>
+            <div class="vc-change"><span class="vc-type changed">Changed</span><span>Clarified ledger coupling vs tracking independence (coupled/decoupled wording) in Section 7.</span></div>
+            <div class="vc-change"><span class="vc-type added">Added</span><span>Explicit Partial CYL Commercial Settlement Rule in Section 8 (quantity reduction by <code>allocated_value / static_price</code>).</span></div>
+            <div class="vc-change"><span class="vc-type fixed">Fixed</span><span>Removed stale epoch anchor wording in the Session Load Sequence (Section 17).</span></div>
+          </div>
+        </div>
+
+        <div class="vc-entry">
+          <div class="vc-head">
+            <span class="vc-ver">v2.4.0</span>
+            <span class="vc-date">2026-05-17</span>
             <span class="vc-author">AI Developer · Normalized Cylinder Custody Schema</span>
           </div>
           <div class="vc-body">

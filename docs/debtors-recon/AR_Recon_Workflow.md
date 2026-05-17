@@ -4,7 +4,7 @@
 **Document Type:** Operator Workflow Specification  
 **Version:** v0.3.0  
 **Status:** Draft — pending T-01 DTRX validation  
-**Companion Spec:** LSR5_Business_Rules_Spec.html v2.4.0  
+**Companion Spec:** LSR5_Business_Rules_Spec.html v2.4.1  
 **Last Updated:** 2026-05-17  
 
 ---
@@ -1041,7 +1041,7 @@ The UI should consume prepared domain objects.
 Status: Draft — pending T-01 DTRX validation
 
 Changes:
-- Updated companion spec reference to LSR5_Business_Rules_Spec.html v2.4.0.
+- Updated companion spec reference to LSR5_Business_Rules_Spec.html v2.4.1.
 - §11 Payment Allocation Workflow: added CYL branch logic (§11.5) with explicit two-path decision — financial-only vs Commercial CYL Settlement. Added allocation preview requirement showing before/after for both value and qty.
 - §12 Financial CRN Allocation Workflow: added CYL settlement rule — financial CYL CRNs automatically reduce both value and qty (no separate prompt). Updated action flow.
 - §22 Safety Rules: added rules 11–13 covering CYL allocation preview, PMT→CYL choice requirement, and financial CRN automatic coupling.

@@ -1,7 +1,7 @@
 # CURRENT_STATE
 
 > **Source of truth for LSR-5 Item-Aware Financial Reconciliation Engine.**
-> Generated from Decision Node (2026-05-17, v2.3.1) and Sessions A + B.
+> Generated from Decision Node (2026-05-17, v2.4.1) and Sessions A + B.
 > Future AI sessions, agents, and developers must treat this document as the operational baseline.
 
 ---
@@ -10,8 +10,8 @@
 
 - **Current Phase:** Pre-implementation — Specification locked, schema design pending
 - **Active Focus:** Data schema build + Session load pipeline
-- **Operational Stability:** No code in production. Living spec (v2.3.1) is the only active artefact.
-- **Last Major Update:** 2026-05-17 — Decision Node merged from Sessions A and B; spec passed three domain review passes (v2.1.0 → v2.3.1); 18/18 validation checks pass. T-01 completed and validated.
+- **Operational Stability:** No code in production. Living spec (v2.4.1) is the only active spec.
+- **Last Major Update:** 2026-05-17 — Decision Node merged from Sessions A and B; spec passed three domain review passes (v2.1.0 → v2.4.1); 18/18 validation checks pass. T-01 completed and validated.
 
 ---
 
@@ -123,7 +123,7 @@ Flags are persistent, operator-driven, never inferred from historical behaviour.
 
 ### Canonical Spec Governance
 
-- Single living file: `LSR5_Business_Rules_Spec.html` (v2.3.1, 26 sections)
+- Single living file: `LSR5_Business_Rules_Spec.html` (v2.4.1, 26 sections)
 - Edits are surgical `str_replace` operations only — no new versioned file copies
 - Version history maintained as internal timeline inside the document
 - Target location: GitHub repo `LPG Stock Recon`, `docs/` folder, GitHub Pages enabled
@@ -132,7 +132,7 @@ Flags are persistent, operator-driven, never inferred from historical behaviour.
 
 ## 3. IMPLEMENTED / WORKING
 
-- **Business rules spec:** `LSR5_Business_Rules_Spec.html` v2.3.1 — 26 sections, 18/18 validation checks passing, no known contradictions
+- **Business rules spec:** `LSR5_Business_Rules_Spec.html` v2.4.1 — 26 sections, 18/18 validation checks passing, no known contradictions
 - **Domain model:** Four-component sub-ledger fully specified; dual-state settlement model fully specified
 - **Decision Node:** Merged and locked (2026-05-17) — no active architectural conflicts
 - **INC001 first-pass analysis completed:**
@@ -207,7 +207,7 @@ Flags are persistent, operator-driven, never inferred from historical behaviour.
 | DTRX `entry_type` values unvalidated | **Closed** | Validated on 2026-05-17 (T-01). Literal is `'Payment'` (not `'PMT'`). Negatives = credits, positives = adjustments/reversals. |
 | Findings #1–#13 audit (ChatGPT PRD session) | **Closed** | All 13 findings from the v2.1.0 PRD review verified against v2.3.1. Every finding resolved. T-02 complete. One low-priority cosmetic note: "epoch anchor" phrase in §17 step 6 could be replaced in a future v2.3.2 pass — not a functional defect. |
 | INC001 Bank UD origin unconfirmed | **Medium** | 2 records, R9,860, status MISSING IN DATABASE. May be ERP artifacts or legitimate transactions. Classify on load; origin investigation separate. |
-| Git repo not yet created | **Closed** | Initialized and committed as version v2.3.1/v2.4.0. Spec under version control. |
+| Git repo not yet created | **Closed** | Initialized and committed as version v2.3.1/v2.4.1. Spec under version control. |
 | `cyl_qty_balance_by_sku` JSONB at scale | **Closed** | Resolved in v2.4.0. Replaced JSONB with normalized `invoice_cyl_qty` table. |
 | PMT component selection UX (mixed invoices) | **Medium** | Spec locked; UI interaction pattern not yet designed. |
 | R1.00 rounding threshold | **Low** | Currently a fixed constant. Should be per-account configurable. |
@@ -270,7 +270,7 @@ Flags are persistent, operator-driven, never inferred from historical behaviour.
    Retrieve the original ChatGPT session transcript. Map Findings #1/#2/#3 against v2.3.1 spec. Apply surgical corrections if needed before implementation begins.
 
 3. **[ARCHITECTURAL] Create Git repository and commit canonical spec [COMPLETED]**
-   Staged and committed v2.3.1, v2.3.2, and v2.4.0 specs. Working tree clean.
+   Staged and committed v2.3.1, v2.3.2, v2.4.0, and v2.4.1 specs. Working tree clean.
 
 4. **[IMPLEMENTATION] Build data schemas**
    Required tables: `invoice_sub_ledger`, `invoice_cyl_qty`, `allocation_record`, `session`, `customer_config`, `exception_queue`, `classification_table`, `customer_credit_pool`.
@@ -320,7 +320,7 @@ Flags are persistent, operator-driven, never inferred from historical behaviour.
 
 ### Spec as source of truth
 
-`LSR5_Business_Rules_Spec.html` v2.3.1 is the canonical implementation contract. When in doubt, it takes precedence over any reasoning in this document. Changes to business rules must be applied to the spec first, then reflected here.
+`LSR5_Business_Rules_Spec.html` v2.4.1 is the canonical implementation contract. When in doubt, it takes precedence over any reasoning in this document. Changes to business rules must be applied to the spec first, then reflected here.
 
 ### What AI should not rewrite without explicit instruction
 
