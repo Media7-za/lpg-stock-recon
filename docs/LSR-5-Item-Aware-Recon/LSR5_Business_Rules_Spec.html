@@ -1,0 +1,1745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LSR-5 · Business Rules Specification v2.3.1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:    #1B2A4A;
+    --blue:    #2563EB;
+    --teal:    #0D9488;
+    --amber:   #D97706;
+    --red:     #DC2626;
+    --green:   #16A34A;
+    --ink:     #1f2933;
+    --muted:   #64748B;
+    --border:  #d9dee3;
+    --surface: #f7f7f5;
+    --paper:   #ffffff;
+    --code-bg: #eef2f4;
+    --sidebar-w: 264px;
+    --mono: 'IBM Plex Mono', ui-monospace, monospace;
+    --serif: 'DM Serif Display', Georgia, serif;
+    --sans: 'DM Sans', Inter, Arial, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--ink);
+    background: var(--surface);
+    display: flex;
+  }
+
+  /* ── SIDEBAR ── */
+  #sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: var(--sidebar-w);
+    height: 100vh;
+    background: var(--navy);
+    overflow-y: auto;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    scrollbar-width: thin;
+    scrollbar-color: #2E4470 transparent;
+  }
+
+  .sb-header {
+    padding: 22px 20px 16px;
+    border-bottom: 1px solid #2E4470;
+    flex-shrink: 0;
+  }
+
+  .sb-logo {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    color: #60A5FA;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+
+  .sb-title {
+    font-family: var(--serif);
+    font-size: 14px;
+    color: #E2E8F0;
+    line-height: 1.35;
+  }
+
+  .sb-ver {
+    margin-top: 8px;
+    font-family: var(--mono);
+    font-size: 10px;
+    background: #1E3A5F;
+    color: #60A5FA;
+    border: 1px solid #2E4F7A;
+    border-radius: 4px;
+    padding: 2px 8px;
+    display: inline-block;
+  }
+
+  .sb-nav { padding: 12px 0; flex: 1; }
+
+  .sb-group {
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #3D5A7A;
+    padding: 8px 20px 3px;
+  }
+
+  .sb-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 20px;
+    font-size: 12px;
+    color: #94A3B8;
+    text-decoration: none;
+    transition: all 0.12s;
+    border-left: 2px solid transparent;
+    overflow: hidden;
+  }
+
+  .sb-link .num {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: #3D5A7A;
+    min-width: 16px;
+  }
+
+  .sb-link:hover { color: #E2E8F0; background: #ffffff08; border-left-color: #3B82F6; }
+  .sb-link.active { color: #fff; background: #ffffff0d; border-left-color: #60A5FA; font-weight: 500; }
+  .sb-link.active .num { color: #60A5FA; }
+
+  .sb-footer {
+    padding: 14px 20px;
+    border-top: 1px solid #2E4470;
+    font-family: var(--mono);
+    font-size: 9px;
+    color: #3D5A7A;
+    line-height: 1.7;
+    flex-shrink: 0;
+  }
+
+  /* ── MAIN ── */
+  #main { margin-left: var(--sidebar-w); flex: 1; min-height: 100vh; }
+
+  /* ── TOPBAR ── */
+  .topbar {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(247,247,245,0.93);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 9px 44px;
+  }
+
+  .tb-crumb { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+  .tb-crumb span { color: var(--blue); font-weight: 600; }
+
+  .tb-right {
+    display: flex; align-items: center; gap: 12px;
+    font-family: var(--mono); font-size: 11px; color: var(--muted);
+  }
+
+  .status-pill {
+    background: #DCFCE7; color: #166534;
+    border: 1px solid #BBF7D0;
+    border-radius: 20px;
+    padding: 2px 10px;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.05em; text-transform: uppercase;
+  }
+
+  /* ── PAGE WRAPPER ── */
+  .page { max-width: 960px; margin: 0 auto; padding: 40px 44px 96px; }
+
+  /* ── PAPER CARD ── */
+  .document {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 40px 44px;
+    box-shadow: 0 8px 32px rgba(15,23,42,0.06);
+  }
+
+  /* ── COVER ── */
+  .cover { padding-bottom: 36px; border-bottom: 2px solid var(--navy); margin-bottom: 48px; }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px; font-weight: 600;
+    color: var(--blue);
+    letter-spacing: 0.12em; text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .cover-title {
+    font-family: var(--serif);
+    font-size: 42px; line-height: 1.1;
+    color: var(--navy); margin-bottom: 8px;
+  }
+
+  .cover-sub { font-size: 17px; color: var(--blue); font-weight: 300; margin-bottom: 28px; }
+
+  .meta-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0,1fr));
+    gap: 10px; margin: 24px 0;
+  }
+
+  .meta-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px; padding: 12px;
+  }
+
+  .meta-label {
+    font-family: var(--mono);
+    color: var(--muted); font-size: 10px;
+    text-transform: uppercase; letter-spacing: 0.07em;
+    margin-bottom: 3px;
+  }
+
+  .meta-value { font-weight: 700; font-size: 13px; }
+
+  /* ── TOC ── */
+  .toc {
+    background: #fbfcfd;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin: 20px 0 32px;
+    columns: 2; gap: 24px;
+  }
+
+  .toc a {
+    display: block;
+    color: var(--blue);
+    text-decoration: none;
+    font-size: 13px;
+    margin: 5px 0;
+    break-inside: avoid;
+    transition: color 0.1s;
+  }
+
+  .toc a:hover { color: var(--navy); text-decoration: underline; }
+
+  /* ── SECTION HEADINGS ── */
+  .section { margin-bottom: 56px; scroll-margin-top: 72px; }
+
+  .sec-num {
+    font-family: var(--mono);
+    font-size: 10px; font-weight: 600;
+    color: var(--blue); letter-spacing: 0.1em;
+    text-transform: uppercase; margin-bottom: 3px;
+  }
+
+  h1.sec-title {
+    font-family: var(--serif);
+    font-size: 30px; color: var(--navy);
+    margin-bottom: 6px; line-height: 1.2;
+  }
+
+  .sec-rule {
+    height: 2px;
+    background: linear-gradient(to right, var(--navy) 0%, transparent 100%);
+    margin-bottom: 24px;
+  }
+
+  h2 {
+    font-family: var(--sans);
+    font-size: 17px; font-weight: 600;
+    color: var(--navy);
+    margin: 32px 0 10px;
+    padding-top: 0;
+  }
+
+  h3 {
+    font-family: var(--mono);
+    font-size: 11px; font-weight: 600;
+    color: var(--blue); letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin: 24px 0 9px;
+  }
+
+  p { margin-bottom: 12px; }
+
+  ul, ol { padding-left: 22px; margin-bottom: 12px; }
+  li { margin: 5px 0; line-height: 1.6; }
+  li::marker { color: var(--blue); }
+
+  /* ── CALLOUTS ── */
+  .callout {
+    border-left: 4px solid;
+    padding: 13px 16px;
+    border-radius: 0 10px 10px 0;
+    margin: 18px 0;
+    font-size: 14px; line-height: 1.6;
+  }
+
+  .callout .callout-label {
+    font-family: var(--mono);
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.09em; text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+
+  .callout.rule   { border-color: var(--red);   background: #fff3f0; }
+  .callout.rule   .callout-label { color: var(--red); }
+  .callout.warning{ border-color: var(--amber);  background: #fff8e8; }
+  .callout.warning .callout-label { color: var(--amber); }
+  .callout.note   { border-color: var(--teal);   background: #f0fdfa; }
+  .callout.note   .callout-label { color: var(--teal); }
+  .callout.info   { border-color: var(--blue);   background: #eef6ff; }
+  .callout.info   .callout-label { color: var(--blue); }
+
+  /* ── TABLES ── */
+  .table-wrap {
+    overflow-x: auto; margin: 14px 0 22px;
+    border: 1px solid var(--border); border-radius: 10px;
+  }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+
+  thead tr { background: var(--navy); }
+
+  th {
+    padding: 10px 14px; text-align: left;
+    font-family: var(--mono);
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: white; white-space: nowrap;
+  }
+
+  td {
+    padding: 10px 14px; border-bottom: 1px solid var(--border);
+    vertical-align: top; line-height: 1.5;
+  }
+
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:nth-child(even) td { background: #fafbfc; }
+  td:first-child { font-weight: 500; color: var(--navy); }
+  td.mono { font-family: var(--mono); font-size: 12px; color: var(--navy); }
+  td.danger { background: #fff3f0 !important; color: #8a1f11 !important; font-weight: 700; }
+  td.warn   { background: #fff8e8 !important; color: #8a5a00; }
+  td.good   { background: #eefaf3 !important; color: #1f6b45; font-weight: 600; }
+  td.out    { background: #fafbfc !important; color: var(--muted); font-style: italic; }
+
+  /* ── CODE ── */
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--blue);
+    border-radius: 8px; padding: 16px 20px;
+    font-family: var(--mono); font-size: 12.5px;
+    line-height: 1.8; overflow-x: auto;
+    color: var(--navy); margin: 14px 0;
+  }
+
+  pre .c  { color: var(--muted); font-style: italic; }
+  pre .k  { color: var(--blue); font-weight: 600; }
+  pre .ok { color: var(--green); font-weight: 600; }
+  pre .bad{ color: var(--red);  font-weight: 600; }
+
+  code {
+    background: var(--code-bg);
+    padding: 2px 6px; border-radius: 5px;
+    font-family: var(--mono); font-size: 0.9em;
+    color: var(--navy);
+  }
+
+  /* ── BADGES ── */
+  .badge {
+    display: inline-block; padding: 2px 8px;
+    border-radius: 999px; font-size: 11px;
+    font-weight: 700; font-family: var(--mono);
+    letter-spacing: 0.04em;
+  }
+
+  .badge.locked  { background: #e9f7ef; color: #1f6b45; }
+  .badge.mvp     { background: #eef6ff; color: #245b8f; }
+  .badge.future  { background: #fff8e8; color: #8a5a00; }
+  .badge.danger  { background: #fff3f0; color: #8a1f11; }
+
+  /* ── STATE MACHINE ── */
+  .state-flow {
+    display: flex; align-items: center;
+    gap: 8px; flex-wrap: wrap; margin: 10px 0;
+    font-family: var(--mono); font-size: 12px;
+  }
+
+  .state {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px; padding: 4px 12px;
+    color: var(--navy); font-weight: 600;
+  }
+
+  .state.terminal { background: #eef6ff; border-color: #bfdbfe; color: #1e40af; }
+  .state.alt      { background: #fff8e8; border-color: #fde68a; color: #92400e; }
+  .state.danger   { background: #fff3f0; border-color: #fecaca; color: #991b1b; }
+  .arrow { color: var(--muted); font-size: 14px; }
+
+  /* ── VERSION CONTROL ── */
+  .vc-timeline { position: relative; padding-left: 28px; margin-top: 16px; }
+
+  .vc-timeline::before {
+    content: ''; position: absolute;
+    left: 7px; top: 8px; bottom: 8px;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--blue), var(--border));
+  }
+
+  .vc-entry {
+    position: relative; margin-bottom: 24px;
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 10px; overflow: hidden;
+  }
+
+  .vc-entry::before {
+    content: ''; position: absolute;
+    left: -25px; top: 16px;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--blue);
+    border: 2px solid white;
+    box-shadow: 0 0 0 2px var(--blue);
+    z-index: 1;
+  }
+
+  .vc-entry.current::before { background: var(--green); box-shadow: 0 0 0 2px var(--green); }
+
+  .vc-head {
+    display: flex; align-items: center;
+    gap: 12px; padding: 10px 16px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+
+  .vc-ver   { font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--navy); }
+  .vc-date  { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+  .vc-author{ font-size: 12px; color: var(--muted); margin-left: auto; }
+
+  .vc-tag {
+    font-family: var(--mono); font-size: 10px; font-weight: 700;
+    padding: 2px 8px; border-radius: 20px;
+    letter-spacing: 0.05em; text-transform: uppercase;
+  }
+
+  .vc-tag.locked  { background: #e9f7ef; color: #166534; border: 1px solid #bbf7d0; }
+  .vc-tag.draft   { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+  .vc-tag.current { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+
+  .vc-body { padding: 12px 16px; }
+
+  .vc-change {
+    display: flex; gap: 10px;
+    margin-bottom: 7px; font-size: 13.5px;
+    line-height: 1.5; align-items: flex-start;
+  }
+
+  .vc-type {
+    font-family: var(--mono); font-size: 9px; font-weight: 700;
+    padding: 2px 7px; border-radius: 4px;
+    white-space: nowrap; margin-top: 2px;
+    text-transform: uppercase; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+
+  .vc-type.added   { background: #dcfce7; color: #166534; }
+  .vc-type.changed { background: #dbeafe; color: #1e40af; }
+  .vc-type.locked  { background: #f3e8ff; color: #6b21a8; }
+  .vc-type.fixed   { background: #fef3c7; color: #92400e; }
+  .vc-type.deferred{ background: #f1f5f9; color: #475569; }
+
+  /* ── AMENDMENT FORM ── */
+  .amend-form {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px; padding: 20px;
+    margin-top: 20px;
+  }
+
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 14px 0; }
+  .form-group { display: flex; flex-direction: column; gap: 4px; }
+
+  .form-group label {
+    font-family: var(--mono); font-size: 10px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
+  }
+
+  .form-group input, .form-group select, .form-group textarea {
+    font-family: var(--sans); font-size: 13.5px;
+    border: 1px solid var(--border); border-radius: 6px;
+    padding: 8px 12px; color: var(--ink);
+    background: var(--paper); outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    border-color: var(--blue); background: white;
+  }
+
+  .form-group textarea { min-height: 70px; resize: vertical; }
+
+  .changes-list { display: flex; flex-direction: column; gap: 7px; margin-bottom: 10px; }
+
+  .change-row {
+    display: grid;
+    grid-template-columns: 130px 1fr 32px;
+    gap: 8px; align-items: start;
+  }
+
+  .change-row select, .change-row input {
+    font-family: var(--sans); font-size: 13px;
+    border: 1px solid var(--border); border-radius: 6px;
+    padding: 7px 10px; color: var(--ink);
+    background: var(--paper); outline: none;
+  }
+
+  .add-btn {
+    font-family: var(--mono); font-size: 11px; color: var(--blue);
+    background: none; border: 1px dashed var(--blue);
+    border-radius: 6px; padding: 6px 14px;
+    cursor: pointer; width: 100%; margin-bottom: 14px;
+    transition: background 0.12s;
+  }
+
+  .add-btn:hover { background: #eff6ff; }
+
+  .rm-btn {
+    font-size: 18px; background: none; border: none;
+    color: var(--muted); cursor: pointer; padding: 4px;
+    line-height: 1; transition: color 0.12s;
+  }
+
+  .rm-btn:hover { color: var(--red); }
+
+  .submit-btn {
+    background: var(--navy); color: white; border: none;
+    border-radius: 6px; padding: 10px 24px;
+    font-family: var(--mono); font-size: 11px; font-weight: 700;
+    cursor: pointer; letter-spacing: 0.07em; text-transform: uppercase;
+    transition: background 0.15s;
+  }
+
+  .submit-btn:hover { background: var(--blue); }
+
+  /* ── PROGRESS BAR ── */
+  #progress {
+    position: fixed; top: 0;
+    left: var(--sidebar-w); right: 0;
+    height: 2px; background: var(--blue);
+    transform-origin: left; transform: scaleX(0);
+    z-index: 200; transition: transform 0.04s;
+  }
+
+  /* ── DIVIDER ── */
+  hr { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+
+  .doc-footer {
+    margin-top: 32px; padding-top: 20px;
+    border-top: 1px solid var(--border);
+    color: var(--muted); font-size: 13px;
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 800px) {
+    #sidebar { display: none; }
+    #main { margin-left: 0; }
+    .page { padding: 20px 16px 60px; }
+    .document { padding: 24px 20px; border-radius: 10px; }
+    .cover-title { font-size: 30px; }
+    .meta-grid { grid-template-columns: 1fr 1fr; }
+    .toc { columns: 1; }
+    .form-grid { grid-template-columns: 1fr; }
+    .change-row { grid-template-columns: 110px 1fr 28px; }
+    h1.sec-title { font-size: 24px; }
+    .topbar { padding: 9px 16px; }
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    #sidebar, #progress, .topbar, .amend-form { display: none; }
+    #main { margin-left: 0; }
+    body { background: white; }
+    .page { padding: 0; max-width: none; }
+    .document { border: none; box-shadow: none; border-radius: 0; }
+    a { color: inherit; text-decoration: none; }
+    pre { white-space: pre-wrap; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="sb-header">
+    <div class="sb-logo">LSR-5 · Recon Engine</div>
+    <div class="sb-title">Business Rules<br>Specification</div>
+    <div class="sb-ver">v2.3.1 · 2026-05-17</div>
+  </div>
+  <div class="sb-nav">
+    <div class="sb-group">Overview</div>
+    <a class="sb-link" href="#cover"><span class="num">—</span>Cover</a>
+    <a class="sb-link" href="#s1"><span class="num">1</span>Executive Summary</a>
+    <a class="sb-link" href="#s2"><span class="num">2</span>Scope &amp; Non-Goals</a>
+    <a class="sb-link" href="#s3"><span class="num">3</span>Domain Language</a>
+
+    <div class="sb-group">Architecture</div>
+    <a class="sb-link" href="#s4"><span class="num">4</span>Core Domain Model</a>
+    <a class="sb-link" href="#s5"><span class="num">5</span>Data Sources</a>
+    <a class="sb-link" href="#s6"><span class="num">6</span>Document Taxonomy</a>
+    <a class="sb-link" href="#s7"><span class="num">7</span>Invoice Sub-Ledger</a>
+    <a class="sb-link" href="#s8"><span class="num">8</span>Cylinder Custody</a>
+
+    <div class="sb-group">Hard Rules</div>
+    <a class="sb-link" href="#s9"><span class="num">9</span>Domain Invariants</a>
+    <a class="sb-link" href="#s10"><span class="num">10</span>Matching Engine</a>
+    <a class="sb-link" href="#s11"><span class="num">11</span>Item Awareness</a>
+    <a class="sb-link" href="#s12"><span class="num">12</span>Credit Note Rules</a>
+    <a class="sb-link" href="#s13"><span class="num">13</span>Opening Balance</a>
+
+    <div class="sb-group">Allocation</div>
+    <a class="sb-link" href="#s14"><span class="num">14</span>Classification Rules</a>
+    <a class="sb-link" href="#s15"><span class="num">15</span>Credit Pool</a>
+    <a class="sb-link" href="#s16"><span class="num">16</span>Exception Lanes</a>
+
+    <div class="sb-group">Session</div>
+    <a class="sb-link" href="#s17"><span class="num">17</span>Session Lifecycle</a>
+    <a class="sb-link" href="#s18"><span class="num">18</span>Completion Rules</a>
+    <a class="sb-link" href="#s19"><span class="num">19</span>UI Safety Contracts</a>
+
+    <div class="sb-group">Reference</div>
+    <a class="sb-link" href="#s20"><span class="num">20</span>State Machines</a>
+    <a class="sb-link" href="#s21"><span class="num">21</span>Edge Cases</a>
+    <a class="sb-link" href="#s22"><span class="num">22</span>Open Risks</a>
+    <a class="sb-link" href="#s23"><span class="num">23</span>Implementation Order</a>
+    <a class="sb-link" href="#s24"><span class="num">24</span>Future Boundary</a>
+
+    <div class="sb-group">Living Doc</div>
+    <a class="sb-link" href="#s25"><span class="num">25</span>Customer Config UX</a>
+    <a class="sb-link" href="#s26"><span class="num">26</span>Version Control</a>
+  </div>
+  <div class="sb-footer">
+    lpg-stock-recon<br>
+    oqhpxnaadahohwkslive<br>
+    eu-west-1 · ACTIVE_HEALTHY
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div id="main">
+  <div class="topbar">
+    <div class="tb-crumb">LSR-5 / <span>Business Rules Spec v2.3.1</span></div>
+    <div class="tb-right">
+      <span class="status-pill">Locked — Engineering</span>
+      <span>2026-05-17</span>
+    </div>
+  </div>
+
+  <div class="page">
+  <div class="document">
+
+    <!-- COVER -->
+    <div class="cover" id="cover">
+      <div class="eyebrow">LSR-5 · Engineering Review Artifact · Confidential</div>
+      <h1 class="cover-title">Debtor Reconciliation Workbench<br>Business Rules &amp; Engineering Specification</h1>
+      <p class="cover-sub">Authoritative source-of-truth for the MVP internal reconciliation workbench replacing spreadsheet-based debtor reconciliation workflows.</p>
+      <div class="meta-grid">
+        <div class="meta-card"><div class="meta-label">Version</div><div class="meta-value">v2.3.1</div></div>
+        <div class="meta-card"><div class="meta-label">Status</div><div class="meta-value" style="color:var(--green)">Engineering Review</div></div>
+        <div class="meta-card"><div class="meta-label">Scope</div><div class="meta-value">MVP Business Rules</div></div>
+        <div class="meta-card"><div class="meta-label">Last Updated</div><div class="meta-value" style="font-family:var(--mono)">2026-05-17</div></div>
+      </div>
+
+      <h2 style="margin-top:28px;padding-top:0;border-top:none">Table of Contents</h2>
+      <nav class="toc">
+        <a href="#s1">1. Executive Summary</a>
+        <a href="#s2">2. Scope &amp; Non-Goals</a>
+        <a href="#s3">3. Domain Language</a>
+        <a href="#s4">4. Core Domain Model</a>
+        <a href="#s5">5. Data Sources</a>
+        <a href="#s6">6. Document Taxonomy</a>
+        <a href="#s7">7. Invoice Sub-Ledger</a>
+        <a href="#s8">8. Cylinder Custody</a>
+        <a href="#s9">9. Domain Invariants</a>
+        <a href="#s10">10. Matching Engine</a>
+        <a href="#s11">11. Item Awareness</a>
+        <a href="#s12">12. Credit Note Rules</a>
+        <a href="#s13">13. Opening Balance</a>
+        <a href="#s14">14. Classification Rules</a>
+        <a href="#s15">15. Credit Pool</a>
+        <a href="#s16">16. Exception Lanes</a>
+        <a href="#s17">17. Session Lifecycle</a>
+        <a href="#s18">18. Completion Rules</a>
+        <a href="#s19">19. UI Safety Contracts</a>
+        <a href="#s20">20. State Machines</a>
+        <a href="#s21">21. Edge Cases</a>
+        <a href="#s22">22. Open Risks</a>
+        <a href="#s23">23. Implementation Order</a>
+        <a href="#s24">24. Future Boundary</a>
+        <a href="#s25">25. Customer Configuration UX</a>
+        <a href="#s26">26. Version Control</a>
+      </nav>
+    </div>
+
+    <!-- S1: EXECUTIVE SUMMARY -->
+    <div class="section" id="s1">
+      <div class="sec-num">Section 1</div>
+      <h1 class="sec-title">Executive Summary</h1>
+      <div class="sec-rule"></div>
+      <div class="callout info">
+        <div class="callout-label">Core Hypothesis</div>
+        This is not a simple invoice matching engine. It is a <strong>hybrid debtor exposure and cylinder custody reconciliation workbench</strong>. The engine reconstructs the true state of a customer's AR ledger from three incomplete sources, then surfaces what remains unresolved with enough context for a human to make a defensible accounting decision.
+      </div>
+      <ul>
+        <li>The platform is <strong>internal-only, human-in-the-loop, and ERP read-only</strong>.</li>
+        <li>Sessions reconcile <strong>exactly one debtor account</strong> at a time.</li>
+        <li>MVP supports <strong>assisted recommendations only</strong> — no autonomous allocations.</li>
+        <li>Finance users need commercial AR visibility and CYL custody visibility in the same workspace.</li>
+        <li>ERP running balance is a health signal, not a completion gate — exports may be incomplete by design.</li>
+      </ul>
+    </div>
+
+    <!-- S2: SCOPE -->
+    <div class="section" id="s2">
+      <div class="sec-num">Section 2</div>
+      <h1 class="sec-title">Scope &amp; Non-Goals</h1>
+      <div class="sec-rule"></div>
+      <h2>In Scope — MVP</h2>
+      <ul>
+        <li>Invoice, payment, and financial credit note allocation assistance.</li>
+        <li>Opening balance handling (positive = invoice-like; negative = credit pool).</li>
+        <li>Journal and Bank UD classification before allocation.</li>
+        <li>Cylinder quantity awareness at sub-ledger level.</li>
+        <li>Persistent customer credit pool tracking across sessions.</li>
+        <li>Operator notes and session completion workflow.</li>
+        <li>Customer flags: <code>allows_cross_bucket_settlement</code>, <code>pays_for_cyl</code>.</li>
+        <li>Rounding write-off up to R1.00 with operator one-click approval.</li>
+      </ul>
+      <h2>Out of Scope — MVP</h2>
+      <ul>
+        <li>ERP writeback of any kind.</li>
+        <li>Autonomous reconciliation without operator confirmation.</li>
+        <li>Machine learning model adaptation.</li>
+        <li>Full yard / SOH cylinder reconciliation (CYL Custody Engine — deferred).</li>
+        <li>Cross-account batch reconciliation.</li>
+        <li>Cross-period allocation rules.</li>
+        <li>Multi-operator concurrent sessions.</li>
+      </ul>
+    </div>
+
+    <!-- S3: DOMAIN LANGUAGE -->
+    <div class="section" id="s3">
+      <div class="sec-num">Section 3</div>
+      <h1 class="sec-title">Ubiquitous Domain Language</h1>
+      <div class="sec-rule"></div>
+      <p>All engineers, domain experts, and operators must use these terms consistently. Ambiguous synonyms are prohibited in code, comments, and documentation.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Term</th><th>Definition</th></tr></thead>
+        <tbody>
+          <tr><td>Commercial Ledger</td><td>Monetary debtor exposure split into LPG value, CYL value, and OTHER value balances.</td></tr>
+          <tr><td>Custody Ledger</td><td>Physical cylinder quantity exposure tracked by SKU.</td></tr>
+          <tr><td>Financial CRN</td><td>Credit note with <code>ABS(HDR_TOTAL) &gt; 0</code>. Has monetary effect. Participates in commercial settlement.</td></tr>
+          <tr><td>Operational CYL CRN</td><td>Credit note with <code>HDR_TOTAL = 0</code> and CYL qty movement. Affects custody ledger only.</td></tr>
+          <tr><td>Sub-ledger</td><td>The four independently tracked components of an invoice: lpg_value_balance, cyl_value_balance, other_value_balance, cyl_qty_balance_by_sku.</td></tr>
+          <tr><td>Credit Pool</td><td>Persistent unapplied customer credit, surviving across sessions. Never auto-applied.</td></tr>
+          <tr><td>Suspense — PMT</td><td>Unallocated payment value or payment remainder awaiting matching.</td></tr>
+          <tr><td>Suspense — CRN</td><td>Unallocated financial credit note value or CRN remainder.</td></tr>
+          <tr><td>Manual Hold</td><td>Open invoice exposure with no payment or credit covering it. Intentionally outstanding.</td></tr>
+          <tr><td>Debit Adjustment</td><td>A classified JNL/Bank UD that <em>increases</em> debtor exposure. Never a settlement action.</td></tr>
+          <tr><td>Processed Document</td><td>A document in a terminal state: ALLOCATED, PARTIAL_ALLOCATED, MANUAL_HOLD, SUSPENSE_PMT, SUSPENSE_CRN, WRITE_OFF, IGNORED, or OPERATIONAL_EXCEPTION.</td></tr>
+          <tr><td>OPERATIONAL_EXCEPTION</td><td>Exception lane for operational CYL CRNs that could not be deterministically matched to an invoice on session load. Custody-only — does not block financial session completion.</td></tr>
+          <tr><td>Session</td><td>A bounded reconciliation workspace for a single debtor account. States: DRAFT → ACTIVE → COMPLETE → ARCHIVED.</td></tr>
+          <tr><td>DTRX</td><td>The transaction_headers Supabase table. Designated PMT lane source pending full integration validation. Run discovery query to confirm entry_type values before going live.</td></tr>
+          <tr><td>OB Priority Rule</td><td>Business rule that positive Opening Balances rank before all dated invoices in candidate sorting. Implementation detail only — no synthetic date is mandated by the business spec.</td></tr>
+          <tr><td>financial_state</td><td>Commercial settlement state of an invoice. Canonical enum: <strong>OUTSTANDING | SETTLED | EXCEPTIONED | WRITTEN_OFF | IGNORED</strong>. Independent of custody_state. Source of truth: invoice_sub_ledger table.</td></tr>
+          <tr><td>custody_state</td><td>Cylinder custody state of an invoice. Canonical enum: <strong>OUTSTANDING | PARTIALLY_RETURNED | RETURNED | COMMERCIALIZED | DISPUTED | IGNORED</strong>. Independent of financial_state. COMMERCIALIZED = operator confirmed cylinders settled by cash, no physical return required. Source of truth: invoice_sub_ledger table.</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <!-- S4: CORE DOMAIN MODEL -->
+    <div class="section" id="s4">
+      <div class="sec-num">Section 4</div>
+      <h1 class="sec-title">Core Domain Model</h1>
+      <div class="sec-rule"></div>
+      <ul>
+        <li>Two coupled ledgers exist: <strong>Commercial Ledger</strong> (value) and <strong>Custody Ledger</strong> (qty).</li>
+        <li>Commercial settlement and custody settlement are <strong>related but distinct</strong>.</li>
+        <li>An invoice carries two independent settlement states: <strong>financial_state</strong> (monetary sub-ledger) and <strong>custody_state</strong> (cylinder qty). Each resolves independently. financial_state = SETTLED does not require custody_state = RETURNED.</li>
+        <li>Customers may settle CYL commercially (cash) instead of physically returning cylinders.</li>
+        <li>No single data source is complete — the engine triangulates across four sources (ERP summary, detail lines, transaction_headers, transaction_items).</li>
+        <li>The engine recommends; the operator decides. No autonomous allocation in MVP.</li>
+      </ul>
+    </div>
+
+    <!-- S5: DATA SOURCES -->
+    <div class="section" id="s5">
+      <div class="sec-num">Section 5</div>
+      <h1 class="sec-title">Data Sources — Four-Source Architecture</h1>
+      <div class="sec-rule"></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Source</th><th>Provides</th><th>Used For</th></tr></thead>
+        <tbody>
+          <tr><td>ERP Summary Export</td><td>INV / CRN / OB / JNL headers, HDR_TOTAL, document state</td><td>Invoice and CRN financial headers; ERP reference balance</td></tr>
+          <tr><td>Detail Lines Export</td><td>Line-level CAT, qty, LINE_TOTAL per DOCNO</td><td>Item signatures; sub-ledger seeding (LPG / CYL / OTHER split)</td></tr>
+          <tr><td>transaction_headers (Supabase)</td><td>doc_no, tx_date, amount_excl + tax_amount, description, batch_ref</td><td>Designated PMT lane source — pending integration validation (entry_type enumeration, deduplication, reversal detection)</td></tr>
+          <tr><td>transaction_items (Supabase)</td><td>doc_no, stock_no (SKU), qty per line</td><td>CYL qty balance per SKU per invoice</td></tr>
+          <tr><td>erp_snapshots (Supabase)</td><td>SOH snapshots from STKCOUNT.csv</td><td class="out">CYL Custody Engine ONLY — not used in MVP</td></tr>
+          <tr><td>movement_data (Supabase)</td><td>Daily movement registers per SKU</td><td class="out">CYL Custody Engine ONLY — not used in MVP</td></tr>
+        </tbody>
+      </table></div>
+
+      <h2>DTRX Field Mapping — PMT Lane</h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Scoring Variable</th><th>Supabase Column</th><th>Type</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>PMT_ID</td><td class="mono">doc_no</td><td>TEXT</td><td>Unique transaction identifier</td></tr>
+          <tr><td>DATE</td><td class="mono">tx_date</td><td>DATE</td><td>Critical for date proximity scoring</td></tr>
+          <tr><td>AMOUNT</td><td class="mono">amount_excl + tax_amount</td><td>NUMERIC</td><td>Tax-inclusive gross total</td></tr>
+          <tr><td>BANK_REF</td><td class="mono">description</td><td>TEXT</td><td>Near-zero weight — e.g. SPEEDP | PC-76-17</td></tr>
+          <tr><td>CUSTOMER_REF</td><td class="mono">batch_ref</td><td>TEXT</td><td>Near-zero weight — e.g. MRS DLAMINI</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>Discovery Query — Run Before PMT Lane Goes Live</h3>
+      <pre><span class="c">-- Confirm exact entry_type values in your Supabase instance</span>
+SELECT DISTINCT entry_type, COUNT(*) AS cnt
+FROM transaction_headers
+WHERE account_no = <span class="k">'INC001'</span>
+GROUP BY entry_type ORDER BY cnt DESC;</pre>
+    </div>
+
+    <!-- S6: DOCUMENT TAXONOMY -->
+    <div class="section" id="s6">
+      <div class="sec-num">Section 6</div>
+      <h1 class="sec-title">Document Taxonomy</h1>
+      <div class="sec-rule"></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Type</th><th>MVP Handling</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>INV</td><td>Invoice exposure document</td><td>ERP Summary</td><td>Split into LPG value, CYL value, OTHER, and CYL qty by SKU.</td></tr>
+          <tr><td>Financial CRN</td><td>Reduces monetary exposure</td><td>ERP Summary</td><td><code>ABS(HDR_TOTAL) &gt; 0</code>. Can target sub-ledger components.</td></tr>
+          <tr><td>Operational CYL CRN</td><td>Reduces quantity only</td><td>ERP Summary</td><td><code>HDR_TOTAL = 0</code>. Applied on load only when exact SKU + prior-dated invoice match exists. Ambiguous → OPERATIONAL_EXCEPTION queue. Never enters financial engine.</td></tr>
+          <tr><td>PMT</td><td>Settlement document</td><td>DTRX (Supabase)</td><td>May only settle invoices dated on or before payment date. Hard rule.</td></tr>
+          <tr><td>OB Positive</td><td>Oldest debit exposure</td><td>ERP Summary</td><td>Ranks before all dated invoices (business rule). Implementation mechanism at engine discretion.</td></tr>
+          <tr><td>OB Negative</td><td>Credit pool source</td><td>ERP Summary</td><td>Routed to credit pool on session load. Persistent across sessions.</td></tr>
+          <tr><td>JNL</td><td>Blocked — classification required</td><td>ERP Summary</td><td>Operator must classify before engine allocates.</td></tr>
+          <tr><td>Bank UD</td><td>Blocked — UNCLASSIFIED_EXCEPTION</td><td>DTRX / ERP</td><td>Reversal/correction artifact. Routes to UNCLASSIFIED_EXCEPTION on load. Operator must classify before engine touches it. Blocks session completion.</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <!-- S7: INVOICE SUB-LEDGER -->
+    <div class="section" id="s7">
+      <div class="sec-num">Section 7</div>
+      <h1 class="sec-title">Invoice Sub-Ledger Model</h1>
+      <div class="sec-rule"></div>
+      <p>An invoice is not a single open balance. It carries <strong>four independently tracked components</strong>. Settlement requires all components to reach zero.</p>
+
+      <h2>Schema</h2>
+      <pre>invoice_sub_ledger {
+  invoice_id             TEXT      <span class="c">-- doc_no from ERP summary</span>
+  total_amount           NUMERIC   <span class="c">-- HDR_TOTAL</span>
+  lpg_value_balance      NUMERIC   <span class="c">-- sum of LPG line totals</span>
+  cyl_value_balance      NUMERIC   <span class="c">-- sum of CYL line totals</span>
+  other_value_balance    NUMERIC   <span class="c">-- AGR + unmapped items</span>
+  cyl_qty_balance        JSONB     <span class="c">-- { "9.1": 5, "14.1": 2 } per SKU</span>
+  financial_state        TEXT      <span class="c">-- OUTSTANDING | SETTLED | EXCEPTIONED | WRITTEN_OFF | IGNORED</span>
+  custody_state          TEXT      <span class="c">-- OUTSTANDING | PARTIALLY_RETURNED | RETURNED | COMMERCIALIZED | DISPUTED | IGNORED</span></pre>
+
+<div class="callout note">
+  <div class="callout-label">Note — State Independence</div>
+  financial_state and custody_state are tracked and resolved independently. SETTLED + OUTSTANDING is a valid complete state for pays_for_cyl accounts. Neither state requires the other to be resolved first.
+</div>
+
+<pre>
+}</pre>
+
+      <h2>Dual Settlement States — Independent Tracking</h2>
+      <div class="callout rule">
+        <div class="callout-label">Hard Rule — Invoice Settlement</div>
+        Financial settlement and custody settlement are <strong>independent but coupled</strong>. An invoice carries two separate settlement states. Neither requires the other to be resolved first. A customer who pays commercially for cylinders achieves <code>financial_state = SETTLED</code> while <code>custody_state</code> remains <code>OUTSTANDING</code> — that is a valid and complete financial outcome.
+      </div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>State</th><th>Tracks</th><th>Settled When</th></tr></thead>
+        <tbody>
+          <tr><td><strong>financial_state</strong></td><td>lpg_value_balance + cyl_value_balance + other_value_balance</td><td>All value balances ≤ R1.00 (rounding tolerance). Independent of custody.</td></tr>
+          <tr><td><strong>custody_state</strong></td><td>cyl_qty_balance_by_sku per SKU</td><td>All SKU qtys = 0, OR operator marks as COMMERCIALIZED / WRITTEN_OFF. Independent of financial.</td></tr>
+        </tbody>
+      </table></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>financial_state</th><th>custody_state</th><th>Meaning</th><th>Session terminal?</th></tr></thead>
+        <tbody>
+          <tr><td class="good">SETTLED</td><td class="good">RETURNED</td><td>Fully resolved — no further action needed.</td><td class="good">Yes</td></tr>
+          <tr><td class="good">SETTLED</td><td class="warn">OUTSTANDING</td><td>Value paid; cylinders physically outstanding. Valid complete financial outcome for pays_for_cyl accounts.</td><td class="good">Yes — financial</td></tr>
+          <tr><td class="good">SETTLED</td><td class="good">COMMERCIALIZED</td><td>Value paid; operator confirmed cylinders settled by cash.</td><td class="good">Yes</td></tr>
+          <tr><td class="good">SETTLED</td><td class="warn">PARTIALLY_RETURNED</td><td>Value paid; some cylinders returned, some outstanding.</td><td class="good">Yes — financial</td></tr>
+          <tr><td class="warn">OUTSTANDING</td><td class="warn">OUTSTANDING</td><td>Open invoice — awaiting payment and cylinder return.</td><td class="warn">Manual Hold</td></tr>
+          <tr><td class="warn">OUTSTANDING</td><td class="good">RETURNED</td><td>Cylinders returned; commercial balance still outstanding.</td><td class="warn">Manual Hold</td></tr>
+          <tr><td class="good">EXCEPTIONED</td><td>—</td><td>Invoice in exception lane (Suspense, Manual Hold). Custody tracked independently.</td><td class="good">Yes</td></tr>
+        </tbody>
+      </table></div>
+
+      <h2>Sub-Ledger Seeding — Bucket Map</h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>CAT Code</th><th>Bucket</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>14K, 19K, 9KG, SV, DV</td><td>LPG</td><td>All are LPG or 48kg variants</td></tr>
+          <tr><td>CYL</td><td>CYL</td><td>Item-aware scoring active</td></tr>
+          <tr><td>SKU ending in .1</td><td>CYL</td><td>Pattern rule — no lookup table needed (e.g. 9.1, 14.1, 19.1)</td></tr>
+          <tr><td>AGR</td><td>OTHER</td><td>Info warning: "Rarely used — verify allocation"</td></tr>
+          <tr><td>Unmapped</td><td>OTHER</td><td>No cross-bucket warning fired</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <!-- S8: CYLINDER CUSTODY -->
+    <div class="section" id="s8">
+      <div class="sec-num">Section 8</div>
+      <h1 class="sec-title">Cylinder Custody Model</h1>
+      <div class="sec-rule"></div>
+      <ul>
+        <li>CYL tracks both <strong>value balance</strong> (<code>cyl_value_balance</code>) and <strong>quantity balance</strong> (<code>cyl_qty_balance_by_sku</code>) per invoice.</li>
+        <li>Operational CYL CRNs (<code>HDR_TOTAL = 0</code>) reduce <code>cyl_qty_balance_by_sku</code> only. Applied deterministically on session load <strong>only when an exact SKU match to a prior-dated invoice exists</strong>. Ambiguous or unmatched operational CRNs route to the operational exception queue for operator manual assignment — never blindly auto-applied.</li>
+        <li>CYL pricing is <strong>static across all customers</strong>. Value = qty × static_price per SKU.</li>
+        <li>Customers with <code>pays_for_cyl = true</code> settle CYL liability by cash payment instead of physical return.</li>
+        <li>A dedicated CYL Custody Engine will handle full operational reconciliation post-MVP using <code>erp_snapshots</code> and <code>movement_data</code>.</li>
+      </ul>
+      <div class="callout note">
+        <div class="callout-label">MVP CYL Boundary</div>
+        MVP is CYL-aware at sub-ledger level — it tracks value and qty balances per invoice. The future CYL engine handles yard counts, SOH snapshots, movement logs, and full custody chain reconciliation.
+      </div>
+    </div>
+
+    <!-- S9: DOMAIN INVARIANTS -->
+    <div class="section" id="s9">
+      <div class="sec-num">Section 9</div>
+      <h1 class="sec-title">Hard Domain Invariants</h1>
+      <div class="sec-rule"></div>
+      <div class="callout rule">
+        <div class="callout-label">Hard Rule — Non-Negotiable</div>
+        These are absolute engineering constraints. No exception handling, no operator override, no configuration flag changes them.
+      </div>
+      <ul>
+        <li><strong>Payments may never settle future-dated invoices.</strong> <code>invoice_date ≤ payment_date</code> is enforced before scoring — future invoices are invisible to the scorer.</li>
+        <li><strong>Zero-value CYL CRNs may never reduce monetary balances.</strong> They reduce custody qty only.</li>
+        <li><strong>DEBIT_ADJUSTMENT always increases debtor exposure.</strong> It is never a settlement action.</li>
+        <li><strong>ERP is read-only.</strong> No allocation, write-off, or classification is posted back to ERP in MVP.</li>
+        <li><strong>Credit pool is never applied automatically.</strong> Operator must explicitly trigger credit pool usage.</li>
+        <li><strong>All financial (monetary) allocations require operator confirmation.</strong> The engine suggests; it never acts autonomously on value balances. Deterministic operational CRN qty reconciliation (exact SKU match, prior-dated invoice) may auto-apply custody-only adjustments on session load — this does not constitute a financial allocation.</li>
+      </ul>
+    </div>
+
+    <!-- S10: MATCHING ENGINE -->
+    <div class="section" id="s10">
+      <div class="sec-num">Section 10</div>
+      <h1 class="sec-title">Matching Engine Rules</h1>
+      <div class="sec-rule"></div>
+
+      <h2>Payment Scoring Stack</h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>#</th><th>Signal</th><th>Notes</th><th>Weight</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Closest prior date</td><td>invoice_date closest to payment_date; hard filter <code>invoice_date ≤ payment_date</code> applied first</td><td style="font-weight:700;color:var(--blue)">Primary</td></tr>
+          <tr><td>2</td><td>Exact amount / proximity</td><td>ABS(invoice_remaining − payment_amount) minimised</td><td style="font-weight:600">Strong</td></tr>
+          <tr><td>3</td><td>Running balance impact</td><td>Prefer allocations that minimise net session balance delta</td><td>Tiebreaker</td></tr>
+          <tr><td>4</td><td>FIFO (oldest open balance)</td><td>Among equal candidates, prefer older invoice</td><td>Tiebreaker</td></tr>
+          <tr><td>5</td><td>Bank reference similarity</td><td>Fuzzy match on <code>description</code> field</td><td style="color:var(--muted)">Near-zero</td></tr>
+          <tr><td>6</td><td>Customer reference similarity</td><td>Fuzzy match on <code>batch_ref</code></td><td style="color:var(--muted)">Near-zero</td></tr>
+        </tbody>
+      </table></div>
+
+      <pre><span class="c">// Hard filter applied BEFORE scoring</span>
+const eligible = invoices.filter(inv =&gt; inv.date &lt;= payment.date);
+<span class="c">// Future-dated invoices are invisible to the scorer — no exceptions.</span></pre>
+
+      <h2>CRN Scoring</h2>
+      <ul>
+        <li><strong>Closest prior date</strong> — primary signal (same constraint as PMT)</li>
+        <li><strong>Amount proximity</strong> — ABS(CRN_remaining − invoice_component_balance)</li>
+        <li><strong>Bucket similarity</strong> — fraction of CRN value in same bucket as invoice dominant bucket (≥70% defines dominant)</li>
+      </ul>
+      <div class="callout note">
+        <div class="callout-label">Note</div>
+        Reference metadata (BANK_REF, CUSTOMER_REF) is low-trust for this customer base. Amount and date are the only reliable primary signals.
+      </div>
+
+      <h2>PMT Allocation Mechanics — Locked Rule</h2>
+      <div class="callout rule">
+        <div class="callout-label">Hard Rule — PMT Targeting</div>
+        A single PMT allocation action targets exactly: one PMT → one invoice → one sub-ledger component. No proportional split. No automatic spillover into other components. No silent distribution across the invoice.
+      </div>
+
+      <div class="table-wrap"><table>
+        <thead><tr><th>Step</th><th>Who decides</th><th>Rule</th></tr></thead>
+        <tbody>
+          <tr><td>1. Select target invoice</td><td>Operator (engine suggests via scoring stack)</td><td>Must satisfy <code>invoice_date ≤ payment_date</code>. One invoice per action.</td></tr>
+          <tr><td>2. Select target component</td><td>Operator</td><td>For single-component invoices: component is implicit. For mixed invoices (LPG + CYL + OTHER): operator must explicitly choose <strong>LPG</strong>, <strong>CYL_VALUE</strong>, or <strong>OTHER</strong>. Engine may suggest based on bucket dominance — never auto-select.</td></tr>
+          <tr><td>3. Apply amount</td><td>Engine</td><td>Reduces selected component balance by MIN(pmt_amount, component_balance). If pmt_amount ≤ component_balance: component reduced, PMT fully consumed. If pmt_amount &gt; component_balance: component reduced to zero, remainder routes to Suspense-PMT.</td></tr>
+          <tr><td>4. Remainder</td><td>Engine routes, operator acts</td><td>PMT remainder in Suspense-PMT is available for a subsequent allocation action. The engine may suggest the next best invoice + component, but must not perform the allocation automatically.</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>Worked example</h3>
+      <pre><span class="c">// PMT R5,000 against a mixed invoice</span>
+PMT amount       : R5,000
+Invoice LPG bal  : R3,000
+Invoice CYL bal  : R2,000
+
+Operator selects : LPG component
+
+<span class="ok">Result:</span>
+  LPG balance    : R3,000 → R0       (fully settled)
+  CYL balance    : R2,000 → R2,000   (unchanged)
+  PMT consumed   : R3,000
+  PMT remainder  : R2,000 → <span class="bad">Suspense-PMT</span>
+
+<span class="c">// CYL balance remains open. Engine suggests next action.</span>
+<span class="c">// Operator performs a second allocation to apply the R2,000 remainder.</span>
+<span class="c">// Engine never does this automatically.</span></pre>
+
+      <h3>What the engine must never do</h3>
+      <ul>
+        <li>Proportionally distribute a PMT across LPG, CYL, and OTHER components</li>
+        <li>Automatically spill a PMT remainder into the next component after one is settled</li>
+        <li>Auto-select a sub-ledger component for a mixed invoice</li>
+        <li>Chain allocation actions without an operator confirmation between each</li>
+      </ul>
+    </div>
+
+    <!-- S11: ITEM AWARENESS -->
+    <div class="section" id="s11">
+      <div class="sec-num">Section 11</div>
+      <h1 class="sec-title">Item Awareness Rules</h1>
+      <div class="sec-rule"></div>
+      <ul>
+        <li>Item composition <strong>influences candidate ranking</strong> — it is never a hard constraint blocking allocation.</li>
+        <li>Cross-bucket allocation is <strong>always permitted</strong> but generates a warning.</li>
+        <li>Warning severity is controlled by the <code>allows_cross_bucket_settlement</code> customer flag.</li>
+        <li>Warning suppression is controlled only by the <code>allows_cross_bucket_settlement</code> flag. No automatic learning or historical rate inference.</li>
+      </ul>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Flag</th><th>Type</th><th>Effect on Cross-Bucket Allocations</th></tr></thead>
+        <tbody>
+          <tr><td>allows_cross_bucket_settlement = true</td><td class="mono">BOOLEAN</td><td>Lower warning severity, minimal score penalty. Alert still shown.</td></tr>
+          <tr><td>allows_cross_bucket_settlement = false</td><td class="mono">BOOLEAN</td><td>Heavier score penalty, strong warning, explicit operator confirmation required.</td></tr>
+          <tr><td>pays_for_cyl = true</td><td class="mono">BOOLEAN</td><td>CYL cash settlement treated as normal. Alert tone softened accordingly.</td></tr>
+          <tr><td colspan="3" style="color:var(--muted);font-style:italic;font-size:12px">mixed_invoices flag removed — mixed buckets are a document fact derived from detail lines, not customer configuration. The engine reads item composition directly from the invoice sub-ledger.</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <!-- S12: CREDIT NOTE RULES -->
+    <div class="section" id="s12">
+      <div class="sec-num">Section 12</div>
+      <h1 class="sec-title">Credit Note Rules</h1>
+      <div class="sec-rule"></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>CRN Type</th><th>Rule</th><th>Effect</th></tr></thead>
+        <tbody>
+          <tr><td>Financial CRN</td><td><code>ABS(HDR_TOTAL) &gt; 0</code></td><td>Enters allocation engine. Reduces lpg / cyl_value / other_value balance. Operator selects target component.</td></tr>
+          <tr><td>Operational CYL CRN</td><td><code>HDR_TOTAL = 0</code> + CYL qty movement</td><td>Deterministic auto-apply on session load <strong>only when exact SKU + prior-dated invoice match exists</strong>. Ambiguous → operational exception queue. Never enters financial engine.</td></tr>
+        </tbody>
+      </table></div>
+      <ul>
+        <li>Financial CRNs may target mixed invoices at sub-ledger level (LPG, CYL, or OTHER component).</li>
+        <li>Unmatched operational CRNs route to the operational exception queue for manual operator assignment.</li>
+        <li>CRN remainders after partial allocation route to Suspense-CRN.</li>
+      </ul>
+    </div>
+
+    <!-- S13: OPENING BALANCE -->
+    <div class="section" id="s13">
+      <div class="sec-num">Section 13</div>
+      <h1 class="sec-title">Opening Balance Rules</h1>
+      <div class="sec-rule"></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Rule</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Positive OB</td><td>Invoice-like debit. <strong>Business rule: ranks before all dated invoices in every sort and scoring operation.</strong> Implementation decides how to achieve this ordering — the business rule does not prescribe a synthetic date.</td></tr>
+          <tr><td>Negative OB</td><td>Routed directly to credit pool on session load. Never enters the candidate queue.</td></tr>
+          <tr><td>OB sub-ledger</td><td>No item detail — entire amount goes to <code>other_value_balance</code>. Cannot be targeted by bucket-specific CRN allocation.</td></tr>
+          <tr><td>OB scoring</td><td>Always the top candidate before any dated invoice. Amount and running-balance signals apply as tiebreakers when multiple OBs exist.</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <!-- S14: CLASSIFICATION RULES -->
+    <div class="section" id="s14">
+      <div class="sec-num">Section 14</div>
+      <h1 class="sec-title">Classification Rules — JNL &amp; Bank UD</h1>
+      <div class="sec-rule"></div>
+      <p>JNL and Bank UD documents default to <code>UNCLASSIFIED_EXCEPTION</code> on session load. Operator must assign a classification before the engine can touch them. Unclassified documents <strong>block session completion</strong>.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Classification</th><th>Exposure Effect</th><th>Post-Classification Routing</th><th>UI Requirement</th></tr></thead>
+        <tbody>
+          <tr><td>PAYMENT_EQUIVALENT</td><td class="good">Reduces</td><td>Enters PMT lane. Past-only constraint applies.</td><td>Settlement treatment.</td></tr>
+          <tr><td>CREDIT_NOTE_EQUIVALENT</td><td class="good">Reduces</td><td>Enters financial CRN lane. Bucket scoring applied if item detail exists.</td><td>Credit treatment.</td></tr>
+          <tr><td>DEBIT_ADJUSTMENT</td><td class="danger">⚠ INCREASES</td><td>Enters INV lane. Uses actual tx_date (NOT epoch anchor). Operator must set target bucket.</td><td><span class="badge danger">Danger state</span> — must show "Adds to debtor exposure".</td></tr>
+          <tr><td>WRITE_OFF</td><td class="good">Clears</td><td>Creates WRITE_OFF record. Operator must enter reason.</td><td>Requires explicit confirmation.</td></tr>
+          <tr><td>IGNORE</td><td>No change</td><td>Removed from session. Logged to audit with timestamp + operator ID.</td><td>Visible ignored state required.</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout rule">
+        <div class="callout-label">Hard Rule — DEBIT_ADJUSTMENT</div>
+        DEBIT_ADJUSTMENT is the ONLY classification that increases debtor exposure. UI must use red/danger styling with an explicit "Adds R[amount] to debtor balance" confirmation modal before saving. It must never be styled as a settlement action.
+      </div>
+    </div>
+
+    <!-- S15: CREDIT POOL -->
+    <div class="section" id="s15">
+      <div class="sec-num">Section 15</div>
+      <h1 class="sec-title">Credit Pool Lifecycle</h1>
+      <div class="sec-rule"></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Rule</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Sources</td><td>Overpayment (PMT &gt; invoice balance) · Unapplied financial CRN remainder · Negative OB on session load</td></tr>
+          <tr><td>Persistence</td><td>Indefinite — survives session close, available across future sessions</td></tr>
+          <tr><td>Application</td><td>Operator-triggered ONLY. Engine never auto-applies. Balance displayed on session header.</td></tr>
+          <tr><td>JNL credits</td><td>Do NOT automatically feed credit pool. JNL always goes to UNCLASSIFIED_EXCEPTION first.</td></tr>
+          <tr><td>Schema</td><td>customer_credit_pool — customer-keyed, session-independent, append-only movement log</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <!-- S16: EXCEPTION LANES -->
+    <div class="section" id="s16">
+      <div class="sec-num">Section 16</div>
+      <h1 class="sec-title">Exception Lanes</h1>
+      <div class="sec-rule"></div>
+      <p>Every document that cannot be cleanly allocated enters an exception lane. All exception lanes are valid terminal states and allow session completion.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Lane</th><th>Business Meaning</th><th>Created When</th></tr></thead>
+        <tbody>
+          <tr><td>Suspense — PMT</td><td>Cash received; no matching invoice found. Unallocated payment or remainder.</td><td>PMT has no eligible past-dated invoice, or PMT remainder &gt; R1.00.</td></tr>
+          <tr><td>Suspense — CRN</td><td>Credit note exists but not applied. Unallocated CRN or remainder.</td><td>Financial CRN with no open invoice match, or CRN remainder after partial allocation.</td></tr>
+          <tr><td>Manual Hold — INV</td><td>Invoice or remainder with no payment or CN. Intentionally open AR.</td><td>Invoice has remaining balance &gt; R1.00 after all PMTs and CRNs applied.</td></tr>
+          <tr><td>UNCLASSIFIED_EXCEPTION</td><td>JNL or Bank UD awaiting operator classification.</td><td>Any JNL or Bank UD on session load. Blocks session completion.</td></tr>
+          <tr><td>OPERATIONAL_EXCEPTION</td><td>Operational CYL CRN that could not be deterministically matched to a prior-dated invoice by exact SKU.</td><td>Operational CRN without unambiguous match on session load. Does not block financial session completion — custody-only lane.</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <!-- S17: SESSION LIFECYCLE -->
+    <div class="section" id="s17">
+      <div class="sec-num">Section 17</div>
+      <h1 class="sec-title">Session Lifecycle</h1>
+      <div class="sec-rule"></div>
+      <p>Session states: <strong>DRAFT → ACTIVE → COMPLETE → ARCHIVED</strong>. One debtor account per session, always.</p>
+
+      <h2>Session Load Sequence</h2>
+      <ol>
+        <li>Load all documents from ERP summary export for account + date range.</li>
+        <li>Load DTRX payments from <code>transaction_headers</code> (Supabase) for account + date range.</li>
+        <li>Load CYL qty data from <code>transaction_items</code> — build <code>cyl_qty_balance_by_sku</code> per invoice.</li>
+        <li>Split CRNs: <code>HDR_TOTAL ≠ 0</code> → financial queue; <code>HDR_TOTAL = 0</code> → operational queue.</li>
+        <li>Apply operational CRNs to <code>cyl_qty_balance_by_sku</code> <strong>deterministically — only when an exact SKU match exists on a prior-dated invoice</strong>. Any operational CRN without an unambiguous match routes to the operational exception queue for operator assignment. No blind auto-apply.</li>
+        <li>Sign-split OBs: positive → INV lane (epoch anchor); negative → credit pool.</li>
+        <li>Route all JNL and Bank UD to UNCLASSIFIED_EXCEPTION queue. Neither enters any financial lane until operator classification is complete.</li>
+        <li>Seed all invoice sub-ledgers from detail lines (LPG / CYL / OTHER splits).</li>
+        <li>Display session. Engine surfaces suggestions. Operator proceeds.</li>
+      </ol>
+
+      <h2>Session Output — Saved on Close</h2>
+      <div class="callout warning">
+        <div class="callout-label">Audit Trail — MVP Scope</div>
+        A formal queryable audit trail is deferred post-MVP. However, an <strong>append-only allocation log</strong> must be written for every session regardless — it costs near-zero and will be essential by month 3. The items below define the minimum required log content.
+      </div>
+      <ul>
+        <li>All allocation records (amounts, doc refs, operator ID, timestamp)</li>
+        <li>All exception lane assignments with reason codes</li>
+        <li>Credit pool movements (credit and debit events)</li>
+        <li>Reconstructed running balance at session close</li>
+        <li>Operator notes (if entered — never mandatory)</li>
+        <li>ROUNDING_WRITE_OFF records with approving operator ID</li>
+        <li>JNL / Bank UD classification decisions with classification type and operator ID</li>
+        <li>IGNORED document log (doc_id, operator_id, timestamp)</li>
+      </ul>
+    </div>
+
+    <!-- S18: COMPLETION RULES -->
+    <div class="section" id="s18">
+      <div class="sec-num">Section 18</div>
+      <h1 class="sec-title">Completion Rules</h1>
+      <div class="sec-rule"></div>
+      <div class="callout rule">
+        <div class="callout-label">Hard Rule — Session Completion</div>
+        Session is complete when: (1) every document has a terminal state AND (2) no UNCLASSIFIED_EXCEPTION remains AND (3) operator explicitly marks complete. ERP balance convergence is NOT a required condition.
+      </div>
+      <div class="callout warning">
+        <div class="callout-label">Engine Warning — Balance Mismatch</div>
+        When reconstructed balance ≠ ERP running balance: default assumption is ERP export is incomplete, not that allocations are wrong. Flag as informational warning only. Operator may override and complete with a noted discrepancy.
+      </div>
+      <h2>Rounding Write-Off</h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Rule</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Auto-close threshold</td><td>≤ R1.00 residual eligible for rounding close</td></tr>
+          <tr><td>Trigger</td><td>Operator one-click approval — never silent/automatic</td></tr>
+          <tr><td>Record type</td><td>ROUNDING_WRITE_OFF allocation record</td></tr>
+          <tr><td>Invoice state after</td><td><code>financial_state = SETTLED</code> for that invoice (component balance zeroed within tolerance)</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <!-- S19: UI SAFETY CONTRACTS -->
+    <div class="section" id="s19">
+      <div class="sec-num">Section 19</div>
+      <h1 class="sec-title">UI Safety Contracts</h1>
+      <div class="sec-rule"></div>
+      <ul>
+        <li><code>DEBIT_ADJUSTMENT</code> must use danger/red styling and show an explicit "Adds R[amount] to debtor balance" confirmation modal before saving. Must never resemble a settlement action.</li>
+        <li>Cross-bucket allocations must display a warning. Severity adapts to <code>allows_cross_bucket_settlement</code> flag.</li>
+        <li>UNCLASSIFIED documents must visually block allocation — operators cannot accidentally allocate an unclassified JNL.</li>
+        <li>Confirmation dialogs must show the affected sub-ledger component balances before and after the proposed allocation.</li>
+        <li>PMT against CYL component must trigger a separate alert: "Cash payment applied to CYL balance — verify physical return with operations."</li>
+        <li>Session completion button must be disabled until all documents reach a terminal state and no UNCLASSIFIED_EXCEPTION exists.</li>
+        <li>Credit pool application must be operator-initiated from a dedicated action — never presented as an auto-suggestion inline with regular allocation cards.</li>
+      </ul>
+    </div>
+
+    <!-- S20: STATE MACHINES -->
+    <div class="section" id="s20">
+      <div class="sec-num">Section 20</div>
+      <h1 class="sec-title">State Machines</h1>
+      <div class="sec-rule"></div>
+
+      <h2>Invoice — financial_state</h2>
+      <div class="state-flow">
+        <div class="state">OUTSTANDING</div><div class="arrow">→</div>
+        <div class="state terminal">SETTLED</div>
+      </div>
+      <p style="margin-top:8px;font-size:13px;color:var(--muted)">Alternative terminal states:</p>
+      <div class="state-flow">
+        <div class="state alt">EXCEPTIONED</div>
+        <div class="state alt">WRITTEN_OFF</div>
+        <div class="state alt">IGNORED</div>
+      </div>
+
+      <h2>Invoice — custody_state</h2>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:8px">Tracked independently from financial_state. SETTLED + OUTSTANDING is a valid complete state.</p>
+      <div class="state-flow">
+        <div class="state">OUTSTANDING</div><div class="arrow">→</div>
+        <div class="state">PARTIALLY_RETURNED</div><div class="arrow">→</div>
+        <div class="state terminal">RETURNED</div>
+      </div>
+      <p style="margin-top:8px;font-size:13px;color:var(--muted)">Alternative terminal states:</p>
+      <div class="state-flow">
+        <div class="state alt">COMMERCIALIZED</div>
+        <div class="state alt">DISPUTED</div>
+        <div class="state alt">IGNORED</div>
+      </div>
+
+      <h2>Document — Universal State Machine</h2>
+      <pre>INITIAL STATES (on session load)
+  PENDING              <span class="c">-- default for all documents</span>
+  UNCLASSIFIED         <span class="c">-- JNL and Bank UD only</span>
+
+INTERMEDIATE
+  IN_PROGRESS          <span class="c">-- partially allocated, remainder outstanding</span>
+
+TERMINAL (all block session completion if not reached)
+  <span class="ok">ALLOCATED</span>            <span class="c">-- fully matched, all sub-balances = 0</span>
+  <span class="ok">PARTIAL_ALLOCATED</span>    <span class="c">-- partially matched, remainder in exception lane</span>
+  <span class="ok">MANUAL_HOLD</span>          <span class="c">-- intentionally open AR, operator acknowledged</span>
+  <span class="ok">SUSPENSE_PMT</span>         <span class="c">-- unmatched cash</span>
+  <span class="ok">SUSPENSE_CRN</span>         <span class="c">-- unmatched credit</span>
+  <span class="ok">WRITE_OFF</span>            <span class="c">-- irrecoverable, reason logged</span>
+  <span class="ok">IGNORED</span>              <span class="c">-- excluded from session, audit logged</span>
+
+CUSTODY-ONLY LANE (does not block financial session completion)
+  <span class="ok">OPERATIONAL_EXCEPTION</span><span class="c">-- operational CYL CRN awaiting manual custody matching</span></pre>
+
+      <h2>Session State Machine</h2>
+      <div class="state-flow">
+        <div class="state">DRAFT</div><div class="arrow">→</div>
+        <div class="state">ACTIVE</div><div class="arrow">→</div>
+        <div class="state terminal">COMPLETE</div><div class="arrow">→</div>
+        <div class="state terminal">ARCHIVED</div>
+      </div>
+    </div>
+
+    <!-- S21: EDGE CASES -->
+    <div class="section" id="s21">
+      <div class="sec-num">Section 21</div>
+      <h1 class="sec-title">Edge Cases</h1>
+      <div class="sec-rule"></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Edge Case</th><th>Engine Behaviour</th></tr></thead>
+        <tbody>
+          <tr><td>Mixed invoices (LPG + CYL + OTHER in one doc)</td><td>Sub-ledger tracks each component independently. CRN targets one operator-selected component. PMT targets one invoice and one operator-selected component (LPG, CYL_VALUE, or OTHER). See §10 PMT Allocation Mechanics for the full locked rule including remainder routing.</td></tr>
+          <tr><td>Partial payments across multiple invoices</td><td>Many-to-many cardinality supported. Each invoice has an independent remaining balance. A PMT is applied to one operator-selected invoice (engine suggests the best candidate via scoring stack). PMT remainder routes to Suspense-PMT for subsequent allocation. Allocation policy is never inferred by the engine.</td></tr>
+          <tr><td>Split CRNs across invoices</td><td>CRN remainder after partial allocation routes to Suspense-CRN for operator to apply to next invoice.</td></tr>
+          <tr><td>Cross-bucket customer behaviour</td><td>Controlled by <code>allows_cross_bucket_settlement</code> flag. Warning severity adapts. Allocation always permitted.</td></tr>
+          <tr><td>Incomplete ERP export</td><td>Balance mismatch is informational only. Operator may complete session with noted discrepancy.</td></tr>
+          <tr><td>Bank UD correction artifacts</td><td>Routes to UNCLASSIFIED_EXCEPTION on session load — never to Suspense-PMT. Suspense-PMT is reserved for confirmed cash receipts only. Bank UD does not imply cash received until operator classifies it. Blocks session completion until resolved.</td></tr>
+          <tr><td>Rounding residuals ≤ R1.00</td><td>ROUNDING_WRITE_OFF eligible. Operator one-click approval. Record created for traceability.</td></tr>
+          <tr><td>Customer pays cash for CYL (pays_for_cyl)</td><td><code>cyl_value_balance = 0</code> but <code>cyl_qty</code> remains open. Invoice shows <code>financially_settled_custody_open</code>. Alert fires. Operator marks qty as "cash resolved".</td></tr>
+          <tr><td>Operational CRN with no matching invoice</td><td>Routes to operational exception queue. Operator assigns manually. Deferred to CYL engine for full automation.</td></tr>
+          <tr><td>Same-date invoices (date tie in scoring)</td><td>Amount proximity acts as effective tiebreaker in composite scorer.</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <!-- S22: OPEN RISKS -->
+    <div class="section" id="s22">
+      <div class="sec-num">Section 22</div>
+      <h1 class="sec-title">Open Risks</h1>
+      <div class="sec-rule"></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Risk</th><th>Severity</th><th>Mitigation</th></tr></thead>
+        <tbody>
+          <tr><td>DTRX entry_type values unconfirmed</td><td class="danger">High</td><td>Run discovery query (Section 5) before PMT lane goes live.</td></tr>
+          <tr><td>DEBIT_ADJUSTMENT operator error risk</td><td class="danger">High</td><td>Mandatory danger UI treatment with confirmation modal. See Section 19.</td></tr>
+          <tr><td>Operational CRN unmatched on load</td><td class="warn">Medium</td><td>Operational exception queue. Operator assigns manually. Full automation deferred to CYL engine.</td></tr>
+          <tr><td>cyl_qty_balance JSONB performance at scale</td><td class="warn">Medium</td><td>Design indexing strategy before production load. Consider GIN index on JSONB column.</td></tr>
+          <tr><td>Same-date invoice tie</td><td>Low</td><td>Amount proximity is effective tiebreaker in composite scorer.</td></tr>
+          <tr><td>R1.00 rounding threshold too generous</td><td>Low</td><td>Make configurable per account. R0.13 residuals in INC001 data suggest legitimate accumulated diffs.</td></tr>
+          <tr><td>OB bucket ambiguity</td><td>Low</td><td>OB has no item detail — entire amount to other_value_balance. Cannot be targeted by bucket-specific CRN.</td></tr>
+          <tr><td>Cross-period allocations undefined</td><td>Low</td><td>Deferred post-MVP. Past-only payment rule covers most cases in practice.</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <!-- S23: IMPLEMENTATION ORDER -->
+    <div class="section" id="s23">
+      <div class="sec-num">Section 23</div>
+      <h1 class="sec-title">Recommended Implementation Order</h1>
+      <div class="sec-rule"></div>
+      <ol>
+        <li><strong>Data schemas</strong> — invoice_sub_ledger, allocation_record, session, customer_config, exception_queue, classification_table, customer_credit_pool</li>
+        <li><strong>Session load pipeline</strong> — ERP parse → detail line seeding → DTRX fetch → operational CRN auto-apply → OB sign-split → JNL/Bank UD routing</li>
+        <li><strong>Scoring engine</strong> — composite scorer with hard past-only filter, date proximity primary, amount secondary, balance impact tertiary, FIFO tiebreak</li>
+        <li><strong>Allocation mechanics</strong> — sub-ledger reduction per operator-selected component, cross-bucket detection and alerts, PMT-to-CYL alert, PMT remainder routing to Suspense-PMT</li>
+        <li><strong>Exception lane UI</strong> — three financial lanes (Suspense-PMT, Suspense-CRN, Manual Hold-INV) + UNCLASSIFIED_EXCEPTION queue + OPERATIONAL_EXCEPTION queue (custody-only, does not block financial completion)</li>
+        <li><strong>JNL / Bank UD classification modal</strong> — enum picker with mandatory DEBIT_ADJUSTMENT danger styling</li>
+        <li><strong>Session completion validator</strong> — terminal state check + UNCLASSIFIED block + operator mark-complete</li>
+        <li><strong>Credit pool</strong> — persistent balance table, operator-triggered application, movement log</li>
+        <li><strong>Rounding write-off flow</strong> — one-click approval, ROUNDING_WRITE_OFF record creation</li>
+        <li><strong>Customer flags</strong> — allows_cross_bucket_settlement, pays_for_cyl — session start UI + config persistence. mixed_invoices flag removed (bucket mix is a document fact, not customer config).</li>
+      </ol>
+    </div>
+
+    <!-- S24: FUTURE BOUNDARY -->
+    <div class="section" id="s24">
+      <div class="sec-num">Section 24</div>
+      <h1 class="sec-title">Future Architecture Boundary</h1>
+      <div class="sec-rule"></div>
+      <p>The dedicated CYL Custody Engine is a planned post-MVP system. MVP retains only the custody awareness necessary for finance workflows.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Capability</th><th>MVP</th><th>CYL Engine (Future)</th></tr></thead>
+        <tbody>
+          <tr><td>CYL value balance per invoice</td><td class="good">✓ In scope</td><td>—</td></tr>
+          <tr><td>CYL qty balance per SKU per invoice</td><td class="good">✓ In scope</td><td>—</td></tr>
+          <tr><td>Operational CRN qty auto-apply</td><td class="good">✓ In scope</td><td>—</td></tr>
+          <tr><td>pays_for_cyl flag + dual settlement states (financial_state / custody_state)</td><td class="good">✓ In scope</td><td>—</td></tr>
+          <tr><td>Zero-value CRN full matching chain</td><td class="out">Excluded</td><td class="warn">✓ CYL engine</td></tr>
+          <tr><td>SOH snapshot reconciliation (erp_snapshots)</td><td class="out">Excluded</td><td class="warn">✓ CYL engine</td></tr>
+          <tr><td>Movement data integration (movement_data)</td><td class="out">Excluded</td><td class="warn">✓ CYL engine</td></tr>
+          <tr><td>Physical yard count reconciliation</td><td class="out">Excluded</td><td class="warn">✓ CYL engine</td></tr>
+          <tr><td>Full CYL return vs cash equivalence engine</td><td class="out">Excluded</td><td class="warn">✓ CYL engine</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <!-- S25: VERSION CONTROL -->
+    <!-- S25: CUSTOMER CONFIGURATION UX -->
+    <div class="section" id="s25">
+      <div class="sec-num">Section 25</div>
+      <h1 class="sec-title">Customer Configuration UX Rules</h1>
+      <div class="sec-rule"></div>
+
+      <p>The spec defines two persistent customer flags: <code>allows_cross_bucket_settlement</code> and <code>pays_for_cyl</code>. This section defines exactly how and when those flags enter the operator workflow.</p>
+
+      <div class="callout rule">
+        <div class="callout-label">Hard Rule — Configuration Source</div>
+        Customer configuration may only be created or changed by explicit operator action. The engine may never infer, self-update, or drift customer config based on historical allocation patterns. No counting logic. No threshold-triggered updates. Operator intent is the sole source of truth.
+      </div>
+
+      <h2>Core Design Principle — Friction-Born Configuration</h2>
+      <p>Flags are not set through a settings screen that operators never visit. Configuration surfaces at the <strong>exact moment the operator experiences the relevant friction</strong> for the first time. This is the only UX contract that reliably produces correct configuration.</p>
+
+      <div class="table-wrap"><table>
+        <thead><tr><th>Anti-pattern</th><th>Correct pattern</th></tr></thead>
+        <tbody>
+          <tr><td>Operator navigates to Settings → Customer → Flags</td><td>Flag prompt appears inline at the first qualifying allocation event</td></tr>
+          <tr><td>System auto-sets flag after N overrides ("after 4 warnings")</td><td>Prompt appears on the first occurrence — operator decides immediately</td></tr>
+          <tr><td>System infers flag from historical session data</td><td>Operator explicitly chooses "Always allow for this customer"</td></tr>
+        </tbody>
+      </table></div>
+
+      <h2>25.1 — <code>allows_cross_bucket_settlement</code> Flow</h2>
+      <p>Triggered on the first cross-bucket allocation attempt in any session where the flag is not already set.</p>
+
+      <h3>Trigger condition</h3>
+      <pre><span class="c">// Flag prompt fires when ALL of the following are true:</span>
+operator attempts CRN or PMT allocation to a different bucket than the invoice component
+AND customer_config.allows_cross_bucket_settlement IS NULL or false
+AND this is the first cross-bucket attempt in this session</pre>
+
+      <h3>Warning modal — operator choices</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Action</th><th>Effect</th><th>Persists?</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Proceed once</strong></td><td>Allocation completes. Flag unchanged. Warning fires again next cross-bucket attempt.</td><td>No</td></tr>
+          <tr><td><strong>Always allow for this customer</strong></td><td>Allocation completes. <code>allows_cross_bucket_settlement = true</code> saved to customer_config. Future cross-bucket allocations show soft informational badge only — no blocking confirmation modal.</td><td class="good">Yes — customer level</td></tr>
+          <tr><td><strong>Cancel</strong></td><td>Allocation cancelled. No config change.</td><td>No</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>Behaviour once flag = true</h3>
+      <ul>
+        <li>Cross-bucket allocations show a soft informational badge: <em>"Cross-bucket commercial settlement"</em></li>
+        <li>No blocking confirmation modal</li>
+        <li>Score penalty for cross-bucket suggestions is reduced (engine still prefers same-bucket matches)</li>
+        <li>Flag is visible and editable from the session header customer info panel</li>
+      </ul>
+
+      <h2>25.2 — <code>pays_for_cyl</code> Flow</h2>
+      <p>Triggered on the first attempt to apply a PMT to a CYL value sub-ledger component in any session where the flag is not already set.</p>
+
+      <h3>Trigger condition</h3>
+      <pre><span class="c">// Flag prompt fires when ALL of the following are true:</span>
+operator directs a PMT allocation to the cyl_value_balance component of an invoice
+AND customer_config.pays_for_cyl IS NULL or false
+AND this is the first PMT→CYL attempt in this session</pre>
+
+      <h3>Alert modal — operator choices</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Action</th><th>Effect</th><th>Persists?</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Proceed once</strong></td><td>PMT applied to CYL balance. custody_state remains OUTSTANDING. Alert fires again next PMT→CYL attempt.</td><td>No</td></tr>
+          <tr><td><strong>Mark customer as pays for cylinders</strong></td><td>PMT applied. <code>pays_for_cyl = true</code> saved. custody_state transitions to COMMERCIALIZED on operator confirmation. Future PMT→CYL alerts softened to informational.</td><td class="good">Yes — customer level</td></tr>
+          <tr><td><strong>Cancel</strong></td><td>Allocation cancelled. No config change.</td><td>No</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>Behaviour once flag = true</h3>
+      <ul>
+        <li>PMT→CYL allocations show soft informational badge: <em>"Cash CYL settlement — commercial account"</em></li>
+        <li>custody_state transitions to COMMERCIALIZED (not OUTSTANDING) when CYL value balance reaches zero</li>
+        <li>No blocking confirmation modal for subsequent PMT→CYL allocations</li>
+        <li>Flag visible and editable from session header customer info panel</li>
+      </ul>
+
+      <h2>25.3 — Customer Config Schema</h2>
+      <pre>customer_config {
+  account_no                      TEXT      <span class="c">-- FK to customer account</span>
+  allows_cross_bucket_settlement  BOOLEAN   <span class="c">-- default: false</span>
+  pays_for_cyl                    BOOLEAN   <span class="c">-- default: false</span>
+  updated_by                      TEXT      <span class="c">-- operator ID who last changed config</span>
+  updated_at                      TIMESTAMP <span class="c">-- when last changed</span>
+}</pre>
+
+      <h2>25.4 — Config Editing Outside Workflow Prompts</h2>
+      <p>Operators can also view and change flags from the session header customer info panel at any time — not just at the friction moment. This handles cases where a flag was set incorrectly or a customer's commercial behaviour changes.</p>
+      <ul>
+        <li>Config changes from the session header take effect immediately for the current session</li>
+        <li>All config changes are logged: account_no, flag changed, old value, new value, operator_id, timestamp</li>
+        <li>Config log is append-only — no silent overwrites</li>
+      </ul>
+
+      <div class="callout note">
+        <div class="callout-label">Note — Why Not "After N Warnings"?</div>
+        Prompting after N repeated overrides is still inference-driven UX — the system is counting behaviour and deciding when to surface config. The correct model is first-occurrence prompting: the operator sees the decision on the first qualifying event and makes an explicit choice. No counting. No hidden thresholds.
+      </div>
+    </div>
+
+    <div class="section" id="s26">
+      <div class="sec-num">Section 26</div>
+      <h1 class="sec-title">Version Control</h1>
+      <div class="sec-rule"></div>
+      <p>This is a living document. All changes must be logged with version, date, author, and change type before taking effect. Engineers must reference the version number in any implementation work tied to this spec.</p>
+
+      <div class="vc-timeline" id="vc-timeline">
+
+        <div class="vc-entry current">
+          <div class="vc-head">
+            <span class="vc-ver">v2.3.1</span>
+            <span class="vc-date">2026-05-17</span>
+            <span class="vc-tag current">Current</span>
+            <span class="vc-author">PM · PMT allocation mechanics locked</span>
+          </div>
+          <div class="vc-body">
+            <div class="vc-change"><span class="vc-type added">Added</span><span>§10 PMT Allocation Mechanics — dedicated locked rule: one PMT → one invoice → one sub-ledger component per allocation action. No proportional split, no automatic spillover, no silent distribution.</span></div>
+            <div class="vc-change"><span class="vc-type added">Added</span><span>Four-step allocation sequence: (1) operator selects invoice, (2) operator selects component for mixed invoices, (3) engine applies MIN(pmt, component_balance), (4) remainder routes to Suspense-PMT.</span></div>
+            <div class="vc-change"><span class="vc-type added">Added</span><span>Worked example: PMT R5,000 against LPG R3,000 + CYL R2,000. Operator selects LPG. LPG → R0, remainder R2,000 → Suspense-PMT. CYL unchanged. Second action required for remainder.</span></div>
+            <div class="vc-change"><span class="vc-type added">Added</span><span>Explicit "what the engine must never do" list: no proportional distribution, no auto-spillover, no auto-component selection for mixed invoices, no chained actions without operator confirmation.</span></div>
+            <div class="vc-change"><span class="vc-type changed">Changed</span><span>S21 mixed invoice edge case row updated to reference §10 PMT Allocation Mechanics rather than restating incomplete rules inline.</span></div>
+          </div>
+        </div>
+
+        <div class="vc-entry">
+          <div class="vc-head">
+            <span class="vc-ver">v2.3.0</span>
+            <span class="vc-date">2026-05-17</span>
+            <span class="vc-tag current">Current</span>
+            <span class="vc-author">PM · Customer configuration UX rules</span>
+          </div>
+          <div class="vc-body">
+            <div class="vc-change"><span class="vc-type added">Added</span><span>§25 Customer Configuration UX Rules — new section defining exactly how and when customer flags enter operator workflow.</span></div>
+            <div class="vc-change"><span class="vc-type added">Added</span><span>Friction-born configuration principle: flags surface at first qualifying workflow event, never through a settings screen. No counting logic, no threshold-triggered prompts.</span></div>
+            <div class="vc-change"><span class="vc-type added">Added</span><span>allows_cross_bucket_settlement flow: first cross-bucket attempt triggers modal with Proceed Once / Always Allow / Cancel. Always Allow persists to customer_config.</span></div>
+            <div class="vc-change"><span class="vc-type added">Added</span><span>pays_for_cyl flow: first PMT→CYL attempt triggers modal. Mark as pays_for_cyl transitions custody_state to COMMERCIALIZED on CYL value settlement.</span></div>
+            <div class="vc-change"><span class="vc-type added">Added</span><span>customer_config schema: account_no, allows_cross_bucket_settlement, pays_for_cyl, updated_by, updated_at. Append-only config change log.</span></div>
+            <div class="vc-change"><span class="vc-type added">Added</span><span>Config editing via session header panel — flags editable at any point during a session, not only at friction moment. All changes logged.</span></div>
+            <div class="vc-change"><span class="vc-type locked">Locked</span><span>Architectural boundary confirmed: operator intent is the sole source of customer config. System may never infer or self-update flags from observed allocation patterns.</span></div>
+          </div>
+        </div>
+
+        <div class="vc-entry">
+          <div class="vc-head">
+            <span class="vc-ver">v2.2.1</span>
+            <span class="vc-date">2026-05-17</span>
+            <span class="vc-tag current">Current</span>
+            <span class="vc-author">PM · Contradiction correction pass</span>
+          </div>
+          <div class="vc-body">
+            <div class="vc-change"><span class="vc-type fixed">Fixed</span><span>PMT proportional split contradiction fully purged. S21 and S23 both now state: PMT targets one operator-selected invoice. No proportional allocation across sub-ledger components. Allocation policy is never engine-inferred.</span></div>
+            <div class="vc-change"><span class="vc-type fixed">Fixed</span><span>Bank UD routing contradiction fully resolved. S21 edge case now matches S6 and S16: Bank UD → UNCLASSIFIED_EXCEPTION only. Suspense-PMT is reserved for confirmed cash receipts.</span></div>
+            <div class="vc-change"><span class="vc-type fixed">Fixed</span><span>Operational CRN auto-apply qualifier added to S17 session load sequence. Exact SKU + prior-dated invoice match required. No blind auto-apply. S6 taxonomy updated to match.</span></div>
+            <div class="vc-change"><span class="vc-type fixed">Fixed</span><span>financial_state and custody_state enums canonicalised. Schema and state machine now share identical enum sets. financial_state: OUTSTANDING | SETTLED | EXCEPTIONED | WRITTEN_OFF | IGNORED. custody_state: OUTSTANDING | PARTIALLY_RETURNED | RETURNED | COMMERCIALIZED | DISPUTED | IGNORED.</span></div>
+            <div class="vc-change"><span class="vc-type fixed">Fixed</span><span>S4 settlement wording leak removed. "Settled only when all sub-ledger components resolved" replaced with explicit dual-state independence statement.</span></div>
+            <div class="vc-change"><span class="vc-type fixed">Fixed</span><span>Topbar version drift corrected. UI now consistently shows v2.2.1.</span></div>
+            <div class="vc-change"><span class="vc-type changed">Changed</span><span>"ERP balance truth" softened to "ERP reference balance" in S5 to align with completion rule that ERP mismatch is informational only.</span></div>
+            <div class="vc-change"><span class="vc-type fixed">Fixed</span><span>Stale is_financially_settled boolean in S18 rounding write-off replaced with financial_state = SETTLED (canonical enum).</span></div>
+            <div class="vc-change"><span class="vc-type added">Added</span><span>OPERATIONAL_EXCEPTION defined as first-class lane in S16, domain language, S20 state machine, and S23 implementation order. Custody-only — does not block financial session completion.</span></div>
+          </div>
+        </div>
+
+        <div class="vc-entry">
+          <div class="vc-head">
+            <span class="vc-ver">v2.2.0</span>
+            <span class="vc-date">2026-05-17</span>
+            <span class="vc-tag current">Current</span>
+            <span class="vc-author">PM · Domain correctness review pass</span>
+          </div>
+          <div class="vc-body">
+            <div class="vc-change"><span class="vc-type fixed">Fixed</span><span>CRITICAL: Invoice settlement model decoupled into independent financial_state and custody_state. financial_state = SETTLED with custody_state = OUTSTANDING is a valid complete outcome for pays_for_cyl accounts.</span></div>
+            <div class="vc-change"><span class="vc-type fixed">Fixed</span><span>CRITICAL: Removed cross-bucket 40% historical suppression — invented behaviour not in spec. Warning suppression is operator-flag-only. No behavioural learning or inference.</span></div>
+            <div class="vc-change"><span class="vc-type fixed">Fixed</span><span>CRITICAL: Removed proportional PMT split assumption. PMT targets a single operator-selected invoice and optionally a single sub-ledger component. No proportional allocation across components.</span></div>
+            <div class="vc-change"><span class="vc-type fixed">Fixed</span><span>CRITICAL: Resolved Bank UD routing contradiction. Bank UD routes to UNCLASSIFIED_EXCEPTION only — not Suspense-PMT. Suspense-PMT implies confirmed cash receipt; Bank UD does not.</span></div>
+            <div class="vc-change"><span class="vc-type fixed">Fixed</span><span>CRITICAL: Operational CRN auto-apply now conditional — deterministic only on exact SKU + prior-dated invoice match. Ambiguous or unmatched → operational exception queue. Never blind auto-apply.</span></div>
+            <div class="vc-change"><span class="vc-type fixed">Fixed</span><span>CRITICAL: Softened DTRX "authoritative truth" to "designated source pending integration validation". entry_type values, deduplication, and reversal handling must be confirmed before PMT lane goes live.</span></div>
+            <div class="vc-change"><span class="vc-type changed">Changed</span><span>partial_settled removed. Replaced by explicit financial_state and custody_state enums. partial_settled was a misleading name — SETTLED financial + OUTSTANDING custody is a fully valid and complete state.</span></div>
+            <div class="vc-change"><span class="vc-type changed">Changed</span><span>Epoch anchor (1900-01-01) removed from business rules. Replaced with the business rule: positive OB ranks before all dated invoices. Implementation chooses the mechanism.</span></div>
+            <div class="vc-change"><span class="vc-type changed">Changed</span><span>mixed_invoices flag removed. Mixed buckets are a document fact derived from detail lines, not customer configuration. The engine reads item composition from the invoice sub-ledger directly.</span></div>
+            <div class="vc-change"><span class="vc-type changed">Changed</span><span>Audit trail clarified: formal query interface deferred post-MVP; append-only allocation log is mandatory from day one regardless.</span></div>
+            <div class="vc-change"><span class="vc-type changed">Changed</span><span>Architecture renamed from three-source to four-source (ERP summary + detail lines + transaction_headers + transaction_items). Fifth source (erp_snapshots/movement_data) reserved for CYL engine.</span></div>
+            <div class="vc-change"><span class="vc-type fixed">Fixed</span><span>Invariant §9 now correctly carves out operational CRN deterministic qty apply from "all allocations require operator confirmation" — these are custody adjustments, not financial allocations.</span></div>
+          </div>
+        </div>
+
+
+        <div class="vc-entry">
+          <div class="vc-head">
+            <span class="vc-ver">v2.1.0</span>
+            <span class="vc-date">2026-05-17</span>
+            <span class="vc-tag current">Current</span>
+            <span class="vc-author">PM · Merged from both spec sessions</span>
+          </div>
+          <div class="vc-body">
+            <div class="vc-change"><span class="vc-type added">Added</span><span>§3 Ubiquitous Domain Language — 15-term glossary table for shared engineering/operator vocabulary.</span></div>
+            <div class="vc-change"><span class="vc-type added">Added</span><span>§2 Scope &amp; Non-Goals — explicit in/out of scope boundary list.</span></div>
+            <div class="vc-change"><span class="vc-type added">Added</span><span>§20 Named state machines — OPEN→PARTIALLY_SETTLED→SETTLED (commercial) and OUT→RETURNED (custody) with alternative terminal states.</span></div>
+            <div class="vc-change"><span class="vc-type added">Added</span><span>§21 Edge Cases — 10 edge cases with engine behaviour for each.</span></div>
+            <div class="vc-change"><span class="vc-type added">Added</span><span>§9 Consolidated Hard Domain Invariants — all 6 non-negotiable rules in a single dedicated section.</span></div>
+            <div class="vc-change"><span class="vc-type added">Added</span><span>Session state lifecycle: DRAFT → ACTIVE → COMPLETE → ARCHIVED.</span></div>
+            <div class="vc-change"><span class="vc-type changed">Changed</span><span>Mobile-responsive layout — sidebar hides below 800px; paper-card aesthetic retained on all viewports.</span></div>
+            <div class="vc-change"><span class="vc-type changed">Changed</span><span>Restructured to 25 sections (from 16) incorporating full preview.html content coverage.</span></div>
+          </div>
+        </div>
+
+        <div class="vc-entry">
+          <div class="vc-head">
+            <span class="vc-ver">v2.0.0</span>
+            <span class="vc-date">2026-05-17</span>
+            <span class="vc-tag locked">Locked</span>
+            <span class="vc-author">PM · preview.html session</span>
+          </div>
+          <div class="vc-body">
+            <div class="vc-change"><span class="vc-type locked">Locked</span><span>Dual-ledger model confirmed: Commercial Ledger (value) + Custody Ledger (qty).</span></div>
+            <div class="vc-change"><span class="vc-type locked">Locked</span><span>CYL quantity dimension added to sub-ledger. cyl_qty_balance_by_sku (JSONB) per invoice.</span></div>
+            <div class="vc-change"><span class="vc-type locked">Locked</span><span>Sub-ledger invoice balances: lpg_value, cyl_value, other_value, cyl_qty.</span></div>
+            <div class="vc-change"><span class="vc-type locked">Locked</span><span>Strict payment chronology: invoice_date ≤ payment_date as hard accounting invariant.</span></div>
+            <div class="vc-change"><span class="vc-type locked">Locked</span><span>Four exception lanes locked: Suspense-PMT, Suspense-CRN, Manual Hold-INV, UNCLASSIFIED.</span></div>
+            <div class="vc-change"><span class="vc-type locked">Locked</span><span>Session completion: all docs reach terminal state + operator mark-complete. ERP convergence NOT required.</span></div>
+          </div>
+        </div>
+
+        <div class="vc-entry">
+          <div class="vc-head">
+            <span class="vc-ver">v1.0.0</span>
+            <span class="vc-date">2026-05-16</span>
+            <span class="vc-tag locked">Locked</span>
+            <span class="vc-author">PM · AI-assisted spec session</span>
+          </div>
+          <div class="vc-body">
+            <div class="vc-change"><span class="vc-type added">Added</span><span>Initial spec locked. Three-source architecture (ERP summary + detail lines + DTRX). Financial AR engine scope defined.</span></div>
+            <div class="vc-change"><span class="vc-type added">Added</span><span>Payment scoring stack: date proximity → amount → running balance → FIFO. Reference signals near-zero weight.</span></div>
+            <div class="vc-change"><span class="vc-type added">Added</span><span>JNL/Bank UD classification enum: PAYMENT_EQUIVALENT, CREDIT_NOTE_EQUIVALENT, DEBIT_ADJUSTMENT, WRITE_OFF, IGNORE.</span></div>
+            <div class="vc-change"><span class="vc-type added">Added</span><span>INC001 first-pass data findings: Bank UD type, zero-value CRN classification, DV/SV → LPG bucket. Cross-bucket suppression thresholds noted as data pattern only.</span></div>
+            <div class="vc-change"><span class="vc-type added">Added</span><span>Customer flags: allows_cross_bucket_settlement, pays_for_cyl, mixed_invoices.</span></div>
+          </div>
+        </div>
+
+      </div><!-- /vc-timeline -->
+
+      <h2>Log an Amendment</h2>
+      <p>All fields required. New entries prepend to the timeline above.</p>
+
+      <div class="amend-form">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Version Number</label>
+            <input type="text" id="f-ver" placeholder="e.g. v2.2.0">
+          </div>
+          <div class="form-group">
+            <label>Date</label>
+            <input type="date" id="f-date">
+          </div>
+          <div class="form-group">
+            <label>Author</label>
+            <input type="text" id="f-author" placeholder="Name / team">
+          </div>
+          <div class="form-group">
+            <label>Status</label>
+            <select id="f-status">
+              <option value="draft">Draft</option>
+              <option value="current">Current</option>
+              <option value="locked">Locked</option>
+            </select>
+          </div>
+        </div>
+
+        <h3 style="margin:16px 0 8px;font-family:var(--mono);font-size:11px;letter-spacing:0.08em;color:var(--muted);text-transform:uppercase">Changes</h3>
+        <div class="changes-list" id="changes-list">
+          <div class="change-row">
+            <select><option value="added">Added</option><option value="changed">Changed</option><option value="locked">Locked</option><option value="fixed">Fixed</option><option value="deferred">Deferred</option></select>
+            <input type="text" placeholder="Describe the change…">
+            <button class="rm-btn" onclick="this.closest('.change-row').remove()">×</button>
+          </div>
+        </div>
+        <button class="add-btn" onclick="addRow()">+ Add another change</button>
+        <button class="submit-btn" onclick="submitVer()">Add Version Entry</button>
+      </div>
+    </div>
+
+    <hr>
+    <div class="doc-footer">
+      Document owner: Product / Domain Design. Review audience: engineering, finance operations, implementation agents.<br>
+      This document must be versioned whenever a locked business rule changes. Reference the version number in all implementation tickets tied to this spec.
+    </div>
+
+  </div><!-- /document -->
+  </div><!-- /page -->
+</div><!-- /main -->
+
+<script>
+  // Progress bar
+  const prog = document.getElementById('progress');
+  window.addEventListener('scroll', () => {
+    const t = document.body.scrollHeight - window.innerHeight;
+    prog.style.transform = `scaleX(${Math.min(window.scrollY / t, 1)})`;
+  }, { passive: true });
+
+  // Active sidebar link
+  const sections = document.querySelectorAll('.section, .cover');
+  const links = document.querySelectorAll('.sb-link');
+
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const l = document.querySelector(`.sb-link[href="#${e.target.id}"]`);
+        if (l) l.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-15% 0px -75% 0px' });
+
+  sections.forEach(s => obs.observe(s));
+
+  // Amendment form
+  function addRow() {
+    const row = document.createElement('div');
+    row.className = 'change-row';
+    row.innerHTML = `
+      <select><option value="added">Added</option><option value="changed">Changed</option><option value="locked">Locked</option><option value="fixed">Fixed</option><option value="deferred">Deferred</option></select>
+      <input type="text" placeholder="Describe the change…">
+      <button class="rm-btn" onclick="this.closest('.change-row').remove()">×</button>`;
+    document.getElementById('changes-list').appendChild(row);
+  }
+
+  function submitVer() {
+    const ver    = document.getElementById('f-ver').value.trim();
+    const date   = document.getElementById('f-date').value;
+    const author = document.getElementById('f-author').value.trim();
+    const status = document.getElementById('f-status').value;
+
+    if (!ver || !date || !author) { alert('Version, date, and author are all required.'); return; }
+
+    const rows = [...document.querySelectorAll('#changes-list .change-row')];
+    const changes = rows.map(r => ({
+      type: r.querySelector('select').value,
+      text: r.querySelector('input').value.trim()
+    })).filter(c => c.text);
+
+    if (!changes.length) { alert('Add at least one change entry.'); return; }
+
+    const labels = { draft: 'Draft', current: 'Current', locked: 'Locked' };
+
+    const entry = document.createElement('div');
+    entry.className = `vc-entry${status === 'current' ? ' current' : ''}`;
+    entry.innerHTML = `
+      <div class="vc-head">
+        <span class="vc-ver">${ver}</span>
+        <span class="vc-date">${date}</span>
+        <span class="vc-tag ${status}">${labels[status]}</span>
+        <span class="vc-author">${author}</span>
+      </div>
+      <div class="vc-body">
+        ${changes.map(c => `<div class="vc-change"><span class="vc-type ${c.type}">${c.type.charAt(0).toUpperCase()+c.type.slice(1)}</span><span>${c.text}</span></div>`).join('')}
+      </div>`;
+
+    document.getElementById('vc-timeline').insertBefore(entry, document.getElementById('vc-timeline').firstChild);
+
+    // Reset
+    document.getElementById('f-ver').value = '';
+    document.getElementById('f-author').value = '';
+    document.getElementById('f-status').value = 'draft';
+    document.getElementById('changes-list').innerHTML = `
+      <div class="change-row">
+        <select><option value="added">Added</option><option value="changed">Changed</option><option value="locked">Locked</option><option value="fixed">Fixed</option><option value="deferred">Deferred</option></select>
+        <input type="text" placeholder="Describe the change…">
+        <button class="rm-btn" onclick="this.closest('.change-row').remove()">×</button>
+      </div>`;
+  }
+
+  document.getElementById('f-date').valueAsDate = new Date();
+</script>
+</body>
+</html>
