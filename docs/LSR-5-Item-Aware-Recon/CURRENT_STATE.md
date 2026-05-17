@@ -9,9 +9,9 @@
 ## 1. PROJECT STATUS
 
 - **Current Phase:** Pre-implementation — Specification locked, schema design pending
-- **Active Focus:** DTRX entry_type validation (hard blocker) + data schema build
+- **Active Focus:** Data schema build + Session load pipeline
 - **Operational Stability:** No code in production. Living spec (v2.3.1) is the only active artefact.
-- **Last Major Update:** 2026-05-17 — Decision Node merged from Sessions A and B; spec passed three domain review passes (v2.1.0 → v2.3.1); 18/18 validation checks pass.
+- **Last Major Update:** 2026-05-17 — Decision Node merged from Sessions A and B; spec passed three domain review passes (v2.1.0 → v2.3.1); 18/18 validation checks pass. T-01 completed and validated.
 
 ---
 
@@ -154,9 +154,9 @@ Flags are persistent, operator-driven, never inferred from historical behaviour.
 - **Dependencies:** Schema build (§8, immediate priority)
 
 ### D2 — DTRX (transaction_headers) as sole payment source
-- **Status:** Active — pending entry_type validation
-- **Operational impact:** PMT lane cannot go live until DTRX entry_type discovery query is run and values confirmed
-- **Dependencies:** DTRX discovery query (§8, blocker)
+- **Status:** Active — validated on 2026-05-17 (T-01 complete)
+- **Operational impact:** PMT lane must ingest `entry_type = 'Payment'` records. Polarity: negative amounts = payments (credit transactions); positive amounts = allocation adjustments/reversals. Duplicate `doc_no` represents legitimate receipt splits or adjustment offsets and must not be discarded.
+- **Dependencies:** None (T-01 complete)
 
 ### D3 — One PMT → one invoice → one component (locked)
 - **Status:** Active — locked
@@ -204,7 +204,7 @@ Flags are persistent, operator-driven, never inferred from historical behaviour.
 
 | Problem | Severity | Notes |
 |---|---|---|
-| DTRX `entry_type` values unvalidated | **Critical** | Blocks PMT lane. Discovery query is the immediate next action. |
+| DTRX `entry_type` values unvalidated | **Closed** | Validated on 2026-05-17 (T-01). Literal is `'Payment'` (not `'PMT'`). Negatives = credits, positives = adjustments/reversals. |
 | Findings #1–#13 audit (ChatGPT PRD session) | **Closed** | All 13 findings from the v2.1.0 PRD review verified against v2.3.1. Every finding resolved. T-02 complete. One low-priority cosmetic note: "epoch anchor" phrase in §17 step 6 could be replaced in a future v2.3.2 pass — not a functional defect. |
 | INC001 Bank UD origin unconfirmed | **Medium** | 2 records, R9,860, status MISSING IN DATABASE. May be ERP artifacts or legitimate transactions. Classify on load; origin investigation separate. |
 | Git repo not yet created | **Medium** | Canonical spec not under version control. Risk of divergence. |
@@ -247,20 +247,24 @@ Flags are persistent, operator-driven, never inferred from historical behaviour.
 - `DEBIT_ADJUSTMENT` increases debtor exposure and requires danger-class UX with confirmation modal.
 - Cross-bucket allocations are allowed, warned, and gated by `allows_cross_bucket_settlement` flag.
 
+### Validated (passed DTRX live database discovery — 2026-05-17)
+
+- DTRX `entry_type` values are `'Payment'` (PMT), `'Invoice'` (INV), `'Crd Note'` (CRN), `'Journal'` (JNL), and `'Bank UD'`.
+- Payment transactions are primarily **negative** (credits reducing AR balance), with 269 negative records totaling R-722,194.68.
+- Positive payment transactions (**8 records** totaling R15,425.47) represent **system reversals or allocation adjustments** in the ERP, characterized by matching offsetting amounts under the same `doc_no` series (e.g. `00016282`).
+- Duplicate `doc_no` values are legitimate splits (splitting one receipt across multiple invoices) or offsetting adjustment rows, not import errors. They must not be deduplicated out during ingestion.
+- DTRX is complete for INC001 with 277 total payments totaling R-706,769.21.
+
 ### Assumed but unverified (do not treat as validated)
 
-- DTRX `entry_type` values correctly identify payment records (not yet confirmed by discovery query)
 - Static CYL pricing table exists and is accessible from the application layer
 - INC001 ~R700k open balance is genuine outstanding AR (not a data completeness artifact)
-- `transaction_headers` deduplication and reversal handling behave as expected for PMT ingestion
 
 ---
 
 ## 8. NEXT PRIORITIES
 
-1. **[BLOCKER] Run DTRX discovery query**
-   `SELECT DISTINCT entry_type, COUNT(*) FROM transaction_headers WHERE account_no = 'INC001' GROUP BY entry_type ORDER BY 2 DESC`
-   PMT lane implementation cannot proceed without confirmed entry_type values.
+1. **[COMPLETED] Run DTRX discovery query** (Completed on 2026-05-17. Verified literals: `'Payment'`, `'Invoice'`, `'Crd Note'`, `'Journal'`, `'Bank UD'`. Negative values = credit payments, positive values = adjustments/reversals, duplicate doc_nos = legitimate splits/offsets).
 
 2. **[BLOCKER] Audit Findings #1, #2, #3 from Session B (ChatGPT PRD session)**
    Retrieve the original ChatGPT session transcript. Map Findings #1/#2/#3 against v2.3.1 spec. Apply surgical corrections if needed before implementation begins.
@@ -328,7 +332,6 @@ Flags are persistent, operator-driven, never inferred from historical behaviour.
 
 ### Known assumptions requiring validation before trusting
 
-- DTRX entry_type values (critical — do not assume)
 - CYL static pricing table availability
 - INC001 balance genuineness
 

@@ -597,7 +597,7 @@
   <div class="sb-header">
     <div class="sb-logo">LSR-5 · Recon Engine</div>
     <div class="sb-title">Business Rules<br>Specification</div>
-    <div class="sb-ver">v2.3.1 · 2026-05-17</div>
+    <div class="sb-ver">v2.3.2 · 2026-05-17</div>
   </div>
   <div class="sb-nav">
     <div class="sb-group">Overview</div>
@@ -651,7 +651,7 @@
 <!-- MAIN -->
 <div id="main">
   <div class="topbar">
-    <div class="tb-crumb">LSR-5 / <span>Business Rules Spec v2.3.1</span></div>
+    <div class="tb-crumb">LSR-5 / <span>Business Rules Spec v2.3.2</span></div>
     <div class="tb-right">
       <span class="status-pill">Locked — Engineering</span>
       <span>2026-05-17</span>
@@ -667,7 +667,7 @@
       <h1 class="cover-title">Debtor Reconciliation Workbench<br>Business Rules &amp; Engineering Specification</h1>
       <p class="cover-sub">Authoritative source-of-truth for the MVP internal reconciliation workbench replacing spreadsheet-based debtor reconciliation workflows.</p>
       <div class="meta-grid">
-        <div class="meta-card"><div class="meta-label">Version</div><div class="meta-value">v2.3.1</div></div>
+        <div class="meta-card"><div class="meta-label">Version</div><div class="meta-value">v2.3.2</div></div>
         <div class="meta-card"><div class="meta-label">Status</div><div class="meta-value" style="color:var(--green)">Engineering Review</div></div>
         <div class="meta-card"><div class="meta-label">Scope</div><div class="meta-value">MVP Business Rules</div></div>
         <div class="meta-card"><div class="meta-label">Last Updated</div><div class="meta-value" style="font-family:var(--mono)">2026-05-17</div></div>
@@ -772,7 +772,7 @@
           <tr><td>Processed Document</td><td>A document in a terminal state: ALLOCATED, PARTIAL_ALLOCATED, MANUAL_HOLD, SUSPENSE_PMT, SUSPENSE_CRN, WRITE_OFF, IGNORED, or OPERATIONAL_EXCEPTION.</td></tr>
           <tr><td>OPERATIONAL_EXCEPTION</td><td>Exception lane for operational CYL CRNs that could not be deterministically matched to an invoice on session load. Custody-only — does not block financial session completion.</td></tr>
           <tr><td>Session</td><td>A bounded reconciliation workspace for a single debtor account. States: DRAFT → ACTIVE → COMPLETE → ARCHIVED.</td></tr>
-          <tr><td>DTRX</td><td>The transaction_headers Supabase table. Designated PMT lane source pending full integration validation. Run discovery query to confirm entry_type values before going live.</td></tr>
+          <tr><td>DTRX</td><td>The transaction_headers Supabase table. Authoritative payment source. Validated on 2026-05-17: entry_type literal is `'Payment'`; negative amounts are credit payments; positive amounts are adjustment reversals; duplicate doc_nos are legitimate splits/offsets.</td></tr>
           <tr><td>OB Priority Rule</td><td>Business rule that positive Opening Balances rank before all dated invoices in candidate sorting. Implementation detail only — no synthetic date is mandated by the business spec.</td></tr>
           <tr><td>financial_state</td><td>Commercial settlement state of an invoice. Canonical enum: <strong>OUTSTANDING | SETTLED | EXCEPTIONED | WRITTEN_OFF | IGNORED</strong>. Independent of custody_state. Source of truth: invoice_sub_ledger table.</td></tr>
           <tr><td>custody_state</td><td>Cylinder custody state of an invoice. Canonical enum: <strong>OUTSTANDING | PARTIALLY_RETURNED | RETURNED | COMMERCIALIZED | DISPUTED | IGNORED</strong>. Independent of financial_state. COMMERCIALIZED = operator confirmed cylinders settled by cash, no physical return required. Source of truth: invoice_sub_ledger table.</td></tr>
@@ -805,7 +805,7 @@
         <tbody>
           <tr><td>ERP Summary Export</td><td>INV / CRN / OB / JNL headers, HDR_TOTAL, document state</td><td>Invoice and CRN financial headers; ERP reference balance</td></tr>
           <tr><td>Detail Lines Export</td><td>Line-level CAT, qty, LINE_TOTAL per DOCNO</td><td>Item signatures; sub-ledger seeding (LPG / CYL / OTHER split)</td></tr>
-          <tr><td>transaction_headers (Supabase)</td><td>doc_no, tx_date, amount_excl + tax_amount, description, batch_ref</td><td>Designated PMT lane source — pending integration validation (entry_type enumeration, deduplication, reversal detection)</td></tr>
+          <tr><td>transaction_headers (Supabase)</td><td>doc_no, tx_date, amount_excl + tax_amount, description, batch_ref</td><td>Authoritative payment source — Validated on 2026-05-17 (entry_type = `'Payment'`, negative values = credit payments, positive values = adjustment/reversal, duplicate doc_nos = legitimate splits/offsets)</td></tr>
           <tr><td>transaction_items (Supabase)</td><td>doc_no, stock_no (SKU), qty per line</td><td>CYL qty balance per SKU per invoice</td></tr>
           <tr><td>erp_snapshots (Supabase)</td><td>SOH snapshots from STKCOUNT.csv</td><td class="out">CYL Custody Engine ONLY — not used in MVP</td></tr>
           <tr><td>movement_data (Supabase)</td><td>Daily movement registers per SKU</td><td class="out">CYL Custody Engine ONLY — not used in MVP</td></tr>
@@ -824,12 +824,13 @@
         </tbody>
       </table></div>
 
-      <h3>Discovery Query — Run Before PMT Lane Goes Live</h3>
-      <pre><span class="c">-- Confirm exact entry_type values in your Supabase instance</span>
-SELECT DISTINCT entry_type, COUNT(*) AS cnt
-FROM transaction_headers
-WHERE account_no = <span class="k">'INC001'</span>
-GROUP BY entry_type ORDER BY cnt DESC;</pre>
+      <h3>Discovery Query — Validated on 2026-05-17</h3>
+      <pre><span class="c">-- Live database results for INC001:</span>
+-- entry_type = 'Payment' (277 total rows, 269 negative credit payments, 8 positive reversals)
+-- entry_type = 'Invoice' (197 total rows, all positive)
+-- entry_type = 'Crd Note' (108 total rows, 101 negative, 7 zero)
+-- entry_type = 'Journal' (Journal entries present)
+-- entry_type = 'Bank UD' (Unclassified deposit entries present)</pre>
     </div>
 
     <!-- S6: DOCUMENT TAXONOMY -->
@@ -1313,7 +1314,7 @@ CUSTODY-ONLY LANE (does not block financial session completion)
       <div class="table-wrap"><table>
         <thead><tr><th>Risk</th><th>Severity</th><th>Mitigation</th></tr></thead>
         <tbody>
-          <tr><td>DTRX entry_type values unconfirmed</td><td class="danger">High</td><td>Run discovery query (Section 5) before PMT lane goes live.</td></tr>
+          <tr><td>DTRX entry_type values unconfirmed</td><td class="good" style="background:#dcfce7;color:#166534;font-weight:700">Closed</td><td>Validated on 2026-05-17. Payment literal is 'Payment', negative values = credit payments, positive values = adjustment/reversal, duplicate doc_nos = legitimate splits/offsets.</td></tr>
           <tr><td>DEBIT_ADJUSTMENT operator error risk</td><td class="danger">High</td><td>Mandatory danger UI treatment with confirmation modal. See Section 19.</td></tr>
           <tr><td>Operational CRN unmatched on load</td><td class="warn">Medium</td><td>Operational exception queue. Operator assigns manually. Full automation deferred to CYL engine.</td></tr>
           <tr><td>cyl_qty_balance JSONB performance at scale</td><td class="warn">Medium</td><td>Design indexing strategy before production load. Consider GIN index on JSONB column.</td></tr>
@@ -1531,9 +1532,21 @@ AND this is the first PMT→CYL attempt in this session</pre>
           </div>
         </div>
 
+        <div class="vc-entry current">
+          <div class="vc-head">
+            <span class="vc-ver">v2.3.2</span>
+            <span class="vc-date">2026-05-17</span>
+            <span class="vc-tag current">Current</span>
+            <span class="vc-author">AI Developer · Live DTRX Integration Validation</span>
+          </div>
+          <div class="vc-body">
+            <div class="vc-change"><span class="vc-type fixed">Fixed</span><span>CRITICAL: Run discovery query T-01 on Supabase transaction_headers. Confirmed payment literal string is 'Payment', negative values are credit payments, positive values are adjustment reversals, and duplicate doc_nos represent legitimate splits and must not be deduplicated out.</span></div>
+          </div>
+        </div>
+
         <div class="vc-entry">
           <div class="vc-head">
-            <span class="vc-ver">v2.2.0</span>
+            <span class="vc-ver">v2.3.1</span>
             <span class="vc-date">2026-05-17</span>
             <span class="vc-tag current">Current</span>
             <span class="vc-author">PM · Domain correctness review pass</span>

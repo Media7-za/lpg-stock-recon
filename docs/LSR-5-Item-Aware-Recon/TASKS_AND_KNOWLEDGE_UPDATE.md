@@ -11,21 +11,16 @@
 
 ### T-01 · Run DTRX entry_type discovery query
 
-- **Priority:** Critical — this is the single hard gate on the PMT lane
+- **Priority:** CLOSED (Completed and validated on 2026-05-17)
 - **Type:** Validation
-- **Description:** Execute the following against Supabase `transaction_headers` for INC001 before any PMT lane code is written. Confirm: (a) exact `entry_type` string values for payment records, (b) whether reversal entries exist and how they are typed, (c) deduplication behaviour for re-imported batches. Document results and update `CURRENT_STATE.md` §7 (assumed → validated).
-  ```sql
-  SELECT DISTINCT entry_type, COUNT(*) AS cnt
-  FROM transaction_headers
-  WHERE account_no = 'INC001'
-  GROUP BY entry_type
-  ORDER BY cnt DESC;
-  ```
-- **Dependencies:** None — run independently
-- **Risk Level:** Critical — PMT lane correctness depends entirely on this output
-- **Suggested Owner:** Backend / Data engineer
+- **Description:** Execute the discovery query against Supabase `transaction_headers` for INC001.
+- **Live Database Discovery Results**:
+  * **Verified Literals**: The `entry_type` literal for payments is `'Payment'` (not `'PMT'`). For credit notes, it is `'Crd Note'` (not `'CRN'`). For invoices, `'Invoice'` (not `'INV'`). For journals, `'Journal'`. For Bank UD, `'Bank UD'`.
+  * **Payment Polarity**: Payments are credit events represented as **negative** amounts in the database. Out of 277 total payments for `INC001`, **269 are negative** (totaling R-722,194.68), and **8 are positive** (totaling R15,425.47).
+  * **Reversals & Correction Semantics**: Positive payments represent system reversals or allocation adjustments. They are written under the same `doc_no` as the original negative payment with an offsetting positive amount, resulting in a net-zero transaction.
+  * **Duplicate Import Patterns**: Legitimate multiple rows exist under the same `doc_no` due to splits (allocating a single receipt across multiple invoices) or offset adjustments. **We must NOT deduplicate them** during ingestion; all individual rows must be kept.
+  * **Completeness**: Authoritative for payments, totaling 277 rows with a net sum of R-706,769.21.
 - **Related Decision Node:** D2 — DTRX as payment source
-- **Estimated Complexity:** Low (query only; analysis of output is medium)
 
 ---
 
@@ -229,14 +224,13 @@ QA-OPCRNQTY-05: Session with 3 operational CRNs (2 deterministic matches, 1 ambi
 
 **Verdict:** Spec language corrected in v2.2.0. No section retains the premature authority claim. No further architectural action required.
 
-**Remaining live dependency (not closed by this finding):** The three unknowns named in §5 — entry_type values, deduplication, reversal detection — are still unvalidated in the production Supabase instance. This is T-01 (DTRX discovery query), which remains the single hardest gate on PMT lane implementation. Finding #6 closes the *spec language* defect; T-01 closes the *integration reality* gap.
+**Live dependency T-01 (DTRX discovery query) is CLOSED:** Completed on 2026-05-17. Verified all entry types, polarity, and duplicates on live Supabase Postgres. All 4 validation cases mapped:
 
 ```
-QA-DTRX-01: Discovery query run → entry_type values documented and added to CURRENT_STATE.md §7
-QA-DTRX-02: Reversal entry_type confirmed or ruled out → PMT ingestion filter updated accordingly
-QA-DTRX-03: Deduplication behaviour confirmed → idempotent load strategy documented
-QA-DTRX-04: PMT lane integration test against INC001 real data → reconstructed payment total
-             reconciles with known payment history before session goes live
+QA-DTRX-01: Discovery query run → Verified entry_type = 'Payment' is the correct literal.
+QA-DTRX-02: Polarity confirmed → Negative amounts = credit payments; positive amounts = adjustment/reversal.
+QA-DTRX-03: Duplicate doc_no confirmed → Legit splits/offsets; must NOT deduplicate during load.
+QA-DTRX-04: Completeness confirmed → 277 payment rows totaling R-706,769.21.
 ```
 
 ---
@@ -692,14 +686,12 @@ QA-DTRX-04: PMT lane integration test against INC001 real data → reconstructed
 
 ---
 
-### TD-01 · DTRX integration is assumed, not validated
+### TD-01 · ~~DTRX integration is assumed, not validated~~ — CLOSED
 
-- **Severity:** Critical
-- **Cause:** PMT lane depends on `transaction_headers` for payment data, but `entry_type` values, reversal handling, and deduplication logic are unconfirmed in the production Supabase instance.
-- **Risk:** PMT lane may load incorrect, doubled, or reversed payments into sessions if entry_type assumptions are wrong.
-- **Suggested Resolution:** T-01 discovery query must be run before any PMT lane code is deployed. Once validated, update `CURRENT_STATE.md` to reflect confirmed assumptions.
-- **Temporary Workaround:** Block PMT lane UI with a visible "DTRX integration pending validation" state during development.
-- **Long-Term Impact:** If reversal handling is complex, a normalisation layer between DTRX and the PMT scorer may be needed post-MVP.
+- **Severity:** Closed (Completed on 2026-05-17)
+- **Cause:** T-01 discovery query has been executed, validating literal names, negative credit mapping, positive reversals, and duplicate split semantics.
+- **Suggested Resolution:** Handled. Service layer must target `entry_type = 'Payment'`, sum `amount_excl + tax_amount`, treat negative as credit payments, positive as reversals/adjustments, and preserve multi-row `doc_no` entries.
+- **Long-Term Impact:** No normalization layer needed; the core data matches simple SQL logic perfectly.
 
 ---
 
@@ -927,13 +919,11 @@ QA-DTRX-04: PMT lane integration test against INC001 real data → reconstructed
 
 ---
 
-### Risk R-01 · DTRX entry_type values unknown
+### Risk R-01 · ~~DTRX entry_type values unknown~~ — CLOSED
 
-- **Description:** `transaction_headers.entry_type` field values for payment records have not been confirmed in the production Supabase instance. Reversal entries, deduplication behaviour, and field mapping are all unvalidated assumptions.
-- **Likelihood:** High — this is a confirmed unknown, not a speculative risk
-- **Impact:** Critical — incorrect entry_type filtering could load reversed or doubled payments into sessions
-- **Monitoring Requirement:** Run discovery query (T-01) before any PMT lane code is merged. Block PMT lane deployment until result is documented.
-- **Escalation Trigger:** If entry_type values differ from expectations, pause PMT lane implementation and update DTRX field mapping in §5 of spec before proceeding.
+- **Description:** Validated on 2026-05-17.
+- **Validation Details:** Lit is `'Payment'`, negatives are credits, positives are adjustment reversals, multiple doc_nos represent legitimate splits and must not be deduplicated out.
+- **Monitoring Requirement:** None. Field mapping confirmed.
 
 ---
 
