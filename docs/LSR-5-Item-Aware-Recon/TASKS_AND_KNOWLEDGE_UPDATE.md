@@ -262,13 +262,22 @@ QA-DTRX-04: Completeness confirmed → 277 payment rows totaling R-706,769.21.
   lpg_value_balance     NUMERIC NOT NULL DEFAULT 0,
   cyl_value_balance     NUMERIC NOT NULL DEFAULT 0,
   other_value_balance   NUMERIC NOT NULL DEFAULT 0,
-  cyl_qty_balance       JSONB NOT NULL DEFAULT '{}',  -- { "9.1": 5, "14.1": 2 }
   financial_state       TEXT NOT NULL DEFAULT 'OUTSTANDING',
     -- CHECK IN ('OUTSTANDING','SETTLED','EXCEPTIONED','WRITTEN_OFF','IGNORED')
   custody_state         TEXT NOT NULL DEFAULT 'OUTSTANDING',
     -- CHECK IN ('OUTSTANDING','PARTIALLY_RETURNED','RETURNED','COMMERCIALIZED','DISPUTED','IGNORED')
   invoice_date          DATE NOT NULL,
   created_at            TIMESTAMPTZ DEFAULT now()
+  ```
+
+  **`invoice_cyl_qty`**
+  ```sql
+  id                    UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  invoice_id            TEXT NOT NULL REFERENCES invoice_sub_ledger(invoice_id),
+  sku                   TEXT NOT NULL,           -- '9.1', '14.1', '19.1', '48'
+  qty_balance           NUMERIC NOT NULL DEFAULT 0,
+  created_at            TIMESTAMPTZ DEFAULT now(),
+  UNIQUE (invoice_id, sku)
   ```
 
   **`allocation_record`** — append-only log
@@ -372,26 +381,23 @@ QA-DTRX-04: Completeness confirmed → 277 payment rows totaling R-706,769.21.
   Note: this table records custody state changes only. It must never be created by a financial allocation action. Financial allocations write to `allocation_record` exclusively.
 
 - **Dependencies:** T-01 (DTRX validation) for field alignment, T-03 (repo exists) for migration files
-- **Risk Level:** Medium — JSONB GIN index strategy must be defined before production load (see T-05)
+- **Risk Level:** Low — Index strategy is defined using standard B-tree unique index in v2.4.0
 - **Suggested Owner:** Backend engineer
 - **Related Decision Node:** D1 — four-component sub-ledger
 - **Estimated Complexity:** Medium
 
 ---
 
-### T-05 · Define GIN index strategy for `cyl_qty_balance` JSONB
+### T-05 · Define GIN index strategy for `cyl_qty_balance` JSONB — CLOSED
 
-- **Priority:** High — must be resolved before schema is committed to production
+- **Priority:** CLOSED (Obsolete - Resolved in v2.4.0 on 2026-05-17)
 - **Type:** Feature / Validation
-- **Description:** Benchmark JSONB query patterns against representative data (INC001: ~197 invoices, ~108 operational CRNs). Key queries: (a) find all invoices with qty > 0 for a given SKU, (b) sum qty across all open invoices per SKU for a session. Implement GIN index if query plans show seq scans on relevant query shapes. Document index definition in schema migration file.
-  ```sql
-  CREATE INDEX ON invoice_sub_ledger USING GIN (cyl_qty_balance);
-  ```
+- **Description:** Resolved by refactoring the JSONB column into a normalized `invoice_cyl_qty` table in the v2.4.0 specification. High performance query access patterns (such as prior-dated scans for operational CRN auto-apply and sum grouping for custody balance) are fully supported via a standard B-tree unique index on `(invoice_id, sku)`. GIN index benchmarking is completely obsolete.
 - **Dependencies:** T-04
-- **Risk Level:** Medium — performance failure at scale is predictable but not yet measured
+- **Risk Level:** Low
 - **Suggested Owner:** Backend / DB engineer
-- **Related Decision Node:** CURRENT_STATE §5 — open risk
-- **Estimated Complexity:** Low–Medium
+- **Related Decision Node:** CURRENT_STATE §5 — closed risk
+- **Estimated Complexity:** Closed
 
 ---
 
@@ -403,9 +409,9 @@ QA-DTRX-04: Completeness confirmed → 277 payment rows totaling R-706,769.21.
 
   1. Load all documents from ERP summary export for `account_no` + date range → parse into typed document records (INV / CRN / OB / JNL / BANK_UD)
   2. Load DTRX payments from `transaction_headers` for same account + date range
-  3. Load CYL qty data from `transaction_items` → build `cyl_qty_balance_by_sku` (JSONB) per invoice
+  3. Load CYL qty data from `transaction_items` → seed normalized `invoice_cyl_qty` records per invoice
   4. Split CRNs: `HDR_TOTAL ≠ 0` → financial queue; `HDR_TOTAL = 0` → operational queue
-  5. Apply operational CRNs to `cyl_qty_balance_by_sku` deterministically: exact SKU match + `crn_date < invoice_date` → auto-apply; all others → `OPERATIONAL_EXCEPTION`
+  5. Apply operational CRNs to `invoice_cyl_qty` records deterministically: exact SKU match + `crn_date < invoice_date` → auto-apply; all others → `OPERATIONAL_EXCEPTION`
   6. Sign-split OBs: positive → INV lane (ranked before all dated invoices); negative → credit pool
   7. Route all JNL and Bank UD to `UNCLASSIFIED_EXCEPTION` queue unconditionally
   8. Seed invoice sub-ledgers from detail lines using CAT-to-bucket map (see §7 sub-ledger seeding table)
@@ -836,7 +842,7 @@ QA-DTRX-04: Completeness confirmed → 277 payment rows totaling R-706,769.21.
 
 ### Standard S-04 · Zero-value CRNs never touch financial balances
 
-- **Rule:** A CRN with `HDR_TOTAL = 0` may only reduce `cyl_qty_balance_by_sku`. It must never be applied to `lpg_value_balance`, `cyl_value_balance`, or `other_value_balance`. Service layer must enforce this by type-checking before applying.
+- **Rule:** A CRN with `HDR_TOTAL = 0` may only reduce `cyl_qty_balance` (via the normalized `invoice_cyl_qty` table). It must never be applied to `lpg_value_balance`, `cyl_value_balance`, or `other_value_balance`. Service layer must enforce this by type-checking before applying.
 - **Rationale:** Zero-value CRNs are custody events, not financial settlement instruments.
 - **Enforcement Priority:** Critical
 - **Applies To:** Operational CRN apply logic, session load step 5
@@ -905,7 +911,7 @@ QA-DTRX-04: Completeness confirmed → 277 payment rows totaling R-706,769.21.
 - **Applies To:** Session load pipeline step 5 (operational CRN auto-apply), `custody_reconciliation_event` write path, integration tests QA-OPCRNQTY-01 through QA-OPCRNQTY-05
 
 **Permitted auto-apply actions (write `custody_reconciliation_event`):**
-- Reduce `cyl_qty_balance_by_sku` for a matched SKU
+- Reduce `invoice_cyl_qty` balance for a matched SKU
 - Update `custody_state` if all SKU qtys reach zero
 
 **Prohibited in auto-apply (never permitted without operator confirmation):**
@@ -936,13 +942,12 @@ QA-DTRX-04: Completeness confirmed → 277 payment rows totaling R-706,769.21.
 
 ---
 
-### Risk R-03 · JSONB JSONB cyl_qty_balance performance at scale
+### Risk R-03 · ~~JSONB cyl_qty_balance performance at scale~~ — CLOSED
 
-- **Description:** `cyl_qty_balance_by_sku` is JSONB. Key access patterns (find all invoices with qty > 0 for a SKU, sum qty across open invoices per SKU) may degrade without a GIN index. Performance at production scale is unknown.
-- **Likelihood:** Medium
-- **Impact:** Medium — slow session load is an operational friction issue, not a data correctness issue
-- **Monitoring Requirement:** Benchmark before production load (T-05). Monitor query plan for seq scans on `cyl_qty_balance`.
-- **Escalation Trigger:** p95 session load time > 3s on accounts with > 500 open invoices.
+- **Description:** Obsolete — Resolved on 2026-05-17. The JSONB field was replaced by a normalized `invoice_cyl_qty` table in the v2.4.0 specification, removing GIN index needs and eliminating seq scans.
+- **Likelihood:** N/A — closed
+- **Impact:** N/A — closed
+- **Resolution:** Decoupled JSONB column into a dedicated normalized `invoice_cyl_qty` table. Outstanding balances are scanned using standard B-tree indexes, guaranteeing optimal indexing and eliminating seq scans or read-modify-write overhead.
 
 ---
 

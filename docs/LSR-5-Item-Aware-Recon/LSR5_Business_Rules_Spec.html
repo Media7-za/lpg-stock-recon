@@ -597,7 +597,7 @@
   <div class="sb-header">
     <div class="sb-logo">LSR-5 · Recon Engine</div>
     <div class="sb-title">Business Rules<br>Specification</div>
-    <div class="sb-ver">v2.3.2 · 2026-05-17</div>
+    <div class="sb-ver">v2.4.0 · 2026-05-17</div>
   </div>
   <div class="sb-nav">
     <div class="sb-group">Overview</div>
@@ -651,7 +651,7 @@
 <!-- MAIN -->
 <div id="main">
   <div class="topbar">
-    <div class="tb-crumb">LSR-5 / <span>Business Rules Spec v2.3.2</span></div>
+    <div class="tb-crumb">LSR-5 / <span>Business Rules Spec v2.4.0</span></div>
     <div class="tb-right">
       <span class="status-pill">Locked — Engineering</span>
       <span>2026-05-17</span>
@@ -667,7 +667,7 @@
       <h1 class="cover-title">Debtor Reconciliation Workbench<br>Business Rules &amp; Engineering Specification</h1>
       <p class="cover-sub">Authoritative source-of-truth for the MVP internal reconciliation workbench replacing spreadsheet-based debtor reconciliation workflows.</p>
       <div class="meta-grid">
-        <div class="meta-card"><div class="meta-label">Version</div><div class="meta-value">v2.3.2</div></div>
+        <div class="meta-card"><div class="meta-label">Version</div><div class="meta-value">v2.4.0</div></div>
         <div class="meta-card"><div class="meta-label">Status</div><div class="meta-value" style="color:var(--green)">Engineering Review</div></div>
         <div class="meta-card"><div class="meta-label">Scope</div><div class="meta-value">MVP Business Rules</div></div>
         <div class="meta-card"><div class="meta-label">Last Updated</div><div class="meta-value" style="font-family:var(--mono)">2026-05-17</div></div>
@@ -763,7 +763,7 @@
           <tr><td>Custody Ledger</td><td>Physical cylinder quantity exposure tracked by SKU.</td></tr>
           <tr><td>Financial CRN</td><td>Credit note with <code>ABS(HDR_TOTAL) &gt; 0</code>. Has monetary effect. Participates in commercial settlement.</td></tr>
           <tr><td>Operational CYL CRN</td><td>Credit note with <code>HDR_TOTAL = 0</code> and CYL qty movement. Affects custody ledger only.</td></tr>
-          <tr><td>Sub-ledger</td><td>The four independently tracked components of an invoice: lpg_value_balance, cyl_value_balance, other_value_balance, cyl_qty_balance_by_sku.</td></tr>
+          <tr><td>Sub-ledger</td><td>The four independently tracked components of an invoice: lpg_value_balance, cyl_value_balance, other_value_balance, and physical cylinder quantity balances (stored normalized in the invoice_cyl_qty table).</td></tr>
           <tr><td>Credit Pool</td><td>Persistent unapplied customer credit, surviving across sessions. Never auto-applied.</td></tr>
           <tr><td>Suspense — PMT</td><td>Unallocated payment value or payment remainder awaiting matching.</td></tr>
           <tr><td>Suspense — CRN</td><td>Unallocated financial credit note value or CRN remainder.</td></tr>
@@ -867,17 +867,22 @@
   lpg_value_balance      NUMERIC   <span class="c">-- sum of LPG line totals</span>
   cyl_value_balance      NUMERIC   <span class="c">-- sum of CYL line totals</span>
   other_value_balance    NUMERIC   <span class="c">-- AGR + unmapped items</span>
-  cyl_qty_balance        JSONB     <span class="c">-- { "9.1": 5, "14.1": 2 } per SKU</span>
   financial_state        TEXT      <span class="c">-- OUTSTANDING | SETTLED | EXCEPTIONED | WRITTEN_OFF | IGNORED</span>
-  custody_state          TEXT      <span class="c">-- OUTSTANDING | PARTIALLY_RETURNED | RETURNED | COMMERCIALIZED | DISPUTED | IGNORED</span></pre>
+  custody_state          TEXT      <span class="c">-- OUTSTANDING | PARTIALLY_RETURNED | RETURNED | COMMERCIALIZED | DISPUTED | IGNORED</span>
+}
+
+invoice_cyl_qty {
+  id                     UUID      <span class="c">-- PRIMARY KEY</span>
+  invoice_id             TEXT      <span class="c">-- FOREIGN KEY to invoice_sub_ledger(invoice_id)</span>
+  sku                    TEXT      <span class="c">-- Cylinder SKU (e.g. '9.1', '14.1', '19.1', '48')</span>
+  qty_balance            NUMERIC   <span class="c">-- Outstanding cylinder quantity</span>
+  <span class="c">-- UNIQUE (invoice_id, sku)</span>
+}</pre>
 
 <div class="callout note">
   <div class="callout-label">Note — State Independence</div>
   financial_state and custody_state are tracked and resolved independently. SETTLED + OUTSTANDING is a valid complete state for pays_for_cyl accounts. Neither state requires the other to be resolved first.
 </div>
-
-<pre>
-}</pre>
 
       <h2>Dual Settlement States — Independent Tracking</h2>
       <div class="callout rule">
@@ -888,7 +893,7 @@
         <thead><tr><th>State</th><th>Tracks</th><th>Settled When</th></tr></thead>
         <tbody>
           <tr><td><strong>financial_state</strong></td><td>lpg_value_balance + cyl_value_balance + other_value_balance</td><td>All value balances ≤ R1.00 (rounding tolerance). Independent of custody.</td></tr>
-          <tr><td><strong>custody_state</strong></td><td>cyl_qty_balance_by_sku per SKU</td><td>All SKU qtys = 0, OR operator marks as COMMERCIALIZED / WRITTEN_OFF. Independent of financial.</td></tr>
+          <tr><td><strong>custody_state</strong></td><td>invoice_cyl_qty table records</td><td>All SKU qtys = 0, OR operator marks as COMMERCIALIZED / WRITTEN_OFF. Independent of financial.</td></tr>
         </tbody>
       </table></div>
       <div class="table-wrap"><table>
@@ -923,8 +928,8 @@
       <h1 class="sec-title">Cylinder Custody Model</h1>
       <div class="sec-rule"></div>
       <ul>
-        <li>CYL tracks both <strong>value balance</strong> (<code>cyl_value_balance</code>) and <strong>quantity balance</strong> (<code>cyl_qty_balance_by_sku</code>) per invoice.</li>
-        <li>Operational CYL CRNs (<code>HDR_TOTAL = 0</code>) reduce <code>cyl_qty_balance_by_sku</code> only. Applied deterministically on session load <strong>only when an exact SKU match to a prior-dated invoice exists</strong>. Ambiguous or unmatched operational CRNs route to the operational exception queue for operator manual assignment — never blindly auto-applied.</li>
+        <li>CYL tracks both <strong>value balance</strong> (<code>cyl_value_balance</code>) and <strong>quantity balance</strong> (stored normalized in the <code>invoice_cyl_qty</code> table) per invoice.</li>
+        <li>Operational CYL CRNs (<code>HDR_TOTAL = 0</code>) reduce <code>invoice_cyl_qty</code> record balances only. Applied deterministically on session load <strong>only when an exact SKU match to a prior-dated invoice exists</strong>. Ambiguous or unmatched operational CRNs route to the operational exception queue for operator manual assignment — never blindly auto-applied.</li>
         <li>CYL pricing is <strong>static across all customers</strong>. Value = qty × static_price per SKU.</li>
         <li>Customers with <code>pays_for_cyl = true</code> settle CYL liability by cash payment instead of physical return.</li>
         <li>A dedicated CYL Custody Engine will handle full operational reconciliation post-MVP using <code>erp_snapshots</code> and <code>movement_data</code>.</li>
@@ -1156,9 +1161,9 @@ Operator selects : LPG component
       <ol>
         <li>Load all documents from ERP summary export for account + date range.</li>
         <li>Load DTRX payments from <code>transaction_headers</code> (Supabase) for account + date range.</li>
-        <li>Load CYL qty data from <code>transaction_items</code> — build <code>cyl_qty_balance_by_sku</code> per invoice.</li>
+        <li>Load CYL qty data from <code>transaction_items</code> — seed normalized <code>invoice_cyl_qty</code> records per invoice.</li>
         <li>Split CRNs: <code>HDR_TOTAL ≠ 0</code> → financial queue; <code>HDR_TOTAL = 0</code> → operational queue.</li>
-        <li>Apply operational CRNs to <code>cyl_qty_balance_by_sku</code> <strong>deterministically — only when an exact SKU match exists on a prior-dated invoice</strong>. Any operational CRN without an unambiguous match routes to the operational exception queue for operator assignment. No blind auto-apply.</li>
+        <li>Apply operational CRNs to <code>invoice_cyl_qty</code> records <strong>deterministically — only when an exact SKU match exists on a prior-dated invoice</strong>. Any operational CRN without an unambiguous match routes to the operational exception queue for operator assignment. No blind auto-apply.</li>
         <li>Sign-split OBs: positive → INV lane (epoch anchor); negative → credit pool.</li>
         <li>Route all JNL and Bank UD to UNCLASSIFIED_EXCEPTION queue. Neither enters any financial lane until operator classification is complete.</li>
         <li>Seed all invoice sub-ledgers from detail lines (LPG / CYL / OTHER splits).</li>
@@ -1317,7 +1322,7 @@ CUSTODY-ONLY LANE (does not block financial session completion)
           <tr><td>DTRX entry_type values unconfirmed</td><td class="good" style="background:#dcfce7;color:#166534;font-weight:700">Closed</td><td>Validated on 2026-05-17. Payment literal is 'Payment', negative values = credit payments, positive values = adjustment/reversal, duplicate doc_nos = legitimate splits/offsets.</td></tr>
           <tr><td>DEBIT_ADJUSTMENT operator error risk</td><td class="danger">High</td><td>Mandatory danger UI treatment with confirmation modal. See Section 19.</td></tr>
           <tr><td>Operational CRN unmatched on load</td><td class="warn">Medium</td><td>Operational exception queue. Operator assigns manually. Full automation deferred to CYL engine.</td></tr>
-          <tr><td>cyl_qty_balance JSONB performance at scale</td><td class="warn">Medium</td><td>Design indexing strategy before production load. Consider GIN index on JSONB column.</td></tr>
+          <tr><td>cyl_qty_balance JSONB performance at scale</td><td class="good" style="background:#dcfce7;color:#166534;font-weight:700">Closed</td><td>Obsolete — Resolved on 2026-05-17 in v2.4.0. Replaced JSONB with normalized invoice_cyl_qty table. Indexing is standard B-tree on (invoice_id, sku).</td></tr>
           <tr><td>Same-date invoice tie</td><td>Low</td><td>Amount proximity is effective tiebreaker in composite scorer.</td></tr>
           <tr><td>R1.00 rounding threshold too generous</td><td>Low</td><td>Make configurable per account. R0.13 residuals in INC001 data suggest legitimate accumulated diffs.</td></tr>
           <tr><td>OB bucket ambiguity</td><td>Low</td><td>OB has no item detail — entire amount to other_value_balance. Cannot be targeted by bucket-specific CRN.</td></tr>
@@ -1534,9 +1539,20 @@ AND this is the first PMT→CYL attempt in this session</pre>
 
         <div class="vc-entry current">
           <div class="vc-head">
-            <span class="vc-ver">v2.3.2</span>
+            <span class="vc-ver">v2.4.0</span>
             <span class="vc-date">2026-05-17</span>
             <span class="vc-tag current">Current</span>
+            <span class="vc-author">AI Developer · Normalized Cylinder Custody Schema</span>
+          </div>
+          <div class="vc-body">
+            <div class="vc-change"><span class="vc-type changed">Changed</span><span>CRITICAL: Normalized <code>cyl_qty_balance</code> JSONB column from <code>invoice_sub_ledger</code> into a dedicated <code>invoice_cyl_qty</code> table with standard indices. This guarantees database-level constraints (uniqueness per SKU per invoice), clean SQL queries for session custody and auto-apply scans, and avoids complex read-modify-write JSONB overhead.</span></div>
+          </div>
+        </div>
+
+        <div class="vc-entry">
+          <div class="vc-head">
+            <span class="vc-ver">v2.3.2</span>
+            <span class="vc-date">2026-05-17</span>
             <span class="vc-author">AI Developer · Live DTRX Integration Validation</span>
           </div>
           <div class="vc-body">

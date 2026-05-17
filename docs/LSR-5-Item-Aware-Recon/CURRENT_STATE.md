@@ -40,7 +40,7 @@ Every invoice carries four independently tracked components:
 lpg_value_balance       -- monetary: LPG product value
 cyl_value_balance       -- monetary: cylinder deposit value
 other_value_balance     -- monetary: miscellaneous charges
-cyl_qty_balance_by_sku  -- JSONB: physical cylinder qty by SKU
+cyl_qty_balance        -- Normalized: stored in dedicated table invoice_cyl_qty
 ```
 
 These components are settled independently. Settling one does not imply settling others.
@@ -91,7 +91,7 @@ Operational CRN deterministic auto-apply (session load step 5) uses **Model A �
 - `custody_reconciliation_event` is a separate append-only table from `allocation_record`
 - This preserves accounting semantics: financial audit log stays clean; custody state changes remain traceable
 
-Permitted in auto-apply: reduce `cyl_qty_balance_by_sku`, update `custody_state` if qtys reach zero.
+Permitted in auto-apply: reduce `invoice_cyl_qty` balance, update `custody_state` if qtys reach zero.
 Prohibited in auto-apply without operator confirmation: any change to value balances or `financial_state`.
 
 ### Customer Configuration (friction-born)
@@ -150,7 +150,7 @@ Flags are persistent, operator-driven, never inferred from historical behaviour.
 
 ### D1 — Four-component sub-ledger model
 - **Status:** Active — locked
-- **Operational impact:** All invoice tables, allocation records, and scoring logic must operate on lpg/cyl/other value balances and cyl_qty JSONB independently
+- **Operational impact:** All invoice tables, allocation records, and scoring logic must operate on lpg/cyl/other value balances and normalized invoice_cyl_qty table records independently
 - **Dependencies:** Schema build (§8, immediate priority)
 
 ### D2 — DTRX (transaction_headers) as sole payment source
@@ -207,8 +207,8 @@ Flags are persistent, operator-driven, never inferred from historical behaviour.
 | DTRX `entry_type` values unvalidated | **Closed** | Validated on 2026-05-17 (T-01). Literal is `'Payment'` (not `'PMT'`). Negatives = credits, positives = adjustments/reversals. |
 | Findings #1–#13 audit (ChatGPT PRD session) | **Closed** | All 13 findings from the v2.1.0 PRD review verified against v2.3.1. Every finding resolved. T-02 complete. One low-priority cosmetic note: "epoch anchor" phrase in §17 step 6 could be replaced in a future v2.3.2 pass — not a functional defect. |
 | INC001 Bank UD origin unconfirmed | **Medium** | 2 records, R9,860, status MISSING IN DATABASE. May be ERP artifacts or legitimate transactions. Classify on load; origin investigation separate. |
-| Git repo not yet created | **Medium** | Canonical spec not under version control. Risk of divergence. |
-| `cyl_qty_balance_by_sku` JSONB at scale | **Medium** | GIN index strategy undefined. No performance baseline established. |
+| Git repo not yet created | **Closed** | Initialized and committed as version v2.3.1/v2.4.0. Spec under version control. |
+| `cyl_qty_balance_by_sku` JSONB at scale | **Closed** | Resolved in v2.4.0. Replaced JSONB with normalized `invoice_cyl_qty` table. |
 | PMT component selection UX (mixed invoices) | **Medium** | Spec locked; UI interaction pattern not yet designed. |
 | R1.00 rounding threshold | **Low** | Currently a fixed constant. Should be per-account configurable. |
 | Cross-period allocation rules | **Low** | Deferred post-MVP. Not specified. |
@@ -269,12 +269,12 @@ Flags are persistent, operator-driven, never inferred from historical behaviour.
 2. **[BLOCKER] Audit Findings #1, #2, #3 from Session B (ChatGPT PRD session)**
    Retrieve the original ChatGPT session transcript. Map Findings #1/#2/#3 against v2.3.1 spec. Apply surgical corrections if needed before implementation begins.
 
-3. **[ARCHITECTURAL] Create Git repository and commit canonical spec**
-   Repo: `LPG Stock Recon`. File: `docs/LSR5_Business_Rules_Spec.html` (v2.3.1). Enable GitHub Pages.
+3. **[ARCHITECTURAL] Create Git repository and commit canonical spec [COMPLETED]**
+   Staged and committed v2.3.1, v2.3.2, and v2.4.0 specs. Working tree clean.
 
 4. **[IMPLEMENTATION] Build data schemas**
-   Required tables: `invoice_sub_ledger`, `allocation_record`, `session`, `customer_config`, `exception_queue`, `classification_table`, `customer_credit_pool`.
-   GIN index strategy for `cyl_qty_balance_by_sku` must be defined before schema is committed.
+   Required tables: `invoice_sub_ledger`, `invoice_cyl_qty`, `allocation_record`, `session`, `customer_config`, `exception_queue`, `classification_table`, `customer_credit_pool`.
+   Standard B-tree unique index on `(invoice_id, sku)` in `invoice_cyl_qty` replaces the old GIN index strategy.
 
 5. **[IMPLEMENTATION] Session load pipeline (9-step sequence per §17 of spec)**
    Includes: ERP ingestion, sub-ledger seeding from detail lines, DTRX payment ingestion, zero-value CRN filtering, Bank UD classification, exception routing.
