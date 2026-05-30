@@ -119,7 +119,11 @@ export class ERPImportEngine {
         if (!s) return null;
         try {
             const d = parse(s.trim(), 'dd/MM/yyyy', new Date());
-            return d.toISOString().split('T')[0];
+            if (isNaN(d.getTime())) return null;
+            const year = d.getFullYear();
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
         } catch {
             return null;
         }

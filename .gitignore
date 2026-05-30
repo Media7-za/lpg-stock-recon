@@ -28,3 +28,9 @@ prisma/*.db-journal
 *.sln
 *.sw?
 
+# Local Python Environments
+.venv_fam/
+
+# Temporary analysis & scratch scripts
+scratch/
+supabase/.temp/
