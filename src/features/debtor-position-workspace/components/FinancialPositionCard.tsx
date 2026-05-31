@@ -35,8 +35,6 @@ export function FinancialPositionCard({
   erpStatedBalance,
   erpVariance,
 }: FinancialPositionCardProps) {
-  const erpVarianceHighlight = erpVariance === 0 ? 'muted' : 'amber';
-
   return (
     <div className="bg-surface rounded-xl border border-border p-5">
       <h2 className="text-xs font-black uppercase tracking-widest text-text-secondary mb-4">Financial Position</h2>

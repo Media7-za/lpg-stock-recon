@@ -9,6 +9,7 @@ import DataHub from './components/dashboard/DataHub';
 import AuditDashboard from './components/dashboard/AuditDashboard';
 import DispatchDashboard from './components/dispatch/DispatchDashboard';
 import ReconciliationWorkspace from './components/reconciliation/ReconciliationWorkspace';
+import { DebtorListView, DebtorWorkspacePage } from './features/debtor-position-workspace';
 import { useAuth, UserRole } from './hooks/useAuth';
 import { Navigate } from 'react-router-dom';
 
@@ -69,6 +70,16 @@ function App() {
                 <Route path="/debtors-recon/:accountNo" element={
                   <ProtectedRoute allowedRoles={['Depot Manager', 'Invoice Clerk']}>
                     <ReconciliationWorkspace />
+                  </ProtectedRoute>
+                } />
+                <Route path="/debtors" element={
+                  <ProtectedRoute allowedRoles={['Depot Manager', 'Invoice Clerk']}>
+                    <DebtorListView />
+                  </ProtectedRoute>
+                } />
+                <Route path="/debtors/:debtorCode" element={
+                  <ProtectedRoute allowedRoles={['Depot Manager', 'Invoice Clerk']}>
+                    <DebtorWorkspacePage />
                   </ProtectedRoute>
                 } />
               </Routes>
