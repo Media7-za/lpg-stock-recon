@@ -134,14 +134,35 @@
 ---
 
 <!-- INTERNAL_ONLY_START -->
-## 🧮 Final Reconciliation
+<!-- DEBTOR_POSITION_WORKSPACE_START -->
 
-*   **Combined Account Balance:** R23,443.04 Debit
-*   **ERP Statement Balance (JEN001.TXT):** R23,443.04 Debit
-*   **Variance:** R0.00 (Perfect Match)
+## Debtor Position Summary
 
-### 📊 Component Breakdown
-*   **CYL Deposit Debt (Net Cylinder Financial Exposure):** R2,932.50 Debit
-*   **Pure LPG Gas Balance (Gas Portion Only):** R20,510.54 Debit
-*   **Total Reconciled Balance:** R23,443.04 Debit
+### 1. Financial Position
+
+| Component | Amount |
+|---|---:|
+| LPG Gas Debt | R20,510.54 |
+| Cylinder Financial Balance | R2,932.50 |
+| **Total Debtor Balance** | **R23,443.04** |
+
+### 2. Custody Position
+
+| SKU | Net Returnable Qty | Deposit Rate | Custody Exposure |
+|---|---:|---:|---:|
+| 19kg | 2 | R690.00 | R1,380.00 |
+| 9kg | 3 | R517.50 | R1,552.50 |
+| **Total** | **5** | — | **R2,932.50** |
+
+### 3. Reconciliation Position
+
+| Check | Financial | Custody | Variance |
+|---|---:|---:|---:|
+| Cylinder Position | R2,932.50 | R2,932.50 | R0.00 |
+
+**ERP Combined Balance:** R23,443.04  
+**Reconstructed Balance:** R23,443.04  
+**Variance:** R0.00
+
+<!-- DEBTOR_POSITION_WORKSPACE_END -->
 <!-- INTERNAL_ONLY_END -->

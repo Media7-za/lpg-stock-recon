@@ -159,3 +159,29 @@ def is_cyl_row(customer_bank_ref: str) -> bool:
 5. **Apply Rule 8b** (intraday sort) **after** stripping so the sort operates only on the clean gas rows.
 
 **Relationship to Rule 10:** Rule 10 governs the Supabase / database layer (zeroing `x.1` SKU financials). Rule 11 governs the **CSV Ground Truth layer** (stripping entire `-EMPTY` documents from the flat text export). Both rules achieve the same business objective — isolating gas debt from cylinder deposit noise — but at different data layers. Both must be applied independently.
+
+## 12. Debtor Position Workspace Doctrine
+**Problem:** A debtor clerk is managing three truths simultaneously:
+1.  **Money**: Financial debt (Gas Debt vs Cylinder Financial Balance).
+2.  **Stock/Custody**: Physical cylinders outstanding (asset tracking).
+3.  **Reconciliation**: Verification that the financial cylinder balance matches the custody cylinder value.
+
+**Rule:** The Internal Audit View of any statement must present these three positions as first-class citizens in a 3-section layout:
+1.  **Financial Position**: Surfaces `LPG Gas Debt`, `Cylinder Financial Balance`, and the combined `Total Debtor Balance` (which matches the ERP).
+2.  **Custody Position**: Surfaces outstanding cylinder quantities by SKU (e.g. 19kg, 9kg) and calculates the `Total Deposit Exposure` based on standard rates.
+3.  **Reconciliation Position**: Surfaces `Cylinder Financial Balance` and `Cylinder Custody Exposure` (Total Deposit Exposure) and calculates the `Cylinder Variance`. A non-zero variance indicates a data anomaly or allocation error that requires manual investigation.
+
+**Mathematical Model:**
+```typescript
+type DebtorPosition = {
+  gasDebt: number
+  cylinderFinancialBalance: number
+  cylinderCustodyExposure: number
+  cylinderVariance: number
+  totalDebtorBalance: number
+}
+```
+Where:
+- `cylinderVariance = cylinderFinancialBalance - cylinderCustodyExposure`
+- `totalDebtorBalance = gasDebt + cylinderFinancialBalance`
+

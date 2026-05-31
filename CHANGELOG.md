@@ -43,8 +43,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Rebuilt `JEN001` statement baseline (v4) under CYL Settlement Allocation Doctrine.
 - Created `JEN001_BASELINE_v4.md`, `JEN001_Statement_Account_v4.md`, and `JEN001_v3_to_v4_CHANGELOG.md` reports.
 - Corrected opening custody and financial balances for `9.1` and `19.1` cylinders based on historical payments/settlements.
-- Created shared markdown-to-HTML statement generator utility `analysis/debtors/shared/scripts/export_to_html.py`.
-- Generated dual-view browser statement reports for `JEN001` v4 (`JEN001_Statement_Account_v4.html`, `JEN001_Statement_Account_v4_Internal.html`, and `JEN001_Statement_Account_v4_Customer.html`) using comment-based stripping (`<!-- INTERNAL_ONLY_START -->` / `<!-- INTERNAL_ONLY_END -->`).
+- Implemented the 3-section **Debtor Position Workspace** (Financial, Custody, and Reconciliation Positions) in [JEN001_Statement_Account_v4.md](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/JEN001/reports/JEN001_Statement_Account_v4.md).
+- Created shared markdown-to-HTML statement generator utility [export_to_html.py](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/shared/scripts/export_to_html.py).
+- Generated dual-view browser statement reports for `JEN001` v4 (`JEN001_Statement_Account_v4.html`, `JEN001_Statement_Account_v4_Internal.html`, and `JEN001_Statement_Account_v4_Customer.html`) using explicit comment-based stripping (`<!-- INTERNAL_ONLY_START -->` / `<!-- INTERNAL_ONLY_END -->` and `<!-- DEBTOR_POSITION_WORKSPACE_START -->` / `<!-- DEBTOR_POSITION_WORKSPACE_END -->`).
 
 
 

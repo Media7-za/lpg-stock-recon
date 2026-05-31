@@ -140,14 +140,33 @@ def enhance_html(html_content, is_internal=True):
     html_content = html_content.replace("</p>\n</blockquote>", "</div>")
     html_content = html_content.replace("</blockquote>", "</div>")
     
-    # Wrap Final Reconciliation
-    recon_match = re.search(r'<h2>🧮 Final Reconciliation</h2>', html_content)
-    if recon_match:
-        html_content = html_content.replace(
-            recon_match.group(0),
-            '<div class="reconciliation-card"><h2>🧮 Final Reconciliation</h2>'
+    # Wrap Debtor Position Workspace block
+    workspace_match = re.search(
+        r'(?:<p>)?(?:<!--|&lt;!--)\s*DEBTOR_POSITION_WORKSPACE_START\s*(?:-->|--&gt;)(?:</p>)?(.*?)(?:<p>)?(?:<!--|&lt;!--)\s*DEBTOR_POSITION_WORKSPACE_END\s*(?:-->|--&gt;)(?:</p>)?',
+        html_content,
+        re.DOTALL | re.IGNORECASE
+    )
+    if workspace_match:
+        workspace_inner = workspace_match.group(1)
+        
+        # Turn each H3 sub-section into a nested card
+        processed_inner = re.sub(
+            r'<h3>(\d\.\s+.*?)</h3>',
+            r'</div><div class="position-card"><h3>\1</h3>',
+            workspace_inner
         )
-        html_content += "\n</div>"
+        
+        # Wrap the whole block in workspace-card, close the last position-card, and fix the first divider boundary
+        wrapped_block = f"""
+        <div class="workspace-card">
+            {processed_inner}
+        </div>
+        </div>
+        """
+        wrapped_block = wrapped_block.replace('</div><div class="position-card">', '<div class="position-card">', 1)
+        
+        # Replace the original block (including comments) in html_content
+        html_content = html_content.replace(workspace_match.group(0), wrapped_block)
         
     return html_content
 
@@ -209,6 +228,55 @@ def build_full_html(enhanced_content, is_internal=True):
             background-color: #ecfdf5;
             color: #10b981;
             border: 1px solid #6ee7b7;
+        }}
+        
+        /* Debtor Position Workspace Card */
+        .workspace-card {{
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 35px;
+            margin-bottom: 35px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }}
+        
+        .workspace-card h2 {{
+            color: #1e3a8a;
+            border-bottom: 2px solid #cbd5e1;
+            margin-top: 0;
+            padding-bottom: 8px;
+            font-size: 14pt;
+        }}
+        
+        .position-card {{
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-top: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+        }}
+        
+        .position-card h3 {{
+            color: #1e293b;
+            border-bottom: none;
+            margin-top: 0;
+            margin-bottom: 12px;
+            font-size: 11pt;
+            font-weight: 600;
+        }}
+        
+        .position-card table {{
+            margin-top: 5px;
+            margin-bottom: 5px;
+            box-shadow: none;
+            border: 1px solid #f1f5f9;
+        }}
+        
+        .position-card tr:nth-child(even) {{
+            background-color: #fafbfc;
         }}
         
         /* Header Section */
