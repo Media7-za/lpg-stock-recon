@@ -2775,6 +2775,24 @@ During the reconstruction of JIM001, we verified that the account contains large
 |---|---:|---:|---:|
 | Cylinder Position | R-6.50 | R26,220.00 | R-26,226.50 |
 
+### 4. LPG Payment Allocation Position (Internal Only)
+
+| Metric | Value |
+|---|---:|
+| Total Invoice Months Reviewed | 79 |
+| Total LPG Invoices Reviewed | 491 |
+| Total Payments Reviewed (Unique) | 84 |
+| Total Payments Allocated | R963,479.61 |
+| Total LPG Invoice Value Allocated | R963,479.61 |
+| Remaining Unpaid LPG Invoice Balance | R146,857.72 |
+| Total Unallocated Payment Balance | R0.00 |
+| Residual ERP Variance | R55.91 |
+| Oldest Unpaid LPG Invoice Month | July 2025 |
+| Most Recent Unpaid LPG Invoice Month | May 2026 |
+| Number of Fully Settled Months | 68 |
+| Number of Partially Settled Months | 1 |
+| Number of Unpaid Months | 10 |
+
 **ERP Combined Balance:** R146,907.13  
 **Reconstructed Balance:** R146,851.22  
 **Variance:** R55.91

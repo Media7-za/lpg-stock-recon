@@ -40,6 +40,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Implemented **JIM001 v4 Phase 2 LPG-only payment allocation**:
+  - Added LPG-only `Calendar-Month Batch Payment Allocation Register` to [JIM001_BASELINE_v4.md](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/JIM001/reports/JIM001_BASELINE_v4.md) identifying 68 fully settled months, 1 partially settled month (July 2025: R5,400.84 allocated, R13,379.29 unpaid), and 10 completely unpaid months (August 2025 – May 2026).
+  - Added `Unallocated Invoice Register (Remaining Unpaid LPG Invoices)` tracking the 38 open LPG invoices totaling `R146,857.72` remaining unpaid.
+  - Added `Unallocated Payment Register` showing all payments were fully matched chronologically (`R0.00` unallocated payments).
+  - Added internal-only payment allocation position block to `Debtor Position Workspace` in [JIM001_Statement_Account_v4.md](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/JIM001/reports/JIM001_Statement_Account_v4.md).
+  - Added a doctrine note:
+    > Batch-paying debtors require calendar-month payment allocation analysis in addition to invoice/payment ledger reconstruction.
 - Rebuilt `JIM001` statement baseline (v4) under Cylinder Allocation and Debtor Position Workspace doctrines as a complete lifetime reconstruction (3 December 2018 to 31 May 2026) starting from a clean R0.00 opening balance, using corrected split payment consolidation and CN double-taxation corrections (reconstructed balance R146,851.22, corrected ERP Stated Balance R146,907.13, residual unexplained ERP variance of R55.91).
 - Disclosed the original `R284,760.09` database deduplication defect as an ERP exception in `JIM001_BASELINE_v4.md` and `JIM001_Statement_Account_v4.md`.
 - Surfaced Cylinder Custody Exposure of `R26,220.00` and Cylinder Variance of `-R26,226.50` separately in the Debtor Position Workspace.
