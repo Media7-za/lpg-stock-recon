@@ -1,0 +1,61 @@
+{
+  "debtorCode": "TAN001",
+  "debtorName": "Tanya Lehman",
+  "period": { "from": "2026-01-01", "to": "2026-05-31" },
+  "version": "v4",
+  "status": "erp_exception",
+  "lastGeneratedAt": "2026-05-31T00:00:00+02:00",
+  "financialPosition": {
+    "lpgGasDebt": 95111.42,
+    "cylinderFinancialBalance": -862.50,
+    "totalDebtorBalance": 94248.92,
+    "erpStatedBalance": 96889.49,
+    "erpVariance": 2640.57
+  },
+  "custodyPosition": {
+    "totalCustodyExposure": 1667.50,
+    "lines": [
+      { "sku": "19.1", "label": "19kg",         "qty": -4, "depositRate": 690.00,  "exposure": -2760.00 },
+      { "sku": "9.1",  "label": "9kg",          "qty": 13, "depositRate": 517.50,  "exposure": 6727.50 },
+      { "sku": "D.1",  "label": "Double-Valve", "qty": 2,  "depositRate": 1150.00, "exposure": 2300.00 },
+      { "sku": "S.1",  "label": "Single-Valve", "qty": -4, "depositRate": 1150.00, "exposure": -4600.00 }
+    ]
+  },
+  "reconciliationPosition": {
+    "cylinderVariance": -2530.00,
+    "erpVariance": 2640.57,
+    "exceptions": [
+      {
+        "type": "ERP_HEADER_VARIANCE",
+        "severity": "warning",
+        "title": "ERP stated balance differs from reconstructed balance",
+        "description": "ERP stated balance differs from reconstructed balance due to disclosed header-layer and credit-note treatment exceptions."
+      }
+    ]
+  },
+  "allocationEvidence": [
+    {
+      "event": "Opening Balances",
+      "date": "Pre-Jan 2026",
+      "classification": "Assumed",
+      "evidenceSource": "SYSTEM_MIGRATION_CARRIED",
+      "confidence": "Medium",
+      "summary": "Reconciled balances carried forward from historical audit prior to 1 January 2026."
+    },
+    {
+      "event": "Period Movements",
+      "date": "Jan-May 2026",
+      "classification": "Probable",
+      "evidenceSource": "FULL_INVOICE_SETTLEMENT",
+      "confidence": "High",
+      "summary": "Monthly pool payments settled period cylinder invoices and returns in full."
+    }
+  ],
+  "artifacts": {
+    "statementMarkdown": "analysis/debtors/TAN001/reports/TAN001_Statement_Account_v4.md",
+    "baselineMarkdown": "analysis/debtors/TAN001/reports/TAN001_BASELINE_v4.md",
+    "defaultHtml": "analysis/debtors/TAN001/reports/TAN001_Statement_Account_v4.html",
+    "internalHtml": "analysis/debtors/TAN001/reports/TAN001_Statement_Account_v4_Internal.html",
+    "customerHtml": "analysis/debtors/TAN001/reports/TAN001_Statement_Account_v4_Customer.html"
+  }
+}

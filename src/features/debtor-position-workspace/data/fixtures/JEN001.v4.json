@@ -1,0 +1,52 @@
+{
+  "debtorCode": "JEN001",
+  "debtorName": "Spoon Eatery",
+  "period": { "from": "2026-01-01", "to": "2026-05-31" },
+  "version": "v4",
+  "status": "clean",
+  "lastGeneratedAt": "2026-05-31T00:00:00+02:00",
+  "financialPosition": {
+    "lpgGasDebt": 20510.54,
+    "cylinderFinancialBalance": 2932.50,
+    "totalDebtorBalance": 23443.04,
+    "erpStatedBalance": 23443.04,
+    "erpVariance": 0.00
+  },
+  "custodyPosition": {
+    "totalCustodyExposure": 2932.50,
+    "lines": [
+      { "sku": "19.1", "label": "19kg", "qty": 2, "depositRate": 690.00, "exposure": 1380.00 },
+      { "sku": "9.1",  "label": "9kg",  "qty": 3, "depositRate": 517.50, "exposure": 1552.50 }
+    ]
+  },
+  "reconciliationPosition": {
+    "cylinderVariance": 0.00,
+    "erpVariance": 0.00,
+    "exceptions": []
+  },
+  "allocationEvidence": [
+    {
+      "event": "Payment 00029693",
+      "date": "2024-03-07",
+      "classification": "Confirmed",
+      "evidenceSource": "EXPLICIT_ALLOCATION",
+      "confidence": "High",
+      "summary": "R3,588.00 allocated to 6 cylinders of 19.1 at R598.00 each."
+    },
+    {
+      "event": "Payment 00029694",
+      "date": "2024-03-22",
+      "classification": "Confirmed",
+      "evidenceSource": "EXPLICIT_ALLOCATION",
+      "confidence": "High",
+      "summary": "R3,588.00 allocated to 6 cylinders of 19.1 at R598.00 each."
+    }
+  ],
+  "artifacts": {
+    "statementMarkdown": "analysis/debtors/JEN001/reports/JEN001_Statement_Account_v4.md",
+    "baselineMarkdown": "analysis/debtors/JEN001/reports/JEN001_BASELINE_v4.md",
+    "defaultHtml": "analysis/debtors/JEN001/reports/JEN001_Statement_Account_v4.html",
+    "internalHtml": "analysis/debtors/JEN001/reports/JEN001_Statement_Account_v4_Internal.html",
+    "customerHtml": "analysis/debtors/JEN001/reports/JEN001_Statement_Account_v4_Customer.html"
+  }
+}
