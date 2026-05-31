@@ -40,6 +40,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Rebuilt `FAM000` consolidated statement baseline (v4) under Cylinder Allocation and Debtor Position Workspace doctrines.
+- Created `FAM000_BASELINE_v4.md` and `FAM000_Statement_Account_v4.md` reports.
+- Corrected the cylinder custody exposure and variance metrics in the Debtor Position Workspace (surfacing Cylinder Variance of `+R7,532.50` separately from the ERP reconciled balance).
+- Generated dual-view browser statement reports for `FAM000` v4 (`FAM000_Statement_Account_v4.html`, `FAM000_Statement_Account_v4_Internal.html`, and `FAM000_Statement_Account_v4_Customer.html`) using the shared `export_to_html.py` converter.
 - Rebuilt `JEN001` statement baseline (v4) under CYL Settlement Allocation Doctrine.
 - Created `JEN001_BASELINE_v4.md`, `JEN001_Statement_Account_v4.md`, and `JEN001_v3_to_v4_CHANGELOG.md` reports.
 - Corrected opening custody and financial balances for `9.1` and `19.1` cylinders based on historical payments/settlements.

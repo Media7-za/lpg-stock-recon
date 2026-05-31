@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Midlands Petroleum - Statement of Account</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-size: 9.5pt;
+            line-height: 1.6;
+            color: #334155;
+            background-color: #f1f5f9;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .statement-container {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+            max-width: 850px;
+            margin: 20px auto;
+            padding: 40px;
+            position: relative;
+            box-sizing: border-box;
+        }
+        
+        /* View Badge */
+        .view-badge {
+            position: absolute;
+            top: 15px;
+            right: 40px;
+            font-size: 7.5pt;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 3px 8px;
+            border-radius: 4px;
+            pointer-events: none;
+        }
+        
+        .internal-badge {
+            background-color: #fee2e2;
+            color: #ef4444;
+            border: 1px solid #fca5a5;
+        }
+        
+        .customer-badge {
+            background-color: #ecfdf5;
+            color: #10b981;
+            border: 1px solid #6ee7b7;
+        }
+        
+        /* Debtor Position Workspace Card */
+        .workspace-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 35px;
+            margin-bottom: 35px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+        
+        .workspace-card h2 {
+            color: #1e3a8a;
+            border-bottom: 2px solid #cbd5e1;
+            margin-top: 0;
+            padding-bottom: 8px;
+            font-size: 14pt;
+        }
+        
+        .position-card {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-top: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+        }
+        
+        .position-card h3 {
+            color: #1e293b;
+            border-bottom: none;
+            margin-top: 0;
+            margin-bottom: 12px;
+            font-size: 11pt;
+            font-weight: 600;
+        }
+        
+        .position-card table {
+            margin-top: 5px;
+            margin-bottom: 5px;
+            box-shadow: none;
+            border: 1px solid #f1f5f9;
+        }
+        
+        .position-card tr:nth-child(even) {
+            background-color: #fafbfc;
+        }
+        
+        /* Header Section */
+        .statement-header {
+            margin-bottom: 30px;
+            border-bottom: 3px solid #1e3a8a;
+            padding-bottom: 20px;
+        }
+        
+        .header-main {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .brand {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo-icon {
+            font-size: 28pt;
+            margin-right: 12px;
+        }
+        
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .brand-name {
+            font-family: 'Outfit', sans-serif;
+            font-size: 18pt;
+            font-weight: 700;
+            color: #0f172a;
+            line-height: 1.1;
+        }
+        
+        .brand-sub {
+            font-size: 8pt;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 2px;
+            font-weight: 600;
+        }
+        
+        .doc-title {
+            text-align: right;
+        }
+        
+        .doc-title h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 15pt;
+            font-weight: 700;
+            color: #1e3a8a;
+            margin: 0;
+            letter-spacing: 0.02em;
+        }
+        
+        .doc-title .subtitle {
+            font-size: 8.5pt;
+            color: #475569;
+            font-weight: 500;
+        }
+        
+        /* Header Metadata Section */
+        .meta-section {
+            margin-top: 15px;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 12px 18px;
+        }
+        
+        .meta-table {
+            width: 100%;
+            border-collapse: collapse;
+            border: none !important;
+            margin: 0 !important;
+            box-shadow: none !important;
+            border-radius: 0 !important;
+        }
+        
+        .meta-table tr {
+            background-color: transparent !important;
+        }
+        
+        .meta-table tr:hover {
+            background-color: transparent !important;
+        }
+        
+        .meta-table td {
+            padding: 5px 8px !important;
+            border: none !important;
+            font-size: 8.5pt !important;
+            color: #334155 !important;
+        }
+        
+        .meta-table td.meta-label {
+            font-weight: 600 !important;
+            color: #64748b !important;
+            width: 18%;
+            text-align: left;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .meta-table td.meta-value {
+            color: #0f172a !important;
+            font-weight: 500 !important;
+            width: 32%;
+            text-align: left;
+        }
+        
+        h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 13pt;
+            font-weight: 600;
+            color: #1e3a8a;
+            border-bottom: 1.5px solid #e2e8f0;
+            padding-bottom: 6px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        
+        h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 11pt;
+            font-weight: 600;
+            color: #0f172a;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        p {
+            margin-top: 0;
+            margin-bottom: 12px;
+            color: #475569;
+        }
+        
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 10px;
+            margin-bottom: 25px;
+            font-size: 8.5pt;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+        
+        th {
+            background-color: #1e293b;
+            color: #ffffff;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 7.5pt;
+            letter-spacing: 0.05em;
+            padding: 10px 12px;
+            border: none;
+            text-align: left;
+        }
+        
+        td {
+            padding: 8px 12px;
+            border-bottom: 1px solid #f1f5f9;
+            color: #334155;
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+        
+        tr:hover td {
+            background-color: #f1f5f9;
+            transition: background-color 0.15s ease;
+        }
+        
+        /* Bolding dynamic total/balance rows */
+        tr:has(strong) {
+            font-weight: 600;
+            background-color: #f1f5f9 !important;
+        }
+        
+        tr:has(strong) td {
+            color: #0f172a;
+        }
+        
+        /* Lists */
+        ul {
+            margin-top: 5px;
+            margin-bottom: 15px;
+            padding-left: 20px;
+        }
+        
+        li {
+            margin-bottom: 6px;
+            color: #475569;
+        }
+        
+        /* Horizontal Rule */
+        hr {
+            border: 0;
+            border-top: 1px solid #cbd5e1;
+            margin: 25px 0;
+        }
+        
+        /* Alert Boxes */
+        .alert-box {
+            padding: 12px 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+            font-size: 9.5pt;
+        }
+        .alert-box strong {
+            font-weight: 600;
+            margin-right: 5px;
+        }
+        .alert-box.important {
+            background-color: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            color: #1e40af;
+        }
+        .alert-box.tip {
+            background-color: #f0fdf4;
+            border-left: 4px solid #22c55e;
+            color: #166534;
+        }
+        .alert-box.warning {
+            background-color: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            color: #92400e;
+        }
+        .alert-box.note {
+            background-color: #f8fafc;
+            border-left: 4px solid #64748b;
+            color: #334155;
+        }
+        .alert-box.caution {
+            background-color: #fef2f2;
+            border-left: 4px solid #ef4444;
+            color: #991b1b;
+        }
+        
+        /* Reconciliation Section Styling */
+        .reconciliation-card {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            border: 1px solid #bbf7d0;
+            border-radius: 8px;
+            padding: 18px 22px;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .reconciliation-card h2 {
+            color: #166534;
+            border-bottom: 1px solid #bbf7d0;
+            margin-top: 0;
+            padding-bottom: 6px;
+        }
+        
+        .reconciliation-card ul {
+            padding-left: 15px;
+            margin-bottom: 10px;
+        }
+        
+        .reconciliation-card li {
+            color: #14532d;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .reconciliation-card li strong {
+            color: #166534;
+        }
+        
+        .reconciliation-card h3 {
+            color: #15803d;
+            border-bottom: none;
+            margin-top: 15px;
+        }
+        
+        /* Page Footer styling */
+        .page-footer {
+            text-align: center;
+            font-size: 7.5pt;
+            color: #94a3b8;
+            border-top: 1px solid #cbd5e1;
+            padding-top: 15px;
+            margin-top: 40px;
+        }
+        
+        /* Responsive Print Layout Styles */
+        @media print {
+            body {
+                background-color: #ffffff;
+                padding: 0;
+                font-size: 9pt;
+            }
+            .statement-container {
+                border: none;
+                box-shadow: none;
+                padding: 0;
+                margin: 0;
+                max-width: 100%;
+            }
+            .view-badge {
+                display: none;
+            }
+            @page {
+                size: A4;
+                margin: 15mm;
+            }
+            tr:hover td {
+                background-color: transparent !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="statement-container">
+        <span class="view-badge customer-badge">Customer View</span>
+        
+    <div class="statement-header">
+        <div class="header-main">
+            <div class="brand">
+                <div class="logo-icon">🔥</div>
+                <div class="logo-text">
+                    <span class="brand-name">Midlands Petroleum</span>
+                    <span class="brand-sub">LPG Stock Reconciliation</span>
+                </div>
+            </div>
+            <div class="doc-title">
+                <h1>STATEMENT OF ACCOUNT: FAMILY GAS (FAM000 / FAM002) - VERSION 4 (CANONICAL SETTLEMENT ALLOCATION DOCTRINE)</h1>
+                <span class="subtitle">Combined LPG Gas &amp; Cylinder Asset Tracker</span>
+            </div>
+        </div>
+        
+        <div class="meta-section">
+            <table class="meta-table">
+                <tr>
+                    <td class="meta-label">Customer:</td>
+                    <td class="meta-value"><strong>Family Gas (FAM000 / FAM002)</strong></td>
+                    <td class="meta-label">Opening Bal B/F:</td>
+                    <td class="meta-value"><strong>R61,626.77</strong> <span style="font-size: 7.5pt; color: #64748b;">(ERP verified — source: Consolidated Audit / Statement)</span></td>
+                </tr>
+                <tr>
+                    <td class="meta-label">Period:</td>
+                    <td class="meta-value">1 March 2026 → 31 May 2026</td>
+                    <td class="meta-label">Closing Balance:</td>
+                    <td class="meta-value"><strong>N/A</strong> <span style="font-size: 7.5pt; color: #64748b;">(LPG & Cylinder Outstanding)</span></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    
+
+<hr>
+<h2>Part 1: LPG Gas Statement</h2>
+<p><em>Tracks all gas invoiced and all payments received since 1 March 2026. The Balance B/F is the true reconciled financial balance as of 28 February 2026.</em></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Date</th>
+<th style="text-align:left">Entry Type</th>
+<th style="text-align:left">Doc #</th>
+<th style="text-align:right">Amount (R)</th>
+<th style="text-align:right">Running Balance (R)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>28 Feb 2026</strong></td>
+<td style="text-align:left"><strong>Balance B/F</strong></td>
+<td style="text-align:left">—</td>
+<td style="text-align:right"></td>
+<td style="text-align:right"><strong>61,626.77</strong></td>
+</tr>
+<tr>
+<td style="text-align:left">02 Mar 2026</td>
+<td style="text-align:left">Payment</td>
+<td style="text-align:left">43498</td>
+<td style="text-align:right">-18,938.31</td>
+<td style="text-align:right">42,688.46</td>
+</tr>
+<tr>
+<td style="text-align:left">06 Mar 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">49619 / 49620</td>
+<td style="text-align:right">11,156.55</td>
+<td style="text-align:right">53,845.01</td>
+</tr>
+<tr>
+<td style="text-align:left">08 Mar 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14559 / 14560</td>
+<td style="text-align:right">-863.74</td>
+<td style="text-align:right">52,981.27</td>
+</tr>
+<tr>
+<td style="text-align:left">08 Mar 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">49626 / 49627 / 49628 / 49629</td>
+<td style="text-align:right">8,925.17</td>
+<td style="text-align:right">61,906.44</td>
+</tr>
+<tr>
+<td style="text-align:left">09 Mar 2026</td>
+<td style="text-align:left">Payment</td>
+<td style="text-align:left">43590 / 43590 / 43590 / 43590</td>
+<td style="text-align:right">-20,343.00</td>
+<td style="text-align:right">41,563.44</td>
+</tr>
+<tr>
+<td style="text-align:left">09 Mar 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">49668 / 49669</td>
+<td style="text-align:right">13,507.79</td>
+<td style="text-align:right">55,071.23</td>
+</tr>
+<tr>
+<td style="text-align:left">11 Mar 2026</td>
+<td style="text-align:left">Payment</td>
+<td style="text-align:left">43612</td>
+<td style="text-align:right">-11,156.50</td>
+<td style="text-align:right">43,914.73</td>
+</tr>
+<tr>
+<td style="text-align:left">13 Mar 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">49746</td>
+<td style="text-align:right">12,955.92</td>
+<td style="text-align:right">56,870.65</td>
+</tr>
+<tr>
+<td style="text-align:left">16 Mar 2026</td>
+<td style="text-align:left">Payment</td>
+<td style="text-align:left">43671 / 43671</td>
+<td style="text-align:right">-12,957.00</td>
+<td style="text-align:right">43,913.65</td>
+</tr>
+<tr>
+<td style="text-align:left">18 Mar 2026</td>
+<td style="text-align:left">Payment</td>
+<td style="text-align:left">43702 / 43702</td>
+<td style="text-align:right">-8,062.00</td>
+<td style="text-align:right">35,851.65</td>
+</tr>
+<tr>
+<td style="text-align:left">18 Mar 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">49832 / 49833</td>
+<td style="text-align:right">16,866.68</td>
+<td style="text-align:right">52,718.33</td>
+</tr>
+<tr>
+<td style="text-align:left">22 Mar 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">49871 / 49872</td>
+<td style="text-align:right">18,402.21</td>
+<td style="text-align:right">71,120.54</td>
+</tr>
+<tr>
+<td style="text-align:left">23 Mar 2026</td>
+<td style="text-align:left">Payment</td>
+<td style="text-align:left">43741 / 43741</td>
+<td style="text-align:right">-21,600.00</td>
+<td style="text-align:right">49,520.54</td>
+</tr>
+<tr>
+<td style="text-align:left">28 Mar 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">49991</td>
+<td style="text-align:right">25,312.05</td>
+<td style="text-align:right">74,832.59</td>
+</tr>
+<tr>
+<td style="text-align:left">30 Mar 2026</td>
+<td style="text-align:left">Payment</td>
+<td style="text-align:left">43825 / 43826</td>
+<td style="text-align:right">-25,312.00</td>
+<td style="text-align:right">49,520.59</td>
+</tr>
+<tr>
+<td style="text-align:left">06 Apr 2026</td>
+<td style="text-align:left">Payment</td>
+<td style="text-align:left">43891 / 43891 / 43891 / 43892</td>
+<td style="text-align:right">-37,200.00</td>
+<td style="text-align:right">12,320.59</td>
+</tr>
+<tr>
+<td style="text-align:left">06 Apr 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50102 / 50103 / 50111 / 50112</td>
+<td style="text-align:right">40,925.01</td>
+<td style="text-align:right">53,245.60</td>
+</tr>
+<tr>
+<td style="text-align:left">09 Apr 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50199 / 50200</td>
+<td style="text-align:right">8,920.83</td>
+<td style="text-align:right">62,166.43</td>
+</tr>
+<tr>
+<td style="text-align:left">15 Apr 2026</td>
+<td style="text-align:left">Payment</td>
+<td style="text-align:left">44007 / 44007 / 44007 / 44007 / 44007 / 44007 / 44007 / 44007 / 44007</td>
+<td style="text-align:right">-21,000.00</td>
+<td style="text-align:right">41,166.43</td>
+</tr>
+<tr>
+<td style="text-align:left">15 Apr 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50254 / 50255</td>
+<td style="text-align:right">20,059.30</td>
+<td style="text-align:right">61,225.73</td>
+</tr>
+<tr>
+<td style="text-align:left">19 Apr 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50316 / 50317</td>
+<td style="text-align:right">12,096.05</td>
+<td style="text-align:right">73,321.78</td>
+</tr>
+<tr>
+<td style="text-align:left">20 Apr 2026</td>
+<td style="text-align:left">Payment</td>
+<td style="text-align:left">44046 / 44046 / 44046</td>
+<td style="text-align:right">-15,500.00</td>
+<td style="text-align:right">57,821.78</td>
+</tr>
+<tr>
+<td style="text-align:left">20 Apr 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50322 / 50323 / 50324</td>
+<td style="text-align:right">2,394.02</td>
+<td style="text-align:right">60,215.80</td>
+</tr>
+<tr>
+<td style="text-align:left">23 Apr 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50368 / 50369</td>
+<td style="text-align:right">13,078.88</td>
+<td style="text-align:right">73,294.68</td>
+</tr>
+<tr>
+<td style="text-align:left">28 Apr 2026</td>
+<td style="text-align:left">Payment</td>
+<td style="text-align:left">44102 / 44102 / 44102</td>
+<td style="text-align:right">-30,000.00</td>
+<td style="text-align:right">43,294.68</td>
+</tr>
+<tr>
+<td style="text-align:left">28 Apr 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50401 / 50402</td>
+<td style="text-align:right">16,254.09</td>
+<td style="text-align:right">59,548.77</td>
+</tr>
+<tr>
+<td style="text-align:left">30 Apr 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50481 / 50482</td>
+<td style="text-align:right">13,078.88</td>
+<td style="text-align:right">72,627.65</td>
+</tr>
+<tr>
+<td style="text-align:left">04 May 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50498 / 50499</td>
+<td style="text-align:right">13,104.07</td>
+<td style="text-align:right">85,731.72</td>
+</tr>
+<tr>
+<td style="text-align:left">05 May 2026</td>
+<td style="text-align:left">Payment</td>
+<td style="text-align:left">44170 / 44170 / 44170</td>
+<td style="text-align:right">-39,000.00</td>
+<td style="text-align:right">46,731.72</td>
+</tr>
+<tr>
+<td style="text-align:left">05 May 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50526 / 50527</td>
+<td style="text-align:right">17,942.48</td>
+<td style="text-align:right">64,674.20</td>
+</tr>
+<tr>
+<td style="text-align:left">08 May 2026</td>
+<td style="text-align:left">Payment</td>
+<td style="text-align:left">44199 / 44199 / 44199</td>
+<td style="text-align:right">-10,000.00</td>
+<td style="text-align:right">54,674.20</td>
+</tr>
+<tr>
+<td style="text-align:left">10 May 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50610</td>
+<td style="text-align:right">9,772.18</td>
+<td style="text-align:right">64,446.38</td>
+</tr>
+</tbody>
+</table>
+<div class="alert-box important"><strong>IMPORTANT:</strong>
+<strong>Final LPG Gas Balance: R65,389.38 Debit</strong></div>
+<hr>
+<h2>Part 2: Cylinder (CYL) Ledger (Physical Asset Tracker)</h2>
+<p><em>Tracks the physical outstanding cylinder quantities.</em></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Date</th>
+<th style="text-align:left">Entry Type</th>
+<th style="text-align:left">Doc #</th>
+<th style="text-align:right">14kg Qty</th>
+<th style="text-align:right">19kg Qty</th>
+<th style="text-align:right">9kg Qty</th>
+<th style="text-align:right">D.1 Qty</th>
+<th style="text-align:right">S.1 Qty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>28 Feb 2026</strong></td>
+<td style="text-align:left"><strong>Balance B/F</strong></td>
+<td style="text-align:left">—</td>
+<td style="text-align:right"><strong>24</strong></td>
+<td style="text-align:right"><strong>-75</strong></td>
+<td style="text-align:right"><strong>90</strong></td>
+<td style="text-align:right"><strong>-2</strong></td>
+<td style="text-align:right"><strong>8</strong></td>
+</tr>
+<tr>
+<td style="text-align:left">01 Mar 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14518</td>
+<td style="text-align:right">-3</td>
+<td style="text-align:right">-3</td>
+<td style="text-align:right">-20</td>
+<td style="text-align:right">-2</td>
+<td style="text-align:right">-10</td>
+</tr>
+<tr>
+<td style="text-align:left">09 Mar 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">49669</td>
+<td style="text-align:right">+2</td>
+<td style="text-align:right">+1</td>
+<td style="text-align:right">+20</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+7</td>
+</tr>
+<tr>
+<td style="text-align:left">09 Mar 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14571</td>
+<td style="text-align:right">-2</td>
+<td style="text-align:right">-1</td>
+<td style="text-align:right">-20</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-7</td>
+</tr>
+<tr>
+<td style="text-align:left">22 Mar 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">49872</td>
+<td style="text-align:right">+2</td>
+<td style="text-align:right">+1</td>
+<td style="text-align:right">+16</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+12</td>
+</tr>
+<tr>
+<td style="text-align:left">24 Mar 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14641</td>
+<td style="text-align:right">-2</td>
+<td style="text-align:right">-1</td>
+<td style="text-align:right">-16</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-12</td>
+</tr>
+<tr>
+<td style="text-align:left">29 Mar 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">49992</td>
+<td style="text-align:right">+3</td>
+<td style="text-align:right">+5</td>
+<td style="text-align:right">+22</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+15</td>
+</tr>
+<tr>
+<td style="text-align:left">29 Mar 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14682</td>
+<td style="text-align:right">-3</td>
+<td style="text-align:right">-5</td>
+<td style="text-align:right">-21</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-15</td>
+</tr>
+<tr>
+<td style="text-align:left">06 Apr 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50103</td>
+<td style="text-align:right">+2</td>
+<td style="text-align:right">+5</td>
+<td style="text-align:right">+10</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+10</td>
+</tr>
+<tr>
+<td style="text-align:left">06 Apr 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50112</td>
+<td style="text-align:right">+4</td>
+<td style="text-align:right">+2</td>
+<td style="text-align:right">+29</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+12</td>
+</tr>
+<tr>
+<td style="text-align:left">06 Apr 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14715</td>
+<td style="text-align:right">-3</td>
+<td style="text-align:right">-5</td>
+<td style="text-align:right">-22</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-12</td>
+</tr>
+<tr>
+<td style="text-align:left">06 Apr 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14716</td>
+<td style="text-align:right">-2</td>
+<td style="text-align:right">-6</td>
+<td style="text-align:right">-9</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-10</td>
+</tr>
+<tr>
+<td style="text-align:left">09 Apr 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50200</td>
+<td style="text-align:right">+2</td>
+<td style="text-align:right">+2</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+6</td>
+</tr>
+<tr>
+<td style="text-align:left">11 Apr 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14743</td>
+<td style="text-align:right">-2</td>
+<td style="text-align:right">-2</td>
+<td style="text-align:right">-5</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-6</td>
+</tr>
+<tr>
+<td style="text-align:left">15 Apr 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50255</td>
+<td style="text-align:right">+2</td>
+<td style="text-align:right">+3</td>
+<td style="text-align:right">+15</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+12</td>
+</tr>
+<tr>
+<td style="text-align:left">15 Apr 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14764</td>
+<td style="text-align:right">-2</td>
+<td style="text-align:right">-3</td>
+<td style="text-align:right">-15</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-12</td>
+</tr>
+<tr>
+<td style="text-align:left">04 May 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50499</td>
+<td style="text-align:right">+2</td>
+<td style="text-align:right">+8</td>
+<td style="text-align:right">+12</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">04 May 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14845</td>
+<td style="text-align:right">-2</td>
+<td style="text-align:right">-8</td>
+<td style="text-align:right">-12</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">05 May 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50527</td>
+<td style="text-align:right">+5</td>
+<td style="text-align:right">+6</td>
+<td style="text-align:right">+16</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+8</td>
+</tr>
+<tr>
+<td style="text-align:left">05 May 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14859</td>
+<td style="text-align:right">-4</td>
+<td style="text-align:right">-7</td>
+<td style="text-align:right">-16</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-8</td>
+</tr>
+<tr>
+<td style="text-align:left">18 Mar 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">49833</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+1</td>
+<td style="text-align:right">+12</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+12</td>
+</tr>
+<tr>
+<td style="text-align:left">19 Mar 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14627</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-1</td>
+<td style="text-align:right">-12</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-12</td>
+</tr>
+<tr>
+<td style="text-align:left">20 Apr 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50323</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+3</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">20 Apr 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14782</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-3</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">28 Apr 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50402</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+3</td>
+<td style="text-align:right">+12</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+10</td>
+</tr>
+<tr>
+<td style="text-align:left">28 Apr 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14813</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-3</td>
+<td style="text-align:right">-12</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-10</td>
+</tr>
+<tr>
+<td style="text-align:left">06 Mar 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">49620</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+25</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+5</td>
+</tr>
+<tr>
+<td style="text-align:left">06 Mar 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14555</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-25</td>
+<td style="text-align:right">-3</td>
+<td style="text-align:right">-9</td>
+</tr>
+<tr>
+<td style="text-align:left">08 Mar 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">49627</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+4</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">08 Mar 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14560</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-4</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">23 Apr 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50369</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+15</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+8</td>
+</tr>
+<tr>
+<td style="text-align:left">23 Apr 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14804</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-15</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-8</td>
+</tr>
+<tr>
+<td style="text-align:left">30 Apr 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50482</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+15</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+8</td>
+</tr>
+<tr>
+<td style="text-align:left">02 May 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14839</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-15</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-8</td>
+</tr>
+<tr>
+<td style="text-align:left">11 May 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50611</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+10</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+5</td>
+</tr>
+<tr>
+<td style="text-align:left">11 May 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14889</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-10</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-5</td>
+</tr>
+<tr>
+<td style="text-align:left">08 Mar 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">49629</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+7</td>
+</tr>
+<tr>
+<td style="text-align:left">19 Apr 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50317</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+10</td>
+</tr>
+<tr>
+<td style="text-align:left">20 Apr 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14785</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-10</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>TOTAL OUTSTANDING</strong></td>
+<td style="text-align:left">—</td>
+<td style="text-align:left">—</td>
+<td style="text-align:right"><strong>23</strong></td>
+<td style="text-align:right"><strong>-83</strong></td>
+<td style="text-align:right"><strong>74</strong></td>
+<td style="text-align:right"><strong>-7</strong></td>
+<td style="text-align:right"><strong>1</strong></td>
+</tr>
+</tbody>
+</table>
+<div class="alert-box tip"><strong>TIP:</strong>
+<strong>Final Outstanding Cylinders (Custody): 14kg: 23 | 19kg: -83 | 9kg: 74 | D.1: -7 | S.1: 1</strong></div>
+<hr>
+
+        <div class="page-footer">
+            Midlands Petroleum &middot; LPG Stock Reconciliation Statement &middot; Generated dynamically under CYL Settlement Doctrine v4
+        </div>
+    </div>
+</body>
+</html>
