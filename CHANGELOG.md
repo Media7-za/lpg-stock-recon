@@ -46,6 +46,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Implemented the 3-section **Debtor Position Workspace** (Financial, Custody, and Reconciliation Positions) in [JEN001_Statement_Account_v4.md](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/JEN001/reports/JEN001_Statement_Account_v4.md).
 - Created shared markdown-to-HTML statement generator utility [export_to_html.py](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/shared/scripts/export_to_html.py).
 - Generated dual-view browser statement reports for `JEN001` v4 (`JEN001_Statement_Account_v4.html`, `JEN001_Statement_Account_v4_Internal.html`, and `JEN001_Statement_Account_v4_Customer.html`) using explicit comment-based stripping (`<!-- INTERNAL_ONLY_START -->` / `<!-- INTERNAL_ONLY_END -->` and `<!-- DEBTOR_POSITION_WORKSPACE_START -->` / `<!-- DEBTOR_POSITION_WORKSPACE_END -->`).
+- Created shared doctrine documents [DEBTOR_POSITION_WORKSPACE.md](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/shared/docs/DEBTOR_POSITION_WORKSPACE.md) and [ALLOCATION_DOCTRINE.md](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/shared/docs/ALLOCATION_DOCTRINE.md) to define standard debtor positions, models, and payment allocation evidence rules.
 
 
 
