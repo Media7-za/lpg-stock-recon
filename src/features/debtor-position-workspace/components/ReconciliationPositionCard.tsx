@@ -56,7 +56,7 @@ export function ReconciliationPositionCard({
         <ReconRow label="Reconstructed Balance" value={financialPosition.totalDebtorBalance} />
         <ReconRow label="ERP Variance" value={reconciliationPosition.erpVariance} isVariance />
       </div>
-      {reconciliationPosition.erpVariance !== 0 && (
+      {(reconciliationPosition.erpVariance !== 0 || reconciliationPosition.cylinderVariance !== 0) && (
         <p className="mt-3 text-[11px] text-text-secondary italic">
           Non-zero variances above are disclosed outcomes from the reconciliation process, not uncategorised errors.
         </p>
