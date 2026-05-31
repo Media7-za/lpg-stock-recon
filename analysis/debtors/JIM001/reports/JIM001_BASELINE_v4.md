@@ -19,13 +19,11 @@
 - **Resolution:** Consolidating payment splits by document number and date before cross-file deduplication resolves the true payment sum to **-R950,729.61** (instead of -R660,418.73 under naive deduplication), reducing the unexplained ERP variance to the true residual variance of **R55.91** (with corrected ERP Stated Balance of **R146,907.13**).
 - **Rule:** Split payment allocations must **NOT** be deduplicated away, as they represent valid separate allocations.
 
-## Opening Balance Analysis (as of 1 January 2026) — Informative, Not Canonical
-- **Method Used:** `openingBalanceStrategy: dynamic_db`
-  - Opening balances are derived dynamically from database transactions occurring strictly before 2026-01-01.
-  - The Credit Note tax sign correction is applied to ensure exact tax totals.
+## Opening Balance Analysis (as of 3 December 2018)
+- **Method Used:** Lifetime Reconstruction starting from first available transaction.
 - **Supporting Evidence:**
   - **Combined B/F Balance:** R0.00
-  - **Raw Cylinder B/F Value:** R0.00
+  - **Cylinder Financial B/F Value:** R0.00
   - **LPG Gas Opening B/F:** R0.00
 
 ## Cylinder Analysis
@@ -69,37 +67,37 @@ This register traces cylinder deposit transaction assumptions, classifying the s
 
 | Event / Document | Date | SKU | Qty | Amount | Match Target | Classification | Evidence Source | Confidence | Evidence Trail / Logic |
 | :--- | :--- | :--- | :---: | :---: | :--- | :---: | :--- | :---: | :--- |
-| **Opening Balances** | Pre-Jan 2026 | Various | 47 | R0.00 | Legacy Statement | **Assumed** | `SYSTEM_MIGRATION_CARRIED` | **Medium** | Reconciled balances carried forward from historical audit prior to 1 January 2026. |
-| **Period Movements** | Jan-May 2026 | Various | 0 | R0.00 | Monthly Payments | **Probable** | `FULL_INVOICE_SETTLEMENT` | **High** | Monthly pool payments settled period cylinder invoices and returns in full. |
+| **Opening Balances** | Pre-Dec 2018 | Various | 0 | R0.00 | Legacy Statement | **Confirmed** | `SYSTEM_MIGRATION_CARRIED` | **High** | Account inception starting at R0.00 balance. |
+| **Period Movements** | Dec 2018 - May 2026 | Various | 0 | R0.00 | Monthly Payments | **Probable** | `FULL_INVOICE_SETTLEMENT` | **High** | Monthly pool payments settled period cylinder invoices and returns in full. |
 
 ## LPG Analysis
-- **LPG Balance:** R138,191.56
+- **LPG Balance:** R146,857.72
 - **LPG Supporting Calculations:**
   - **LPG Gas Opening B/F:** R0.00
   - **LPG Gas Billed (Period):** R1,162,404.68
   - **LPG Gas Credits (Period):** R-64,817.35
   - **LPG Payments (Period):** R-950,729.61
-  - **LPG Gas Closing Balance:** \`${fmt(gasOpeningBal)} + ${fmt(periodLpgInvoices)} + (${fmt(periodLpgCredits)}) + (${fmt(Math.abs(periodPmtsSum))}) =\` **R138,191.56**
+  - **LPG Gas Closing Balance:** \`R0.00 + ${fmt(periodLpgInvoices)} + (${fmt(periodLpgCredits)}) + (${fmt(Math.abs(periodPmtsSum))}) =\` **R146,857.72**
 
 ## Final Reconciliation
 
 ```
 Cylinder Financial Balance:      R-6.50
-Plus LPG Gas Balance:            R138,191.56
+Plus LPG Gas Balance:            R146,857.72
 ========================================
-Total Reconciled Balance:        R138,185.06
+Total Reconciled Balance:        R146,851.22
 ERP Statement Current Balance:   R146,907.13
-Variance:                         R8,722.07
+Variance:                         R55.91
 ```
 
 ## Variance Analysis (v3 vs v4)
 
 | Metric | Version 3 Statement | Version 4 Statement | Material Variance | Reason for Variance |
 | :--- | :--- | :--- | :---: | :--- |
-| **LPG Gas Balance** | N/A | R138,191.56 | N/A | First v4 reconstruction for JIM001. |
+| **LPG Gas Balance** | N/A | R146,857.72 | N/A | First v4 reconstruction for JIM001. |
 | **Cylinder Financial Balance** | N/A | R-6.50 | N/A | First v4 reconstruction for JIM001. |
 | **Cylinder Custody Exposure** | N/A | R26,220.00 | N/A | First v4 reconstruction for JIM001. |
-| **Total Reconciled Balance** | N/A | R138,185.06 | N/A | First v4 reconstruction for JIM001. |
+| **Total Reconciled Balance** | N/A | R146,851.22 | N/A | First v4 reconstruction for JIM001. |
 
 ## Database Mapping — Informative, Not Canonical
 - **Header Layer (`transaction_headers`):** Contains raw ERP statement transaction summaries. Contains date-shifted duplicates and payment allocation splits.
