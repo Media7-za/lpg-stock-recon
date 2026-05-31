@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Midlands Petroleum - Statement of Account</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-size: 9.5pt;
+            line-height: 1.6;
+            color: #334155;
+            background-color: #f1f5f9;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .statement-container {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+            max-width: 850px;
+            margin: 20px auto;
+            padding: 40px;
+            position: relative;
+            box-sizing: border-box;
+        }
+        
+        /* View Badge */
+        .view-badge {
+            position: absolute;
+            top: 15px;
+            right: 40px;
+            font-size: 7.5pt;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 3px 8px;
+            border-radius: 4px;
+            pointer-events: none;
+        }
+        
+        .internal-badge {
+            background-color: #fee2e2;
+            color: #ef4444;
+            border: 1px solid #fca5a5;
+        }
+        
+        .customer-badge {
+            background-color: #ecfdf5;
+            color: #10b981;
+            border: 1px solid #6ee7b7;
+        }
+        
+        /* Header Section */
+        .statement-header {
+            margin-bottom: 30px;
+            border-bottom: 3px solid #1e3a8a;
+            padding-bottom: 20px;
+        }
+        
+        .header-main {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .brand {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo-icon {
+            font-size: 28pt;
+            margin-right: 12px;
+        }
+        
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .brand-name {
+            font-family: 'Outfit', sans-serif;
+            font-size: 18pt;
+            font-weight: 700;
+            color: #0f172a;
+            line-height: 1.1;
+        }
+        
+        .brand-sub {
+            font-size: 8pt;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 2px;
+            font-weight: 600;
+        }
+        
+        .doc-title {
+            text-align: right;
+        }
+        
+        .doc-title h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 15pt;
+            font-weight: 700;
+            color: #1e3a8a;
+            margin: 0;
+            letter-spacing: 0.02em;
+        }
+        
+        .doc-title .subtitle {
+            font-size: 8.5pt;
+            color: #475569;
+            font-weight: 500;
+        }
+        
+        /* Header Metadata Section */
+        .meta-section {
+            margin-top: 15px;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 12px 18px;
+        }
+        
+        .meta-table {
+            width: 100%;
+            border-collapse: collapse;
+            border: none !important;
+            margin: 0 !important;
+            box-shadow: none !important;
+            border-radius: 0 !important;
+        }
+        
+        .meta-table tr {
+            background-color: transparent !important;
+        }
+        
+        .meta-table tr:hover {
+            background-color: transparent !important;
+        }
+        
+        .meta-table td {
+            padding: 5px 8px !important;
+            border: none !important;
+            font-size: 8.5pt !important;
+            color: #334155 !important;
+        }
+        
+        .meta-table td.meta-label {
+            font-weight: 600 !important;
+            color: #64748b !important;
+            width: 18%;
+            text-align: left;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .meta-table td.meta-value {
+            color: #0f172a !important;
+            font-weight: 500 !important;
+            width: 32%;
+            text-align: left;
+        }
+        
+        h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 13pt;
+            font-weight: 600;
+            color: #1e3a8a;
+            border-bottom: 1.5px solid #e2e8f0;
+            padding-bottom: 6px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        
+        h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 11pt;
+            font-weight: 600;
+            color: #0f172a;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        p {
+            margin-top: 0;
+            margin-bottom: 12px;
+            color: #475569;
+        }
+        
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 10px;
+            margin-bottom: 25px;
+            font-size: 8.5pt;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+        
+        th {
+            background-color: #1e293b;
+            color: #ffffff;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 7.5pt;
+            letter-spacing: 0.05em;
+            padding: 10px 12px;
+            border: none;
+            text-align: left;
+        }
+        
+        td {
+            padding: 8px 12px;
+            border-bottom: 1px solid #f1f5f9;
+            color: #334155;
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+        
+        tr:hover td {
+            background-color: #f1f5f9;
+            transition: background-color 0.15s ease;
+        }
+        
+        /* Bolding dynamic total/balance rows */
+        tr:has(strong) {
+            font-weight: 600;
+            background-color: #f1f5f9 !important;
+        }
+        
+        tr:has(strong) td {
+            color: #0f172a;
+        }
+        
+        /* Lists */
+        ul {
+            margin-top: 5px;
+            margin-bottom: 15px;
+            padding-left: 20px;
+        }
+        
+        li {
+            margin-bottom: 6px;
+            color: #475569;
+        }
+        
+        /* Horizontal Rule */
+        hr {
+            border: 0;
+            border-top: 1px solid #cbd5e1;
+            margin: 25px 0;
+        }
+        
+        /* Alert Boxes */
+        .alert-box {
+            padding: 12px 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+            font-size: 9.5pt;
+        }
+        .alert-box strong {
+            font-weight: 600;
+            margin-right: 5px;
+        }
+        .alert-box.important {
+            background-color: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            color: #1e40af;
+        }
+        .alert-box.tip {
+            background-color: #f0fdf4;
+            border-left: 4px solid #22c55e;
+            color: #166534;
+        }
+        .alert-box.warning {
+            background-color: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            color: #92400e;
+        }
+        .alert-box.note {
+            background-color: #f8fafc;
+            border-left: 4px solid #64748b;
+            color: #334155;
+        }
+        .alert-box.caution {
+            background-color: #fef2f2;
+            border-left: 4px solid #ef4444;
+            color: #991b1b;
+        }
+        
+        /* Reconciliation Section Styling */
+        .reconciliation-card {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            border: 1px solid #bbf7d0;
+            border-radius: 8px;
+            padding: 18px 22px;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .reconciliation-card h2 {
+            color: #166534;
+            border-bottom: 1px solid #bbf7d0;
+            margin-top: 0;
+            padding-bottom: 6px;
+        }
+        
+        .reconciliation-card ul {
+            padding-left: 15px;
+            margin-bottom: 10px;
+        }
+        
+        .reconciliation-card li {
+            color: #14532d;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .reconciliation-card li strong {
+            color: #166534;
+        }
+        
+        .reconciliation-card h3 {
+            color: #15803d;
+            border-bottom: none;
+            margin-top: 15px;
+        }
+        
+        /* Page Footer styling */
+        .page-footer {
+            text-align: center;
+            font-size: 7.5pt;
+            color: #94a3b8;
+            border-top: 1px solid #cbd5e1;
+            padding-top: 15px;
+            margin-top: 40px;
+        }
+        
+        /* Responsive Print Layout Styles */
+        @media print {
+            body {
+                background-color: #ffffff;
+                padding: 0;
+                font-size: 9pt;
+            }
+            .statement-container {
+                border: none;
+                box-shadow: none;
+                padding: 0;
+                margin: 0;
+                max-width: 100%;
+            }
+            .view-badge {
+                display: none;
+            }
+            @page {
+                size: A4;
+                margin: 15mm;
+            }
+            tr:hover td {
+                background-color: transparent !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="statement-container">
+        <span class="view-badge customer-badge">Customer View</span>
+        
+    <div class="statement-header">
+        <div class="header-main">
+            <div class="brand">
+                <div class="logo-icon">🔥</div>
+                <div class="logo-text">
+                    <span class="brand-name">Midlands Petroleum</span>
+                    <span class="brand-sub">LPG Stock Reconciliation</span>
+                </div>
+            </div>
+            <div class="doc-title">
+                <h1>STATEMENT OF ACCOUNT: JENNINGS GAS (JEN001) - VERSION 4 (CANONICAL SETTLEMENT ALLOCATION DOCTRINE)</h1>
+                <span class="subtitle">Combined LPG Gas &amp; Cylinder Asset Tracker</span>
+            </div>
+        </div>
+        
+        <div class="meta-section">
+            <table class="meta-table">
+                <tr>
+                    <td class="meta-label">Customer:</td>
+                    <td class="meta-value"><strong>Spoon Eatery (JEN001)</strong></td>
+                    <td class="meta-label">Opening Bal B/F:</td>
+                    <td class="meta-value"><strong>R9,082.81</strong> <span style="font-size: 7.5pt; color: #64748b;">(ERP verified — source: <code>analysis/debtors/JEN001/raw/JEN001.TXT</code> Line 14)</span></td>
+                </tr>
+                <tr>
+                    <td class="meta-label">Period:</td>
+                    <td class="meta-value">1 January 2026 → 31 May 2026</td>
+                    <td class="meta-label">Closing Balance:</td>
+                    <td class="meta-value"><strong>N/A</strong> <span style="font-size: 7.5pt; color: #64748b;">(LPG & Cylinder Outstanding)</span></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    
+
+<hr>
+<h2>Part 1: Combined Financial Statement (LPG Gas &amp; Cylinder Deposits)</h2>
+<p><em>Tracks all gas invoiced, cylinder deposits, and payments received since 1 January 2026. Matching cylinder invoice/credit note pairs (which cancel out exactly) are stripped from this view for readability. This combined ledger directly reconciles with the ERP running balance.</em></p>
+<h3>January 2026</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Date</th>
+<th style="text-align:left">Entry Type</th>
+<th style="text-align:left">Doc #</th>
+<th style="text-align:right">Amount (R)</th>
+<th style="text-align:right">Running Bal (R)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>01 Jan</strong></td>
+<td style="text-align:left"><strong>Opening Balance</strong></td>
+<td style="text-align:left">—</td>
+<td style="text-align:right"></td>
+<td style="text-align:right"><strong>9,082.81</strong></td>
+</tr>
+<tr>
+<td style="text-align:left">07 Jan 2026</td>
+<td style="text-align:left">Payment</td>
+<td style="text-align:left">00042917</td>
+<td style="text-align:right">-9,082.81</td>
+<td style="text-align:right">0.00</td>
+</tr>
+<tr>
+<td style="text-align:left">08 Jan 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">48675</td>
+<td style="text-align:right">3,032.41</td>
+<td style="text-align:right">3,032.41</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3>February 2026</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Date</th>
+<th style="text-align:left">Entry Type</th>
+<th style="text-align:left">Doc #</th>
+<th style="text-align:right">Amount (R)</th>
+<th style="text-align:right">Running Bal (R)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>01 Feb</strong></td>
+<td style="text-align:left"><strong>Opening Balance</strong></td>
+<td style="text-align:left">—</td>
+<td style="text-align:right"></td>
+<td style="text-align:right"><strong>3,032.41</strong></td>
+</tr>
+<tr>
+<td style="text-align:left">02 Feb 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">49067</td>
+<td style="text-align:right">3,052.49</td>
+<td style="text-align:right">6,084.90</td>
+</tr>
+<tr>
+<td style="text-align:left">17 Feb 2026</td>
+<td style="text-align:left">Payment</td>
+<td style="text-align:left">00043367</td>
+<td style="text-align:right">-3,032.41</td>
+<td style="text-align:right">3,052.49</td>
+</tr>
+<tr>
+<td style="text-align:left">17 Feb 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">49287</td>
+<td style="text-align:right">3,084.02</td>
+<td style="text-align:right">6,136.51</td>
+</tr>
+<tr>
+<td style="text-align:left">23 Feb 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">49379</td>
+<td style="text-align:right">3,084.02</td>
+<td style="text-align:right">9,220.53</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3>March 2026</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Date</th>
+<th style="text-align:left">Entry Type</th>
+<th style="text-align:left">Doc #</th>
+<th style="text-align:right">Amount (R)</th>
+<th style="text-align:right">Running Bal (R)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>01 Mar</strong></td>
+<td style="text-align:left"><strong>Opening Balance</strong></td>
+<td style="text-align:left">—</td>
+<td style="text-align:right"></td>
+<td style="text-align:right"><strong>9,220.53</strong></td>
+</tr>
+<tr>
+<td style="text-align:left">06 Mar 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">49609</td>
+<td style="text-align:right">2,589.05</td>
+<td style="text-align:right">11,809.58</td>
+</tr>
+<tr>
+<td style="text-align:left">12 Mar 2026</td>
+<td style="text-align:left">Payment</td>
+<td style="text-align:left">00043638</td>
+<td style="text-align:right">-9,220.53</td>
+<td style="text-align:right">2,589.05</td>
+</tr>
+<tr>
+<td style="text-align:left">16 Mar 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">49752</td>
+<td style="text-align:right">3,597.41</td>
+<td style="text-align:right">6,186.46</td>
+</tr>
+<tr>
+<td style="text-align:left">16 Mar 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">49753</td>
+<td style="text-align:right">5,175.00</td>
+<td style="text-align:right">11,361.46</td>
+</tr>
+<tr>
+<td style="text-align:left">17 Mar 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14601</td>
+<td style="text-align:right">-4,657.50</td>
+<td style="text-align:right">6,703.96</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3>April 2026</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Date</th>
+<th style="text-align:left">Entry Type</th>
+<th style="text-align:left">Doc #</th>
+<th style="text-align:right">Amount (R)</th>
+<th style="text-align:right">Running Bal (R)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>01 Apr</strong></td>
+<td style="text-align:left"><strong>Opening Balance</strong></td>
+<td style="text-align:left">—</td>
+<td style="text-align:right"></td>
+<td style="text-align:right"><strong>6,703.96</strong></td>
+</tr>
+<tr>
+<td style="text-align:left">02 Apr 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50051</td>
+<td style="text-align:right">4,578.50</td>
+<td style="text-align:right">11,282.46</td>
+</tr>
+<tr>
+<td style="text-align:left">02 Apr 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50052</td>
+<td style="text-align:right">7,245.00</td>
+<td style="text-align:right">18,527.46</td>
+</tr>
+<tr>
+<td style="text-align:left">02 Apr 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14698</td>
+<td style="text-align:right">-5,692.50</td>
+<td style="text-align:right">12,834.96</td>
+</tr>
+<tr>
+<td style="text-align:left">08 Apr 2026</td>
+<td style="text-align:left">Payment</td>
+<td style="text-align:left">00043927</td>
+<td style="text-align:right">-6,703.96</td>
+<td style="text-align:right">6,131.00</td>
+</tr>
+<tr>
+<td style="text-align:left">09 Apr 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50146</td>
+<td style="text-align:right">3,448.83</td>
+<td style="text-align:right">9,579.83</td>
+</tr>
+<tr>
+<td style="text-align:left">20 Apr 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50318</td>
+<td style="text-align:right">3,448.83</td>
+<td style="text-align:right">13,028.66</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3>May 2026</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Date</th>
+<th style="text-align:left">Entry Type</th>
+<th style="text-align:left">Doc #</th>
+<th style="text-align:right">Amount (R)</th>
+<th style="text-align:right">Running Bal (R)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>01 May</strong></td>
+<td style="text-align:left"><strong>Opening Balance</strong></td>
+<td style="text-align:left">—</td>
+<td style="text-align:right"></td>
+<td style="text-align:right"><strong>13,028.66</strong></td>
+</tr>
+<tr>
+<td style="text-align:left">06 May 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50536</td>
+<td style="text-align:right">5,082.47</td>
+<td style="text-align:right">18,111.13</td>
+</tr>
+<tr>
+<td style="text-align:left">06 May 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50537</td>
+<td style="text-align:right">7,245.00</td>
+<td style="text-align:right">25,356.13</td>
+</tr>
+<tr>
+<td style="text-align:left">07 May 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14864</td>
+<td style="text-align:right">-5,865.00</td>
+<td style="text-align:right">19,491.13</td>
+</tr>
+<tr>
+<td style="text-align:left">18 May 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50753</td>
+<td style="text-align:right">3,951.91</td>
+<td style="text-align:right">23,443.04</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>Part 2: Cylinder (CYL) Ledger (Physical Asset Tracker)</h2>
+<p><em>Cylinders are tracked purely by physical count. The Opening Balance on 01 January 2026 correctly incorporates the legacy migration deficit of -1 cylinder of 9.1.</em></p>
+<h3>January 2026</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Date</th>
+<th style="text-align:left">Entry Type</th>
+<th style="text-align:left">Doc #</th>
+<th style="text-align:right">14kg Qty</th>
+<th style="text-align:right">19kg Qty</th>
+<th style="text-align:right">9kg Qty</th>
+<th style="text-align:right">D.1 Qty</th>
+<th style="text-align:right">S.1 Qty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>01 Jan</strong></td>
+<td style="text-align:left"><strong>Opening Balance</strong></td>
+<td style="text-align:left">—</td>
+<td style="text-align:right"><strong>0</strong></td>
+<td style="text-align:right"><strong>0</strong></td>
+<td style="text-align:right"><strong>-1</strong></td>
+<td style="text-align:right"><strong>0</strong></td>
+<td style="text-align:right"><strong>0</strong></td>
+</tr>
+<tr>
+<td style="text-align:left">08 Jan 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">48676</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+6</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">08 Jan 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14231</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-6</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>End Jan</strong></td>
+<td style="text-align:left"><strong>Closing Balance</strong></td>
+<td style="text-align:left">—</td>
+<td style="text-align:right"><strong>0</strong></td>
+<td style="text-align:right"><strong>0</strong></td>
+<td style="text-align:right"><strong>-1</strong></td>
+<td style="text-align:right"><strong>0</strong></td>
+<td style="text-align:right"><strong>0</strong></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3>February 2026</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Date</th>
+<th style="text-align:left">Entry Type</th>
+<th style="text-align:left">Doc #</th>
+<th style="text-align:right">14kg Qty</th>
+<th style="text-align:right">19kg Qty</th>
+<th style="text-align:right">9kg Qty</th>
+<th style="text-align:right">D.1 Qty</th>
+<th style="text-align:right">S.1 Qty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>01 Feb</strong></td>
+<td style="text-align:left"><strong>Opening Balance</strong></td>
+<td style="text-align:left">—</td>
+<td style="text-align:right"><strong>0</strong></td>
+<td style="text-align:right"><strong>0</strong></td>
+<td style="text-align:right"><strong>-1</strong></td>
+<td style="text-align:right"><strong>0</strong></td>
+<td style="text-align:right"><strong>0</strong></td>
+</tr>
+<tr>
+<td style="text-align:left">03 Feb 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">49068</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+6</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">03 Feb 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14374</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-6</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">17 Feb 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">49288</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+6</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">19 Feb 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14445</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-6</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">23 Feb 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">49380</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+6</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">24 Feb 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14477</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-6</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>End Feb</strong></td>
+<td style="text-align:left"><strong>Closing Balance</strong></td>
+<td style="text-align:left">—</td>
+<td style="text-align:right"><strong>0</strong></td>
+<td style="text-align:right"><strong>0</strong></td>
+<td style="text-align:right"><strong>-1</strong></td>
+<td style="text-align:right"><strong>0</strong></td>
+<td style="text-align:right"><strong>0</strong></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3>March 2026</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Date</th>
+<th style="text-align:left">Entry Type</th>
+<th style="text-align:left">Doc #</th>
+<th style="text-align:right">14kg Qty</th>
+<th style="text-align:right">19kg Qty</th>
+<th style="text-align:right">9kg Qty</th>
+<th style="text-align:right">D.1 Qty</th>
+<th style="text-align:right">S.1 Qty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>01 Mar</strong></td>
+<td style="text-align:left"><strong>Opening Balance</strong></td>
+<td style="text-align:left">—</td>
+<td style="text-align:right"><strong>0</strong></td>
+<td style="text-align:right"><strong>0</strong></td>
+<td style="text-align:right"><strong>-1</strong></td>
+<td style="text-align:right"><strong>0</strong></td>
+<td style="text-align:right"><strong>0</strong></td>
+</tr>
+<tr>
+<td style="text-align:left">06 Mar 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">49610</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+5</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">09 Mar 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14556</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-5</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">16 Mar 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">49753</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+6</td>
+<td style="text-align:right">+2</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">17 Mar 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14601</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-6</td>
+<td style="text-align:right">-1</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>End Mar</strong></td>
+<td style="text-align:left"><strong>Closing Balance</strong></td>
+<td style="text-align:left">—</td>
+<td style="text-align:right"><strong>0</strong></td>
+<td style="text-align:right"><strong>0</strong></td>
+<td style="text-align:right"><strong>0</strong></td>
+<td style="text-align:right"><strong>0</strong></td>
+<td style="text-align:right"><strong>0</strong></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3>April 2026</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Date</th>
+<th style="text-align:left">Entry Type</th>
+<th style="text-align:left">Doc #</th>
+<th style="text-align:right">14kg Qty</th>
+<th style="text-align:right">19kg Qty</th>
+<th style="text-align:right">9kg Qty</th>
+<th style="text-align:right">D.1 Qty</th>
+<th style="text-align:right">S.1 Qty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>01 Apr</strong></td>
+<td style="text-align:left"><strong>Opening Balance</strong></td>
+<td style="text-align:left">—</td>
+<td style="text-align:right"><strong>0</strong></td>
+<td style="text-align:right"><strong>0</strong></td>
+<td style="text-align:right"><strong>0</strong></td>
+<td style="text-align:right"><strong>0</strong></td>
+<td style="text-align:right"><strong>0</strong></td>
+</tr>
+<tr>
+<td style="text-align:left">02 Apr 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50052</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+6</td>
+<td style="text-align:right">+6</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">02 Apr 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14698</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-6</td>
+<td style="text-align:right">-3</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">09 Apr 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50147</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+6</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">09 Apr 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14729</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-6</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">21 Apr 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50319</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+6</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">21 Apr 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14784</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-6</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>End Apr</strong></td>
+<td style="text-align:left"><strong>Closing Balance</strong></td>
+<td style="text-align:left">—</td>
+<td style="text-align:right"><strong>0</strong></td>
+<td style="text-align:right"><strong>0</strong></td>
+<td style="text-align:right"><strong>3</strong></td>
+<td style="text-align:right"><strong>0</strong></td>
+<td style="text-align:right"><strong>0</strong></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3>May 2026</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Date</th>
+<th style="text-align:left">Entry Type</th>
+<th style="text-align:left">Doc #</th>
+<th style="text-align:right">14kg Qty</th>
+<th style="text-align:right">19kg Qty</th>
+<th style="text-align:right">9kg Qty</th>
+<th style="text-align:right">D.1 Qty</th>
+<th style="text-align:right">S.1 Qty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>01 May</strong></td>
+<td style="text-align:left"><strong>Opening Balance</strong></td>
+<td style="text-align:left">—</td>
+<td style="text-align:right"><strong>0</strong></td>
+<td style="text-align:right"><strong>0</strong></td>
+<td style="text-align:right"><strong>3</strong></td>
+<td style="text-align:right"><strong>0</strong></td>
+<td style="text-align:right"><strong>0</strong></td>
+</tr>
+<tr>
+<td style="text-align:left">06 May 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50537</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+6</td>
+<td style="text-align:right">+6</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">07 May 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14864</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-4</td>
+<td style="text-align:right">-6</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">18 May 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50754</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+6</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">19 May 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14922</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-6</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>End May</strong></td>
+<td style="text-align:left"><strong>Closing Balance</strong></td>
+<td style="text-align:left">—</td>
+<td style="text-align:right"><strong>0</strong></td>
+<td style="text-align:right"><strong>2</strong></td>
+<td style="text-align:right"><strong>3</strong></td>
+<td style="text-align:right"><strong>0</strong></td>
+<td style="text-align:right"><strong>0</strong></td>
+</tr>
+</tbody>
+</table>
+<hr>
+
+        <div class="page-footer">
+            Midlands Petroleum &middot; LPG Stock Reconciliation Statement &middot; Generated dynamically under CYL Settlement Doctrine v4
+        </div>
+    </div>
+</body>
+</html>

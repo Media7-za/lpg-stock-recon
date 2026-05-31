@@ -39,6 +39,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Rebuilt `JEN001` statement baseline (v4) under CYL Settlement Allocation Doctrine.
+- Created `JEN001_BASELINE_v4.md`, `JEN001_Statement_Account_v4.md`, and `JEN001_v3_to_v4_CHANGELOG.md` reports.
+- Corrected opening custody and financial balances for `9.1` and `19.1` cylinders based on historical payments/settlements.
+- Created shared markdown-to-HTML statement generator utility `analysis/debtors/shared/scripts/export_to_html.py`.
+- Generated dual-view browser statement reports for `JEN001` v4 (`JEN001_Statement_Account_v4.html`, `JEN001_Statement_Account_v4_Internal.html`, and `JEN001_Statement_Account_v4_Customer.html`) using comment-based stripping (`<!-- INTERNAL_ONLY_START -->` / `<!-- INTERNAL_ONLY_END -->`).
+
+
 
 ### Added (Invoice Dispatch Module - LSR-3)
 - **Dispatch Dashboard**: New interface for Invoice Clerks to track and manage outbound invoices by date.
