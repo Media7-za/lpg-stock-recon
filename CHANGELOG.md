@@ -40,6 +40,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Rebuilt `JIM001` statement baseline (v4) under Cylinder Allocation and Debtor Position Workspace doctrines as a complete lifetime reconstruction (3 December 2018 to 31 May 2026) starting from a clean R0.00 opening balance, using corrected split payment consolidation and CN double-taxation corrections (reconstructed balance R146,851.22, corrected ERP Stated Balance R146,907.13, residual unexplained ERP variance of R55.91).
+- Disclosed the original `R284,760.09` database deduplication defect as an ERP exception in `JIM001_BASELINE_v4.md` and `JIM001_Statement_Account_v4.md`.
+- Surfaced Cylinder Custody Exposure of `R26,220.00` and Cylinder Variance of `-R26,226.50` separately in the Debtor Position Workspace.
+- Created `JIM001_BASELINE_v4.md` and `JIM001_Statement_Account_v4.md` reports.
+- Generated dual-view browser statement reports for `JIM001` v4 (`JIM001_Statement_Account_v4.html`, `JIM001_Statement_Account_v4_Internal.html`, and `JIM001_Statement_Account_v4_Customer.html`) using the shared `export_to_html.py` converter.
 - Rebuilt `TAN001` statement baseline (v4) under Cylinder Allocation and Debtor Position Workspace doctrines as a reconciled reconstruction with disclosed ERP exceptions (preserving ERP variance of `R2,640.57`).
 - Created `TAN001_BASELINE_v4.md` and `TAN001_Statement_Account_v4.md` reports.
 - Generated dual-view browser statement reports for `TAN001` v4 (`TAN001_Statement_Account_v4.html`, `TAN001_Statement_Account_v4_Internal.html`, and `TAN001_Statement_Account_v4_Customer.html`) using the shared `export_to_html.py` converter.
