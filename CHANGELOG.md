@@ -40,6 +40,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Refactored the **Part 1 Financial Ledger** structure in the statement markdown (`JIM001_Statement_Account_v4.md`) and HTML statements for Jim Gas (`JIM001`) to support five sub-ledgers/sections:
+  - **Part 1A: Combined ERP Financial Ledger** (unstripped chronological transactions).
+  - **Part 1B: LPG Gas Financial Ledger** (reconciling to LPG Gas Debt = `R146,857.72` with Payment `38481` split into `R14,287.13` LPG-applied and `R1,529.50` unallocated payment portions).
+  - **Part 1C: Cylinder Financial Ledger** (CYL invoices/CNs, closing to `R-6.50` with no uncorroborated payments).
+  - **Part 1D: Payment Allocation Split Summary** (high-level customer-safe split table).
+  - **Part 1E: Payment-to-Invoice Allocation Detail** (detailed payment-to-invoice allocation edges, internal-only).
+- Implemented **Interactive sub-ledger tabs** (Combined / LPG Gas / Cylinder) in the HTML statements with progressive enhancement, print styles, and keyboard accessibility.
 - Added the **Payment-Batch Allocation Detail Register** to [JIM001_BASELINE_v4.md](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/JIM001/reports/JIM001_BASELINE_v4.md) below the prior-month intent matching register:
   - Details allocations from the payment-batch perspective (Payment Date → Payment Ref/Doc → Payment Amount → Intended LPG Month → LPG Month Net → Invoices Allocated/Partially Allocated → Amount Allocated → Residual Unpaid → Allocation Result → Evidence Source → Notes).
   - Groups split allocations across months (e.g. payments 38481, 40746) and labels them clearly as `SPLIT_PAYMENT_PORTION` instead of incorrect overpayments.

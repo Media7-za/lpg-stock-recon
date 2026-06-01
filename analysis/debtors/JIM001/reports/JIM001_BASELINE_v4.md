@@ -77,7 +77,7 @@ This register traces cylinder deposit transaction assumptions, classifying the s
   - **LPG Gas Billed (Period):** R1,162,404.68
   - **LPG Gas Credits (Period):** R-64,817.35
   - **LPG Payments (Period):** R-950,729.61
-  - **LPG Gas Closing Balance:** \`R0.00 + ${fmt(periodLpgInvoices)} + (${fmt(periodLpgCredits)}) + (${fmt(Math.abs(periodPmtsSum))}) =\` **R146,857.72**
+  - **LPG Gas Closing Balance:** \`R0.00 + ${fmtClean(periodLpgInvoices)} + (${fmtClean(periodLpgCredits)}) + (${fmtClean(Math.abs(periodPmtsSum))}) =\` **R146,857.72**
 
 ## Final Reconciliation
 

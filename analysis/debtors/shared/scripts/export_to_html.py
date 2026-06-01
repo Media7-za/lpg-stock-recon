@@ -56,9 +56,9 @@ def enhance_html(html_content, is_internal=True):
         
     # Extract starting balance from table rows if not in header metadata
     if opening_bal == "N/A":
-        row_match = re.search(r'<tr>\s*<td.*?>.*?</td>\s*<td.*?><strong>(?:Balance B/F|Opening Balance|Balance b/f)</strong></td>.*?<td.*?><strong>(.*?)</strong></td>\s*</tr>', html_content, re.IGNORECASE | re.DOTALL)
+        row_match = re.search(r'<tr>\s*<td.*?>.*?</td>\s*<td.*?><strong>(Opening Balance|Balance B/F)</strong></td>.*?<td.*?><strong>(.*?)</strong></td>\s*</tr>', html_content, re.IGNORECASE | re.DOTALL)
         if row_match:
-            val = row_match.group(1).strip()
+            val = row_match.group(2).strip()
             opening_bal = "R" + val.lstrip("R")
             opening_desc = "Balance B/F"
             
@@ -77,6 +77,8 @@ def enhance_html(html_content, is_internal=True):
         display_account = "Spoon Eatery (JEN001)"
     elif "FAM000" in account:
         display_account = "Family Gas (FAM000 / FAM002)"
+    elif "JIM001" in account:
+        display_account = "Jim Gas (JIM001)"
 
     # Formulate styled corporate header block
     header_html = f"""
@@ -146,6 +148,14 @@ def enhance_html(html_content, is_internal=True):
         html_content,
         re.DOTALL | re.IGNORECASE
     )
+    # Check simple regex match if comment is exact
+    if not workspace_match:
+        workspace_match = re.search(
+            r'<!--\s*DEBTOR_POSITION_WORKSPACE_START\s*-->(.*?)<!--\s*DEBTOR_POSITION_WORKSPACE_END\s*-->',
+            html_content,
+            re.DOTALL | re.IGNORECASE
+        )
+        
     if workspace_match:
         workspace_inner = workspace_match.group(1)
         
@@ -168,6 +178,48 @@ def enhance_html(html_content, is_internal=True):
         # Replace the original block (including comments) in html_content
         html_content = html_content.replace(workspace_match.group(0), wrapped_block)
         
+    # Tab replacement logic for Part 1 sub-ledgers (1A, 1B, 1C)
+    tab_pattern = re.compile(
+        r'<h3>Part 1A:\s*Combined ERP Financial Ledger</h3>(.*?)'
+        r'<h3>Part 1B:\s*LPG Gas Financial Ledger</h3>(.*?)'
+        r'<h3>Part 1C:\s*Cylinder Financial Ledger</h3>(.*?)'
+        r'(?=<h3>Part 1D\b|<h2>|<hr\s*/?>)',
+        re.DOTALL | re.IGNORECASE
+    )
+    
+    def replace_with_tabs(match):
+        p1a_content = match.group(1)
+        p1b_content = match.group(2)
+        p1c_content = match.group(3)
+        
+        tab_html = """
+        <div class="tabs-container">
+            <div class="tab-list" role="tablist">
+                <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="panel-1a" id="tab-1a">Combined ERP Financial Ledger</button>
+                <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-1b" id="tab-1b">LPG Gas Financial Ledger</button>
+                <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-1c" id="tab-1c">Cylinder Financial Ledger</button>
+            </div>
+            
+            <div class="tab-panel active" id="panel-1a" role="tabpanel" aria-labelledby="tab-1a">
+                <h3>Part 1A: Combined ERP Financial Ledger</h3>
+                {}
+            </div>
+            
+            <div class="tab-panel" id="panel-1b" role="tabpanel" aria-labelledby="tab-1b">
+                <h3>Part 1B: LPG Gas Financial Ledger</h3>
+                {}
+            </div>
+            
+            <div class="tab-panel" id="panel-1c" role="tabpanel" aria-labelledby="tab-1c">
+                <h3>Part 1C: Cylinder Financial Ledger</h3>
+                {}
+            </div>
+        </div>
+        """.format(p1a_content, p1b_content, p1c_content)
+        return tab_html
+        
+    html_content = tab_pattern.sub(replace_with_tabs, html_content)
+    
     return html_content
 
 def build_full_html(enhanced_content, is_internal=True):
@@ -325,7 +377,7 @@ def build_full_html(enhanced_content, is_internal=True):
             letter-spacing: 0.05em;
             margin-top: 2px;
             font-weight: 600;
-        }}
+            }}
         
         .doc-title {{
             text-align: right;
@@ -580,6 +632,63 @@ def build_full_html(enhanced_content, is_internal=True):
             margin-top: 40px;
         }}
         
+        /* Interactive sub-ledger tabs styling */
+        .tabs-container {{
+            margin: 30px 0;
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }}
+        
+        .tab-list {{
+            display: flex;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-bottom: 1px solid #cbd5e1;
+            padding: 0 15px;
+            gap: 10px;
+        }}
+        
+        .tab-btn {{
+            font-family: 'Outfit', sans-serif;
+            font-size: 9pt;
+            font-weight: 600;
+            color: #64748b;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            padding: 14px 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            outline: none;
+        }}
+        
+        .tab-btn:hover {{
+            color: #1e3a8a;
+            border-bottom-color: #cbd5e1;
+        }}
+        
+        .tab-btn.active {{
+            color: #1e3a8a;
+            border-bottom-color: #1e3a8a;
+        }}
+        
+        .tab-panel {{
+            display: none;
+            padding: 25px;
+        }}
+        
+        .tab-panel.active {{
+            display: block;
+            animation: fadeIn 0.25s ease-in-out;
+        }}
+        
+        @keyframes fadeIn {{
+            from {{ opacity: 0; transform: translateY(2px); }}
+            to {{ opacity: 1; transform: translateY(0); }}
+        }}
+        
         /* Responsive Print Layout Styles */
         @media print {{
             body {{
@@ -604,8 +713,37 @@ def build_full_html(enhanced_content, is_internal=True):
             tr:hover td {{
                 background-color: transparent !important;
             }}
+            /* Print tabs sequentially */
+            .tab-list {{
+                display: none !important;
+            }}
+            .tab-panel {{
+                display: block !important;
+                page-break-inside: avoid;
+                margin-bottom: 35px;
+                padding: 0 !important;
+                border: none !important;
+            }}
+            .tabs-container {{
+                border: none !important;
+                box-shadow: none !important;
+            }}
         }}
     </style>
+    <noscript>
+        <style>
+            .tab-panel {{
+                display: block !important;
+            }}
+            .tab-list {{
+                display: none !important;
+            }}
+            .tabs-container {{
+                border: none !important;
+                box-shadow: none !important;
+            }}
+        </style>
+    </noscript>
 </head>
 <body>
     <div class="statement-container">
@@ -615,6 +753,55 @@ def build_full_html(enhanced_content, is_internal=True):
             Midlands Petroleum &middot; LPG Stock Reconciliation Statement &middot; Generated dynamically under CYL Settlement Doctrine v4
         </div>
     </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {{
+            const tabs = document.querySelectorAll('.tab-btn');
+            const panels = document.querySelectorAll('.tab-panel');
+
+            tabs.forEach(tab => {{
+                tab.addEventListener('click', () => {{
+                    const targetPanelId = tab.getAttribute('aria-controls');
+
+                    tabs.forEach(t => {{
+                        t.classList.remove('active');
+                        t.setAttribute('aria-selected', 'false');
+                    }});
+                    panels.forEach(p => p.classList.remove('active'));
+
+                    tab.classList.add('active');
+                    tab.setAttribute('aria-selected', 'true');
+                    const targetPanel = document.getElementById(targetPanelId);
+                    if (targetPanel) {{
+                        targetPanel.classList.add('active');
+                    }}
+                }});
+                
+                // Keyboard accessibility (Arrow keys, Home, End)
+                tab.addEventListener('keydown', (e) => {{
+                    let targetTab = null;
+                    const tabButtons = Array.from(tab.parentElement.querySelectorAll('.tab-btn'));
+                    const index = tabButtons.indexOf(tab);
+
+                    if (e.key === 'ArrowRight') {{
+                        targetTab = tabButtons[(index + 1) % tabButtons.length];
+                    }} else if (e.key === 'ArrowLeft') {{
+                        targetTab = tabButtons[(index - 1 + tabButtons.length) % tabButtons.length];
+                    }} else if (e.key === 'Home') {{
+                        targetTab = tabButtons[0];
+                    }} else if (e.key === 'End') {{
+                        targetTab = tabButtons[tabButtons.length - 1];
+                    }}
+
+                    if (targetTab) {{
+                        targetTab.focus();
+                        targetTab.click();
+                        e.preventDefault();
+                    }}
+                }});
+            }});
+        }});
+    </script>
 </body>
 </html>"""
 
