@@ -2785,8 +2785,8 @@ During the reconstruction of JIM001, we verified that the account contains large
 | Total Payments Reviewed (Unique) | 45 |
 | Pre-March 2022 Opening LPG Balance B/F | R28,709.91 |
 | Reconstructed LPG Gas Debt | R146,857.72 |
-| Total Unpaid Invoices Sum (including B/F) | R247,087.75 |
-| Total Unmatched / Overpayment Pool | R100,230.03 |
+| Total Unpaid Invoices Sum (including B/F) | R241,155.91 |
+| Total Unmatched / Overpayment Pool | R94,298.19 |
 | Net LPG Gas Debt (Unpaid - Unmatched/Overpaid) | R146,857.72 |
 | Residual ERP Variance | R55.91 |
 | Oldest Unpaid LPG Invoice Month | March 2022 |

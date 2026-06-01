@@ -165,9 +165,7 @@ Variance:                         R55.91
 | 31 May 2022 | 13744 | 2022-05 | R2,786.34 | 15071 | R1,114.44 | R1,671.90 | HUMAN_WORKSHEET_AND_ERP | Probable | Partially paid in ERP batch. |
 | 28 Jun 2022 | 14341 | 2022-06 | R2,229.07 | 15473 | R614.26 | R1,614.81 | HUMAN_WORKSHEET_AND_ERP | Probable | Partially paid in ERP batch. |
 | 23 Sep 2022 | 15782 | 2022-09 | R4,151.52 | 17073 | R1,383.84 | R2,767.68 | HUMAN_WORKSHEET_AND_ERP | Probable | Partially paid in ERP batch. |
-| 31 Dec 2022 | 17132 | 2022-12 | R2,765.75 | 18185 | R79.67 | R2,686.08 | HUMAN_WORKSHEET_AND_ERP | Probable | Partially paid in ERP batch. |
 | 23 Mar 2023 | 18695 | 2023-03 | R4,202.58 | 21193 | R3,500.54 | R702.04 | HUMAN_WORKSHEET_AND_ERP | Probable | Partially paid in ERP batch. |
-| 31 Aug 2023 | 23964 | 2023-08 | R3,245.76 | — | R0.00 | R3,245.76 | HUMAN_WORKSHEET | Confirmed | Explicitly marked Unpaid in human worksheet. |
 | 29 Dec 2023 | 28140 | 2023-12 | R4,037.78 | 35270 | R3,744.44 | R293.34 | HUMAN_WORKSHEET_AND_ERP | Probable | Partially paid in ERP batch. |
 | 24 May 2024 | 32409 | 2024-05 | R2,808.76 | 31179 | R2,626.99 | R181.77 | HUMAN_WORKSHEET_AND_ERP | Probable | Partially paid in ERP batch. |
 | 28 May 2024 | 32531 | 2024-05 | R2,808.76 | — | R0.00 | R2,808.76 | HUMAN_WORKSHEET_AND_ERP | Probable | Partially paid in ERP batch. |
@@ -205,16 +203,16 @@ Variance:                         R55.91
 | 10 Apr 2025 | 42181 | 2025-04 | R4,325.33 | 38481 | R4,227.45 | R97.88 | ERP_LEDGER | Assumed | Partially paid in ERP batch. |
 | 17 Apr 2025 | 42357 | 2025-04 | R4,325.33 | — | R0.00 | R4,325.33 | ERP_LEDGER | Assumed | Partially paid in ERP batch. |
 | 25 Apr 2025 | 42565 | 2025-04 | R4,325.33 | — | R0.00 | R4,325.33 | ERP_LEDGER | Assumed | Partially paid in ERP batch. |
-| 30 Apr 2025 | 42704 | 2025-04 | R4,325.33 | — | R0.00 | R4,325.33 | ERP_LEDGER | Assumed | Partially paid in ERP batch. |
-| 15 May 2025 | 43089 | 2025-05 | R2,883.56 | 38481 | R2,482.58 | R400.98 | ERP_LEDGER | Assumed | Partially paid in ERP batch. |
+| 09 May 2025 | 42949 | 2025-05 | R4,325.33 | 38481 | R2,482.58 | R1,842.75 | ERP_LEDGER | Assumed | Partially paid in ERP batch. |
+| 15 May 2025 | 43089 | 2025-05 | R2,883.56 | — | R0.00 | R2,883.56 | ERP_LEDGER | Assumed | Partially paid in ERP batch. |
 | 21 May 2025 | 43271 | 2025-05 | R4,382.95 | — | R0.00 | R4,382.95 | ERP_LEDGER | Assumed | Partially paid in ERP batch. |
 | 29 May 2025 | 43451 | 2025-05 | R2,921.97 | — | R0.00 | R2,921.97 | ERP_LEDGER | Assumed | Partially paid in ERP batch. |
 | 26 Jun 2025 | 44241 | 2025-06 | R2,848.04 | 40063, 40746 | R287.71 | R2,560.33 | ERP_LEDGER | Assumed | Partially paid in ERP batch. |
 | 26 Jul 2025 | 45162 | 2025-07 | R262.55 | — | R0.00 | R262.55 | ERP_LEDGER | Assumed | Partially paid in ERP batch. |
-| 12 Dec 2025 | 48244 | 2025-12 | R2,596.52 | 43199 | R18.21 | R2,578.31 | ERP_LEDGER | Assumed | Partially paid in ERP batch. |
+| 04 Dec 2025 | 48098 | 2025-12 | R3,876.56 | — | R0.00 | R3,876.56 | ERP_LEDGER | Assumed | Partially paid in ERP batch. |
+| 12 Dec 2025 | 48244 | 2025-12 | R2,596.52 | — | R0.00 | R2,596.52 | ERP_LEDGER | Assumed | Partially paid in ERP batch. |
 | 19 Dec 2025 | 48391 | 2025-12 | R3,894.77 | — | R0.00 | R3,894.77 | ERP_LEDGER | Assumed | Partially paid in ERP batch. |
 | 24 Dec 2025 | 48487 | 2025-12 | R1,298.26 | — | R0.00 | R1,298.26 | ERP_LEDGER | Assumed | Partially paid in ERP batch. |
-| 31 Dec 2025 | 48578 | 2025-12 | R3,894.77 | — | R0.00 | R3,894.77 | ERP_LEDGER | Assumed | Partially paid in ERP batch. |
 | 01 Jan 2026 | 48599 | 2026-01 | R3,894.77 | — | R2,596.52 | R1,298.25 | EXCEPTION | Exception | Unpaid month, no payment matching. |
 | 03 Jan 2026 | 48776 | 2026-01 | R2,596.52 | — | R0.00 | R2,596.52 | EXCEPTION | Exception | Unpaid month, no payment matching. |
 | 09 Jan 2026 | 48701 | 2026-01 | R3,894.77 | — | R0.00 | R3,894.77 | EXCEPTION | Exception | Unpaid month, no payment matching. |
@@ -243,8 +241,7 @@ Variance:                         R55.91
 | 17 Mar 2022 | 13245 | R14,982.58 | 2022-03 | R14,943.48 | R39.10 | UNMATCHED_PAYMENT | Exception | No allocation entries link this payment to any invoice. |
 | — | 16648 | R547.77 | 2022-08 | — | — | OVERPAYMENT_AGAINST_MONTH | Assumed | Payment batch exceeded matched month total; unused cash remains unallocated. |
 | — | 17578 | R2,767.68 | 2022-10 | — | — | OVERPAYMENT_AGAINST_MONTH | Assumed | Payment batch exceeded matched month total; unused cash remains unallocated. |
-| — | 17777 | R2,686.08 | 2022-11 | — | — | OVERPAYMENT_AGAINST_MONTH | Assumed | Payment batch exceeded matched month total; unused cash remains unallocated. |
-| — | 27468 | R16,774.30 | 2023-09 | — | — | OVERPAYMENT_AGAINST_MONTH | Assumed | Payment batch exceeded matched month total; unused cash remains unallocated. |
+| — | 27468 | R13,528.54 | 2023-09 | — | — | OVERPAYMENT_AGAINST_MONTH | Assumed | Payment batch exceeded matched month total; unused cash remains unallocated. |
 | — | 28893 | R2,583.36 | 2023-11 | — | — | OVERPAYMENT_AGAINST_MONTH | Assumed | Payment batch exceeded matched month total; unused cash remains unallocated. |
 | — | 30269 | R2,622.50 | 2023-10 | — | — | OVERPAYMENT_AGAINST_MONTH | Assumed | Payment batch exceeded matched month total; unused cash remains unallocated. |
 | — | 32896 | R3,772.33 | 2024-02 | — | — | OVERPAYMENT_AGAINST_MONTH | Assumed | Payment batch exceeded matched month total; unused cash remains unallocated. |
