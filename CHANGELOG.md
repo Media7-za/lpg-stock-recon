@@ -40,6 +40,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Implemented **Account position dashboard** and **sticky side control panel** layout for JIM001 statements:
+  - Surfaces a customer-safe summary dashboard (Account Position, Payment Position, and Cylinder Position metrics) immediately after the header.
+  - Adds an internal-only dashboard card (Internal Audit Snapshot) for internal analyst views.
+  - Added a sticky, persistent side control panel on desktop that collapses into a top sticky horizontal navigation strip on mobile/tablet viewports.
+  - Links side panel buttons to active ledger tabs (LPG Gas / Combined ERP / Cylinder) and section anchors (Dashboard, Payment Summary, Cylinder Custody, Internal Audit).
+  - Toggles default active tab based on view context: Customer HTML defaults to the **LPG Gas Financial Ledger**, while Internal HTML defaults to the **Combined ERP Financial Ledger**.
+  - Automatically hides the side control panel in print media layouts and exports, printing all tab panels sequentially.
 - Refactored the **Part 1 Financial Ledger** structure in the statement markdown (`JIM001_Statement_Account_v4.md`) and HTML statements for Jim Gas (`JIM001`) to support five sub-ledgers/sections:
   - **Part 1A: Combined ERP Financial Ledger** (unstripped chronological transactions).
   - **Part 1B: LPG Gas Financial Ledger** (reconciling to LPG Gas Debt = `R146,857.72` with Payment `38481` split into `R14,287.13` LPG-applied and `R1,529.50` unallocated payment portions).

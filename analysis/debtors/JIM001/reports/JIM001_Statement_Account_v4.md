@@ -4,24 +4,54 @@
 
 ---
 
+<div id="account-dashboard"></div>
+
+## Account Position Dashboard
+
+<div class="dashboard-grid">
+    <div class="dashboard-card position-card-item">
+        <h4>Account Position</h4>
+        <ul>
+            <li><strong>Total Account Balance:</strong> R146,851.22</li>
+            <li><strong>LPG Gas Debt:</strong> R146,857.72</li>
+            <li><strong>Cylinder Financial Balance:</strong> R-6.50</li>
+            <li><strong>Statement Period:</strong> 3 Dec 2018 – 31 May 2026</li>
+        </ul>
+    </div>
+    <div class="dashboard-card payment-card-item">
+        <h4>Payment Position</h4>
+        <ul>
+            <li><strong>Net LPG Gas Debt:</strong> R146,857.72</li>
+            <li><strong>Unpaid LPG Invoices:</strong> R241,155.91</li>
+            <li><strong>Unmatched / Overpayments:</strong> R94,298.19</li>
+            <li><strong>Allocation Period:</strong> 1 Mar 2022 – 31 May 2026</li>
+        </ul>
+    </div>
+    <div class="dashboard-card cylinder-card-item">
+        <h4>Cylinder Position</h4>
+        <ul>
+            <li><strong>Cylinder Financial Balance:</strong> R-6.50</li>
+            <li><strong>Cylinder Custody Exposure:</strong> R26,220.00</li>
+            <li><strong>Cylinder Variance:</strong> R-26,226.50</li>
+        </ul>
+    </div>
 <!-- INTERNAL_ONLY_START -->
-## ⚠️ Audit Disclosure & Executive Summary
-
-During the reconstruction of JIM001, we verified that the account contains large-scale payment allocation splits and credit note double-taxation discrepancies in the ERP database header layer.
-
-### 🔍 Key Findings:
-1. **Deduplication Defect Diagnosed (R284,760.09):**
-   * A naive database deduplication checking `DISTINCT ON (doc_no, entry_type, tx_date)` incorrectly drops split payment allocations of identical amounts on the same date, dropping **R268,000.00+** of customer payments.
-   * By implementing corrected payment consolidation (grouping splits by document number and date before cross-file deduplication), the true payment total of **-R950,729.61** is preserved.
-   * Additionally, all Credit Notes were double-taxed in the header layer (populating `amount_excl` with the tax-inclusive total), creating a **R78,261.93** error.
-2. **True Reconciled Balance & Residual Variance:**
-   * The true combined customer balance at 31 May 2026 is **R146,851.22** (LPG Gas Debt: R146,857.72, Cylinder Financial Balance: R-6.50).
-   * The fully corrected ERP stated balance is **R146,907.13**, resulting in a tiny, residual unexplained variance of only **R55.91**.
+    <div class="dashboard-card internal-audit-card-item">
+        <h4>Internal Audit Snapshot</h4>
+        <ul>
+            <li><strong>Corrected ERP Stated Balance:</strong> R146,907.13</li>
+            <li><strong>ERP Residual Variance:</strong> R55.91</li>
+            <li><strong>Naive split-payment defect:</strong> R284,760.09</li>
+            <li><strong>Credit Note 14198:</strong> Allocated to Invoice 48578 via ref_no rule</li>
+            <li>Part 1E allocation detail available internally</li>
+        </ul>
+    </div>
+<!-- INTERNAL_ONLY_END -->
+</div>
 
 ---
-<!-- INTERNAL_ONLY_END -->
 
-## Part 1: Financial Ledgers
+<h2 id="financial-ledgers">Part 1: Financial Ledgers</h2>
 *Tracks all chronological transactions, gas, and cylinders in three sub-ledgers. Use the tabs below to select the view.*
 
 ### Part 1A: Combined ERP Financial Ledger
@@ -4020,7 +4050,7 @@ During the reconstruction of JIM001, we verified that the account contains large
 
 ---
 
-### Part 1D: Payment Allocation Split Summary
+<h3 id="payment-allocation-summary">Part 1D: Payment Allocation Split Summary</h3>
 *High-level summary of payment splits and allocations between LPG and Cylinder ledgers.*
 
 
@@ -4036,6 +4066,8 @@ During the reconstruction of JIM001, we verified that the account contains large
 ---
 
 <!-- INTERNAL_ONLY_START -->
+<div id="payment-allocation-detail"></div>
+
 ### Part 1E: Payment-to-Invoice Allocation Detail
 *Internal Audit Trail: Detailed payment-to-invoice allocation edges from March 2022 to May 2026.*
 
@@ -4244,9 +4276,26 @@ During the reconstruction of JIM001, we verified that the account contains large
 
 
 ---
+
+<div id="internal-audit-disclosure"></div>
+
+## ⚠️ Audit Disclosure & Executive Summary
+
+During the reconstruction of JIM001, we verified that the account contains large-scale payment allocation splits and credit note double-taxation discrepancies in the ERP database header layer.
+
+### 🔍 Key Findings:
+1. **Deduplication Defect Diagnosed (R284,760.09):**
+   * A naive database deduplication checking `DISTINCT ON (doc_no, entry_type, tx_date)` incorrectly drops split payment allocations of identical amounts on the same date, dropping **R268,000.00+** of customer payments.
+   * By implementing corrected payment consolidation (grouping splits by document number and date before cross-file deduplication), the true payment total of **-R950,729.61** is preserved.
+   * Additionally, all Credit Notes were double-taxed in the header layer (populating `amount_excl` with the tax-inclusive total), creating a **R78,261.93** error.
+2. **True Reconciled Balance & Residual Variance:**
+   * The true combined customer balance at 31 May 2026 is **R146,851.22** (LPG Gas Debt: R146,857.72, Cylinder Financial Balance: R-6.50).
+   * The fully corrected ERP stated balance is **R146,907.13**, resulting in a tiny, residual unexplained variance of only **R55.91**.
+
+---
 <!-- INTERNAL_ONLY_END -->
 
-## Part 2: Cylinder (CYL) Ledger (Physical Asset Tracker)
+<h2 id="cylinder-custody-tracker">Part 2: Cylinder (CYL) Ledger (Physical Asset Tracker)</h2>
 *Cylinders are tracked purely by physical count. The Opening Balance on 03 December 2018 is R0.00 as it represents account inception.*
 
 ### December 2018
@@ -5459,7 +5508,7 @@ During the reconstruction of JIM001, we verified that the account contains large
 | 18 May 2026 | Crd Note | 14924 | 0 | 0 | 0 | 0 | -2 |
 | 20 May 2026 | Invoice | 50811 | 0 | 0 | 0 | 0 | +3 |
 | 20 May 2026 | Crd Note | 14940 | 0 | 0 | 0 | 0 | -3 |
-| **End May** | **Closing Balance** | — | **1** | **24** | **2** | **16** | **-9** |
+| **End May** | **Closing Balance** | — | **1** | **24** | **2** | **16** | **-9** | + `
 
 ---
 

@@ -192,30 +192,56 @@ def enhance_html(html_content, is_internal=True):
         p1b_content = match.group(2)
         p1c_content = match.group(3)
         
-        tab_html = """
-        <div class="tabs-container">
-            <div class="tab-list" role="tablist">
-                <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="panel-1a" id="tab-1a">Combined ERP Financial Ledger</button>
-                <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-1b" id="tab-1b">LPG Gas Financial Ledger</button>
-                <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-1c" id="tab-1c">Cylinder Financial Ledger</button>
+        if is_internal:
+            tab_html = """
+            <div class="tabs-container">
+                <div class="tab-list" role="tablist">
+                    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="panel-1a" id="tab-1a">Combined ERP Financial Ledger</button>
+                    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-1b" id="tab-1b">LPG Gas Financial Ledger</button>
+                    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-1c" id="tab-1c">Cylinder Financial Ledger</button>
+                </div>
+                
+                <div class="tab-panel active" id="panel-1a" role="tabpanel" aria-labelledby="tab-1a">
+                    <h3>Part 1A: Combined ERP Financial Ledger</h3>
+                    {}
+                </div>
+                
+                <div class="tab-panel" id="panel-1b" role="tabpanel" aria-labelledby="tab-1b">
+                    <h3>Part 1B: LPG Gas Financial Ledger</h3>
+                    {}
+                </div>
+                
+                <div class="tab-panel" id="panel-1c" role="tabpanel" aria-labelledby="tab-1c">
+                    <h3>Part 1C: Cylinder Financial Ledger</h3>
+                    {}
+                </div>
             </div>
-            
-            <div class="tab-panel active" id="panel-1a" role="tabpanel" aria-labelledby="tab-1a">
-                <h3>Part 1A: Combined ERP Financial Ledger</h3>
-                {}
+            """.format(p1a_content, p1b_content, p1c_content)
+        else:
+            tab_html = """
+            <div class="tabs-container">
+                <div class="tab-list" role="tablist">
+                    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-1a" id="tab-1a">Combined ERP Financial Ledger</button>
+                    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="panel-1b" id="tab-1b">LPG Gas Financial Ledger</button>
+                    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-1c" id="tab-1c">Cylinder Financial Ledger</button>
+                </div>
+                
+                <div class="tab-panel" id="panel-1a" role="tabpanel" aria-labelledby="tab-1a">
+                    <h3>Part 1A: Combined ERP Financial Ledger</h3>
+                    {}
+                </div>
+                
+                <div class="tab-panel active" id="panel-1b" role="tabpanel" aria-labelledby="tab-1b">
+                    <h3>Part 1B: LPG Gas Financial Ledger</h3>
+                    {}
+                </div>
+                
+                <div class="tab-panel" id="panel-1c" role="tabpanel" aria-labelledby="tab-1c">
+                    <h3>Part 1C: Cylinder Financial Ledger</h3>
+                    {}
+                </div>
             </div>
-            
-            <div class="tab-panel" id="panel-1b" role="tabpanel" aria-labelledby="tab-1b">
-                <h3>Part 1B: LPG Gas Financial Ledger</h3>
-                {}
-            </div>
-            
-            <div class="tab-panel" id="panel-1c" role="tabpanel" aria-labelledby="tab-1c">
-                <h3>Part 1C: Cylinder Financial Ledger</h3>
-                {}
-            </div>
-        </div>
-        """.format(p1a_content, p1b_content, p1c_content)
+            """.format(p1a_content, p1b_content, p1c_content)
         return tab_html
         
     html_content = tab_pattern.sub(replace_with_tabs, html_content)
@@ -224,6 +250,10 @@ def enhance_html(html_content, is_internal=True):
 
 def build_full_html(enhanced_content, is_internal=True):
     badge = '<span class="view-badge internal-badge">Internal Audit View</span>' if is_internal else '<span class="view-badge customer-badge">Customer View</span>'
+    internal_side_links = """
+                    <a href="#internal-audit-disclosure" class="side-nav-btn" data-section="audit">Internal Audit Snapshot</a>
+                    <a href="#payment-allocation-detail" class="side-nav-btn" data-section="detail">Payment Allocation Detail</a>
+    """ if is_internal else ""
     
     return f"""<!DOCTYPE html>
 <html>
@@ -689,6 +719,219 @@ def build_full_html(enhanced_content, is_internal=True):
             to {{ opacity: 1; transform: translateY(0); }}
         }}
         
+        
+        /* Dashboard grid and card styling */
+        .dashboard-grid {{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 15px;
+            margin: 25px 0;
+        }}
+        
+        .dashboard-card {{
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 18px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }}
+        
+        .dashboard-card:hover {{
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+        }}
+        
+        .dashboard-card h4 {{
+            margin-top: 0;
+            margin-bottom: 12px;
+            color: #1e3a8a;
+            font-family: 'Outfit', sans-serif;
+            font-size: 11pt;
+            font-weight: 600;
+            border-bottom: 2px solid #eff6ff;
+            padding-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }}
+        
+        .dashboard-card ul {{
+            list-style: none;
+            padding-left: 0;
+            margin: 0;
+        }}
+        
+        .dashboard-card li {{
+            font-size: 8.5pt;
+            color: #475569;
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }}
+        
+        .dashboard-card li strong {{
+            color: #0f172a;
+        }}
+
+        .position-card-item h4 {{ color: #2563eb; border-bottom-color: #dbeafe; }}
+        .payment-card-item h4 {{ color: #16a34a; border-bottom-color: #dcfce7; }}
+        .cylinder-card-item h4 {{ color: #ea580c; border-bottom-color: #ffedd5; }}
+        .internal-audit-card-item {{
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+            border-color: #fde68a;
+        }}
+        .internal-audit-card-item h4 {{ color: #b45309; border-bottom-color: #fde68a; }}
+
+        /* Two-column App Layout for desktop */
+        .app-layout {{
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            gap: 24px;
+            position: relative;
+        }}
+        
+        .statement-container {{
+            flex: 1;
+            min-width: 0;
+            margin: 0;
+        }}
+        
+        .side-control-panel-wrapper {{
+            width: 260px;
+            flex-shrink: 0;
+        }}
+        
+        .side-control-panel {{
+            position: sticky;
+            top: 24px;
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+            max-height: calc(100vh - 48px);
+            overflow-y: auto;
+        }}
+        
+        .side-panel-title {{
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #0f172a;
+            font-family: 'Outfit', sans-serif;
+            font-size: 11pt;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 8px;
+        }}
+        
+        .side-nav-links {{
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }}
+        
+        .side-nav-btn {{
+            display: block;
+            width: 100%;
+            text-align: left;
+            background: none;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 9pt;
+            font-weight: 500;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            box-sizing: border-box;
+        }}
+        
+        .side-nav-btn:hover {{
+            background-color: #f1f5f9;
+            color: #1e3a8a;
+        }}
+        
+        .side-nav-btn.active {{
+            background-color: #eff6ff;
+            color: #1e40af;
+            font-weight: 600;
+            border-color: #bfdbfe;
+        }}
+        
+        .side-nav-btn.print-btn {{
+            margin-top: 10px;
+            background-color: #1e3a8a;
+            color: #ffffff;
+            font-weight: 600;
+            text-align: center;
+        }}
+        
+        .side-nav-btn.print-btn:hover {{
+            background-color: #1d4ed8;
+            color: #ffffff;
+        }}
+        
+        /* Mobile Layout for sidebar (sticky top nav) */
+        @media (max-width: 1199px) {{
+            .app-layout {{
+                display: block;
+            }}
+            
+            .side-control-panel-wrapper {{
+                width: 100%;
+                position: sticky;
+                top: 0;
+                z-index: 100;
+                margin-bottom: 20px;
+            }}
+            
+            .side-control-panel {{
+                position: static;
+                border-radius: 0;
+                border-left: none;
+                border-right: none;
+                border-top: none;
+                padding: 10px 20px;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                overflow-x: auto;
+                white-space: nowrap;
+                background-color: #ffffff;
+                scrollbar-width: none;
+            }}
+            
+            .side-control-panel::-webkit-scrollbar {{
+                display: none;
+            }}
+            
+            .side-panel-title {{
+                display: none;
+            }}
+            
+            .side-nav-links {{
+                display: flex;
+                flex-direction: row;
+                gap: 8px;
+            }}
+            
+            .side-nav-btn {{
+                display: inline-block;
+                width: auto;
+                padding: 8px 12px;
+            }}
+            
+            .side-nav-btn.print-btn {{
+                margin-top: 0;
+            }}
+        }}
+        
         /* Responsive Print Layout Styles */
         @media print {{
             body {{
@@ -702,6 +945,12 @@ def build_full_html(enhanced_content, is_internal=True):
                 padding: 0;
                 margin: 0;
                 max-width: 100%;
+            }}
+            .side-control-panel-wrapper {{
+                display: none !important;
+            }}
+            .app-layout {{
+                display: block !important;
             }}
             .view-badge {{
                 display: none;
@@ -746,11 +995,29 @@ def build_full_html(enhanced_content, is_internal=True):
     </noscript>
 </head>
 <body>
-    <div class="statement-container">
-        {badge}
-        {enhanced_content}
-        <div class="page-footer">
-            Midlands Petroleum &middot; LPG Stock Reconciliation Statement &middot; Generated dynamically under CYL Settlement Doctrine v4
+    <div class="app-layout">
+        <div class="statement-container">
+            {badge}
+            {enhanced_content}
+            <div class="page-footer">
+                Midlands Petroleum &middot; LPG Stock Reconciliation Statement &middot; Generated dynamically under CYL Settlement Doctrine v4
+            </div>
+        </div>
+        
+        <div class="side-control-panel-wrapper">
+            <div class="side-control-panel">
+                <h4 class="side-panel-title">Navigation</h4>
+                <div class="side-nav-links">
+                    <a href="#account-dashboard" class="side-nav-btn active" data-section="dashboard">Account Dashboard</a>
+                    <button class="side-nav-btn" data-tab="tab-1b" data-section="ledger">LPG Gas Ledger</button>
+                    <button class="side-nav-btn" data-tab="tab-1a" data-section="ledger">Combined ERP Ledger</button>
+                    <button class="side-nav-btn" data-tab="tab-1c" data-section="ledger">Cylinder Ledger</button>
+                    <a href="#payment-allocation-summary" class="side-nav-btn" data-section="payment">Payment Summary</a>
+                    <a href="#cylinder-custody-tracker" class="side-nav-btn" data-section="custody">Cylinder Custody</a>
+                    {internal_side_links}
+                    <button class="side-nav-btn print-btn" onclick="window.print()">Print / Save</button>
+                </div>
+            </div>
         </div>
     </div>
     
@@ -775,6 +1042,15 @@ def build_full_html(enhanced_content, is_internal=True):
                     if (targetPanel) {{
                         targetPanel.classList.add('active');
                     }}
+                    
+                    // Keep sidebar active states in sync for tab clicks
+                    document.querySelectorAll('.side-nav-btn[data-tab]').forEach(btn => {{
+                        if (btn.getAttribute('data-tab') === tab.id) {{
+                            btn.classList.add('active');
+                        }} else {{
+                            btn.classList.remove('active');
+                        }}
+                    }});
                 }});
                 
                 // Keyboard accessibility (Arrow keys, Home, End)
@@ -796,6 +1072,39 @@ def build_full_html(enhanced_content, is_internal=True):
                     if (targetTab) {{
                         targetTab.focus();
                         targetTab.click();
+                        e.preventDefault();
+                    }}
+                }});
+            }});
+
+            // Side Control Panel click behavior
+            const sideNavButtons = document.querySelectorAll('.side-nav-btn');
+            sideNavButtons.forEach(btn => {{
+                btn.addEventListener('click', (e) => {{
+                    const tabId = btn.getAttribute('data-tab');
+                    const targetHref = btn.getAttribute('href');
+                    
+                    sideNavButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    if (tabId) {{
+                        // Toggle matching tab in Part 1
+                        const tabBtn = document.getElementById(tabId);
+                        if (tabBtn) {{
+                            tabBtn.click();
+                            // Scroll to Part 1
+                            const dest = document.getElementById('financial-ledgers');
+                            if (dest) {{
+                                dest.scrollIntoView({{ behavior: 'smooth' }});
+                            }}
+                        }}
+                        e.preventDefault();
+                    }} else if (targetHref && targetHref.startsWith('#')) {{
+                        const targetId = targetHref.slice(1);
+                        const dest = document.getElementById(targetId);
+                        if (dest) {{
+                            dest.scrollIntoView({{ behavior: 'smooth' }});
+                        }}
                         e.preventDefault();
                     }}
                 }});

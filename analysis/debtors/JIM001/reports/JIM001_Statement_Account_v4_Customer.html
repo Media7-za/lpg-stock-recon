@@ -462,6 +462,219 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
+        
+        /* Dashboard grid and card styling */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 15px;
+            margin: 25px 0;
+        }
+        
+        .dashboard-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 18px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+        }
+        
+        .dashboard-card h4 {
+            margin-top: 0;
+            margin-bottom: 12px;
+            color: #1e3a8a;
+            font-family: 'Outfit', sans-serif;
+            font-size: 11pt;
+            font-weight: 600;
+            border-bottom: 2px solid #eff6ff;
+            padding-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .dashboard-card ul {
+            list-style: none;
+            padding-left: 0;
+            margin: 0;
+        }
+        
+        .dashboard-card li {
+            font-size: 8.5pt;
+            color: #475569;
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        
+        .dashboard-card li strong {
+            color: #0f172a;
+        }
+
+        .position-card-item h4 { color: #2563eb; border-bottom-color: #dbeafe; }
+        .payment-card-item h4 { color: #16a34a; border-bottom-color: #dcfce7; }
+        .cylinder-card-item h4 { color: #ea580c; border-bottom-color: #ffedd5; }
+        .internal-audit-card-item {
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+            border-color: #fde68a;
+        }
+        .internal-audit-card-item h4 { color: #b45309; border-bottom-color: #fde68a; }
+
+        /* Two-column App Layout for desktop */
+        .app-layout {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            gap: 24px;
+            position: relative;
+        }
+        
+        .statement-container {
+            flex: 1;
+            min-width: 0;
+            margin: 0;
+        }
+        
+        .side-control-panel-wrapper {
+            width: 260px;
+            flex-shrink: 0;
+        }
+        
+        .side-control-panel {
+            position: sticky;
+            top: 24px;
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+            max-height: calc(100vh - 48px);
+            overflow-y: auto;
+        }
+        
+        .side-panel-title {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #0f172a;
+            font-family: 'Outfit', sans-serif;
+            font-size: 11pt;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 8px;
+        }
+        
+        .side-nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .side-nav-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            background: none;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 9pt;
+            font-weight: 500;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            box-sizing: border-box;
+        }
+        
+        .side-nav-btn:hover {
+            background-color: #f1f5f9;
+            color: #1e3a8a;
+        }
+        
+        .side-nav-btn.active {
+            background-color: #eff6ff;
+            color: #1e40af;
+            font-weight: 600;
+            border-color: #bfdbfe;
+        }
+        
+        .side-nav-btn.print-btn {
+            margin-top: 10px;
+            background-color: #1e3a8a;
+            color: #ffffff;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .side-nav-btn.print-btn:hover {
+            background-color: #1d4ed8;
+            color: #ffffff;
+        }
+        
+        /* Mobile Layout for sidebar (sticky top nav) */
+        @media (max-width: 1199px) {
+            .app-layout {
+                display: block;
+            }
+            
+            .side-control-panel-wrapper {
+                width: 100%;
+                position: sticky;
+                top: 0;
+                z-index: 100;
+                margin-bottom: 20px;
+            }
+            
+            .side-control-panel {
+                position: static;
+                border-radius: 0;
+                border-left: none;
+                border-right: none;
+                border-top: none;
+                padding: 10px 20px;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                overflow-x: auto;
+                white-space: nowrap;
+                background-color: #ffffff;
+                scrollbar-width: none;
+            }
+            
+            .side-control-panel::-webkit-scrollbar {
+                display: none;
+            }
+            
+            .side-panel-title {
+                display: none;
+            }
+            
+            .side-nav-links {
+                display: flex;
+                flex-direction: row;
+                gap: 8px;
+            }
+            
+            .side-nav-btn {
+                display: inline-block;
+                width: auto;
+                padding: 8px 12px;
+            }
+            
+            .side-nav-btn.print-btn {
+                margin-top: 0;
+            }
+        }
+        
         /* Responsive Print Layout Styles */
         @media print {
             body {
@@ -475,6 +688,12 @@
                 padding: 0;
                 margin: 0;
                 max-width: 100%;
+            }
+            .side-control-panel-wrapper {
+                display: none !important;
+            }
+            .app-layout {
+                display: block !important;
             }
             .view-badge {
                 display: none;
@@ -519,9 +738,10 @@
     </noscript>
 </head>
 <body>
-    <div class="statement-container">
-        <span class="view-badge customer-badge">Customer View</span>
-        
+    <div class="app-layout">
+        <div class="statement-container">
+            <span class="view-badge customer-badge">Customer View</span>
+            
     <div class="statement-header">
         <div class="header-main">
             <div class="brand">
@@ -557,19 +777,50 @@
     
 
 <hr>
-<h2>Part 1: Financial Ledgers</h2>
-<p><em>Tracks all chronological transactions, gas, and cylinders in three sub-ledgers. Use the tabs below to select the view.</em></p>
+<p>&lt;div id=&quot;account-dashboard&quot;&gt;&lt;/div&gt;</p>
+<h2>Account Position Dashboard</h2>
+<p>&lt;div class=&quot;dashboard-grid&quot;&gt;
+&lt;div class=&quot;dashboard-card position-card-item&quot;&gt;
+&lt;h4&gt;Account Position&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Total Account Balance:&lt;/strong&gt; R146,851.22&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;LPG Gas Debt:&lt;/strong&gt; R146,857.72&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Cylinder Financial Balance:&lt;/strong&gt; R-6.50&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Statement Period:&lt;/strong&gt; 3 Dec 2018 – 31 May 2026&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;dashboard-card payment-card-item&quot;&gt;
+&lt;h4&gt;Payment Position&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Net LPG Gas Debt:&lt;/strong&gt; R146,857.72&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Unpaid LPG Invoices:&lt;/strong&gt; R241,155.91&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Unmatched / Overpayments:&lt;/strong&gt; R94,298.19&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Allocation Period:&lt;/strong&gt; 1 Mar 2022 – 31 May 2026&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;dashboard-card cylinder-card-item&quot;&gt;
+&lt;h4&gt;Cylinder Position&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Cylinder Financial Balance:&lt;/strong&gt; R-6.50&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Cylinder Custody Exposure:&lt;/strong&gt; R26,220.00&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Cylinder Variance:&lt;/strong&gt; R-26,226.50&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;</p>
+<p>&lt;/div&gt;</p>
+<hr>
+<p>&lt;h2 id=&quot;financial-ledgers&quot;&gt;Part 1: Financial Ledgers&lt;/h2&gt;
+<em>Tracks all chronological transactions, gas, and cylinders in three sub-ledgers. Use the tabs below to select the view.</em></p>
 
-        <div class="tabs-container">
-            <div class="tab-list" role="tablist">
-                <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="panel-1a" id="tab-1a">Combined ERP Financial Ledger</button>
-                <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-1b" id="tab-1b">LPG Gas Financial Ledger</button>
-                <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-1c" id="tab-1c">Cylinder Financial Ledger</button>
-            </div>
-            
-            <div class="tab-panel active" id="panel-1a" role="tabpanel" aria-labelledby="tab-1a">
-                <h3>Part 1A: Combined ERP Financial Ledger</h3>
+            <div class="tabs-container">
+                <div class="tab-list" role="tablist">
+                    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-1a" id="tab-1a">Combined ERP Financial Ledger</button>
+                    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="panel-1b" id="tab-1b">LPG Gas Financial Ledger</button>
+                    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-1c" id="tab-1c">Cylinder Financial Ledger</button>
+                </div>
                 
+                <div class="tab-panel" id="panel-1a" role="tabpanel" aria-labelledby="tab-1a">
+                    <h3>Part 1A: Combined ERP Financial Ledger</h3>
+                    
 <p><em>Shows all transactions recorded in the ERP for this account (both gas and cylinders combined) chronologically.</em></p>
 <h4>December 2018</h4>
 <table>
@@ -9790,11 +10041,11 @@
 </table>
 <hr>
 
-            </div>
-            
-            <div class="tab-panel" id="panel-1b" role="tabpanel" aria-labelledby="tab-1b">
-                <h3>Part 1B: LPG Gas Financial Ledger</h3>
+                </div>
                 
+                <div class="tab-panel active" id="panel-1b" role="tabpanel" aria-labelledby="tab-1b">
+                    <h3>Part 1B: LPG Gas Financial Ledger</h3>
+                    
 <p><em>Shows only gas-related transactions and payments. Reconciles to LPG Gas Debt = R146,857.72.</em></p>
 <h4>December 2018</h4>
 <table>
@@ -16669,11 +16920,11 @@
 </table>
 <hr>
 
-            </div>
-            
-            <div class="tab-panel" id="panel-1c" role="tabpanel" aria-labelledby="tab-1c">
-                <h3>Part 1C: Cylinder Financial Ledger</h3>
+                </div>
                 
+                <div class="tab-panel" id="panel-1c" role="tabpanel" aria-labelledby="tab-1c">
+                    <h3>Part 1C: Cylinder Financial Ledger</h3>
+                    
 <p><em>Shows only cylinder-related transactions (CYL invoices/CNs, no uncorroborated CYL payments). Cylinder financial balance = R-6.50.</em></p>
 <h4>January 2019</h4>
 <table>
@@ -16753,9 +17004,9 @@
 </tbody>
 </table>
 
+                </div>
             </div>
-        </div>
-        <hr>
+            <hr>
 <h4>February 2019</h4>
 <table>
 <thead>
@@ -21351,8 +21602,8 @@
 </tbody>
 </table>
 <hr>
-<h3>Part 1D: Payment Allocation Split Summary</h3>
-<p><em>High-level summary of payment splits and allocations between LPG and Cylinder ledgers.</em></p>
+<p>&lt;h3 id=&quot;payment-allocation-summary&quot;&gt;Part 1D: Payment Allocation Split Summary&lt;/h3&gt;
+<em>High-level summary of payment splits and allocations between LPG and Cylinder ledgers.</em></p>
 <table>
 <thead>
 <tr>
@@ -21414,8 +21665,8 @@
 </tbody>
 </table>
 <hr>
-<h2>Part 2: Cylinder (CYL) Ledger (Physical Asset Tracker)</h2>
-<p><em>Cylinders are tracked purely by physical count. The Opening Balance on 03 December 2018 is R0.00 as it represents account inception.</em></p>
+<p>&lt;h2 id=&quot;cylinder-custody-tracker&quot;&gt;Part 2: Cylinder (CYL) Ledger (Physical Asset Tracker)&lt;/h2&gt;
+<em>Cylinders are tracked purely by physical count. The Opening Balance on 03 December 2018 is R0.00 as it represents account inception.</em></p>
 <h3>December 2018</h3>
 <table>
 <thead>
@@ -30071,8 +30322,25 @@
 </table>
 <hr>
 
-        <div class="page-footer">
-            Midlands Petroleum &middot; LPG Stock Reconciliation Statement &middot; Generated dynamically under CYL Settlement Doctrine v4
+            <div class="page-footer">
+                Midlands Petroleum &middot; LPG Stock Reconciliation Statement &middot; Generated dynamically under CYL Settlement Doctrine v4
+            </div>
+        </div>
+        
+        <div class="side-control-panel-wrapper">
+            <div class="side-control-panel">
+                <h4 class="side-panel-title">Navigation</h4>
+                <div class="side-nav-links">
+                    <a href="#account-dashboard" class="side-nav-btn active" data-section="dashboard">Account Dashboard</a>
+                    <button class="side-nav-btn" data-tab="tab-1b" data-section="ledger">LPG Gas Ledger</button>
+                    <button class="side-nav-btn" data-tab="tab-1a" data-section="ledger">Combined ERP Ledger</button>
+                    <button class="side-nav-btn" data-tab="tab-1c" data-section="ledger">Cylinder Ledger</button>
+                    <a href="#payment-allocation-summary" class="side-nav-btn" data-section="payment">Payment Summary</a>
+                    <a href="#cylinder-custody-tracker" class="side-nav-btn" data-section="custody">Cylinder Custody</a>
+                    
+                    <button class="side-nav-btn print-btn" onclick="window.print()">Print / Save</button>
+                </div>
+            </div>
         </div>
     </div>
     
@@ -30097,6 +30365,15 @@
                     if (targetPanel) {
                         targetPanel.classList.add('active');
                     }
+                    
+                    // Keep sidebar active states in sync for tab clicks
+                    document.querySelectorAll('.side-nav-btn[data-tab]').forEach(btn => {
+                        if (btn.getAttribute('data-tab') === tab.id) {
+                            btn.classList.add('active');
+                        } else {
+                            btn.classList.remove('active');
+                        }
+                    });
                 });
                 
                 // Keyboard accessibility (Arrow keys, Home, End)
@@ -30118,6 +30395,39 @@
                     if (targetTab) {
                         targetTab.focus();
                         targetTab.click();
+                        e.preventDefault();
+                    }
+                });
+            });
+
+            // Side Control Panel click behavior
+            const sideNavButtons = document.querySelectorAll('.side-nav-btn');
+            sideNavButtons.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const tabId = btn.getAttribute('data-tab');
+                    const targetHref = btn.getAttribute('href');
+                    
+                    sideNavButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    if (tabId) {
+                        // Toggle matching tab in Part 1
+                        const tabBtn = document.getElementById(tabId);
+                        if (tabBtn) {
+                            tabBtn.click();
+                            // Scroll to Part 1
+                            const dest = document.getElementById('financial-ledgers');
+                            if (dest) {
+                                dest.scrollIntoView({ behavior: 'smooth' });
+                            }
+                        }
+                        e.preventDefault();
+                    } else if (targetHref && targetHref.startsWith('#')) {
+                        const targetId = targetHref.slice(1);
+                        const dest = document.getElementById(targetId);
+                        if (dest) {
+                            dest.scrollIntoView({ behavior: 'smooth' });
+                        }
                         e.preventDefault();
                     }
                 });
