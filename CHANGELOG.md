@@ -40,6 +40,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Added the **Payment-Batch Allocation Detail Register** to [JIM001_BASELINE_v4.md](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/JIM001/reports/JIM001_BASELINE_v4.md) below the prior-month intent matching register:
+  - Details allocations from the payment-batch perspective (Payment Date → Payment Ref/Doc → Payment Amount → Intended LPG Month → LPG Month Net → Invoices Allocated/Partially Allocated → Amount Allocated → Residual Unpaid → Allocation Result → Evidence Source → Notes).
+  - Groups split allocations across months (e.g. payments 38481, 40746) and labels them clearly as `SPLIT_PAYMENT_PORTION` instead of incorrect overpayments.
+  - Explains complex splits (e.g., payment 38481 April/May split, payments 40063/40746 June/August split) with specific audit notes detailing Credit Note 12390 and Cylinder allocations.
+  - Excludes unmatched payments (e.g. 13245, 38846, 39812) to keep the register focused strictly on allocated payment batches.
 - Implemented **JIM001 v4 Phase 2 LPG Prior-Month Payment Intent Allocation**:
   - Shifts allocation from chronological FIFO to the LPG Prior-Month Payment Intent Matching doctrine starting from 1 March 2022.
   - Added LPG-only `LPG Prior-Month Payment Intent Matching Register` to [JIM001_BASELINE_v4.md](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/JIM001/reports/JIM001_BASELINE_v4.md) grouping payments and invoices into intent-based monthly matches, identifying 13 fully settled months, 10 partially settled / underpaid months, 16 overpaid months, and 12 completely unpaid months.
