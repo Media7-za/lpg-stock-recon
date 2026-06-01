@@ -20,7 +20,7 @@ Feature: {ONE LINE DESCRIPTION}
 ### Step 1 — Clone the repo
 
 ```bash
-git clone https://[PAT]@github.com/Media7-za/lpg-stock-recon.git /home/claude/lpg-stock-recon
+git clone https://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@github.com/Media7-za/lpg-stock-recon.git /home/claude/lpg-stock-recon
 cd /home/claude/lpg-stock-recon
 git config user.email "56847p@gmail.com"
 git config user.name "Media7-za"
