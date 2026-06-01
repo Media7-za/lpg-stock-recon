@@ -99,144 +99,166 @@ Variance:                         R55.91
 | **Cylinder Custody Exposure** | N/A | R26,220.00 | N/A | First v4 reconstruction for JIM001. |
 | **Total Reconciled Balance** | N/A | R146,851.22 | N/A | First v4 reconstruction for JIM001. |
 
-## Calendar-Month Batch Payment Allocation Register
+## LPG Prior-Month Payment Intent Matching Register
 
-| Allocation ID | Invoice Month(s) | Invoice / Net Amount | Payment Doc(s) | Payment Date(s) | Payment Amount | Allocated Amount | Residual | Allocation Type | Confidence | Notes |
-| ------------- | ---------------: | -------------------: | -------------- | --------------- | -------------: | ---------------: | -------: | --------------- | ---------- | ----- |
-| AL-001 | 2018-12 | R21,750.02 | 00000029, 00004832, 00004839, 00004807, 00004898 | 2018-12-17, 2018-12-28, 2019-01-04, 2019-01-08 | R21,950.01 | R21,750.02 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00000029, 00004832, 00004839, 00004807, 00004898. |
-| AL-002 | 2019-01 | R19,306.77 | 00004898, 00004841, 00004904, 00005043, 00005047 | 2019-01-08, 2019-01-09, 2019-01-20, 2019-02-06, 2019-02-18 | R27,897.40 | R19,306.77 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00004898, 00004841, 00004904, 00005043, 00005047. |
-| AL-003 | 2019-02 | R10,697.41 | 00005047, 00000032, 00005437 | 2019-02-18, 2019-02-27, 2019-04-23 | R17,402.39 | R10,697.41 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00005047, 00000032, 00005437. |
-| AL-004 | 2019-03 | R3,774.98 | 00005437, 00005436 | 2019-04-23, 2019-05-05 | R23,430.00 | R3,774.98 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00005437, 00005436. |
-| AL-005 | 2019-04 | R13,504.86 | 00005436, 00005618 | 2019-05-05, 2019-06-19 | R22,130.00 | R13,504.86 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00005436, 00005618. |
-| AL-006 | 2019-05 | R10,210.63 | 00005618, 00005804 | 2019-06-19, 2019-07-03 | R21,375.00 | R10,210.63 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00005618, 00005804. |
-| AL-007 | 2019-06 | R11,250.00 | 00005804, 00005226, 00005876 | 2019-07-03, 2019-07-07, 2019-08-05 | R30,179.00 | R11,250.00 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00005804, 00005226, 00005876. |
-| AL-008 | 2019-07 | R14,981.01 | 00005876, 00005988 | 2019-08-05, 2019-09-03 | R28,304.00 | R14,981.01 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00005876, 00005988. |
-| AL-009 | 2019-08 | R13,874.99 | 00005988, 00006104 | 2019-09-03, 2019-10-20 | R27,750.00 | R13,874.99 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00005988, 00006104. |
-| AL-010 | 2019-09 | R13,322.98 | 00006104, 00006316 | 2019-10-20, 2019-12-08 | R24,750.00 | R13,322.98 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00006104, 00006316. |
-| AL-011 | 2019-10 | R12,749.95 | 00006316, 00006381, 00006376 | 2019-12-08, 2019-12-23, 2019-12-26 | R24,720.00 | R12,749.95 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00006316, 00006381, 00006376. |
-| AL-012 | 2019-11 | R11,039.94 | 00006376 | 2019-12-26 | R12,915.00 | R11,039.94 | R0.00 | CALENDAR_MONTH_FULL_SETTLEMENT | Confirmed | Month settled in full by payment doc 00006376. |
-| AL-013 | 2019-12 | R14,193.85 | 00006376, 00006423, 00006685 | 2019-12-26, 2020-01-16, 2020-03-02 | R40,932.80 | R14,193.85 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00006376, 00006423, 00006685. |
-| AL-014 | 2020-01 | R13,840.09 | 00006685 | 2020-03-02 | R15,302.80 | R13,840.09 | R0.00 | CALENDAR_MONTH_FULL_SETTLEMENT | Confirmed | Month settled in full by payment doc 00006685. |
-| AL-015 | 2020-02 | R11,250.03 | 00006685, 00007216, 00007226, 00007348 | 2020-03-02, 2020-06-03, 2020-06-28, 2020-08-03 | R26,552.80 | R11,250.03 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00006685, 00007216, 00007226, 00007348. |
-| AL-016 | 2020-03 | R10,125.03 | 00007348, 00007489, 00007572 | 2020-08-03, 2020-09-03, 2020-11-04 | R13,125.00 | R10,125.03 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00007348, 00007489, 00007572. |
-| AL-017 | 2021-03 | R12,518.20 | 00007572, 00008420 | 2020-11-04, 2021-04-08 | R17,643.21 | R12,518.20 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00007572, 00008420. |
-| AL-018 | 2021-04 | R9,765.76 | 00008420, 00008764 | 2021-04-08, 2021-05-10 | R22,283.97 | R9,765.76 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00008420, 00008764. |
-| AL-019 | 2021-05 | R12,222.90 | 00008764, 00009315 | 2021-05-10, 2021-06-02 | R21,988.66 | R12,222.90 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00008764, 00009315. |
-| AL-020 | 2021-06 | R12,372.10 | 00009315, 00009996, 00010226 | 2021-06-02, 2021-06-30, 2021-08-04 | R32,594.95 | R12,372.10 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00009315, 00009996, 00010226. |
-| AL-021 | 2021-07 | R7,999.95 | 00010226 | 2021-08-04 | R9,079.94 | R7,999.95 | R0.00 | CALENDAR_MONTH_FULL_SETTLEMENT | Confirmed | Month settled in full by payment doc 00010226. |
-| AL-022 | 2021-08 | R13,012.51 | 00010226, 00010584 | 2021-08-04, 2021-09-01 | R22,092.44 | R13,012.51 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00010226, 00010584. |
-| AL-023 | 2021-09 | R13,260.28 | 00010584, 00011068 | 2021-09-01, 2021-10-06 | R26,272.78 | R13,260.28 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00010584, 00011068. |
-| AL-024 | 2021-10 | R13,329.62 | 00011068, 00011558, 00012146 | 2021-10-06, 2021-11-03, 2021-12-19 | R38,350.29 | R13,329.62 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00011068, 00011558, 00012146. |
-| AL-025 | 2021-11 | R16,378.91 | 00012146, 00012719 | 2021-12-19, 2022-01-30 | R29,178.60 | R16,378.91 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00012146, 00012719. |
-| AL-026 | 2021-12 | R12,399.78 | 00012719 | 2022-01-30 | R17,018.30 | R12,399.78 | R0.00 | CALENDAR_MONTH_FULL_SETTLEMENT | Confirmed | Month settled in full by payment doc 00012719. |
-| AL-027 | 2022-01 | R16,425.58 | 00012719, 00013245, 00013583 | 2022-01-30, 2022-03-16, 2022-04-11 | R45,949.88 | R16,425.58 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00012719, 00013245, 00013583. |
-| AL-028 | 2022-02 | R12,506.00 | 00013583 | 2022-04-11 | R13,949.00 | R12,506.00 | R0.00 | CALENDAR_MONTH_FULL_SETTLEMENT | Confirmed | Month settled in full by payment doc 00013583. |
-| AL-029 | 2022-03 | R16,951.56 | 00013583, 00014135 | 2022-04-11, 2022-05-31 | R32,133.64 | R16,951.56 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00013583, 00014135. |
-| AL-030 | 2022-04 | R16,176.56 | 00014135, 00015071 | 2022-05-31, 2022-07-25 | R35,460.31 | R16,176.56 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00014135, 00015071. |
-| AL-031 | 2022-05 | R18,947.57 | 00015071, 00015473, 00015987 | 2022-07-25, 2022-08-10, 2022-09-09 | R48,933.91 | R18,947.57 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00015071, 00015473, 00015987. |
-| AL-032 | 2022-06 | R16,103.76 | 00015987, 00016648 | 2022-09-09, 2022-10-19 | R33,054.56 | R16,103.76 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00015987, 00016648. |
-| AL-033 | 2022-07 | R17,169.29 | 00016648, 00017073 | 2022-10-19, 2022-11-23 | R29,723.67 | R17,169.29 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00016648, 00017073. |
-| AL-034 | 2022-08 | R18,105.18 | 00017073, 00017578 | 2022-11-23, 2022-12-18 | R31,828.32 | R18,105.18 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00017073, 00017578. |
-| AL-035 | 2022-09 | R16,606.08 | 00017578, 00017777 | 2022-12-18, 2023-01-18 | R28,815.84 | R16,606.08 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00017578, 00017777. |
-| AL-036 | 2022-10 | R12,454.56 | 00017777, 00018185 | 2023-01-18, 2023-02-12 | R36,010.28 | R12,454.56 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00017777, 00018185. |
-| AL-037 | 2022-11 | R14,043.62 | 00018185 | 2023-02-12 | R25,184.36 | R14,043.62 | R0.00 | CALENDAR_MONTH_FULL_SETTLEMENT | Confirmed | Month settled in full by payment doc 00018185. |
-| AL-038 | 2022-12 | R21,966.66 | 00018185, 00019176, 00020357 | 2023-02-12, 2023-03-21, 2023-05-01 | R48,863.11 | R21,966.66 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00018185, 00019176, 00020357. |
-| AL-039 | 2023-01 | R11,335.68 | 00020357, 00021193 | 2023-05-01, 2023-05-30 | R27,752.53 | R11,335.68 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00020357, 00021193. |
-| AL-040 | 2023-02 | R12,343.07 | 00021193, 00022711 | 2023-05-30, 2023-07-20 | R30,550.15 | R12,343.07 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00021193, 00022711. |
-| AL-041 | 2023-03 | R16,111.50 | 00022711, 00023280 | 2023-07-20, 2023-08-10 | R28,947.46 | R16,111.50 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00022711, 00023280. |
-| AL-042 | 2023-04 | R15,140.69 | 00023280, 00023977 | 2023-08-10, 2023-09-04 | R30,771.61 | R15,140.69 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00023280, 00023977. |
-| AL-043 | 2023-05 | R17,368.55 | 00023977, 00025394 | 2023-09-04, 2023-10-23 | R30,876.38 | R17,368.55 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00023977, 00025394. |
-| AL-044 | 2023-06 | R13,403.06 | 00025394, 00026601 | 2023-10-23, 2023-11-28 | R26,432.35 | R13,403.06 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00025394, 00026601. |
-| AL-045 | 2023-07 | R13,911.54 | 00026601, 00027468 | 2023-11-28, 2023-12-28 | R37,322.09 | R13,911.54 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00026601, 00027468. |
-| AL-046 | 2023-08 | R12,520.81 | 00027468 | 2023-12-28 | R24,801.28 | R12,520.81 | R0.00 | CALENDAR_MONTH_FULL_SETTLEMENT | Confirmed | Month settled in full by payment doc 00027468. |
-| AL-047 | 2023-09 | R11,272.74 | 00027468, 00028893 | 2023-12-28, 2024-02-19 | R39,009.76 | R11,272.74 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00027468, 00028893. |
-| AL-048 | 2023-10 | R13,528.54 | 00028893, 00030269 | 2024-02-19, 2024-04-23 | R30,359.52 | R13,528.54 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00028893, 00030269. |
-| AL-049 | 2023-11 | R14,208.48 | 00030269, 00030891 | 2024-04-23, 2024-05-26 | R27,256.35 | R14,208.48 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00030269, 00030891. |
-| AL-050 | 2023-12 | R16,151.10 | 00030891, 00031179 | 2024-05-26, 2024-06-09 | R24,967.34 | R16,151.10 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00030891, 00031179. |
-| AL-051 | 2024-01 | R15,226.78 | 00031179, 00031792 | 2024-06-09, 2024-07-08 | R29,257.21 | R15,226.78 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00031179, 00031792. |
-| AL-052 | 2024-02 | R12,524.11 | 00031792, 00032896 | 2024-07-08, 2024-08-22 | R33,030.04 | R12,524.11 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00031792, 00032896. |
-| AL-053 | 2024-03 | R12,612.13 | 00032896, 00033810 | 2024-08-22, 2024-09-29 | R37,867.04 | R12,612.13 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00032896, 00033810. |
-| AL-054 | 2024-04 | R12,634.86 | 00033810 | 2024-09-29 | R20,232.18 | R12,634.86 | R0.00 | CALENDAR_MONTH_FULL_SETTLEMENT | Confirmed | Month settled in full by payment doc 00033810. |
-| AL-055 | 2024-05 | R18,256.94 | 00033810, 00034425 | 2024-09-29, 2024-10-27 | R40,675.18 | R18,256.94 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00033810, 00034425. |
-| AL-056 | 2024-06 | R15,232.18 | 00034425, 00035270 | 2024-10-27, 2024-12-03 | R38,884.12 | R15,232.18 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00034425, 00035270. |
-| AL-057 | 2024-07 | R15,443.00 | 00035270, 00036139 | 2024-12-03, 2025-01-16 | R40,778.01 | R15,443.00 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00035270, 00036139. |
-| AL-058 | 2024-08 | R15,184.18 | 00036139 | 2025-01-16 | R22,336.89 | R15,184.18 | R0.00 | CALENDAR_MONTH_FULL_SETTLEMENT | Confirmed | Month settled in full by payment doc 00036139. |
-| AL-059 | 2024-09 | R15,336.89 | 00036139, 00036988 | 2025-01-16, 2025-02-20 | R41,887.31 | R15,336.89 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00036139, 00036988. |
-| AL-060 | 2024-10 | R14,025.58 | 00036988, 00038481 | 2025-02-20, 2025-05-04 | R35,367.05 | R14,025.58 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00036988, 00038481. |
-| AL-061 | 2024-11 | R12,524.85 | 00038481, 00038846 | 2025-05-04, 2025-05-21 | R23,154.60 | R12,524.85 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00038481, 00038846. |
-| AL-062 | 2024-12 | R15,816.63 | 00038846, 00039812 | 2025-05-21, 2025-06-11 | R27,895.66 | R15,816.63 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00038846, 00039812. |
-| AL-063 | 2025-01 | R17,574.84 | 00039812, 00040063 | 2025-06-11, 2025-07-13 | R32,352.93 | R17,574.84 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00039812, 00040063. |
-| AL-064 | 2025-02 | R10,320.82 | 00040063, 00040746 | 2025-07-13, 2025-08-21 | R26,374.68 | R10,320.82 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00040063, 00040746. |
-| AL-065 | 2025-03 | R11,795.24 | 00040746, 00041664 | 2025-08-21, 2025-10-13 | R31,181.25 | R11,795.24 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00040746, 00041664. |
-| AL-066 | 2025-04 | R21,724.53 | 00041664, 00042134 | 2025-10-13, 2025-11-05 | R29,929.68 | R21,724.53 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00041664, 00042134. |
-| AL-067 | 2025-05 | R13,342.37 | 00042134, 00042788 | 2025-11-05, 2025-12-28 | R26,489.73 | R13,342.37 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00042134, 00042788. |
-| AL-068 | 2025-06 | R14,618.11 | 00042788, 00043199 | 2025-12-28, 2026-02-04 | R28,740.09 | R14,618.11 | R0.00 | CALENDAR_MONTH_BATCH_SETTLEMENT | Confirmed | Month settled in full via batch payments: 00042788, 00043199. |
-| AL-069 | 2025-07 | R18,780.13 | 00043199 | 2026-02-04 | R15,578.23 | R5,400.84 | R13,379.29 | PARTIAL_MONTH_SETTLEMENT | Probable | Partially settled. Remaining unpaid LPG: R13,379.29. |
-| AL-070 | 2025-08 | R12,401.13 | — | — | — | — | R12,401.13 | UNALLOCATED_INVOICE | Exception | No payment allocated. LPG balance remains completely unpaid. |
-| AL-071 | 2025-09 | R13,327.87 | — | — | — | — | R13,327.87 | UNALLOCATED_INVOICE | Exception | No payment allocated. LPG balance remains completely unpaid. |
-| AL-072 | 2025-10 | R17,110.42 | — | — | — | — | R17,110.42 | UNALLOCATED_INVOICE | Exception | No payment allocated. LPG balance remains completely unpaid. |
-| AL-073 | 2025-11 | R11,629.67 | — | — | — | — | R11,629.67 | UNALLOCATED_INVOICE | Exception | No payment allocated. LPG balance remains completely unpaid. |
-| AL-074 | 2025-12 | R15,560.88 | — | — | — | — | R15,560.88 | UNALLOCATED_INVOICE | Exception | No payment allocated. LPG balance remains completely unpaid. |
-| AL-075 | 2026-01 | R10,428.32 | — | — | — | — | R10,428.32 | UNALLOCATED_INVOICE | Exception | No payment allocated. LPG balance remains completely unpaid. |
-| AL-076 | 2026-02 | R10,559.95 | — | — | — | — | R10,559.95 | UNALLOCATED_INVOICE | Exception | No payment allocated. LPG balance remains completely unpaid. |
-| AL-077 | 2026-03 | R15,926.35 | — | — | — | — | R15,926.35 | UNALLOCATED_INVOICE | Exception | No payment allocated. LPG balance remains completely unpaid. |
-| AL-078 | 2026-04 | R14,736.00 | — | — | — | — | R14,736.00 | UNALLOCATED_INVOICE | Exception | No payment allocated. LPG balance remains completely unpaid. |
-| AL-079 | 2026-05 | R11,797.84 | — | — | — | — | R11,797.84 | UNALLOCATED_INVOICE | Exception | No payment allocated. LPG balance remains completely unpaid. |
+| Match ID | Invoice Month | LPG Month Net Amount | Payment Doc(s) / Ref(s) | Payment Date(s) | Payment Amount | Difference | Match Type | Confidence | Evidence Source | Notes |
+| :--- | :--- | ---: | :--- | :--- | ---: | ---: | :--- | :--- | :--- | :--- |
+| PM-001 | March 2022 (2022-03) | R14,943.48 | 13583 | 12 Apr 2022 | R13,949.00 | R994.48 | UNDERPAYMENT_AGAINST_MONTH | Probable | HUMAN_WORKSHEET_AND_ERP | Underpayment of R994.48 against month total. |
+| PM-002 | April 2022 (2022-04) | R18,184.64 | 14135 | 01 Jun 2022 | R18,184.64 | R0.00 | EXACT_PRIOR_MONTH_MATCH | Confirmed | HUMAN_WORKSHEET_AND_ERP | Settled in full. Matches human worksheet. |
+| PM-003 | May 2022 (2022-05) | R18,947.57 | 15071 | 26 Jul 2022 | R17,275.67 | R1,671.90 | PARTIAL_PRIOR_MONTH_PAYMENT | Probable | HUMAN_WORKSHEET_AND_ERP | Worksheet identifies invoices [13637] as unpaid. Settle amount R17275.67 matched. |
+| PM-004 | June 2022 (2022-06) | R16,103.76 | 15473 | 11 Aug 2022 | R14,488.95 | R1,614.81 | PARTIAL_PRIOR_MONTH_PAYMENT | Probable | HUMAN_WORKSHEET_AND_ERP | Worksheet identifies invoices [14788] as unpaid. Settle amount R14488.95 matched. |
+| PM-005 | July 2022 (2022-07) | R17,169.29 | 15987 | 10 Sep 2022 | R17,169.29 | R0.00 | EXACT_PRIOR_MONTH_MATCH | Confirmed | HUMAN_WORKSHEET_AND_ERP | Settled in full. Matches human worksheet (noting worksheet variance of R538.28 due to worksheet omitting a line on Doc 14744). |
+| PM-006 | August 2022 (2022-08) | R15,337.50 | 16648 | 20 Oct 2022 | R15,885.27 | R-547.77 | OVERPAYMENT_AGAINST_MONTH | Probable | HUMAN_WORKSHEET_AND_ERP | Overpayment of R547.77 against month total. |
+| PM-007 | September 2022 (2022-09) | R16,606.08 | 17073 | 24 Nov 2022 | R13,838.40 | R2,767.68 | UNDERPAYMENT_AGAINST_MONTH | Probable | HUMAN_WORKSHEET_AND_ERP | Underpayment of R2,767.68 against month total. |
+| PM-008 | October 2022 (2022-10) | R15,222.24 | 17578 | 19 Dec 2022 | R17,989.92 | R-2,767.68 | OVERPAYMENT_AGAINST_MONTH | Probable | HUMAN_WORKSHEET_AND_ERP | Overpayment of R2,767.68 against month total. |
+| PM-009 | November 2022 (2022-11) | R8,139.84 | 17777 | 19 Jan 2023 | R10,825.92 | R-2,686.08 | OVERPAYMENT_AGAINST_MONTH | Probable | HUMAN_WORKSHEET_AND_ERP | Overpayment of R2,686.08 against month total. |
+| PM-010 | December 2022 (2022-12) | R27,870.44 | 18185 | 13 Feb 2023 | R25,184.36 | R2,686.08 | PARTIAL_PRIOR_MONTH_PAYMENT | Probable | HUMAN_WORKSHEET_AND_ERP | Worksheet identifies invoices [16648] as unpaid. Settle amount R25184.36 matched. |
+| PM-011 | January 2023 (2023-01) | R11,335.68 | 19176 | 22 Mar 2023 | R11,335.68 | R0.00 | EXACT_PRIOR_MONTH_MATCH | Confirmed | HUMAN_WORKSHEET_AND_ERP | Settled in full. Matches human worksheet. |
+| PM-012 | February 2023 (2023-02) | R12,343.07 | 20357 | 02 May 2023 | R12,343.07 | R0.00 | EXACT_PRIOR_MONTH_MATCH | Confirmed | HUMAN_WORKSHEET_AND_ERP | Settled in full. Matches human worksheet. |
+| PM-013 | March 2023 (2023-03) | R16,111.50 | 21193 | 31 May 2023 | R15,409.46 | R702.04 | UNDERPAYMENT_AGAINST_MONTH | Probable | HUMAN_WORKSHEET_AND_ERP | Underpayment of R702.04 against month total. |
+| PM-014 | April 2023 (2023-04) | R15,140.69 | 22711 | 21 Jul 2023 | R15,140.69 | R0.00 | EXACT_PRIOR_MONTH_MATCH | Confirmed | HUMAN_WORKSHEET_AND_ERP | Settled in full. Matches human worksheet. |
+| PM-015 | May 2023 (2023-05) | R13,806.77 | 23280 | 11 Aug 2023 | R13,806.77 | R0.00 | EXACT_PRIOR_MONTH_MATCH | Confirmed | HUMAN_WORKSHEET_AND_ERP | Settled in full. Matches human worksheet. |
+| PM-016 | June 2023 (2023-06) | R16,964.84 | 23977 | 05 Sep 2023 | R16,964.84 | R0.00 | EXACT_PRIOR_MONTH_MATCH | Confirmed | HUMAN_WORKSHEET_AND_ERP | Settled in full. Matches human worksheet. |
+| PM-017 | July 2023 (2023-07) | R13,911.54 | 25394 | 24 Oct 2023 | R13,911.54 | R0.00 | EXACT_PRIOR_MONTH_MATCH | Confirmed | HUMAN_WORKSHEET_AND_ERP | Settled in full. Matches human worksheet. |
+| PM-018 | August 2023 (2023-08) | R15,766.57 | 26601 | 29 Nov 2023 | R12,520.81 | R3,245.76 | PARTIAL_PRIOR_MONTH_PAYMENT | Probable | HUMAN_WORKSHEET_AND_ERP | Worksheet identifies invoices [23964] as unpaid. Settle amount R12520.81 matched. |
+| PM-019 | September 2023 (2023-09) | R8,026.98 | 27468 | 29 Dec 2023 | R24,801.28 | R-16,774.30 | OVERPAYMENT_AGAINST_MONTH | Probable | HUMAN_WORKSHEET_AND_ERP | Overpayment of R16,774.30 against month total. |
+| PM-020 | October 2023 (2023-10) | R13,528.54 | 30269 | 24 Apr 2024 | R16,151.04 | R-2,622.50 | OVERPAYMENT_AGAINST_MONTH | Probable | HUMAN_WORKSHEET_AND_ERP | Overpayment of R2,622.50 against month total. |
+| PM-021 | November 2023 (2023-11) | R11,625.12 | 28893 | 20 Feb 2024 | R14,208.48 | R-2,583.36 | OVERPAYMENT_AGAINST_MONTH | Probable | HUMAN_WORKSHEET_AND_ERP | Overpayment of R2,583.36 against month total. |
+| PM-022 | December 2023 (2023-12) | R18,734.46 | 35270 | 04 Dec 2024 | R18,441.12 | R293.34 | UNDERPAYMENT_AGAINST_MONTH | Probable | HUMAN_WORKSHEET_AND_ERP | Underpayment of R293.34 against month total. |
+| PM-023 | January 2024 (2024-01) | R11,105.31 | 30891 | 27 May 2024 | R11,105.31 | R0.00 | EXACT_PRIOR_MONTH_MATCH | Confirmed | HUMAN_WORKSHEET_AND_ERP | Settled in full. Matches human worksheet. |
+| PM-024 | February 2024 (2024-02) | R13,862.53 | 32896 | 23 Aug 2024 | R17,634.86 | R-3,772.33 | OVERPAYMENT_AGAINST_MONTH | Probable | HUMAN_WORKSHEET_AND_ERP | Overpayment of R3,772.33 against month total. |
+| PM-025 | March 2024 (2024-03) | R15,395.18 | 31792 | 09 Jul 2024 | R15,395.18 | R0.00 | EXACT_PRIOR_MONTH_MATCH | Confirmed | HUMAN_WORKSHEET_AND_ERP | Settled in full. Matches human worksheet. |
+| PM-026 | April 2024 (2024-04) | R12,634.86 | 33810 | 30 Sep 2024 | R20,232.18 | R-7,597.32 | OVERPAYMENT_AGAINST_MONTH | Probable | HUMAN_WORKSHEET_AND_ERP | Overpayment of R7,597.32 against month total. |
+| PM-027 | May 2024 (2024-05) | R18,256.94 | 31179 | 10 Jun 2024 | R13,862.03 | R4,394.91 | UNDERPAYMENT_AGAINST_MONTH | Probable | HUMAN_WORKSHEET_AND_ERP | Underpayment of R4,394.91 against month total. |
+| PM-028 | June 2024 (2024-06) | R15,232.18 | 34425 | 28 Oct 2024 | R20,443.00 | R-5,210.82 | OVERPAYMENT_AGAINST_MONTH | Probable | HUMAN_WORKSHEET_AND_ERP | Overpayment of R5,210.82 against month total. |
+| PM-029 | July 2024 (2024-07) | R15,443.00 | 36139 | 17 Jan 2025 | R22,336.89 | R-6,893.89 | OVERPAYMENT_AGAINST_MONTH | Probable | HUMAN_WORKSHEET_AND_ERP | Overpayment of R6,893.89 against month total. |
+| PM-030 | August 2024 (2024-08) | R15,184.18 | 36988 | 21 Feb 2025 | R19,550.42 | R-4,366.24 | OVERPAYMENT_AGAINST_MONTH | Probable | HUMAN_WORKSHEET_AND_ERP | Overpayment of R4,366.24 against month total. |
+| PM-031 | September 2024 (2024-09) | R15,336.89 | — | — | — | R15,336.89 | NO_PLAUSIBLE_MATCH | Exception | EXCEPTION | No payment allocated. LPG balance remains completely unpaid. |
+| PM-032 | October 2024 (2024-10) | R14,025.58 | — | — | — | R14,025.58 | NO_PLAUSIBLE_MATCH | Exception | EXCEPTION | No payment allocated. LPG balance remains completely unpaid. |
+| PM-033 | November 2024 (2024-11) | R12,524.85 | — | — | — | R12,524.85 | NO_PLAUSIBLE_MATCH | Exception | EXCEPTION | No payment allocated. LPG balance remains completely unpaid. |
+| PM-034 | December 2024 (2024-12) | R15,816.63 | — | — | — | R15,816.63 | NO_PLAUSIBLE_MATCH | Exception | EXCEPTION | No payment allocated. LPG balance remains completely unpaid. |
+| PM-035 | January 2025 (2025-01) | R17,574.84 | — | — | — | R17,574.84 | NO_PLAUSIBLE_MATCH | Exception | EXCEPTION | No payment allocated. LPG balance remains completely unpaid. |
+| PM-036 | February 2025 (2025-02) | R10,320.82 | — | — | — | R10,320.82 | NO_PLAUSIBLE_MATCH | Exception | EXCEPTION | No payment allocated. LPG balance remains completely unpaid. |
+| PM-037 | March 2025 (2025-03) | R11,795.24 | — | — | — | R11,795.24 | NO_PLAUSIBLE_MATCH | Exception | EXCEPTION | No payment allocated. LPG balance remains completely unpaid. |
+| PM-038 | April 2025 (2025-04) | R21,724.53 | 38481 | 05 May 2025 | R15,816.63 | R5,907.90 | UNDERPAYMENT_AGAINST_MONTH | Assumed | ERP_LEDGER | Underpayment of R5,907.90 against month total. |
+| PM-039 | May 2025 (2025-05) | R13,342.37 | 38481 | 05 May 2025 | R15,816.63 | R-2,474.26 | OVERPAYMENT_AGAINST_MONTH | Assumed | ERP_LEDGER | Overpayment of R2,474.26 against month total. |
+| PM-040 | June 2025 (2025-06) | R14,618.11 | 40063, 40746 | 14 Jul 2025, 22 Aug 2025 | R26,374.68 | R-11,756.57 | OVERPAYMENT_AGAINST_MONTH | Assumed | ERP_LEDGER | Overpayment of R11,756.57 against month total. |
+| PM-041 | July 2025 (2025-07) | R14,579.44 | 40063, 40746 | 14 Jul 2025, 22 Aug 2025 | R26,374.68 | R-11,795.24 | OVERPAYMENT_AGAINST_MONTH | Assumed | ERP_LEDGER | Overpayment of R11,795.24 against month total. |
+| PM-042 | August 2025 (2025-08) | R16,601.82 | 40746, 41664 | 22 Aug 2025, 14 Oct 2025 | R31,181.25 | R-14,579.43 | OVERPAYMENT_AGAINST_MONTH | Assumed | ERP_LEDGER | Overpayment of R14,579.43 against month total. |
+| PM-043 | September 2025 (2025-09) | R13,327.87 | 42134 | 06 Nov 2025 | R13,327.87 | R0.00 | EXACT_PRIOR_MONTH_MATCH | Confirmed | ERP_LEDGER | Settle match in ERP ledger allocations. |
+| PM-044 | October 2025 (2025-10) | R13,161.86 | 42788 | 29 Dec 2025 | R13,161.86 | R0.00 | EXACT_PRIOR_MONTH_MATCH | Confirmed | ERP_LEDGER | Settle match in ERP ledger allocations. |
+| PM-045 | November 2025 (2025-11) | R15,578.23 | 43199 | 05 Feb 2026 | R15,578.23 | R0.00 | EXACT_PRIOR_MONTH_MATCH | Confirmed | ERP_LEDGER | Settle match in ERP ledger allocations. |
+| PM-046 | December 2025 (2025-12) | R11,666.11 | 43199 | 05 Feb 2026 | R15,578.23 | R-3,912.12 | OVERPAYMENT_AGAINST_MONTH | Assumed | ERP_LEDGER | Overpayment of R3,912.12 against month total. |
+| PM-047 | January 2026 (2026-01) | R14,323.09 | — | — | — | R14,323.09 | NO_PLAUSIBLE_MATCH | Exception | EXCEPTION | No payment allocated. LPG balance remains completely unpaid. |
+| PM-048 | February 2026 (2026-02) | R10,559.95 | — | — | — | R10,559.95 | NO_PLAUSIBLE_MATCH | Exception | EXCEPTION | No payment allocated. LPG balance remains completely unpaid. |
+| PM-049 | March 2026 (2026-03) | R11,937.56 | — | — | — | R11,937.56 | NO_PLAUSIBLE_MATCH | Exception | EXCEPTION | No payment allocated. LPG balance remains completely unpaid. |
+| PM-050 | April 2026 (2026-04) | R14,303.99 | — | — | — | R14,303.99 | NO_PLAUSIBLE_MATCH | Exception | EXCEPTION | No payment allocated. LPG balance remains completely unpaid. |
+| PM-051 | May 2026 (2026-05) | R16,218.64 | — | — | — | R16,218.64 | NO_PLAUSIBLE_MATCH | Exception | EXCEPTION | No payment allocated. LPG balance remains completely unpaid. |
 
-## Unallocated Invoice Register
 
-| Invoice Date | Invoice No | Month | Invoice Amount | Amount Allocated | Amount Unallocated | Reason | Confidence |
-| ------------ | ---------- | ----- | -------------: | ---------------: | -----------------: | ------ | ---------- |
-| 2025-07-09 | 44707 | 2025-07 | R4,200.69 | R2,285.79 | R1,914.90 | Partially settled in July 2025 batch allocation | Probable |
-| 2025-07-17 | 44933 | 2025-07 | R4,200.69 | R0.00 | R4,200.69 | Partially settled in July 2025 batch allocation | Probable |
-| 2025-07-23 | 45091 | 2025-07 | R2,800.46 | R0.00 | R2,800.46 | Partially settled in July 2025 batch allocation | Probable |
-| 2025-07-25 | 45162 | 2025-07 | R262.55 | R0.00 | R262.55 | Partially settled in July 2025 batch allocation | Probable |
-| 2025-07-31 | 45323 | 2025-07 | R4,200.69 | R0.00 | R4,200.69 | Partially settled in July 2025 batch allocation | Probable |
-| 2025-08-07 | 45498 | 2025-08 | R2,800.46 | R0.00 | R2,800.46 | Unpaid month, credit notes applied | Exception |
-| 2025-08-14 | 45671 | 2025-08 | R4,114.57 | R0.00 | R4,114.57 | Unpaid month, credit notes applied | Exception |
-| 2025-08-21 | 45831 | 2025-08 | R4,114.57 | R0.00 | R4,114.57 | Unpaid month, credit notes applied | Exception |
-| 2025-08-28 | 45992 | 2025-08 | R1,371.53 | R0.00 | R1,371.53 | Unpaid month, credit notes applied | Exception |
-| 2025-09-03 | 46124 | 2025-09 | R4,114.57 | R0.00 | R4,114.57 | Unpaid month, credit notes applied | Exception |
-| 2025-09-10 | 46308 | 2025-09 | R3,948.56 | R0.00 | R3,948.56 | Unpaid month, credit notes applied | Exception |
-| 2025-09-18 | 46525 | 2025-09 | R2,632.37 | R0.00 | R2,632.37 | Unpaid month, credit notes applied | Exception |
-| 2025-09-25 | 46686 | 2025-09 | R2,632.37 | R0.00 | R2,632.37 | Unpaid month, credit notes applied | Exception |
-| 2025-10-02 | 46859 | 2025-10 | R3,948.56 | R0.00 | R3,948.56 | Unpaid month, credit notes applied | Exception |
-| 2025-10-08 | 46990 | 2025-10 | R3,948.56 | R0.00 | R3,948.56 | Unpaid month, credit notes applied | Exception |
-| 2025-10-16 | 47148 | 2025-10 | R2,632.37 | R0.00 | R2,632.37 | Unpaid month, credit notes applied | Exception |
-| 2025-10-23 | 47292 | 2025-10 | R2,632.37 | R0.00 | R2,632.37 | Unpaid month, credit notes applied | Exception |
-| 2025-10-31 | 47464 | 2025-10 | R3,948.56 | R0.00 | R3,948.56 | Unpaid month, credit notes applied | Exception |
-| 2025-11-07 | 47571 | 2025-11 | R2,584.37 | R0.00 | R2,584.37 | Unpaid month, credit notes applied | Exception |
-| 2025-11-13 | 47670 | 2025-11 | R2,584.37 | R0.00 | R2,584.37 | Unpaid month, credit notes applied | Exception |
-| 2025-11-20 | 47848 | 2025-11 | R3,876.56 | R0.00 | R3,876.56 | Unpaid month, credit notes applied | Exception |
-| 2025-11-27 | 47983 | 2025-11 | R2,584.37 | R0.00 | R2,584.37 | Unpaid month, credit notes applied | Exception |
-| 2025-12-11 | 48244 | 2025-12 | R2,596.52 | R18.21 | R2,578.31 | Unpaid month, credit notes applied | Exception |
-| 2025-12-18 | 48391 | 2025-12 | R3,894.77 | R0.00 | R3,894.77 | Unpaid month, credit notes applied | Exception |
-| 2025-12-23 | 48487 | 2025-12 | R1,298.26 | R0.00 | R1,298.26 | Unpaid month, credit notes applied | Exception |
-| 2025-12-30 | 48578 | 2025-12 | R3,894.77 | R0.00 | R3,894.77 | Unpaid month, credit notes applied | Exception |
-| 2025-12-31 | 48599 | 2025-12 | R3,894.77 | R0.00 | R3,894.77 | Unpaid month, credit notes applied | Exception |
-| 2026-01-08 | 48701 | 2026-01 | R3,894.77 | R0.00 | R3,894.77 | Unpaid month, credit notes applied | Exception |
-| 2026-01-16 | 48828 | 2026-01 | R3,920.13 | R0.00 | R3,920.13 | Unpaid month, credit notes applied | Exception |
-| 2026-01-27 | 48994 | 2026-01 | R2,613.42 | R0.00 | R2,613.42 | Unpaid month, credit notes applied | Exception |
-| 2026-02-05 | 49126 | 2026-02 | R3,959.98 | R0.00 | R3,959.98 | Unpaid month, credit notes applied | Exception |
-| 2026-02-12 | 49242 | 2026-02 | R2,639.99 | R0.00 | R2,639.99 | Unpaid month, credit notes applied | Exception |
-| 2026-02-17 | 49315 | 2026-02 | R3,959.98 | R0.00 | R3,959.98 | Unpaid month, credit notes applied | Exception |
-| 2026-03-03 | 49540 | 2026-03 | R3,959.98 | R0.00 | R3,959.98 | Unpaid month, credit notes applied | Exception |
-| 2026-03-12 | 49727 | 2026-03 | R3,988.79 | R0.00 | R3,988.79 | Unpaid month, credit notes applied | Exception |
-| 2026-03-19 | 49842 | 2026-03 | R3,988.79 | R0.00 | R3,988.79 | Unpaid month, credit notes applied | Exception |
-| 2026-03-31 | 50042 | 2026-03 | R3,988.79 | R0.00 | R3,988.79 | Unpaid month, credit notes applied | Exception |
-| 2026-04-08 | 50161 | 2026-04 | R4,420.80 | R0.00 | R4,420.80 | Unpaid month, credit notes applied | Exception |
-| 2026-04-17 | 50290 | 2026-04 | R2,947.20 | R0.00 | R2,947.20 | Unpaid month, credit notes applied | Exception |
-| 2026-04-23 | 50371 | 2026-04 | R2,947.20 | R0.00 | R2,947.20 | Unpaid month, credit notes applied | Exception |
-| 2026-04-30 | 50468 | 2026-04 | R4,420.80 | R0.00 | R4,420.80 | Unpaid month, credit notes applied | Exception |
-| 2026-05-08 | 50594 | 2026-05 | R3,370.81 | R0.00 | R3,370.81 | Unpaid month, credit notes applied | Exception |
-| 2026-05-15 | 50712 | 2026-05 | R3,370.81 | R0.00 | R3,370.81 | Unpaid month, credit notes applied | Exception |
-| 2026-05-20 | 50810 | 2026-05 | R5,056.22 | R0.00 | R5,056.22 | Unpaid month, credit notes applied | Exception |
+## LPG Unpaid / Partially Paid Invoice Register
 
-## Unallocated Payment Register
+| Invoice Date | Invoice No | Invoice Month | LPG Invoice Amount | Matched Payment Batch | Amount Matched | Amount Unpaid | Evidence Source | Confidence | Notes |
+| :--- | :--- | :--- | ---: | :--- | ---: | ---: | :--- | :--- | :--- |
+| Pre-March 2022 | — | Pre-March 2022 | R28,709.91 | — | R0.00 | R28,709.91 | ERP_LEDGER | Confirmed | Opening LPG Gas balance brought forward from pre-March 2022 reconstruction period. |
+| 28 Mar 2022 | 12718 | 2022-03 | R2,008.08 | 13583 | R1,013.60 | R994.48 | HUMAN_WORKSHEET_AND_ERP | Probable | Partially paid in ERP batch. |
+| 31 May 2022 | 13744 | 2022-05 | R2,786.34 | 15071 | R1,114.44 | R1,671.90 | HUMAN_WORKSHEET_AND_ERP | Probable | Partially paid in ERP batch. |
+| 28 Jun 2022 | 14341 | 2022-06 | R2,229.07 | 15473 | R614.26 | R1,614.81 | HUMAN_WORKSHEET_AND_ERP | Probable | Partially paid in ERP batch. |
+| 23 Sep 2022 | 15782 | 2022-09 | R4,151.52 | 17073 | R1,383.84 | R2,767.68 | HUMAN_WORKSHEET_AND_ERP | Probable | Partially paid in ERP batch. |
+| 31 Dec 2022 | 17132 | 2022-12 | R2,765.75 | 18185 | R79.67 | R2,686.08 | HUMAN_WORKSHEET_AND_ERP | Probable | Partially paid in ERP batch. |
+| 23 Mar 2023 | 18695 | 2023-03 | R4,202.58 | 21193 | R3,500.54 | R702.04 | HUMAN_WORKSHEET_AND_ERP | Probable | Partially paid in ERP batch. |
+| 31 Aug 2023 | 23964 | 2023-08 | R3,245.76 | — | R0.00 | R3,245.76 | HUMAN_WORKSHEET | Confirmed | Explicitly marked Unpaid in human worksheet. |
+| 29 Dec 2023 | 28140 | 2023-12 | R4,037.78 | 35270 | R3,744.44 | R293.34 | HUMAN_WORKSHEET_AND_ERP | Probable | Partially paid in ERP batch. |
+| 24 May 2024 | 32409 | 2024-05 | R2,808.76 | 31179 | R2,626.99 | R181.77 | HUMAN_WORKSHEET_AND_ERP | Probable | Partially paid in ERP batch. |
+| 28 May 2024 | 32531 | 2024-05 | R2,808.76 | — | R0.00 | R2,808.76 | HUMAN_WORKSHEET_AND_ERP | Probable | Partially paid in ERP batch. |
+| 31 May 2024 | 32614 | 2024-05 | R1,404.38 | — | R0.00 | R1,404.38 | HUMAN_WORKSHEET_AND_ERP | Probable | Partially paid in ERP batch. |
+| 05 Sep 2024 | 35961 | 2024-09 | R1,380.38 | — | R0.00 | R1,380.38 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 06 Sep 2024 | 35990 | 2024-09 | R2,760.76 | — | R0.00 | R2,760.76 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 12 Sep 2024 | 36191 | 2024-09 | R4,358.65 | — | R0.00 | R4,358.65 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 18 Sep 2024 | 36395 | 2024-09 | R4,102.26 | — | R0.00 | R4,102.26 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 26 Sep 2024 | 36680 | 2024-09 | R2,734.84 | — | R0.00 | R2,734.84 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 05 Oct 2024 | 37020 | 2024-10 | R2,753.48 | — | R0.00 | R2,753.48 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 11 Oct 2024 | 37216 | 2024-10 | R2,753.49 | — | R0.00 | R2,753.49 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 17 Oct 2024 | 37363 | 2024-10 | R2,753.49 | — | R0.00 | R2,753.49 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 25 Oct 2024 | 37619 | 2024-10 | R3,011.63 | — | R0.00 | R3,011.63 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 31 Oct 2024 | 37799 | 2024-10 | R2,753.49 | — | R0.00 | R2,753.49 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 07 Nov 2024 | 38040 | 2024-11 | R4,174.95 | — | R0.00 | R4,174.95 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 14 Nov 2024 | 38266 | 2024-11 | R2,783.30 | — | R0.00 | R2,783.30 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 21 Nov 2024 | 38456 | 2024-11 | R2,783.30 | — | R0.00 | R2,783.30 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 29 Nov 2024 | 38664 | 2024-11 | R2,783.30 | — | R0.00 | R2,783.30 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 04 Dec 2024 | 38820 | 2024-12 | R4,174.95 | — | R0.00 | R4,174.95 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 12 Dec 2024 | 39008 | 2024-12 | R4,365.63 | — | R0.00 | R4,365.63 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 18 Dec 2024 | 39149 | 2024-12 | R4,365.63 | — | R0.00 | R4,365.63 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 23 Dec 2024 | 39307 | 2024-12 | R2,910.42 | — | R0.00 | R2,910.42 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 02 Jan 2025 | 39558 | 2025-01 | R2,950.74 | — | R0.00 | R2,950.74 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 09 Jan 2025 | 39714 | 2025-01 | R4,387.23 | — | R0.00 | R4,387.23 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 15 Jan 2025 | 39898 | 2025-01 | R4,387.23 | — | R0.00 | R4,387.23 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 24 Jan 2025 | 40143 | 2025-01 | R2,924.82 | — | R0.00 | R2,924.82 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 31 Jan 2025 | 40319 | 2025-01 | R2,924.82 | — | R0.00 | R2,924.82 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 11 Feb 2025 | 40622 | 2025-02 | R4,423.21 | — | R0.00 | R4,423.21 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 21 Feb 2025 | 40881 | 2025-02 | R4,423.21 | — | R0.00 | R4,423.21 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 27 Feb 2025 | 41051 | 2025-02 | R1,474.40 | — | R0.00 | R1,474.40 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 05 Mar 2025 | 41216 | 2025-03 | R2,948.81 | — | R0.00 | R2,948.81 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 14 Mar 2025 | 41486 | 2025-03 | R2,948.81 | — | R0.00 | R2,948.81 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 20 Mar 2025 | 41633 | 2025-03 | R2,948.81 | — | R0.00 | R2,948.81 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 28 Mar 2025 | 41799 | 2025-03 | R2,948.81 | — | R0.00 | R2,948.81 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 10 Apr 2025 | 42181 | 2025-04 | R4,325.33 | 38481 | R4,227.45 | R97.88 | ERP_LEDGER | Assumed | Partially paid in ERP batch. |
+| 17 Apr 2025 | 42357 | 2025-04 | R4,325.33 | — | R0.00 | R4,325.33 | ERP_LEDGER | Assumed | Partially paid in ERP batch. |
+| 25 Apr 2025 | 42565 | 2025-04 | R4,325.33 | — | R0.00 | R4,325.33 | ERP_LEDGER | Assumed | Partially paid in ERP batch. |
+| 30 Apr 2025 | 42704 | 2025-04 | R4,325.33 | — | R0.00 | R4,325.33 | ERP_LEDGER | Assumed | Partially paid in ERP batch. |
+| 15 May 2025 | 43089 | 2025-05 | R2,883.56 | 38481 | R2,482.58 | R400.98 | ERP_LEDGER | Assumed | Partially paid in ERP batch. |
+| 21 May 2025 | 43271 | 2025-05 | R4,382.95 | — | R0.00 | R4,382.95 | ERP_LEDGER | Assumed | Partially paid in ERP batch. |
+| 29 May 2025 | 43451 | 2025-05 | R2,921.97 | — | R0.00 | R2,921.97 | ERP_LEDGER | Assumed | Partially paid in ERP batch. |
+| 26 Jun 2025 | 44241 | 2025-06 | R2,848.04 | 40063, 40746 | R287.71 | R2,560.33 | ERP_LEDGER | Assumed | Partially paid in ERP batch. |
+| 26 Jul 2025 | 45162 | 2025-07 | R262.55 | — | R0.00 | R262.55 | ERP_LEDGER | Assumed | Partially paid in ERP batch. |
+| 12 Dec 2025 | 48244 | 2025-12 | R2,596.52 | 43199 | R18.21 | R2,578.31 | ERP_LEDGER | Assumed | Partially paid in ERP batch. |
+| 19 Dec 2025 | 48391 | 2025-12 | R3,894.77 | — | R0.00 | R3,894.77 | ERP_LEDGER | Assumed | Partially paid in ERP batch. |
+| 24 Dec 2025 | 48487 | 2025-12 | R1,298.26 | — | R0.00 | R1,298.26 | ERP_LEDGER | Assumed | Partially paid in ERP batch. |
+| 31 Dec 2025 | 48578 | 2025-12 | R3,894.77 | — | R0.00 | R3,894.77 | ERP_LEDGER | Assumed | Partially paid in ERP batch. |
+| 01 Jan 2026 | 48599 | 2026-01 | R3,894.77 | — | R2,596.52 | R1,298.25 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 03 Jan 2026 | 48776 | 2026-01 | R2,596.52 | — | R0.00 | R2,596.52 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 09 Jan 2026 | 48701 | 2026-01 | R3,894.77 | — | R0.00 | R3,894.77 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 17 Jan 2026 | 48828 | 2026-01 | R3,920.13 | — | R0.00 | R3,920.13 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 28 Jan 2026 | 48994 | 2026-01 | R2,613.42 | — | R0.00 | R2,613.42 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 06 Feb 2026 | 49126 | 2026-02 | R3,959.98 | — | R0.00 | R3,959.98 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 13 Feb 2026 | 49242 | 2026-02 | R2,639.99 | — | R0.00 | R2,639.99 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 18 Feb 2026 | 49315 | 2026-02 | R3,959.98 | — | R0.00 | R3,959.98 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 04 Mar 2026 | 49540 | 2026-03 | R3,959.98 | — | R0.00 | R3,959.98 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 13 Mar 2026 | 49727 | 2026-03 | R3,988.79 | — | R0.00 | R3,988.79 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 20 Mar 2026 | 49842 | 2026-03 | R3,988.79 | — | R0.00 | R3,988.79 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 01 Apr 2026 | 50042 | 2026-04 | R3,988.79 | — | R0.00 | R3,988.79 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 09 Apr 2026 | 50161 | 2026-04 | R4,420.80 | — | R0.00 | R4,420.80 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 18 Apr 2026 | 50290 | 2026-04 | R2,947.20 | — | R0.00 | R2,947.20 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 24 Apr 2026 | 50371 | 2026-04 | R2,947.20 | — | R0.00 | R2,947.20 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 01 May 2026 | 50468 | 2026-05 | R4,420.80 | — | R0.00 | R4,420.80 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 09 May 2026 | 50594 | 2026-05 | R3,370.81 | — | R0.00 | R3,370.81 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 16 May 2026 | 50712 | 2026-05 | R3,370.81 | — | R0.00 | R3,370.81 | EXCEPTION | Exception | Unpaid month, no payment matching. |
+| 21 May 2026 | 50810 | 2026-05 | R5,056.22 | — | R0.00 | R5,056.22 | EXCEPTION | Exception | Unpaid month, no payment matching. |
 
-| Payment Date | Payment Doc No | Payment Amount | Amount Allocated | Amount Unallocated | Possible Month(s) | Reason | Confidence |
-| ------------ | -------------- | -------------: | ---------------: | -----------------: | ----------------- | ------ | ---------- |
-*All payments are fully allocated to chronological invoice month balances. There are no unallocated payments.*
+
+## Unmatched / Weakly Matched Payment Register
+
+| Payment Date | Payment Doc / Ref | Payment Amount | Candidate Month(s) | Closest LPG Month Amount | Difference | Match Status | Confidence | Notes |
+| :--- | :--- | ---: | :--- | ---: | ---: | :--- | :--- | :--- |
+| 17 Mar 2022 | 13245 | R14,982.58 | 2022-03 | R14,943.48 | R39.10 | UNMATCHED_PAYMENT | Exception | No allocation entries link this payment to any invoice. |
+| — | 16648 | R547.77 | 2022-08 | — | — | OVERPAYMENT_AGAINST_MONTH | Assumed | Payment batch exceeded matched month total; unused cash remains unallocated. |
+| — | 17578 | R2,767.68 | 2022-10 | — | — | OVERPAYMENT_AGAINST_MONTH | Assumed | Payment batch exceeded matched month total; unused cash remains unallocated. |
+| — | 17777 | R2,686.08 | 2022-11 | — | — | OVERPAYMENT_AGAINST_MONTH | Assumed | Payment batch exceeded matched month total; unused cash remains unallocated. |
+| — | 27468 | R16,774.30 | 2023-09 | — | — | OVERPAYMENT_AGAINST_MONTH | Assumed | Payment batch exceeded matched month total; unused cash remains unallocated. |
+| — | 28893 | R2,583.36 | 2023-11 | — | — | OVERPAYMENT_AGAINST_MONTH | Assumed | Payment batch exceeded matched month total; unused cash remains unallocated. |
+| — | 30269 | R2,622.50 | 2023-10 | — | — | OVERPAYMENT_AGAINST_MONTH | Assumed | Payment batch exceeded matched month total; unused cash remains unallocated. |
+| — | 32896 | R3,772.33 | 2024-02 | — | — | OVERPAYMENT_AGAINST_MONTH | Assumed | Payment batch exceeded matched month total; unused cash remains unallocated. |
+| — | 33810 | R7,597.32 | 2024-04 | — | — | OVERPAYMENT_AGAINST_MONTH | Assumed | Payment batch exceeded matched month total; unused cash remains unallocated. |
+| — | 34425 | R2,497.69 | 2024-06 | — | — | OVERPAYMENT_AGAINST_MONTH | Assumed | Payment batch exceeded matched month total; unused cash remains unallocated. |
+| 28 Oct 2024 | 34425 | R2,713.13 | 2023-09 | R8,026.98 | R-5,313.85 | UNMATCHED_PAYMENT | Exception | No allocation entries link this payment to any invoice. |
+| — | 36139 | R5,400.86 | 2024-07 | — | — | OVERPAYMENT_AGAINST_MONTH | Assumed | Payment batch exceeded matched month total; unused cash remains unallocated. |
+| 17 Jan 2025 | 36139 | R1,493.03 | 2023-09 | R8,026.98 | R-6,533.95 | UNMATCHED_PAYMENT | Exception | No allocation entries link this payment to any invoice. |
+| — | 36988 | R352.30 | 2024-08 | — | — | OVERPAYMENT_AGAINST_MONTH | Assumed | Payment batch exceeded matched month total; unused cash remains unallocated. |
+| 21 Feb 2025 | 36988 | R4,013.94 | 2023-09 | R8,026.98 | R-4,013.04 | UNMATCHED_PAYMENT | Exception | No allocation entries link this payment to any invoice. |
+| — | 38481 | R1,529.50 | 2025-04, 2025-05 | — | — | OVERPAYMENT_AGAINST_MONTH | Assumed | Payment batch exceeded matched month total; unused cash remains unallocated. |
+| 22 May 2025 | 38846 | R7,337.97 | 2023-09 | R8,026.98 | R-689.01 | UNMATCHED_PAYMENT | Exception | No allocation entries link this payment to any invoice. |
+| 12 Jun 2025 | 39812 | R20,557.69 | 2025-04 | R21,724.53 | R-1,166.84 | UNMATCHED_PAYMENT | Exception | No allocation entries link this payment to any invoice. |
+
 
 ## Database Mapping — Informative, Not Canonical
 - **Header Layer (`transaction_headers`):** Contains raw ERP statement transaction summaries. Contains date-shifted duplicates and payment allocation splits.
