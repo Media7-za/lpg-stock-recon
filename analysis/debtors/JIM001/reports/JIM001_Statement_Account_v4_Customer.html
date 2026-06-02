@@ -760,6 +760,7 @@
                     <button class="side-nav-btn" data-tab="tab-1b" data-section="ledger">LPG Gas Ledger</button>
                     <button class="side-nav-btn" data-tab="tab-1a" data-section="ledger">Combined ERP Ledger</button>
                     <button class="side-nav-btn" data-tab="tab-1c" data-section="ledger">Cylinder Ledger</button>
+                    <a href="#monthly-lpg-insights" class="side-nav-btn" data-section="insights">Monthly LPG Insights</a>
                     <a href="#payment-allocation-summary" class="side-nav-btn" data-section="payment">Payment Summary</a>
                     <a href="#cylinder-custody-tracker" class="side-nav-btn" data-section="custody">Cylinder Custody</a>
                     
@@ -836,6 +837,18 @@
         </ul>
     </div>
 </div>
+<h3>LPG Monthly Insight Summary</h3>
+<ul>
+<li><strong>Total Months Reviewed:</strong> 51 months (March 2022 – May 2026)</li>
+<li><strong>Fully Settled Months:</strong> 13</li>
+<li><strong>Partially Settled Months:</strong> 10</li>
+<li><strong>Overpaid Months:</strong> 16</li>
+<li><strong>Unpaid Months:</strong> 12</li>
+<li><strong>Oldest Unpaid LPG Month:</strong> March 2022 (R994.48 unpaid)</li>
+<li><strong>Largest Unpaid LPG Month:</strong> January 2025 (R17,574.84 unpaid)</li>
+<li><strong>Most Recent Fully Settled LPG Month:</strong> November 2025</li>
+<li><strong>Net LPG Gas Debt:</strong> R146,857.72</li>
+</ul>
 <hr>
 <h2 id="financial-ledgers">Part 1: Financial Ledgers</h2>
 *Tracks all chronological transactions, gas, and cylinders in three sub-ledgers. Use the tabs below to select the view.*
@@ -21694,6 +21707,77 @@
 </tbody>
 </table>
 <hr>
+<div id="monthly-lpg-insights"></div>
+<h2>Monthly LPG Insights</h2>
+<p><em>Derived reporting layer summarizing LPG gas invoices, allocated payments, and balances.</em></p>
+<h3>Yearly LPG Invoice and Payment Summary</h3>
+<table>
+<thead>
+<tr>
+<th>Year</th>
+<th style="text-align:right">Net LPG Invoiced</th>
+<th style="text-align:right">Payments Allocated</th>
+<th style="text-align:right">Gross Difference</th>
+<th style="text-align:right">Cumulative Gross Unpaid LPG Position</th>
+<th style="text-align:right">Unmatched / Overpayment Pool Applied</th>
+<th style="text-align:right">Net LPG Position</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2022</td>
+<td style="text-align:right">R168,524.84</td>
+<td style="text-align:right">R161,475.97</td>
+<td style="text-align:right">R7,048.87</td>
+<td style="text-align:right">R35,758.78</td>
+<td style="text-align:right">R0.00</td>
+<td style="text-align:right">R35,758.78</td>
+<td>Cumulative position includes Pre-March 2022 LPG Opening Balance B/F (R28,709.91).</td>
+</tr>
+<tr>
+<td>2023</td>
+<td style="text-align:right">R167,295.76</td>
+<td style="text-align:right">R166,300.38</td>
+<td style="text-align:right">R995.38</td>
+<td style="text-align:right">R36,754.16</td>
+<td style="text-align:right">R0.00</td>
+<td style="text-align:right">R36,754.16</td>
+<td>—</td>
+</tr>
+<tr>
+<td>2024</td>
+<td style="text-align:right">R174,818.13</td>
+<td style="text-align:right">R112,719.27</td>
+<td style="text-align:right">R62,098.86</td>
+<td style="text-align:right">R98,853.02</td>
+<td style="text-align:right">R0.00</td>
+<td style="text-align:right">R98,853.02</td>
+<td>—</td>
+</tr>
+<tr>
+<td>2025</td>
+<td style="text-align:right">R174,291.24</td>
+<td style="text-align:right">R99,331.58</td>
+<td style="text-align:right">R74,959.66</td>
+<td style="text-align:right">R173,812.68</td>
+<td style="text-align:right">R0.00</td>
+<td style="text-align:right">R173,812.68</td>
+<td>—</td>
+</tr>
+<tr>
+<td>2026</td>
+<td style="text-align:right">R67,343.23</td>
+<td style="text-align:right">R0.00</td>
+<td style="text-align:right">R67,343.23</td>
+<td style="text-align:right">R241,155.91</td>
+<td style="text-align:right">R94,298.19</td>
+<td style="text-align:right">R146,857.72</td>
+<td>Unmatched/overpayment pool applied as a reconciliation offset to arrive at final LPG Gas Debt of R146,857.72.</td>
+</tr>
+</tbody>
+</table>
+<hr>
 <h2 id="cylinder-custody-tracker">Part 2: Cylinder (CYL) Ledger (Physical Asset Tracker)</h2>
 *Cylinders are tracked purely by physical count. The Opening Balance on 03 December 2018 is R0.00 as it represents account inception.*
 <h3>December 2018</h3>
@@ -30465,6 +30549,7 @@
             const spySections = [
                 { id: 'account-dashboard', type: 'dashboard' },
                 { id: 'financial-ledgers', type: 'ledger' },
+                { id: 'monthly-lpg-insights', type: 'insights' },
                 { id: 'payment-allocation-summary', type: 'payment' },
                 { id: 'cylinder-custody-tracker', type: 'custody' }
             ];

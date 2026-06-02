@@ -183,7 +183,7 @@ def enhance_html(html_content, is_internal=True):
         r'<h3>Part 1A:\s*Combined ERP Financial Ledger</h3>(.*?)'
         r'<h3>Part 1B:\s*LPG Gas Financial Ledger</h3>(.*?)'
         r'<h3>Part 1C:\s*Cylinder Financial Ledger</h3>(.*?)'
-        r'(?=<h3(?:\s+[^>]*?)?>Part 1D\b|<div id="payment-allocation-summary")',
+        r'(?=<h2(?:\s+[^>]*?)?>Monthly LPG Insights|<h3(?:\s+[^>]*?)?>Part 1D\b|<div id="payment-allocation-summary")',
         re.DOTALL | re.IGNORECASE
     )
     
@@ -1018,6 +1018,7 @@ def build_full_html(enhanced_content, is_internal=True):
                     <button class="side-nav-btn" data-tab="tab-1b" data-section="ledger">LPG Gas Ledger</button>
                     <button class="side-nav-btn" data-tab="tab-1a" data-section="ledger">Combined ERP Ledger</button>
                     <button class="side-nav-btn" data-tab="tab-1c" data-section="ledger">Cylinder Ledger</button>
+                    <a href="#monthly-lpg-insights" class="side-nav-btn" data-section="insights">Monthly LPG Insights</a>
                     <a href="#payment-allocation-summary" class="side-nav-btn" data-section="payment">Payment Summary</a>
                     <a href="#cylinder-custody-tracker" class="side-nav-btn" data-section="custody">Cylinder Custody</a>
                     {internal_side_links}
@@ -1143,6 +1144,7 @@ def build_full_html(enhanced_content, is_internal=True):
             const spySections = [
                 {{ id: 'account-dashboard', type: 'dashboard' }},
                 {{ id: 'financial-ledgers', type: 'ledger' }},
+                {{ id: 'monthly-lpg-insights', type: 'insights' }},
                 {{ id: 'payment-allocation-summary', type: 'payment' }},
                 {{ id: 'cylinder-custody-tracker', type: 'custody' }}
             ];

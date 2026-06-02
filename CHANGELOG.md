@@ -54,6 +54,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Corrected `.brand-sub` indentation in CSS output.
 
 ### Added
+- Implemented Phase 6 Monthly LPG Insights layer for the JIM001 statement and baseline reports:
+  - Added a customer-safe `### LPG Monthly Insight Summary` block near the top of the statement showing reviewed months, status counts, oldest/largest unpaid months, most recent fully settled month, and Net LPG Gas Debt.
+  - Added a `## Yearly LPG Invoice and Payment Summary` table presenting Year, Net LPG Invoiced, Payments Allocated, Gross Difference, Cumulative Gross Unpaid LPG Position, Unmatched/Overpayment Pool Applied, Net LPG Position, and reconciliation notes for each calendar year.
+  - Added a detailed `## Monthly LPG Insight Register` (internal-only in the statement, fully present in the baseline) tracing LPG Invoiced, Credit Notes, Net Invoiced, Allocated Payments, allocated dates, difference, and month status.
+  - Restricted the detailed monthly register to internal-only view via HTML comment blocks while presenting the yearly rollup to all views.
+  - Flagged September 2025 to December 2025 in the notes as `[REVIEW_REQUIRED] Inferred from ERP ledger allocations` while preserving mathematical status.
+  - Added side control panel link `Monthly LPG Insights` with scroll-spy highlighting and smooth scroll scroll-targeting.
 - Implemented **Account position dashboard** and **sticky side control panel** layout for JIM001 statements:
   - Surfaces a customer-safe summary dashboard (Account Position, Payment Position, and Cylinder Position metrics) immediately after the header.
   - Adds an internal-only dashboard card (Internal Audit Snapshot) for internal analyst views.
