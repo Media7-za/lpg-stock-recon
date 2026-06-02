@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Midlands Petroleum - Statement of Account</title>
+    <title>Midlands Petroleum - Statement of Account (Customer View)</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap');
         
@@ -150,7 +150,7 @@
             letter-spacing: 0.05em;
             margin-top: 2px;
             font-weight: 600;
-            }
+        }
         
         .doc-title {
             text-align: right;
@@ -292,12 +292,12 @@
         }
         
         /* Bolding dynamic total/balance rows */
-        tr:has(strong) {
+        tr.total-row {
             font-weight: 600;
             background-color: #f1f5f9 !important;
         }
         
-        tr:has(strong) td {
+        tr.total-row td {
             color: #0f172a;
         }
         
@@ -446,6 +446,16 @@
             color: #1e3a8a;
             border-bottom-color: #1e3a8a;
         }
+
+        .tab-btn:focus {
+            outline: none;
+        }
+
+        .tab-btn:focus-visible {
+            outline: 2px solid #1e3a8a;
+            outline-offset: -3px;
+            border-radius: 6px;
+        }
         
         .tab-panel {
             display: none;
@@ -515,7 +525,7 @@
         .dashboard-card li strong {
             color: #0f172a;
         }
-
+ 
         .position-card-item h4 { color: #2563eb; border-bottom-color: #dbeafe; }
         .payment-card-item h4 { color: #16a34a; border-bottom-color: #dcfce7; }
         .cylinder-card-item h4 { color: #ea580c; border-bottom-color: #ffedd5; }
@@ -524,10 +534,11 @@
             border-color: #fde68a;
         }
         .internal-audit-card-item h4 { color: #b45309; border-bottom-color: #fde68a; }
-
+ 
         /* Two-column App Layout for desktop */
         .app-layout {
             display: flex;
+            flex-direction: row-reverse;
             max-width: 1400px;
             margin: 0 auto;
             gap: 24px;
@@ -538,6 +549,7 @@
             flex: 1;
             min-width: 0;
             margin: 0;
+            max-width: 1000px;
         }
         
         .side-control-panel-wrapper {
@@ -715,6 +727,7 @@
                 margin-bottom: 35px;
                 padding: 0 !important;
                 border: none !important;
+                box-shadow: none !important;
             }
             .tabs-container {
                 border: none !important;
@@ -739,6 +752,22 @@
 </head>
 <body>
     <div class="app-layout">
+        <div class="side-control-panel-wrapper">
+            <div class="side-control-panel">
+                <h4 class="side-panel-title">Navigation</h4>
+                <div class="side-nav-links">
+                    <a href="#account-dashboard" class="side-nav-btn active" data-section="dashboard">Account Dashboard</a>
+                    <button class="side-nav-btn" data-tab="tab-1b" data-section="ledger">LPG Gas Ledger</button>
+                    <button class="side-nav-btn" data-tab="tab-1a" data-section="ledger">Combined ERP Ledger</button>
+                    <button class="side-nav-btn" data-tab="tab-1c" data-section="ledger">Cylinder Ledger</button>
+                    <a href="#payment-allocation-summary" class="side-nav-btn" data-section="payment">Payment Summary</a>
+                    <a href="#cylinder-custody-tracker" class="side-nav-btn" data-section="custody">Cylinder Custody</a>
+                    
+                    <button class="side-nav-btn print-btn" id="print-btn">Print / Save</button>
+                </div>
+            </div>
+        </div>
+
         <div class="statement-container">
             <span class="view-badge customer-badge">Customer View</span>
             
@@ -777,45 +806,45 @@
     
 
 <hr>
-<p>&lt;div id=&quot;account-dashboard&quot;&gt;&lt;/div&gt;</p>
+<div id="account-dashboard"></div>
 <h2>Account Position Dashboard</h2>
-<p>&lt;div class=&quot;dashboard-grid&quot;&gt;
-&lt;div class=&quot;dashboard-card position-card-item&quot;&gt;
-&lt;h4&gt;Account Position&lt;/h4&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Total Account Balance:&lt;/strong&gt; R146,851.22&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;LPG Gas Debt:&lt;/strong&gt; R146,857.72&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Cylinder Financial Balance:&lt;/strong&gt; R-6.50&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Statement Period:&lt;/strong&gt; 3 Dec 2018 – 31 May 2026&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;div class=&quot;dashboard-card payment-card-item&quot;&gt;
-&lt;h4&gt;Payment Position&lt;/h4&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Net LPG Gas Debt:&lt;/strong&gt; R146,857.72&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Unpaid LPG Invoices:&lt;/strong&gt; R241,155.91&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Unmatched / Overpayments:&lt;/strong&gt; R94,298.19&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Allocation Period:&lt;/strong&gt; 1 Mar 2022 – 31 May 2026&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;div class=&quot;dashboard-card cylinder-card-item&quot;&gt;
-&lt;h4&gt;Cylinder Position&lt;/h4&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Cylinder Financial Balance:&lt;/strong&gt; R-6.50&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Cylinder Custody Exposure:&lt;/strong&gt; R26,220.00&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Cylinder Variance:&lt;/strong&gt; R-26,226.50&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;</p>
-<p>&lt;/div&gt;</p>
+<div class="dashboard-grid">
+    <div class="dashboard-card position-card-item">
+        <h4>Account Position</h4>
+        <ul>
+            <li><strong>Total Account Balance:</strong> R146,851.22</li>
+            <li><strong>LPG Gas Debt:</strong> R146,857.72</li>
+            <li><strong>Cylinder Financial Balance:</strong> R-6.50</li>
+            <li><strong>Statement Period:</strong> 3 Dec 2018 – 31 May 2026</li>
+        </ul>
+    </div>
+    <div class="dashboard-card payment-card-item">
+        <h4>Payment Position</h4>
+        <ul>
+            <li><strong>Net LPG Gas Debt:</strong> R146,857.72</li>
+            <li><strong>Unpaid LPG Invoices:</strong> R241,155.91</li>
+            <li><strong>Unmatched / Overpayments:</strong> R94,298.19</li>
+            <li><strong>Allocation Period:</strong> 1 Mar 2022 – 31 May 2026</li>
+        </ul>
+    </div>
+    <div class="dashboard-card cylinder-card-item">
+        <h4>Cylinder Position</h4>
+        <ul>
+            <li><strong>Cylinder Financial Balance:</strong> R-6.50</li>
+            <li><strong>Cylinder Custody Exposure:</strong> R26,220.00</li>
+            <li><strong>Cylinder Variance:</strong> R-26,226.50</li>
+        </ul>
+    </div>
+</div>
 <hr>
-<p>&lt;h2 id=&quot;financial-ledgers&quot;&gt;Part 1: Financial Ledgers&lt;/h2&gt;
-<em>Tracks all chronological transactions, gas, and cylinders in three sub-ledgers. Use the tabs below to select the view.</em></p>
+<h2 id="financial-ledgers">Part 1: Financial Ledgers</h2>
+*Tracks all chronological transactions, gas, and cylinders in three sub-ledgers. Use the tabs below to select the view.*
 
             <div class="tabs-container">
                 <div class="tab-list" role="tablist">
-                    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-1a" id="tab-1a">Combined ERP Financial Ledger</button>
-                    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="panel-1b" id="tab-1b">LPG Gas Financial Ledger</button>
-                    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-1c" id="tab-1c">Cylinder Financial Ledger</button>
+                    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-1a" id="tab-1a" tabindex="-1">Combined ERP Financial Ledger</button>
+                    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="panel-1b" id="tab-1b" tabindex="0">LPG Gas Financial Ledger</button>
+                    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-1c" id="tab-1c" tabindex="-1">Cylinder Financial Ledger</button>
                 </div>
                 
                 <div class="tab-panel" id="panel-1a" role="tabpanel" aria-labelledby="tab-1a">
@@ -17003,10 +17032,7 @@
 </tr>
 </tbody>
 </table>
-
-                </div>
-            </div>
-            <hr>
+<hr>
 <h4>February 2019</h4>
 <table>
 <thead>
@@ -21602,8 +21628,11 @@
 </tbody>
 </table>
 <hr>
-<p>&lt;h3 id=&quot;payment-allocation-summary&quot;&gt;Part 1D: Payment Allocation Split Summary&lt;/h3&gt;
-<em>High-level summary of payment splits and allocations between LPG and Cylinder ledgers.</em></p>
+
+                </div>
+            </div>
+            <h3 id="payment-allocation-summary">Part 1D: Payment Allocation Split Summary</h3>
+*High-level summary of payment splits and allocations between LPG and Cylinder ledgers.*
 <table>
 <thead>
 <tr>
@@ -21665,8 +21694,8 @@
 </tbody>
 </table>
 <hr>
-<p>&lt;h2 id=&quot;cylinder-custody-tracker&quot;&gt;Part 2: Cylinder (CYL) Ledger (Physical Asset Tracker)&lt;/h2&gt;
-<em>Cylinders are tracked purely by physical count. The Opening Balance on 03 December 2018 is R0.00 as it represents account inception.</em></p>
+<h2 id="cylinder-custody-tracker">Part 2: Cylinder (CYL) Ledger (Physical Asset Tracker)</h2>
+*Cylinders are tracked purely by physical count. The Opening Balance on 03 December 2018 is R0.00 as it represents account inception.*
 <h3>December 2018</h3>
 <table>
 <thead>
@@ -30326,28 +30355,28 @@
                 Midlands Petroleum &middot; LPG Stock Reconciliation Statement &middot; Generated dynamically under CYL Settlement Doctrine v4
             </div>
         </div>
-        
-        <div class="side-control-panel-wrapper">
-            <div class="side-control-panel">
-                <h4 class="side-panel-title">Navigation</h4>
-                <div class="side-nav-links">
-                    <a href="#account-dashboard" class="side-nav-btn active" data-section="dashboard">Account Dashboard</a>
-                    <button class="side-nav-btn" data-tab="tab-1b" data-section="ledger">LPG Gas Ledger</button>
-                    <button class="side-nav-btn" data-tab="tab-1a" data-section="ledger">Combined ERP Ledger</button>
-                    <button class="side-nav-btn" data-tab="tab-1c" data-section="ledger">Cylinder Ledger</button>
-                    <a href="#payment-allocation-summary" class="side-nav-btn" data-section="payment">Payment Summary</a>
-                    <a href="#cylinder-custody-tracker" class="side-nav-btn" data-section="custody">Cylinder Custody</a>
-                    
-                    <button class="side-nav-btn print-btn" onclick="window.print()">Print / Save</button>
-                </div>
-            </div>
-        </div>
     </div>
     
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const tabs = document.querySelectorAll('.tab-btn');
             const panels = document.querySelectorAll('.tab-panel');
+            const sideNavButtons = document.querySelectorAll('.side-nav-btn');
+
+            // Scope total-row class to non-meta table rows containing strong elements
+            document.querySelectorAll('table:not(.meta-table) tr').forEach(row => {
+                if (row.querySelector('strong')) {
+                    row.classList.add('total-row');
+                }
+            });
+
+            // Bind print button event listener
+            const printBtn = document.getElementById('print-btn');
+            if (printBtn) {
+                printBtn.addEventListener('click', () => {
+                    window.print();
+                });
+            }
 
             tabs.forEach(tab => {
                 tab.addEventListener('click', () => {
@@ -30356,18 +30385,20 @@
                     tabs.forEach(t => {
                         t.classList.remove('active');
                         t.setAttribute('aria-selected', 'false');
+                        t.setAttribute('tabindex', '-1');
                     });
                     panels.forEach(p => p.classList.remove('active'));
 
                     tab.classList.add('active');
                     tab.setAttribute('aria-selected', 'true');
+                    tab.setAttribute('tabindex', '0');
                     const targetPanel = document.getElementById(targetPanelId);
                     if (targetPanel) {
                         targetPanel.classList.add('active');
                     }
                     
                     // Keep sidebar active states in sync for tab clicks
-                    document.querySelectorAll('.side-nav-btn[data-tab]').forEach(btn => {
+                    sideNavButtons.forEach(btn => {
                         if (btn.getAttribute('data-tab') === tab.id) {
                             btn.classList.add('active');
                         } else {
@@ -30376,7 +30407,7 @@
                     });
                 });
                 
-                // Keyboard accessibility (Arrow keys, Home, End)
+                // Keyboard accessibility (Arrow keys, Home, End) - roving focus only (manual activation)
                 tab.addEventListener('keydown', (e) => {
                     let targetTab = null;
                     const tabButtons = Array.from(tab.parentElement.querySelectorAll('.tab-btn'));
@@ -30393,22 +30424,19 @@
                     }
 
                     if (targetTab) {
+                        tabButtons.forEach(t => t.setAttribute('tabindex', '-1'));
+                        targetTab.setAttribute('tabindex', '0');
                         targetTab.focus();
-                        targetTab.click();
                         e.preventDefault();
                     }
                 });
             });
 
             // Side Control Panel click behavior
-            const sideNavButtons = document.querySelectorAll('.side-nav-btn');
             sideNavButtons.forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const tabId = btn.getAttribute('data-tab');
                     const targetHref = btn.getAttribute('href');
-                    
-                    sideNavButtons.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
                     
                     if (tabId) {
                         // Toggle matching tab in Part 1
@@ -30429,6 +30457,49 @@
                             dest.scrollIntoView({ behavior: 'smooth' });
                         }
                         e.preventDefault();
+                    }
+                });
+            });
+
+            // Scroll-Spy to highlight side control panel links on scroll
+            const spySections = [
+                { id: 'account-dashboard', type: 'dashboard' },
+                { id: 'financial-ledgers', type: 'ledger' },
+                { id: 'payment-allocation-summary', type: 'payment' },
+                { id: 'cylinder-custody-tracker', type: 'custody' }
+            ];
+            if (false) {
+                spySections.push({ id: 'payment-allocation-detail', type: 'detail' });
+                spySections.push({ id: 'internal-audit-disclosure', type: 'audit' });
+            }
+
+            window.addEventListener('scroll', () => {
+                let activeType = null;
+                
+                for (const sec of spySections) {
+                    const el = document.getElementById(sec.id);
+                    if (el) {
+                        const rect = el.getBoundingClientRect();
+                        // If the top of the element is above/near 30% of viewport height
+                        if (rect.top <= window.innerHeight * 0.3) {
+                            activeType = sec.type;
+                        }
+                    }
+                }
+                
+                if (!activeType) {
+                    activeType = 'dashboard';
+                }
+
+                sideNavButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                    if (activeType === 'ledger') {
+                        const activeTab = document.querySelector('.tab-btn.active');
+                        if (activeTab && btn.getAttribute('data-tab') === activeTab.id) {
+                            btn.classList.add('active');
+                        }
+                    } else if (btn.getAttribute('data-section') === activeType) {
+                        btn.classList.add('active');
                     }
                 });
             });

@@ -39,6 +39,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Fixed
+- Resolved HTML statement views frontend rendering, navigation, and accessibility issues from frontend audit:
+  - Enabled raw HTML tag parsing (`html: True`) on Python's `markdown-it` to resolve dashboard grid/card escaping (E1–E4) and navigation anchor targets (N1–N2).
+  - Updated cylinder ledger regex lookup to stop matching strictly on Part 1D or payment allocations, preventing early panel cuts (T1) and ensuring all 66 months of data render inside the cylinder tab.
+  - Reordered DOM structure in HTML builder so `.side-control-panel-wrapper` precedes `.statement-container` for screen readers (L1).
+  - Implemented desktop flex `flex-direction: row-reverse;` and responsive media overrides to stack side-nav correctly on mobile and keep sidebar on the right on wide viewports (L1).
+  - Restricted total-row bolding CSS styles to a `.total-row` class dynamically scoped to non-metadata table rows (`table:not(.meta-table) tr`) in JavaScript, resolving metadata row bolding (L4).
+  - Implemented roving tabindexes and keyboard navigation for tab button list using standard `tabindex="0"` / `-1` and arrow key roving focus without calling `.click()`, letting native Space/Enter clicks trigger activation (A1–A3).
+  - Restored browser-native `:focus-visible` outline rings on interactive tab buttons.
+  - Eliminated inline `onclick` script handlers from Print/Save button to align with strict CSP (J1).
+  - Implemented client-side scroll-spy window event listener to dynamically update the active control panel link based on viewport scroll position (T2).
+  - Added dynamic title tags to HTML outputs containing view context (Internal Audit View vs Customer View) and set `<html lang="en">` attribute (N3–N4).
+  - Corrected `.brand-sub` indentation in CSS output.
+
 ### Added
 - Implemented **Account position dashboard** and **sticky side control panel** layout for JIM001 statements:
   - Surfaces a customer-safe summary dashboard (Account Position, Payment Position, and Cylinder Position metrics) immediately after the header.

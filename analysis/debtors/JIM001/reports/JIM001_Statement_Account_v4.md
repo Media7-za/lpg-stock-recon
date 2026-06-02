@@ -36,16 +36,16 @@
         </ul>
     </div>
 <!-- INTERNAL_ONLY_START -->
-    <div class="dashboard-card internal-audit-card-item">
-        <h4>Internal Audit Snapshot</h4>
-        <ul>
-            <li><strong>Corrected ERP Stated Balance:</strong> R146,907.13</li>
-            <li><strong>ERP Residual Variance:</strong> R55.91</li>
-            <li><strong>Naive split-payment defect:</strong> R284,760.09</li>
-            <li><strong>Credit Note 14198:</strong> Allocated to Invoice 48578 via ref_no rule</li>
-            <li>Part 1E allocation detail available internally</li>
-        </ul>
-    </div>
+<div class="dashboard-card internal-audit-card-item">
+    <h4>Internal Audit Snapshot</h4>
+    <ul>
+        <li><strong>Corrected ERP Stated Balance:</strong> R146,907.13</li>
+        <li><strong>ERP Residual Variance:</strong> R55.91</li>
+        <li><strong>Naive split-payment defect:</strong> R284,760.09</li>
+        <li><strong>Credit Note 14198:</strong> Allocated to Invoice 48578 via ref_no rule</li>
+        <li>Part 1E allocation detail available internally</li>
+    </ul>
+</div>
 <!-- INTERNAL_ONLY_END -->
 </div>
 

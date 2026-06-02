@@ -183,7 +183,7 @@ def enhance_html(html_content, is_internal=True):
         r'<h3>Part 1A:\s*Combined ERP Financial Ledger</h3>(.*?)'
         r'<h3>Part 1B:\s*LPG Gas Financial Ledger</h3>(.*?)'
         r'<h3>Part 1C:\s*Cylinder Financial Ledger</h3>(.*?)'
-        r'(?=<h3>Part 1D\b|<h2>|<hr\s*/?>)',
+        r'(?=<h3(?:\s+[^>]*?)?>Part 1D\b|<div id="payment-allocation-summary")',
         re.DOTALL | re.IGNORECASE
     )
     
@@ -196,9 +196,9 @@ def enhance_html(html_content, is_internal=True):
             tab_html = """
             <div class="tabs-container">
                 <div class="tab-list" role="tablist">
-                    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="panel-1a" id="tab-1a">Combined ERP Financial Ledger</button>
-                    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-1b" id="tab-1b">LPG Gas Financial Ledger</button>
-                    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-1c" id="tab-1c">Cylinder Financial Ledger</button>
+                    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="panel-1a" id="tab-1a" tabindex="0">Combined ERP Financial Ledger</button>
+                    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-1b" id="tab-1b" tabindex="-1">LPG Gas Financial Ledger</button>
+                    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-1c" id="tab-1c" tabindex="-1">Cylinder Financial Ledger</button>
                 </div>
                 
                 <div class="tab-panel active" id="panel-1a" role="tabpanel" aria-labelledby="tab-1a">
@@ -221,9 +221,9 @@ def enhance_html(html_content, is_internal=True):
             tab_html = """
             <div class="tabs-container">
                 <div class="tab-list" role="tablist">
-                    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-1a" id="tab-1a">Combined ERP Financial Ledger</button>
-                    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="panel-1b" id="tab-1b">LPG Gas Financial Ledger</button>
-                    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-1c" id="tab-1c">Cylinder Financial Ledger</button>
+                    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-1a" id="tab-1a" tabindex="-1">Combined ERP Financial Ledger</button>
+                    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="panel-1b" id="tab-1b" tabindex="0">LPG Gas Financial Ledger</button>
+                    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-1c" id="tab-1c" tabindex="-1">Cylinder Financial Ledger</button>
                 </div>
                 
                 <div class="tab-panel" id="panel-1a" role="tabpanel" aria-labelledby="tab-1a">
@@ -255,12 +255,13 @@ def build_full_html(enhanced_content, is_internal=True):
                     <a href="#payment-allocation-detail" class="side-nav-btn" data-section="detail">Payment Allocation Detail</a>
     """ if is_internal else ""
     
+    title_suffix = " (Internal Audit View)" if is_internal else " (Customer View)"
     return f"""<!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Midlands Petroleum - Statement of Account</title>
+    <title>Midlands Petroleum - Statement of Account{title_suffix}</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap');
         
@@ -407,7 +408,7 @@ def build_full_html(enhanced_content, is_internal=True):
             letter-spacing: 0.05em;
             margin-top: 2px;
             font-weight: 600;
-            }}
+        }}
         
         .doc-title {{
             text-align: right;
@@ -549,12 +550,12 @@ def build_full_html(enhanced_content, is_internal=True):
         }}
         
         /* Bolding dynamic total/balance rows */
-        tr:has(strong) {{
+        tr.total-row {{
             font-weight: 600;
             background-color: #f1f5f9 !important;
         }}
         
-        tr:has(strong) td {{
+        tr.total-row td {{
             color: #0f172a;
         }}
         
@@ -703,6 +704,16 @@ def build_full_html(enhanced_content, is_internal=True):
             color: #1e3a8a;
             border-bottom-color: #1e3a8a;
         }}
+
+        .tab-btn:focus {{
+            outline: none;
+        }}
+
+        .tab-btn:focus-visible {{
+            outline: 2px solid #1e3a8a;
+            outline-offset: -3px;
+            border-radius: 6px;
+        }}
         
         .tab-panel {{
             display: none;
@@ -772,7 +783,7 @@ def build_full_html(enhanced_content, is_internal=True):
         .dashboard-card li strong {{
             color: #0f172a;
         }}
-
+ 
         .position-card-item h4 {{ color: #2563eb; border-bottom-color: #dbeafe; }}
         .payment-card-item h4 {{ color: #16a34a; border-bottom-color: #dcfce7; }}
         .cylinder-card-item h4 {{ color: #ea580c; border-bottom-color: #ffedd5; }}
@@ -781,10 +792,11 @@ def build_full_html(enhanced_content, is_internal=True):
             border-color: #fde68a;
         }}
         .internal-audit-card-item h4 {{ color: #b45309; border-bottom-color: #fde68a; }}
-
+ 
         /* Two-column App Layout for desktop */
         .app-layout {{
             display: flex;
+            flex-direction: row-reverse;
             max-width: 1400px;
             margin: 0 auto;
             gap: 24px;
@@ -795,6 +807,7 @@ def build_full_html(enhanced_content, is_internal=True):
             flex: 1;
             min-width: 0;
             margin: 0;
+            max-width: 1000px;
         }}
         
         .side-control-panel-wrapper {{
@@ -972,6 +985,7 @@ def build_full_html(enhanced_content, is_internal=True):
                 margin-bottom: 35px;
                 padding: 0 !important;
                 border: none !important;
+                box-shadow: none !important;
             }}
             .tabs-container {{
                 border: none !important;
@@ -996,14 +1010,6 @@ def build_full_html(enhanced_content, is_internal=True):
 </head>
 <body>
     <div class="app-layout">
-        <div class="statement-container">
-            {badge}
-            {enhanced_content}
-            <div class="page-footer">
-                Midlands Petroleum &middot; LPG Stock Reconciliation Statement &middot; Generated dynamically under CYL Settlement Doctrine v4
-            </div>
-        </div>
-        
         <div class="side-control-panel-wrapper">
             <div class="side-control-panel">
                 <h4 class="side-panel-title">Navigation</h4>
@@ -1015,8 +1021,16 @@ def build_full_html(enhanced_content, is_internal=True):
                     <a href="#payment-allocation-summary" class="side-nav-btn" data-section="payment">Payment Summary</a>
                     <a href="#cylinder-custody-tracker" class="side-nav-btn" data-section="custody">Cylinder Custody</a>
                     {internal_side_links}
-                    <button class="side-nav-btn print-btn" onclick="window.print()">Print / Save</button>
+                    <button class="side-nav-btn print-btn" id="print-btn">Print / Save</button>
                 </div>
+            </div>
+        </div>
+
+        <div class="statement-container">
+            {badge}
+            {enhanced_content}
+            <div class="page-footer">
+                Midlands Petroleum &middot; LPG Stock Reconciliation Statement &middot; Generated dynamically under CYL Settlement Doctrine v4
             </div>
         </div>
     </div>
@@ -1025,6 +1039,22 @@ def build_full_html(enhanced_content, is_internal=True):
         document.addEventListener('DOMContentLoaded', () => {{
             const tabs = document.querySelectorAll('.tab-btn');
             const panels = document.querySelectorAll('.tab-panel');
+            const sideNavButtons = document.querySelectorAll('.side-nav-btn');
+
+            // Scope total-row class to non-meta table rows containing strong elements
+            document.querySelectorAll('table:not(.meta-table) tr').forEach(row => {{
+                if (row.querySelector('strong')) {{
+                    row.classList.add('total-row');
+                }}
+            }});
+
+            // Bind print button event listener
+            const printBtn = document.getElementById('print-btn');
+            if (printBtn) {{
+                printBtn.addEventListener('click', () => {{
+                    window.print();
+                }});
+            }}
 
             tabs.forEach(tab => {{
                 tab.addEventListener('click', () => {{
@@ -1033,18 +1063,20 @@ def build_full_html(enhanced_content, is_internal=True):
                     tabs.forEach(t => {{
                         t.classList.remove('active');
                         t.setAttribute('aria-selected', 'false');
+                        t.setAttribute('tabindex', '-1');
                     }});
                     panels.forEach(p => p.classList.remove('active'));
 
                     tab.classList.add('active');
                     tab.setAttribute('aria-selected', 'true');
+                    tab.setAttribute('tabindex', '0');
                     const targetPanel = document.getElementById(targetPanelId);
                     if (targetPanel) {{
                         targetPanel.classList.add('active');
                     }}
                     
                     // Keep sidebar active states in sync for tab clicks
-                    document.querySelectorAll('.side-nav-btn[data-tab]').forEach(btn => {{
+                    sideNavButtons.forEach(btn => {{
                         if (btn.getAttribute('data-tab') === tab.id) {{
                             btn.classList.add('active');
                         }} else {{
@@ -1053,7 +1085,7 @@ def build_full_html(enhanced_content, is_internal=True):
                     }});
                 }});
                 
-                // Keyboard accessibility (Arrow keys, Home, End)
+                // Keyboard accessibility (Arrow keys, Home, End) - roving focus only (manual activation)
                 tab.addEventListener('keydown', (e) => {{
                     let targetTab = null;
                     const tabButtons = Array.from(tab.parentElement.querySelectorAll('.tab-btn'));
@@ -1070,22 +1102,19 @@ def build_full_html(enhanced_content, is_internal=True):
                     }}
 
                     if (targetTab) {{
+                        tabButtons.forEach(t => t.setAttribute('tabindex', '-1'));
+                        targetTab.setAttribute('tabindex', '0');
                         targetTab.focus();
-                        targetTab.click();
                         e.preventDefault();
                     }}
                 }});
             }});
 
             // Side Control Panel click behavior
-            const sideNavButtons = document.querySelectorAll('.side-nav-btn');
             sideNavButtons.forEach(btn => {{
                 btn.addEventListener('click', (e) => {{
                     const tabId = btn.getAttribute('data-tab');
                     const targetHref = btn.getAttribute('href');
-                    
-                    sideNavButtons.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
                     
                     if (tabId) {{
                         // Toggle matching tab in Part 1
@@ -1106,6 +1135,49 @@ def build_full_html(enhanced_content, is_internal=True):
                             dest.scrollIntoView({{ behavior: 'smooth' }});
                         }}
                         e.preventDefault();
+                    }}
+                }});
+            }});
+
+            // Scroll-Spy to highlight side control panel links on scroll
+            const spySections = [
+                {{ id: 'account-dashboard', type: 'dashboard' }},
+                {{ id: 'financial-ledgers', type: 'ledger' }},
+                {{ id: 'payment-allocation-summary', type: 'payment' }},
+                {{ id: 'cylinder-custody-tracker', type: 'custody' }}
+            ];
+            if ({'true' if is_internal else 'false'}) {{
+                spySections.push({{ id: 'payment-allocation-detail', type: 'detail' }});
+                spySections.push({{ id: 'internal-audit-disclosure', type: 'audit' }});
+            }}
+
+            window.addEventListener('scroll', () => {{
+                let activeType = null;
+                
+                for (const sec of spySections) {{
+                    const el = document.getElementById(sec.id);
+                    if (el) {{
+                        const rect = el.getBoundingClientRect();
+                        // If the top of the element is above/near 30% of viewport height
+                        if (rect.top <= window.innerHeight * 0.3) {{
+                            activeType = sec.type;
+                        }}
+                    }}
+                }}
+                
+                if (!activeType) {{
+                    activeType = 'dashboard';
+                }}
+
+                sideNavButtons.forEach(btn => {{
+                    btn.classList.remove('active');
+                    if (activeType === 'ledger') {{
+                        const activeTab = document.querySelector('.tab-btn.active');
+                        if (activeTab && btn.getAttribute('data-tab') === activeTab.id) {{
+                            btn.classList.add('active');
+                        }}
+                    }} else if (btn.getAttribute('data-section') === activeType) {{
+                        btn.classList.add('active');
                     }}
                 }});
             }});
@@ -1135,7 +1207,7 @@ def convert_md_to_html(md_path, html_path):
     # Strip the comments themselves from the internal content
     internal_md_content = md_content.replace('<!-- INTERNAL_ONLY_START -->', '').replace('<!-- INTERNAL_ONLY_END -->', '')
     
-    md = MarkdownIt('js-default')
+    md = MarkdownIt('js-default', {'html': True})
     
     # Compile Internal HTML
     print("Converting internal markdown to HTML...")
