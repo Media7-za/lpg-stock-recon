@@ -1,0 +1,15 @@
+[
+  {
+    "review_id": "HR-0001",
+    "table_name": "allocation_edges",
+    "record_id": "AL-0001",
+    "field_name": "commercially_confirmed",
+    "generated_value": true,
+    "human_value": "",
+    "review_status": "Review Required",
+    "review_note": "Verify invoice match with client bank payment slip.",
+    "reviewed_by": "",
+    "reviewed_at": "",
+    "action_required": "Verify"
+  }
+]
