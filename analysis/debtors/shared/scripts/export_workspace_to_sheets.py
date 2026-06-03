@@ -570,7 +570,7 @@ def main():
 
     # Step 7: settlement_windows.csv
     # Include the requested known batch matching window
-    settlement_windows = [{
+    settlement_windows_raw = [{
         'settlement_id': 'JIM001-BATCH-2024-APR-NOV',
         'invoice_window_start': '2024-04-01',
         'invoice_window_end': '2024-11-30',
@@ -580,17 +580,89 @@ def main():
         'payment_total': 118638.47,
         'lpg_invoice_total': 121032.82,
         'difference': 2394.35,
-        'candidate_unpaid_invoice': '36945',
-        'candidate_unpaid_amount': 2394.34,
         'cyl_excluded_total': 54899.83,
         'missing_batch_ref': 'STAT:109',
-        'confidence_score': 0.98,
-        'status': 'HIGH_CONFIDENCE_MULTI_MONTH_LPG_SETTLEMENT_WITH_ONE_UNPAID_INVOICE',
         'notes': 'STAT sequence jumps from STAT:108 to STAT:110. STAT:109 is missing from ERP records. The six payments appear to settle Apr–Nov 2024 LPG-only invoices. Invoice 36945 appears to be the uncovered invoice. CYL invoice total R54,899.83 is excluded from this match.'
     }]
+
+    import itertools
+    settlement_windows = []
+    df_lpg_invoices = df_invoices_out[(df_invoices_out['is_lpg']) & (df_invoices_out['entry_type'] == 'Invoice')]
+
+    for sw in settlement_windows_raw:
+        sid = sw['settlement_id']
+        w_start = sw['invoice_window_start']
+        w_end = sw['invoice_window_end']
+        diff_amount = float(sw['difference'])
+        
+        # Define search range (window +- 32 days to cover +-1 month)
+        dt_start = datetime.strptime(w_start, "%Y-%m-%d")
+        dt_end = datetime.strptime(w_end, "%Y-%m-%d")
+        search_start = (dt_start - pd.Timedelta(days=32)).strftime("%Y-%m-%d")
+        search_end = (dt_end + pd.Timedelta(days=32)).strftime("%Y-%m-%d")
+        
+        # Filter candidate invoices
+        candidates_df = df_lpg_invoices[(df_lpg_invoices['tx_date'] >= search_start) & (df_lpg_invoices['tx_date'] <= search_end)]
+        candidates = []
+        for _, row in candidates_df.iterrows():
+            candidates.append({
+                'doc_no': str(row['doc_no']).lstrip('0'),
+                'amount': float(row['amount_incl'])
+            })
+            
+        # Search for combination of size 1 to 4
+        best_match = None
+        best_variance = float('inf')
+        tolerance = 100.0
+        
+        for r in range(1, 5):
+            for comb in itertools.combinations(candidates, r):
+                comb_sum = sum(c['amount'] for c in comb)
+                variance = abs(diff_amount - comb_sum)
+                if variance <= tolerance:
+                    if variance < best_variance:
+                        best_variance = variance
+                        best_match = comb
+                        
+        if best_match:
+            doc_list = ",".join(c['doc_no'] for c in best_match)
+            amt_list = ",".join(str(c['amount']) for c in best_match)
+            match_total = sum(c['amount'] for c in best_match)
+            variance_val = round(best_variance, 2)
+            
+            m_type = "RESIDUAL_MATCHES_SINGLE_UNPAID_INVOICE" if len(best_match) == 1 else "RESIDUAL_MATCHES_UNPAID_INVOICE_COMBINATION"
+            conf = "HIGH" if variance_val <= 1.0 else ("PROBABLE" if variance_val <= 10.0 else "REVIEW_REQUIRED but plausible")
+            
+            sw['residual_match_type'] = m_type
+            sw['residual_matched_invoice_docs'] = doc_list
+            sw['residual_matched_invoice_amounts'] = amt_list
+            sw['residual_match_total'] = round(match_total, 2)
+            sw['residual_match_variance'] = variance_val
+            sw['residual_match_confidence'] = conf
+            sw['status'] = m_type
+            sw['confidence_score'] = 0.98 if conf == 'HIGH' else (0.85 if conf == 'PROBABLE' else 0.70)
+            
+            # Backwards compatibility columns for statement generator
+            sw['candidate_unpaid_invoice'] = doc_list
+            sw['candidate_unpaid_amount'] = round(match_total, 2)
+        else:
+            sw['residual_match_type'] = "RESIDUAL_UNEXPLAINED_REVIEW_REQUIRED"
+            sw['residual_matched_invoice_docs'] = "—"
+            sw['residual_matched_invoice_amounts'] = "—"
+            sw['residual_match_total'] = 0.0
+            sw['residual_match_variance'] = diff_amount
+            sw['residual_match_confidence'] = "UNEXPLAINED"
+            sw['status'] = "RESIDUAL_UNEXPLAINED_REVIEW_REQUIRED"
+            sw['confidence_score'] = 0.10
+            
+            sw['candidate_unpaid_invoice'] = "—"
+            sw['candidate_unpaid_amount'] = 0.0
+            
+        settlement_windows.append(sw)
+
     df_settlements_out = pd.DataFrame(settlement_windows)
     df_settlements_out.to_csv(f"{output_dir}/settlement_windows.csv", index=False)
-    print(f"Generated settlement_windows.csv with 1 record.")
+    print(f"Generated settlement_windows.csv with {len(df_settlements_out)} records.")
 
     # Step 8: delivery_cycle_windows.csv
     # Include known straddle cases
