@@ -28608,6 +28608,41 @@
 </tbody>
 </table>
 <hr>
+<h3>Part 1F: Multi-Month Settlement Windows</h3>
+<p><em>Internal Audit Trail: Multi-month batch matching windows.</em></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Window ID</th>
+<th style="text-align:left">Invoice Window</th>
+<th style="text-align:left">Payment Window</th>
+<th style="text-align:right">Payment Total</th>
+<th style="text-align:right">LPG Invoice Total</th>
+<th style="text-align:right">Gap</th>
+<th style="text-align:right">Excluded CYL</th>
+<th style="text-align:left">Missing Batch</th>
+<th style="text-align:left">Unpaid Candidate</th>
+<th style="text-align:left">Status</th>
+<th style="text-align:left">Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">JIM001-BATCH-2024-APR-NOV</td>
+<td style="text-align:left">2024-04-01 to 2024-11-30</td>
+<td style="text-align:left">2024-08-23 to 2025-02-21</td>
+<td style="text-align:right">R118,638.47</td>
+<td style="text-align:right">R121,032.82</td>
+<td style="text-align:right">R2,394.35</td>
+<td style="text-align:right">R54,899.83</td>
+<td style="text-align:left">STAT:109</td>
+<td style="text-align:left">Invoice 36945 (R2,394.34)</td>
+<td style="text-align:left">HIGH_CONFIDENCE_MULTI_MONTH_LPG_SETTLEMENT_WITH_ONE_UNPAID_INVOICE</td>
+<td style="text-align:left">STAT sequence jumps from STAT:108 to STAT:110. STAT:109 is missing from ERP records. The six payments appear to settle Apr–Nov 2024 LPG-only invoices. Invoice 36945 appears to be the uncovered invoice. CYL invoice total R54,899.83 is excluded from this match.</td>
+</tr>
+</tbody>
+</table>
+<hr>
 <div id="internal-audit-disclosure"></div>
 <h2>⚠️ Audit Disclosure &amp; Executive Summary</h2>
 <p>During the reconstruction of JIM001, we verified that the account contains large-scale payment allocation splits and credit note double-taxation discrepancies in the ERP database header layer.</p>

@@ -525,9 +525,9 @@ def main():
         'settlement_id': 'JIM001-BATCH-2024-APR-NOV',
         'invoice_window_start': '2024-04-01',
         'invoice_window_end': '2024-11-30',
-        'payment_window_start': '2024-04-01',
-        'payment_window_end': '2024-11-30',
-        'payment_refs': 'STAT:106, STAT:107, STAT:108, STAT:110, STAT:111, STAT:112',
+        'payment_window_start': '2024-08-23',
+        'payment_window_end': '2025-02-21',
+        'payment_refs': '00032896,00033810,00034425,00035270,00036139,00036988',
         'payment_total': 118638.47,
         'lpg_invoice_total': 121032.82,
         'difference': 2394.35,
@@ -535,9 +535,9 @@ def main():
         'candidate_unpaid_amount': 2394.34,
         'cyl_excluded_total': 54899.83,
         'missing_batch_ref': 'STAT:109',
-        'confidence_score': 0.95,
-        'status': 'RESOLVED_WITH_UNPAID_CANDIDATE',
-        'notes': 'Multi-month settlement window covering April to November 2024. Excludes cylinder charges of R54,899.83. Invoice 36945 (R2,394.34) remains unpaid.'
+        'confidence_score': 0.98,
+        'status': 'HIGH_CONFIDENCE_MULTI_MONTH_LPG_SETTLEMENT_WITH_ONE_UNPAID_INVOICE',
+        'notes': 'STAT sequence jumps from STAT:108 to STAT:110. STAT:109 is missing from ERP records. The six payments appear to settle Apr–Nov 2024 LPG-only invoices. Invoice 36945 appears to be the uncovered invoice. CYL invoice total R54,899.83 is excluded from this match.'
     }]
     df_settlements_out = pd.DataFrame(settlement_windows)
     df_settlements_out.to_csv(f"{output_dir}/settlement_windows.csv", index=False)

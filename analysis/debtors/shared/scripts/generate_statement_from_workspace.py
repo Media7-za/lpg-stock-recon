@@ -50,6 +50,7 @@ def main():
         df_edges = pd.read_csv(f"{data_dir}/allocation_edges.csv")
         df_insights = pd.read_csv(f"{data_dir}/monthly_lpg_insights.csv")
         df_cyl_txs = pd.read_csv(f"{data_dir}/cylinder_transactions.csv")
+        df_settlements = pd.read_csv(f"{data_dir}/settlement_windows.csv")
         
         with open(f"{data_dir}/dashboard_metrics.json", "r", encoding="utf-8") as f:
             metrics = json.load(f)
@@ -369,6 +370,25 @@ def main():
 | :--- | :--- | :--- | :--- | :--- | ---: | :--- | :--- | :--- |
 """ + "\n".join(part1e_rows)
 
+    # Part 1F: Multi-Month Settlement Windows
+    part1f_rows = []
+    for idx, row in df_settlements.iterrows():
+        p_total = fmt(row['payment_total'])
+        l_total = fmt(row['lpg_invoice_total'])
+        diff = fmt(row['difference'])
+        cyl_excl = fmt(row['cyl_excluded_total'])
+        cand_unpaid = str(row['candidate_unpaid_invoice']).lstrip('0') if not pd.isna(row['candidate_unpaid_invoice']) else "—"
+        cand_amt = fmt(row['candidate_unpaid_amount'])
+        
+        part1f_rows.append(
+            f"| {row['settlement_id']} | {row['invoice_window_start']} to {row['invoice_window_end']} | {row['payment_window_start']} to {row['payment_window_end']} | {p_total} | {l_total} | {diff} | {cyl_excl} | {row['missing_batch_ref']} | Invoice {cand_unpaid} ({cand_amt}) | {row['status']} | {row['notes']} |"
+        )
+        
+    part1f_markdown = """
+| Window ID | Invoice Window | Payment Window | Payment Total | LPG Invoice Total | Gap | Excluded CYL | Missing Batch | Unpaid Candidate | Status | Notes |
+| :--- | :--- | :--- | ---: | ---: | ---: | ---: | :--- | :--- | :--- | :--- |
+""" + "\n".join(part1f_rows)
+
     # Cylinder physical custody movements (Part 2)
     current_cyl_bal = {'14kg': 0, '19kg': 0, '9kg': 0, 'D.1': 0, 'S.1': 0}
     cols = ['14kg', '19kg', '9kg', 'D.1', 'S.1']
@@ -556,6 +576,13 @@ def main():
 *Internal Audit Trail: Detailed payment-to-invoice allocation edges from March 2022 to May 2026.*
 
 {part1e_table}
+
+---
+
+### Part 1F: Multi-Month Settlement Windows
+*Internal Audit Trail: Multi-month batch matching windows.*
+
+{part1f_markdown}
 
 ---
 
