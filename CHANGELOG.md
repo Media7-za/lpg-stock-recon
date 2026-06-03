@@ -54,6 +54,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Corrected `.brand-sub` indentation in CSS output.
 
 ### Added
+- Generated a commercial account intelligence report for Impendle Wholesale (consolidating BU0003 and BU0009; excluding inactive BU0031) under `analysis/debtors/BU0009/reports/impendle_wholesale_intelligence.md`. Analyzed 9.6 years of purchase history, reconciled historical underpricing, assessed the May 2026 price hike's impact on volume drop-off, and provided retention-sensitive pricing scenarios balancing margin recovery with churn risk.
+- Created styled Excel workbook for Jim Gas (JIM001) reconciliation containing chronological LPG ledger sheet (`LPG only Invoices`), consolidated database payments ledger sheet (`Payment unallocated (actual)`), and the exact invoice-to-payment monthly matches sheet (`Monthly Matches`).
 - Implemented Phase 6 Monthly LPG Insights layer for the JIM001 statement and baseline reports:
   - Added a customer-safe `### LPG Monthly Insight Summary` block near the top of the statement showing reviewed months, status counts, oldest/largest unpaid months, most recent fully settled month, and Net LPG Gas Debt.
   - Added a `## Yearly LPG Invoice and Payment Summary` table presenting Year, Net LPG Invoiced, Payments Allocated, Gross Difference, Cumulative Gross Unpaid LPG Position, Unmatched/Overpayment Pool Applied, Net LPG Position, and reconciliation notes for each calendar year.
