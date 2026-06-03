@@ -40,7 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Fixed
-- Updated `export_workspace_to_sheets.py` matches loading logic to merge exact matches from `JIM001_LPG_Reconciliation_v4.xlsx` (sheet `Monthly Matches`) with the published CSV allocations, and refined heuristic fallback matching with a 180-day date-proximity window to prevent past months from stealing future payments.
+- Updated `export_workspace_to_sheets.py` matches loading logic to merge exact matches from `JIM001_LPG_Reconciliation_v4.xlsx` (sheet `Monthly Matches`) with the published CSV allocations, and refined heuristic fallback matching with a 180-day post-invoice-only date constraint (`payment_date >= invoice_month_start` and `payment_date <= invoice_month_end + 180 days`) to prevent past months from stealing future payments.
 - Fixed a date parsing format bug in `export_workspace_to_sheets.py` that caused published allocation matches to be dropped, resulting in incorrect empty allocations for several months (e.g. April to November 2024).
 - Resolved HTML statement views frontend rendering, navigation, and accessibility issues from frontend audit:
   - Enabled raw HTML tag parsing (`html: True`) on Python's `markdown-it` to resolve dashboard grid/card escaping (E1–E4) and navigation anchor targets (N1–N2).

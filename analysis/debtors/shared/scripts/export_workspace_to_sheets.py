@@ -420,10 +420,14 @@ def main():
             for p in pmt_list:
                 if p['remaining'] > 0 and abs(p['remaining'] - m_net) < 500:
                     try:
+                        import calendar
                         p_date = datetime.strptime(p['tx_date'], "%Y-%m-%d")
-                        inv_month_dt = datetime.strptime(m_key + "-01", "%Y-%m-%d")
-                        diff_days = (p_date - inv_month_dt).days
-                        if 0 <= diff_days <= 180:
+                        inv_month_start = datetime.strptime(m_key + "-01", "%Y-%m-%d")
+                        year, month = map(int, m_key.split("-"))
+                        last_day = calendar.monthrange(year, month)[1]
+                        inv_month_end = datetime(year, month, last_day)
+                        
+                        if p_date >= inv_month_start and (p_date - inv_month_end).days <= 180:
                             m_pmts = [p]
                             break
                     except Exception:
