@@ -1224,8 +1224,7 @@
 | 17 Apr 2024 | Invoice | 31413 | 4,213.14 | 83,468.01 |
 | 17 Apr 2024 | Invoice | 31426 | 1,794.00 | 85,262.01 |
 | 17 Apr 2024 | Crd Note | 8117 | -1,794.00 | 83,468.01 |
-| 23 Apr 2024 | Payment | 00030269 | -12,113.34 | 71,354.67 |
-| 23 Apr 2024 | Payment | 00030269 | -4,037.70 | 67,316.97 |
+| 23 Apr 2024 | Payment | 00030269 | -16,151.04 | 67,316.97 |
 | 25 Apr 2024 | Invoice | 31640 | 2,808.76 | 70,125.73 |
 | 25 Apr 2024 | Invoice | 31655 | 1,196.00 | 71,321.73 |
 | 25 Apr 2024 | Crd Note | 8209 | -1,196.00 | 70,125.73 |
@@ -1375,8 +1374,7 @@
 | 24 Oct 2024 | Invoice | 37619 | 3,011.63 | 83,730.45 |
 | 24 Oct 2024 | Invoice | 37620 | 1,794.00 | 85,524.45 |
 | 25 Oct 2024 | Crd Note | 10919 | -2,392.00 | 83,132.45 |
-| 27 Oct 2024 | Payment | 00034425 | -17,729.87 | 65,402.58 |
-| 27 Oct 2024 | Payment | 00034425 | -2,713.13 | 62,689.45 |
+| 27 Oct 2024 | Payment | 00034425 | -20,443.00 | 62,689.45 |
 | 30 Oct 2024 | Invoice | 37799 | 2,753.49 | 65,442.94 |
 | 30 Oct 2024 | Invoice | 37800 | 1,196.00 | 66,638.94 |
 | 30 Oct 2024 | Crd Note | 10998 | -1,196.00 | 65,442.94 |
@@ -1408,8 +1406,7 @@
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
 | **01 Dec** | **Opening Balance** | — | | **77,967.79** |
-| 03 Dec 2024 | Payment | 00035270 | -17,992.94 | 59,974.85 |
-| 03 Dec 2024 | Payment | 00035270 | -448.18 | 59,526.67 |
+| 03 Dec 2024 | Payment | 00035270 | -18,441.12 | 59,526.67 |
 | 03 Dec 2024 | Invoice | 38820 | 4,174.95 | 63,701.62 |
 | 03 Dec 2024 | Invoice | 38821 | 3,622.50 | 67,324.12 |
 | 03 Dec 2024 | Crd Note | 11394 | -3,622.50 | 63,701.62 |
@@ -1434,8 +1431,7 @@
 | 14 Jan 2025 | Invoice | 39898 | 4,387.23 | 87,068.50 |
 | 14 Jan 2025 | Invoice | 39899 | 3,622.50 | 90,691.00 |
 | 15 Jan 2025 | Crd Note | 11693 | -2,415.00 | 88,276.00 |
-| 16 Jan 2025 | Payment | 00036139 | -20,843.86 | 67,432.14 |
-| 16 Jan 2025 | Payment | 00036139 | -1,493.03 | 65,939.11 |
+| 16 Jan 2025 | Payment | 00036139 | -22,336.89 | 65,939.11 |
 | 23 Jan 2025 | Invoice | 40143 | 2,924.82 | 68,863.93 |
 | 23 Jan 2025 | Invoice | 40144 | 2,415.00 | 71,278.93 |
 | 23 Jan 2025 | Crd Note | 11757 | -2,415.00 | 68,863.93 |
@@ -1453,8 +1449,7 @@
 | 10 Feb 2025 | Invoice | 40622 | 4,423.21 | 76,211.96 |
 | 10 Feb 2025 | Invoice | 40623 | 3,622.50 | 79,834.46 |
 | 10 Feb 2025 | Crd Note | 11876 | -4,830.00 | 75,004.46 |
-| 20 Feb 2025 | Payment | 00036988 | -15,536.48 | 59,467.98 |
-| 20 Feb 2025 | Payment | 00036988 | -4,013.94 | 55,454.04 |
+| 20 Feb 2025 | Payment | 00036988 | -19,550.42 | 55,454.04 |
 | 20 Feb 2025 | Invoice | 40881 | 4,423.21 | 59,877.25 |
 | 20 Feb 2025 | Invoice | 40882 | 3,622.50 | 63,499.75 |
 | 20 Feb 2025 | Crd Note | 11938 | -3,622.50 | 59,877.25 |
@@ -2715,8 +2710,7 @@
 | 03 Apr 2024 | Invoice | 30977 |  | 2,814.21 | 77,491.12 |
 | 10 Apr 2024 | Invoice | 31201 |  | 2,798.75 | 80,289.87 |
 | 17 Apr 2024 | Invoice | 31413 |  | 4,213.14 | 84,503.01 |
-| 23 Apr 2024 | Payment | 00030269 |  | -12,113.34 | 72,389.67 |
-| 23 Apr 2024 | Payment | 00030269 |  | -4,037.70 | 68,351.97 |
+| 23 Apr 2024 | Payment | 00030269 |  | -16,151.04 | 68,351.97 |
 | 25 Apr 2024 | Invoice | 31640 |  | 2,808.76 | 71,160.73 |
 
 ---
@@ -2804,8 +2798,7 @@
 | 10 Oct 2024 | Invoice | 37216 |  | 2,753.49 | 77,891.33 |
 | 16 Oct 2024 | Invoice | 37363 |  | 2,753.49 | 80,644.82 |
 | 24 Oct 2024 | Invoice | 37619 |  | 3,011.63 | 83,656.45 |
-| 27 Oct 2024 | Payment | 00034425 |  | -17,729.87 | 65,926.58 |
-| 27 Oct 2024 | Payment | 00034425 |  | -2,713.13 | 63,213.45 |
+| 27 Oct 2024 | Payment | 00034425 |  | -20,443.00 | 63,213.45 |
 | 30 Oct 2024 | Invoice | 37799 |  | 2,753.49 | 65,966.94 |
 
 ---
@@ -2827,8 +2820,7 @@
 | Date | Entry Type | Doc # | Description | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | :--- | ---: | ---: |
 | **01 Dec** | **Opening Balance** | — | | | **78,491.79** |
-| 03 Dec 2024 | Payment | 00035270 |  | -17,992.94 | 60,498.85 |
-| 03 Dec 2024 | Payment | 00035270 |  | -448.18 | 60,050.67 |
+| 03 Dec 2024 | Payment | 00035270 |  | -18,441.12 | 60,050.67 |
 | 03 Dec 2024 | Invoice | 38820 |  | 4,174.95 | 64,225.62 |
 | 11 Dec 2024 | Invoice | 39008 |  | 4,365.63 | 68,591.25 |
 | 17 Dec 2024 | Invoice | 39149 |  | 4,365.63 | 72,956.88 |
@@ -2844,8 +2836,7 @@
 | 01 Jan 2025 | Invoice | 39558 |  | 2,950.74 | 78,818.04 |
 | 08 Jan 2025 | Invoice | 39714 |  | 4,387.23 | 83,205.27 |
 | 14 Jan 2025 | Invoice | 39898 |  | 4,387.23 | 87,592.50 |
-| 16 Jan 2025 | Payment | 00036139 |  | -20,843.86 | 66,748.64 |
-| 16 Jan 2025 | Payment | 00036139 |  | -1,493.03 | 65,255.61 |
+| 16 Jan 2025 | Payment | 00036139 |  | -22,336.89 | 65,255.61 |
 | 23 Jan 2025 | Invoice | 40143 |  | 2,924.82 | 68,180.43 |
 | 30 Jan 2025 | Invoice | 40319 |  | 2,924.82 | 71,105.25 |
 
@@ -2857,8 +2848,7 @@
 | :--- | :--- | :--- | :--- | ---: | ---: |
 | **01 Feb** | **Opening Balance** | — | | | **71,105.25** |
 | 10 Feb 2025 | Invoice | 40622 |  | 4,423.21 | 75,528.46 |
-| 20 Feb 2025 | Payment | 00036988 |  | -15,536.48 | 59,991.98 |
-| 20 Feb 2025 | Payment | 00036988 |  | -4,013.94 | 55,978.04 |
+| 20 Feb 2025 | Payment | 00036988 |  | -19,550.42 | 55,978.04 |
 | 20 Feb 2025 | Invoice | 40881 |  | 4,423.21 | 60,401.25 |
 | 26 Feb 2025 | Invoice | 41051 |  | 1,474.40 | 61,875.65 |
 
@@ -2896,8 +2886,7 @@
 | **01 May** | **Opening Balance** | — | | | **95,395.42** |
 | 02 May 2025 | Invoice | 42755 |  | 3,153.89 | 98,549.31 |
 | 02 May 2025 | Crd Note | 12390 |  | -4,325.33 | 94,223.98 |
-| 04 May 2025 | Payment | 00038481 | LPG-applied portion | -14,287.13 | 79,936.85 |
-| 04 May 2025 | Payment adjustment | 00038481 | Unallocated payment portion — included in LPG reconciliation pool | -1,529.50 | 78,407.35 |
+| 04 May 2025 | Payment | 00038481 |  | -15,816.63 | 78,407.35 |
 | 08 May 2025 | Invoice | 42949 |  | 4,325.33 | 82,732.68 |
 | 14 May 2025 | Invoice | 43089 |  | 2,883.56 | 85,616.24 |
 | 20 May 2025 | Invoice | 43271 |  | 4,382.95 | 89,999.19 |
@@ -4068,7 +4057,7 @@
 
 | Payment Date | Payment Doc | Gross Payment | LPG Applied | ERP-Indicated CYL / Non-LPG Portion | Commercial CYL Confirmed | Notes / Running Balance Treatment |
 | :--- | :--- | ---: | ---: | ---: | :--- | :--- |
-| 05 May 2025 | 38481 | R15,816.63 | R14,287.13 | R1,529.50 | No | Included in LPG reconciliation pool to preserve tie-back to LPG Gas Debt |
+| 05 May 2025 | 38481 | R15,816.63 | R15,816.63 | R0.00 | No | Fully allocated to LPG |
 | 14 Jul 2025 | 40063 | R11,795.24 | R11,795.24 | R0.00 | No | Fully allocated to LPG |
 | 22 Aug 2025 | 40746 | R14,579.44 | R14,579.44 | R0.00 | No | Fully allocated to LPG (split across June/July/August LPG) |
 | 14 Oct 2025 | 41664 | R16,601.81 | R16,601.81 | R0.00 | No | Fully allocated to LPG |
@@ -4275,8 +4264,7 @@
 | 24 Apr 2024 | 30269 | 07 Oct 2023 | 25251 | 2023-10 | R1,230.16 | SPLIT_PAYMENT_PORTION | HUMAN_WORKSHEET_AND_ERP | Allocated to 2023-10 LPG invoice. |
 | 24 Apr 2024 | 30269 | 14 Oct 2023 | 25475 | 2023-10 | R2,459.52 | SPLIT_PAYMENT_PORTION | HUMAN_WORKSHEET_AND_ERP | Allocated to 2023-10 LPG invoice. |
 | 24 Apr 2024 | 30269 | 19 Oct 2023 | 25616 | 2023-10 | R3,689.28 | SPLIT_PAYMENT_PORTION | HUMAN_WORKSHEET_AND_ERP | Allocated to 2023-10 LPG invoice. |
-| 24 Apr 2024 | 30269 | 26 Oct 2023 | 25852 | 2023-10 | R2,274.08 | MULTI_PAYMENT_INVOICE_SETTLEMENT | HUMAN_WORKSHEET_AND_ERP | Allocated to 2023-10 LPG invoice. |
-| 24 Apr 2024 | 30269 | 26 Oct 2023 | 25852 | 2023-10 | R1,415.20 | MULTI_PAYMENT_INVOICE_SETTLEMENT | HUMAN_WORKSHEET_AND_ERP | Allocated to 2023-10 LPG invoice. |
+| 24 Apr 2024 | 30269 | 26 Oct 2023 | 25852 | 2023-10 | R3,689.28 | SPLIT_PAYMENT_PORTION | HUMAN_WORKSHEET_AND_ERP | Allocated to 2023-10 LPG invoice. |
 | 24 Apr 2024 | 30269 | — | — | — | R2,622.50 | UNALLOCATED_PORTION | ERP_LEDGER | Leftover payment cash not consumed by LPG invoices. |
 | 27 May 2024 | 30891 | 04 Jan 2024 | 28330 | 2024-01 | R4,052.20 | SPLIT_PAYMENT_PORTION | HUMAN_WORKSHEET_AND_ERP | Allocated to 2024-01 LPG invoice. |
 | 27 May 2024 | 30891 | 11 Jan 2024 | 28565 | 2024-01 | R2,701.46 | SPLIT_PAYMENT_PORTION | HUMAN_WORKSHEET_AND_ERP | Allocated to 2024-01 LPG invoice. |
@@ -4305,32 +4293,28 @@
 | 28 Oct 2024 | 34425 | 11 Jun 2024 | 32976 | 2024-06 | R4,141.14 | SPLIT_PAYMENT_PORTION | HUMAN_WORKSHEET_AND_ERP | Allocated to 2024-06 LPG invoice. |
 | 28 Oct 2024 | 34425 | 20 Jun 2024 | 33272 | 2024-06 | R4,141.14 | SPLIT_PAYMENT_PORTION | HUMAN_WORKSHEET_AND_ERP | Allocated to 2024-06 LPG invoice. |
 | 28 Oct 2024 | 34425 | 27 Jun 2024 | 33533 | 2024-06 | R4,141.14 | SPLIT_PAYMENT_PORTION | HUMAN_WORKSHEET_AND_ERP | Allocated to 2024-06 LPG invoice. |
-| 28 Oct 2024 | 34425 | — | — | — | R2,497.69 | UNALLOCATED_PORTION | ERP_LEDGER | Leftover payment cash not consumed by LPG invoices. |
-| 28 Oct 2024 | 34425 | — | — | — | R2,713.13 | UNALLOCATED_PORTION | ERP_LEDGER | Leftover payment cash not consumed by LPG invoices. |
+| 28 Oct 2024 | 34425 | — | — | — | R5,210.82 | UNALLOCATED_PORTION | ERP_LEDGER | Leftover payment cash not consumed by LPG invoices. |
 | 04 Dec 2024 | 35270 | 01 Dec 2023 | 27132 | 2023-12 | R2,583.36 | SPLIT_PAYMENT_PORTION | HUMAN_WORKSHEET_AND_ERP | Allocated to 2023-12 LPG invoice. |
 | 04 Dec 2024 | 35270 | 07 Dec 2023 | 27384 | 2023-12 | R4,037.76 | SPLIT_PAYMENT_PORTION | HUMAN_WORKSHEET_AND_ERP | Allocated to 2023-12 LPG invoice. |
 | 04 Dec 2024 | 35270 | 14 Dec 2023 | 27641 | 2023-12 | R4,037.78 | SPLIT_PAYMENT_PORTION | HUMAN_WORKSHEET_AND_ERP | Allocated to 2023-12 LPG invoice. |
 | 04 Dec 2024 | 35270 | 21 Dec 2023 | 27897 | 2023-12 | R4,037.78 | SPLIT_PAYMENT_PORTION | HUMAN_WORKSHEET_AND_ERP | Allocated to 2023-12 LPG invoice. |
-| 04 Dec 2024 | 35270 | 29 Dec 2023 | 28140 | 2023-12 | R3,296.26 | MULTI_PAYMENT_INVOICE_SETTLEMENT | HUMAN_WORKSHEET_AND_ERP | Allocated to 2023-12 LPG invoice. |
-| 04 Dec 2024 | 35270 | 29 Dec 2023 | 28140 | 2023-12 | R448.18 | MULTI_PAYMENT_INVOICE_SETTLEMENT | HUMAN_WORKSHEET_AND_ERP | Allocated to 2023-12 LPG invoice. |
+| 04 Dec 2024 | 35270 | 29 Dec 2023 | 28140 | 2023-12 | R3,744.44 | SPLIT_PAYMENT_PORTION | HUMAN_WORKSHEET_AND_ERP | Allocated to 2023-12 LPG invoice. |
 | 17 Jan 2025 | 36139 | 04 Jul 2024 | 33806 | 2024-07 | R4,141.14 | SPLIT_PAYMENT_PORTION | HUMAN_WORKSHEET_AND_ERP | Allocated to 2024-07 LPG invoice. |
 | 17 Jan 2025 | 36139 | 11 Jul 2024 | 34098 | 2024-07 | R4,141.14 | SPLIT_PAYMENT_PORTION | HUMAN_WORKSHEET_AND_ERP | Allocated to 2024-07 LPG invoice. |
 | 17 Jan 2025 | 36139 | 18 Jul 2024 | 34326 | 2024-07 | R1,380.38 | SPLIT_PAYMENT_PORTION | HUMAN_WORKSHEET_AND_ERP | Allocated to 2024-07 LPG invoice. |
 | 17 Jan 2025 | 36139 | 19 Jul 2024 | 34383 | 2024-07 | R3,019.58 | SPLIT_PAYMENT_PORTION | HUMAN_WORKSHEET_AND_ERP | Allocated to 2024-07 LPG invoice. |
 | 17 Jan 2025 | 36139 | 26 Jul 2024 | 34614 | 2024-07 | R2,760.76 | SPLIT_PAYMENT_PORTION | HUMAN_WORKSHEET_AND_ERP | Allocated to 2024-07 LPG invoice. |
-| 17 Jan 2025 | 36139 | — | — | — | R5,400.86 | UNALLOCATED_PORTION | ERP_LEDGER | Leftover payment cash not consumed by LPG invoices. |
-| 17 Jan 2025 | 36139 | — | — | — | R1,493.03 | UNALLOCATED_PORTION | ERP_LEDGER | Leftover payment cash not consumed by LPG invoices. |
+| 17 Jan 2025 | 36139 | — | — | — | R6,893.89 | UNALLOCATED_PORTION | ERP_LEDGER | Leftover payment cash not consumed by LPG invoices. |
 | 21 Feb 2025 | 36988 | 02 Aug 2024 | 34849 | 2024-08 | R2,760.76 | SPLIT_PAYMENT_PORTION | HUMAN_WORKSHEET_AND_ERP | Allocated to 2024-08 LPG invoice. |
 | 21 Feb 2025 | 36988 | 08 Aug 2024 | 35094 | 2024-08 | R4,141.14 | SPLIT_PAYMENT_PORTION | HUMAN_WORKSHEET_AND_ERP | Allocated to 2024-08 LPG invoice. |
 | 21 Feb 2025 | 36988 | 15 Aug 2024 | 35297 | 2024-08 | R4,141.14 | SPLIT_PAYMENT_PORTION | HUMAN_WORKSHEET_AND_ERP | Allocated to 2024-08 LPG invoice. |
 | 21 Feb 2025 | 36988 | 23 Aug 2024 | 35522 | 2024-08 | R1,380.38 | SPLIT_PAYMENT_PORTION | HUMAN_WORKSHEET_AND_ERP | Allocated to 2024-08 LPG invoice. |
 | 21 Feb 2025 | 36988 | 30 Aug 2024 | 35749 | 2024-08 | R2,760.76 | SPLIT_PAYMENT_PORTION | HUMAN_WORKSHEET_AND_ERP | Allocated to 2024-08 LPG invoice. |
-| 21 Feb 2025 | 36988 | — | — | — | R352.30 | UNALLOCATED_PORTION | ERP_LEDGER | Leftover payment cash not consumed by LPG invoices. |
-| 21 Feb 2025 | 36988 | — | — | — | R4,013.94 | UNALLOCATED_PORTION | ERP_LEDGER | Leftover payment cash not consumed by LPG invoices. |
-| 05 May 2025 | 38481 | 02 Apr 2025 | 41926 | 2025-04 | R4,423.21 | SPLIT_PAYMENT_PORTION | ERP_LEDGER | LPG split allocation portion for payment 38481. |
-| 05 May 2025 | 38481 | 10 Apr 2025 | 42181 | 2025-04 | R4,227.45 | SPLIT_PAYMENT_PORTION | ERP_LEDGER | LPG split allocation portion for payment 38481. |
-| 05 May 2025 | 38481 | 03 May 2025 | 42755 | 2025-05 | R3,153.89 | SPLIT_PAYMENT_PORTION | ERP_LEDGER | LPG split allocation portion for payment 38481. |
-| 05 May 2025 | 38481 | 09 May 2025 | 42949 | 2025-05 | R2,482.58 | SPLIT_PAYMENT_PORTION | ERP_LEDGER | LPG split allocation portion for payment 38481. |
+| 21 Feb 2025 | 36988 | — | — | — | R4,366.24 | UNALLOCATED_PORTION | ERP_LEDGER | Leftover payment cash not consumed by LPG invoices. |
+| 05 May 2025 | 38481 | 02 Apr 2025 | 41926 | 2025-04 | R4,423.21 | SPLIT_PAYMENT_PORTION | ERP_LEDGER | Allocated to 2025-04 LPG invoice. |
+| 05 May 2025 | 38481 | 10 Apr 2025 | 42181 | 2025-04 | R4,227.45 | SPLIT_PAYMENT_PORTION | ERP_LEDGER | Allocated to 2025-04 LPG invoice. |
+| 05 May 2025 | 38481 | 03 May 2025 | 42755 | 2025-05 | R3,153.89 | SPLIT_PAYMENT_PORTION | ERP_LEDGER | Allocated to 2025-05 LPG invoice. |
+| 05 May 2025 | 38481 | 09 May 2025 | 42949 | 2025-05 | R2,482.58 | SPLIT_PAYMENT_PORTION | ERP_LEDGER | Allocated to 2025-05 LPG invoice. |
 | 05 May 2025 | 38481 | — | — | — | R1,529.50 | ERP_INDICATED_NON_LPG_PORTION | ERP_LEDGER | ERP-indicated Cylinder payment portion (commercially unconfirmed). Included in LPG reconciliation pool to preserve debt tie-back. |
 | 22 May 2025 | 38846 | — | — | — | R7,337.97 | UNALLOCATED_PORTION | ERP_LEDGER | Leftover payment cash not consumed by LPG invoices. |
 | 12 Jun 2025 | 39812 | — | — | — | R20,557.69 | UNALLOCATED_PORTION | ERP_LEDGER | Leftover payment cash not consumed by LPG invoices. |

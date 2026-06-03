@@ -1,0 +1,15 @@
+{
+  "debtor_code": "JIM001",
+  "debtor_name": "Jim Gas",
+  "statement_period": "2018-12-03 to 2026-05-31",
+  "lpg_gas_debt": 146857.72,
+  "cylinder_financial_balance": -6.5,
+  "total_reconstructed_balance": 146851.22,
+  "corrected_erp_stated_balance": 146907.13,
+  "erp_residual_variance": 55.91,
+  "cylinder_custody_exposure": 26220.0,
+  "cylinder_variance": -26226.5,
+  "unpaid_lpg_invoices": 241155.91,
+  "unmatched_overpayments": 94298.19,
+  "net_lpg_debt": 146857.72
+}

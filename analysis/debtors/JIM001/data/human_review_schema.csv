@@ -1,0 +1,2 @@
+review_id,table_name,record_id,field_name,generated_value,human_value,review_status,review_note,reviewed_by,reviewed_at,action_required
+HR-0001,allocation_edges,AL-0001,commercially_confirmed,True,,Review Required,Verify invoice match with client bank payment slip.,,,Verify

@@ -53,7 +53,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Added dynamic title tags to HTML outputs containing view context (Internal Audit View vs Customer View) and set `<html lang="en">` attribute (N3–N4).
   - Corrected `.brand-sub` indentation in CSS output.
 
+### Changed
+- Consolidated payment splits for Jim Gas (JIM001) across different ERP source files (`DRTX2025.TXT` and `DTRX2603.TXT`) and collapsed the hardcoded allocation split for payment Doc 00038481 in the Statement of Account and the generated Excel workbook.
+
 ### Added
+- Implemented **Spreadsheet-First Insight Workspace** for Jim Gas (JIM001) under `analysis/debtors/JIM001/data/`:
+  - Extracted 8 CSVs and 1 JSON file representing the normalized database layers (`invoices.csv`, `payments.csv`, `allocation_edges.csv`, `monthly_lpg_insights.csv`, `settlement_windows.csv`, `delivery_cycle_windows.csv`, `cylinder_transactions.csv`, `dashboard_metrics.json`, `human_review_schema.csv`).
+  - Created pipeline script `export_workspace_to_sheets.py` to query Supabase or JSON files and compile these layers into a single styled Excel workbook `JIM001_Reconciliation_Workspace.xlsx` featuring frozen headers, auto-filters, zebra striping, currency/date cell formats, and support for optional Google Sheets sync modes.
+  - Created pipeline script `import_human_review_from_sheets.py` to import manual annotations from the `Human_Review` sheet back into a version-controlled JSON format.
+  - Created pipeline script `generate_statement_from_workspace.py` to construct statement markdown and compile customer and internal HTML reports (`JIM001_Statement_Account_v4_Customer.html` and `_Internal.html`) dynamically from the workspace tables.
 - Generated a commercial account intelligence report for Impendle Wholesale (consolidating BU0003 and BU0009; excluding inactive BU0031) under `analysis/debtors/BU0009/reports/impendle_wholesale_intelligence.md`. Analyzed 9.6 years of purchase history, reconciled historical underpricing, assessed the May 2026 price hike's impact on volume drop-off, and provided retention-sensitive pricing scenarios balancing margin recovery with churn risk.
 - Created styled Excel workbook for Jim Gas (JIM001) reconciliation containing chronological LPG ledger sheet (`LPG only Invoices`), consolidated database payments ledger sheet (`Payment unallocated (actual)`), and the exact invoice-to-payment monthly matches sheet (`Monthly Matches`).
 - Implemented Phase 6 Monthly LPG Insights layer for the JIM001 statement and baseline reports:
