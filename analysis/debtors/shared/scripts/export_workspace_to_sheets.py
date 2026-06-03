@@ -331,31 +331,68 @@ def main():
         })
 
     # Read human worksheet to map monthly payment total matches
-    # Load analysis/debtors/JIM001/reports/JIM001-PUBLISHED - ALLOCATION.csv
     csv_months = {}
+    
+    # 1. Load exact matches from v4 Excel workbook if it exists
+    v4_excel_path = f"analysis/debtors/{debtor_code}/reports/{debtor_code}_LPG_Reconciliation_v4.xlsx"
+    if os.path.exists(v4_excel_path):
+        print(f"Loading exact matches from Excel sheet: {v4_excel_path}...")
+        try:
+            df_v4 = pd.read_excel(v4_excel_path, sheet_name="Monthly Matches", skiprows=2).dropna(subset=["Invoice Month"])
+            m_map = {
+                "January": "01", "February": "02", "March": "03", "April": "04", "May": "05", "June": "06",
+                "July": "07", "August": "08", "September": "09", "October": "10", "November": "11", "December": "12"
+            }
+            for idx, r in df_v4.iterrows():
+                y = str(int(r["Invoice Year"]))
+                m = str(r["Invoice Month"]).strip()
+                if m in m_map:
+                    m_key = f"{y}-{m_map[m]}"
+                    pmt_ref = str(r["Payment Doc #"]).strip()
+                    if pmt_ref.endswith(".0"):
+                        pmt_ref = pmt_ref[:-2]
+                    if pmt_ref == "nan" or not r["Payment Doc #"] or pd.isna(r["Payment Doc #"]):
+                        pmt_ref = "—"
+                    csv_months[m_key] = {
+                        'net_invoice': float(r["Net LPG Invoiced"]) if not pd.isna(r["Net LPG Invoiced"]) else 0.0,
+                        'pmt_ref': pmt_ref,
+                        'pmt_amount': float(r["Payment Amount"]) if not pd.isna(r["Payment Amount"]) else 0.0
+                    }
+            print(f"Loaded {len(csv_months)} matches from Excel workbook.")
+        except Exception as e:
+            print(f"Warning: Failed to load matches from Excel workbook: {e}")
+
+    # 2. Fallback/Merge with published CSV allocation if it exists
     if os.path.exists(pub_alloc_file):
-        with open(pub_alloc_file, 'r', encoding='utf-8') as f:
-            for line in f:
-                parts = line.split(',')
-                if len(parts) < 5:
-                    continue
-                doc_lbl = parts[1].strip() if parts[1] else ''
-                total_val = parts[2].strip() if parts[2] else ''
-                pmt_ref = parts[3].strip() if parts[3] else ''
-                pmt_amt = parts[4].strip() if parts[4] else ''
-                
-                if doc_lbl.endswith('Total:'):
-                    month_str = doc_lbl.replace(' Total:', '').strip()
-                    try:
-                        date_parsed = datetime.strptime(month_str, "%B %Y")
-                        m_key = date_parsed.strftime("%Y-%m")
-                        csv_months[m_key] = {
-                            'net_invoice': float(total_val) if total_val else 0.0,
-                            'pmt_ref': pmt_ref,
-                            'pmt_amount': float(pmt_amt) if pmt_amt else 0.0
-                        }
-                    except Exception:
-                        pass
+        print(f"Loading matches from CSV: {pub_alloc_file}...")
+        try:
+            with open(pub_alloc_file, 'r', encoding='utf-8') as f:
+                for line in f:
+                    parts = line.split(',')
+                    if len(parts) < 5:
+                        continue
+                    doc_lbl = parts[1].strip() if parts[1] else ''
+                    total_val = parts[2].strip() if parts[2] else ''
+                    pmt_ref = parts[3].strip() if parts[3] else ''
+                    pmt_amt = parts[4].strip() if parts[4] else ''
+                    
+                    if doc_lbl.endswith('Total:'):
+                        month_str = doc_lbl.replace(' Total:', '').strip()
+                        try:
+                            date_parsed = datetime.strptime(month_str, "%B %Y")
+                            m_key = date_parsed.strftime("%Y-%m")
+                            # Only overwrite if not already populated or if CSV has a valid pmt_ref and Excel has none
+                            if m_key not in csv_months or (csv_months[m_key]['pmt_ref'] in ['—', 'nan', ''] and pmt_ref and pmt_ref != '—'):
+                                csv_months[m_key] = {
+                                    'net_invoice': float(total_val) if total_val else 0.0,
+                                    'pmt_ref': pmt_ref,
+                                    'pmt_amount': float(pmt_amt) if pmt_amt else 0.0
+                                }
+                        except Exception:
+                            pass
+            print(f"Total matches count after CSV merge: {len(csv_months)}")
+        except Exception as e:
+            print(f"Warning: Failed to parse CSV allocation: {e}")
 
     # Build matches
     # Loop month by month
@@ -378,11 +415,19 @@ def main():
         # If no explicit matches, try direct ERP matching
         if not m_pmts:
             # Look in database allocations table or do fallback heuristic match
-            # For simplicity, if a payment amount matches m_net within R500, allocate it
+            # For simplicity, if a payment amount matches m_net within R500, allocate it,
+            # but only if payment is within 180 days after the invoice month to prevent stealing from future months.
             for p in pmt_list:
                 if p['remaining'] > 0 and abs(p['remaining'] - m_net) < 500:
-                    m_pmts = [p]
-                    break
+                    try:
+                        p_date = datetime.strptime(p['tx_date'], "%Y-%m-%d")
+                        inv_month_dt = datetime.strptime(m_key + "-01", "%Y-%m-%d")
+                        diff_days = (p_date - inv_month_dt).days
+                        if 0 <= diff_days <= 180:
+                            m_pmts = [p]
+                            break
+                    except Exception:
+                        pass
                     
         # Apply payments to invoices in this month
         for p in m_pmts:
