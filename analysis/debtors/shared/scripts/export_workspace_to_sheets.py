@@ -347,7 +347,7 @@ def main():
                 if doc_lbl.endswith('Total:'):
                     month_str = doc_lbl.replace(' Total:', '').strip()
                     try:
-                        date_parsed = datetime.strptime(month_str + " 1", "%B %Y")
+                        date_parsed = datetime.strptime(month_str, "%B %Y")
                         m_key = date_parsed.strftime("%Y-%m")
                         csv_months[m_key] = {
                             'net_invoice': float(total_val) if total_val else 0.0,

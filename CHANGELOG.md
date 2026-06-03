@@ -40,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Fixed
+- Fixed a date parsing format bug in `export_workspace_to_sheets.py` that caused published allocation matches to be dropped, resulting in incorrect empty allocations for several months (e.g. April to November 2024).
 - Resolved HTML statement views frontend rendering, navigation, and accessibility issues from frontend audit:
   - Enabled raw HTML tag parsing (`html: True`) on Python's `markdown-it` to resolve dashboard grid/card escaping (E1–E4) and navigation anchor targets (N1–N2).
   - Updated cylinder ledger regex lookup to stop matching strictly on Part 1D or payment allocations, preventing early panel cuts (T1) and ensuring all 66 months of data render inside the cylinder tab.
