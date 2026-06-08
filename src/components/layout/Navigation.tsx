@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Upload, ClipboardList, TrendingUp, Database, Calculator, Truck } from 'lucide-react';
+import { Home, Upload, ClipboardList, TrendingUp, Database, Calculator, Truck, Users } from 'lucide-react';
 import clsx from 'clsx';
 import { useAuth } from '../../hooks/useAuth';
 
@@ -14,6 +14,7 @@ export default function Navigation() {
     { path: '/data-agent', label: 'Data Hub', icon: Database, roles: ['Depot Manager'] },
     { path: '/audit', label: 'Audit Hub', icon: Calculator, roles: ['Depot Manager', 'Invoice Clerk'] },
     { path: '/dispatch', label: 'Invoice Dispatch', icon: Truck, roles: ['Depot Manager', 'Invoice Clerk'] },
+    { path: '/debtors', label: 'Debtors', icon: Users, roles: ['Depot Manager', 'Invoice Clerk'] },
   ];
 
   const { userRole, loading } = useAuth();
