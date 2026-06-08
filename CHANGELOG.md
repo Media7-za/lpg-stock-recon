@@ -59,6 +59,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Consolidated payment splits for Jim Gas (JIM001) across different ERP source files (`DRTX2025.TXT` and `DTRX2603.TXT`) and collapsed the hardcoded allocation split for payment Doc 00038481 in the Statement of Account and the generated Excel workbook.
 
 ### Added
+- Created four operational Lane Memory Documents under `analysis/debtors/shared/docs/` to document the end-to-end data flow:
+  - [LANE_1_INPUT_INGESTION.md](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/shared/docs/LANE_1_INPUT_INGESTION.md) detailing the ingestion pipeline for raw CSV data sources.
+  - [LANE_2_DATABASE_SCHEMA.md](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/shared/docs/LANE_2_DATABASE_SCHEMA.md) documenting the Supabase relational database schema and table constraints.
+  - [LANE_3_RECONCILIATION_ENGINE.md](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/shared/docs/LANE_3_RECONCILIATION_ENGINE.md) detailing the matching, intent, and allocation algorithms.
+  - [LANE_4_PRESENTATION_EXPORTS.md](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/shared/docs/LANE_4_PRESENTATION_EXPORTS.md) documenting the statement, baseline, and interactive HTML export layouts.
 - Documented and integrated the multi-month settlement window detection for the Apr–Nov 2024 period (`JIM001-BATCH-2024-APR-NOV`), identifying six payments totaling `R118,638.47` mapping to LPG invoices totaling `R121,032.82`, and implemented **residual subset matching** (supporting single/combination unpaid invoice search within ±1 invoice month) to dynamically isolate Invoice `36945` (amounting to `R2,394.34`) as the single unpaid target with a `R0.01` variance (HIGH confidence).
 - Implemented **Spreadsheet-First Insight Workspace** for Jim Gas (JIM001) under `analysis/debtors/JIM001/data/`:
   - Extracted 8 CSVs and 1 JSON file representing the normalized database layers (`invoices.csv`, `payments.csv`, `allocation_edges.csv`, `monthly_lpg_insights.csv`, `settlement_windows.csv`, `delivery_cycle_windows.csv`, `cylinder_transactions.csv`, `dashboard_metrics.json`, `human_review_schema.csv`).
