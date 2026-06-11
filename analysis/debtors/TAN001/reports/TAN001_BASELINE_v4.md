@@ -71,6 +71,19 @@ This register traces cylinder deposit transaction assumptions, classifying the s
   - **LPG Payments (Period):** R-37,500.00
   - **LPG Gas Closing Balance:** `66,565.10 + 71,271.79 + (-3,190.21) + (37,500.00) =` **R97,146.68**
 
+### Monthly LPG Insight Register
+*This register tracks Net LPG Gas Billed vs Payments received. The Net Monthly Change reflects monthly gas debt movements.*
+
+| Month | LPG Invoiced | Credits | Net Invoiced | Payments | Net Monthly Change | Month Status |
+| :--- | ---: | ---: | ---: | ---: | ---: | :--- |
+| **Opening Balance B/F** | — | — | — | — | — | **R66,565.10** |
+| January 2026 | R10,945.42 | R0.00 | R10,945.42 | R-12,000.00 | R-1,054.58 | **Overpaid** |
+| February 2026 | R10,809.28 | R0.00 | R10,809.28 | R-9,000.00 | R1,809.28 | **Underpaid** |
+| March 2026 | R15,680.00 | R-3,190.21 | R12,489.79 | R-3,000.00 | R9,489.79 | **Underpaid** |
+| April 2026 | R14,203.54 | R0.00 | R14,203.54 | R-5,000.00 | R9,203.54 | **Underpaid** |
+| May 2026 | R15,598.29 | R0.00 | R15,598.29 | R-6,500.00 | R9,098.29 | **Underpaid** |
+| June 2026 | R4,035.26 | R0.00 | R4,035.26 | R-2,000.00 | R2,035.26 | **Underpaid** |
+
 ## Final Reconciliation
 
 ```

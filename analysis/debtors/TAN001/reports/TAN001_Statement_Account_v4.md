@@ -4,6 +4,15 @@
 
 ---
 
+### LPG Monthly Insight Summary
+*   **Reviewed Period:** 6 Months (Jan–Jun 2026)
+*   **Account Payment Status:** Mismatch Trend (**5 of 6 months underpaid**)
+*   **Net LPG Gas Debt:** **R97,146.68**
+*   **Payment Coverage Ratio:** Payments (R37,500.00) covered only **55.1%** of period net billings (R68,081.58).
+*   **Oldest Unpaid / Underpaid Month:** February 2026 (Shortfall of R1,809.28)
+
+---
+
 <!-- INTERNAL_ONLY_START -->
 ## ⚠️ Audit Disclosure & Executive Summary
 
@@ -23,6 +32,26 @@ During the reconstruction of TAN001, we verified that the account contains legac
 
 ## Part 1: LPG Gas Statement
 *Tracks all gas invoiced, cylinder deposits, and payments received since 1 January 2026. Matching cylinder invoice/credit note pairs (which cancel out exactly) are stripped from this view for readability. This combined ledger directly reconciles with the ERP running balance.*
+
+## Yearly LPG Invoice and Payment Summary
+| Year | Net LPG Invoiced | Payments Allocated | Gross Difference | Cumulative Gas Debt | Note |
+| :--- | ---: | ---: | ---: | ---: | :--- |
+| **2026** | R68,081.58 | R-37,500.00 | R30,581.58 | R97,146.68 | Period net billings: R68,081.58. Payments (R37,500.00) cover only **55.1%** of period gas consumption. |
+
+<!-- INTERNAL_ONLY_START -->
+## Monthly LPG Insight Register
+*This register tracks Net LPG Gas Billed vs Payments received. The Net Monthly Change reflects monthly gas debt movements.*
+
+| Month | LPG Invoiced | Credits | Net Invoiced | Payments | Net Monthly Change | Month Status |
+| :--- | ---: | ---: | ---: | ---: | ---: | :--- |
+| **Opening Balance B/F** | — | — | — | — | — | **R66,565.10** |
+| January 2026 | R10,945.42 | R0.00 | R10,945.42 | R-12,000.00 | R-1,054.58 | **Overpaid** |
+| February 2026 | R10,809.28 | R0.00 | R10,809.28 | R-9,000.00 | R1,809.28 | **Underpaid** |
+| March 2026 | R15,680.00 | R-3,190.21 | R12,489.79 | R-3,000.00 | R9,489.79 | **Underpaid** |
+| April 2026 | R14,203.54 | R0.00 | R14,203.54 | R-5,000.00 | R9,203.54 | **Underpaid** |
+| May 2026 | R15,598.29 | R0.00 | R15,598.29 | R-6,500.00 | R9,098.29 | **Underpaid** |
+| June 2026 | R4,035.26 | R0.00 | R4,035.26 | R-2,000.00 | R2,035.26 | **Underpaid** |
+<!-- INTERNAL_ONLY_END -->
 
 ### January 2026
 
