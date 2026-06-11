@@ -56,6 +56,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Corrected `.brand-sub` indentation in CSS output.
 
 ### Changed
+- Updated `TAN001` (Tanya Lehman) statement and baseline reports to extend the period scope to 30 June 2026, incorporating new June transactions (Payment `00044460`, Invoices `00050973`/`00050974`, and Credit Note `00015006`).
+- Fixed a SQL deduplication logic bug in the `erpStatedBalance` query in `scratch/generate-tan001-reports.js` by including `amount_excl` and `tax_amount` in the `DISTINCT ON` clause, preventing duplicate document collapses from inflating the ERP variance.
 - Consolidated payment splits for Jim Gas (JIM001) across different ERP source files (`DRTX2025.TXT` and `DTRX2603.TXT`) and collapsed the hardcoded allocation split for payment Doc 00038481 in the Statement of Account and the generated Excel workbook.
 
 ### Added

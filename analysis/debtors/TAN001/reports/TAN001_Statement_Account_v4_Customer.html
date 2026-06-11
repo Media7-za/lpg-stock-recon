@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Midlands Petroleum - Statement of Account</title>
+    <title>Midlands Petroleum - Statement of Account (Customer View)</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap');
         
@@ -292,12 +292,12 @@
         }
         
         /* Bolding dynamic total/balance rows */
-        tr:has(strong) {
+        tr.total-row {
             font-weight: 600;
             background-color: #f1f5f9 !important;
         }
         
-        tr:has(strong) td {
+        tr.total-row td {
             color: #0f172a;
         }
         
@@ -405,6 +405,288 @@
             margin-top: 40px;
         }
         
+        /* Interactive sub-ledger tabs styling */
+        .tabs-container {
+            margin: 30px 0;
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+        
+        .tab-list {
+            display: flex;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-bottom: 1px solid #cbd5e1;
+            padding: 0 15px;
+            gap: 10px;
+        }
+        
+        .tab-btn {
+            font-family: 'Outfit', sans-serif;
+            font-size: 9pt;
+            font-weight: 600;
+            color: #64748b;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            padding: 14px 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+        
+        .tab-btn:hover {
+            color: #1e3a8a;
+            border-bottom-color: #cbd5e1;
+        }
+        
+        .tab-btn.active {
+            color: #1e3a8a;
+            border-bottom-color: #1e3a8a;
+        }
+
+        .tab-btn:focus {
+            outline: none;
+        }
+
+        .tab-btn:focus-visible {
+            outline: 2px solid #1e3a8a;
+            outline-offset: -3px;
+            border-radius: 6px;
+        }
+        
+        .tab-panel {
+            display: none;
+            padding: 25px;
+        }
+        
+        .tab-panel.active {
+            display: block;
+            animation: fadeIn 0.25s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(2px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        
+        /* Dashboard grid and card styling */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 15px;
+            margin: 25px 0;
+        }
+        
+        .dashboard-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 18px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+        }
+        
+        .dashboard-card h4 {
+            margin-top: 0;
+            margin-bottom: 12px;
+            color: #1e3a8a;
+            font-family: 'Outfit', sans-serif;
+            font-size: 11pt;
+            font-weight: 600;
+            border-bottom: 2px solid #eff6ff;
+            padding-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .dashboard-card ul {
+            list-style: none;
+            padding-left: 0;
+            margin: 0;
+        }
+        
+        .dashboard-card li {
+            font-size: 8.5pt;
+            color: #475569;
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        
+        .dashboard-card li strong {
+            color: #0f172a;
+        }
+ 
+        .position-card-item h4 { color: #2563eb; border-bottom-color: #dbeafe; }
+        .payment-card-item h4 { color: #16a34a; border-bottom-color: #dcfce7; }
+        .cylinder-card-item h4 { color: #ea580c; border-bottom-color: #ffedd5; }
+        .internal-audit-card-item {
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+            border-color: #fde68a;
+        }
+        .internal-audit-card-item h4 { color: #b45309; border-bottom-color: #fde68a; }
+ 
+        /* Two-column App Layout for desktop */
+        .app-layout {
+            display: flex;
+            flex-direction: row-reverse;
+            max-width: 1400px;
+            margin: 0 auto;
+            gap: 24px;
+            position: relative;
+        }
+        
+        .statement-container {
+            flex: 1;
+            min-width: 0;
+            margin: 0;
+            max-width: 1000px;
+        }
+        
+        .side-control-panel-wrapper {
+            width: 260px;
+            flex-shrink: 0;
+        }
+        
+        .side-control-panel {
+            position: sticky;
+            top: 24px;
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+            max-height: calc(100vh - 48px);
+            overflow-y: auto;
+        }
+        
+        .side-panel-title {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #0f172a;
+            font-family: 'Outfit', sans-serif;
+            font-size: 11pt;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 8px;
+        }
+        
+        .side-nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .side-nav-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            background: none;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 9pt;
+            font-weight: 500;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            box-sizing: border-box;
+        }
+        
+        .side-nav-btn:hover {
+            background-color: #f1f5f9;
+            color: #1e3a8a;
+        }
+        
+        .side-nav-btn.active {
+            background-color: #eff6ff;
+            color: #1e40af;
+            font-weight: 600;
+            border-color: #bfdbfe;
+        }
+        
+        .side-nav-btn.print-btn {
+            margin-top: 10px;
+            background-color: #1e3a8a;
+            color: #ffffff;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .side-nav-btn.print-btn:hover {
+            background-color: #1d4ed8;
+            color: #ffffff;
+        }
+        
+        /* Mobile Layout for sidebar (sticky top nav) */
+        @media (max-width: 1199px) {
+            .app-layout {
+                display: block;
+            }
+            
+            .side-control-panel-wrapper {
+                width: 100%;
+                position: sticky;
+                top: 0;
+                z-index: 100;
+                margin-bottom: 20px;
+            }
+            
+            .side-control-panel {
+                position: static;
+                border-radius: 0;
+                border-left: none;
+                border-right: none;
+                border-top: none;
+                padding: 10px 20px;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                overflow-x: auto;
+                white-space: nowrap;
+                background-color: #ffffff;
+                scrollbar-width: none;
+            }
+            
+            .side-control-panel::-webkit-scrollbar {
+                display: none;
+            }
+            
+            .side-panel-title {
+                display: none;
+            }
+            
+            .side-nav-links {
+                display: flex;
+                flex-direction: row;
+                gap: 8px;
+            }
+            
+            .side-nav-btn {
+                display: inline-block;
+                width: auto;
+                padding: 8px 12px;
+            }
+            
+            .side-nav-btn.print-btn {
+                margin-top: 0;
+            }
+        }
+        
         /* Responsive Print Layout Styles */
         @media print {
             body {
@@ -419,6 +701,12 @@
                 margin: 0;
                 max-width: 100%;
             }
+            .side-control-panel-wrapper {
+                display: none !important;
+            }
+            .app-layout {
+                display: block !important;
+            }
             .view-badge {
                 display: none;
             }
@@ -429,13 +717,61 @@
             tr:hover td {
                 background-color: transparent !important;
             }
+            /* Print tabs sequentially */
+            .tab-list {
+                display: none !important;
+            }
+            .tab-panel {
+                display: block !important;
+                page-break-inside: avoid;
+                margin-bottom: 35px;
+                padding: 0 !important;
+                border: none !important;
+                box-shadow: none !important;
+            }
+            .tabs-container {
+                border: none !important;
+                box-shadow: none !important;
+            }
         }
     </style>
+    <noscript>
+        <style>
+            .tab-panel {
+                display: block !important;
+            }
+            .tab-list {
+                display: none !important;
+            }
+            .tabs-container {
+                border: none !important;
+                box-shadow: none !important;
+            }
+        </style>
+    </noscript>
 </head>
 <body>
-    <div class="statement-container">
-        <span class="view-badge customer-badge">Customer View</span>
-        
+    <div class="app-layout">
+        <div class="side-control-panel-wrapper">
+            <div class="side-control-panel">
+                <h4 class="side-panel-title">Navigation</h4>
+                <div class="side-nav-links">
+                    <a href="#account-dashboard" class="side-nav-btn active" data-section="dashboard">Account Dashboard</a>
+                    <button class="side-nav-btn" data-tab="tab-1b" data-section="ledger">LPG Gas Ledger</button>
+                    <button class="side-nav-btn" data-tab="tab-1a" data-section="ledger">Combined ERP Ledger</button>
+                    <button class="side-nav-btn" data-tab="tab-1c" data-section="ledger">Cylinder Ledger</button>
+                    <a href="#monthly-lpg-insights" class="side-nav-btn" data-section="insights">Monthly LPG Insights</a>
+                    <a href="#payment-allocation-summary" class="side-nav-btn" data-section="payment">Payment Summary</a>
+                    <a href="#cylinder-custody-tracker" class="side-nav-btn" data-section="custody">Cylinder Custody</a>
+                    
+                    <button class="side-nav-btn print-btn" id="print-btn">Print / Save</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="statement-container">
+            <span class="view-badge customer-badge">Customer View</span>
+            
     <div class="statement-header">
         <div class="header-main">
             <div class="brand">
@@ -461,7 +797,7 @@
                 </tr>
                 <tr>
                     <td class="meta-label">Period:</td>
-                    <td class="meta-value">1 January 2026 → 31 May 2026</td>
+                    <td class="meta-value">1 January 2026 → 30 June 2026</td>
                     <td class="meta-label">Closing Balance:</td>
                     <td class="meta-value"><strong>N/A</strong> <span style="font-size: 7.5pt; color: #64748b;">(LPG & Cylinder Outstanding)</span></td>
                 </tr>
@@ -992,6 +1328,20 @@
 <td style="text-align:left">50851</td>
 <td style="text-align:right">4,035.26</td>
 <td style="text-align:right">94,248.92</td>
+</tr>
+<tr>
+<td style="text-align:left">31 May 2026</td>
+<td style="text-align:left">Payment</td>
+<td style="text-align:left">00044460</td>
+<td style="text-align:right">-2,000.00</td>
+<td style="text-align:right">92,248.92</td>
+</tr>
+<tr>
+<td style="text-align:left">31 May 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50973</td>
+<td style="text-align:right">4,035.26</td>
+<td style="text-align:right">96,284.18</td>
 </tr>
 </tbody>
 </table>
@@ -1606,7 +1956,65 @@
 <td style="text-align:right">-2</td>
 </tr>
 <tr>
+<td style="text-align:left">31 May 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50974</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+2</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+2</td>
+</tr>
+<tr>
 <td style="text-align:left"><strong>End May</strong></td>
+<td style="text-align:left"><strong>Closing Balance</strong></td>
+<td style="text-align:left">—</td>
+<td style="text-align:right"><strong>0</strong></td>
+<td style="text-align:right"><strong>-4</strong></td>
+<td style="text-align:right"><strong>15</strong></td>
+<td style="text-align:right"><strong>2</strong></td>
+<td style="text-align:right"><strong>-2</strong></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3>June 2026</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Date</th>
+<th style="text-align:left">Entry Type</th>
+<th style="text-align:left">Doc #</th>
+<th style="text-align:right">14kg Qty</th>
+<th style="text-align:right">19kg Qty</th>
+<th style="text-align:right">9kg Qty</th>
+<th style="text-align:right">D.1 Qty</th>
+<th style="text-align:right">S.1 Qty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>01 Jun</strong></td>
+<td style="text-align:left"><strong>Opening Balance</strong></td>
+<td style="text-align:left">—</td>
+<td style="text-align:right"><strong>0</strong></td>
+<td style="text-align:right"><strong>-4</strong></td>
+<td style="text-align:right"><strong>15</strong></td>
+<td style="text-align:right"><strong>2</strong></td>
+<td style="text-align:right"><strong>-2</strong></td>
+</tr>
+<tr>
+<td style="text-align:left">01 Jun 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">15006</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-2</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-2</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>End Jun</strong></td>
 <td style="text-align:left"><strong>Closing Balance</strong></td>
 <td style="text-align:left">—</td>
 <td style="text-align:right"><strong>0</strong></td>
@@ -1619,9 +2027,160 @@
 </table>
 <hr>
 
-        <div class="page-footer">
-            Midlands Petroleum &middot; LPG Stock Reconciliation Statement &middot; Generated dynamically under CYL Settlement Doctrine v4
+            <div class="page-footer">
+                Midlands Petroleum &middot; LPG Stock Reconciliation Statement &middot; Generated dynamically under CYL Settlement Doctrine v4
+            </div>
         </div>
     </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabs = document.querySelectorAll('.tab-btn');
+            const panels = document.querySelectorAll('.tab-panel');
+            const sideNavButtons = document.querySelectorAll('.side-nav-btn');
+
+            // Scope total-row class to non-meta table rows containing strong elements
+            document.querySelectorAll('table:not(.meta-table) tr').forEach(row => {
+                if (row.querySelector('strong')) {
+                    row.classList.add('total-row');
+                }
+            });
+
+            // Bind print button event listener
+            const printBtn = document.getElementById('print-btn');
+            if (printBtn) {
+                printBtn.addEventListener('click', () => {
+                    window.print();
+                });
+            }
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const targetPanelId = tab.getAttribute('aria-controls');
+
+                    tabs.forEach(t => {
+                        t.classList.remove('active');
+                        t.setAttribute('aria-selected', 'false');
+                        t.setAttribute('tabindex', '-1');
+                    });
+                    panels.forEach(p => p.classList.remove('active'));
+
+                    tab.classList.add('active');
+                    tab.setAttribute('aria-selected', 'true');
+                    tab.setAttribute('tabindex', '0');
+                    const targetPanel = document.getElementById(targetPanelId);
+                    if (targetPanel) {
+                        targetPanel.classList.add('active');
+                    }
+                    
+                    // Keep sidebar active states in sync for tab clicks
+                    sideNavButtons.forEach(btn => {
+                        if (btn.getAttribute('data-tab') === tab.id) {
+                            btn.classList.add('active');
+                        } else {
+                            btn.classList.remove('active');
+                        }
+                    });
+                });
+                
+                // Keyboard accessibility (Arrow keys, Home, End) - roving focus only (manual activation)
+                tab.addEventListener('keydown', (e) => {
+                    let targetTab = null;
+                    const tabButtons = Array.from(tab.parentElement.querySelectorAll('.tab-btn'));
+                    const index = tabButtons.indexOf(tab);
+
+                    if (e.key === 'ArrowRight') {
+                        targetTab = tabButtons[(index + 1) % tabButtons.length];
+                    } else if (e.key === 'ArrowLeft') {
+                        targetTab = tabButtons[(index - 1 + tabButtons.length) % tabButtons.length];
+                    } else if (e.key === 'Home') {
+                        targetTab = tabButtons[0];
+                    } else if (e.key === 'End') {
+                        targetTab = tabButtons[tabButtons.length - 1];
+                    }
+
+                    if (targetTab) {
+                        tabButtons.forEach(t => t.setAttribute('tabindex', '-1'));
+                        targetTab.setAttribute('tabindex', '0');
+                        targetTab.focus();
+                        e.preventDefault();
+                    }
+                });
+            });
+
+            // Side Control Panel click behavior
+            sideNavButtons.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const tabId = btn.getAttribute('data-tab');
+                    const targetHref = btn.getAttribute('href');
+                    
+                    if (tabId) {
+                        // Toggle matching tab in Part 1
+                        const tabBtn = document.getElementById(tabId);
+                        if (tabBtn) {
+                            tabBtn.click();
+                            // Scroll to Part 1
+                            const dest = document.getElementById('financial-ledgers');
+                            if (dest) {
+                                dest.scrollIntoView({ behavior: 'smooth' });
+                            }
+                        }
+                        e.preventDefault();
+                    } else if (targetHref && targetHref.startsWith('#')) {
+                        const targetId = targetHref.slice(1);
+                        const dest = document.getElementById(targetId);
+                        if (dest) {
+                            dest.scrollIntoView({ behavior: 'smooth' });
+                        }
+                        e.preventDefault();
+                    }
+                });
+            });
+
+            // Scroll-Spy to highlight side control panel links on scroll
+            const spySections = [
+                { id: 'account-dashboard', type: 'dashboard' },
+                { id: 'financial-ledgers', type: 'ledger' },
+                { id: 'monthly-lpg-insights', type: 'insights' },
+                { id: 'payment-allocation-summary', type: 'payment' },
+                { id: 'cylinder-custody-tracker', type: 'custody' }
+            ];
+            if (false) {
+                spySections.push({ id: 'payment-allocation-detail', type: 'detail' });
+                spySections.push({ id: 'internal-audit-disclosure', type: 'audit' });
+            }
+
+            window.addEventListener('scroll', () => {
+                let activeType = null;
+                
+                for (const sec of spySections) {
+                    const el = document.getElementById(sec.id);
+                    if (el) {
+                        const rect = el.getBoundingClientRect();
+                        // If the top of the element is above/near 30% of viewport height
+                        if (rect.top <= window.innerHeight * 0.3) {
+                            activeType = sec.type;
+                        }
+                    }
+                }
+                
+                if (!activeType) {
+                    activeType = 'dashboard';
+                }
+
+                sideNavButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                    if (activeType === 'ledger') {
+                        const activeTab = document.querySelector('.tab-btn.active');
+                        if (activeTab && btn.getAttribute('data-tab') === activeTab.id) {
+                            btn.classList.add('active');
+                        }
+                    } else if (btn.getAttribute('data-section') === activeType) {
+                        btn.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>

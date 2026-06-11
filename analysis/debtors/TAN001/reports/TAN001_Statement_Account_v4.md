@@ -1,5 +1,5 @@
 # Statement of Account: Tanya Lehman (TAN001) - Version 4 (Canonical Settlement Allocation Doctrine)
-**Period:** 1 January 2026 → 31 May 2026 &nbsp;|&nbsp; **Account:** TAN001
+**Period:** 1 January 2026 → 30 June 2026 &nbsp;|&nbsp; **Account:** TAN001
 **Opening Balance B/F:** R60,355.10 (ERP verified — source: Consolidated Audit / Statement)
 
 ---
@@ -16,7 +16,7 @@ During the reconstruction of TAN001, we verified that the account contains legac
    * Unlike historical periods, 2026 Credit Notes were recorded correctly in the database header table (with tax-exclusive amount in `amount_excl` and tax in `tax_amount`). Applying the standard historical credit note correction would introduce an artificial mismatch of **R3,060.00** in the period.
 3. **True Reconciled Balance:**
    * This Stacked Statement calculates the **True Balance directly from raw database line items** (`vw_clean_transactions`), safely bypassing the ERP statement generator's header bugs.
-   * The final True Reconciled Balance is **R94,248.92**, which matches the corrected ERP running ledger.
+   * The final True Reconciled Balance is **R96,284.18**, which matches the corrected ERP running ledger.
 
 ---
 <!-- INTERNAL_ONLY_END -->
@@ -120,6 +120,8 @@ During the reconstruction of TAN001, we verified that the account contains legac
 | 17 May 2026 | Invoice | 50755 | 4,353.83 | 93,713.66 |
 | 21 May 2026 | Payment | 00044381 | -3,500.00 | 90,213.66 |
 | 24 May 2026 | Invoice | 50851 | 4,035.26 | 94,248.92 |
+| 31 May 2026 | Payment | 00044460 | -2,000.00 | 92,248.92 |
+| 31 May 2026 | Invoice | 50973 | 4,035.26 | 96,284.18 |
 
 ---
 
@@ -205,7 +207,17 @@ During the reconstruction of TAN001, we verified that the account contains legac
 | 18 May 2026 | Crd Note | 14923 | 0 | 0 | -3 | 0 | -2 |
 | 24 May 2026 | Invoice | 50858 | 0 | 0 | +2 | 0 | +2 |
 | 24 May 2026 | Crd Note | 14967 | 0 | 0 | -2 | 0 | -2 |
-| **End May** | **Closing Balance** | — | **0** | **-4** | **13** | **2** | **-4** |
+| 31 May 2026 | Invoice | 50974 | 0 | 0 | +2 | 0 | +2 |
+| **End May** | **Closing Balance** | — | **0** | **-4** | **15** | **2** | **-2** |
+
+---
+
+### June 2026
+| Date | Entry Type | Doc # | 14kg Qty | 19kg Qty | 9kg Qty | D.1 Qty | S.1 Qty |
+| :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: |
+| **01 Jun** | **Opening Balance** | — | **0** | **-4** | **15** | **2** | **-2** |
+| 01 Jun 2026 | Crd Note | 15006 | 0 | 0 | -2 | 0 | -2 |
+| **End Jun** | **Closing Balance** | — | **0** | **-4** | **13** | **2** | **-4** |
 
 ---
 
@@ -218,9 +230,9 @@ During the reconstruction of TAN001, we verified that the account contains legac
 
 | Component | Amount |
 |---|---:|
-| LPG Gas Debt | R95,111.42 |
+| LPG Gas Debt | R97,146.68 |
 | Cylinder Financial Balance | R-862.50 |
-| **Total Debtor Balance** | **R94,248.92** |
+| **Total Debtor Balance** | **R96,284.18** |
 
 ### 2. Custody Position
 
@@ -238,9 +250,9 @@ During the reconstruction of TAN001, we verified that the account contains legac
 |---|---:|---:|---:|
 | Cylinder Position | R-862.50 | R1,667.50 | R-2,530.00 |
 
-**ERP Combined Balance:** R96,889.49  
-**Reconstructed Balance:** R94,248.92  
-**Variance:** R2,640.57
+**ERP Combined Balance:** R99,374.75  
+**Reconstructed Balance:** R96,284.18  
+**Variance:** R3,090.57
 
 <!-- DEBTOR_POSITION_WORKSPACE_END -->
 <!-- INTERNAL_ONLY_END -->
