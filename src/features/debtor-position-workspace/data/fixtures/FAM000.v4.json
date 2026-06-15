@@ -1,36 +1,36 @@
 {
   "debtorCode": "FAM000",
   "debtorName": "FAM Group (Consolidated)",
-  "period": { "from": "2026-03-01", "to": "2026-05-31" },
+  "period": { "from": "2026-03-01", "to": "2026-06-09" },
   "version": "v4",
   "status": "cylinder_variance",
-  "lastGeneratedAt": "2026-05-31T00:00:00+02:00",
+  "lastGeneratedAt": "2026-06-15T15:15:00+02:00",
   "financialPosition": {
-    "lpgGasDebt": 65389.38,
-    "cylinderFinancialBalance": -5117.50,
-    "totalDebtorBalance": 60271.88,
-    "erpStatedBalance": 60271.88,
+    "lpgGasDebt": 39211.97,
+    "cylinderFinancialBalance": -4600.00,
+    "totalDebtorBalance": 34611.97,
+    "erpStatedBalance": 34611.97,
     "erpVariance": 0.00
   },
   "custodyPosition": {
-    "totalCustodyExposure": -12650.00,
+    "totalCustodyExposure": -4025.00,
     "lines": [
       { "sku": "14.1", "label": "14kg",        "qty": 23,  "depositRate": 575.00,  "exposure": 13225.00 },
       { "sku": "19.1", "label": "19kg",         "qty": -83, "depositRate": 690.00,  "exposure": -57270.00 },
-      { "sku": "9.1",  "label": "9kg",          "qty": 74,  "depositRate": 517.50,  "exposure": 38295.00 },
+      { "sku": "9.1",  "label": "9kg",          "qty": 84,  "depositRate": 517.50,  "exposure": 43470.00 },
       { "sku": "D.1",  "label": "Double-Valve", "qty": -7,  "depositRate": 1150.00, "exposure": -8050.00 },
-      { "sku": "S.1",  "label": "Single-Valve", "qty": 1,   "depositRate": 1150.00, "exposure": 1150.00 }
+      { "sku": "S.1",  "label": "Single-Valve", "qty": 4,   "depositRate": 1150.00, "exposure": 4600.00 }
     ]
   },
   "reconciliationPosition": {
-    "cylinderVariance": 7532.50,
+    "cylinderVariance": -575.00,
     "erpVariance": 0.00,
     "exceptions": [
       {
         "type": "CYLINDER_VARIANCE",
         "severity": "warning",
         "title": "Cylinder financial balance differs from custody exposure",
-        "description": "Cylinder financial balance of R-5,117.50 differs from custody exposure of R-12,650.00 by R7,532.50 due to historical deposit rate changes."
+        "description": "Cylinder financial balance of R-4,600.00 differs from custody exposure of R-4,025.00 by R-575.00 due to historical deposit rate changes."
       }
     ]
   },
@@ -45,7 +45,7 @@
     },
     {
       "event": "Period Movements",
-      "date": "Mar-May 2026",
+      "date": "Mar-Jun 2026",
       "classification": "Probable",
       "evidenceSource": "FULL_INVOICE_SETTLEMENT",
       "confidence": "High",

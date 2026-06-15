@@ -1,7 +1,7 @@
 # JIM001 Debtor Reconstruction Baseline - Version 4
 
 ## Metadata
-- **Date:** 31 May 2026
+- **Date:** 30 June 2026
 - **Analyst:** Reconciliation Analyst & Debtor Reconstruction Specialist
 - **Source Files Reviewed:**
   - Database schema (`transaction_headers`, `vw_clean_transactions`, `vw_cylinder_ledger`)
@@ -9,14 +9,14 @@
 - **Doctrine Version:** CYL Settlement Allocation Doctrine (v4 Canonical)
 
 ## Statement Scope
-- **Period:** 3 December 2018 to 31 May 2026
+- **Period:** 3 December 2018 to 30 June 2026
 - **Included Accounts:** `account_no = 'JIM001'`
 
 ## ⚠️ Diagnosed ERP/Deduplication Defect (Disclosed Exception)
 - **Stated ERP Balance (Naive Deduplication):** R431,611.31
 - **Reconstruction Variance (Naive Deduplication):** R284,760.09
 - **Diagnosis:** The ERP database records split payment allocations as separate header entries (representing allocations of the same payment across different invoices). A naive deduplication logic checking `DISTINCT ON (doc_no, entry_type, tx_date, amount)` incorrectly drops these split allocations because they share document numbers and dates, dropping over **R268,000.00+** of customer payments.
-- **Resolution:** Consolidating payment splits by document number and date before cross-file deduplication resolves the true payment sum to **-R950,729.61** (instead of -R660,418.73 under naive deduplication), reducing the unexplained ERP variance to the true residual variance of **R55.91** (with corrected ERP Stated Balance of **R146,907.13**).
+- **Resolution:** Consolidating payment splits by document number and date before cross-file deduplication resolves the true payment sum to **-R962,395.73** (instead of -R672,084.85 under naive deduplication), reducing the unexplained ERP variance to the true residual variance of **R55.91** (with corrected ERP Stated Balance of **R${fmtClean(erpStatedBalance)}**).
 - **Rule:** Split payment allocations must **NOT** be deduplicated away, as they represent valid separate allocations.
 
 ## Opening Balance Analysis (as of 3 December 2018)
@@ -33,13 +33,13 @@
   - `9kg`: **0 cylinders** (Standard SKU: 9.1; Historical SKUs: 9.2, 9.7)
   - `D.1` (48kg DV): **0 cylinders**
   - `S.1` (48kg SV): **0 cylinders**
-- **Period Net Qty Changes (Dec 2018 – May 2026):**
+- **Period Net Qty Changes (Dec 2018 – June 2026):**
   - `14kg`: Net change: **1 cylinders**
   - `19kg`: Net change: **24 cylinders**
   - `9kg`: Net change: **2 cylinders**
   - `D.1` (48kg DV): Net change: **16 cylinders**
   - `S.1` (48kg SV): Net change: **-9 cylinders**
-- **Net Returnable Cylinder Position (Custody outstanding as of 31 May 2026):**
+- **Net Returnable Cylinder Position (Custody outstanding as of 30 June 2026):**
   - `14kg`: Outstanding: **1 cylinders**
   - `19kg`: Outstanding: **24 cylinders**
   - `9kg`: Outstanding: **2 cylinders**
@@ -47,10 +47,10 @@
   - `S.1` (48kg SV) Outstanding: **-9 cylinders**
 
 ## Cylinder Financial Analysis
-- **Net Cylinder Custody Exposure:** **R26,220.00**
-- **Cylinder Financial Balance:** **R-6.50**
-- **Cylinder Variance:** **R-26,226.50** (Financial - Custody)
-  - The cylinder variance of R-26,226.50 arises due to legacied price variations and deposit rate shifts.
+- **Net Cylinder Custody Exposure:** **R${fmtClean(totalCylinderCustodyExposure)}**
+- **Cylinder Financial Balance:** **R${fmtClean(final_cyl_balance)}**
+- **Cylinder Variance:** **R${fmtClean(cylVariance)}** (Financial - Custody)
+  - The cylinder variance of R${fmtClean(cylVariance)} arises due to legacied price variations and deposit rate shifts.
 
 ## 🔍 Allocation Evidence Register
 This register traces cylinder deposit transaction assumptions, classifying the strength of the evidence trail according to the Cylinder Allocation Doctrine:
@@ -68,36 +68,36 @@ This register traces cylinder deposit transaction assumptions, classifying the s
 | Event / Document | Date | SKU | Qty | Amount | Match Target | Classification | Evidence Source | Confidence | Evidence Trail / Logic |
 | :--- | :--- | :--- | :---: | :---: | :--- | :---: | :--- | :---: | :--- |
 | **Opening Balances** | Pre-Dec 2018 | Various | 0 | R0.00 | Legacy Statement | **Confirmed** | `SYSTEM_MIGRATION_CARRIED` | **High** | Account inception starting at R0.00 balance. |
-| **Period Movements** | Dec 2018 - May 2026 | Various | 0 | R0.00 | Monthly Payments | **Probable** | `FULL_INVOICE_SETTLEMENT` | **High** | Monthly pool payments settled period cylinder invoices and returns in full. |
+| **Period Movements** | Dec 2018 - June 2026 | Various | 0 | R0.00 | Monthly Payments | **Probable** | `FULL_INVOICE_SETTLEMENT` | **High** | Monthly pool payments settled period cylinder invoices and returns in full. |
 
 ## LPG Analysis
-- **LPG Balance:** R146,857.72
+- **LPG Balance:** R${fmtClean(final_gas_balance)}
 - **LPG Supporting Calculations:**
   - **LPG Gas Opening B/F:** R0.00
-  - **LPG Gas Billed (Period):** R1,162,404.68
-  - **LPG Gas Credits (Period):** R-64,817.35
-  - **LPG Payments (Period):** R-950,729.61
-  - **LPG Gas Closing Balance:** `R0.00 + 1,162,404.68 + (-64,817.35) + (950,729.61) =` **R146,857.72**
+  - **LPG Gas Billed (Period):** R${fmtClean(periodLpgInvoices)}
+  - **LPG Gas Credits (Period):** R${fmtClean(periodLpgCredits)}
+  - **LPG Payments (Period):** R${fmtClean(Math.abs(periodPmtsSum))}
+  - **LPG Gas Closing Balance:** `R0.00 + ${fmtClean(periodLpgInvoices)} + (${fmtClean(periodLpgCredits)}) + (${fmtClean(Math.abs(periodPmtsSum))}) =` **R${fmtClean(final_gas_balance)}**
 
 ## Final Reconciliation
 
 ```
-Cylinder Financial Balance:      R-6.50
-Plus LPG Gas Balance:            R146,857.72
+Cylinder Financial Balance:      R${fmtClean(final_cyl_balance)}
+Plus LPG Gas Balance:            R${fmtClean(final_gas_balance)}
 ========================================
-Total Reconciled Balance:        R146,851.22
-ERP Statement Current Balance:   R146,907.13
-Variance:                         R55.91
+Total Reconciled Balance:        R${fmtClean(final_combined_balance)}
+ERP Statement Current Balance:   R${fmtClean(erpStatedBalance)}
+Variance:                         R${fmtClean(erpVariance)}
 ```
 
 ## Variance Analysis (v3 vs v4)
 
 | Metric | Version 3 Statement | Version 4 Statement | Material Variance | Reason for Variance |
 | :--- | :--- | :--- | :---: | :--- |
-| **LPG Gas Balance** | N/A | R146,857.72 | N/A | First v4 reconstruction for JIM001. |
-| **Cylinder Financial Balance** | N/A | R-6.50 | N/A | First v4 reconstruction for JIM001. |
-| **Cylinder Custody Exposure** | N/A | R26,220.00 | N/A | First v4 reconstruction for JIM001. |
-| **Total Reconciled Balance** | N/A | R146,851.22 | N/A | First v4 reconstruction for JIM001. |
+| **LPG Gas Balance** | N/A | R${fmtClean(final_gas_balance)} | N/A | First v4 reconstruction for JIM001. |
+| **Cylinder Financial Balance** | N/A | R${fmtClean(final_cyl_balance)} | N/A | First v4 reconstruction for JIM001. |
+| **Cylinder Custody Exposure** | N/A | R${fmtClean(totalCylinderCustodyExposure)} | N/A | First v4 reconstruction for JIM001. |
+| **Total Reconciled Balance** | N/A | R${fmtClean(final_combined_balance)} | N/A | First v4 reconstruction for JIM001. |
 
 ## LPG Prior-Month Payment Intent Matching Register
 *(This register remains locked as the month-level reconciliation control)*
@@ -154,9 +154,9 @@ Variance:                         R55.91
 | 2025 | December | R15,560.88 | R0.00 | R11,666.11 | 43199 | 05 Feb 2026 | R0.00 | R11,666.11 | OVERPAID | [REVIEW_REQUIRED] Inferred from ERP ledger allocations. |
 | 2026 | January | R16,919.61 | R0.00 | R14,323.09 | — | — | R0.00 | R14,323.09 | UNPAID | No payment allocated. |
 | 2026 | February | R10,559.95 | R0.00 | R10,559.95 | — | — | R0.00 | R10,559.95 | UNPAID | No payment allocated. |
-| 2026 | March | R15,897.54 | R0.00 | R11,937.56 | — | — | R0.00 | R11,937.56 | UNPAID | No payment allocated. |
+| 2026 | March | R15,897.54 | R0.00 | R11,937.56 | 44555 | 05 Jun 2026 | R11,666.12 | R271.44 | PARTIALLY_SETTLED | Underpaid. R271.44 remaining unpaid. |
 | 2026 | April | R14,303.99 | R0.00 | R14,303.99 | — | — | R0.00 | R14,303.99 | UNPAID | No payment allocated. |
-| 2026 | May | R16,218.64 | R0.00 | R16,218.64 | — | — | R0.00 | R16,218.64 | UNPAID | No payment allocated. |
+| 2026 | May | R21,274.86 | R0.00 | R21,274.86 | — | — | R0.00 | R21,274.86 | UNPAID | No payment allocated. |
 
 
 ## Yearly LPG Invoice and Payment Summary
@@ -167,7 +167,7 @@ Variance:                         R55.91
 | 2023 | R167,295.76 | R166,300.38 | R995.38 | R36,754.16 | R0.00 | R36,754.16 | — |
 | 2024 | R174,818.13 | R112,719.27 | R62,098.86 | R98,853.02 | R0.00 | R98,853.02 | — |
 | 2025 | R174,291.24 | R99,331.58 | R74,959.66 | R173,812.68 | R0.00 | R173,812.68 | — |
-| 2026 | R67,343.23 | R0.00 | R67,343.23 | R241,155.91 | R94,298.19 | R146,857.72 | Unmatched/overpayment pool applied as a reconciliation offset to arrive at final LPG Gas Debt of R146,857.72. |
+| 2026 | R72,399.45 | R11,666.12 | R60,733.33 | R234,546.01 | R94,298.19 | R140,247.82 | Unmatched/overpayment pool applied as a reconciliation offset to arrive at final LPG Gas Debt of R140,247.82. |
 
 
 ## Database Mapping — Informative, Not Canonical

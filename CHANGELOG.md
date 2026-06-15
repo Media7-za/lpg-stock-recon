@@ -39,9 +39,48 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- Extended **Family Gas** (`FAM000` and `FAM002` consolidated) statement and baseline reports up to **09 June 2026** (incorporating all May and June transactions recently loaded into Supabase).
+- Applied payment deduplication for `FAM000` / `FAM002` consolidated, dropping the duplicate payment `00044102` (R30,000.00) on 29 April 2026.
+- Updated the consolidated Excel workbook `FAM000_Final_Recon_Export.xlsx` and generated dual-view browser statement reports (Internal vs Customer views).
+- Updated the `FAM000.v4.json` data fixture with the extended June 9th reconciliation metrics, custody quantities, and financial balances.
+
+### Added
+- Added local git-based tracking for debtor accounts as micro-projects:
+  - Created a structured `project.json` schema in each debtor directory under `analysis/debtors/` to track client metadata, recon status, outstanding/aged balances, and active collection action details.
+  - Formalized **Slice 005: Debtors Portfolio Management**, introducing an architectural Operating System.
+    - Added `PROJECT_SCHEMA.md` to govern schema requirements.
+    - Added `DEBTOR_STATE_MACHINE.md` to map valid reconciliation and collection lifecycle transitions.
+    - Added an AI training manual (`SKILL_Debtors_Project_Manager.md`) to guide future agent interactions.
+    - Added an `events/` folder scaffold and `EVENT_SCHEMA.md` as reserved architecture for future event-sourcing.
+  - Formalized **Slice 005A: Collections Intelligence** & **Slice 005B: Portfolio Metrics**, upgrading the system into a decision-support Priority Queue.
+    - Added `COLLECTIONS_INTELLIGENCE.md` to define the heuristic risk-scoring weight matrix.
+    - Expanded the `project.json` schema to support `nextAction` and `nextActionDate` fields.
+    - Overhauled `debtors_dashboard.mjs` to calculate a dynamic `riskScore` and `daysSinceLastContact` entirely in-memory to prevent stale state.
+    - Upgraded the CLI output and `DEBTORS_DASHBOARD.md` to sort accounts by Risk Score (Priority Queue) rather than alphabetically.
+  - Formalized **Slice 005C: Human Action Prompting**, establishing the dashboard as a Collections Command Centre.
+    - Integrated a dynamic Action Prompting Engine into `debtors_dashboard.mjs` that evaluates `totalOutstanding`, `agedDebt180Plus`, and `status`.
+    - Automatically outputs generated "Human Prompt Cards" (including firm payment reminders and strict legal notices) to a dedicated `ACTION_PROMPTS.md` execution queue.
+    - Updated `SKILL_Debtors_Project_Manager.md` to enforce human-in-the-loop workflows: Agents prompt the human using the generated messages, and only mutate the `project.json` history log *after* the human manually sends the communication.
+    - Added comprehensive portfolio-wide Summary Metrics to the dashboard output.
+  - Implemented `analysis/debtors/shared/scripts/debtors_sync.mjs`, a robust CLI validator that enforces schema and state machine rules, separating validation logic from rendering.
+  - Retained `debtors_dashboard.mjs` exclusively for rendering terminal output and auto-generating the `DEBTORS_DASHBOARD.md` overview.
+  - Added the `npm run debtors:sync` command to `package.json`.
+- Onboarded new debtor account **WES004** (West Coast Fish & Chips — also trading as WES002) as a full account reconstruction:
+  - Ingested and parsed `WES002.TXT` (Jul 2025 – Apr 2026, 84 transactions) and `WES004.TXT` (Dec 2025 – Jun 2026, 92 transactions) ERP statement exports.
+  - Identified split-account structure: customer trades across two ERP codes (WES002 historical, WES004 active); payments flow across both codes from Jan 2026 onwards.
+  - Confirmed **zero ERP variance** — combined TXT reconstruction closes at R36,216.20 matching ERP stated combined balance (WES002: R7,443.73 + WES004: R28,772.47).
+  - Flagged 3 June 2026 transactions (net R3,241.30) not yet ingested into Supabase, and WES002's 84-transaction history as a Supabase gap.
+  - Documented February 2026 DN-21909 triple-invoice/CRN correction pattern and Jan 2026 `00043011` ERP allocation adjustment pair.
+  - Created [WES004_BASELINE_v1.md](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/WES004/reports/WES004_BASELINE_v1.md) covering full payment register, monthly ledger summary, cylinder empties pattern, and reconciliation sign-off.
+  - Created [WES004_Statement_Account_v1.md](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/WES004/reports/WES004_Statement_Account_v1.md) with full chronological Part 1A (WES002) and Part 1B (WES004) ledger tables, Debtor Position Workspace, and payment behaviour assessment.
+  - Generated dual-view HTML statements (`WES004_Statement_Account_v1_Internal.html` and `_Customer.html`) using the shared `export_to_html.py` converter.
+  - Created investigation scripts `investigate-wes004.mjs` and `reconstruct-wes004.mjs` in `scratch/`.
+
 ### Fixed
 - Updated `export_workspace_to_sheets.py` matches loading logic to merge exact matches from `JIM001_LPG_Reconciliation_v4.xlsx` (sheet `Monthly Matches`) with the published CSV allocations, and refined heuristic fallback matching with a 180-day post-invoice-only date constraint (`payment_date >= invoice_month_start` and `payment_date <= invoice_month_end + 180 days`) to prevent past months from stealing future payments.
 - Fixed a date parsing format bug in `export_workspace_to_sheets.py` that caused published allocation matches to be dropped, resulting in incorrect empty allocations for several months (e.g. April to November 2024).
+- **Fixed a year-collision bug in `export_workspace_to_sheets.py`** where `m_key` generation was reading from the `Invoice Year` column in the `Monthly Matches` Excel sheet, which is hardcoded to `2025` for all rows in `JIM001_LPG_Reconciliation_v4.xlsx`. This caused all historical monthly matches (2021–2025) to collide into a single set of 12 keys (e.g. `2025-03`, `2025-04`...), with later rows silently overwriting earlier ones of the same month. The fix now derives the year from `Payment Date` (the ground-truth column) and falls back to `Invoice Year` only when no valid payment date is present. This raised the loaded Excel match count from ~12 collapsed entries to the correct **26 distinct keys**, and the final merged total (Excel + CSV) to **52 unique `YYYY-MM` month keys**.
 - Resolved HTML statement views frontend rendering, navigation, and accessibility issues from frontend audit:
   - Enabled raw HTML tag parsing (`html: True`) on Python's `markdown-it` to resolve dashboard grid/card escaping (E1–E4) and navigation anchor targets (N1–N2).
   - Updated cylinder ledger regex lookup to stop matching strictly on Part 1D or payment allocations, preventing early panel cuts (T1) and ensuring all 66 months of data render inside the cylinder tab.
@@ -56,6 +95,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Corrected `.brand-sub` indentation in CSS output.
 
 ### Changed
+- Updated `JIM001` (Jim Gas) debtor statement, baseline reports, Excel worksheets, and HTML statements to extend the period scope to **30 June 2026**, incorporating May 28 Invoice `50920` for `R5,056.22` and June 4 Payment `00044555` for `R11,666.12`.
 - Updated `TAN001` (Tanya Lehman) statement and baseline reports to extend the period scope to 30 June 2026, incorporating new June transactions (Payment `00044460`, Invoices `00050973`/`00050974`, and Credit Note `00015006`).
 - Fixed a SQL deduplication logic bug in the `erpStatedBalance` query in `scratch/generate-tan001-reports.js` by including `amount_excl` and `tax_amount` in the `DISTINCT ON` clause, preventing duplicate document collapses from inflating the ERP variance.
 - Consolidated payment splits for Jim Gas (JIM001) across different ERP source files (`DRTX2025.TXT` and `DTRX2603.TXT`) and collapsed the hardcoded allocation split for payment Doc 00038481 in the Statement of Account and the generated Excel workbook.

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Midlands Petroleum - Statement of Account</title>
+    <title>Midlands Petroleum - Statement of Account (Internal Audit View)</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap');
         
@@ -292,12 +292,12 @@
         }
         
         /* Bolding dynamic total/balance rows */
-        tr:has(strong) {
+        tr.total-row {
             font-weight: 600;
             background-color: #f1f5f9 !important;
         }
         
-        tr:has(strong) td {
+        tr.total-row td {
             color: #0f172a;
         }
         
@@ -405,6 +405,288 @@
             margin-top: 40px;
         }
         
+        /* Interactive sub-ledger tabs styling */
+        .tabs-container {
+            margin: 30px 0;
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+        
+        .tab-list {
+            display: flex;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-bottom: 1px solid #cbd5e1;
+            padding: 0 15px;
+            gap: 10px;
+        }
+        
+        .tab-btn {
+            font-family: 'Outfit', sans-serif;
+            font-size: 9pt;
+            font-weight: 600;
+            color: #64748b;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            padding: 14px 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+        
+        .tab-btn:hover {
+            color: #1e3a8a;
+            border-bottom-color: #cbd5e1;
+        }
+        
+        .tab-btn.active {
+            color: #1e3a8a;
+            border-bottom-color: #1e3a8a;
+        }
+
+        .tab-btn:focus {
+            outline: none;
+        }
+
+        .tab-btn:focus-visible {
+            outline: 2px solid #1e3a8a;
+            outline-offset: -3px;
+            border-radius: 6px;
+        }
+        
+        .tab-panel {
+            display: none;
+            padding: 25px;
+        }
+        
+        .tab-panel.active {
+            display: block;
+            animation: fadeIn 0.25s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(2px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        
+        /* Dashboard grid and card styling */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 15px;
+            margin: 25px 0;
+        }
+        
+        .dashboard-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 18px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+        }
+        
+        .dashboard-card h4 {
+            margin-top: 0;
+            margin-bottom: 12px;
+            color: #1e3a8a;
+            font-family: 'Outfit', sans-serif;
+            font-size: 11pt;
+            font-weight: 600;
+            border-bottom: 2px solid #eff6ff;
+            padding-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .dashboard-card ul {
+            list-style: none;
+            padding-left: 0;
+            margin: 0;
+        }
+        
+        .dashboard-card li {
+            font-size: 8.5pt;
+            color: #475569;
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        
+        .dashboard-card li strong {
+            color: #0f172a;
+        }
+ 
+        .position-card-item h4 { color: #2563eb; border-bottom-color: #dbeafe; }
+        .payment-card-item h4 { color: #16a34a; border-bottom-color: #dcfce7; }
+        .cylinder-card-item h4 { color: #ea580c; border-bottom-color: #ffedd5; }
+        .internal-audit-card-item {
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+            border-color: #fde68a;
+        }
+        .internal-audit-card-item h4 { color: #b45309; border-bottom-color: #fde68a; }
+ 
+        /* Two-column App Layout for desktop */
+        .app-layout {
+            display: flex;
+            flex-direction: row-reverse;
+            max-width: 1400px;
+            margin: 0 auto;
+            gap: 24px;
+            position: relative;
+        }
+        
+        .statement-container {
+            flex: 1;
+            min-width: 0;
+            margin: 0;
+            max-width: 1000px;
+        }
+        
+        .side-control-panel-wrapper {
+            width: 260px;
+            flex-shrink: 0;
+        }
+        
+        .side-control-panel {
+            position: sticky;
+            top: 24px;
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+            max-height: calc(100vh - 48px);
+            overflow-y: auto;
+        }
+        
+        .side-panel-title {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #0f172a;
+            font-family: 'Outfit', sans-serif;
+            font-size: 11pt;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 8px;
+        }
+        
+        .side-nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .side-nav-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            background: none;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 9pt;
+            font-weight: 500;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            box-sizing: border-box;
+        }
+        
+        .side-nav-btn:hover {
+            background-color: #f1f5f9;
+            color: #1e3a8a;
+        }
+        
+        .side-nav-btn.active {
+            background-color: #eff6ff;
+            color: #1e40af;
+            font-weight: 600;
+            border-color: #bfdbfe;
+        }
+        
+        .side-nav-btn.print-btn {
+            margin-top: 10px;
+            background-color: #1e3a8a;
+            color: #ffffff;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .side-nav-btn.print-btn:hover {
+            background-color: #1d4ed8;
+            color: #ffffff;
+        }
+        
+        /* Mobile Layout for sidebar (sticky top nav) */
+        @media (max-width: 1199px) {
+            .app-layout {
+                display: block;
+            }
+            
+            .side-control-panel-wrapper {
+                width: 100%;
+                position: sticky;
+                top: 0;
+                z-index: 100;
+                margin-bottom: 20px;
+            }
+            
+            .side-control-panel {
+                position: static;
+                border-radius: 0;
+                border-left: none;
+                border-right: none;
+                border-top: none;
+                padding: 10px 20px;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                overflow-x: auto;
+                white-space: nowrap;
+                background-color: #ffffff;
+                scrollbar-width: none;
+            }
+            
+            .side-control-panel::-webkit-scrollbar {
+                display: none;
+            }
+            
+            .side-panel-title {
+                display: none;
+            }
+            
+            .side-nav-links {
+                display: flex;
+                flex-direction: row;
+                gap: 8px;
+            }
+            
+            .side-nav-btn {
+                display: inline-block;
+                width: auto;
+                padding: 8px 12px;
+            }
+            
+            .side-nav-btn.print-btn {
+                margin-top: 0;
+            }
+        }
+        
         /* Responsive Print Layout Styles */
         @media print {
             body {
@@ -419,6 +701,12 @@
                 margin: 0;
                 max-width: 100%;
             }
+            .side-control-panel-wrapper {
+                display: none !important;
+            }
+            .app-layout {
+                display: block !important;
+            }
             .view-badge {
                 display: none;
             }
@@ -429,13 +717,64 @@
             tr:hover td {
                 background-color: transparent !important;
             }
+            /* Print tabs sequentially */
+            .tab-list {
+                display: none !important;
+            }
+            .tab-panel {
+                display: block !important;
+                page-break-inside: avoid;
+                margin-bottom: 35px;
+                padding: 0 !important;
+                border: none !important;
+                box-shadow: none !important;
+            }
+            .tabs-container {
+                border: none !important;
+                box-shadow: none !important;
+            }
         }
     </style>
+    <noscript>
+        <style>
+            .tab-panel {
+                display: block !important;
+            }
+            .tab-list {
+                display: none !important;
+            }
+            .tabs-container {
+                border: none !important;
+                box-shadow: none !important;
+            }
+        </style>
+    </noscript>
 </head>
 <body>
-    <div class="statement-container">
-        <span class="view-badge internal-badge">Internal Audit View</span>
-        
+    <div class="app-layout">
+        <div class="side-control-panel-wrapper">
+            <div class="side-control-panel">
+                <h4 class="side-panel-title">Navigation</h4>
+                <div class="side-nav-links">
+                    <a href="#account-dashboard" class="side-nav-btn active" data-section="dashboard">Account Dashboard</a>
+                    <button class="side-nav-btn" data-tab="tab-1b" data-section="ledger">LPG Gas Ledger</button>
+                    <button class="side-nav-btn" data-tab="tab-1a" data-section="ledger">Combined ERP Ledger</button>
+                    <button class="side-nav-btn" data-tab="tab-1c" data-section="ledger">Cylinder Ledger</button>
+                    <a href="#monthly-lpg-insights" class="side-nav-btn" data-section="insights">Monthly LPG Insights</a>
+                    <a href="#payment-allocation-summary" class="side-nav-btn" data-section="payment">Payment Summary</a>
+                    <a href="#cylinder-custody-tracker" class="side-nav-btn" data-section="custody">Cylinder Custody</a>
+                    
+                    <a href="#internal-audit-disclosure" class="side-nav-btn" data-section="audit">Internal Audit Snapshot</a>
+                    <a href="#payment-allocation-detail" class="side-nav-btn" data-section="detail">Payment Allocation Detail</a>
+    
+                    <button class="side-nav-btn print-btn" id="print-btn">Print / Save</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="statement-container">
+            <span class="view-badge internal-badge">Internal Audit View</span>
+            
     <div class="statement-header">
         <div class="header-main">
             <div class="brand">
@@ -461,7 +800,7 @@
                 </tr>
                 <tr>
                     <td class="meta-label">Period:</td>
-                    <td class="meta-value">1 March 2026 → 31 May 2026</td>
+                    <td class="meta-value">1 March 2026 → 9 June 2026</td>
                     <td class="meta-label">Closing Balance:</td>
                     <td class="meta-value"><strong>N/A</strong> <span style="font-size: 7.5pt; color: #64748b;">(Reconciled Total)</span></td>
                 </tr>
@@ -486,6 +825,11 @@
 <li><strong>Problem:</strong> The ERP re-uses document numbers across different financial years. Because the statement was generated for the &quot;CURRENT&quot; year, historical line items were hidden in the <code>Balance B/F</code>, creating an artificially inflated starting balance and giving the false illusion that the ERP was randomly dropping lines from mixed documents.</li>
 </ul>
 </li>
+<li><strong>Bug C: Duplicate Payment Records</strong>
+<ul>
+<li><strong>Problem:</strong> Payment document <code>00044102</code> (R30,000.00) was double-counted because it was loaded twice (on April 28 from <code>april_dump.TXT</code> and on April 29 from <code>DRTX1105.TXT</code>). We resolved this by dropping the April 29 duplicate.</li>
+</ul>
+</li>
 <li><strong>True Reconciled Balance:</strong>
 <ul>
 <li>This Stacked Statement calculates the <strong>True Balance directly from raw database line items</strong> (<code>vw_clean_transactions</code>), safely bypassing the ERP statement generator's bugs.</li>
@@ -495,255 +839,551 @@
 <hr>
 <h2>Part 1: LPG Gas Statement</h2>
 <p><em>Tracks all gas invoiced and all payments received since 1 March 2026. The Balance B/F is the true reconciled financial balance as of 28 February 2026.</em></p>
+<h3>March 2026</h3>
+<p><strong>Pure Gas Mini-Summary:</strong></p>
+<ul>
+<li>Gas Opening Balance: <strong>R61,626.77</strong></li>
+<li>Total Gas Invoices: <strong>R107,126.37</strong></li>
+<li>Total Payments &amp; Others: <strong>R-118,368.81</strong></li>
+<li>Total Gas Credit Notes: <strong>R-863.74</strong></li>
+<li>Gas Closing Balance: <strong>R49,520.59</strong></li>
+</ul>
 <table>
 <thead>
 <tr>
 <th style="text-align:left">Date</th>
 <th style="text-align:left">Entry Type</th>
 <th style="text-align:left">Doc #</th>
-<th style="text-align:right">Amount (R)</th>
-<th style="text-align:right">Running Balance (R)</th>
+<th style="text-align:right">Gas Amount (R)</th>
+<th style="text-align:right">Running Gas Bal (R)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left"><strong>28 Feb 2026</strong></td>
-<td style="text-align:left"><strong>Balance B/F</strong></td>
+<td style="text-align:left"><strong>01 Mar</strong></td>
+<td style="text-align:left"><strong>Opening Balance</strong></td>
 <td style="text-align:left">—</td>
 <td style="text-align:right"></td>
 <td style="text-align:right"><strong>61,626.77</strong></td>
 </tr>
 <tr>
-<td style="text-align:left">02 Mar 2026</td>
+<td style="text-align:left">03 Mar 2026</td>
 <td style="text-align:left">Payment</td>
-<td style="text-align:left">43498</td>
+<td style="text-align:left">00043498</td>
 <td style="text-align:right">-18,938.31</td>
 <td style="text-align:right">42,688.46</td>
 </tr>
 <tr>
-<td style="text-align:left">06 Mar 2026</td>
+<td style="text-align:left">07 Mar 2026</td>
 <td style="text-align:left">Invoice</td>
-<td style="text-align:left">49619 / 49620</td>
+<td style="text-align:left">49619</td>
 <td style="text-align:right">11,156.55</td>
 <td style="text-align:right">53,845.01</td>
 </tr>
 <tr>
-<td style="text-align:left">08 Mar 2026</td>
-<td style="text-align:left">Crd Note</td>
-<td style="text-align:left">14559 / 14560</td>
-<td style="text-align:right">-863.74</td>
-<td style="text-align:right">52,981.27</td>
-</tr>
-<tr>
-<td style="text-align:left">08 Mar 2026</td>
+<td style="text-align:left">09 Mar 2026</td>
 <td style="text-align:left">Invoice</td>
-<td style="text-align:left">49626 / 49627 / 49628 / 49629</td>
-<td style="text-align:right">8,925.17</td>
-<td style="text-align:right">61,906.44</td>
+<td style="text-align:left">49626</td>
+<td style="text-align:right">863.74</td>
+<td style="text-align:right">54,708.75</td>
 </tr>
 <tr>
 <td style="text-align:left">09 Mar 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">49628</td>
+<td style="text-align:right">8,061.43</td>
+<td style="text-align:right">62,770.18</td>
+</tr>
+<tr>
+<td style="text-align:left">09 Mar 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14559</td>
+<td style="text-align:right">-863.74</td>
+<td style="text-align:right">61,906.44</td>
+</tr>
+<tr>
+<td style="text-align:left">10 Mar 2026</td>
 <td style="text-align:left">Payment</td>
-<td style="text-align:left">43590 / 43590 / 43590 / 43590</td>
+<td style="text-align:left">00043590</td>
 <td style="text-align:right">-20,343.00</td>
 <td style="text-align:right">41,563.44</td>
 </tr>
 <tr>
-<td style="text-align:left">09 Mar 2026</td>
+<td style="text-align:left">10 Mar 2026</td>
 <td style="text-align:left">Invoice</td>
-<td style="text-align:left">49668 / 49669</td>
+<td style="text-align:left">49668</td>
 <td style="text-align:right">13,507.79</td>
 <td style="text-align:right">55,071.23</td>
 </tr>
 <tr>
-<td style="text-align:left">11 Mar 2026</td>
+<td style="text-align:left">12 Mar 2026</td>
 <td style="text-align:left">Payment</td>
-<td style="text-align:left">43612</td>
+<td style="text-align:left">00043612</td>
 <td style="text-align:right">-11,156.50</td>
 <td style="text-align:right">43,914.73</td>
 </tr>
 <tr>
-<td style="text-align:left">13 Mar 2026</td>
+<td style="text-align:left">14 Mar 2026</td>
 <td style="text-align:left">Invoice</td>
 <td style="text-align:left">49746</td>
 <td style="text-align:right">12,955.92</td>
 <td style="text-align:right">56,870.65</td>
 </tr>
 <tr>
-<td style="text-align:left">16 Mar 2026</td>
+<td style="text-align:left">17 Mar 2026</td>
 <td style="text-align:left">Payment</td>
-<td style="text-align:left">43671 / 43671</td>
+<td style="text-align:left">00043671</td>
 <td style="text-align:right">-12,957.00</td>
 <td style="text-align:right">43,913.65</td>
 </tr>
 <tr>
-<td style="text-align:left">18 Mar 2026</td>
+<td style="text-align:left">19 Mar 2026</td>
 <td style="text-align:left">Payment</td>
-<td style="text-align:left">43702 / 43702</td>
+<td style="text-align:left">00043702</td>
 <td style="text-align:right">-8,062.00</td>
 <td style="text-align:right">35,851.65</td>
 </tr>
 <tr>
-<td style="text-align:left">18 Mar 2026</td>
+<td style="text-align:left">19 Mar 2026</td>
 <td style="text-align:left">Invoice</td>
-<td style="text-align:left">49832 / 49833</td>
+<td style="text-align:left">49832</td>
 <td style="text-align:right">16,866.68</td>
 <td style="text-align:right">52,718.33</td>
 </tr>
 <tr>
-<td style="text-align:left">22 Mar 2026</td>
+<td style="text-align:left">23 Mar 2026</td>
 <td style="text-align:left">Invoice</td>
-<td style="text-align:left">49871 / 49872</td>
+<td style="text-align:left">49871</td>
 <td style="text-align:right">18,402.21</td>
 <td style="text-align:right">71,120.54</td>
 </tr>
 <tr>
-<td style="text-align:left">23 Mar 2026</td>
+<td style="text-align:left">24 Mar 2026</td>
 <td style="text-align:left">Payment</td>
-<td style="text-align:left">43741 / 43741</td>
+<td style="text-align:left">00043741</td>
 <td style="text-align:right">-21,600.00</td>
 <td style="text-align:right">49,520.54</td>
 </tr>
 <tr>
-<td style="text-align:left">28 Mar 2026</td>
+<td style="text-align:left">29 Mar 2026</td>
 <td style="text-align:left">Invoice</td>
 <td style="text-align:left">49991</td>
 <td style="text-align:right">25,312.05</td>
 <td style="text-align:right">74,832.59</td>
 </tr>
 <tr>
-<td style="text-align:left">30 Mar 2026</td>
+<td style="text-align:left">31 Mar 2026</td>
 <td style="text-align:left">Payment</td>
-<td style="text-align:left">43825 / 43826</td>
+<td style="text-align:left">00043825 / 00043826</td>
 <td style="text-align:right">-25,312.00</td>
 <td style="text-align:right">49,520.59</td>
 </tr>
+</tbody>
+</table>
+<hr>
+<h3>April 2026</h3>
+<p><strong>Pure Gas Mini-Summary:</strong></p>
+<ul>
+<li>Gas Opening Balance: <strong>R49,520.59</strong></li>
+<li>Total Gas Invoices: <strong>R113,728.18</strong></li>
+<li>Total Payments &amp; Others: <strong>R-134,657.61</strong></li>
+<li>Total Gas Credit Notes: <strong>R0.00</strong></li>
+<li>Gas Closing Balance: <strong>R28,591.16</strong></li>
+</ul>
+<table>
+<thead>
 <tr>
-<td style="text-align:left">06 Apr 2026</td>
+<th style="text-align:left">Date</th>
+<th style="text-align:left">Entry Type</th>
+<th style="text-align:left">Doc #</th>
+<th style="text-align:right">Gas Amount (R)</th>
+<th style="text-align:right">Running Gas Bal (R)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>01 Apr</strong></td>
+<td style="text-align:left"><strong>Opening Balance</strong></td>
+<td style="text-align:left">—</td>
+<td style="text-align:right"></td>
+<td style="text-align:right"><strong>49,520.59</strong></td>
+</tr>
+<tr>
+<td style="text-align:left">07 Apr 2026</td>
 <td style="text-align:left">Payment</td>
-<td style="text-align:left">43891 / 43891 / 43891 / 43892</td>
+<td style="text-align:left">00043891 / 00043892</td>
 <td style="text-align:right">-37,200.00</td>
 <td style="text-align:right">12,320.59</td>
 </tr>
 <tr>
-<td style="text-align:left">06 Apr 2026</td>
+<td style="text-align:left">07 Apr 2026</td>
 <td style="text-align:left">Invoice</td>
-<td style="text-align:left">50102 / 50103 / 50111 / 50112</td>
-<td style="text-align:right">40,925.01</td>
+<td style="text-align:left">50102</td>
+<td style="text-align:right">17,463.68</td>
+<td style="text-align:right">29,784.27</td>
+</tr>
+<tr>
+<td style="text-align:left">07 Apr 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50111</td>
+<td style="text-align:right">23,461.33</td>
 <td style="text-align:right">53,245.60</td>
 </tr>
 <tr>
-<td style="text-align:left">09 Apr 2026</td>
+<td style="text-align:left">10 Apr 2026</td>
 <td style="text-align:left">Invoice</td>
-<td style="text-align:left">50199 / 50200</td>
+<td style="text-align:left">50199</td>
 <td style="text-align:right">8,920.83</td>
 <td style="text-align:right">62,166.43</td>
 </tr>
 <tr>
-<td style="text-align:left">15 Apr 2026</td>
+<td style="text-align:left">16 Apr 2026</td>
 <td style="text-align:left">Payment</td>
-<td style="text-align:left">44007 / 44007 / 44007 / 44007 / 44007 / 44007 / 44007 / 44007 / 44007</td>
+<td style="text-align:left">00044007</td>
 <td style="text-align:right">-21,000.00</td>
 <td style="text-align:right">41,166.43</td>
 </tr>
 <tr>
-<td style="text-align:left">15 Apr 2026</td>
+<td style="text-align:left">16 Apr 2026</td>
 <td style="text-align:left">Invoice</td>
-<td style="text-align:left">50254 / 50255</td>
+<td style="text-align:left">50254</td>
 <td style="text-align:right">20,059.30</td>
 <td style="text-align:right">61,225.73</td>
 </tr>
 <tr>
-<td style="text-align:left">19 Apr 2026</td>
+<td style="text-align:left">20 Apr 2026</td>
 <td style="text-align:left">Invoice</td>
-<td style="text-align:left">50316 / 50317</td>
+<td style="text-align:left">50316</td>
 <td style="text-align:right">12,096.05</td>
 <td style="text-align:right">73,321.78</td>
 </tr>
 <tr>
-<td style="text-align:left">20 Apr 2026</td>
+<td style="text-align:left">21 Apr 2026</td>
 <td style="text-align:left">Payment</td>
-<td style="text-align:left">44046 / 44046 / 44046</td>
-<td style="text-align:right">-15,500.00</td>
-<td style="text-align:right">57,821.78</td>
+<td style="text-align:left">00044045 / 00044046</td>
+<td style="text-align:right">-16,457.61</td>
+<td style="text-align:right">56,864.17</td>
 </tr>
 <tr>
-<td style="text-align:left">20 Apr 2026</td>
+<td style="text-align:left">21 Apr 2026</td>
 <td style="text-align:left">Invoice</td>
-<td style="text-align:left">50322 / 50323 / 50324</td>
-<td style="text-align:right">2,394.02</td>
-<td style="text-align:right">60,215.80</td>
+<td style="text-align:left">50322</td>
+<td style="text-align:right">1,436.41</td>
+<td style="text-align:right">58,300.58</td>
 </tr>
 <tr>
-<td style="text-align:left">23 Apr 2026</td>
+<td style="text-align:left">21 Apr 2026</td>
 <td style="text-align:left">Invoice</td>
-<td style="text-align:left">50368 / 50369</td>
+<td style="text-align:left">50324</td>
+<td style="text-align:right">957.61</td>
+<td style="text-align:right">59,258.19</td>
+</tr>
+<tr>
+<td style="text-align:left">24 Apr 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50368</td>
 <td style="text-align:right">13,078.88</td>
-<td style="text-align:right">73,294.68</td>
+<td style="text-align:right">72,337.07</td>
 </tr>
 <tr>
 <td style="text-align:left">28 Apr 2026</td>
 <td style="text-align:left">Payment</td>
-<td style="text-align:left">44102 / 44102 / 44102</td>
+<td style="text-align:left">00044102</td>
 <td style="text-align:right">-30,000.00</td>
-<td style="text-align:right">43,294.68</td>
+<td style="text-align:right">42,337.07</td>
 </tr>
 <tr>
-<td style="text-align:left">28 Apr 2026</td>
+<td style="text-align:left">29 Apr 2026</td>
+<td style="text-align:left">Payment</td>
+<td style="text-align:left">00044102</td>
+<td style="text-align:right">-30,000.00</td>
+<td style="text-align:right">12,337.07</td>
+</tr>
+<tr>
+<td style="text-align:left">29 Apr 2026</td>
 <td style="text-align:left">Invoice</td>
-<td style="text-align:left">50401 / 50402</td>
+<td style="text-align:left">50401</td>
 <td style="text-align:right">16,254.09</td>
-<td style="text-align:right">59,548.77</td>
+<td style="text-align:right">28,591.16</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3>May 2026</h3>
+<p><strong>Pure Gas Mini-Summary:</strong></p>
+<ul>
+<li>Gas Opening Balance: <strong>R28,591.16</strong></li>
+<li>Total Gas Invoices: <strong>R139,814.60</strong></li>
+<li>Total Payments &amp; Others: <strong>R-125,993.48</strong></li>
+<li>Total Gas Credit Notes: <strong>R-2,565.01</strong></li>
+<li>Gas Closing Balance: <strong>R39,847.27</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Date</th>
+<th style="text-align:left">Entry Type</th>
+<th style="text-align:left">Doc #</th>
+<th style="text-align:right">Gas Amount (R)</th>
+<th style="text-align:right">Running Gas Bal (R)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>01 May</strong></td>
+<td style="text-align:left"><strong>Opening Balance</strong></td>
+<td style="text-align:left">—</td>
+<td style="text-align:right"></td>
+<td style="text-align:right"><strong>28,591.16</strong></td>
 </tr>
 <tr>
-<td style="text-align:left">30 Apr 2026</td>
+<td style="text-align:left">01 May 2026</td>
 <td style="text-align:left">Invoice</td>
-<td style="text-align:left">50481 / 50482</td>
+<td style="text-align:left">50481</td>
 <td style="text-align:right">13,078.88</td>
-<td style="text-align:right">72,627.65</td>
+<td style="text-align:right">41,670.04</td>
 </tr>
 <tr>
-<td style="text-align:left">04 May 2026</td>
+<td style="text-align:left">05 May 2026</td>
 <td style="text-align:left">Invoice</td>
-<td style="text-align:left">50498 / 50499</td>
+<td style="text-align:left">50498</td>
 <td style="text-align:right">13,104.07</td>
-<td style="text-align:right">85,731.72</td>
+<td style="text-align:right">54,774.11</td>
 </tr>
 <tr>
-<td style="text-align:left">05 May 2026</td>
+<td style="text-align:left">06 May 2026</td>
 <td style="text-align:left">Payment</td>
-<td style="text-align:left">44170 / 44170 / 44170</td>
+<td style="text-align:left">00044170</td>
 <td style="text-align:right">-39,000.00</td>
-<td style="text-align:right">46,731.72</td>
+<td style="text-align:right">15,774.11</td>
 </tr>
 <tr>
-<td style="text-align:left">05 May 2026</td>
+<td style="text-align:left">06 May 2026</td>
 <td style="text-align:left">Invoice</td>
-<td style="text-align:left">50526 / 50527</td>
+<td style="text-align:left">50526</td>
 <td style="text-align:right">17,942.48</td>
-<td style="text-align:right">64,674.20</td>
+<td style="text-align:right">33,716.59</td>
 </tr>
 <tr>
-<td style="text-align:left">08 May 2026</td>
+<td style="text-align:left">09 May 2026</td>
 <td style="text-align:left">Payment</td>
-<td style="text-align:left">44199 / 44199 / 44199</td>
+<td style="text-align:left">00044199</td>
 <td style="text-align:right">-10,000.00</td>
-<td style="text-align:right">54,674.20</td>
+<td style="text-align:right">23,716.59</td>
 </tr>
 <tr>
-<td style="text-align:left">10 May 2026</td>
+<td style="text-align:left">11 May 2026</td>
 <td style="text-align:left">Invoice</td>
 <td style="text-align:left">50610</td>
 <td style="text-align:right">9,772.18</td>
-<td style="text-align:right">64,446.38</td>
+<td style="text-align:right">33,488.77</td>
+</tr>
+<tr>
+<td style="text-align:left">12 May 2026</td>
+<td style="text-align:left">Payment</td>
+<td style="text-align:left">00044245</td>
+<td style="text-align:right">-19,000.00</td>
+<td style="text-align:right">14,488.77</td>
+</tr>
+<tr>
+<td style="text-align:left">13 May 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50650</td>
+<td style="text-align:right">19,807.51</td>
+<td style="text-align:right">34,296.28</td>
+</tr>
+<tr>
+<td style="text-align:left">15 May 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50714</td>
+<td style="text-align:right">1,500.00</td>
+<td style="text-align:right">35,796.28</td>
+</tr>
+<tr>
+<td style="text-align:left">16 May 2026</td>
+<td style="text-align:left">Payment</td>
+<td style="text-align:left">00044282 / 00044283 / 00044292</td>
+<td style="text-align:right">-14,282.48</td>
+<td style="text-align:right">21,513.80</td>
+</tr>
+<tr>
+<td style="text-align:left">16 May 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50717</td>
+<td style="text-align:right">1,282.48</td>
+<td style="text-align:right">22,796.28</td>
+</tr>
+<tr>
+<td style="text-align:left">18 May 2026</td>
+<td style="text-align:left">Payment</td>
+<td style="text-align:left">00044311</td>
+<td style="text-align:right">-11,856.00</td>
+<td style="text-align:right">10,940.28</td>
+</tr>
+<tr>
+<td style="text-align:left">18 May 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50724</td>
+<td style="text-align:right">11,855.99</td>
+<td style="text-align:right">22,796.27</td>
+</tr>
+<tr>
+<td style="text-align:left">20 May 2026</td>
+<td style="text-align:left">Payment</td>
+<td style="text-align:left">00044335</td>
+<td style="text-align:right">-10,000.00</td>
+<td style="text-align:right">12,796.27</td>
+</tr>
+<tr>
+<td style="text-align:left">20 May 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50794</td>
+<td style="text-align:right">2,565.01</td>
+<td style="text-align:right">15,361.28</td>
+</tr>
+<tr>
+<td style="text-align:left">20 May 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50795</td>
+<td style="text-align:right">21,745.51</td>
+<td style="text-align:right">37,106.79</td>
+</tr>
+<tr>
+<td style="text-align:left">21 May 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14934</td>
+<td style="text-align:right">-2,565.01</td>
+<td style="text-align:right">34,541.78</td>
+</tr>
+<tr>
+<td style="text-align:left">25 May 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50863</td>
+<td style="text-align:right">12,853.48</td>
+<td style="text-align:right">47,395.26</td>
+</tr>
+<tr>
+<td style="text-align:left">26 May 2026</td>
+<td style="text-align:left">Payment</td>
+<td style="text-align:left">00044405 / 00044406 / 00044409</td>
+<td style="text-align:right">-21,855.00</td>
+<td style="text-align:right">25,540.26</td>
+</tr>
+<tr>
+<td style="text-align:left">29 May 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50942</td>
+<td style="text-align:right">14,307.01</td>
+<td style="text-align:right">39,847.27</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3>June 2026</h3>
+<p><strong>Pure Gas Mini-Summary:</strong></p>
+<ul>
+<li>Gas Opening Balance: <strong>R39,847.27</strong></li>
+<li>Total Gas Invoices: <strong>R61,511.70</strong></li>
+<li>Total Payments &amp; Others: <strong>R-62,147.00</strong></li>
+<li>Total Gas Credit Notes: <strong>R0.00</strong></li>
+<li>Gas Closing Balance: <strong>R39,211.97</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Date</th>
+<th style="text-align:left">Entry Type</th>
+<th style="text-align:left">Doc #</th>
+<th style="text-align:right">Gas Amount (R)</th>
+<th style="text-align:right">Running Gas Bal (R)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>01 Jun</strong></td>
+<td style="text-align:left"><strong>Opening Balance</strong></td>
+<td style="text-align:left">—</td>
+<td style="text-align:right"></td>
+<td style="text-align:right"><strong>39,847.27</strong></td>
+</tr>
+<tr>
+<td style="text-align:left">01 Jun 2026</td>
+<td style="text-align:left">Payment</td>
+<td style="text-align:left">00044469 / 00044470</td>
+<td style="text-align:right">-19,807.00</td>
+<td style="text-align:right">20,040.27</td>
+</tr>
+<tr>
+<td style="text-align:left">01 Jun 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50963</td>
+<td style="text-align:right">11,485.48</td>
+<td style="text-align:right">31,525.75</td>
+</tr>
+<tr>
+<td style="text-align:left">01 Jun 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50969</td>
+<td style="text-align:right">6,840.03</td>
+<td style="text-align:right">38,365.78</td>
+</tr>
+<tr>
+<td style="text-align:left">03 Jun 2026</td>
+<td style="text-align:left">Payment</td>
+<td style="text-align:left">00044498</td>
+<td style="text-align:right">-6,840.00</td>
+<td style="text-align:right">31,525.78</td>
+</tr>
+<tr>
+<td style="text-align:left">03 Jun 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">51014</td>
+<td style="text-align:right">6,840.03</td>
+<td style="text-align:right">38,365.81</td>
+</tr>
+<tr>
+<td style="text-align:left">04 Jun 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">51045</td>
+<td style="text-align:right">14,799.29</td>
+<td style="text-align:right">53,165.10</td>
+</tr>
+<tr>
+<td style="text-align:left">05 Jun 2026</td>
+<td style="text-align:left">Payment</td>
+<td style="text-align:left">00044519</td>
+<td style="text-align:right">-17,000.00</td>
+<td style="text-align:right">36,165.10</td>
+</tr>
+<tr>
+<td style="text-align:left">08 Jun 2026</td>
+<td style="text-align:left">Payment</td>
+<td style="text-align:left">00044566</td>
+<td style="text-align:right">-18,500.00</td>
+<td style="text-align:right">17,665.10</td>
+</tr>
+<tr>
+<td style="text-align:left">08 Jun 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">51082</td>
+<td style="text-align:right">14,912.69</td>
+<td style="text-align:right">32,577.79</td>
+</tr>
+<tr>
+<td style="text-align:left">09 Jun 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">51109</td>
+<td style="text-align:right">6,634.18</td>
+<td style="text-align:right">39,211.97</td>
 </tr>
 </tbody>
 </table>
 <div class="alert-box important"><strong>IMPORTANT:</strong>
-<strong>Final LPG Gas Balance: R65,389.38 Debit</strong></div>
+<strong>Final LPG Gas Balance: R39,211.97 Debit</strong></div>
 <hr>
 <h2>Part 2: Cylinder (CYL) Ledger (Physical Asset Tracker)</h2>
 <p><em>Tracks the physical outstanding cylinder quantities.</em></p>
+<h3>March 2026</h3>
 <table>
 <thead>
 <tr>
@@ -759,8 +1399,8 @@
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left"><strong>28 Feb 2026</strong></td>
-<td style="text-align:left"><strong>Balance B/F</strong></td>
+<td style="text-align:left"><strong>01 Mar</strong></td>
+<td style="text-align:left"><strong>Opening Balance</strong></td>
 <td style="text-align:left">—</td>
 <td style="text-align:right"><strong>24</strong></td>
 <td style="text-align:right"><strong>-75</strong></td>
@@ -769,7 +1409,7 @@
 <td style="text-align:right"><strong>8</strong></td>
 </tr>
 <tr>
-<td style="text-align:left">01 Mar 2026</td>
+<td style="text-align:left">02 Mar 2026</td>
 <td style="text-align:left">Crd Note</td>
 <td style="text-align:left">14518</td>
 <td style="text-align:right">-3</td>
@@ -779,247 +1419,7 @@
 <td style="text-align:right">-10</td>
 </tr>
 <tr>
-<td style="text-align:left">09 Mar 2026</td>
-<td style="text-align:left">Invoice</td>
-<td style="text-align:left">49669</td>
-<td style="text-align:right">+2</td>
-<td style="text-align:right">+1</td>
-<td style="text-align:right">+20</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">+7</td>
-</tr>
-<tr>
-<td style="text-align:left">09 Mar 2026</td>
-<td style="text-align:left">Crd Note</td>
-<td style="text-align:left">14571</td>
-<td style="text-align:right">-2</td>
-<td style="text-align:right">-1</td>
-<td style="text-align:right">-20</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">-7</td>
-</tr>
-<tr>
-<td style="text-align:left">22 Mar 2026</td>
-<td style="text-align:left">Invoice</td>
-<td style="text-align:left">49872</td>
-<td style="text-align:right">+2</td>
-<td style="text-align:right">+1</td>
-<td style="text-align:right">+16</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">+12</td>
-</tr>
-<tr>
-<td style="text-align:left">24 Mar 2026</td>
-<td style="text-align:left">Crd Note</td>
-<td style="text-align:left">14641</td>
-<td style="text-align:right">-2</td>
-<td style="text-align:right">-1</td>
-<td style="text-align:right">-16</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">-12</td>
-</tr>
-<tr>
-<td style="text-align:left">29 Mar 2026</td>
-<td style="text-align:left">Invoice</td>
-<td style="text-align:left">49992</td>
-<td style="text-align:right">+3</td>
-<td style="text-align:right">+5</td>
-<td style="text-align:right">+22</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">+15</td>
-</tr>
-<tr>
-<td style="text-align:left">29 Mar 2026</td>
-<td style="text-align:left">Crd Note</td>
-<td style="text-align:left">14682</td>
-<td style="text-align:right">-3</td>
-<td style="text-align:right">-5</td>
-<td style="text-align:right">-21</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">-15</td>
-</tr>
-<tr>
-<td style="text-align:left">06 Apr 2026</td>
-<td style="text-align:left">Invoice</td>
-<td style="text-align:left">50103</td>
-<td style="text-align:right">+2</td>
-<td style="text-align:right">+5</td>
-<td style="text-align:right">+10</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">+10</td>
-</tr>
-<tr>
-<td style="text-align:left">06 Apr 2026</td>
-<td style="text-align:left">Invoice</td>
-<td style="text-align:left">50112</td>
-<td style="text-align:right">+4</td>
-<td style="text-align:right">+2</td>
-<td style="text-align:right">+29</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">+12</td>
-</tr>
-<tr>
-<td style="text-align:left">06 Apr 2026</td>
-<td style="text-align:left">Crd Note</td>
-<td style="text-align:left">14715</td>
-<td style="text-align:right">-3</td>
-<td style="text-align:right">-5</td>
-<td style="text-align:right">-22</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">-12</td>
-</tr>
-<tr>
-<td style="text-align:left">06 Apr 2026</td>
-<td style="text-align:left">Crd Note</td>
-<td style="text-align:left">14716</td>
-<td style="text-align:right">-2</td>
-<td style="text-align:right">-6</td>
-<td style="text-align:right">-9</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">-10</td>
-</tr>
-<tr>
-<td style="text-align:left">09 Apr 2026</td>
-<td style="text-align:left">Invoice</td>
-<td style="text-align:left">50200</td>
-<td style="text-align:right">+2</td>
-<td style="text-align:right">+2</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">+6</td>
-</tr>
-<tr>
-<td style="text-align:left">11 Apr 2026</td>
-<td style="text-align:left">Crd Note</td>
-<td style="text-align:left">14743</td>
-<td style="text-align:right">-2</td>
-<td style="text-align:right">-2</td>
-<td style="text-align:right">-5</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">-6</td>
-</tr>
-<tr>
-<td style="text-align:left">15 Apr 2026</td>
-<td style="text-align:left">Invoice</td>
-<td style="text-align:left">50255</td>
-<td style="text-align:right">+2</td>
-<td style="text-align:right">+3</td>
-<td style="text-align:right">+15</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">+12</td>
-</tr>
-<tr>
-<td style="text-align:left">15 Apr 2026</td>
-<td style="text-align:left">Crd Note</td>
-<td style="text-align:left">14764</td>
-<td style="text-align:right">-2</td>
-<td style="text-align:right">-3</td>
-<td style="text-align:right">-15</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">-12</td>
-</tr>
-<tr>
-<td style="text-align:left">04 May 2026</td>
-<td style="text-align:left">Invoice</td>
-<td style="text-align:left">50499</td>
-<td style="text-align:right">+2</td>
-<td style="text-align:right">+8</td>
-<td style="text-align:right">+12</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">0</td>
-</tr>
-<tr>
-<td style="text-align:left">04 May 2026</td>
-<td style="text-align:left">Crd Note</td>
-<td style="text-align:left">14845</td>
-<td style="text-align:right">-2</td>
-<td style="text-align:right">-8</td>
-<td style="text-align:right">-12</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">0</td>
-</tr>
-<tr>
-<td style="text-align:left">05 May 2026</td>
-<td style="text-align:left">Invoice</td>
-<td style="text-align:left">50527</td>
-<td style="text-align:right">+5</td>
-<td style="text-align:right">+6</td>
-<td style="text-align:right">+16</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">+8</td>
-</tr>
-<tr>
-<td style="text-align:left">05 May 2026</td>
-<td style="text-align:left">Crd Note</td>
-<td style="text-align:left">14859</td>
-<td style="text-align:right">-4</td>
-<td style="text-align:right">-7</td>
-<td style="text-align:right">-16</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">-8</td>
-</tr>
-<tr>
-<td style="text-align:left">18 Mar 2026</td>
-<td style="text-align:left">Invoice</td>
-<td style="text-align:left">49833</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">+1</td>
-<td style="text-align:right">+12</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">+12</td>
-</tr>
-<tr>
-<td style="text-align:left">19 Mar 2026</td>
-<td style="text-align:left">Crd Note</td>
-<td style="text-align:left">14627</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">-1</td>
-<td style="text-align:right">-12</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">-12</td>
-</tr>
-<tr>
-<td style="text-align:left">20 Apr 2026</td>
-<td style="text-align:left">Invoice</td>
-<td style="text-align:left">50323</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">+3</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">0</td>
-</tr>
-<tr>
-<td style="text-align:left">20 Apr 2026</td>
-<td style="text-align:left">Crd Note</td>
-<td style="text-align:left">14782</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">-3</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">0</td>
-</tr>
-<tr>
-<td style="text-align:left">28 Apr 2026</td>
-<td style="text-align:left">Invoice</td>
-<td style="text-align:left">50402</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">+3</td>
-<td style="text-align:right">+12</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">+10</td>
-</tr>
-<tr>
-<td style="text-align:left">28 Apr 2026</td>
-<td style="text-align:left">Crd Note</td>
-<td style="text-align:left">14813</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">-3</td>
-<td style="text-align:right">-12</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">-10</td>
-</tr>
-<tr>
-<td style="text-align:left">06 Mar 2026</td>
+<td style="text-align:left">07 Mar 2026</td>
 <td style="text-align:left">Invoice</td>
 <td style="text-align:left">49620</td>
 <td style="text-align:right">0</td>
@@ -1029,7 +1429,7 @@
 <td style="text-align:right">+5</td>
 </tr>
 <tr>
-<td style="text-align:left">06 Mar 2026</td>
+<td style="text-align:left">07 Mar 2026</td>
 <td style="text-align:left">Crd Note</td>
 <td style="text-align:left">14555</td>
 <td style="text-align:right">0</td>
@@ -1039,7 +1439,7 @@
 <td style="text-align:right">-9</td>
 </tr>
 <tr>
-<td style="text-align:left">08 Mar 2026</td>
+<td style="text-align:left">09 Mar 2026</td>
 <td style="text-align:left">Invoice</td>
 <td style="text-align:left">49627</td>
 <td style="text-align:right">0</td>
@@ -1049,77 +1449,7 @@
 <td style="text-align:right">0</td>
 </tr>
 <tr>
-<td style="text-align:left">08 Mar 2026</td>
-<td style="text-align:left">Crd Note</td>
-<td style="text-align:left">14560</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">-4</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">0</td>
-</tr>
-<tr>
-<td style="text-align:left">23 Apr 2026</td>
-<td style="text-align:left">Invoice</td>
-<td style="text-align:left">50369</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">+15</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">+8</td>
-</tr>
-<tr>
-<td style="text-align:left">23 Apr 2026</td>
-<td style="text-align:left">Crd Note</td>
-<td style="text-align:left">14804</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">-15</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">-8</td>
-</tr>
-<tr>
-<td style="text-align:left">30 Apr 2026</td>
-<td style="text-align:left">Invoice</td>
-<td style="text-align:left">50482</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">+15</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">+8</td>
-</tr>
-<tr>
-<td style="text-align:left">02 May 2026</td>
-<td style="text-align:left">Crd Note</td>
-<td style="text-align:left">14839</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">-15</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">-8</td>
-</tr>
-<tr>
-<td style="text-align:left">11 May 2026</td>
-<td style="text-align:left">Invoice</td>
-<td style="text-align:left">50611</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">+10</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">+5</td>
-</tr>
-<tr>
-<td style="text-align:left">11 May 2026</td>
-<td style="text-align:left">Crd Note</td>
-<td style="text-align:left">14889</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">-10</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">-5</td>
-</tr>
-<tr>
-<td style="text-align:left">08 Mar 2026</td>
+<td style="text-align:left">09 Mar 2026</td>
 <td style="text-align:left">Invoice</td>
 <td style="text-align:left">49629</td>
 <td style="text-align:right">0</td>
@@ -1129,7 +1459,215 @@
 <td style="text-align:right">+7</td>
 </tr>
 <tr>
-<td style="text-align:left">19 Apr 2026</td>
+<td style="text-align:left">09 Mar 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14560</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-4</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">10 Mar 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">49669</td>
+<td style="text-align:right">+2</td>
+<td style="text-align:right">+1</td>
+<td style="text-align:right">+20</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+7</td>
+</tr>
+<tr>
+<td style="text-align:left">10 Mar 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14571</td>
+<td style="text-align:right">-2</td>
+<td style="text-align:right">-1</td>
+<td style="text-align:right">-20</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-7</td>
+</tr>
+<tr>
+<td style="text-align:left">19 Mar 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">49833</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+1</td>
+<td style="text-align:right">+12</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+12</td>
+</tr>
+<tr>
+<td style="text-align:left">20 Mar 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14627</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-1</td>
+<td style="text-align:right">-12</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-12</td>
+</tr>
+<tr>
+<td style="text-align:left">23 Mar 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">49872</td>
+<td style="text-align:right">+2</td>
+<td style="text-align:right">+1</td>
+<td style="text-align:right">+16</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+12</td>
+</tr>
+<tr>
+<td style="text-align:left">25 Mar 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14641</td>
+<td style="text-align:right">-2</td>
+<td style="text-align:right">-1</td>
+<td style="text-align:right">-16</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-12</td>
+</tr>
+<tr>
+<td style="text-align:left">30 Mar 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">49992</td>
+<td style="text-align:right">+3</td>
+<td style="text-align:right">+5</td>
+<td style="text-align:right">+22</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+15</td>
+</tr>
+<tr>
+<td style="text-align:left">30 Mar 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14682</td>
+<td style="text-align:right">-3</td>
+<td style="text-align:right">-5</td>
+<td style="text-align:right">-21</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-15</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>End Mar</strong></td>
+<td style="text-align:left"><strong>Closing Balance</strong></td>
+<td style="text-align:left">—</td>
+<td style="text-align:right"><strong>21</strong></td>
+<td style="text-align:right"><strong>-78</strong></td>
+<td style="text-align:right"><strong>71</strong></td>
+<td style="text-align:right"><strong>-7</strong></td>
+<td style="text-align:right"><strong>1</strong></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3>April 2026</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Date</th>
+<th style="text-align:left">Entry Type</th>
+<th style="text-align:left">Doc #</th>
+<th style="text-align:right">14kg Qty</th>
+<th style="text-align:right">19kg Qty</th>
+<th style="text-align:right">9kg Qty</th>
+<th style="text-align:right">D.1 Qty</th>
+<th style="text-align:right">S.1 Qty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>01 Apr</strong></td>
+<td style="text-align:left"><strong>Opening Balance</strong></td>
+<td style="text-align:left">—</td>
+<td style="text-align:right"><strong>21</strong></td>
+<td style="text-align:right"><strong>-78</strong></td>
+<td style="text-align:right"><strong>71</strong></td>
+<td style="text-align:right"><strong>-7</strong></td>
+<td style="text-align:right"><strong>1</strong></td>
+</tr>
+<tr>
+<td style="text-align:left">07 Apr 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50103</td>
+<td style="text-align:right">+2</td>
+<td style="text-align:right">+5</td>
+<td style="text-align:right">+10</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+10</td>
+</tr>
+<tr>
+<td style="text-align:left">07 Apr 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50112</td>
+<td style="text-align:right">+4</td>
+<td style="text-align:right">+2</td>
+<td style="text-align:right">+29</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+12</td>
+</tr>
+<tr>
+<td style="text-align:left">07 Apr 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14715</td>
+<td style="text-align:right">-3</td>
+<td style="text-align:right">-5</td>
+<td style="text-align:right">-22</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-12</td>
+</tr>
+<tr>
+<td style="text-align:left">07 Apr 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14716</td>
+<td style="text-align:right">-2</td>
+<td style="text-align:right">-6</td>
+<td style="text-align:right">-9</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-10</td>
+</tr>
+<tr>
+<td style="text-align:left">10 Apr 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50200</td>
+<td style="text-align:right">+2</td>
+<td style="text-align:right">+2</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+6</td>
+</tr>
+<tr>
+<td style="text-align:left">12 Apr 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14743</td>
+<td style="text-align:right">-2</td>
+<td style="text-align:right">-2</td>
+<td style="text-align:right">-5</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-6</td>
+</tr>
+<tr>
+<td style="text-align:left">16 Apr 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50255</td>
+<td style="text-align:right">+2</td>
+<td style="text-align:right">+3</td>
+<td style="text-align:right">+15</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+12</td>
+</tr>
+<tr>
+<td style="text-align:left">16 Apr 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14764</td>
+<td style="text-align:right">-2</td>
+<td style="text-align:right">-3</td>
+<td style="text-align:right">-15</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-12</td>
+</tr>
+<tr>
+<td style="text-align:left">20 Apr 2026</td>
 <td style="text-align:left">Invoice</td>
 <td style="text-align:left">50317</td>
 <td style="text-align:right">0</td>
@@ -1139,7 +1677,27 @@
 <td style="text-align:right">+10</td>
 </tr>
 <tr>
-<td style="text-align:left">20 Apr 2026</td>
+<td style="text-align:left">21 Apr 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50323</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+3</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">21 Apr 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14782</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-3</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">21 Apr 2026</td>
 <td style="text-align:left">Crd Note</td>
 <td style="text-align:left">14785</td>
 <td style="text-align:right">0</td>
@@ -1149,8 +1707,266 @@
 <td style="text-align:right">-10</td>
 </tr>
 <tr>
-<td style="text-align:left"><strong>TOTAL OUTSTANDING</strong></td>
+<td style="text-align:left">24 Apr 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50369</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+15</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+8</td>
+</tr>
+<tr>
+<td style="text-align:left">24 Apr 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14804</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-15</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-8</td>
+</tr>
+<tr>
+<td style="text-align:left">29 Apr 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50402</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+3</td>
+<td style="text-align:right">+12</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+10</td>
+</tr>
+<tr>
+<td style="text-align:left">29 Apr 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14813</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-3</td>
+<td style="text-align:right">-12</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-10</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>End Apr</strong></td>
+<td style="text-align:left"><strong>Closing Balance</strong></td>
 <td style="text-align:left">—</td>
+<td style="text-align:right"><strong>22</strong></td>
+<td style="text-align:right"><strong>-82</strong></td>
+<td style="text-align:right"><strong>74</strong></td>
+<td style="text-align:right"><strong>-7</strong></td>
+<td style="text-align:right"><strong>1</strong></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3>May 2026</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Date</th>
+<th style="text-align:left">Entry Type</th>
+<th style="text-align:left">Doc #</th>
+<th style="text-align:right">14kg Qty</th>
+<th style="text-align:right">19kg Qty</th>
+<th style="text-align:right">9kg Qty</th>
+<th style="text-align:right">D.1 Qty</th>
+<th style="text-align:right">S.1 Qty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>01 May</strong></td>
+<td style="text-align:left"><strong>Opening Balance</strong></td>
+<td style="text-align:left">—</td>
+<td style="text-align:right"><strong>22</strong></td>
+<td style="text-align:right"><strong>-82</strong></td>
+<td style="text-align:right"><strong>74</strong></td>
+<td style="text-align:right"><strong>-7</strong></td>
+<td style="text-align:right"><strong>1</strong></td>
+</tr>
+<tr>
+<td style="text-align:left">01 May 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50482</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+15</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+8</td>
+</tr>
+<tr>
+<td style="text-align:left">03 May 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14839</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-15</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-8</td>
+</tr>
+<tr>
+<td style="text-align:left">05 May 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50499</td>
+<td style="text-align:right">+2</td>
+<td style="text-align:right">+8</td>
+<td style="text-align:right">+12</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">05 May 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14845</td>
+<td style="text-align:right">-2</td>
+<td style="text-align:right">-8</td>
+<td style="text-align:right">-12</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">06 May 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50527</td>
+<td style="text-align:right">+5</td>
+<td style="text-align:right">+6</td>
+<td style="text-align:right">+16</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+8</td>
+</tr>
+<tr>
+<td style="text-align:left">06 May 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14859</td>
+<td style="text-align:right">-4</td>
+<td style="text-align:right">-7</td>
+<td style="text-align:right">-16</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-8</td>
+</tr>
+<tr>
+<td style="text-align:left">12 May 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50611</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+10</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+5</td>
+</tr>
+<tr>
+<td style="text-align:left">12 May 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14889</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-10</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-5</td>
+</tr>
+<tr>
+<td style="text-align:left">13 May 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50651</td>
+<td style="text-align:right">+3</td>
+<td style="text-align:right">+2</td>
+<td style="text-align:right">+15</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+10</td>
+</tr>
+<tr>
+<td style="text-align:left">13 May 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14901</td>
+<td style="text-align:right">-3</td>
+<td style="text-align:right">-2</td>
+<td style="text-align:right">-15</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-10</td>
+</tr>
+<tr>
+<td style="text-align:left">18 May 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50725</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+2</td>
+<td style="text-align:right">+10</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+6</td>
+</tr>
+<tr>
+<td style="text-align:left">19 May 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14925</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-2</td>
+<td style="text-align:right">-10</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-6</td>
+</tr>
+<tr>
+<td style="text-align:left">20 May 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50796</td>
+<td style="text-align:right">+1</td>
+<td style="text-align:right">+1</td>
+<td style="text-align:right">+1</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+1</td>
+</tr>
+<tr>
+<td style="text-align:left">20 May 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50797</td>
+<td style="text-align:right">+1</td>
+<td style="text-align:right">+2</td>
+<td style="text-align:right">+15</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+12</td>
+</tr>
+<tr>
+<td style="text-align:left">21 May 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14933</td>
+<td style="text-align:right">-1</td>
+<td style="text-align:right">-2</td>
+<td style="text-align:right">-15</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-12</td>
+</tr>
+<tr>
+<td style="text-align:left">21 May 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14935</td>
+<td style="text-align:right">-1</td>
+<td style="text-align:right">-1</td>
+<td style="text-align:right">-1</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-1</td>
+</tr>
+<tr>
+<td style="text-align:left">25 May 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50865</td>
+<td style="text-align:right">+2</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+15</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+10</td>
+</tr>
+<tr>
+<td style="text-align:left">26 May 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">14969</td>
+<td style="text-align:right">-2</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-15</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-10</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>End May</strong></td>
+<td style="text-align:left"><strong>Closing Balance</strong></td>
 <td style="text-align:left">—</td>
 <td style="text-align:right"><strong>23</strong></td>
 <td style="text-align:right"><strong>-83</strong></td>
@@ -1160,8 +1976,96 @@
 </tr>
 </tbody>
 </table>
+<hr>
+<h3>June 2026</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Date</th>
+<th style="text-align:left">Entry Type</th>
+<th style="text-align:left">Doc #</th>
+<th style="text-align:right">14kg Qty</th>
+<th style="text-align:right">19kg Qty</th>
+<th style="text-align:right">9kg Qty</th>
+<th style="text-align:right">D.1 Qty</th>
+<th style="text-align:right">S.1 Qty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>01 Jun</strong></td>
+<td style="text-align:left"><strong>Opening Balance</strong></td>
+<td style="text-align:left">—</td>
+<td style="text-align:right"><strong>23</strong></td>
+<td style="text-align:right"><strong>-83</strong></td>
+<td style="text-align:right"><strong>74</strong></td>
+<td style="text-align:right"><strong>-7</strong></td>
+<td style="text-align:right"><strong>1</strong></td>
+</tr>
+<tr>
+<td style="text-align:left">01 Jun 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">50964</td>
+<td style="text-align:right">+2</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+15</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+5</td>
+</tr>
+<tr>
+<td style="text-align:left">01 Jun 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">15004</td>
+<td style="text-align:right">-2</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-15</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-5</td>
+</tr>
+<tr>
+<td style="text-align:left">08 Jun 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">51083</td>
+<td style="text-align:right">+1</td>
+<td style="text-align:right">+2</td>
+<td style="text-align:right">+10</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+8</td>
+</tr>
+<tr>
+<td style="text-align:left">08 Jun 2026</td>
+<td style="text-align:left">Crd Note</td>
+<td style="text-align:left">15026</td>
+<td style="text-align:right">-1</td>
+<td style="text-align:right">-2</td>
+<td style="text-align:right">-10</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">-8</td>
+</tr>
+<tr>
+<td style="text-align:left">09 Jun 2026</td>
+<td style="text-align:left">Invoice</td>
+<td style="text-align:left">51110</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+10</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">+3</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>End Jun</strong></td>
+<td style="text-align:left"><strong>Closing Balance</strong></td>
+<td style="text-align:left">—</td>
+<td style="text-align:right"><strong>23</strong></td>
+<td style="text-align:right"><strong>-83</strong></td>
+<td style="text-align:right"><strong>84</strong></td>
+<td style="text-align:right"><strong>-7</strong></td>
+<td style="text-align:right"><strong>4</strong></td>
+</tr>
+</tbody>
+</table>
 <div class="alert-box tip"><strong>TIP:</strong>
-<strong>Final Outstanding Cylinders (Custody): 14kg: 23 | 19kg: -83 | 9kg: 74 | D.1: -7 | S.1: 1</strong></div>
+<strong>Final Outstanding Cylinders (Custody): 14kg: 23 | 19kg: -83 | 9kg: 84 | D.1: -7 | S.1: 4</strong></div>
 <hr>
 
         <div class="workspace-card">
@@ -1178,15 +2082,15 @@
 <tbody>
 <tr>
 <td>LPG Gas Debt</td>
-<td style="text-align:right">R65,389.38</td>
+<td style="text-align:right">R39,211.97</td>
 </tr>
 <tr>
 <td>Cylinder Financial Balance</td>
-<td style="text-align:right">-R5,117.50</td>
+<td style="text-align:right">R-4,600.00</td>
 </tr>
 <tr>
 <td><strong>Total Debtor Balance</strong></td>
-<td style="text-align:right"><strong>R60,271.88</strong></td>
+<td style="text-align:right"><strong>R34,611.97</strong></td>
 </tr>
 </tbody>
 </table>
@@ -1211,31 +2115,31 @@
 <td>19kg</td>
 <td style="text-align:right">-83</td>
 <td style="text-align:right">R690.00</td>
-<td style="text-align:right">-R57,270.00</td>
+<td style="text-align:right">R-57,270.00</td>
 </tr>
 <tr>
 <td>9kg</td>
-<td style="text-align:right">74</td>
+<td style="text-align:right">84</td>
 <td style="text-align:right">R517.50</td>
-<td style="text-align:right">R38,295.00</td>
+<td style="text-align:right">R43,470.00</td>
 </tr>
 <tr>
 <td>Double-Valve (D.1)</td>
 <td style="text-align:right">-7</td>
 <td style="text-align:right">R1,150.00</td>
-<td style="text-align:right">-R8,050.00</td>
+<td style="text-align:right">R-8,050.00</td>
 </tr>
 <tr>
 <td>Single-Valve (S.1)</td>
-<td style="text-align:right">1</td>
+<td style="text-align:right">4</td>
 <td style="text-align:right">R1,150.00</td>
-<td style="text-align:right">R1,150.00</td>
+<td style="text-align:right">R4,600.00</td>
 </tr>
 <tr>
 <td><strong>Total</strong></td>
-<td style="text-align:right"><strong>8</strong></td>
+<td style="text-align:right"><strong>21</strong></td>
 <td style="text-align:right">—</td>
-<td style="text-align:right"><strong>-R12,650.00</strong></td>
+<td style="text-align:right"><strong>R-4,025.00</strong></td>
 </tr>
 </tbody>
 </table>
@@ -1252,23 +2156,174 @@
 <tbody>
 <tr>
 <td>Cylinder Position</td>
-<td style="text-align:right">-R5,117.50</td>
-<td style="text-align:right">-R12,650.00</td>
-<td style="text-align:right">+R7,532.50</td>
+<td style="text-align:right">R-4,600.00</td>
+<td style="text-align:right">R-4,025.00</td>
+<td style="text-align:right">R-575.00</td>
 </tr>
 </tbody>
 </table>
-<p><strong>ERP Combined Balance:</strong> R60,271.88<br>
-<strong>Reconstructed Balance:</strong> R60,271.88<br>
+<p><strong>ERP Combined Balance (corrected):</strong> R34,611.97<br>
+<strong>Reconstructed Balance:</strong> R34,611.97<br>
 <strong>Variance:</strong> R0.00</p>
 
         </div>
         </div>
         
 
-        <div class="page-footer">
-            Midlands Petroleum &middot; LPG Stock Reconciliation Statement &middot; Generated dynamically under CYL Settlement Doctrine v4
+            <div class="page-footer">
+                Midlands Petroleum &middot; LPG Stock Reconciliation Statement &middot; Generated dynamically under CYL Settlement Doctrine v4
+            </div>
         </div>
     </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabs = document.querySelectorAll('.tab-btn');
+            const panels = document.querySelectorAll('.tab-panel');
+            const sideNavButtons = document.querySelectorAll('.side-nav-btn');
+
+            // Scope total-row class to non-meta table rows containing strong elements
+            document.querySelectorAll('table:not(.meta-table) tr').forEach(row => {
+                if (row.querySelector('strong')) {
+                    row.classList.add('total-row');
+                }
+            });
+
+            // Bind print button event listener
+            const printBtn = document.getElementById('print-btn');
+            if (printBtn) {
+                printBtn.addEventListener('click', () => {
+                    window.print();
+                });
+            }
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const targetPanelId = tab.getAttribute('aria-controls');
+
+                    tabs.forEach(t => {
+                        t.classList.remove('active');
+                        t.setAttribute('aria-selected', 'false');
+                        t.setAttribute('tabindex', '-1');
+                    });
+                    panels.forEach(p => p.classList.remove('active'));
+
+                    tab.classList.add('active');
+                    tab.setAttribute('aria-selected', 'true');
+                    tab.setAttribute('tabindex', '0');
+                    const targetPanel = document.getElementById(targetPanelId);
+                    if (targetPanel) {
+                        targetPanel.classList.add('active');
+                    }
+                    
+                    // Keep sidebar active states in sync for tab clicks
+                    sideNavButtons.forEach(btn => {
+                        if (btn.getAttribute('data-tab') === tab.id) {
+                            btn.classList.add('active');
+                        } else {
+                            btn.classList.remove('active');
+                        }
+                    });
+                });
+                
+                // Keyboard accessibility (Arrow keys, Home, End) - roving focus only (manual activation)
+                tab.addEventListener('keydown', (e) => {
+                    let targetTab = null;
+                    const tabButtons = Array.from(tab.parentElement.querySelectorAll('.tab-btn'));
+                    const index = tabButtons.indexOf(tab);
+
+                    if (e.key === 'ArrowRight') {
+                        targetTab = tabButtons[(index + 1) % tabButtons.length];
+                    } else if (e.key === 'ArrowLeft') {
+                        targetTab = tabButtons[(index - 1 + tabButtons.length) % tabButtons.length];
+                    } else if (e.key === 'Home') {
+                        targetTab = tabButtons[0];
+                    } else if (e.key === 'End') {
+                        targetTab = tabButtons[tabButtons.length - 1];
+                    }
+
+                    if (targetTab) {
+                        tabButtons.forEach(t => t.setAttribute('tabindex', '-1'));
+                        targetTab.setAttribute('tabindex', '0');
+                        targetTab.focus();
+                        e.preventDefault();
+                    }
+                });
+            });
+
+            // Side Control Panel click behavior
+            sideNavButtons.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const tabId = btn.getAttribute('data-tab');
+                    const targetHref = btn.getAttribute('href');
+                    
+                    if (tabId) {
+                        // Toggle matching tab in Part 1
+                        const tabBtn = document.getElementById(tabId);
+                        if (tabBtn) {
+                            tabBtn.click();
+                            // Scroll to Part 1
+                            const dest = document.getElementById('financial-ledgers');
+                            if (dest) {
+                                dest.scrollIntoView({ behavior: 'smooth' });
+                            }
+                        }
+                        e.preventDefault();
+                    } else if (targetHref && targetHref.startsWith('#')) {
+                        const targetId = targetHref.slice(1);
+                        const dest = document.getElementById(targetId);
+                        if (dest) {
+                            dest.scrollIntoView({ behavior: 'smooth' });
+                        }
+                        e.preventDefault();
+                    }
+                });
+            });
+
+            // Scroll-Spy to highlight side control panel links on scroll
+            const spySections = [
+                { id: 'account-dashboard', type: 'dashboard' },
+                { id: 'financial-ledgers', type: 'ledger' },
+                { id: 'monthly-lpg-insights', type: 'insights' },
+                { id: 'payment-allocation-summary', type: 'payment' },
+                { id: 'cylinder-custody-tracker', type: 'custody' }
+            ];
+            if (true) {
+                spySections.push({ id: 'payment-allocation-detail', type: 'detail' });
+                spySections.push({ id: 'internal-audit-disclosure', type: 'audit' });
+            }
+
+            window.addEventListener('scroll', () => {
+                let activeType = null;
+                
+                for (const sec of spySections) {
+                    const el = document.getElementById(sec.id);
+                    if (el) {
+                        const rect = el.getBoundingClientRect();
+                        // If the top of the element is above/near 30% of viewport height
+                        if (rect.top <= window.innerHeight * 0.3) {
+                            activeType = sec.type;
+                        }
+                    }
+                }
+                
+                if (!activeType) {
+                    activeType = 'dashboard';
+                }
+
+                sideNavButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                    if (activeType === 'ledger') {
+                        const activeTab = document.querySelector('.tab-btn.active');
+                        if (activeTab && btn.getAttribute('data-tab') === activeTab.id) {
+                            btn.classList.add('active');
+                        }
+                    } else if (btn.getAttribute('data-section') === activeType) {
+                        btn.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>

@@ -59,7 +59,11 @@ def enhance_html(html_content):
         
     # Extract starting balance from table rows if not in header metadata
     if opening_bal == "N/A":
-        row_match = re.search(r'<tr>\s*<td.*?>.*?</td>\s*<td.*?><strong>(?:Balance B/F|Opening Balance|Balance b/f)</strong></td>.*?<td.*?><strong>(.*?)</strong></td>\s*</tr>', html_content, re.IGNORECASE | re.DOTALL)
+        row_match = re.search(
+            r'<tr>(?:(?!</tr>).)*?<strong>(?:Balance B/F|Opening Balance|Balance b/f)</strong>(?:(?!</tr>).)*?<strong>(.*?)</strong>(?:(?!</tr>).)*?</tr>',
+            html_content,
+            re.IGNORECASE | re.DOTALL
+        )
         if row_match:
             val = row_match.group(1).strip()
             opening_bal = "R" + val.lstrip("R")

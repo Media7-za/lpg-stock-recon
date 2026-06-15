@@ -1,5 +1,5 @@
 # Statement of Account: Jim Gas (JIM001) - Version 4 (Canonical Settlement Allocation Doctrine)
-**Period:** 3 December 2018 → 31 May 2026 &nbsp;|&nbsp; **Account:** JIM001
+**Period:** 3 December 2018 → 30 June 2026 &nbsp;|&nbsp; **Account:** JIM001
 **Opening Balance B/F:** R0.00 (Account inception in ERP database)
 
 ---
@@ -12,35 +12,35 @@
     <div class="dashboard-card position-card-item">
         <h4>Account Position</h4>
         <ul>
-            <li><strong>Total Account Balance:</strong> R146,851.22</li>
-            <li><strong>LPG Gas Debt:</strong> R146,857.72</li>
-            <li><strong>Cylinder Financial Balance:</strong> R-6.50</li>
-            <li><strong>Statement Period:</strong> 3 Dec 2018 – 31 May 2026</li>
+            <li><strong>Total Account Balance:</strong> R${fmtClean(final_combined_balance)}</li>
+            <li><strong>LPG Gas Debt:</strong> R${fmtClean(final_gas_balance)}</li>
+            <li><strong>Cylinder Financial Balance:</strong> R${fmtClean(final_cyl_balance)}</li>
+            <li><strong>Statement Period:</strong> 3 Dec 2018 – 30 Jun 2026</li>
         </ul>
     </div>
     <div class="dashboard-card payment-card-item">
         <h4>Payment Position</h4>
         <ul>
-            <li><strong>Net LPG Gas Debt:</strong> R146,857.72</li>
-            <li><strong>Unpaid LPG Invoices:</strong> R241,155.91</li>
-            <li><strong>Unmatched / Overpayments:</strong> R94,298.19</li>
-            <li><strong>Allocation Period:</strong> 1 Mar 2022 – 31 May 2026</li>
+            <li><strong>Net LPG Gas Debt:</strong> R${fmtClean(final_gas_balance)}</li>
+            <li><strong>Unpaid LPG Invoices:</strong> R${fmtClean(totalUnpaidLpgInvoices)}</li>
+            <li><strong>Unmatched / Overpayments:</strong> R${fmtClean(totalUnmatchedOverpayments)}</li>
+            <li><strong>Allocation Period:</strong> 1 Mar 2022 – 30 Jun 2026</li>
         </ul>
     </div>
     <div class="dashboard-card cylinder-card-item">
         <h4>Cylinder Position</h4>
         <ul>
-            <li><strong>Cylinder Financial Balance:</strong> R-6.50</li>
-            <li><strong>Cylinder Custody Exposure:</strong> R26,220.00</li>
-            <li><strong>Cylinder Variance:</strong> R-26,226.50</li>
+            <li><strong>Cylinder Financial Balance:</strong> R${fmtClean(final_cyl_balance)}</li>
+            <li><strong>Cylinder Custody Exposure:</strong> R${fmtClean(totalCylinderCustodyExposure)}</li>
+            <li><strong>Cylinder Variance:</strong> R${fmtClean(cylVariance)}</li>
         </ul>
     </div>
 <!-- INTERNAL_ONLY_START -->
 <div class="dashboard-card internal-audit-card-item">
     <h4>Internal Audit Snapshot</h4>
     <ul>
-        <li><strong>Corrected ERP Stated Balance:</strong> R146,907.13</li>
-        <li><strong>ERP Residual Variance:</strong> R55.91</li>
+        <li><strong>Corrected ERP Stated Balance:</strong> R${fmtClean(erpStatedBalance)}</li>
+        <li><strong>ERP Residual Variance:</strong> R${fmtClean(erpVariance)}</li>
         <li><strong>Naive split-payment defect:</strong> R284,760.09</li>
         <li><strong>Credit Note 14198:</strong> Allocated to Invoice 48578 via ref_no rule</li>
         <li>Part 1E allocation detail available internally</li>
@@ -51,15 +51,15 @@
 
 ### LPG Monthly Insight Summary
 
-* **Total Months Reviewed:** 51 months (March 2022 – May 2026)
-* **Fully Settled Months:** 13
-* **Partially Settled Months:** 10
-* **Overpaid Months:** 16
-* **Unpaid Months:** 12
-* **Oldest Unpaid LPG Month:** March 2022 (R994.48 unpaid)
-* **Largest Unpaid LPG Month:** January 2025 (R17,574.84 unpaid)
-* **Most Recent Fully Settled LPG Month:** November 2025
-* **Net LPG Gas Debt:** R146,857.72
+* **Total Months Reviewed:** ${totalMonthsReviewed} months (March 2022 – June 2026)
+* **Fully Settled Months:** ${fullySettledCount}
+* **Partially Settled Months:** ${partiallySettledCount}
+* **Overpaid Months:** ${overpaidCount}
+* **Unpaid Months:** ${unpaidCount}
+* **Oldest Unpaid LPG Month:** ${oldestUnpaidLpgMonth}
+* **Largest Unpaid LPG Month:** ${largestUnpaidLpgMonth}
+* **Most Recent Fully Settled LPG Month:** ${mostRecentFullySettledLpgMonth}
+* **Net LPG Gas Debt:** R${fmtClean(final_gas_balance)}
 
 ---
 
@@ -1781,11 +1781,21 @@
 | 20 May 2026 | Invoice | 50810 | 5,056.22 | 146,851.22 |
 | 20 May 2026 | Invoice | 50811 | 3,622.50 | 150,473.72 |
 | 20 May 2026 | Crd Note | 14940 | -3,622.50 | 146,851.22 |
+| 27 May 2026 | Invoice | 50920 | 5,056.22 | 151,907.44 |
+
+---
+
+#### June 2026
+
+| Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
+| :--- | :--- | :--- | ---: | ---: |
+| **01 Jun** | **Opening Balance** | — | | **151,907.44** |
+| 04 Jun 2026 | Payment | 00044555 | -11,666.12 | 140,241.32 |
 
 ---
 
 ### Part 1B: LPG Gas Financial Ledger
-*Shows only gas-related transactions and payments. Reconciles to LPG Gas Debt = R146,857.72.*
+*Shows only gas-related transactions and payments. Reconciles to LPG Gas Debt = R${fmtClean(final_gas_balance)}.*
 
 #### December 2018
 
@@ -3052,11 +3062,21 @@
 | 08 May 2026 | Invoice | 50594 |  | 3,370.81 | 138,430.69 |
 | 15 May 2026 | Invoice | 50712 |  | 3,370.81 | 141,801.50 |
 | 20 May 2026 | Invoice | 50810 |  | 5,056.22 | 146,857.72 |
+| 27 May 2026 | Invoice | 50920 |  | 5,056.22 | 151,913.94 |
+
+---
+
+#### June 2026
+
+| Date | Entry Type | Doc # | Description | Amount (R) | Running Bal (R) |
+| :--- | :--- | :--- | :--- | ---: | ---: |
+| **01 Jun** | **Opening Balance** | — | | | **151,913.94** |
+| 04 Jun 2026 | Payment | 00044555 |  | -11,666.12 | 140,247.82 |
 
 ---
 
 ### Part 1C: Cylinder Financial Ledger
-*Shows only cylinder-related transactions (CYL invoices/CNs, no uncorroborated CYL payments). Cylinder financial balance = R-6.50.*
+*Shows only cylinder-related transactions (CYL invoices/CNs, no uncorroborated CYL payments). Cylinder financial balance = R${fmtClean(final_cyl_balance)}.*
 
 #### January 2019
 
@@ -4079,7 +4099,7 @@
 | 2023 | R167,295.76 | R166,300.38 | R995.38 | R36,754.16 | R0.00 | R36,754.16 | — |
 | 2024 | R174,818.13 | R112,719.27 | R62,098.86 | R98,853.02 | R0.00 | R98,853.02 | — |
 | 2025 | R174,291.24 | R99,331.58 | R74,959.66 | R173,812.68 | R0.00 | R173,812.68 | — |
-| 2026 | R67,343.23 | R0.00 | R67,343.23 | R241,155.91 | R94,298.19 | R146,857.72 | Unmatched/overpayment pool applied as a reconciliation offset to arrive at final LPG Gas Debt of R146,857.72. |
+| 2026 | R72,399.45 | R11,666.12 | R60,733.33 | R234,546.01 | R94,298.19 | R140,247.82 | Unmatched/overpayment pool applied as a reconciliation offset to arrive at final LPG Gas Debt of R140,247.82. |
 
 
 <!-- INTERNAL_ONLY_START -->
@@ -4135,9 +4155,9 @@
 | 2025 | December | R15,560.88 | R0.00 | R11,666.11 | 43199 | 05 Feb 2026 | R0.00 | R11,666.11 | OVERPAID | [REVIEW_REQUIRED] Inferred from ERP ledger allocations. |
 | 2026 | January | R16,919.61 | R0.00 | R14,323.09 | — | — | R0.00 | R14,323.09 | UNPAID | No payment allocated. |
 | 2026 | February | R10,559.95 | R0.00 | R10,559.95 | — | — | R0.00 | R10,559.95 | UNPAID | No payment allocated. |
-| 2026 | March | R15,897.54 | R0.00 | R11,937.56 | — | — | R0.00 | R11,937.56 | UNPAID | No payment allocated. |
+| 2026 | March | R15,897.54 | R0.00 | R11,937.56 | 44555 | 05 Jun 2026 | R11,666.12 | R271.44 | PARTIALLY_SETTLED | Underpaid. R271.44 remaining unpaid. |
 | 2026 | April | R14,303.99 | R0.00 | R14,303.99 | — | — | R0.00 | R14,303.99 | UNPAID | No payment allocated. |
-| 2026 | May | R16,218.64 | R0.00 | R16,218.64 | — | — | R0.00 | R16,218.64 | UNPAID | No payment allocated. |
+| 2026 | May | R21,274.86 | R0.00 | R21,274.86 | — | — | R0.00 | R21,274.86 | UNPAID | No payment allocated. |
 
 <!-- INTERNAL_ONLY_END -->
 
@@ -4147,7 +4167,7 @@
 <div id="payment-allocation-detail"></div>
 
 ### Part 1E: Payment-to-Invoice Allocation Detail
-*Internal Audit Trail: Detailed payment-to-invoice allocation edges from March 2022 to May 2026.*
+*Internal Audit Trail: Detailed payment-to-invoice allocation edges from March 2022 to June 2026.*
 
 
 | Payment Date | Payment Doc | Invoice Date | Invoice Doc | Invoice Month | Amount Allocated | Allocation Type | Evidence Source | Notes |
@@ -4346,6 +4366,9 @@
 | 05 Feb 2026 | 43199 | 14 Nov 2025 | 47670 | 2025-11 | R2,584.37 | SPLIT_PAYMENT_PORTION | ERP_LEDGER | Allocated to 2025-11 LPG invoice. |
 | 05 Feb 2026 | 43199 | 21 Nov 2025 | 47848 | 2025-11 | R3,876.56 | SPLIT_PAYMENT_PORTION | ERP_LEDGER | Allocated to 2025-11 LPG invoice. |
 | 05 Feb 2026 | 43199 | 28 Nov 2025 | 47983 | 2025-11 | R2,584.37 | SPLIT_PAYMENT_PORTION | ERP_LEDGER | Allocated to 2025-11 LPG invoice. |
+| 05 Jun 2026 | 44555 | 04 Mar 2026 | 49540 | 2026-03 | R3,959.98 | SPLIT_PAYMENT_PORTION | ERP_LEDGER | Allocated to 2026-03 LPG invoice. |
+| 05 Jun 2026 | 44555 | 13 Mar 2026 | 49727 | 2026-03 | R3,988.79 | SPLIT_PAYMENT_PORTION | ERP_LEDGER | Allocated to 2026-03 LPG invoice. |
+| 05 Jun 2026 | 44555 | 20 Mar 2026 | 49842 | 2026-03 | R3,717.35 | SPLIT_PAYMENT_PORTION | ERP_LEDGER | Allocated to 2026-03 LPG invoice. |
 
 
 ---
@@ -4362,8 +4385,8 @@ During the reconstruction of JIM001, we verified that the account contains large
    * By implementing corrected payment consolidation (grouping splits by document number and date before cross-file deduplication), the true payment total of **-R950,729.61** is preserved.
    * Additionally, all Credit Notes were double-taxed in the header layer (populating `amount_excl` with the tax-inclusive total), creating a **R78,261.93** error.
 2. **True Reconciled Balance & Residual Variance:**
-   * The true combined customer balance at 31 May 2026 is **R146,851.22** (LPG Gas Debt: R146,857.72, Cylinder Financial Balance: R-6.50).
-   * The fully corrected ERP stated balance is **R146,907.13**, resulting in a tiny, residual unexplained variance of only **R55.91**.
+   * The true combined customer balance at 31 May 2026 is **R140,241.32** (LPG Gas Debt: R140,247.82, Cylinder Financial Balance: R-6.50).
+   * The fully corrected ERP stated balance is **R140,297.23**, resulting in a tiny, residual unexplained variance of only **R55.91**.
 
 ---
 <!-- INTERNAL_ONLY_END -->
@@ -5581,7 +5604,15 @@ During the reconstruction of JIM001, we verified that the account contains large
 | 18 May 2026 | Crd Note | 14924 | 0 | 0 | 0 | 0 | -2 |
 | 20 May 2026 | Invoice | 50811 | 0 | 0 | 0 | 0 | +3 |
 | 20 May 2026 | Crd Note | 14940 | 0 | 0 | 0 | 0 | -3 |
-| **End May** | **Closing Balance** | — | **1** | **24** | **2** | **16** | **-9** | + `
+| **End May** | **Closing Balance** | — | **1** | **24** | **2** | **16** | **-9** |
+
+---
+
+### June 2026
+| Date | Entry Type | Doc # | 14kg Qty | 19kg Qty | 9kg Qty | D.1 Qty | S.1 Qty |
+| :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: |
+| **01 Jun** | **Opening Balance** | — | **1** | **24** | **2** | **16** | **-9** |
+| **End Jun** | **Closing Balance** | — | **1** | **24** | **2** | **16** | **-9** | + `
 
 ---
 
@@ -5594,9 +5625,9 @@ During the reconstruction of JIM001, we verified that the account contains large
 
 | Component | Amount |
 |---|---:|
-| LPG Gas Debt | R146,857.72 |
+| LPG Gas Debt | R140,247.82 |
 | Cylinder Financial Balance | R-6.50 |
-| **Total Debtor Balance** | **R146,851.22** |
+| **Total Debtor Balance** | **R140,241.32** |
 
 ### 2. Custody Position
 
@@ -5619,26 +5650,26 @@ During the reconstruction of JIM001, we verified that the account contains large
 
 | Metric | Value |
 |---|---:|
-| Allocation Period | 1 March 2022 – 31 May 2026 |
-| Total Invoice Months Reviewed | 51 |
-| Total LPG Invoices Reviewed | 253 |
-| Total Payments Reviewed (Unique) | 45 |
+| Allocation Period | 1 March 2022 – 30 June 2026 |
+| Total Invoice Months Reviewed | ${matches.length} |
+| Total LPG Invoices Reviewed | 254 |
+| Total Payments Reviewed (Unique) | 46 |
 | Pre-March 2022 Opening LPG Balance B/F | R28,709.91 |
-| Reconstructed LPG Gas Debt | R146,857.72 |
-| Total Unpaid Invoices Sum (including B/F) | R241,155.91 |
-| Total Unmatched / Overpayment Pool | R94,298.19 |
-| Net LPG Gas Debt (Unpaid - Unmatched/Overpaid) | R146,857.72 |
-| Residual ERP Variance | R55.91 |
+| Reconstructed LPG Gas Debt | R${fmtClean(final_gas_balance)} |
+| Total Unpaid Invoices Sum (including B/F) | R${fmtClean(totalUnpaidLpgInvoices)} |
+| Total Unmatched / Overpayment Pool | R${fmtClean(totalUnmatchedOverpayments)} |
+| Net LPG Gas Debt (Unpaid - Unmatched/Overpaid) | R${fmtClean(final_gas_balance)} |
+| Residual ERP Variance | R${fmtClean(erpVariance)} |
 | Oldest Unpaid LPG Invoice Month | March 2022 |
-| Most Recent Unpaid LPG Invoice Month | May 2026 |
-| Number of Fully Settled Months (Exact Matches) | 13 |
-| Number of Partially Settled / Underpaid Months | 10 |
-| Number of Overpaid Months | 16 |
-| Number of Completely Unpaid Months | 12 |
+| Most Recent Unpaid LPG Invoice Month | June 2026 |
+| Number of Fully Settled Months (Exact Matches) | ${fullySettledCount} |
+| Number of Partially Settled / Underpaid Months | ${partiallySettledCount} |
+| Number of Overpaid Months | ${overpaidCount} |
+| Number of Completely Unpaid Months | ${unpaidCount} |
 
-**ERP Combined Balance:** R146,907.13  
-**Reconstructed Balance:** R146,851.22  
-**Variance:** R55.91
+**ERP Combined Balance:** R${fmtClean(erpStatedBalance)}  
+**Reconstructed Balance:** R${fmtClean(final_combined_balance)}  
+**Variance:** R${fmtClean(erpVariance)}
 
 <!-- DEBTOR_POSITION_WORKSPACE_END -->
 <!-- INTERNAL_ONLY_END -->

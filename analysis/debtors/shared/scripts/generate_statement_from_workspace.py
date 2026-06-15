@@ -403,7 +403,7 @@ def main():
     part2_sections = []
     
     # Group period cylinder transactions by month_year
-    df_cyl_period = df_cyl_txs[(df_cyl_txs['tx_date'] >= '2018-12-03') & (df_cyl_txs['tx_date'] <= '2026-05-31')]
+    df_cyl_period = df_cyl_txs[(df_cyl_txs['tx_date'] >= '2018-12-03') & (df_cyl_txs['tx_date'] <= '2026-06-30')]
     cyl_months = sorted(list(set([x[:7] for x in df_cyl_period['tx_date']])))
     
     for m_key in month_keys_sorted: # Use the global months list to keep chronological month headers consistent
@@ -459,7 +459,7 @@ def main():
 
     # Reassemble Statement Markdown
     stmt_md = f"""# Statement of Account: Jim Gas (JIM001) - Version 4 (Spreadsheet-First Workspace Doctrine)
-**Period:** 3 December 2018 → 31 May 2026 &nbsp;|&nbsp; **Account:** JIM001
+**Period:** 3 December 2018 → 30 June 2026 &nbsp;|&nbsp; **Account:** JIM001
 **Opening Balance B/F:** R0.00 (Account inception in ERP database)
 
 ---
@@ -475,7 +475,7 @@ def main():
             <li><strong>Total Account Balance:</strong> R{fmt_clean(metrics['total_reconstructed_balance'])}</li>
             <li><strong>LPG Gas Debt:</strong> R{fmt_clean(metrics['lpg_gas_debt'])}</li>
             <li><strong>Cylinder Financial Balance:</strong> R{fmt_clean(metrics['cylinder_financial_balance'])}</li>
-            <li><strong>Statement Period:</strong> 3 Dec 2018 – 31 May 2026</li>
+            <li><strong>Statement Period:</strong> 3 Dec 2018 – 30 Jun 2026</li>
         </ul>
     </div>
     <div class="dashboard-card payment-card-item">
@@ -484,7 +484,7 @@ def main():
             <li><strong>Net LPG Gas Debt:</strong> R{fmt_clean(metrics['net_lpg_debt'])}</li>
             <li><strong>Unpaid LPG Invoices:</strong> R{fmt_clean(metrics['unpaid_lpg_invoices'])}</li>
             <li><strong>Unmatched / Overpayments:</strong> R{fmt_clean(metrics['unmatched_overpayments'])}</li>
-            <li><strong>Allocation Period:</strong> 1 Mar 2022 – 31 May 2026</li>
+            <li><strong>Allocation Period:</strong> 1 Mar 2022 – 30 Jun 2026</li>
         </ul>
     </div>
     <div class="dashboard-card cylinder-card-item">
@@ -511,7 +511,7 @@ def main():
 
 ### LPG Monthly Insight Summary
 
-* **Total Months Reviewed:** {totalMonthsReviewed} months (March 2022 – May 2026)
+* **Total Months Reviewed:** {totalMonthsReviewed} months (March 2022 – June 2026)
 * **Fully Settled Months:** {fullySettledCount}
 * **Partially Settled Months:** {partiallySettledCount}
 * **Overpaid Months:** {overpaidCount}
@@ -573,7 +573,7 @@ def main():
 <div id="payment-allocation-detail"></div>
 
 ### Part 1E: Payment-to-Invoice Allocation Detail
-*Internal Audit Trail: Detailed payment-to-invoice allocation edges from March 2022 to May 2026.*
+*Internal Audit Trail: Detailed payment-to-invoice allocation edges from March 2022 to June 2026.*
 
 {part1e_table}
 
@@ -598,7 +598,7 @@ During the reconstruction of JIM001, we verified that the account contains large
    * By implementing corrected payment consolidation (grouping splits by document number and date before cross-file deduplication), the true payment total of **-R950,729.61** is preserved.
    * Additionally, all Credit Notes were double-taxed in the header layer (populating `amount_excl` with the tax-inclusive total), creating a **R78,261.93** error.
 2. **True Reconciled Balance & Residual Variance:**
-   * The true combined customer balance at 31 May 2026 is **R{fmt_clean(metrics['total_reconstructed_balance'])}** (LPG Gas Debt: R{fmt_clean(metrics['lpg_gas_debt'])}, Cylinder Financial Balance: R{fmt_clean(metrics['cylinder_financial_balance'])}).
+   * The true combined customer balance at 30 June 2026 is **R{fmt_clean(metrics['total_reconstructed_balance'])}** (LPG Gas Debt: R{fmt_clean(metrics['lpg_gas_debt'])}, Cylinder Financial Balance: R{fmt_clean(metrics['cylinder_financial_balance'])}).
    * The fully corrected ERP stated balance is **R{fmt_clean(metrics['corrected_erp_stated_balance'])}**, resulting in a tiny, residual unexplained variance of only **R{fmt_clean(metrics['erp_residual_variance'])}**.
 
 ---
@@ -645,8 +645,8 @@ During the reconstruction of JIM001, we verified that the account contains large
 
 | Metric | Value |
 |---|---:|
-| Allocation Period | 1 March 2022 – 31 May 2026 |
-| Total Invoice Months Reviewed | 51 |
+| Allocation Period | 1 March 2022 – 30 June 2026 |
+| Total Invoice Months Reviewed | {totalMonthsReviewed} |
 | Total LPG Invoices Reviewed | {len(df_invoices[df_invoices['is_lpg'] & (df_invoices['entry_type'] == 'Invoice')])} |
 | Total Payments Reviewed (Unique) | {len(df_payments)} |
 | Pre-March 2022 Opening LPG Balance B/F | R28,709.91 |
@@ -656,7 +656,7 @@ During the reconstruction of JIM001, we verified that the account contains large
 | Net LPG Gas Debt (Unpaid - Unmatched/Overpaid) | R{fmt_clean(metrics['lpg_gas_debt'])} |
 | Residual ERP Variance | R{fmt_clean(metrics['erp_residual_variance'])} |
 | Oldest Unpaid LPG Invoice Month | March 2022 |
-| Most Recent Unpaid LPG Invoice Month | May 2026 |
+| Most Recent Unpaid LPG Invoice Month | June 2026 |
 | Number of Fully Settled Months (Exact Matches) | {fullySettledCount} |
 | Number of Partially Settled / Underpaid Months | {partiallySettledCount} |
 | Number of Overpaid Months | {overpaidCount} |

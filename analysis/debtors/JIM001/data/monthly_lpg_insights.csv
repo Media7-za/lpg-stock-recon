@@ -75,6 +75,6 @@ year,month,month_year,lpg_invoice_total,lpg_credit_notes,net_lpg_invoiced,paymen
 2025,December,2025-12,15560.88,-3894.77,11666.11,—,—,0.0,11666.11,UNPAID,True,[REVIEW_REQUIRED] Inferred from ERP ledger allocations.
 2026,January,2026-01,16919.61,-2596.52,14323.09,—,—,0.0,14323.09,UNPAID,False,No payment allocated.
 2026,February,2026-02,10559.95,0.0,10559.95,—,—,0.0,10559.95,UNPAID,False,No payment allocated.
-2026,March,2026-03,15897.54,-3959.98,11937.56,—,—,0.0,11937.56,UNPAID,False,No payment allocated.
+2026,March,2026-03,15897.54,-3959.98,11937.56,44555,2026-06-05,11666.12,271.44,PARTIALLY_SETTLED,False,Underpaid. R271.44 remaining unpaid.
 2026,April,2026-04,14303.99,0.0,14303.99,—,—,0.0,14303.99,UNPAID,False,No payment allocated.
-2026,May,2026-05,16218.64,0.0,16218.64,—,—,0.0,16218.64,UNPAID,False,No payment allocated.
+2026,May,2026-05,21274.86,0.0,21274.86,—,—,0.0,21274.86,UNPAID,False,No payment allocated.

@@ -1,0 +1,25 @@
+{
+  "debtorCode": "WES004",
+  "clientName": "West Coast Fish & Chips",
+  "status": "collection",
+  "reconState": "complete",
+  "financials": {
+    "totalOutstanding": 36216.20,
+    "lastInvoiceDate": "2026-06-11",
+    "lastPaymentDate": "2026-04-10",
+    "agedDebt180Plus": 7443.73
+  },
+  "collections": {
+    "actionRequired": true,
+    "actionType": "letter-of-demand",
+    "dateSent": "2026-06-15",
+    "deadlineDate": "2026-06-29",
+    "notes": "WES002 balance of R7,443.73 is long overdue. Letter of Demand sent. WES004 account is active."
+  },
+  "history": [
+    {
+      "date": "2026-06-15",
+      "event": "Onboarded debtor. Confirmed WES002 and WES004 mapping. Drafted and issued formal Letter of Demand for WES002 aged debt."
+    }
+  ]
+}

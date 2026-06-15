@@ -1,0 +1,31 @@
+{
+  "debtorCode": "TAN001",
+  "clientName": "Tanya Lehman",
+  "status": "collection",
+  "reconState": "complete",
+  "financials": {
+    "totalOutstanding": 96284.18,
+    "lastInvoiceDate": "2026-06-01",
+    "lastPaymentDate": "2026-06-01",
+    "agedDebt180Plus": 66565.10
+  },
+  "collections": {
+    "actionRequired": true,
+    "actionType": "prepare-lod",
+    "dateSent": null,
+    "deadlineDate": null,
+    "nextAction": "draft_lod",
+    "nextActionDate": "2026-06-16",
+    "notes": "Reconciliation v4 complete. Substantial historical aged debt (Pre-Jan 2026). Sent to collections."
+  },
+  "history": [
+    {
+      "date": "2026-06-15",
+      "event": "Initialized micro-project tracking."
+    },
+    {
+      "date": "2026-06-15",
+      "event": "Reconciliation v4 baseline verified. Moved to collection due to R66.5k 180+ aged debt."
+    }
+  ]
+}

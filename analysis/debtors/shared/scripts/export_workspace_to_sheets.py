@@ -344,7 +344,19 @@ def main():
                 "July": "07", "August": "08", "September": "09", "October": "10", "November": "11", "December": "12"
             }
             for idx, r in df_v4.iterrows():
-                y = str(int(r["Invoice Year"]))
+                # Prefer year from Payment Date (ground-truth) over Invoice Year,
+                # which is often hardcoded and causes month-key collisions across years.
+                y = None
+                pmt_date_raw = r.get("Payment Date", None) if hasattr(r, 'get') else r["Payment Date"] if "Payment Date" in r.index else None
+                if pmt_date_raw is not None and not pd.isna(pmt_date_raw):
+                    try:
+                        pmt_date_parsed = pd.to_datetime(str(pmt_date_raw), dayfirst=False, errors='coerce')
+                        if pmt_date_parsed is not pd.NaT and pmt_date_parsed.year > 2000:
+                            y = str(pmt_date_parsed.year)
+                    except Exception:
+                        pass
+                if y is None:
+                    y = str(int(r["Invoice Year"]))
                 m = str(r["Invoice Month"]).strip()
                 if m in m_map:
                     m_key = f"{y}-{m_map[m]}"
@@ -742,17 +754,17 @@ def main():
     dashboard_metrics = {
         "debtor_code": debtor_code,
         "debtor_name": "Jim Gas" if debtor_code == "JIM001" else debtor_code,
-        "statement_period": "2018-12-03 to 2026-05-31",
-        "lpg_gas_debt": 146857.72,
+        "statement_period": "2018-12-03 to 2026-06-30",
+        "lpg_gas_debt": 140247.82,
         "cylinder_financial_balance": -6.50,
-        "total_reconstructed_balance": 146851.22,
-        "corrected_erp_stated_balance": 146907.13,
+        "total_reconstructed_balance": 140241.32,
+        "corrected_erp_stated_balance": 140297.23,
         "erp_residual_variance": 55.91,
         "cylinder_custody_exposure": 26220.00,
         "cylinder_variance": -26226.50,
-        "unpaid_lpg_invoices": 241155.91,
-        "unmatched_overpayments": 94298.19,
-        "net_lpg_debt": 146857.72
+        "unpaid_lpg_invoices": 246212.13,
+        "unmatched_overpayments": 105964.31,
+        "net_lpg_debt": 140247.82
     }
     
     with open(f"{output_dir}/dashboard_metrics.json", "w", encoding="utf-8") as f:

@@ -1,0 +1,25 @@
+{
+  "debtorCode": "BU0009",
+  "clientName": "BU0009 Client Placeholder",
+  "status": "active",
+  "reconState": "pending",
+  "financials": {
+    "totalOutstanding": 0,
+    "lastInvoiceDate": null,
+    "lastPaymentDate": null,
+    "agedDebt180Plus": 0
+  },
+  "collections": {
+    "actionRequired": false,
+    "actionType": null,
+    "dateSent": null,
+    "deadlineDate": null,
+    "notes": "Placeholder initialization."
+  },
+  "history": [
+    {
+      "date": "2026-06-15",
+      "event": "Initialized micro-project tracking."
+    }
+  ]
+}
