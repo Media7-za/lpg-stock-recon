@@ -1,25 +1,31 @@
 {
   "debtorCode": "JIM001",
-  "clientName": "JIM001 Client Placeholder",
+  "clientName": "Jim Gas",
   "status": "active",
-  "reconState": "pending",
+  "reconState": "complete",
   "financials": {
-    "totalOutstanding": 0,
-    "lastInvoiceDate": null,
-    "lastPaymentDate": null,
-    "agedDebt180Plus": 0
+    "totalOutstanding": 140297.23,
+    "lastInvoiceDate": "2026-05-28",
+    "lastPaymentDate": "2026-06-05",
+    "agedDebt180Plus": 73007.40
   },
   "collections": {
     "actionRequired": false,
     "actionType": null,
     "dateSent": null,
     "deadlineDate": null,
-    "notes": "Placeholder initialization."
+    "nextAction": null,
+    "nextActionDate": null,
+    "notes": "Reconciliation baseline complete through June 2026."
   },
   "history": [
     {
+      "date": "2026-06-12",
+      "event": "Extended statement period to 30 June 2026 to incorporate June payment."
+    },
+    {
       "date": "2026-06-15",
-      "event": "Initialized micro-project tracking."
+      "event": "Fixed monthly matches year-collision bug and regenerated statements."
     }
   ]
 }

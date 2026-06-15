@@ -7,12 +7,12 @@
 | Metric | Value |
 |---|---|
 | **Accounts** | 8 |
-| **Recon Complete** | 2 |
-| **Recon Pending** | 6 |
+| **Recon Complete** | 3 |
+| **Recon Pending** | 5 |
 | **Collection Active** | 2 |
 | **Legal** | 0 |
-| **Total Outstanding** | **R132 500,38** |
-| **180+ Debt** | **R74 008,83** |
+| **Total Outstanding** | **R272 797,61** |
+| **180+ Debt** | **R147 016,23** |
 | **LOD Issued** | 1 |
 | **Awaiting Response** | 1 |
 
@@ -23,12 +23,12 @@ Accounts are automatically sorted by Risk Score using the Collections Intelligen
 | Risk | Code | Client Name | Recon State | Workflow Status | Outstanding | Aged 180d+ | Next Action |
 |---|---|---|---|---|---|---|---|
 | **55** | [WES004](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/WES004/) | West Coast Fish & Chips | ✅ Complete | 🔴 COLLECTION | R36 216,20 | R7 443,73 | ⚠️ **letter-of-demand** (by 2026-06-29) |
+| **40** | [JIM001](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/JIM001/) | Jim Gas | ✅ Complete | 🟢 ACTIVE | R140 297,23 | R73 007,40 | None |
 | **40** | [TAN001](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/TAN001/) | Tanya Lehman | ✅ Complete | 🔴 COLLECTION | R96 284,18 | R66 565,10 | ⚠️ **draft_lod** (by 2026-06-16) |
 | **0** | [BU0009](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/BU0009/) | BU0009 Client Placeholder | ⏳ Pending | 🟢 ACTIVE | R0,00 | R0,00 | None |
 | **0** | [FAM000](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/FAM000/) | FAM000 Client Placeholder | ⏳ Pending | 🟢 ACTIVE | R0,00 | R0,00 | None |
 | **0** | [FAM001](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/FAM001/) | FAM001 Client Placeholder | ⏳ Pending | 🟢 ACTIVE | R0,00 | R0,00 | None |
 | **0** | [JEN001](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/JEN001/) | JEN001 Client Placeholder | ⏳ Pending | 🟢 ACTIVE | R0,00 | R0,00 | None |
-| **0** | [JIM001](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/JIM001/) | JIM001 Client Placeholder | ⏳ Pending | 🟢 ACTIVE | R0,00 | R0,00 | None |
 | **0** | [SA0001](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/SA0001/) | SA0001 Client Placeholder | ⏳ Pending | 🟢 ACTIVE | R0,00 | R0,00 | None |
 
 ---
