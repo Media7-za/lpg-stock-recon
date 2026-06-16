@@ -185,3 +185,11 @@ Where:
 - `cylinderVariance = cylinderFinancialBalance - cylinderCustodyExposure`
 - `totalDebtorBalance = gasDebt + cylinderFinancialBalance`
 
+## 13. Gross Flow Overpayment & Surplus Allocation Rule
+**Discovered during:** JIM001 August 2022 reconciliation (June 2026).
+
+**Problem:** Under the gross flow invoice vs. payment matching methodology, a monthly cash payment (e.g., STAT:204, R15,885.27) can exceed the net LPG invoices billed in that target month (e.g., August 2022 net LPG, R15,337.50). Trimming the payment in the ledger table to artificially match the invoice hides the actual cash flow.
+**Rule:**
+1. **Log Full Cash:** The actual payment amount received must be logged in the Payment Amount column of the target month.
+2. **Reflect Negative Variance:** The month's variance must show the negative difference (e.g., -R547.77), representing the customer's overpayment or surplus.
+3. **Carry Forward:** The surplus is treated as unallocated cash residing in the global payment pool and may be carried forward or offset against other unpaid gaps, ensuring the sum of all monthly variances strictly matches the actual ledger balance change.

@@ -1,6 +1,6 @@
 # Debtor Action Prompts
 
-*Generated: 2026-06-15*
+*Generated: 2026-06-16*
 
 > **HUMAN EXECUTION QUEUE**: Agents must present these prompts to a human for approval and sending. Agents do NOT send these automatically. Once sent by the human, the agent must update the `history` array in the debtor's `project.json`.
 

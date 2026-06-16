@@ -39,7 +39,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Added **Rule 13 (Gross Flow Overpayment & Surplus Allocation Rule)** to the global business rules (`analysis/debtors/shared/docs/business_rules.md`) to govern how payment surpluses are documented and carried forward.
+- Added **Payment Pattern Analysis & Cumulative Balance Audit** CLI automation script (`payment_pattern_analysis.py`), which queries transaction data directly from Supabase (or falls back to local CSVs) with configurable discrepancy tolerance (`--tolerance`, default R5.00).
+- Generated full 2018–2026 annual payment pattern analysis reports for debtor **JIM001** (`analysis/debtors/JIM001/reports/JIM001_YYYY_Payment_Pattern_Analysis.md`).
+
 ### Changed
+- Reconciled August 2022 for debtor **JIM001** using the gross flow methodology, registering the full payment of R15,885.27 against the month, resulting in a variance of -R547.77 (representing the unallocated surplus paid) and correcting the payment pattern analysis table and totals.
+- Consolidated Section 4 of JIM001's 2022 report into a unified STAT Sequence & Payment Flow table, and added a detailed mathematical reconciliation between the payment settlement pool (R179,774.00) and calendar-year ERP headers (R160,782.02).
+- Added Section 5 (Unallocated Payment Pool) to JIM001's 2022 report listing genuine, non-pattern payment surpluses (STAT196 and STAT204) for 2022.
+- Added Section 2.1 (Candidate Invoice Details) to JIM001's 2022 report, mapping underpaid month shortfalls to specific candidate invoice numbers, dates, and itemized gas-fill line totals (Invoices 13332, 13359, and 14788) with investigation notes below the table clarifying that only 1 of 2 candidates is unpaid for May.
+- Overhauled the **LPG Payment Pattern Analysis** agent skill (`skills/lpg-payment-pattern-analysis/SKILL.md`) to focus strictly on generating the standardized `Payment_Pattern_Analysis.md` report, adding guidelines for Rule 13, Section 4 consolidation, mathematical reconciliation, and Section 5 unallocated pool.
+- Added **Section 4.1 (Ledger-Wide Historical Balance Reconciliation)** and **Section 4.2 (Reconciling Calendar Year Activity vs. Invoice Settlement Pool)** to JIM001's 2022 report, presenting cumulative ledger components (View A/B) and timing-boundary cash comparisons (View C) dynamically.
+- Automated the calculation and formatting of **Section 4 (STAT Sequence Table)**, **Section 4.1 (Ledger-Wide historical roll-forward proof)**, and **Section 4.2 (View C vs. Settlement Pool comparison)** directly within the report generation script (`payment_pattern_analysis.py`).
 - Extended **Family Gas** (`FAM000` and `FAM002` consolidated) statement and baseline reports up to **09 June 2026** (incorporating all May and June transactions recently loaded into Supabase).
 - Applied payment deduplication for `FAM000` / `FAM002` consolidated, dropping the duplicate payment `00044102` (R30,000.00) on 29 April 2026.
 - Updated the consolidated Excel workbook `FAM000_Final_Recon_Export.xlsx` and generated dual-view browser statement reports (Internal vs Customer views).

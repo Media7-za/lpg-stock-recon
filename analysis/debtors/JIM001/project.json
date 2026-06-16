@@ -26,6 +26,30 @@
     {
       "date": "2026-06-15",
       "event": "Fixed monthly matches year-collision bug and regenerated statements."
+    },
+    {
+      "date": "2026-06-15",
+      "event": "Analyzed 2021 payment pattern (Net: R0.00) and compiled report."
+    },
+    {
+      "date": "2026-06-15",
+      "event": "Analyzed 2022 payment pattern (Net: R18,230.19) and compiled report."
+    },
+    {
+      "date": "2026-06-15",
+      "event": "Analyzed 2023 payment pattern (Net: R995.38) and compiled report."
+    },
+    {
+      "date": "2026-06-15",
+      "event": "Analyzed 2024 payment pattern (Net: R46,282.23) and compiled report."
+    },
+    {
+      "date": "2026-06-15",
+      "event": "Analyzed 2025 payment pattern (Net: +R89,246.79) and compiled report."
+    },
+    {
+      "date": "2026-06-16",
+      "event": "Reconciled August 2022 to reflect gross overpayment (surplus) of R547.77 (Net 2022 balance change updated to R17,682.42)."
     }
   ]
 }
