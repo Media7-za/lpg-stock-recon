@@ -201,6 +201,21 @@ def main():
                 "2023-12": {"doc": "30269 / 7204", "date_str": "2024-04-24", "amount": 18734.46, "var": 0.0, "notes": "Fully settled via bulk payment Doc 30269 and Credit Note 7204 offset."}
             }
 
+            jim24_overrides = {
+                "2024-01": {"doc": "30891", "date_str": "2024-05-27", "amount": 11105.31, "var": 0.0, "notes": "Paid in full."},
+                "2024-02": {"doc": "31179", "date_str": "2024-06-10", "amount": 13862.03, "var": 0.50, "notes": "Paid in full (within R0.50 tolerance)."},
+                "2024-03": {"doc": "31792", "date_str": "2024-07-09", "amount": 15395.18, "var": 0.0, "notes": "Paid in full."},
+                "2024-04": {"doc": "33810", "date_str": "2024-09-30", "amount": 20232.18, "var": -7597.32, "notes": "**Overpaid R7,597.32:** Gross payment of R20,232.18 logged against net billed LPG. (Net after credits R12,634.86.)"},
+                "2024-05": {"doc": "31179", "date_str": "2024-06-10", "amount": 13862.03, "var": 4394.91, "notes": "**STAT:104 underpayment:** Billed R18,256.94, settled R13,862.03 (underpaid R4,394.91)."},
+                "2024-06": {"doc": "34425", "date_str": "2024-10-28", "amount": 20443.00, "var": -5210.82, "notes": "**Overpaid R5,210.82:** Gross payment of R20,443.00 logged against net billed LPG. (Net after credits R15,232.18.)"},
+                "2024-07": {"doc": "36139", "date_str": "2025-01-17", "amount": 22336.89, "var": -6893.89, "notes": "**Overpaid R6,893.89:** Gross payment of R22,336.89 logged against net billed LPG. (Net after credits R15,443.00.)"},
+                "2024-08": {"doc": "36988", "date_str": "2025-02-21", "amount": 19550.42, "var": -4366.24, "notes": "**Overpaid R4,366.24:** Gross payment of R19,550.42 logged against net billed LPG. (Net after credits R15,184.18.)"},
+                "2024-09": {"doc": "—", "date_str": "—", "amount": 0.0, "var": 15336.89, "notes": "**Skipped Month:** Statement was completely unpaid."},
+                "2024-10": {"doc": "—", "date_str": "—", "amount": 0.0, "var": 14025.58, "notes": "**Skipped Month:** Statement was completely unpaid."},
+                "2024-11": {"doc": "—", "date_str": "—", "amount": 0.0, "var": 12524.85, "notes": "**Skipped Month:** Statement was completely unpaid."},
+                "2024-12": {"doc": "38481", "date_str": "2025-05-05", "amount": 15816.63, "var": 0.0, "notes": "Paid in full (settled late via payment Doc 38481)."}
+            }
+
             for m, amt in monthly_billed.items():
                 m_str = str(m)
                 
@@ -213,6 +228,9 @@ def main():
                         is_override = True
                     elif y == 2023 and m_str in jim23_overrides:
                         ovr = jim23_overrides[m_str]
+                        is_override = True
+                    elif y == 2024 and m_str in jim24_overrides:
+                        ovr = jim24_overrides[m_str]
                         is_override = True
                 
                 if is_override:
