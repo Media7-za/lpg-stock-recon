@@ -1,6 +1,6 @@
 # JIM001 — 2023 Payment Pattern Analysis
 
-Generated on 2026-06-15 | Tolerance: R5.00
+Generated on 2026-06-16 | Tolerance: R5.00
 
 ---
 
@@ -38,4 +38,84 @@ Generated on 2026-06-15 | Tolerance: R5.00
 
 * **Net CYL Balance Impact:** R-506.00
 
-Cylinder container transactions were strictly ledger-only loop of returns and were excluded from cash payments.
+Cylinder container transactions were strictly ledger-only loop of returns and were excluded from cash payments. CYL credits may not be netted against LPG payment obligations per Baseline Statement Rules.
+
+## 4. STAT Sequence & Payment Flow Reconciliation
+
+| Batch | Payment Doc | Payment Date | Payment Amount | Reconciled Month | Status / Reconciliation Notes |
+| :--- | :---: | :---: | :---: | :---: | :--- |
+| **STAT207** | 17777 | 2023-01-19 | −R10,825.92 | | ✅ Present. |
+| **STAT208** | 18185 | 2023-02-13 | −R25,184.36 | | ✅ Present. |
+| **STAT: 89** | 19176 | 2023-03-22 | −R11,335.68 | | ✅ Present. |
+| **STAT: 91** | 20357 | 2023-05-02 | −R12,343.07 | | ✅ Present. |
+| **STAT: 91** | 21193 | 2023-05-31 | −R15,409.46 | | ✅ Present. |
+| **STAT: 93** | 22711 | 2023-07-21 | −R15,140.69 | | ✅ Present. |
+| **STAT: 94** | 23280 | 2023-08-11 | −R13,806.77 | | ✅ Present. |
+| **STAT: 95** | 23977 | 2023-09-05 | −R16,964.84 | | ✅ Present. |
+| **STAT: 96** | 25394 | 2023-10-24 | −R13,911.54 | | ✅ Present. |
+| **STAT: 97** | 26601 | 2023-11-29 | −R12,520.81 | | ✅ Present. |
+| **STAT: 98** | 27468 | 2023-12-29 | −R24,801.28 | | ✅ Present. |
+| **STAT:100** | 28893 | 2024-02-20 | −R14,208.48 | | ✅ Present. |
+
+### 4.1 Ledger-Wide Historical Balance Reconciliation (View A/B)
+
+This section reconciles the lifetime-to-date ledger balances starting from the opening balance as of 2023-01-01 through to the closing balance as of 2023-12-31, incorporating historical carry-forwards, cylinder flows, and journal adjustments:
+
+#### 1. Opening Balance (as of 2023-01-01)
+
+* LPG Gas Components (Invoices/Credits pre-2023): **+R513,838.97**
+* Cylinder Components (Invoices/Credits pre-2023): **R161.00**
+* ERP Journals (pre-2023): **+R7,350.00**
+* Payments Received (pre-2023): **-R467,717.94**
+* **Total Corrected Opening Balance:** **R53,632.03**
+
+#### 2. Net 2023 Activity
+
+* LPG Invoices: **+R173,233.37**
+* LPG Credit Notes: **R-5,937.61**
+* Cylinder Invoices: **+R35,535.00**
+* Cylinder Credit Notes: **R-36,041.00**
+* ERP Journals: **+R0.00**
+* Payments Received: **-R172,244.42**
+* **Net 2023 Corrected Activity:** **+R-5,454.66**
+
+#### 3. Closing Balance (as of 2023-12-31)
+
+* LPG Gas Components (Lifetime to date): **+R681,134.73**
+* Cylinder Components (Lifetime to date): **+R-345.00**
+* ERP Journals (Lifetime to date): **+R7,350.00**
+* Payments Received (Lifetime to date): **-R639,962.36**
+* **Total Corrected Closing Balance:** **R48,177.37**
+
+> **Proof:**
+> `Opening Balance (R53,632.03) + Net 2023 Activity (R-5,454.66) = Closing Balance (R48,177.37)` ✅
+
+### 4.2 Reconciling Calendar Year Activity (View C) vs. Invoice Settlement Pool
+
+This section reconciles the cash transactions posted within calendar year 2023 (**View C**) to the payments allocated in the monthly settlement pool (**Section 2**).
+
+#### View C — Assumed R0.00 Opening Balance (Calendar Year 2023 Activity)
+
+| Line Item | Amount |
+| :--- | ---: |
+| LPG Gas Invoices Billed | +R173,233.37 |
+| LPG Gas Credit Notes Applied | −R5,937.61 |
+| **Net LPG Gas Billed** | **R167,295.76** |
+| Payments Received (Posted in 2023) | −R172,244.42 |
+| **Net 2023 Activity / Outstanding Balance** | **+R-4,948.66** |
+
+#### Monthly Settlement Pool (Section 2 Totals)
+
+| Line Item | Amount |
+| :--- | ---: |
+| Net LPG Gas Billed | R167,295.76 |
+| Payment Allocations (Settling 2023 Invoices) | −R175,626.98 |
+| **Net Variance Outstanding** | **+R-8,331.22** |
+
+---
+
+## 5. Unallocated Payment Pool (2022 Items)
+
+The following cash payments received during 2022 had surplus amounts that were not consumed by any LPG invoices. In line with **Rule 13 (Gross Flow Overpayment & Surplus Allocation Rule)**, these are tracked in the unallocated pool rather than matching individual month balances:
+
+No unallocated items mapped for this period.
