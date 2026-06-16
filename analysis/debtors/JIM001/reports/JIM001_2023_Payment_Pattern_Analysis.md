@@ -32,6 +32,17 @@ Generated on 2026-06-16 | Tolerance: R5.00
 | **2023-12** | R18,734.46 | 2024-04-24 | 30269 / 7204 | −R18,734.46 | −R0.00 | R0.00 | Fully settled via bulk payment Doc 30269 and Credit Note 7204 offset. |
 | **TOTAL** | **R167,295.76** | | | **-R166,593.72** | | **R702.04** | **Net balance change for 2023.** |
 
+### 2.1 Candidate Invoice Details for Underpayments
+
+| Underpaid Month | Underpaid Amount | Candidate Doc | Invoice Date | LPG Gas Items | Line Total |
+| :--- | :---: | :---: | :---: | :--- | ---: |
+| **2023-03** | R702.04 | **18695** | 2023-03-23 | Partially unpaid invoice (R3,500.54 of R4,202.58 settled) | R702.04 |
+| **2023-08** | R3,245.76 | **23964** | 2023-08-31 | 6 × 19kg LPG Gas (`19.4`) | R3,245.76 |
+
+**Investigation Notes:**
+* **2023-03:** Invoice 18695 was partially settled by the STAT91 payment, leaving a residual of R702.04 unpaid.
+* **2023-08:** Invoice 23964 is completely unpaid in the August statement batch, but is offset by September's timing carryover.
+
 ## 3. Cylinder (CYL) Transactions Analysis
 
 * **Net CYL Balance Impact:** R-506.00

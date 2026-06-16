@@ -351,7 +351,7 @@ def main():
                 f.write(row + "\n")
             f.write(f"| **TOTAL** | **R{billed_sum:,.2f}** | | | **-R{paid_sum:,.2f}** | | **R{net_change:,.2f}** | **Net balance change for {y}.** |\n\n")
             
-            # Write Section 2.1 Candidate Invoice Details for Underpayments (if 2022)
+            # Write Section 2.1 Candidate Invoice Details for Underpayments (if 2022 or 2023)
             if y == 2022:
                 f.write("### 2.1 Candidate Invoice Details for Underpayments\n\n")
                 f.write("| Underpaid Month | Underpaid Amount | Candidate Doc | Invoice Date | LPG Gas Items | Line Total |\n")
@@ -362,6 +362,15 @@ def main():
                 f.write("**Investigation Notes:**\n")
                 f.write("* **2022-05:** Duplicate amount candidate. Only 1 of these 2 May candidates is unpaid (not both).\n")
                 f.write("* **2022-06:** Exact line match candidate. 1 of 1 candidate invoice is unpaid.\n\n")
+            elif y == 2023:
+                f.write("### 2.1 Candidate Invoice Details for Underpayments\n\n")
+                f.write("| Underpaid Month | Underpaid Amount | Candidate Doc | Invoice Date | LPG Gas Items | Line Total |\n")
+                f.write("| :--- | :---: | :---: | :---: | :--- | ---: |\n")
+                f.write("| **2023-03** | R702.04 | **18695** | 2023-03-23 | Partially unpaid invoice (R3,500.54 of R4,202.58 settled) | R702.04 |\n")
+                f.write("| **2023-08** | R3,245.76 | **23964** | 2023-08-31 | 6 × 19kg LPG Gas (`19.4`) | R3,245.76 |\n\n")
+                f.write("**Investigation Notes:**\n")
+                f.write("* **2023-03:** Invoice 18695 was partially settled by the STAT91 payment, leaving a residual of R702.04 unpaid.\n")
+                f.write("* **2023-08:** Invoice 23964 is completely unpaid in the August statement batch, but is offset by September's timing carryover.\n\n")
 
             # Cylinder section
             cyl_bill = y_cyl['line_total'].sum()
