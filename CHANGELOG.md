@@ -43,6 +43,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added **Rule 13 (Gross Flow Overpayment & Surplus Allocation Rule)** to the global business rules (`analysis/debtors/shared/docs/business_rules.md`) to govern how payment surpluses are documented and carried forward.
 - Added **Payment Pattern Analysis & Cumulative Balance Audit** CLI automation script (`payment_pattern_analysis.py`), which queries transaction data directly from Supabase (or falls back to local CSVs) with configurable discrepancy tolerance (`--tolerance`, default R5.00).
 - Generated full 2018–2026 annual payment pattern analysis reports for debtor **JIM001** (`analysis/debtors/JIM001/reports/JIM001_YYYY_Payment_Pattern_Analysis.md`).
+- Reconciled 2024 calendar year payment pattern overrides (Doc 30891, 31179, 31792, 33810, 34425, 36139, 36988, 38481) in `payment_pattern_analysis.py` for debtor **JIM001**.
+- Regenerated the 2024 report (`JIM001_2024_Payment_Pattern_Analysis.md`) showing a net balance change of +R22,214.46 and zero permanent outstanding anomalies.
 
 ### Changed
 - Reconciled August 2022 for debtor **JIM001** using the gross flow methodology, registering the full payment of R15,885.27 against the month, resulting in a variance of -R547.77 (representing the unallocated surplus paid) and correcting the payment pattern analysis table and totals.
