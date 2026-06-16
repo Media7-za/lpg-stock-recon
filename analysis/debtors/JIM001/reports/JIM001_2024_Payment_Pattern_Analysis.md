@@ -28,6 +28,15 @@ Generated on 2026-06-16 | Tolerance: R5.00
 | **2024-12** | R15,816.63 | 2025-05-05 | 38481 | −R15,816.63 | −R0.00 | R0.00 | Paid in full (settled late via payment Doc 38481). |
 | **TOTAL** | **R174,818.13** | | | **-R152,603.67** | | **R22,214.46** | **Net balance change for 2024.** |
 
+### 2.1 Candidate Invoice Details for Underpayments
+
+| Underpaid Month | Underpaid Amount | Candidate Doc | Invoice Date | LPG Gas Items | Line Total |
+| :--- | :---: | :---: | :---: | :--- | ---: |
+| **2024-05** | R4,394.91 | **—** | — | Unpaid remainder of statement batch balance | R4,394.91 |
+
+**Investigation Notes:**
+* **2024-05:** Billed R18,256.94 on statement, but STAT:104 (Doc 31179) only paid R13,862.03, leaving R4,394.91 unpaid. This underpayment corresponds to unpaid components of May's active deliveries.
+
 ## 3. Cylinder (CYL) Transactions Analysis
 
 * **Net CYL Balance Impact:** R1,028.50

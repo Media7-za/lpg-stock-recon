@@ -389,6 +389,13 @@ def main():
                 f.write("**Investigation Notes:**\n")
                 f.write("* **2023-03:** Invoice 18695 was partially settled by the STAT91 payment, leaving a residual of R702.04 unpaid.\n")
                 f.write("* **2023-08:** Invoice 23964 is completely unpaid in the August statement batch, but is offset by September's timing carryover.\n\n")
+            elif y == 2024:
+                f.write("### 2.1 Candidate Invoice Details for Underpayments\n\n")
+                f.write("| Underpaid Month | Underpaid Amount | Candidate Doc | Invoice Date | LPG Gas Items | Line Total |\n")
+                f.write("| :--- | :---: | :---: | :---: | :--- | ---: |\n")
+                f.write("| **2024-05** | R4,394.91 | **—** | — | Unpaid remainder of statement batch balance | R4,394.91 |\n\n")
+                f.write("**Investigation Notes:**\n")
+                f.write("* **2024-05:** Billed R18,256.94 on statement, but STAT:104 (Doc 31179) only paid R13,862.03, leaving R4,394.91 unpaid. This underpayment corresponds to unpaid components of May's active deliveries.\n\n")
 
             # Cylinder section
             cyl_bill = y_cyl['line_total'].sum()
