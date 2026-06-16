@@ -92,19 +92,17 @@ This section reconciles the lifetime-to-date ledger balances starting from the o
 > **Proof:**
 > `Opening Balance (R15,416.63) + Net 2022 Activity (R38,215.40) = Closing Balance (R53,632.03)` ✅
 
-### 4.2 Reconciling Calendar Year Activity (View C) vs. Invoice Settlement Pool
+### 4.2 Reconciling Ledger Balance Movement (View A/B) vs. Invoice Settlement Pool
 
-This section reconciles the cash transactions posted within calendar year 2022 (**View C**) to the payments allocated in the monthly settlement pool (**Section 2**).
+This section reconciles the lifetime ledger balance movement (**View A/B** net change of **R38,215.40**) to the matching payments allocated in the monthly settlement pool (**Section 2** net change of **R17,682.42**):
 
-#### View C — Assumed R0.00 Opening Balance (Calendar Year 2022 Activity)
+#### Ledger Balance Movement (View A/B Totals)
 
 | Line Item | Amount |
 | :--- | ---: |
-| LPG Gas Invoices Billed | +R210,692.08 |
-| LPG Gas Credit Notes Applied | −R13,235.66 |
-| **Net LPG Gas Billed** | **R197,456.42** |
-| Payments Received (Posted in 2022) | −R160,782.02 |
-| **Net 2022 Activity / Outstanding Balance** | **+R36,674.40** |
+| Corrected Opening Balance (as of 2022-01-01) | R15,416.63 |
+| Corrected Closing Balance (as of 2022-12-31) | R53,632.03 |
+| **Net Ledger Balance Movement** | **+R38,215.40** |
 
 #### Monthly Settlement Pool (Section 2 Totals)
 
@@ -114,20 +112,28 @@ This section reconciles the cash transactions posted within calendar year 2022 (
 | Payment Allocations (Settling 2022 Invoices) | −R179,774.00 |
 | **Net Variance Outstanding** | **+R17,682.42** |
 
-#### Mathematical Bridge — Cash Boundary Shift Proof
+#### Mathematical Bridge — Cumulative Ledger to Settlement Pool Proof
 
-The exact difference of **R18,991.98** between View C (+R36,674.40) and the Monthly Table (+R17,682.42) is proven by mapping the three timing boundary-crossing payments:
+The exact difference of **R20,532.98** between the Ledger Balance Movement (+R38,215.40) and the Monthly Table (+R17,682.42) is proven by mapping all non-cash items, journals, and timing boundary-crossing payments:
 
+| Reconciliation Component | Amount | Description |
+| :--- | ---: | :--- |
+| Cylinder Net Movement | R1,541.00 | Ledger-only returns & debits (excluded from LPG cash pool) |
+| ERP Journal Adjustments | R0.00 | ERP adjustments posted in year 2022 |
+| Cash Timing Boundary Shift | R18,991.98 | Payments crossing the calendar year boundary (Nov 21 exits, Nov/Dec 22 enter) |
+| **Total Reconciliation Variance** | **R20,532.98** | ✅ Matches difference exactly |
+
+##### Cash Timing Boundary Shift Breakdown:
 | STAT Batch | Doc | Payment Date | Amount | Boundary Crossing |
 | :--- | :---: | :---: | ---: | :--- |
 | STAT196 | 12719 | 2022-01-31 | −R17,018.30 | Paid in 2022, settles **Nov 2021** → exits 2022 pool |
 | STAT207 | 17777 | 2023-01-19 | +R10,825.92 | Paid in 2023, settles **Nov 2022** → enters 2022 pool |
 | STAT208 | 18185 | 2023-02-13 | +R25,184.36 | Paid in 2023, settles **Dec 2022** → enters 2022 pool |
-| | | | **R18,991.98** | ✅ Matches exactly |
+| | | | **R18,991.98** | ✅ Matches cash timing shift exactly |
 
 > **Proof:**
-> `R179,774.00 (Settlement Pool) − R160,782.02 (Calendar Payments) = R18,991.98`
-> `= (−R17,018.30) + R10,825.92 + R25,184.36` ✅
+> `Ledger Movement (R38,215.40) − Monthly Variance (R17,682.42) = Cylinder (R1,541.00) + Cash Timing Shift (R18,991.98)`
+> `R20,532.98 = R1,541.00 + R18,991.98` ✅
 
 ---
 
