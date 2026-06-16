@@ -34,6 +34,15 @@ Generated on 2026-06-16 | Tolerance: R5.00
 | **2025-12** | R11,666.11 | — | — | R0.00 | — | +R11,666.11 | **Skipped Month:** Statement was completely unpaid. |
 | **TOTAL** | **R174,291.24** | | | **-R85,044.45** | | **R89,246.79** | **Net balance change for 2025.** |
 
+### 2.1 Candidate Invoice Details for Underpayments
+
+| Underpaid Month | Underpaid Amount | Candidate Doc | Invoice Date | LPG Gas Items | Line Total |
+| :--- | :---: | :---: | :---: | :--- | ---: |
+| — | — | — | — | No Pattern 2 candidate invoice underpayments identified for this period. | — |
+
+**Investigation Notes:**
+* No candidate invoice details were identified for this period; skipped statements are listed separately below where applicable.
+
 ### 2.2 Skipped Statements (Unpaid Months)
 
 | Skipped Month | Billed Amount | Payment Status | Investigation / Action Notes |
@@ -102,7 +111,7 @@ This section reconciles the lifetime-to-date ledger balances starting from the o
 
 ### 4.2 Reconciling Ledger Balance Movement (View A/B) vs. Invoice Settlement Pool
 
-This section reconciles the lifetime ledger balance movement (**View A/B** net change of **R17,327.92**) to the matching payments allocated in the monthly settlement pool (**Section 2** net change of **R25,984.08**):
+This section reconciles the lifetime ledger balance movement (**View A/B** net change of **R17,327.92**) to the matching payments allocated in the monthly settlement pool (**Section 2** net change of **R89,246.79**):
 
 #### Ledger Balance Movement (View A/B Totals)
 
@@ -117,19 +126,19 @@ This section reconciles the lifetime ledger balance movement (**View A/B** net c
 | Line Item | Amount |
 | :--- | ---: |
 | Net LPG Gas Billed | R174,291.24 |
-| Payment Allocations (Settling 2025 Invoices) | −R148,307.16 |
-| **Net Variance Outstanding** | **+R25,984.08** |
+| Payment Allocations (Settling 2025 Invoices) | −R85,044.45 |
+| **Net Variance Outstanding** | **+R89,246.79** |
 
 #### Mathematical Bridge — Cumulative Ledger to Settlement Pool Proof
 
-The exact difference of **R-8,656.16** between the Ledger Balance Movement (+R17,327.92) and the Monthly Table (+R25,984.08) is proven by mapping all non-cash items, journals, and timing boundary-crossing payments:
+The exact difference of **R-71,918.87** between the Ledger Balance Movement (+R17,327.92) and the Monthly Table (+R89,246.79) is proven by mapping all non-cash items, journals, and timing boundary-crossing payments:
 
 | Reconciliation Component | Amount | Description |
 | :--- | ---: | :--- |
 | Cylinder Net Movement | R-1,897.50 | Ledger-only returns & debits (excluded from LPG cash pool) |
 | ERP Journal Adjustments | R0.00 | ERP adjustments posted in year 2025 |
-| Cash Timing Boundary Shift | R-6,758.66 | Payments crossing the calendar year boundary |
-| **Total Reconciliation Variance** | **R-8,656.16** | ✅ Matches difference |
+| Cash Timing Boundary Shift | R-70,021.37 | Payments crossing the calendar year boundary |
+| **Total Reconciliation Variance** | **R-71,918.87** | ✅ Matches difference |
 
 ---
 
