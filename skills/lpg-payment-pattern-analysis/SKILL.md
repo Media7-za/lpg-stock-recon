@@ -106,3 +106,14 @@ List all genuine, non-pattern payment surpluses (under **Rule 13**) received in 
 4. **Apply Mirror Corrections:** Pair and resolve Pattern 3 offsets.
 5. **Reconcile Totals:** Verify that the sum of Section 2 variances matches the net balance change and resolves cleanly to the calendar-year totals.
 6. **Generate & Sync:** Save the report and execute `npm run debtors:sync` to ensure it passes layout and metadata validation.
+
+---
+
+## 6. Report Compilation & Overrides Safety
+
+* **Drift Protection:** When compiling or regenerating reports using the automated script, manual Markdown edits to Section 1 & Section 2 will drift and be overwritten.
+* **Override Dictionary:** To lock in verified patterns and prevent drift, you **must** register the verified payments in the override dictionaries (`jim22_overrides`, `jim23_overrides`, etc.) directly inside `analysis/debtors/shared/scripts/payment_pattern_analysis.py`.
+* **Execution Command:** Always run report regeneration within the `.venv_fam` virtual environment:
+  ```bash
+  .venv_fam/bin/python3 analysis/debtors/shared/scripts/payment_pattern_analysis.py --debtor [DEBTOR] --years [YEARS]
+  ```

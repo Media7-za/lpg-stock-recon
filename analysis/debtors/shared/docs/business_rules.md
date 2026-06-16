@@ -193,3 +193,12 @@ Where:
 1. **Log Full Cash:** The actual payment amount received must be logged in the Payment Amount column of the target month.
 2. **Reflect Negative Variance:** The month's variance must show the negative difference (e.g., -R547.77), representing the customer's overpayment or surplus.
 3. **Carry Forward:** The surplus is treated as unallocated cash residing in the global payment pool and may be carried forward or offset against other unpaid gaps, ensuring the sum of all monthly variances strictly matches the actual ledger balance change.
+
+## 14. Payment Pattern Recognition & Matching Overrides (Monthly Batch Debtors)
+**Discovered during:** JIM001 2022 & 2023 reconciliation (June 2026).
+
+**Problem:** Debtors paying in monthly batches often deviate from simple value matching due to timing offsets, clerical errors, underpayments, and timing carries. A standard heuristic analyzer will fail to match these payments, resulting in false statement skips.
+**Rules:**
+1. **Bulk-Payment Statement Allocation (Pattern 2):** When a monthly shortfall corresponds to specific unpaid invoice lines, log the month as `PARTIALLY_SETTLED`. Identify candidate invoices by matching line totals to the unpaid variance, and document them in Section 2.1.
+2. **Timing Mirror Carry Pattern (Pattern 3):** When a payment timing offset occurs (e.g. Month A is underpaid by `X` and Month B's payment is overpaid by exactly `X`), they represent a mirror carry. Treat both months as `FULLY SETTLED` in the summary, log the actual payments and variances in the ledger, and link them as mirror offsets.
+3. **Override Registry Doctrine:** Any verified patterns or timing mirror overrides must be hardcoded in the report generator override dictionaries (`jim22_overrides`, `jim23_overrides`, etc.) to prevent automated scripts from reverting them back to raw heuristic skipped states on compilation.
