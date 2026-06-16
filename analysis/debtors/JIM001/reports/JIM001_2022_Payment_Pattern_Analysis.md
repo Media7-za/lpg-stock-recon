@@ -12,6 +12,9 @@ Generated on 2026-06-16 | Tolerance: R5.00
   * **2022-05 Underpayment:** Billed **R18,947.57**, R1,671.90 unmatched. *(Pattern 2 — possible cross-batch carry. See Section 2.1 for candidate invoices.)*
   * **2022-06 Underpayment:** Billed **R16,103.76**, R1,614.81 unmatched. *(Pattern 2 — possible cross-batch carry. See Section 2.1 for candidate invoices.)*
   * **2022-08 Overpayment (Surplus):** Net billed **R15,337.50**, paid **R15,885.27** (surplus of **-R547.77**). Treated as unallocated surplus.
+* **Pattern 3 Corrections Applied (exact mirrors — self-cancelling):**
+  * **2022-09 / 2022-10:** Sep underpaid R2,767.68 ↔ Oct STAT:206 residual R2,767.68. Treated as FULLY SETTLED.
+  * **2022-11 / 2022-12:** Nov overpaid R2,686.08 ↔ Dec underpaid R2,686.08. Treated as FULLY SETTLED.
 * **Arrears Catch-Up Payments Received:** **-R0.00**
 
 ## 2. Monthly LPG Invoices vs. Payments

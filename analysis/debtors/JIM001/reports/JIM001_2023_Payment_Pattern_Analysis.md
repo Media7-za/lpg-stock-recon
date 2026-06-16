@@ -6,33 +6,31 @@ Generated on 2026-06-16 | Tolerance: R5.00
 
 ## 1. Executive Summary
 
-* **Net LPG Gas Balance Change:** **R83,793.17**
-* **Permanent Outstanding Anomalies:** **R83,793.17**
-  * **2023-03 Statement Skip:** Billed **R16,111.50**, completely skipped.
-  * **2023-08 Statement Skip:** Billed **R15,766.57**, completely skipped.
-  * **2023-09 Statement Skip:** Billed **R8,026.98**, completely skipped.
-  * **2023-10 Statement Skip:** Billed **R13,528.54**, completely skipped.
-  * **2023-11 Statement Skip:** Billed **R11,625.12**, completely skipped.
-  * **2023-12 Statement Skip:** Billed **R18,734.46**, completely skipped.
+* **Net LPG Gas Balance Change:** **R702.04**
+* **Permanent Outstanding Anomalies:** **R3,947.80**
+  * **2023-03 Underpayment:** Billed **R16,111.50**, R702.04 unmatched (STAT:91 residual underpayment).
+  * **2023-08 Underpayment:** Billed **R15,766.57**, R3,245.76 unmatched (STAT:97 underpayment).
+* **Pattern 3 Corrections Applied (exact mirrors — self-cancelling):**
+  * **2023-08 / 2023-09:** Aug underpaid R3,245.76 ↔ Sep STAT:98 residual R3,245.76 mirror carry. Treated as FULLY SETTLED.
 * **Arrears Catch-Up Payments Received:** **-R0.00**
 
 ## 2. Monthly LPG Invoices vs. Payments
 
 | Billing Month | LPG Invoice Total | Payment Date | Payment Doc | Payment Amount | Arrears Catch-Up | LPG Variance | Reconciliation Notes |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
-| **2023-01** | R11,335.68 | 2023-03-22 | 19176 | -R11,335.68 | -R0.00 | R0.00 | Paid in full. |
-| **2023-02** | R12,343.07 | 2023-05-02 | 20357 | -R12,343.07 | -R0.00 | R-0.00 | Paid in full. |
-| **2023-03** | R16,111.50 | — | — | R0.00 | — | +R16,111.50 | **Skipped Month:** Statement was completely unpaid. |
-| **2023-04** | R15,140.69 | 2023-07-21 | 22711 | -R15,140.69 | -R0.00 | R0.00 | Paid in full. |
-| **2023-05** | R13,806.77 | 2023-08-11 | 23280 | -R13,806.77 | -R0.00 | R0.00 | Paid in full. |
-| **2023-06** | R16,964.84 | 2023-09-05 | 23977 | -R16,964.84 | -R0.00 | R0.00 | Paid in full. |
-| **2023-07** | R13,911.54 | 2023-10-24 | 25394 | -R13,911.54 | -R0.00 | R0.00 | Paid in full. |
-| **2023-08** | R15,766.57 | — | — | R0.00 | — | +R15,766.57 | **Skipped Month:** Statement was completely unpaid. |
-| **2023-09** | R8,026.98 | — | — | R0.00 | — | +R8,026.98 | **Skipped Month:** Statement was completely unpaid. |
-| **2023-10** | R13,528.54 | — | — | R0.00 | — | +R13,528.54 | **Skipped Month:** Statement was completely unpaid. |
-| **2023-11** | R11,625.12 | — | — | R0.00 | — | +R11,625.12 | **Skipped Month:** Statement was completely unpaid. |
-| **2023-12** | R18,734.46 | — | — | R0.00 | — | +R18,734.46 | **Skipped Month:** Statement was completely unpaid. |
-| **TOTAL** | **R167,295.76** | | | **-R83,502.59** | | **R83,793.17** | **Net balance change for 2023.** |
+| **2023-01** | R11,335.68 | 2023-03-22 | 19176 | −R11,335.68 | −R0.00 | R0.00 | Paid in full. |
+| **2023-02** | R12,343.07 | 2023-05-02 | 20357 | −R12,343.07 | −R0.00 | R0.00 | Paid in full. |
+| **2023-03** | R16,111.50 | 2023-05-31 | 21193 | −R15,409.46 | −R0.00 | R702.04 | **STAT: 91 underpayment:** Billed R16,111.50, settled R15,409.46 (underpaid R702.04). |
+| **2023-04** | R15,140.69 | 2023-07-21 | 22711 | −R15,140.69 | −R0.00 | R0.00 | Paid in full. |
+| **2023-05** | R13,806.77 | 2023-08-11 | 23280 | −R13,806.77 | −R0.00 | R0.00 | Paid in full. |
+| **2023-06** | R16,964.84 | 2023-09-05 | 23977 | −R16,964.84 | −R0.00 | R0.00 | Paid in full. |
+| **2023-07** | R13,911.54 | 2023-10-24 | 25394 | −R13,911.54 | −R0.00 | R0.00 | Paid in full. |
+| **2023-08** | R15,766.57 | 2023-11-29 | 26601 | −R12,520.81 | −R0.00 | R3,245.76 | **STAT: 97 underpayment:** Billed R15,766.57, settled R12,520.81 (underpaid R3,245.76). |
+| **2023-09** | R8,026.98 | 2023-12-29 | 27468 | −R11,272.74 | −R0.00 | −R3,245.76 | **Pattern 3 — Mirror carry:** STAT:98 payment includes R3,245.76 timing carryover to settle August shortfall. Treated as fully settled. |
+| **2023-10** | R13,528.54 | 2024-04-24 | 30269 | −R13,528.54 | −R0.00 | R0.00 | Paid in full (settled via bulk payment Doc 30269). |
+| **2023-11** | R11,625.12 | 2024-02-20 | 28893 | −R11,625.12 | −R0.00 | R0.00 | Paid in full (settled via payment Doc 28893). |
+| **2023-12** | R18,734.46 | 2024-04-24 | 30269 / 7204 | −R18,734.46 | −R0.00 | R0.00 | Fully settled via bulk payment Doc 30269 and Credit Note 7204 offset. |
+| **TOTAL** | **R167,295.76** | | | **-R166,593.72** | | **R702.04** | **Net balance change for 2023.** |
 
 ## 3. Cylinder (CYL) Transactions Analysis
 

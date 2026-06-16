@@ -186,11 +186,36 @@ def main():
                 "2022-12": {"doc": "18185", "date_str": "2023-02-13", "amount": 25184.36, "var": 2686.08, "notes": "**Pattern 3 — Mirror carry:** R2,686.08 shortfall offset by Nov overpayment. Treated as fully settled."}
             }
 
+            jim23_overrides = {
+                "2023-01": {"doc": "19176", "date_str": "2023-03-22", "amount": 11335.68, "var": 0.0, "notes": "Paid in full."},
+                "2023-02": {"doc": "20357", "date_str": "2023-05-02", "amount": 12343.07, "var": 0.0, "notes": "Paid in full."},
+                "2023-03": {"doc": "21193", "date_str": "2023-05-31", "amount": 15409.46, "var": 702.04, "notes": "**STAT: 91 underpayment:** Billed R16,111.50, settled R15,409.46 (underpaid R702.04)."},
+                "2023-04": {"doc": "22711", "date_str": "2023-07-21", "amount": 15140.69, "var": 0.0, "notes": "Paid in full."},
+                "2023-05": {"doc": "23280", "date_str": "2023-08-11", "amount": 13806.77, "var": 0.0, "notes": "Paid in full."},
+                "2023-06": {"doc": "23977", "date_str": "2023-09-05", "amount": 16964.84, "var": 0.0, "notes": "Paid in full."},
+                "2023-07": {"doc": "25394", "date_str": "2023-10-24", "amount": 13911.54, "var": 0.0, "notes": "Paid in full."},
+                "2023-08": {"doc": "26601", "date_str": "2023-11-29", "amount": 12520.81, "var": 3245.76, "notes": "**STAT: 97 underpayment:** Billed R15,766.57, settled R12,520.81 (underpaid R3,245.76)."},
+                "2023-09": {"doc": "27468", "date_str": "2023-12-29", "amount": 11272.74, "var": -3245.76, "notes": "**Pattern 3 — Mirror carry:** STAT:98 payment includes R3,245.76 timing carryover to settle August shortfall. Treated as fully settled."},
+                "2023-10": {"doc": "30269", "date_str": "2024-04-24", "amount": 13528.54, "var": 0.0, "notes": "Paid in full (settled via bulk payment Doc 30269)."},
+                "2023-11": {"doc": "28893", "date_str": "2024-02-20", "amount": 11625.12, "var": 0.0, "notes": "Paid in full (settled via payment Doc 28893)."},
+                "2023-12": {"doc": "30269 / 7204", "date_str": "2024-04-24", "amount": 18734.46, "var": 0.0, "notes": "Fully settled via bulk payment Doc 30269 and Credit Note 7204 offset."}
+            }
+
             for m, amt in monthly_billed.items():
                 m_str = str(m)
                 
-                if debtor_code == "JIM001" and y == 2022 and m_str in jim22_overrides:
-                    ovr = jim22_overrides[m_str]
+                # Check overrides
+                is_override = False
+                ovr = None
+                if debtor_code == "JIM001":
+                    if y == 2022 and m_str in jim22_overrides:
+                        ovr = jim22_overrides[m_str]
+                        is_override = True
+                    elif y == 2023 and m_str in jim23_overrides:
+                        ovr = jim23_overrides[m_str]
+                        is_override = True
+                
+                if is_override:
                     p_amt = ovr["amount"]
                     p_date_str = ovr["date_str"]
                     p_doc = ovr["doc"]
@@ -200,37 +225,49 @@ def main():
                     paid_sum += p_amt
                     
                     # Accumulate anomalies for summary
-                    if m_str == "2022-03":
-                        permanent_anomalies.append({
-                            'month': m_str,
-                            'amount': amt,
-                            'text': f"* **2022-03 Statement Gap:** Billed **R14,943.48** — STAT:199 missing from sequence. Under bank recon investigation. If not found, this becomes a formal claim."
-                        })
-                        permanent_anomalies_sum += amt
-                    elif m_str in ["2022-05", "2022-06"]:
-                        permanent_anomalies.append({
-                            'month': m_str,
-                            'amount': var_val,
-                            'text': f"* **{m_str} Underpayment:** Billed **R{amt:,.2f}**, R{var_val:,.2f} unmatched. *(Pattern 2 — possible cross-batch carry. See Section 2.1 for candidate invoices.)*"
-                        })
-                        permanent_anomalies_sum += var_val
-                    elif m_str == "2022-08":
-                        permanent_anomalies.append({
-                            'month': m_str,
-                            'amount': var_val,
-                            'text': f"* **2022-08 Overpayment (Surplus):** Net billed **R15,337.50**, paid **R15,885.27** (surplus of **-R547.77**). Treated as unallocated surplus."
-                        })
-                        permanent_anomalies_sum += var_val
-                    elif m_str == "2022-09":
-                        timing_anomalies.append(f"* **2022-09 / 2022-10:** Sep underpaid R2,767.68 ↔ Oct STAT:206 residual R2,767.68. Treated as FULLY SETTLED.")
-                    elif m_str == "2022-11":
-                        timing_anomalies.append(f"* **2022-11 / 2022-12:** Nov overpaid R2,686.08 ↔ Dec underpaid R2,686.08. Treated as FULLY SETTLED.")
-                    
-                    # Output table rows
-                    arr_val_str = "—"
-                    if m_str in ["2022-08", "2022-10", "2022-11"]:
-                        # Surplus portion treated as unallocated arrears/surplus
-                        pass
+                    if y == 2022:
+                        if m_str == "2022-03":
+                            permanent_anomalies.append({
+                                'month': m_str,
+                                'amount': amt,
+                                'text': f"* **2022-03 Statement Gap:** Billed **R14,943.48** — STAT:199 missing from sequence. Under bank recon investigation. If not found, this becomes a formal claim."
+                            })
+                            permanent_anomalies_sum += amt
+                        elif m_str in ["2022-05", "2022-06"]:
+                            permanent_anomalies.append({
+                                'month': m_str,
+                                'amount': var_val,
+                                'text': f"* **{m_str} Underpayment:** Billed **R{amt:,.2f}**, R{var_val:,.2f} unmatched. *(Pattern 2 — possible cross-batch carry. See Section 2.1 for candidate invoices.)*"
+                            })
+                            permanent_anomalies_sum += var_val
+                        elif m_str == "2022-08":
+                            permanent_anomalies.append({
+                                'month': m_str,
+                                'amount': var_val,
+                                'text': f"* **2022-08 Overpayment (Surplus):** Net billed **R15,337.50**, paid **R15,885.27** (surplus of **-R547.77**). Treated as unallocated surplus."
+                            })
+                            permanent_anomalies_sum += var_val
+                        elif m_str == "2022-09":
+                            timing_anomalies.append(f"* **2022-09 / 2022-10:** Sep underpaid R2,767.68 ↔ Oct STAT:206 residual R2,767.68. Treated as FULLY SETTLED.")
+                        elif m_str == "2022-11":
+                            timing_anomalies.append(f"* **2022-11 / 2022-12:** Nov overpaid R2,686.08 ↔ Dec underpaid R2,686.08. Treated as FULLY SETTLED.")
+                    elif y == 2023:
+                        if m_str == "2023-03":
+                            permanent_anomalies.append({
+                                'month': m_str,
+                                'amount': var_val,
+                                'text': f"* **2023-03 Underpayment:** Billed **R{amt:,.2f}**, R{var_val:,.2f} unmatched (STAT:91 residual underpayment)."
+                            })
+                            permanent_anomalies_sum += var_val
+                        elif m_str == "2023-08":
+                            permanent_anomalies.append({
+                                'month': m_str,
+                                'amount': var_val,
+                                'text': f"* **2023-08 Underpayment:** Billed **R{amt:,.2f}**, R{var_val:,.2f} unmatched (STAT:97 underpayment)."
+                            })
+                            permanent_anomalies_sum += var_val
+                        elif m_str == "2023-09":
+                            timing_anomalies.append(f"* **2023-08 / 2023-09:** Aug underpaid R3,245.76 ↔ Sep STAT:98 residual R3,245.76 mirror carry. Treated as FULLY SETTLED.")
                     
                     p_amt_str = f"−R{p_amt:,.2f}" if p_amt > 0 else "R0.00"
                     var_val_str = f"R{var_val:,.2f}" if var_val > 0 else (f"−R{abs(var_val):,.2f}" if var_val < 0 else "R0.00")
@@ -298,6 +335,10 @@ def main():
             f.write(f"* **Permanent Outstanding Anomalies:** **R{permanent_anomalies_sum:,.2f}**\n")
             for pa in permanent_anomalies:
                 f.write(f"  {pa['text']}\n")
+            if timing_anomalies:
+                f.write(f"* **Pattern 3 Corrections Applied (exact mirrors — self-cancelling):**\n")
+                for ta in timing_anomalies:
+                    f.write(f"  {ta}\n")
             
             f.write(f"* **Arrears Catch-Up Payments Received:** **-R{arrears_payments_sum:,.2f}**\n")
             for ap in arrears_payments:
