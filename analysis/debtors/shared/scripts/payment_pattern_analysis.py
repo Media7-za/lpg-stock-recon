@@ -351,6 +351,18 @@ def main():
                 f.write(row + "\n")
             f.write(f"| **TOTAL** | **R{billed_sum:,.2f}** | | | **-R{paid_sum:,.2f}** | | **R{net_change:,.2f}** | **Net balance change for {y}.** |\n\n")
             
+            # Write Section 2.1 Candidate Invoice Details for Underpayments (if 2022)
+            if y == 2022:
+                f.write("### 2.1 Candidate Invoice Details for Underpayments\n\n")
+                f.write("| Underpaid Month | Underpaid Amount | Candidate Doc | Invoice Date | LPG Gas Items | Line Total |\n")
+                f.write("| :--- | :---: | :---: | :---: | :--- | ---: |\n")
+                f.write("| **2022-05** | R1,671.90 | **13332** | 2022-05-07 | 3 × 19kg LPG Gas (`19.4`) | R1,671.90 |\n")
+                f.write("| **2022-05** | R1,671.90 | **13359** | 2022-05-09 | 3 × 19kg LPG Gas (`19.3`) | R1,671.90 |\n")
+                f.write("| **2022-06** | R1,614.81 | **14788** | 2022-06-23 | 3 × 19kg LPG Gas (`19.4`) | R1,614.81 |\n\n")
+                f.write("**Investigation Notes:**\n")
+                f.write("* **2022-05:** Duplicate amount candidate. Only 1 of these 2 May candidates is unpaid (not both).\n")
+                f.write("* **2022-06:** Exact line match candidate. 1 of 1 candidate invoice is unpaid.\n\n")
+
             # Cylinder section
             cyl_bill = y_cyl['line_total'].sum()
             f.write(f"## 3. Cylinder (CYL) Transactions Analysis\n\n")

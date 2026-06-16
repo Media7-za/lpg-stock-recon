@@ -35,6 +35,18 @@ Generated on 2026-06-16 | Tolerance: R5.00
 | **2022-12** | R27,870.44 | 2023-02-13 | 18185 | −R25,184.36 | −R0.00 | R2,686.08 | **Pattern 3 — Mirror carry:** R2,686.08 shortfall offset by Nov overpayment. Treated as fully settled. |
 | **TOTAL** | **R197,456.42** | | | **-R179,774.00** | | **R17,682.42** | **Net balance change for 2022.** |
 
+### 2.1 Candidate Invoice Details for Underpayments
+
+| Underpaid Month | Underpaid Amount | Candidate Doc | Invoice Date | LPG Gas Items | Line Total |
+| :--- | :---: | :---: | :---: | :--- | ---: |
+| **2022-05** | R1,671.90 | **13332** | 2022-05-07 | 3 × 19kg LPG Gas (`19.4`) | R1,671.90 |
+| **2022-05** | R1,671.90 | **13359** | 2022-05-09 | 3 × 19kg LPG Gas (`19.3`) | R1,671.90 |
+| **2022-06** | R1,614.81 | **14788** | 2022-06-23 | 3 × 19kg LPG Gas (`19.4`) | R1,614.81 |
+
+**Investigation Notes:**
+* **2022-05:** Duplicate amount candidate. Only 1 of these 2 May candidates is unpaid (not both).
+* **2022-06:** Exact line match candidate. 1 of 1 candidate invoice is unpaid.
+
 ## 3. Cylinder (CYL) Transactions Analysis
 
 * **Net CYL Balance Impact:** R1,541.00
