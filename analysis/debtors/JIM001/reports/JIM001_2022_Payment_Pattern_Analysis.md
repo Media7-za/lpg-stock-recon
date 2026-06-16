@@ -53,23 +53,23 @@ Generated on 2026-06-16 | Tolerance: R5.00
 
 Cylinder container transactions were strictly ledger-only loop of returns and were excluded from cash payments. CYL credits may not be netted against LPG payment obligations per Baseline Statement Rules.
 
-## 4. STAT Sequence & Payment Flow Reconciliation
+## 4. Payment Flow & Sequence Reconciliation
 
-| Batch | Payment Doc | Payment Date | Payment Amount | Reconciled Month | Status / Reconciliation Notes |
+| Sequence | Payment Doc | Payment Date | Payment Amount | Reconciled Month | Status / Reconciliation Notes |
 | :--- | :---: | :---: | :---: | :---: | :--- |
-| **STAT196** | 12719 | 2022-01-31 | −R17,018.30 | Nov 2021 | ✅ Present. Out of 2022 scope (settles Nov 2021 invoice). |
-| **STAT197** | 13245 | 2022-03-17 | −R14,982.58 | Jan 2022 | ✅ Present. Settled Jan 2022 invoice in full. |
-| **STAT198** | 13583 | 2022-04-12 | −R13,949.00 | Feb 2022 | ✅ Present. Settled Feb 2022 invoice in full. |
-| **STAT199** | **—** | **—** | **R0.00** | Mar 2022 | **🔴 MISSING — Under bank recon investigation.** |
-| **STAT200** | 14135 | 2022-06-01 | −R18,184.64 | Apr 2022 | ✅ Present. Settled Apr 2022 invoice in full. |
-| **STAT201** | 15071 | 2022-07-26 | −R17,275.67 | May 2022 | ✅ Present. Partially settled May 2022 invoice (underpaid R1,671.90). |
-| **STAT202** | 15473 | 2022-08-11 | −R14,488.95 | Jun 2022 | ✅ Present. Partially settled Jun 2022 invoice (underpaid R1,614.81). |
-| **STAT203** | 15987 | 2022-09-10 | −R17,169.29 | Jul 2022 | ✅ Present. Settled Jul 2022 invoice in full. |
-| **STAT204** | 16648 | 2022-10-20 | −R15,885.27 | Aug 2022 | ✅ Present. Reconciled Aug 2022 invoice with R547.77 surplus (Rule 13). |
-| **STAT205** | 17073 | 2022-11-24 | −R13,838.40 | Sep 2022 | ✅ Present. Reconciled Sep 2022 invoice (Pattern 3 mirror carry). |
-| **STAT206** | 17578 | 2022-12-19 | −R17,989.92 | Oct 2022 | ✅ Present. Reconciled Oct 2022 invoice and covered Sep carryover. |
-| **STAT207** | 17777 | 2023-01-19 | −R10,825.92 | Nov 2022 | ✅ Present. Reconciled Nov 2022 invoice (Pattern 3 mirror carry). |
-| **STAT208** | 18185 | 2023-02-13 | −R25,184.36 | Dec 2022 | ✅ Present. Reconciled Dec 2022 invoice (Pattern 3 mirror carry). |
+| **Doc 12719** | 12719 | 2022-01-31 | −R17,018.30 | Nov 2021 | ✅ Present. Out of 2022 scope (settles Nov 2021 invoice). |
+| **Doc 13245** | 13245 | 2022-03-17 | −R14,982.58 | Jan 2022 | ✅ Present. Settled Jan 2022 invoice in full. |
+| **Doc 13583** | 13583 | 2022-04-12 | −R13,949.00 | Feb 2022 | ✅ Present. Settled Feb 2022 invoice in full. |
+| **Doc — (STAT199)** | **—** | **—** | **R0.00** | Mar 2022 | **🔴 MISSING — Under bank recon investigation.** |
+| **Doc 14135** | 14135 | 2022-06-01 | −R18,184.64 | Apr 2022 | ✅ Present. Settled Apr 2022 invoice in full. |
+| **Doc 15071** | 15071 | 2022-07-26 | −R17,275.67 | May 2022 | ✅ Present. Partially settled May 2022 invoice (underpaid R1,671.90). |
+| **Doc 15473** | 15473 | 2022-08-11 | −R14,488.95 | Jun 2022 | ✅ Present. Partially settled Jun 2022 invoice (underpaid R1,614.81). |
+| **Doc 15987** | 15987 | 2022-09-10 | −R17,169.29 | Jul 2022 | ✅ Present. Settled Jul 2022 invoice in full. |
+| **Doc 16648** | 16648 | 2022-10-20 | −R15,885.27 | Aug 2022 | ✅ Present. Reconciled Aug 2022 invoice with R547.77 surplus (Rule 13). |
+| **Doc 17073** | 17073 | 2022-11-24 | −R13,838.40 | Sep 2022 | ✅ Present. Reconciled Sep 2022 invoice (Pattern 3 mirror carry). |
+| **Doc 17578** | 17578 | 2022-12-19 | −R17,989.92 | Oct 2022 | ✅ Present. Reconciled Oct 2022 invoice and covered Sep carryover. |
+| **Doc 17777** | 17777 | 2023-01-19 | −R10,825.92 | Nov 2022 | ✅ Present. Reconciled Nov 2022 invoice (Pattern 3 mirror carry). |
+| **Doc 18185** | 18185 | 2023-02-13 | −R25,184.36 | Dec 2022 | ✅ Present. Reconciled Dec 2022 invoice (Pattern 3 mirror carry). |
 
 ### 4.1 Ledger-Wide Historical Balance Reconciliation (View A/B)
 
@@ -136,11 +136,11 @@ The exact difference of **R20,532.98** between the Ledger Balance Movement (+R38
 | **Total Reconciliation Variance** | **R20,532.98** | ✅ Matches difference exactly |
 
 ##### Cash Timing Boundary Shift Breakdown:
-| STAT Batch | Doc | Payment Date | Amount | Boundary Crossing |
+| Sequence | Doc | Payment Date | Amount | Boundary Crossing |
 | :--- | :---: | :---: | ---: | :--- |
-| STAT196 | 12719 | 2022-01-31 | −R17,018.30 | Paid in 2022, settles **Nov 2021** → exits 2022 pool |
-| STAT207 | 17777 | 2023-01-19 | +R10,825.92 | Paid in 2023, settles **Nov 2022** → enters 2022 pool |
-| STAT208 | 18185 | 2023-02-13 | +R25,184.36 | Paid in 2023, settles **Dec 2022** → enters 2022 pool |
+| Doc 12719 | 12719 | 2022-01-31 | −R17,018.30 | Paid in 2022, settles **Nov 2021** → exits 2022 pool |
+| Doc 17777 | 17777 | 2023-01-19 | +R10,825.92 | Paid in 2023, settles **Nov 2022** → enters 2022 pool |
+| Doc 18185 | 18185 | 2023-02-13 | +R25,184.36 | Paid in 2023, settles **Dec 2022** → enters 2022 pool |
 | | | | **R18,991.98** | ✅ Matches cash timing shift exactly |
 
 > **Proof:**

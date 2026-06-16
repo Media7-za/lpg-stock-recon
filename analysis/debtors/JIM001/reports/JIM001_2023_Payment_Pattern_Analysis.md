@@ -49,22 +49,22 @@ Generated on 2026-06-16 | Tolerance: R5.00
 
 Cylinder container transactions were strictly ledger-only loop of returns and were excluded from cash payments. CYL credits may not be netted against LPG payment obligations per Baseline Statement Rules.
 
-## 4. STAT Sequence & Payment Flow Reconciliation
+## 4. Payment Flow & Sequence Reconciliation
 
-| Batch | Payment Doc | Payment Date | Payment Amount | Reconciled Month | Status / Reconciliation Notes |
+| Sequence | Payment Doc | Payment Date | Payment Amount | Reconciled Month | Status / Reconciliation Notes |
 | :--- | :---: | :---: | :---: | :---: | :--- |
-| **STAT207** | 17777 | 2023-01-19 | −R10,825.92 | | ✅ Present. |
-| **STAT208** | 18185 | 2023-02-13 | −R25,184.36 | | ✅ Present. |
-| **STAT: 89** | 19176 | 2023-03-22 | −R11,335.68 | | ✅ Present. |
-| **STAT: 91** | 20357 | 2023-05-02 | −R12,343.07 | | ✅ Present. |
-| **STAT: 91** | 21193 | 2023-05-31 | −R15,409.46 | | ✅ Present. |
-| **STAT: 93** | 22711 | 2023-07-21 | −R15,140.69 | | ✅ Present. |
-| **STAT: 94** | 23280 | 2023-08-11 | −R13,806.77 | | ✅ Present. |
-| **STAT: 95** | 23977 | 2023-09-05 | −R16,964.84 | | ✅ Present. |
-| **STAT: 96** | 25394 | 2023-10-24 | −R13,911.54 | | ✅ Present. |
-| **STAT: 97** | 26601 | 2023-11-29 | −R12,520.81 | | ✅ Present. |
-| **STAT: 98** | 27468 | 2023-12-29 | −R24,801.28 | | ✅ Present. |
-| **STAT:100** | 28893 | 2024-02-20 | −R14,208.48 | | ✅ Present. |
+| **Doc 17777** | 17777 | 2023-01-19 | −R10,825.92 | | ✅ Present. |
+| **Doc 18185** | 18185 | 2023-02-13 | −R25,184.36 | | ✅ Present. |
+| **Doc 19176** | 19176 | 2023-03-22 | −R11,335.68 | | ✅ Present. |
+| **Doc 20357** | 20357 | 2023-05-02 | −R12,343.07 | | ✅ Present. |
+| **Doc 21193** | 21193 | 2023-05-31 | −R15,409.46 | | ✅ Present. |
+| **Doc 22711** | 22711 | 2023-07-21 | −R15,140.69 | | ✅ Present. |
+| **Doc 23280** | 23280 | 2023-08-11 | −R13,806.77 | | ✅ Present. |
+| **Doc 23977** | 23977 | 2023-09-05 | −R16,964.84 | | ✅ Present. |
+| **Doc 25394** | 25394 | 2023-10-24 | −R13,911.54 | | ✅ Present. |
+| **Doc 26601** | 26601 | 2023-11-29 | −R12,520.81 | | ✅ Present. |
+| **Doc 27468** | 27468 | 2023-12-29 | −R24,801.28 | | ✅ Present. |
+| **Doc 28893** | 28893 | 2024-02-20 | −R14,208.48 | | ✅ Present. |
 
 ### 4.1 Ledger-Wide Historical Balance Reconciliation (View A/B)
 
@@ -131,12 +131,12 @@ The exact difference of **R2,876.56** between the Ledger Balance Movement (+R-5,
 | **Total Reconciliation Variance** | **R2,876.56** | ✅ Matches difference exactly |
 
 ##### Cash Timing Boundary Shift Breakdown:
-| STAT Batch | Doc | Payment Date | Amount | Boundary Crossing |
+| Sequence | Doc | Payment Date | Amount | Boundary Crossing |
 | :--- | :---: | :---: | ---: | :--- |
-| STAT207 | 17777 | 2023-01-19 | −R10,825.92 | Paid in 2023, settles **Nov 2022** → exits 2023 pool |
-| STAT208 | 18185 | 2023-02-13 | −R25,184.36 | Paid in 2023, settles **Dec 2022** → exits 2023 pool |
-| STAT:100 | 28893 | 2024-02-20 | +R11,625.12 | Paid in 2024, settles **Nov 2023** → enters 2023 pool |
-| STAT:102 | 30269 | 2024-04-24 | +R29,679.52 | Paid in 2024, settles **Oct/Dec 2023** → enters 2023 pool |
+| Doc 17777 | 17777 | 2023-01-19 | −R10,825.92 | Paid in 2023, settles **Nov 2022** → exits 2023 pool |
+| Doc 18185 | 18185 | 2023-02-13 | −R25,184.36 | Paid in 2023, settles **Dec 2022** → exits 2023 pool |
+| Doc 28893 | 28893 | 2024-02-20 | +R11,625.12 | Paid in 2024, settles **Nov 2023** → enters 2023 pool |
+| Doc 30269 | 30269 | 2024-04-24 | +R29,679.52 | Paid in 2024, settles **Oct/Dec 2023** → enters 2023 pool |
 | | | | **R3,382.56** | ✅ Matches cash timing shift exactly |
 
 > **Proof:**
@@ -145,8 +145,8 @@ The exact difference of **R2,876.56** between the Ledger Balance Movement (+R-5,
 
 ---
 
-## 5. Unallocated Payment Pool (2022 Items)
+## 5. Unallocated Payment Pool (2023 Items)
 
-The following cash payments received during 2022 had surplus amounts that were not consumed by any LPG invoices. In line with **Rule 13 (Gross Flow Overpayment & Surplus Allocation Rule)**, these are tracked in the unallocated pool rather than matching individual month balances:
+The following cash payments received during 2023 had surplus amounts that were not consumed by any LPG invoices. In line with **Rule 13 (Gross Flow Overpayment & Surplus Allocation Rule)**, these are tracked in the unallocated pool rather than matching individual month balances:
 
 No unallocated items mapped for this period.

@@ -55,21 +55,21 @@ Generated on 2026-06-16 | Tolerance: R5.00
 
 Cylinder container transactions were strictly ledger-only loop of returns and were excluded from cash payments. CYL credits may not be netted against LPG payment obligations per Baseline Statement Rules.
 
-## 4. STAT Sequence & Payment Flow Reconciliation
+## 4. Payment Flow & Sequence Reconciliation
 
-| Batch | Payment Doc | Payment Date | Payment Amount | Reconciled Month | Status / Reconciliation Notes |
+| Sequence | Payment Doc | Payment Date | Payment Amount | Reconciled Month | Status / Reconciliation Notes |
 | :--- | :---: | :---: | :---: | :---: | :--- |
-| **STAT:100** | 28893 | 2024-02-20 | −R14,208.48 | | ✅ Present. |
-| **STAT:102** | 30269 | 2024-04-24 | −R16,151.04 | | ✅ Present. |
-| **STAT:103** | 30891 | 2024-05-27 | −R11,105.31 | | ✅ Present. |
-| **STAT:104** | 31179 | 2024-06-10 | −R13,862.03 | | ✅ Present. |
-| **STAT:105** | 31792 | 2024-07-09 | −R15,395.18 | | ✅ Present. |
-| **STAT:106** | 32896 | 2024-08-23 | −R17,634.86 | | ✅ Present. |
-| **STAT:107** | 33810 | 2024-09-30 | −R20,232.18 | | ✅ Present. |
-| **STAT:108** | 34425 | 2024-10-28 | −R20,443.00 | | ✅ Present. |
-| **STAT:110** | 35270 | 2024-12-04 | −R18,441.12 | | ✅ Present. |
-| **STAT:111** | 36139 | 2025-01-17 | −R22,336.89 | | ✅ Present. |
-| **STAT:112** | 36988 | 2025-02-21 | −R19,550.42 | | ✅ Present. |
+| **Doc 28893** | 28893 | 2024-02-20 | −R14,208.48 | | ✅ Present. |
+| **Doc 30269** | 30269 | 2024-04-24 | −R16,151.04 | | ✅ Present. |
+| **Doc 30891** | 30891 | 2024-05-27 | −R11,105.31 | | ✅ Present. |
+| **Doc 31179** | 31179 | 2024-06-10 | −R13,862.03 | | ✅ Present. |
+| **Doc 31792** | 31792 | 2024-07-09 | −R15,395.18 | | ✅ Present. |
+| **Doc 32896** | 32896 | 2024-08-23 | −R17,634.86 | | ✅ Present. |
+| **Doc 33810** | 33810 | 2024-09-30 | −R20,232.18 | | ✅ Present. |
+| **Doc 34425** | 34425 | 2024-10-28 | −R20,443.00 | | ✅ Present. |
+| **Doc 35270** | 35270 | 2024-12-04 | −R18,441.12 | | ✅ Present. |
+| **Doc 36139** | 36139 | 2025-01-17 | −R22,336.89 | | ✅ Present. |
+| **Doc 36988** | 36988 | 2025-02-21 | −R19,550.42 | | ✅ Present. |
 
 ### 4.1 Ledger-Wide Historical Balance Reconciliation (View A/B)
 
@@ -136,13 +136,13 @@ The exact difference of **R42,915.81** between the Ledger Balance Movement (+R28
 | **Total Reconciliation Variance** | **R42,915.81** | ✅ Matches difference exactly |
 
 ##### Cash Timing Boundary Shift Breakdown:
-| STAT Batch | Doc | Payment Date | Amount | Boundary Crossing |
+| Sequence | Doc | Payment Date | Amount | Boundary Crossing |
 | :--- | :---: | :---: | ---: | :--- |
-| STAT:100 | 28893 | 2024-02-20 | −R11,625.12 | Paid in 2024, settles **Nov 2023** → exits 2024 pool |
-| STAT:102 | 30269 | 2024-04-24 | −R29,679.52 | Paid in 2024, settles **Oct/Dec 2023** → exits 2024 pool |
-| STAT:111 | 36139 | 2025-01-17 | +R22,336.89 | Paid in 2025, settles **Jul 2024** → enters 2024 pool |
-| STAT:112 | 36988 | 2025-02-21 | +R19,550.42 | Paid in 2025, settles **Aug 2024** → enters 2024 pool |
-| Late Dec | 38481 | 2025-05-05 | +R15,816.63 | Paid in 2025, settles **Dec 2024** → enters 2024 pool |
+| Doc 28893 | 28893 | 2024-02-20 | −R11,625.12 | Paid in 2024, settles **Nov 2023** → exits 2024 pool |
+| Doc 30269 | 30269 | 2024-04-24 | −R29,679.52 | Paid in 2024, settles **Oct/Dec 2023** → exits 2024 pool |
+| Doc 36139 | 36139 | 2025-01-17 | +R22,336.89 | Paid in 2025, settles **Jul 2024** → enters 2024 pool |
+| Doc 36988 | 36988 | 2025-02-21 | +R19,550.42 | Paid in 2025, settles **Aug 2024** → enters 2024 pool |
+| Doc 38481 | 38481 | 2025-05-05 | +R15,816.63 | Paid in 2025, settles **Dec 2024** → enters 2024 pool |
 | | | | **R41,887.31** | ✅ Matches cash timing shift exactly |
 
 > **Proof:**

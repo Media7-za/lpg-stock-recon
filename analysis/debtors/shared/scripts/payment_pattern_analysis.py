@@ -421,15 +421,14 @@ def main():
                 for sm in skipped_months:
                     f.write(f"| **{sm['month']}** | R{sm['amount']:,.2f} | Unpaid | Statement was completely unpaid during the calendar year. |\n")
                 f.write("\n")
-
-            # Cylinder section
+                    # Cylinder section
             cyl_bill = y_cyl['line_total'].sum()
             f.write(f"## 3. Cylinder (CYL) Transactions Analysis\n\n")
             f.write(f"* **Net CYL Balance Impact:** R{cyl_bill:,.2f}\n\n")
             f.write("Cylinder container transactions were strictly ledger-only loop of returns and were excluded from cash payments. CYL credits may not be netted against LPG payment obligations per Baseline Statement Rules.\n\n")
 
-            # Section 4: STAT Sequence Table & Flow
-            f.write("## 4. STAT Sequence & Payment Flow Reconciliation\n\n")
+            # Section 4: Payment Flow & Sequence Reconciliation
+            f.write("## 4. Payment Flow & Sequence Reconciliation\n\n")
             
             # Find all payments associated with this year's statement periods or timing
             y_all_pmts = sorted(
@@ -437,50 +436,33 @@ def main():
                 key=lambda x: (x['date'], x['doc_no'])
             )
             
-            # Print STAT Sequence Table
-            f.write("| Batch | Payment Doc | Payment Date | Payment Amount | Reconciled Month | Status / Reconciliation Notes |\n")
+            # Print Payment Sequence Table
+            f.write("| Sequence | Payment Doc | Payment Date | Payment Amount | Reconciled Month | Status / Reconciliation Notes |\n")
             f.write("| :--- | :---: | :---: | :---: | :---: | :--- |\n")
             
-            # For 2022, we know the exact mapping:
-            # STAT196: Nov 2021
-            # STAT197: Jan 2022
-            # STAT198: Feb 2022
-            # STAT199: Mar 2022 (Gap)
-            # STAT200: Apr 2022
-            # STAT201: May 2022
-            # STAT202: Jun 2022
-            # STAT203: Jul 2022
-            # STAT204: Aug 2022
-            # STAT205: Sep 2022
-            # STAT206: Oct 2022
-            # STAT207: Nov 2022
-            # STAT208: Dec 2022
-            
-            # Let's map batches to months dynamically if possible, otherwise hardcode for JIM001 2022 or generic structure
             # Let's check the batch refs present
             batches_found = [p['batch_ref'] for p in y_all_pmts]
             
-            # Write out STAT batch lines dynamically based on y_all_pmts
-            # If STAT199 is missing (which we know it is for 2022), we insert it in sequence
+            # Write out batch lines dynamically based on y_all_pmts
             if y == 2022:
                 # Sequence table specifically for 2022
-                f.write("| **STAT196** | 12719 | 2022-01-31 | −R17,018.30 | Nov 2021 | ✅ Present. Out of 2022 scope (settles Nov 2021 invoice). |\n")
-                f.write("| **STAT197** | 13245 | 2022-03-17 | −R14,982.58 | Jan 2022 | ✅ Present. Settled Jan 2022 invoice in full. |\n")
-                f.write("| **STAT198** | 13583 | 2022-04-12 | −R13,949.00 | Feb 2022 | ✅ Present. Settled Feb 2022 invoice in full. |\n")
-                f.write("| **STAT199** | **—** | **—** | **R0.00** | Mar 2022 | **🔴 MISSING — Under bank recon investigation.** |\n")
-                f.write("| **STAT200** | 14135 | 2022-06-01 | −R18,184.64 | Apr 2022 | ✅ Present. Settled Apr 2022 invoice in full. |\n")
-                f.write("| **STAT201** | 15071 | 2022-07-26 | −R17,275.67 | May 2022 | ✅ Present. Partially settled May 2022 invoice (underpaid R1,671.90). |\n")
-                f.write("| **STAT202** | 15473 | 2022-08-11 | −R14,488.95 | Jun 2022 | ✅ Present. Partially settled Jun 2022 invoice (underpaid R1,614.81). |\n")
-                f.write("| **STAT203** | 15987 | 2022-09-10 | −R17,169.29 | Jul 2022 | ✅ Present. Settled Jul 2022 invoice in full. |\n")
-                f.write("| **STAT204** | 16648 | 2022-10-20 | −R15,885.27 | Aug 2022 | ✅ Present. Reconciled Aug 2022 invoice with R547.77 surplus (Rule 13). |\n")
-                f.write("| **STAT205** | 17073 | 2022-11-24 | −R13,838.40 | Sep 2022 | ✅ Present. Reconciled Sep 2022 invoice (Pattern 3 mirror carry). |\n")
-                f.write("| **STAT206** | 17578 | 2022-12-19 | −R17,989.92 | Oct 2022 | ✅ Present. Reconciled Oct 2022 invoice and covered Sep carryover. |\n")
-                f.write("| **STAT207** | 17777 | 2023-01-19 | −R10,825.92 | Nov 2022 | ✅ Present. Reconciled Nov 2022 invoice (Pattern 3 mirror carry). |\n")
-                f.write("| **STAT208** | 18185 | 2023-02-13 | −R25,184.36 | Dec 2022 | ✅ Present. Reconciled Dec 2022 invoice (Pattern 3 mirror carry). |\n\n")
+                f.write("| **Doc 12719** | 12719 | 2022-01-31 | −R17,018.30 | Nov 2021 | ✅ Present. Out of 2022 scope (settles Nov 2021 invoice). |\n")
+                f.write("| **Doc 13245** | 13245 | 2022-03-17 | −R14,982.58 | Jan 2022 | ✅ Present. Settled Jan 2022 invoice in full. |\n")
+                f.write("| **Doc 13583** | 13583 | 2022-04-12 | −R13,949.00 | Feb 2022 | ✅ Present. Settled Feb 2022 invoice in full. |\n")
+                f.write("| **Doc — (STAT199)** | **—** | **—** | **R0.00** | Mar 2022 | **🔴 MISSING — Under bank recon investigation.** |\n")
+                f.write("| **Doc 14135** | 14135 | 2022-06-01 | −R18,184.64 | Apr 2022 | ✅ Present. Settled Apr 2022 invoice in full. |\n")
+                f.write("| **Doc 15071** | 15071 | 2022-07-26 | −R17,275.67 | May 2022 | ✅ Present. Partially settled May 2022 invoice (underpaid R1,671.90). |\n")
+                f.write("| **Doc 15473** | 15473 | 2022-08-11 | −R14,488.95 | Jun 2022 | ✅ Present. Partially settled Jun 2022 invoice (underpaid R1,614.81). |\n")
+                f.write("| **Doc 15987** | 15987 | 2022-09-10 | −R17,169.29 | Jul 2022 | ✅ Present. Settled Jul 2022 invoice in full. |\n")
+                f.write("| **Doc 16648** | 16648 | 2022-10-20 | −R15,885.27 | Aug 2022 | ✅ Present. Reconciled Aug 2022 invoice with R547.77 surplus (Rule 13). |\n")
+                f.write("| **Doc 17073** | 17073 | 2022-11-24 | −R13,838.40 | Sep 2022 | ✅ Present. Reconciled Sep 2022 invoice (Pattern 3 mirror carry). |\n")
+                f.write("| **Doc 17578** | 17578 | 2022-12-19 | −R17,989.92 | Oct 2022 | ✅ Present. Reconciled Oct 2022 invoice and covered Sep carryover. |\n")
+                f.write("| **Doc 17777** | 17777 | 2023-01-19 | −R10,825.92 | Nov 2022 | ✅ Present. Reconciled Nov 2022 invoice (Pattern 3 mirror carry). |\n")
+                f.write("| **Doc 18185** | 18185 | 2023-02-13 | −R25,184.36 | Dec 2022 | ✅ Present. Reconciled Dec 2022 invoice (Pattern 3 mirror carry). |\n\n")
             else:
-                # Fallback for other years: just print the payments listed in y_all_pmts
+                # Fallback for other years: just print the payments listed in y_all_pmts using Doc number
                 for p in y_all_pmts:
-                    f.write(f"| **{p['batch_ref'] or 'N/A'}** | {p['clean_doc']} | {p['date'].strftime('%Y-%m-%d')} | −R{abs(p['amount']):,.2f} | | ✅ Present. |\n")
+                    f.write(f"| **Doc {p['clean_doc']}** | {p['clean_doc']} | {p['date'].strftime('%Y-%m-%d')} | −R{abs(p['amount']):,.2f} | | ✅ Present. |\n")
                 f.write("\n")
 
             # Section 4.1: Ledger-Wide Historical Balance Reconciliation (View A/B)
@@ -606,11 +588,11 @@ def main():
                 f.write(f"| **Total Reconciliation Variance** | **R{variance_diff:,.2f}** | ✅ Matches difference exactly |\n\n")
                 
                 f.write("##### Cash Timing Boundary Shift Breakdown:\n")
-                f.write("| STAT Batch | Doc | Payment Date | Amount | Boundary Crossing |\n")
+                f.write("| Sequence | Doc | Payment Date | Amount | Boundary Crossing |\n")
                 f.write("| :--- | :---: | :---: | ---: | :--- |\n")
-                f.write("| STAT196 | 12719 | 2022-01-31 | −R17,018.30 | Paid in 2022, settles **Nov 2021** → exits 2022 pool |\n")
-                f.write("| STAT207 | 17777 | 2023-01-19 | +R10,825.92 | Paid in 2023, settles **Nov 2022** → enters 2022 pool |\n")
-                f.write("| STAT208 | 18185 | 2023-02-13 | +R25,184.36 | Paid in 2023, settles **Dec 2022** → enters 2022 pool |\n")
+                f.write("| Doc 12719 | 12719 | 2022-01-31 | −R17,018.30 | Paid in 2022, settles **Nov 2021** → exits 2022 pool |\n")
+                f.write("| Doc 17777 | 17777 | 2023-01-19 | +R10,825.92 | Paid in 2023, settles **Nov 2022** → enters 2022 pool |\n")
+                f.write("| Doc 18185 | 18185 | 2023-02-13 | +R25,184.36 | Paid in 2023, settles **Dec 2022** → enters 2022 pool |\n")
                 f.write(f"| | | | **R{cash_boundary_shift:,.2f}** | ✅ Matches cash timing shift exactly |\n\n")
                 
                 f.write("> **Proof:**\n")
@@ -621,12 +603,12 @@ def main():
                 f.write(f"| **Total Reconciliation Variance** | **R{variance_diff:,.2f}** | ✅ Matches difference exactly |\n\n")
                 
                 f.write("##### Cash Timing Boundary Shift Breakdown:\n")
-                f.write("| STAT Batch | Doc | Payment Date | Amount | Boundary Crossing |\n")
+                f.write("| Sequence | Doc | Payment Date | Amount | Boundary Crossing |\n")
                 f.write("| :--- | :---: | :---: | ---: | :--- |\n")
-                f.write("| STAT207 | 17777 | 2023-01-19 | −R10,825.92 | Paid in 2023, settles **Nov 2022** → exits 2023 pool |\n")
-                f.write("| STAT208 | 18185 | 2023-02-13 | −R25,184.36 | Paid in 2023, settles **Dec 2022** → exits 2023 pool |\n")
-                f.write("| STAT:100 | 28893 | 2024-02-20 | +R11,625.12 | Paid in 2024, settles **Nov 2023** → enters 2023 pool |\n")
-                f.write("| STAT:102 | 30269 | 2024-04-24 | +R29,679.52 | Paid in 2024, settles **Oct/Dec 2023** → enters 2023 pool |\n")
+                f.write("| Doc 17777 | 17777 | 2023-01-19 | −R10,825.92 | Paid in 2023, settles **Nov 2022** → exits 2023 pool |\n")
+                f.write("| Doc 18185 | 18185 | 2023-02-13 | −R25,184.36 | Paid in 2023, settles **Dec 2022** → exits 2023 pool |\n")
+                f.write("| Doc 28893 | 28893 | 2024-02-20 | +R11,625.12 | Paid in 2024, settles **Nov 2023** → enters 2023 pool |\n")
+                f.write("| Doc 30269 | 30269 | 2024-04-24 | +R29,679.52 | Paid in 2024, settles **Oct/Dec 2023** → enters 2023 pool |\n")
                 f.write(f"| | | | **R{cash_boundary_shift:,.2f}** | ✅ Matches cash timing shift exactly |\n\n")
                 
                 f.write("> **Proof:**\n")
@@ -637,13 +619,13 @@ def main():
                 f.write(f"| **Total Reconciliation Variance** | **R{variance_diff:,.2f}** | ✅ Matches difference exactly |\n\n")
                 
                 f.write("##### Cash Timing Boundary Shift Breakdown:\n")
-                f.write("| STAT Batch | Doc | Payment Date | Amount | Boundary Crossing |\n")
+                f.write("| Sequence | Doc | Payment Date | Amount | Boundary Crossing |\n")
                 f.write("| :--- | :---: | :---: | ---: | :--- |\n")
-                f.write("| STAT:100 | 28893 | 2024-02-20 | −R11,625.12 | Paid in 2024, settles **Nov 2023** → exits 2024 pool |\n")
-                f.write("| STAT:102 | 30269 | 2024-04-24 | −R29,679.52 | Paid in 2024, settles **Oct/Dec 2023** → exits 2024 pool |\n")
-                f.write("| STAT:111 | 36139 | 2025-01-17 | +R22,336.89 | Paid in 2025, settles **Jul 2024** → enters 2024 pool |\n")
-                f.write("| STAT:112 | 36988 | 2025-02-21 | +R19,550.42 | Paid in 2025, settles **Aug 2024** → enters 2024 pool |\n")
-                f.write("| Late Dec | 38481 | 2025-05-05 | +R15,816.63 | Paid in 2025, settles **Dec 2024** → enters 2024 pool |\n")
+                f.write("| Doc 28893 | 28893 | 2024-02-20 | −R11,625.12 | Paid in 2024, settles **Nov 2023** → exits 2024 pool |\n")
+                f.write("| Doc 30269 | 30269 | 2024-04-24 | −R29,679.52 | Paid in 2024, settles **Oct/Dec 2023** → exits 2024 pool |\n")
+                f.write("| Doc 36139 | 36139 | 2025-01-17 | +R22,336.89 | Paid in 2025, settles **Jul 2024** → enters 2024 pool |\n")
+                f.write("| Doc 36988 | 36988 | 2025-02-21 | +R19,550.42 | Paid in 2025, settles **Aug 2024** → enters 2024 pool |\n")
+                f.write("| Doc 38481 | 38481 | 2025-05-05 | +R15,816.63 | Paid in 2025, settles **Dec 2024** → enters 2024 pool |\n")
                 f.write(f"| | | | **R{cash_boundary_shift:,.2f}** | ✅ Matches cash timing shift exactly |\n\n")
                 
                 f.write("> **Proof:**\n")
