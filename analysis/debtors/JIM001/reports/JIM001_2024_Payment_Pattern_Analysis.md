@@ -6,7 +6,7 @@ Generated on 2026-06-16 | Tolerance: R5.00
 
 ## 1. Executive Summary
 
-* **Net LPG Gas Balance Change:** **R22,214.46**
+* **Net LPG Gas Balance Change:** **R34,258.26**
 * **Permanent Outstanding Anomalies:** **R46,282.23**
   * **2024-05 Underpayment:** Billed **R18,256.94**, R4,394.91 unmatched (STAT:104 underpayment).
   * **2024-09 Statement Skip:** Billed **R15,336.89**, completely skipped.
@@ -19,7 +19,7 @@ Generated on 2026-06-16 | Tolerance: R5.00
 | Billing Month | LPG Invoice Total | Payment Date | Payment Doc | Payment Amount | Arrears Catch-Up | LPG Variance | Reconciliation Notes |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
 | **2024-01** | R11,105.31 | 2024-05-27 | 30891 | −R11,105.31 | −R0.00 | R0.00 | Paid in full. |
-| **2024-02** | R13,862.53 | 2024-06-10 | 31179 | −R13,862.03 | −R0.00 | R0.50 | Paid in full (within R0.50 tolerance). |
+| **2024-02** | R13,862.53 | 2024-08-23 | 32896 | −R17,634.86 | −R0.00 | −R3,772.33 | **Overpaid R3,772.33:** Gross payment of R17,634.86 logged against net billed LPG. (Net after credits R13,862.53.) |
 | **2024-03** | R15,395.18 | 2024-07-09 | 31792 | −R15,395.18 | −R0.00 | R0.00 | Paid in full. |
 | **2024-04** | R12,634.86 | 2024-09-30 | 33810 | −R20,232.18 | −R0.00 | −R7,597.32 | **Overpaid R7,597.32:** Gross payment of R20,232.18 logged against net billed LPG. (Net after credits R12,634.86.) |
 | **2024-05** | R18,256.94 | 2024-06-10 | 31179 | −R13,862.03 | −R0.00 | R4,394.91 | **STAT:104 underpayment:** Billed R18,256.94, settled R13,862.03 (underpaid R4,394.91). |
@@ -29,8 +29,8 @@ Generated on 2026-06-16 | Tolerance: R5.00
 | **2024-09** | R15,336.89 | — | — | R0.00 | −R0.00 | R15,336.89 | **Skipped Month:** Statement was completely unpaid. |
 | **2024-10** | R14,025.58 | — | — | R0.00 | −R0.00 | R14,025.58 | **Skipped Month:** Statement was completely unpaid. |
 | **2024-11** | R12,524.85 | — | — | R0.00 | −R0.00 | R12,524.85 | **Skipped Month:** Statement was completely unpaid. |
-| **2024-12** | R15,816.63 | 2025-05-05 | 38481 | −R15,816.63 | −R0.00 | R0.00 | Paid in full (settled late via payment Doc 38481). |
-| **TOTAL** | **R174,818.13** | | | **-R152,603.67** | | **R22,214.46** | **Net balance change for 2024.** |
+| **2024-12** | R15,816.63 | — | — | R0.00 | −R0.00 | R15,816.63 | **Skipped Month:** Statement was completely unpaid. |
+| **TOTAL** | **R174,818.13** | | | **-R140,559.87** | | **R34,258.26** | **Net balance change for 2024.** |
 
 ### 2.1 Candidate Invoice Details for Underpayments
 
@@ -132,17 +132,17 @@ The exact difference of **R42,915.81** between the Ledger Balance Movement (+R28
 | :--- | ---: | :--- |
 | Cylinder Net Movement | R1,028.50 | Ledger-only returns & debits (excluded from LPG cash pool) |
 | ERP Journal Adjustments | R0.00 | ERP adjustments posted in year 2024 |
-| Cash Timing Boundary Shift | R41,887.31 | Payments crossing the calendar year boundary (Nov/Dec 23 exit, Late 24 enter) |
+| Cash Timing Boundary Shift | R41,887.31 | Payments crossing the calendar year boundary (Late 23 exit, Late 24 enter) |
 | **Total Reconciliation Variance** | **R42,915.81** | ✅ Matches difference exactly |
 
 ##### Cash Timing Boundary Shift Breakdown:
 | Sequence | Doc | Payment Date | Amount | Boundary Crossing |
 | :--- | :---: | :---: | ---: | :--- |
-| Doc 28893 | 28893 | 2024-02-20 | −R11,625.12 | Paid in 2024, settles **Nov 2023** → exits 2024 pool |
-| Doc 30269 | 30269 | 2024-04-24 | −R29,679.52 | Paid in 2024, settles **Oct/Dec 2023** → exits 2024 pool |
+| Doc 28893 | 28893 | 2024-02-20 | −R14,208.48 | Paid in 2024, settles **Nov 2023** → exits 2024 pool |
+| Doc 30269 | 30269 | 2024-04-24 | −R16,151.04 | Paid in 2024, settles **Oct 2023** → exits 2024 pool |
+| Doc 35270 | 35270 | 2024-12-04 | −R18,441.12 | Paid in 2024, settles **Dec 2023** → exits 2024 pool |
 | Doc 36139 | 36139 | 2025-01-17 | +R22,336.89 | Paid in 2025, settles **Jul 2024** → enters 2024 pool |
 | Doc 36988 | 36988 | 2025-02-21 | +R19,550.42 | Paid in 2025, settles **Aug 2024** → enters 2024 pool |
-| Doc 38481 | 38481 | 2025-05-05 | +R15,816.63 | Paid in 2025, settles **Dec 2024** → enters 2024 pool |
 | | | | **R41,887.31** | ✅ Matches cash timing shift exactly |
 
 > **Proof:**
@@ -155,8 +155,8 @@ The exact difference of **R42,915.81** between the Ledger Balance Movement (+R28
 
 The following cash payments received during 2024 had surplus amounts that were not consumed by any LPG invoices. In line with **Rule 13 (Gross Flow Overpayment & Surplus Allocation Rule)**, these are tracked in the unallocated pool rather than matching individual month balances:
 
-* **STAT:107** (Doc 33810, 2024-09-30): **R7,597.32** unallocated portion (April 2024 surplus).
-* **STAT:108** (Doc 34425, 2024-10-28): **R5,210.82** unallocated portion (June 2024 surplus).
-* **STAT:111** (Doc 36139, 2025-01-17): **R6,893.89** unallocated portion (July 2024 surplus).
-* **STAT:112** (Doc 36988, 2025-02-21): **R4,366.24** unallocated portion (August 2024 surplus).
+* **Doc 33810** (2024-09-30): **R7,597.32** unallocated portion (April 2024 surplus).
+* **Doc 34425** (2024-10-28): **R5,210.82** unallocated portion (June 2024 surplus).
+* **Doc 36139** (2025-01-17): **R6,893.89** unallocated portion (July 2024 surplus).
+* **Doc 36988** (2025-02-21): **R4,366.24** unallocated portion (August 2024 surplus).
 

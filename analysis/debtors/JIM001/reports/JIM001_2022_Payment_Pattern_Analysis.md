@@ -153,7 +153,7 @@ The exact difference of **R20,532.98** between the Ledger Balance Movement (+R38
 
 The following cash payments received during 2022 had surplus amounts that were not consumed by any LPG invoices. In line with **Rule 13 (Gross Flow Overpayment & Surplus Allocation Rule)**, these are tracked in the unallocated pool rather than matching individual month balances:
 
-* **STAT196** (Doc 12719, 2022-01-31): **R239.48** unallocated portion.
-* **STAT204** (Doc 16648, 2022-10-20): **R547.77** unallocated portion (August 2022 surplus).
+* **Doc 12719** (2022-01-31): **R239.48** unallocated portion.
+* **Doc 16648** (2022-10-20): **R547.77** unallocated portion (August 2022 surplus).
 
-*Note: The R2,767.68 clerical surplus in STAT206 (Doc 17578) is excluded from this list because it was fully consumed by the September 2022 Pattern 3 mirror carry.*
+*Note: The R2,767.68 clerical surplus in Doc 17578 is excluded from this list because it was fully consumed by the September 2022 Pattern 3 mirror carry.*

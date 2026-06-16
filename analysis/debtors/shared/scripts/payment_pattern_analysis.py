@@ -195,15 +195,15 @@ def main():
                 "2023-06": {"doc": "23977", "date_str": "2023-09-05", "amount": 16964.84, "var": 0.0, "notes": "Paid in full."},
                 "2023-07": {"doc": "25394", "date_str": "2023-10-24", "amount": 13911.54, "var": 0.0, "notes": "Paid in full."},
                 "2023-08": {"doc": "26601", "date_str": "2023-11-29", "amount": 12520.81, "var": 3245.76, "notes": "**STAT: 97 underpayment:** Billed R15,766.57, settled R12,520.81 (underpaid R3,245.76)."},
-                "2023-09": {"doc": "27468", "date_str": "2023-12-29", "amount": 11272.74, "var": -3245.76, "notes": "**Pattern 3 — Mirror carry:** STAT:98 payment includes R3,245.76 timing carryover to settle August shortfall. Treated as fully settled."},
-                "2023-10": {"doc": "30269", "date_str": "2024-04-24", "amount": 13528.54, "var": 0.0, "notes": "Paid in full (settled via bulk payment Doc 30269)."},
-                "2023-11": {"doc": "28893", "date_str": "2024-02-20", "amount": 11625.12, "var": 0.0, "notes": "Paid in full (settled via payment Doc 28893)."},
-                "2023-12": {"doc": "30269 / 7204", "date_str": "2024-04-24", "amount": 18734.46, "var": 0.0, "notes": "Fully settled via bulk payment Doc 30269 and Credit Note 7204 offset."}
+                "2023-09": {"doc": "27468", "date_str": "2023-12-29", "amount": 24801.28, "var": -16774.30, "notes": "**Surplus of R16,774.30:** Gross payment of R24,801.28 logged against net billed LPG. (Net after credits R8,026.98.)"},
+                "2023-10": {"doc": "30269", "date_str": "2024-04-24", "amount": 16151.04, "var": -2622.50, "notes": "**Overpaid R2,622.50:** Gross payment of R16,151.04 logged against net billed LPG. (Net after credits R13,528.54.)"},
+                "2023-11": {"doc": "28893", "date_str": "2024-02-20", "amount": 14208.48, "var": -2583.36, "notes": "**Overpaid R2,583.36:** Gross payment of R14,208.48 logged against net billed LPG. (Net after credits R11,625.12.)"},
+                "2023-12": {"doc": "35270", "date_str": "2024-12-04", "amount": 18441.12, "var": 293.34, "notes": "**STAT:110 underpayment:** Billed R18,734.46, settled R18,441.12 (underpaid R293.34)."}
             }
 
             jim24_overrides = {
                 "2024-01": {"doc": "30891", "date_str": "2024-05-27", "amount": 11105.31, "var": 0.0, "notes": "Paid in full."},
-                "2024-02": {"doc": "31179", "date_str": "2024-06-10", "amount": 13862.03, "var": 0.50, "notes": "Paid in full (within R0.50 tolerance)."},
+                "2024-02": {"doc": "32896", "date_str": "2024-08-23", "amount": 17634.86, "var": -3772.33, "notes": "**Overpaid R3,772.33:** Gross payment of R17,634.86 logged against net billed LPG. (Net after credits R13,862.53.)"},
                 "2024-03": {"doc": "31792", "date_str": "2024-07-09", "amount": 15395.18, "var": 0.0, "notes": "Paid in full."},
                 "2024-04": {"doc": "33810", "date_str": "2024-09-30", "amount": 20232.18, "var": -7597.32, "notes": "**Overpaid R7,597.32:** Gross payment of R20,232.18 logged against net billed LPG. (Net after credits R12,634.86.)"},
                 "2024-05": {"doc": "31179", "date_str": "2024-06-10", "amount": 13862.03, "var": 4394.91, "notes": "**STAT:104 underpayment:** Billed R18,256.94, settled R13,862.03 (underpaid R4,394.91)."},
@@ -213,7 +213,7 @@ def main():
                 "2024-09": {"doc": "—", "date_str": "—", "amount": 0.0, "var": 15336.89, "notes": "**Skipped Month:** Statement was completely unpaid."},
                 "2024-10": {"doc": "—", "date_str": "—", "amount": 0.0, "var": 14025.58, "notes": "**Skipped Month:** Statement was completely unpaid."},
                 "2024-11": {"doc": "—", "date_str": "—", "amount": 0.0, "var": 12524.85, "notes": "**Skipped Month:** Statement was completely unpaid."},
-                "2024-12": {"doc": "38481", "date_str": "2025-05-05", "amount": 15816.63, "var": 0.0, "notes": "Paid in full (settled late via payment Doc 38481)."}
+                "2024-12": {"doc": "—", "date_str": "—", "amount": 0.0, "var": 15816.63, "notes": "**Skipped Month:** Statement was completely unpaid."}
             }
 
             for m, amt in monthly_billed.items():
@@ -599,7 +599,7 @@ def main():
                 f.write(f"> `Ledger Movement (R{net_act:,.2f}) − Monthly Variance (R{settle_net_change:,.2f}) = Cylinder (R{cyl_movement:,.2f}) + Cash Timing Shift (R{cash_boundary_shift:,.2f})`\n")
                 f.write(f"> `R{variance_diff:,.2f} = R{cyl_movement:,.2f} + R{cash_boundary_shift:,.2f}` ✅\n\n")
             elif y == 2023:
-                f.write(f"| Cash Timing Boundary Shift | R{cash_boundary_shift:,.2f} | Payments crossing the calendar year boundary (Nov/Dec 22 exit, Nov/Dec 23 enter) |\n")
+                f.write(f"| Cash Timing Boundary Shift | R{cash_boundary_shift:,.2f} | Payments crossing the calendar year boundary (Nov/Dec 22 exit, Late 23 enter) |\n")
                 f.write(f"| **Total Reconciliation Variance** | **R{variance_diff:,.2f}** | ✅ Matches difference exactly |\n\n")
                 
                 f.write("##### Cash Timing Boundary Shift Breakdown:\n")
@@ -607,25 +607,26 @@ def main():
                 f.write("| :--- | :---: | :---: | ---: | :--- |\n")
                 f.write("| Doc 17777 | 17777 | 2023-01-19 | −R10,825.92 | Paid in 2023, settles **Nov 2022** → exits 2023 pool |\n")
                 f.write("| Doc 18185 | 18185 | 2023-02-13 | −R25,184.36 | Paid in 2023, settles **Dec 2022** → exits 2023 pool |\n")
-                f.write("| Doc 28893 | 28893 | 2024-02-20 | +R11,625.12 | Paid in 2024, settles **Nov 2023** → enters 2023 pool |\n")
-                f.write("| Doc 30269 | 30269 | 2024-04-24 | +R29,679.52 | Paid in 2024, settles **Oct/Dec 2023** → enters 2023 pool |\n")
+                f.write("| Doc 28893 | 28893 | 2024-02-20 | +R14,208.48 | Paid in 2024, settles **Nov 2023** → enters 2023 pool |\n")
+                f.write("| Doc 30269 | 30269 | 2024-04-24 | +R16,151.04 | Paid in 2024, settles **Oct 2023** → enters 2023 pool |\n")
+                f.write("| Doc 35270 | 35270 | 2024-12-04 | +R18,441.12 | Paid in 2024, settles **Dec 2023** → enters 2023 pool |\n")
                 f.write(f"| | | | **R{cash_boundary_shift:,.2f}** | ✅ Matches cash timing shift exactly |\n\n")
                 
                 f.write("> **Proof:**\n")
                 f.write(f"> `Ledger Movement (R{net_act:,.2f}) − Monthly Variance (R{settle_net_change:,.2f}) = Cylinder (R{cyl_movement:,.2f}) + Cash Timing Shift (R{cash_boundary_shift:,.2f})`\n")
                 f.write(f"> `R{variance_diff:,.2f} = R{cyl_movement:,.2f} + R{cash_boundary_shift:,.2f}` ✅\n\n")
             elif y == 2024:
-                f.write(f"| Cash Timing Boundary Shift | R{cash_boundary_shift:,.2f} | Payments crossing the calendar year boundary (Nov/Dec 23 exit, Late 24 enter) |\n")
+                f.write(f"| Cash Timing Boundary Shift | R{cash_boundary_shift:,.2f} | Payments crossing the calendar year boundary (Late 23 exit, Late 24 enter) |\n")
                 f.write(f"| **Total Reconciliation Variance** | **R{variance_diff:,.2f}** | ✅ Matches difference exactly |\n\n")
                 
                 f.write("##### Cash Timing Boundary Shift Breakdown:\n")
                 f.write("| Sequence | Doc | Payment Date | Amount | Boundary Crossing |\n")
                 f.write("| :--- | :---: | :---: | ---: | :--- |\n")
-                f.write("| Doc 28893 | 28893 | 2024-02-20 | −R11,625.12 | Paid in 2024, settles **Nov 2023** → exits 2024 pool |\n")
-                f.write("| Doc 30269 | 30269 | 2024-04-24 | −R29,679.52 | Paid in 2024, settles **Oct/Dec 2023** → exits 2024 pool |\n")
+                f.write("| Doc 28893 | 28893 | 2024-02-20 | −R14,208.48 | Paid in 2024, settles **Nov 2023** → exits 2024 pool |\n")
+                f.write("| Doc 30269 | 30269 | 2024-04-24 | −R16,151.04 | Paid in 2024, settles **Oct 2023** → exits 2024 pool |\n")
+                f.write("| Doc 35270 | 35270 | 2024-12-04 | −R18,441.12 | Paid in 2024, settles **Dec 2023** → exits 2024 pool |\n")
                 f.write("| Doc 36139 | 36139 | 2025-01-17 | +R22,336.89 | Paid in 2025, settles **Jul 2024** → enters 2024 pool |\n")
                 f.write("| Doc 36988 | 36988 | 2025-02-21 | +R19,550.42 | Paid in 2025, settles **Aug 2024** → enters 2024 pool |\n")
-                f.write("| Doc 38481 | 38481 | 2025-05-05 | +R15,816.63 | Paid in 2025, settles **Dec 2024** → enters 2024 pool |\n")
                 f.write(f"| | | | **R{cash_boundary_shift:,.2f}** | ✅ Matches cash timing shift exactly |\n\n")
                 
                 f.write("> **Proof:**\n")
@@ -638,14 +639,16 @@ def main():
             f.write(f"---\n\n## 5. Unallocated Payment Pool ({y} Items)\n\n")
             f.write(f"The following cash payments received during {y} had surplus amounts that were not consumed by any LPG invoices. In line with **Rule 13 (Gross Flow Overpayment & Surplus Allocation Rule)**, these are tracked in the unallocated pool rather than matching individual month balances:\n\n")
             if y == 2022:
-                f.write("* **STAT196** (Doc 12719, 2022-01-31): **R239.48** unallocated portion.\n")
-                f.write("* **STAT204** (Doc 16648, 2022-10-20): **R547.77** unallocated portion (August 2022 surplus).\n\n")
-                f.write("*Note: The R2,767.68 clerical surplus in STAT206 (Doc 17578) is excluded from this list because it was fully consumed by the September 2022 Pattern 3 mirror carry.*\n")
+                f.write("* **Doc 12719** (2022-01-31): **R239.48** unallocated portion.\n")
+                f.write("* **Doc 16648** (2022-10-20): **R547.77** unallocated portion (August 2022 surplus).\n\n")
+                f.write("*Note: The R2,767.68 clerical surplus in Doc 17578 is excluded from this list because it was fully consumed by the September 2022 Pattern 3 mirror carry.*\n")
+            elif y == 2023:
+                f.write("* **Doc 30269** (2024-04-24): **R2,622.50** unallocated portion (October 2023 surplus).\n\n")
             elif y == 2024:
-                f.write("* **STAT:107** (Doc 33810, 2024-09-30): **R7,597.32** unallocated portion (April 2024 surplus).\n")
-                f.write("* **STAT:108** (Doc 34425, 2024-10-28): **R5,210.82** unallocated portion (June 2024 surplus).\n")
-                f.write("* **STAT:111** (Doc 36139, 2025-01-17): **R6,893.89** unallocated portion (July 2024 surplus).\n")
-                f.write("* **STAT:112** (Doc 36988, 2025-02-21): **R4,366.24** unallocated portion (August 2024 surplus).\n\n")
+                f.write("* **Doc 33810** (2024-09-30): **R7,597.32** unallocated portion (April 2024 surplus).\n")
+                f.write("* **Doc 34425** (2024-10-28): **R5,210.82** unallocated portion (June 2024 surplus).\n")
+                f.write("* **Doc 36139** (2025-01-17): **R6,893.89** unallocated portion (July 2024 surplus).\n")
+                f.write("* **Doc 36988** (2025-02-21): **R4,366.24** unallocated portion (August 2024 surplus).\n\n")
             else:
                 f.write("No unallocated items mapped for this period.\n")
 
