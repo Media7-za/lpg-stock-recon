@@ -7,7 +7,11 @@ Generated on 2026-06-16 | Tolerance: R5.00
 ## 1. Executive Summary
 
 * **Net LPG Gas Balance Change:** **R22,214.46**
-* **Permanent Outstanding Anomalies:** **R0.00**
+* **Permanent Outstanding Anomalies:** **R46,282.23**
+  * **2024-05 Underpayment:** Billed **R18,256.94**, R4,394.91 unmatched (STAT:104 underpayment).
+  * **2024-09 Statement Skip:** Billed **R15,336.89**, completely skipped.
+  * **2024-10 Statement Skip:** Billed **R14,025.58**, completely skipped.
+  * **2024-11 Statement Skip:** Billed **R12,524.85**, completely skipped.
 * **Arrears Catch-Up Payments Received:** **-R0.00**
 
 ## 2. Monthly LPG Invoices vs. Payments
@@ -36,6 +40,14 @@ Generated on 2026-06-16 | Tolerance: R5.00
 
 **Investigation Notes:**
 * **2024-05:** Billed R18,256.94 on statement, but STAT:104 (Doc 31179) only paid R13,862.03, leaving R4,394.91 unpaid. This underpayment corresponds to unpaid components of May's active deliveries.
+
+### 2.2 Skipped Statements (Unpaid Months)
+
+| Skipped Month | Billed Amount | Payment Status | Investigation / Action Notes |
+| :--- | :---: | :--- | :--- |
+| **2024-09** | R15,336.89 | Unpaid | Statement was completely unpaid during the calendar year. |
+| **2024-10** | R14,025.58 | Unpaid | Statement was completely unpaid during the calendar year. |
+| **2024-11** | R12,524.85 | Unpaid | Statement was completely unpaid during the calendar year. |
 
 ## 3. Cylinder (CYL) Transactions Analysis
 

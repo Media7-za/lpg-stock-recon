@@ -286,6 +286,21 @@ def main():
                             permanent_anomalies_sum += var_val
                         elif m_str == "2023-09":
                             timing_anomalies.append(f"* **2023-08 / 2023-09:** Aug underpaid R3,245.76 ↔ Sep STAT:98 residual R3,245.76 mirror carry. Treated as FULLY SETTLED.")
+                    elif y == 2024:
+                        if m_str in ["2024-09", "2024-10", "2024-11"]:
+                            permanent_anomalies.append({
+                                'month': m_str,
+                                'amount': amt,
+                                'text': f"* **{m_str} Statement Skip:** Billed **R{amt:,.2f}**, completely skipped."
+                            })
+                            permanent_anomalies_sum += amt
+                        elif m_str == "2024-05":
+                            permanent_anomalies.append({
+                                'month': m_str,
+                                'amount': var_val,
+                                'text': f"* **2024-05 Underpayment:** Billed **R{amt:,.2f}**, R{var_val:,.2f} unmatched (STAT:104 underpayment)."
+                            })
+                            permanent_anomalies_sum += var_val
                     
                     p_amt_str = f"−R{p_amt:,.2f}" if p_amt > 0 else "R0.00"
                     var_val_str = f"R{var_val:,.2f}" if var_val > 0 else (f"−R{abs(var_val):,.2f}" if var_val < 0 else "R0.00")
@@ -396,6 +411,16 @@ def main():
                 f.write("| **2024-05** | R4,394.91 | **—** | — | Unpaid remainder of statement batch balance | R4,394.91 |\n\n")
                 f.write("**Investigation Notes:**\n")
                 f.write("* **2024-05:** Billed R18,256.94 on statement, but STAT:104 (Doc 31179) only paid R13,862.03, leaving R4,394.91 unpaid. This underpayment corresponds to unpaid components of May's active deliveries.\n\n")
+
+            # Write Section 2.2 Skipped Statements (if there are skipped months in permanent_anomalies)
+            skipped_months = [pa for pa in permanent_anomalies if "skipped" in pa['text'].lower() or "skip" in pa['text'].lower()]
+            if skipped_months:
+                f.write("### 2.2 Skipped Statements (Unpaid Months)\n\n")
+                f.write("| Skipped Month | Billed Amount | Payment Status | Investigation / Action Notes |\n")
+                f.write("| :--- | :---: | :--- | :--- |\n")
+                for sm in skipped_months:
+                    f.write(f"| **{sm['month']}** | R{sm['amount']:,.2f} | Unpaid | Statement was completely unpaid during the calendar year. |\n")
+                f.write("\n")
 
             # Cylinder section
             cyl_bill = y_cyl['line_total'].sum()
