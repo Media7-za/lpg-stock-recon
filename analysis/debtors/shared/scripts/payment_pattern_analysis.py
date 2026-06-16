@@ -600,16 +600,38 @@ def main():
                 f.write("> **Proof:**\n")
                 f.write(f"> `Ledger Movement (R{net_act:,.2f}) − Monthly Variance (R{settle_net_change:,.2f}) = Cylinder (R{cyl_movement:,.2f}) + Cash Timing Shift (R{cash_boundary_shift:,.2f})`\n")
                 f.write(f"> `R{variance_diff:,.2f} = R{cyl_movement:,.2f} + R{cash_boundary_shift:,.2f}` ✅\n\n")
+            elif y == 2024:
+                f.write(f"| Cash Timing Boundary Shift | R{cash_boundary_shift:,.2f} | Payments crossing the calendar year boundary (Nov/Dec 23 exit, Late 24 enter) |\n")
+                f.write(f"| **Total Reconciliation Variance** | **R{variance_diff:,.2f}** | ✅ Matches difference exactly |\n\n")
+                
+                f.write("##### Cash Timing Boundary Shift Breakdown:\n")
+                f.write("| STAT Batch | Doc | Payment Date | Amount | Boundary Crossing |\n")
+                f.write("| :--- | :---: | :---: | ---: | :--- |\n")
+                f.write("| STAT:100 | 28893 | 2024-02-20 | −R11,625.12 | Paid in 2024, settles **Nov 2023** → exits 2024 pool |\n")
+                f.write("| STAT:102 | 30269 | 2024-04-24 | −R29,679.52 | Paid in 2024, settles **Oct/Dec 2023** → exits 2024 pool |\n")
+                f.write("| STAT:111 | 36139 | 2025-01-17 | +R22,336.89 | Paid in 2025, settles **Jul 2024** → enters 2024 pool |\n")
+                f.write("| STAT:112 | 36988 | 2025-02-21 | +R19,550.42 | Paid in 2025, settles **Aug 2024** → enters 2024 pool |\n")
+                f.write("| Late Dec | 38481 | 2025-05-05 | +R15,816.63 | Paid in 2025, settles **Dec 2024** → enters 2024 pool |\n")
+                f.write(f"| | | | **R{cash_boundary_shift:,.2f}** | ✅ Matches cash timing shift exactly |\n\n")
+                
+                f.write("> **Proof:**\n")
+                f.write(f"> `Ledger Movement (R{net_act:,.2f}) − Monthly Variance (R{settle_net_change:,.2f}) = Cylinder (R{cyl_movement:,.2f}) + Cash Timing Shift (R{cash_boundary_shift:,.2f})`\n")
+                f.write(f"> `R{variance_diff:,.2f} = R{cyl_movement:,.2f} + R{cash_boundary_shift:,.2f}` ✅\n\n")
             else:
                 f.write(f"| Cash Timing Boundary Shift | R{cash_boundary_shift:,.2f} | Payments crossing the calendar year boundary |\n")
                 f.write(f"| **Total Reconciliation Variance** | **R{variance_diff:,.2f}** | ✅ Matches difference |\n\n")
                 
-            f.write("---\n\n## 5. Unallocated Payment Pool (2022 Items)\n\n")
-            f.write("The following cash payments received during 2022 had surplus amounts that were not consumed by any LPG invoices. In line with **Rule 13 (Gross Flow Overpayment & Surplus Allocation Rule)**, these are tracked in the unallocated pool rather than matching individual month balances:\n\n")
+            f.write(f"---\n\n## 5. Unallocated Payment Pool ({y} Items)\n\n")
+            f.write(f"The following cash payments received during {y} had surplus amounts that were not consumed by any LPG invoices. In line with **Rule 13 (Gross Flow Overpayment & Surplus Allocation Rule)**, these are tracked in the unallocated pool rather than matching individual month balances:\n\n")
             if y == 2022:
                 f.write("* **STAT196** (Doc 12719, 2022-01-31): **R239.48** unallocated portion.\n")
                 f.write("* **STAT204** (Doc 16648, 2022-10-20): **R547.77** unallocated portion (August 2022 surplus).\n\n")
                 f.write("*Note: The R2,767.68 clerical surplus in STAT206 (Doc 17578) is excluded from this list because it was fully consumed by the September 2022 Pattern 3 mirror carry.*\n")
+            elif y == 2024:
+                f.write("* **STAT:107** (Doc 33810, 2024-09-30): **R7,597.32** unallocated portion (April 2024 surplus).\n")
+                f.write("* **STAT:108** (Doc 34425, 2024-10-28): **R5,210.82** unallocated portion (June 2024 surplus).\n")
+                f.write("* **STAT:111** (Doc 36139, 2025-01-17): **R6,893.89** unallocated portion (July 2024 surplus).\n")
+                f.write("* **STAT:112** (Doc 36988, 2025-02-21): **R4,366.24** unallocated portion (August 2024 surplus).\n\n")
             else:
                 f.write("No unallocated items mapped for this period.\n")
 

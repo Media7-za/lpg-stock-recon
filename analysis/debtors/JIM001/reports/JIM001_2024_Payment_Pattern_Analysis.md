@@ -111,13 +111,31 @@ The exact difference of **R42,915.81** between the Ledger Balance Movement (+R28
 | :--- | ---: | :--- |
 | Cylinder Net Movement | R1,028.50 | Ledger-only returns & debits (excluded from LPG cash pool) |
 | ERP Journal Adjustments | R0.00 | ERP adjustments posted in year 2024 |
-| Cash Timing Boundary Shift | R41,887.31 | Payments crossing the calendar year boundary |
-| **Total Reconciliation Variance** | **R42,915.81** | ✅ Matches difference |
+| Cash Timing Boundary Shift | R41,887.31 | Payments crossing the calendar year boundary (Nov/Dec 23 exit, Late 24 enter) |
+| **Total Reconciliation Variance** | **R42,915.81** | ✅ Matches difference exactly |
+
+##### Cash Timing Boundary Shift Breakdown:
+| STAT Batch | Doc | Payment Date | Amount | Boundary Crossing |
+| :--- | :---: | :---: | ---: | :--- |
+| STAT:100 | 28893 | 2024-02-20 | −R11,625.12 | Paid in 2024, settles **Nov 2023** → exits 2024 pool |
+| STAT:102 | 30269 | 2024-04-24 | −R29,679.52 | Paid in 2024, settles **Oct/Dec 2023** → exits 2024 pool |
+| STAT:111 | 36139 | 2025-01-17 | +R22,336.89 | Paid in 2025, settles **Jul 2024** → enters 2024 pool |
+| STAT:112 | 36988 | 2025-02-21 | +R19,550.42 | Paid in 2025, settles **Aug 2024** → enters 2024 pool |
+| Late Dec | 38481 | 2025-05-05 | +R15,816.63 | Paid in 2025, settles **Dec 2024** → enters 2024 pool |
+| | | | **R41,887.31** | ✅ Matches cash timing shift exactly |
+
+> **Proof:**
+> `Ledger Movement (R28,373.43) − Monthly Variance (R-14,542.38) = Cylinder (R1,028.50) + Cash Timing Shift (R41,887.31)`
+> `R42,915.81 = R1,028.50 + R41,887.31` ✅
 
 ---
 
-## 5. Unallocated Payment Pool (2022 Items)
+## 5. Unallocated Payment Pool (2024 Items)
 
-The following cash payments received during 2022 had surplus amounts that were not consumed by any LPG invoices. In line with **Rule 13 (Gross Flow Overpayment & Surplus Allocation Rule)**, these are tracked in the unallocated pool rather than matching individual month balances:
+The following cash payments received during 2024 had surplus amounts that were not consumed by any LPG invoices. In line with **Rule 13 (Gross Flow Overpayment & Surplus Allocation Rule)**, these are tracked in the unallocated pool rather than matching individual month balances:
 
-No unallocated items mapped for this period.
+* **STAT:107** (Doc 33810, 2024-09-30): **R7,597.32** unallocated portion (April 2024 surplus).
+* **STAT:108** (Doc 34425, 2024-10-28): **R5,210.82** unallocated portion (June 2024 surplus).
+* **STAT:111** (Doc 36139, 2025-01-17): **R6,893.89** unallocated portion (July 2024 surplus).
+* **STAT:112** (Doc 36988, 2025-02-21): **R4,366.24** unallocated portion (August 2024 surplus).
+
