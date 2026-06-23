@@ -1,0 +1,13 @@
+{
+  "debtor_code": "WO0001",
+  "debtor_name": "L3 Cash and Carry",
+  "statement_period": "2016-11-02 to 2026-06-03",
+  "lpg_gas_debt": 92844.18,
+  "cylinder_financial_balance": 17945.18,
+  "total_reconstructed_balance": 110789.36,
+  "corrected_erp_stated_balance": 110789.36,
+  "erp_residual_variance": 0,
+  "cylinder_custody_exposure": 75325,
+  "cylinder_variance": -57379.82,
+  "net_lpg_debt": 92844.18
+}

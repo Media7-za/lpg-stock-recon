@@ -1,18 +1,18 @@
 # Debtors Portfolio Management Dashboard
 
-*Last Updated: 2026-06-16*
+*Last Updated: 2026-06-23*
 
 ## 📊 Portfolio Summary
 
 | Metric | Value |
 |---|---|
-| **Accounts** | 8 |
+| **Accounts** | 9 |
 | **Recon Complete** | 3 |
-| **Recon Pending** | 5 |
+| **Recon Pending** | 6 |
 | **Collection Active** | 2 |
 | **Legal** | 0 |
-| **Total Outstanding** | **R272 797,61** |
-| **180+ Debt** | **R147 016,23** |
+| **Total Outstanding** | **R383 586,97** |
+| **180+ Debt** | **R198 645,15** |
 | **LOD Issued** | 1 |
 | **Awaiting Response** | 1 |
 
@@ -25,6 +25,7 @@ Accounts are automatically sorted by Risk Score using the Collections Intelligen
 | **55** | [WES004](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/WES004/) | West Coast Fish & Chips | ✅ Complete | 🔴 COLLECTION | R36 216,20 | R7 443,73 | ⚠️ **letter-of-demand** (by 2026-06-29) |
 | **40** | [JIM001](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/JIM001/) | Jim Gas | ✅ Complete | 🟢 ACTIVE | R140 297,23 | R73 007,40 | None |
 | **40** | [TAN001](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/TAN001/) | Tanya Lehman | ✅ Complete | 🔴 COLLECTION | R96 284,18 | R66 565,10 | ⚠️ **draft_lod** (by 2026-06-16) |
+| **30** | [WO0001](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/WO0001/) | L3 Cash and Carry | ⏳ Pending | 🟢 ACTIVE | R110 789,36 | R51 628,92 | None |
 | **0** | [BU0009](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/BU0009/) | BU0009 Client Placeholder | ⏳ Pending | 🟢 ACTIVE | R0,00 | R0,00 | None |
 | **0** | [FAM000](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/FAM000/) | FAM000 Client Placeholder | ⏳ Pending | 🟢 ACTIVE | R0,00 | R0,00 | None |
 | **0** | [FAM001](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/FAM001/) | FAM001 Client Placeholder | ⏳ Pending | 🟢 ACTIVE | R0,00 | R0,00 | None |

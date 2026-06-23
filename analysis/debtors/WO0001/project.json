@@ -1,0 +1,27 @@
+{
+  "debtorCode": "WO0001",
+  "clientName": "L3 Cash and Carry",
+  "status": "active",
+  "reconState": "pending",
+  "financials": {
+    "totalOutstanding": 110789.36,
+    "lastInvoiceDate": "2026-06-02",
+    "lastPaymentDate": "2026-06-03",
+    "agedDebt180Plus": 51628.92
+  },
+  "collections": {
+    "actionRequired": false,
+    "actionType": null,
+    "dateSent": null,
+    "deadlineDate": null,
+    "nextAction": null,
+    "nextActionDate": null,
+    "notes": "Onboarded 2026-06-23. Reconciliation pending — cylinder variance requires investigation before collection action."
+  },
+  "history": [
+    {
+      "date": "2026-06-23",
+      "event": "Onboarded WO0001 (L3 Cash and Carry). Supabase query: 962 transactions (Nov 2016–Jun 2026). ERP balance R110,789.36. Alloc/Recon: 108 rows in 23 doc groups, all net zero. LPG/CYL separated via Dual-Line Pattern. reconState set to pending."
+    }
+  ]
+}
