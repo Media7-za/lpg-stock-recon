@@ -23,7 +23,8 @@ export type DecisionState =
   | 'won'
   | 'lost'
   | 'expired'
-  | 'superseded';
+  | 'superseded'
+  | 'withdrawn';
 
 export interface CustomerRecord {
   customerCode: string;
@@ -99,15 +100,41 @@ export interface PricingRecommendation {
 
 export interface CommercialDecisionRecord {
   decisionId: string;
+  decisionCode: string | null;
+  previousDecisionId: string | null;
   customerCode: string;
   customerName: string;
   customerLane: CustomerLane;
   commercialStatus: CommercialStatus;
   state: DecisionState;
   approvedPricePerKg: number;
+  approvedBy: string | null;
   decisionReason: string;
   orderLines: OrderLine[];
+  pricingIntakeSnapshot: PricingIntake;
+  customerContextSnapshot: CustomerCommercialContext | null;
+  deliveryEconomicsSnapshot: DeliveryEconomics | null;
+  supplierCostSnapshot: SupplierCostSnapshot;
+  marketContextSnapshot: MarketObservation[] | null;
   createdAt: string;
+  approvedAt: string | null;
+  quotedAt: string | null;
+}
+
+export interface CreateCommercialDecisionRecordInput {
+  customerCode: string;
+  customerName: string;
+  customerLane: CustomerLane;
+  commercialStatus: CommercialStatus;
+  approvedPricePerKg: number;
+  approvedBy: string | null;
+  decisionReason: string;
+  pricingIntakeSnapshot: PricingIntake;
+  customerContextSnapshot: CustomerCommercialContext | null;
+  deliveryEconomicsSnapshot: DeliveryEconomics | null;
+  supplierCostSnapshot: SupplierCostSnapshot;
+  marketContextSnapshot: MarketObservation[] | null;
+  previousDecisionId?: string | null;
 }
 
 export interface MobileProformaLine {

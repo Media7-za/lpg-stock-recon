@@ -63,12 +63,14 @@ function emptyIntake(): PricingIntake {
 export function QuoteWorkspace() {
   const { customerCode: routeCustomerCode } = useParams<{ customerCode?: string }>();
   const navigate = useNavigate();
-  const { addDecision } = usePricingDeskStore();
+  const { addDecision, updateDecisionState } = usePricingDeskStore();
 
   const initialFixture = routeCustomerCode ? getFixtureBundle(routeCustomerCode) : null;
   const [intake, setIntake] = useState<PricingIntake>(initialFixture ? initialFixture.intake : emptyIntake());
   const [approvedDecision, setApprovedDecision] = useState<CommercialDecisionRecord | null>(null);
   const [proforma, setProforma] = useState<MobileProforma | null>(null);
+  const [generatingProforma, setGeneratingProforma] = useState(false);
+  const [proformaError, setProformaError] = useState<string | null>(null);
 
   const fixture = getFixtureBundle(intake.customerCode);
   const context = fixture ? fixture.context : EMPTY_CONTEXT;
@@ -111,44 +113,59 @@ export function QuoteWorkspace() {
     setIntake((prev) => ({ ...prev, orderLines: prev.orderLines.filter((_, i) => i !== index) }));
   }
 
-  function handleApprove(approvedPricePerKg: number, decisionReason: string) {
-    const decision: CommercialDecisionRecord = {
-      decisionId: `CDR-DRAFT-${Date.now()}`,
+  async function handleApprove(approvedPricePerKg: number, decisionReason: string, approvedBy: string) {
+    const decision = await addDecision({
       customerCode: intake.customerCode || 'MANUAL',
       customerName: intake.customerName,
       customerLane: intake.customerLane as CustomerLane,
-      commercialStatus: intake.commercialStatus as CommercialStatus,
-      state: 'approved',
+      commercialStatus: intake.commercialStatus ?? 'new_prospect',
       approvedPricePerKg,
+      approvedBy,
       decisionReason,
-      orderLines: intake.orderLines,
-      createdAt: new Date().toISOString(),
-    };
+      pricingIntakeSnapshot: intake,
+      customerContextSnapshot: fixture ? context : null,
+      deliveryEconomicsSnapshot: deliveryEconomics,
+      supplierCostSnapshot: supplierCost,
+      marketContextSnapshot: MARKET_OBSERVATIONS,
+    });
     setApprovedDecision(decision);
-    addDecision(decision);
   }
 
-  function handleGenerateProforma() {
+  async function handleGenerateProforma() {
     if (!approvedDecision) return;
-    const items = approvedDecision.orderLines.map((line) => {
-      const unitPrice = Number((approvedDecision.approvedPricePerKg * line.kgPerUnit).toFixed(2));
-      return {
-        description: line.description,
-        qty: line.qty,
-        unitPrice,
-        lineTotal: Number((unitPrice * line.qty).toFixed(2)),
-      };
-    });
-    const totalPayable = Number(items.reduce((sum, item) => sum + item.lineTotal, 0).toFixed(2));
-    setProforma({
-      decisionId: approvedDecision.decisionId,
-      customer: approvedDecision.customerName,
-      contact: fixture?.customer.primaryContact,
-      pricePerKg: approvedDecision.approvedPricePerKg,
-      items,
-      totalPayable,
-      createdAt: new Date().toISOString(),
-    });
+    setGeneratingProforma(true);
+    setProformaError(null);
+    try {
+      const updated = await updateDecisionState(approvedDecision.decisionId, {
+        state: 'quoted',
+        quotedAt: new Date().toISOString(),
+      });
+      setApprovedDecision(updated);
+
+      const items = updated.orderLines.map((line) => {
+        const unitPrice = Number((updated.approvedPricePerKg * line.kgPerUnit).toFixed(2));
+        return {
+          description: line.description,
+          qty: line.qty,
+          unitPrice,
+          lineTotal: Number((unitPrice * line.qty).toFixed(2)),
+        };
+      });
+      const totalPayable = Number(items.reduce((sum, item) => sum + item.lineTotal, 0).toFixed(2));
+      setProforma({
+        decisionId: updated.decisionId,
+        customer: updated.customerName,
+        contact: fixture?.customer.primaryContact,
+        pricePerKg: updated.approvedPricePerKg,
+        items,
+        totalPayable,
+        createdAt: new Date().toISOString(),
+      });
+    } catch (err) {
+      setProformaError(err instanceof Error ? err.message : 'Failed to generate proforma.');
+    } finally {
+      setGeneratingProforma(false);
+    }
   }
 
   return (
@@ -348,12 +365,16 @@ export function QuoteWorkspace() {
       )}
 
       {approvedDecision && !proforma && (
-        <button
-          onClick={handleGenerateProforma}
-          className="w-full bg-surface-elevated hover:bg-surface border border-border text-text-primary text-sm font-black py-2.5 rounded-lg transition-colors"
-        >
-          Generate Mobile Proforma
-        </button>
+        <div className="space-y-2">
+          {proformaError && <p className="text-xs text-red-400">{proformaError}</p>}
+          <button
+            onClick={handleGenerateProforma}
+            disabled={generatingProforma}
+            className="w-full bg-surface-elevated hover:bg-surface border border-border disabled:opacity-60 text-text-primary text-sm font-black py-2.5 rounded-lg transition-colors"
+          >
+            {generatingProforma ? 'Generating…' : 'Generate Mobile Proforma'}
+          </button>
+        </div>
       )}
 
       {proforma && <MobileProformaPreview proforma={proforma} />}

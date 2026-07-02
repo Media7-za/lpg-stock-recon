@@ -7,7 +7,7 @@ import { SupplierCostCard } from './SupplierCostCard';
 
 export function PricingDeskHome() {
   const navigate = useNavigate();
-  const { decisions } = usePricingDeskStore();
+  const { decisions, loading } = usePricingDeskStore();
   const customers = listFixtureCustomers();
   const winBacks = customers.filter((c) => c.commercialStatus === 'win_back');
 
@@ -58,7 +58,7 @@ export function PricingDeskHome() {
 
         <SupplierCostCard snapshot={SUPPLIER_COST_SNAPSHOT} />
         <MarketContextCard observations={MARKET_OBSERVATIONS} />
-        <ActivityFeed decisions={decisions} />
+        <ActivityFeed decisions={decisions} loading={loading} />
       </div>
     </div>
   );

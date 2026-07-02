@@ -3,13 +3,28 @@ import { PricingRecommendation } from '../types/pricingDesk';
 
 interface RecommendationCardProps {
   recommendation: PricingRecommendation;
-  onApprove: (approvedPricePerKg: number, decisionReason: string) => void;
+  onApprove: (approvedPricePerKg: number, decisionReason: string, approvedBy: string) => Promise<void>;
   approved: boolean;
 }
 
 export function RecommendationCard({ recommendation, onApprove, approved }: RecommendationCardProps) {
   const [approvedPrice, setApprovedPrice] = useState(recommendation.recommendedPricePerKg);
   const [reason, setReason] = useState('');
+  const [approvedBy, setApprovedBy] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function handleApprove() {
+    setSubmitting(true);
+    setError(null);
+    try {
+      await onApprove(approvedPrice, reason || 'Approved at recommended price', approvedBy || 'Unspecified');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to approve price.');
+    } finally {
+      setSubmitting(false);
+    }
+  }
 
   return (
     <div className="bg-surface border border-border rounded-xl p-5">
@@ -76,11 +91,20 @@ export function RecommendationCard({ recommendation, onApprove, approved }: Reco
             onChange={(e) => setReason(e.target.value)}
             className="w-full bg-surface-elevated border border-border rounded px-3 py-2 text-sm text-text-primary placeholder:text-text-secondary"
           />
+          <input
+            type="text"
+            placeholder="Approved by (your name)"
+            value={approvedBy}
+            onChange={(e) => setApprovedBy(e.target.value)}
+            className="w-full bg-surface-elevated border border-border rounded px-3 py-2 text-sm text-text-primary placeholder:text-text-secondary"
+          />
+          {error && <p className="text-xs text-red-400">{error}</p>}
           <button
-            onClick={() => onApprove(approvedPrice, reason || 'Approved at recommended price')}
-            className="w-full bg-blue-500 hover:bg-blue-600 text-white text-sm font-black py-2 rounded-lg transition-colors"
+            onClick={handleApprove}
+            disabled={submitting}
+            className="w-full bg-blue-500 hover:bg-blue-600 disabled:opacity-60 text-white text-sm font-black py-2 rounded-lg transition-colors"
           >
-            Approve Price
+            {submitting ? 'Approving…' : 'Approve Price'}
           </button>
         </div>
       )}

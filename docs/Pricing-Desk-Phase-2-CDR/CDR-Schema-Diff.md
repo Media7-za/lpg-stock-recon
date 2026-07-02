@@ -1,10 +1,10 @@
 ## Schema Diff — Commercial Decision Records (Pricing Desk Phase 2)
 
-STATUS: **PROPOSAL ONLY — not implemented.** No SQL in this document has been run.
-Nothing here should be executed until it is explicitly approved.
+STATUS: **Approved and applied.** Storage model decided in `lpg-intelligence` (`lpg/docs/pricing_desk/COMMERCIAL_DECISION_DOCTRINE.md` — Option A, Postgres first). `state` CHECK and `decision_type` default updated to match the CDR terminology/lifecycle standardization done after this proposal was first written. RLS deferred rather than enabled with policies that would silently block the app — see the migration's RLS comment block below.
 
-Source doctrine: `lpg-intelligence/lpg/docs/pricing_desk/PRD_SLICE_002_COMMERCIAL_DECISION_RECORDS.md`
-and `DOMAIN_MODEL.md`. Phase 1 UX shell that this persists: commit `5a8b05e` (`src/features/pricing-desk/`).
+Source doctrine: `lpg-intelligence/lpg/docs/pricing_desk/PRD_SLICE_002_COMMERCIAL_DECISION_RECORDS.md`,
+`lpg-intelligence/lpg/docs/pricing_desk/COMMERCIAL_DECISION_DOCTRINE.md`, and
+`lpg-intelligence/docs/architecture/STATE_MACHINES.md`. Phase 1 UX shell that this persists: commit `5a8b05e` (`src/features/pricing-desk/`).
 
 ---
 
@@ -37,7 +37,7 @@ can be queried across sessions/users, and satisfy the PRD_SLICE_002 invariants
 | Create trigger `enforce_cdr_immutability` (blocks edits to approved/snapshot fields post-approval) | Additive | Medium | YES |
 | Create indexes on customer_code, state, outcome, created_at | Additive | Low | NO |
 | Defer `mobile_proformas` table and `proforma_id` FK to Phase 4 | Deferred | — | NO |
-| RLS policy (baseline: authenticated only) | Additive | Medium | YES |
+| RLS policy | Deferred to a future phase (real auth not wired up yet) | — | NO |
 
 ---
 
@@ -74,12 +74,12 @@ CREATE TABLE IF NOT EXISTS commercial_decision_records (
                                     'new_prospect', 'active_customer', 'dormant_customer',
                                     'win_back', 'churn_risk', 'lost'
                                  )),
-    decision_type               TEXT NOT NULL DEFAULT 'pricing_decision_record',
+    decision_type               TEXT NOT NULL DEFAULT 'pricing_decision',  -- "pricing decision" is a UI/business term for a CDR use case, see COMMERCIAL_DECISION_DOCTRINE.md
 
     state                       TEXT NOT NULL DEFAULT 'draft' CHECK (state IN (
                                     'draft', 'recommended', 'approved', 'quoted',
-                                    'won', 'lost', 'expired', 'superseded'
-                                 )),
+                                    'won', 'lost', 'expired', 'superseded', 'withdrawn'
+                                 )),  -- see STATE_MACHINES.md § Commercial Decision Record (CDR) Lifecycle
 
     -- Snapshots: frozen context at time of decision (doctrine invariant #4, #5)
     pricing_intake_snapshot     JSONB NOT NULL,
@@ -175,19 +175,19 @@ CREATE TRIGGER cdr_enforce_immutability
   BEFORE UPDATE ON commercial_decision_records
   FOR EACH ROW EXECUTE FUNCTION enforce_cdr_immutability();
 
--- 5. RLS — baseline only (see "Open Questions" below re: real auth wiring)
-ALTER TABLE commercial_decision_records ENABLE ROW LEVEL SECURITY;
-
-CREATE POLICY "Authenticated users can read CDRs" ON commercial_decision_records
-    FOR SELECT USING (auth.role() = 'authenticated');
-
-CREATE POLICY "Authenticated users can create CDRs" ON commercial_decision_records
-    FOR INSERT WITH CHECK (auth.role() = 'authenticated');
-
-CREATE POLICY "Authenticated users can update CDR state/outcome" ON commercial_decision_records
-    FOR UPDATE USING (auth.role() = 'authenticated');
-
--- Explicitly no DELETE policy — CDRs are never deleted, only superseded.
+-- 5. RLS — DEFERRED, not enabled in this migration.
+-- Real Supabase auth is not wired up yet (src/hooks/useAuth.ts stubs a role
+-- locally and never establishes a Supabase session). `auth.role() = 'authenticated'`
+-- policies would block every request from this app, since it isn't actually
+-- authenticated against Supabase. This matches the existing, pre-existing
+-- convention in this codebase: `sessions` and `counts` (supabase/create_operational_tables.sql)
+-- are also RLS-disabled for the same reason. This is a known, already-flagged
+-- codebase-wide gap (see the RLS advisory surfaced when this migration was
+-- applied) — not something newly introduced by this table, but not fixed by
+-- it either. commercial_decision_records holds internal-only commercial data
+-- (per docs/governance/customer_facing_commercial_document_policy.md) and is
+-- currently exposed to the anon key like the other RLS-disabled tables.
+-- Enable RLS with real policies once Supabase auth is actually wired up.
 ```
 
 ---
@@ -245,12 +245,11 @@ tables (see comment header in `supabase/create_operational_tables.sql`).
 
 ### Open Questions (need a decision before implementation)
 
-1. **Auth**: `useAuth.ts` currently stubs `userRole` to `'Depot Manager'` when no
-   Supabase session exists (local dev fallback). The RLS policies above assume
-   `auth.role() = 'authenticated'` is meaningful — if Pricing Desk ships before
-   real auth is wired end-to-end, those policies will either block everyone or
-   (if Supabase client falls back to anon key) let anyone through. Needs a call:
-   ship Phase 2 with RLS disabled until auth lands, or block Phase 2 on auth.
+1. **Auth — resolved for this phase.** `useAuth.ts` stubs `userRole` locally and never
+   establishes a real Supabase session, so `auth.role() = 'authenticated'` policies
+   would block the app outright. Decision: ship Phase 2 with RLS disabled on this
+   table (matching the existing `sessions`/`counts` precedent), not blocked on auth.
+   Revisit once real Supabase auth exists.
 2. **`approved_by`**: PRD_SLICE_002 wants this to identify a person (`approved_by: Louis`
    in the doctrine example). Should this be a free-text name (matches current
    `RecommendationCard` UX) or `auth.uid()` once real auth exists?
@@ -279,12 +278,12 @@ a filter *range* (e.g. "quotes under R28/kg") than an equality lookup; can add
 
 ### Deployment Sequence
 
-When approved, execute in the Supabase SQL Editor, in order:
+Applied via Supabase migration `create_commercial_decision_records`, in order:
 1. `CREATE SEQUENCE`.
 2. `CREATE TABLE` + indexes.
 3. `CREATE FUNCTION` + `CREATE TRIGGER` (decision code).
 4. `CREATE FUNCTION` + `CREATE TRIGGER` (immutability).
-5. `ALTER TABLE ... ENABLE ROW LEVEL SECURITY` + policies.
+5. RLS deferred — not applied, see Open Question 1.
 
 ---
 
@@ -295,7 +294,7 @@ When approved, execute in the Supabase SQL Editor, in order:
 - [x] Data safety warnings flagged (None)
 - [x] Index recommendations included
 - [x] Application integration plan outlined
-- [x] Open questions flagged for a decision before implementation
+- [x] Open questions flagged, decided where needed for this phase
 - [x] All SQL is idempotent (`IF NOT EXISTS` / `CREATE OR REPLACE`)
 - [x] Deployment sequence is correct and safe
-- [ ] **Awaiting sign-off before any SQL runs**
+- [x] **Applied to project `oqhpxnaadahohwkslive` via migration `create_commercial_decision_records`**
