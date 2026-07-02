@@ -1,34 +1,37 @@
 import { useState, useEffect } from 'react';
+import { Session } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabase';
 
 export type UserRole = 'Depot Manager' | 'Invoice Clerk' | 'Yard Counter';
 
 export function useAuth() {
     const [userRole, setUserRole] = useState<UserRole | null>(null);
+    const [session, setSession] = useState<Session | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        async function getProfile() {
-            if (!supabase) {
-                // Stub for local development
-                setUserRole('Depot Manager');
-                setLoading(false);
-                return;
-            }
+        if (!supabase) {
+            // No Supabase project configured at all — nothing to authenticate
+            // against, so fall back to a local-dev stub role.
+            setUserRole('Depot Manager');
+            setLoading(false);
+            return;
+        }
 
-            const { data: { user } } = await supabase.auth.getUser();
-            if (user) {
-                // In a real app, you'd fetch this from a profiles table
-                // For this module, we'll assume the role is in user_metadata
-                setUserRole(user.user_metadata?.role as UserRole || 'Yard Counter');
-            } else {
-                // Mock for this demo if not logged in
-                setUserRole('Depot Manager');
-            }
+        function applySession(nextSession: Session | null) {
+            setSession(nextSession);
+            setUserRole((nextSession?.user.user_metadata?.role as UserRole) ?? null);
             setLoading(false);
         }
-        getProfile();
+
+        supabase.auth.getSession().then(({ data }) => applySession(data.session));
+
+        const { data: subscription } = supabase.auth.onAuthStateChange((_event, nextSession) => {
+            applySession(nextSession);
+        });
+
+        return () => subscription.subscription.unsubscribe();
     }, []);
 
-    return { userRole, loading };
+    return { userRole, session, loading, isAuthenticated: !!supabase ? !!session : true };
 }

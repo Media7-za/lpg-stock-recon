@@ -12,6 +12,7 @@ import ReconciliationWorkspace from './components/reconciliation/ReconciliationW
 import { DebtorListView, DebtorWorkspacePage } from './features/debtor-position-workspace';
 import { PricingDeskHome, QuoteWorkspace, PricingDeskProvider } from './features/pricing-desk';
 import { useAuth, UserRole } from './hooks/useAuth';
+import LoginScreen from './components/auth/LoginScreen';
 import { Navigate } from 'react-router-dom';
 
 function ProtectedRoute({ children, allowedRoles }: { children: React.ReactNode, allowedRoles: UserRole[] }) {
@@ -24,6 +25,15 @@ function ProtectedRoute({ children, allowedRoles }: { children: React.ReactNode,
 }
 
 function App() {
+  const { isAuthenticated, loading } = useAuth();
+
+  if (loading) {
+    return <div className="flex items-center justify-center h-screen font-black text-blue-500 animate-pulse">Checking Permissions...</div>;
+  }
+  if (!isAuthenticated) {
+    return <LoginScreen />;
+  }
+
   return (
     <BrowserRouter>
       <PricingDeskProvider>

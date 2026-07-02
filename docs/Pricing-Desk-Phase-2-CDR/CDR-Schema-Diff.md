@@ -1,6 +1,6 @@
 ## Schema Diff — Commercial Decision Records (Pricing Desk Phase 2)
 
-STATUS: **Approved and applied.** Storage model decided in `lpg-intelligence` (`lpg/docs/pricing_desk/COMMERCIAL_DECISION_DOCTRINE.md` — Option A, Postgres first). `state` CHECK and `decision_type` default updated to match the CDR terminology/lifecycle standardization done after this proposal was first written. RLS deferred rather than enabled with policies that would silently block the app — see the migration's RLS comment block below.
+STATUS: **Approved and applied, including RLS (Option A).** Storage model decided in `lpg-intelligence` (`lpg/docs/pricing_desk/COMMERCIAL_DECISION_DOCTRINE.md` — Option A, Postgres first). `state` CHECK and `decision_type` default updated to match the CDR terminology/lifecycle standardization done after this proposal was first written. RLS was initially deferred (see the superseded note below) because real Supabase Auth wasn't wired up — it now is (`src/hooks/useAuth.ts`, `src/components/auth/LoginScreen.tsx`), so RLS is enabled with `authenticated`-only SELECT/INSERT/UPDATE policies, applied via migration `enable_rls_commercial_decision_records`. Verified: anonymous SELECT returns zero rows, anonymous INSERT is rejected with an RLS violation, authenticated access works, and the `cdr_enforce_immutability` trigger is untouched.
 
 Source doctrine: `lpg-intelligence/lpg/docs/pricing_desk/PRD_SLICE_002_COMMERCIAL_DECISION_RECORDS.md`,
 `lpg-intelligence/lpg/docs/pricing_desk/COMMERCIAL_DECISION_DOCTRINE.md`, and
@@ -175,20 +175,24 @@ CREATE TRIGGER cdr_enforce_immutability
   BEFORE UPDATE ON commercial_decision_records
   FOR EACH ROW EXECUTE FUNCTION enforce_cdr_immutability();
 
--- 5. RLS — DEFERRED, not enabled in this migration.
--- Real Supabase auth is not wired up yet (src/hooks/useAuth.ts stubs a role
--- locally and never establishes a Supabase session). `auth.role() = 'authenticated'`
--- policies would block every request from this app, since it isn't actually
--- authenticated against Supabase. This matches the existing, pre-existing
--- convention in this codebase: `sessions` and `counts` (supabase/create_operational_tables.sql)
--- are also RLS-disabled for the same reason. This is a known, already-flagged
--- codebase-wide gap (see the RLS advisory surfaced when this migration was
--- applied) — not something newly introduced by this table, but not fixed by
--- it either. commercial_decision_records holds internal-only commercial data
--- (per docs/governance/customer_facing_commercial_document_policy.md) and is
--- currently exposed to the anon key like the other RLS-disabled tables.
--- Enable RLS with real policies once Supabase auth is actually wired up.
+-- 5. RLS — initially deferred in this migration (superseded, see below).
 ```
+
+**Superseded.** RLS was deferred here because `src/hooks/useAuth.ts` stubbed a role locally with no real Supabase session, so `auth.role() = 'authenticated'` policies would have blocked the app outright — same reasoning as the pre-existing `sessions`/`counts` tables. Once real Supabase Auth login was added (`src/hooks/useAuth.ts`, `src/components/auth/LoginScreen.tsx`), that reasoning no longer applied. RLS was enabled via a follow-up migration, `enable_rls_commercial_decision_records`:
+
+```sql
+ALTER TABLE commercial_decision_records ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Authenticated users can read CDRs" ON commercial_decision_records
+    FOR SELECT USING (auth.role() = 'authenticated');
+CREATE POLICY "Authenticated users can create CDRs" ON commercial_decision_records
+    FOR INSERT WITH CHECK (auth.role() = 'authenticated');
+CREATE POLICY "Authenticated users can update CDR state/outcome" ON commercial_decision_records
+    FOR UPDATE USING (auth.role() = 'authenticated');
+-- No DELETE policy — CDRs are never deleted, only superseded.
+```
+
+`commercial_decision_records` no longer appears in Supabase's RLS-disabled advisory. The other 15 pre-existing tables (`sessions`, `counts`, `transaction_headers`, etc.) are unaffected and remain a separate, pre-existing gap — not addressed by this change.
 
 ---
 
@@ -245,14 +249,19 @@ tables (see comment header in `supabase/create_operational_tables.sql`).
 
 ### Open Questions (need a decision before implementation)
 
-1. **Auth — resolved for this phase.** `useAuth.ts` stubs `userRole` locally and never
-   establishes a real Supabase session, so `auth.role() = 'authenticated'` policies
-   would block the app outright. Decision: ship Phase 2 with RLS disabled on this
-   table (matching the existing `sessions`/`counts` precedent), not blocked on auth.
-   Revisit once real Supabase auth exists.
-2. **`approved_by`**: PRD_SLICE_002 wants this to identify a person (`approved_by: Louis`
-   in the doctrine example). Should this be a free-text name (matches current
-   `RecommendationCard` UX) or `auth.uid()` once real auth exists?
+1. **Auth — fully resolved.** `useAuth.ts` now calls real `supabase.auth.getSession()` /
+   `onAuthStateChange`, gated by `src/components/auth/LoginScreen.tsx`. RLS is enabled
+   with `authenticated`-only policies (see "Superseded" note above). One interim
+   credential exists (`pricing.desk.depot.manager@gmail.com`, created directly via SQL
+   because `supabase.auth.signUp()` hit this project's email rate limit — see commit
+   message for detail). This is a single shared credential, not per-user accounts;
+   real user management (one account per depot staff member, `approved_by` tied to a
+   real identity) remains future work.
+2. **`approved_by`**: still free-text, matching current `RecommendationCard` UX
+   (now has an "Approved by" field). Not yet `auth.uid()`-derived — the app has one
+   shared credential, not per-user identity, so free-text remains the only option
+   that actually identifies *who* approved something. Revisit once per-user accounts
+   exist.
 3. **Decision code format**: proposed `CDR-<year>-<seq>` resets numbering only by
    calendar year via `to_char(now(), 'YYYY')`, but the sequence itself never resets
    (Postgres sequences don't reset automatically) — numbers will just keep climbing
@@ -283,7 +292,7 @@ Applied via Supabase migration `create_commercial_decision_records`, in order:
 2. `CREATE TABLE` + indexes.
 3. `CREATE FUNCTION` + `CREATE TRIGGER` (decision code).
 4. `CREATE FUNCTION` + `CREATE TRIGGER` (immutability).
-5. RLS deferred — not applied, see Open Question 1.
+5. RLS initially deferred, then applied via follow-up migration `enable_rls_commercial_decision_records` once real auth landed.
 
 ---
 
