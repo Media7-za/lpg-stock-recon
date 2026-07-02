@@ -1,9 +1,21 @@
 ## Schema Diff — Customer Commercial Context API, Phase 3A (Pricing Desk)
 
-STATUS: **Directionally approved. No SQL run yet.** All five design decisions and the
-seeding scope are confirmed (see Open Questions 1–5 below for what's resolved and
-what's still open). Still awaiting the explicit go-ahead to actually execute the SQL —
-that is a separate step from this approval.
+STATUS: **Applied and verified.** Migration `create_customer_commercial_context_phase3a`
+ran against `oqhpxnaadahohwkslive` with no deviation from the SQL below. Verified:
+tables exist with RLS enabled; seed rows present (4 `commercial_customers`, 6
+`commercial_customer_accounts`, 10 `product_classification_rules`); the function
+returns a correct, non-null `customer` block for TAN002, LIN001, SIY000, and BU0003
+(BU0003's `erp_accounts` correctly resolves to `["BU0003","BU0009","BU0031"]`,
+confirming the consolidation works); RLS blocks anonymous SELECT (0 rows) and INSERT
+(explicit RLS violation error) on all three tables, and allows authenticated access.
+One nuance: the anonymous RPC call to `get_customer_commercial_context` does not
+error — it returns `{"error":"unknown_customer"}`, because the function's internal
+queries are themselves subject to the caller's RLS, so an anonymous caller
+legitimately finds no matching account. Same security property as a hard block
+(no data reaches an anonymous caller), softer failure shape.
+
+Application integration (Quote Workspace calling this function instead of its
+fixtures) is explicitly not done — out of scope for this step.
 
 Source: `Context-API-Planning.md` (this folder) — the data-reality check this proposal
 is built from. Source doctrine: `lpg-intelligence/lpg/docs/pricing_desk/PRD_SLICE_003_CUSTOMER_COMMERCIAL_CONTEXT_API.md`,
@@ -414,7 +426,7 @@ When approved, execute in order:
 - [x] Known limitations stated explicitly, not silently approximated
 - [x] All SQL is idempotent (`IF NOT EXISTS` / `ON CONFLICT DO NOTHING` / `CREATE OR REPLACE`)
 - [x] Deployment sequence is correct and safe
-- [ ] **Awaiting sign-off before any SQL runs**
+- [x] **Applied to project `oqhpxnaadahohwkslive` via migration `create_customer_commercial_context_phase3a`, verified (tables, seed counts, function output for all 4 identifiers, RLS anon-block/authenticated-allow)**
 
 ---
 
