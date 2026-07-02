@@ -1,7 +1,9 @@
 ## Schema Diff — Customer Commercial Context API, Phase 3A (Pricing Desk)
 
-STATUS: **PROPOSAL ONLY — not implemented.** No SQL in this document has been run.
-Nothing here should be executed until it is explicitly approved.
+STATUS: **Directionally approved. No SQL run yet.** All five design decisions and the
+seeding scope are confirmed (see Open Questions 1–5 below for what's resolved and
+what's still open). Still awaiting the explicit go-ahead to actually execute the SQL —
+that is a separate step from this approval.
 
 Source: `Context-API-Planning.md` (this folder) — the data-reality check this proposal
 is built from. Source doctrine: `lpg-intelligence/lpg/docs/pricing_desk/PRD_SLICE_003_CUSTOMER_COMMERCIAL_CONTEXT_API.md`,
@@ -41,7 +43,7 @@ doesn't own risks side effects on reconciliation logic that already depends on i
 | Create index `idx_items_account_no` on `transaction_items` | Additive | Low | NO |
 | Create function `get_customer_commercial_context(text)` | Additive | Low | YES |
 | RLS on all 3 new tables, `authenticated`-only | Additive | Medium | YES |
-| Seed `commercial_customer_accounts` for the 3 validated test customers (TAN002, LIN001, Impendle's 3 accounts) | Additive, data | Low | YES — see Open Question 3 |
+| Seed `commercial_customers` / `commercial_customer_accounts` for TAN002, LIN001, Siyaya (`SIY000`), and Impendle's 3 accounts | Additive, data | Low | Approved — see Open Question 3 |
 
 No existing table, view, or Prisma model is touched.
 
@@ -298,6 +300,50 @@ CREATE POLICY "Authenticated users can read classification rules" ON product_cla
     FOR SELECT USING (auth.role() = 'authenticated');
 CREATE POLICY "Authenticated users can manage classification rules" ON product_classification_rules
     FOR ALL USING (auth.role() = 'authenticated') WITH CHECK (auth.role() = 'authenticated');
+
+-- 7. SEED — the four customers approved for seeding. Classifications below
+-- are only set where confirmed; everything else is left NULL rather than
+-- guessed, per the "unknown is better than guessed" decision.
+--
+-- Note: "Siyaya Cash & Carry" was seeded in the Phase 1 UX shell fixtures
+-- under a made-up code, SIYAYA001 (src/features/pricing-desk/data/fixtures/pricingDeskFixtures.ts).
+-- The real ERP account is SIY000 ("SIYAYA CASH AND CARRY", 265 transactions,
+-- 2025-06-13 to 2026-06-18). Seeding uses the real code. The Phase 1 fixture
+-- mismatch is not fixed here — that's application-layer work for whenever
+-- Quote Workspace starts calling this function instead of its fixtures.
+DO $$
+DECLARE
+  v_tan002 uuid;
+  v_lin001 uuid;
+  v_siyaya uuid;
+  v_impendle uuid;
+BEGIN
+  INSERT INTO commercial_customers (customer_name, customer_lane, commercial_status)
+  VALUES ('Tandoor The Clay Oven', 'consuming_customer', 'win_back')
+  RETURNING id INTO v_tan002;
+  INSERT INTO commercial_customer_accounts (commercial_customer_id, account_no, account_role)
+  VALUES (v_tan002, 'TAN002', 'active');
+
+  INSERT INTO commercial_customers (customer_name, customer_lane, commercial_status)
+  VALUES ('Slindokuhle Enterprises', 'standard_wholesale', 'active_customer')
+  RETURNING id INTO v_lin001;
+  INSERT INTO commercial_customer_accounts (commercial_customer_id, account_no, account_role)
+  VALUES (v_lin001, 'LIN001', 'active');
+
+  INSERT INTO commercial_customers (customer_name, customer_lane, commercial_status)
+  VALUES ('Siyaya Cash and Carry', 'commodity_wholesale', 'active_customer')
+  RETURNING id INTO v_siyaya;
+  INSERT INTO commercial_customer_accounts (commercial_customer_id, account_no, account_role)
+  VALUES (v_siyaya, 'SIY000', 'active');
+
+  INSERT INTO commercial_customers (customer_name, customer_lane, commercial_status)
+  VALUES ('Impendle Wholesale', 'standard_wholesale', 'dormant_customer')
+  RETURNING id INTO v_impendle;
+  INSERT INTO commercial_customer_accounts (commercial_customer_id, account_no, account_role) VALUES
+    (v_impendle, 'BU0003', 'historical'),
+    (v_impendle, 'BU0009', 'active'),
+    (v_impendle, 'BU0031', 'empties_deposit');
+END $$;
 ```
 
 ---
@@ -313,7 +359,9 @@ CREATE POLICY "Authenticated users can manage classification rules" ON product_c
 
 ### Data Safety Warnings
 
-None — additive only, idempotent (`IF NOT EXISTS` / `ON CONFLICT DO NOTHING`). No existing table, view, Prisma model, or the `item_classifications` table is touched.
+Table/function/index DDL is additive and idempotent (`IF NOT EXISTS` / `CREATE OR REPLACE`). No existing table, view, Prisma model, or `item_classifications` is touched.
+
+The seed block (Section 7) is **not** fully idempotent — `commercial_customer_accounts.account_no` is `UNIQUE`, so re-running the seed a second time will fail cleanly on the first duplicate `account_no` insert (the whole `DO` block rolls back, per Postgres transaction semantics) rather than silently creating duplicate customers. That's a safety net, not a "run this repeatedly" design — it's intended to run once.
 
 ---
 
@@ -321,10 +369,16 @@ None — additive only, idempotent (`IF NOT EXISTS` / `ON CONFLICT DO NOTHING`).
 
 1. **Canonical customer name (Finding 1).** This proposal stores `customer_name` directly on `commercial_customers` as a field a human sets when creating the row — it does **not** attempt to auto-derive it from the noisy `account_name` values found in `transaction_headers` (`"BULWER IMPENDILE"` vs `"DISCOUNT ALLOWED"` vs `"FNB APP PAYMENT..."` all sharing `BU0003`). Confirm this is acceptable, or specify the derivation rule if you want it computed instead of entered.
 2. **Who populates `customer_lane` / `commercial_status`?** This proposal leaves both nullable, populated manually. No admin UI for this exists yet — would need to be a new Pricing Desk workspace screen, or direct table edits via Supabase Studio in the interim. Not part of this schema diff.
-3. **Seed data scope.** The Change Summary lists seeding `commercial_customer_accounts` for the 3 validated test customers. Proposed seed (not yet in the SQL above — would add before `Deployment Sequence` once confirmed):
-   - `commercial_customers`: one row each for "Tandoor The Clay Oven", "Slindokuhle Enterprises (LIN001)", "Impendle Wholesale".
-   - `commercial_customer_accounts`: `TAN002` → Tandoor; `LIN001` → Slindokuhle; `BU0003` (historical), `BU0009` (active), `BU0031` (empties_deposit) → Impendle Wholesale.
-   - Confirm before this is added — it's real data, not a mock fixture, and `customer_lane`/`commercial_status` would need real values (or explicit `NULL`) for each.
+3. ~~**Seed data scope.**~~ **Resolved.** Seed TAN002, LIN001, Siyaya (real account `SIY000`, not the `SIYAYA001` mock code from the Phase 1 UX fixtures), and Impendle Wholesale's three-account consolidation. Classifications set only where confirmed:
+
+   | Customer | Account(s) | Lane | Commercial Status |
+   |---|---|---|---|
+   | Tandoor The Clay Oven | `TAN002` | `consuming_customer` | `win_back` |
+   | Slindokuhle Enterprises | `LIN001` | `standard_wholesale` | `active_customer` |
+   | Siyaya Cash and Carry | `SIY000` | `commodity_wholesale` | `active_customer` |
+   | Impendle Wholesale | `BU0003` (historical), `BU0009` (active), `BU0031` (empties_deposit) | `standard_wholesale` | `dormant_customer` |
+
+   SQL added as Section 7 above.
 4. **`purchase_frequency` vs `buying_cycle`.** The PRD lists these as two separate fields (`purchase_history.purchase_frequency`, `commercial_profile.buying_cycle`). This proposal computes them with the identical band formula from `COMMERCIAL_ANALYTICS.md` rather than inventing a second classification system. Confirm that's intended, or specify how they should differ.
 5. **`get_customer_commercial_context` performance at scale.** Tested logic only, not run — with 144k `transaction_items` rows this should be fast per single-customer lookup given the new `idx_items_account_no` index, but this hasn't been measured with `EXPLAIN ANALYZE`. Recommend doing that before this is called from a live UI, not just before merge.
 
@@ -347,7 +401,7 @@ When approved, execute in order:
 4. `CREATE INDEX idx_items_account_no`.
 5. `CREATE FUNCTION get_customer_commercial_context`.
 6. Enable RLS + policies on all three new tables.
-7. (Pending Open Question 3) seed the three validated test customers.
+7. Seed the four approved customers (TAN002, LIN001, Siyaya, Impendle).
 
 ---
 
