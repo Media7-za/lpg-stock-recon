@@ -1,5 +1,4 @@
 import {
-  CustomerCommercialContext,
   CustomerRecord,
   DeliveryEconomics,
   MarketObservation,
@@ -31,9 +30,14 @@ export const MARKET_OBSERVATIONS: MarketObservation[] = [
   },
 ];
 
+// Note: this bundle no longer carries a `context` field. Customer
+// commercial context now comes live from get_customer_commercial_context()
+// (Phase 3A, src/features/pricing-desk/lib/customerContextRepository.ts) --
+// see docs/Pricing-Desk-Phase-3-Context-API/App-Integration-Slice-Scope.md.
+// `intake`, `delivery`, and `recommendation` remain fixture-driven; none of
+// those are provided by that API.
 export interface PricingDeskFixtureBundle {
   customer: CustomerRecord;
-  context: CustomerCommercialContext;
   intake: PricingIntake;
   delivery: DeliveryEconomics;
   recommendation: PricingRecommendation;
@@ -72,12 +76,6 @@ const TAN002: PricingDeskFixtureBundle = {
     commercialStatus: 'win_back',
     primaryContact: undefined,
   },
-  context: {
-    lastPurchaseDate: '2026-02-24',
-    churnRisk: 'high',
-    purchaseRhythm: 'Irregular — dormant since last purchase',
-    previousDecisionSummaries: [],
-  },
   intake: {
     customerCode: 'TAN002',
     customerName: 'Tandoor The Clay Oven',
@@ -115,19 +113,15 @@ const SIYAYA_ORDER_LINES: OrderLine[] = [
 
 const SIYAYA: PricingDeskFixtureBundle = {
   customer: {
-    customerCode: 'SIYAYA001',
+    customerCode: 'SIY000',
     customerName: 'Siyaya Cash & Carry',
-    erpAccountCodes: ['SIYAYA001'],
+    erpAccountCodes: ['SIY000'],
     customerLane: 'commodity_wholesale',
     commercialStatus: 'active_customer',
     primaryContact: 'Imtiaas',
   },
-  context: {
-    purchaseRhythm: 'Regular wholesale buyer',
-    previousDecisionSummaries: [],
-  },
   intake: {
-    customerCode: 'SIYAYA001',
+    customerCode: 'SIY000',
     customerName: 'Siyaya Cash & Carry',
     customerLane: 'commodity_wholesale',
     commercialStatus: 'active_customer',
@@ -157,7 +151,7 @@ const SIYAYA: PricingDeskFixtureBundle = {
 
 export const PRICING_DESK_FIXTURES: Record<string, PricingDeskFixtureBundle> = {
   TAN002: TAN002,
-  SIYAYA001: SIYAYA,
+  SIY000: SIYAYA,
 };
 
 export function getFixtureBundle(customerCode: string): PricingDeskFixtureBundle | null {

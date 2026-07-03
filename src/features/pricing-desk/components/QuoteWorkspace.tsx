@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
   computeDeliveryEconomics,
@@ -8,6 +8,7 @@ import {
   missingIntakeFields,
 } from '../hooks/usePricingDeskData';
 import { getFixtureBundle, listFixtureCustomers, MARKET_OBSERVATIONS } from '../data/fixtures/pricingDeskFixtures';
+import { getCustomerCommercialContext } from '../lib/customerContextRepository';
 import { usePricingDeskStore } from '../state/PricingDeskProvider';
 import {
   CommercialDecisionRecord,
@@ -19,7 +20,7 @@ import {
   OrderLine,
   PricingIntake,
 } from '../types/pricingDesk';
-import { CustomerSummaryCard } from './CustomerSummaryCard';
+import { CustomerSummaryCard, CustomerContextStatus } from './CustomerSummaryCard';
 import { DeliveryEconomicsCard } from './DeliveryEconomicsCard';
 import { SupplierCostCard } from './SupplierCostCard';
 import { MarketContextCard } from './MarketContextCard';
@@ -43,8 +44,6 @@ const COMMERCIAL_STATUSES: CommercialStatus[] = [
   'churn_risk',
   'lost',
 ];
-
-const EMPTY_CONTEXT: CustomerCommercialContext = { previousDecisionSummaries: [] };
 
 function emptyIntake(): PricingIntake {
   return {
@@ -73,7 +72,50 @@ export function QuoteWorkspace() {
   const [proformaError, setProformaError] = useState<string | null>(null);
 
   const fixture = getFixtureBundle(intake.customerCode);
-  const context = fixture ? fixture.context : EMPTY_CONTEXT;
+  const [context, setContext] = useState<CustomerCommercialContext | null>(null);
+  const [contextStatus, setContextStatus] = useState<CustomerContextStatus>('not_found');
+
+  // Live customer commercial context (Phase 3A — get_customer_commercial_context()).
+  // Fires whenever the selected customer code changes; intake.customerCode only
+  // ever changes atomically (dropdown selection or the route param), never via
+  // free text, so no debouncing is needed here.
+  useEffect(() => {
+    if (!intake.customerCode) {
+      setContext(null);
+      setContextStatus('not_found');
+      return;
+    }
+    let cancelled = false;
+    setContextStatus('loading');
+    getCustomerCommercialContext(intake.customerCode)
+      .then((result) => {
+        if (cancelled) return;
+        setContext(result);
+        setContextStatus(result ? 'ready' : 'not_found');
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setContext(null);
+        setContextStatus('error');
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [intake.customerCode]);
+
+  // Lane/status unification: once live context resolves, it becomes the
+  // displayed and used truth for customer_lane/commercial_status — it
+  // overrides whatever the fixture prefilled, but only where the API
+  // actually has a value (never clobber a known value with null).
+  useEffect(() => {
+    if (contextStatus === 'ready' && context) {
+      setIntake((prev) => ({
+        ...prev,
+        customerLane: context.customer.lane ?? prev.customerLane,
+        commercialStatus: context.customer.commercialStatus ?? prev.commercialStatus,
+      }));
+    }
+  }, [contextStatus, context]);
 
   const missing = missingIntakeFields(intake);
   const readyForRecommendation = hasMinimumIntake(intake);
@@ -123,7 +165,7 @@ export function QuoteWorkspace() {
       approvedBy,
       decisionReason,
       pricingIntakeSnapshot: intake,
-      customerContextSnapshot: fixture ? context : null,
+      customerContextSnapshot: context,
       deliveryEconomicsSnapshot: deliveryEconomics,
       supplierCostSnapshot: supplierCost,
       marketContextSnapshot: MARKET_OBSERVATIONS,
@@ -343,11 +385,12 @@ export function QuoteWorkspace() {
 
       <MissingFieldsBanner missingFields={missing} />
 
-      {intake.customerLane && (
+      {intake.customerCode && (
         <CustomerSummaryCard
           customerName={intake.customerName || 'Unnamed customer'}
           customerLane={intake.customerLane}
-          commercialStatus={intake.commercialStatus ?? 'new_prospect'}
+          commercialStatus={intake.commercialStatus}
+          status={contextStatus}
           context={context}
         />
       )}
@@ -356,7 +399,7 @@ export function QuoteWorkspace() {
       <SupplierCostCard snapshot={supplierCost} />
       <MarketContextCard observations={MARKET_OBSERVATIONS} />
 
-      {recommendation && (
+      {recommendation && contextStatus !== 'loading' && (
         <RecommendationCard
           recommendation={recommendation}
           onApprove={handleApprove}

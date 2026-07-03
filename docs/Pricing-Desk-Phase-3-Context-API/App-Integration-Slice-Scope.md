@@ -1,8 +1,10 @@
 # Phase 3A App Integration — Slice Scope
 
-STATUS: **Scoping only. No code written.** This defines the boundary of the
-integration before implementation starts, per instruction: small enough that
-pricing rules and logistics can't get touched by accident.
+STATUS: **Implemented and browser-verified.** Built exactly to this scope — see
+the "Decisions" section added below for the three judgment calls made per
+instruction (customer picker, lane/status unification, loading behavior).
+Nothing outside this document's "In Scope" list was touched; confirmed by
+`git diff --name-only` against the commit.
 
 Goal: Quote Workspace stops reading customer commercial context from the
 Phase 1 mock fixtures and loads it from `get_customer_commercial_context()`
@@ -90,6 +92,25 @@ None of these block starting the slice — they're refinements within it or imme
 
 ---
 
-## 6. Why this is safe
+## 7. Decisions (resolved before implementation)
+
+1. **Customer picker**: kept the 2-entry fixture list, unchanged. A real searchable customer list is a separate slice.
+2. **Lane/status**: unified now. `QuoteWorkspace.tsx` has a `useEffect` keyed on the resolved context that overwrites `intake.customerLane`/`intake.commercialStatus` with `context.customer.lane`/`context.customer.commercialStatus` whenever the API has a non-null value — the API becomes the displayed and used truth, not just a display-only annotation. Verified: TAN002's badges read "Consuming Customer" / "Win Back" after the live fetch resolves, matching the seeded `commercial_customers` row, not just the fixture's copy of the same values.
+3. **Loading behavior**: `CustomerSummaryCard` shows a skeleton while `contextStatus === 'loading'`; `RecommendationCard` is held back (`{recommendation && contextStatus !== 'loading' && ...}`) until the fetch settles, but the rest of the form (order lines, delivery, competitor reference) stays fully interactive throughout — nothing there reads `contextStatus`. On fetch failure, `CustomerSummaryCard` shows a warning instead of blocking, and `RecommendationCard` is *not* held back (only `'loading'` blocks it, not `'error'`), so the workflow stays usable per instruction.
+
+## 8. Verification
+
+Ran the full flow through a real browser (Playwright, since the Chrome extension wasn't reachable in this session — same approach as Phase 2/3A DB verification):
+
+- TAN002: live context loads correctly (`buying_cycle: weekly`, `average_net_contribution` shown as "not yet available" rather than faked, lane/status badges match the seeded `consuming_customer`/`win_back`).
+- SIY000 (Siyaya, post fix): resolves to real data — before the one-line code correction this would have shown "no commercial history found" since the fixture's `SIYAYA001` doesn't exist in the real database.
+- Manual entry (no customer code): `CustomerSummaryCard` correctly does not render at all — nothing to look up.
+- Approved a real TAN002 quote and confirmed in the database that `commercial_decision_records.customer_context_snapshot` now contains the live API shape (nested `customer`/`purchaseHistory`/`pricing`/`averageOrder`/`commercialProfile`/`risk`/`classification`/`dataFreshness`), not the old flat fixture shape. Test row deleted afterward.
+
+`npx tsc --noEmit` and `npx eslint src/features/pricing-desk/` both clean (one pre-existing, unrelated warning in `PricingDeskProvider.tsx`).
+
+---
+
+## 9. Why this is safe
 
 Every file this slice touches (`customerContextRepository.ts` [new], `types/pricingDesk.ts` [type addition], `CustomerSummaryCard.tsx` [display], `QuoteWorkspace.tsx` [one variable's data source], `pricingDeskFixtures.ts` [one code fix]) is either new or already fully understood from Phase 1/Phase 2 work this session. None of them are shared with pricing calculation, delivery calculation, CDR persistence, or auth — those subsystems have no code path that reads `context`, so there's no way this slice can change their behavior.

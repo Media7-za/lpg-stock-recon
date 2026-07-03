@@ -35,14 +35,61 @@ export interface CustomerRecord {
   primaryContact?: string;
 }
 
+// Mirrors the real output of the get_customer_commercial_context() Postgres
+// function (Phase 3A, lpg-stock-recon). Every field is nullable because the
+// API returns null/"unknown" rather than a guessed value wherever it can't
+// infer something — see COMMERCIAL_ANALYTICS.md's guardrails.
 export interface CustomerCommercialContext {
-  lastPurchaseDate?: string;
-  lastPricePerKgInclVat?: number;
-  averageOrderKg?: number;
-  averageNetContributionPerOrder?: number;
-  churnRisk?: 'low' | 'medium' | 'high';
-  purchaseRhythm?: string;
-  previousDecisionSummaries: string[];
+  customer: {
+    id: string;
+    code: string;
+    erpAccounts: string[];
+    name: string;
+    lane: CustomerLane | null;
+    commercialStatus: CommercialStatus | null;
+  };
+  purchaseHistory: {
+    lastPurchaseDate: string | null;
+    daysSinceLastPurchase: number | null;
+    averageDaysBetweenOrders: number | null;
+    purchaseFrequency: string | null;
+    annualVolumeKg: number | null;
+  };
+  pricing: {
+    lastPricePerKgExVat: number | null;
+    averagePricePerKg3m: number | null;
+    averagePricePerKg6m: number | null;
+    averagePricePerKg12m: number | null;
+    highestPricePerKg: number | null;
+    lowestPricePerKg: number | null;
+  };
+  averageOrder: {
+    averageOrderKg: number | null;
+    averageOrderValueExVat: number | null;
+    averageGrossProfit: number | null;
+    averageDeliveryCost: number | null;
+    averageNetContribution: number | null;
+  };
+  commercialProfile: {
+    buyingCycle: string | null;
+    expectedReorderDate: string | null;
+    commercialRating: string | null;
+    lifetimeContribution: number | null;
+  };
+  risk: {
+    churnRisk: string | null;
+    reorderStatus: string | null;
+    lastOrderGap: number | null;
+  };
+  classification: {
+    lpgSkusIncluded: string[];
+    excludedSkuClasses: string[];
+    confidence: string | null;
+  };
+  dataFreshness: {
+    source: string;
+    refreshedAt: string;
+  };
 }
 
 export interface OrderLine {
