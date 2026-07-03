@@ -1,0 +1,22 @@
+Category,Field,Unit,CS70HKZN,CS70HMZN,Notes
+Identity,Registration,,CS70HKZN,CS70HMZN,
+Identity,Label,,Small vehicle,4-ton truck,
+Payload,Minimum economic payload,kg,,1500,CS70HKZN minimum not stated anywhere -- need real number
+Payload,Recommended payload,kg,500,4000,
+Payload,Maximum payload,kg,,4000,CS70HKZN maximum not stated anywhere -- need real number
+Fuel,Fuel consumption,L/km,0.125,0.194,
+Fuel,Fuel price basis,R/L,,,"Need real number. Implied ~R29.28/L (CS70HKZN) and ~R29.23/L (CS70HMZN) from current app shadow rates -- not identical, so likely not one consistent shared price today. If genuinely one shared diesel price, fill in once and note ""same"" in the other column"
+Tyres,Active tyres (excl. spare),count,,,Need real number
+Tyres,Tyre unit cost,R,,,Need real number
+Tyres,Tyre lifespan,km,,,Need real number
+Service,Service interval,km,,,Need real number
+Service,Standard service cost,R,,,Need real number
+Maintenance,Maintenance cost per km,R/km,,,"Need real number. Entered directly, not derived -- covers unscheduled repair/wear"
+Insurance,Annual insurance cost,R,,,Need real number
+Licensing,Annual licensing cost,R,,,Need real number
+Depreciation,Purchase value,R,,,Need real number
+Depreciation,Depreciation period,years,,,Need real number
+Depreciation,Residual value,R,,,"Need real number. Enter 0 if expected worthless at end of life, leave blank only if genuinely unknown"
+Utilisation,Expected utilisation,km/month,,,Need real number -- insurance/licensing/depreciation per-km all divide by this
+Labour,Driver hourly rate,R,,,Need real number
+Labour,Assistant hourly rate,R,,,Need real number
