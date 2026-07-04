@@ -1,10 +1,10 @@
 # Phase 4A Planning Review 001 — Fleet Operational Data Discovery
 
-STATUS: **Proposed. No schema, no SQL, no code.** Captures the architecture
-requirements exposed by a real fuel workbook discovery. Contains one
-proposed renumbering of the existing 004A/B/C engine slices, flagged
-explicitly as a breaking change requiring confirmation before any file is
-renamed — same discipline as the 004B rename in Architecture Review 001.
+STATUS: **Accepted. No schema, no SQL, no code.** Captures the architecture
+requirements exposed by a real fuel workbook discovery. `004A`, `004B`, and
+`004C` are explicitly **not** renumbered — they remain stable identifiers.
+The new work is introduced as decimal sub-slices (`004A.1`–`004A.4`)
+beneath `004A`, per decision (Section 5). No existing file is renamed.
 
 **Trigger:** a real fuel account workbook (`Book14.xlsx`, "Midlands
 Petroleum" fuel statement) was reviewed as part of Phase 4A data collection.
@@ -207,67 +207,77 @@ future review step, not something the engine resolves silently.
 
 ---
 
-## 5. Proposed Revised Phase 4 Sequence
+## 5. Slice Numbering — Decision: Sub-Slices, Not Renumbering
 
-**Proposed only — not applied.** This renumbers the three existing engine
-PRDs. Flagging as a breaking change per Section 6 before any file is
-touched.
+**Decided.** `004A`, `004B`, and `004C` keep their existing identity as
+stable identifiers. Nothing is renamed. The new work discovered by this
+review is introduced as decimal sub-slices beneath `004A`, since all four
+new capabilities are prerequisites of `PRD_SLICE_004A_VEHICLE_COST_ENGINE.md`
+specifically, not peers of it:
 
 | Slice | Owns | Status |
 |---|---|---|
-| 004A — Vehicle Registry & Fuel Supplier | Governed vehicle list, supplier list | 🟢 Ready to plan — no missing data |
-| 004B — Fuel Transaction Import | Import from supplier statements, registration normalization, exception queue | 🟢 Ready to plan — real data exists (Midlands Petroleum), pending Decision 5's multi-supplier question |
-| 004C — Fuel Consumption Engine | Distance, L/100km, cost/km, anomaly detection | 🟢 Ready to plan — derived entirely from 004B, no assumptions |
-| 004D — Vehicle Cost Profile _(currently `PRD_SLICE_004A_VEHICLE_COST_ENGINE.md`)_ | Full per-vehicle cost profile | 🟡 Still blocked — tyres, service, maintenance, insurance, licensing, depreciation have no source (see `Vehicle-Cost-Input-Sheet.md`). Fuel cost input now comes from 004C instead of a manual assumption. |
-| 004E — Trip Cost Engine _(currently `PRD_SLICE_004B_TRIP_COST_ENGINE.md`)_ | Per-trip running/labour cost | ⏳ Depends on 004D |
-| 004F — Delivery Economics Engine _(currently `PRD_SLICE_004C_DELIVERY_ECONOMICS_ENGINE.md`)_ | Net contribution | ⏳ Depends on 004E |
-| Phase 5 — Pricing Strategy | Recommendation | ⏳ Depends on 004F |
-| Phase 6 — Mobile Proforma Generator _(currently Phase 5)_ | Document generation | Not started |
+| `004A.1` — Vehicle Registry | Governed vehicle list | 🟢 Ready to plan — no missing data |
+| `004A.2` — Fuel Suppliers | Supplier list (Midlands Petroleum, and others as they're imported) | 🟢 Ready to plan |
+| `004A.3` — Fuel Transaction Import | Import from supplier statements, registration normalization, exception queue | 🟢 Ready to plan — real data exists, pending Decision 5's multi-supplier question |
+| `004A.4` — Fuel Consumption Engine | Distance, L/100km, cost/km, anomaly detection | 🟢 Ready to plan — derived entirely from `004A.3`, no assumptions |
+| `004A` — Vehicle Cost Profile (unchanged) | Full per-vehicle cost profile | 🟡 Still blocked — tyres, service, maintenance, insurance, licensing, depreciation have no source (see `Vehicle-Cost-Input-Sheet.md`). Fuel cost input now comes from `004A.4` instead of a manual assumption. |
+| `004B` — Trip Cost Engine (unchanged) | Per-trip running/labour cost | ⏳ Depends on `004A` |
+| `004C` — Delivery Economics Engine (unchanged) | Net contribution | ⏳ Depends on `004B` |
+
+No document that already links `004A`, `004B`, or `004C` by name needs to
+change — `PRD_SLICE_004A_VEHICLE_COST_ENGINE.md` still means the same file
+it always has. The four new capabilities get their own PRD documents
+(`PRD_SLICE_004A.1_VEHICLE_REGISTRY.md` etc.) as a later step, once this
+review is confirmed — not created here.
+
+**Why not renumber:** slice numbers are stable identifiers that this
+project has already linked from multiple documents, release notes, and
+architecture reviews. Renumbering rewrites that history for no functional
+gain. The meaning of `004A` has grown — that's normal — and the correct
+response is to add supporting slices underneath it, not move it.
+
+### Domain Hierarchy
+
+This is the same static/dynamic, master-data/transaction pattern already
+used elsewhere in Pricing Desk — Customer Commercial Context (master data)
+derived from ERP transactions (Phase 3A), Commercial Decision Records as
+business decisions anchored on both. Fleet costing follows the identical
+shape:
+
+```text
+Fleet Master Data
+├── Vehicle Registry        (004A.1)
+├── Fuel Suppliers          (004A.2)
+└── Vehicle Cost Profiles   (004A)
+
+Operational Data
+└── Fuel Transactions       (004A.3)
+
+Engines
+└── Fuel Consumption Engine (004A.4)
+
+Commercial Engines
+└── Trip Cost Engine (004B)
+      ↓
+    Delivery Economics (004C)
+```
 
 ---
 
-## 6. Breaking Change — Needs Confirmation Before Execution
-
-Renumbering 004A/004B/004C to 004D/004E/004F means renaming three existing,
-already-cross-referenced files:
-
-```
-PRD_SLICE_004A_VEHICLE_COST_ENGINE.md         -> PRD_SLICE_004D_VEHICLE_COST_ENGINE.md
-PRD_SLICE_004B_TRIP_COST_ENGINE.md            -> PRD_SLICE_004E_TRIP_COST_ENGINE.md
-PRD_SLICE_004C_DELIVERY_ECONOMICS_ENGINE.md   -> PRD_SLICE_004F_DELIVERY_ECONOMICS_ENGINE.md
-```
-
-Documents that reference these by name and would need updating:
-`README.md`'s document index, `IMPLEMENTATION_HANDOVER.md`'s Status table
-and Recommended Build Order (already amended once this release to fix the
-stale Phase 4 numbering — this would be a second amendment), `RELEASE_v0.3.md`,
-`COMMERCIAL_ANALYTICS.md` (references 004C's contribution assessment),
-`pricing_strategy.md` (references 004C by old name), `STATE_MACHINES.md`
-(if it references these slices — needs checking), and this repo's own
-`CDR-Schema-Diff.md` (references `delivery_economics_snapshot` conceptually
-tied to 004C).
-
-This mirrors exactly how Architecture Review 001 renamed 004B →
-"Trip Cost Engine" — flagged first, executed only after confirmation, cross-
-references updated in the same pass. Not done here. Awaiting the same kind
-of explicit go-ahead before any file moves.
-
----
-
-## 7. What This Review Does Not Do
+## 6. What This Review Does Not Do
 
 - No schema, no `CREATE TABLE`, no SQL of any kind.
-- No file renames — the breaking change in Section 6 is proposed, not executed.
+- No renumbering, no file renames — `004A`, `004B`, `004C` are unchanged. The new sub-slices (`004A.1`–`004A.4`) don't have PRD documents yet either; this review only establishes the numbering and responsibilities.
 - No expansion of the governed fleet — `NP186678`, `NPS79356`, `BV56VMGP`, `ND4222` remain unclassified pending a human decision (Decision 1), not silently added to `VehicleCostProfile` scope.
 - No import of the workbook's data into any table.
-- No change to `PRD_SLICE_004A/B/C`'s existing content — only a renumbering is proposed, and only as a name/position change, not a content change.
-- 004D (renumbered Vehicle Cost Profile) remains exactly as blocked as it was in `Phase-4A-Vehicle-Cost-Profile-Planning.md` — this review does not supply any of the missing tyre/service/insurance/licensing/depreciation numbers.
+- No change to `PRD_SLICE_004A/B/C`'s existing content at all.
+- `004A` (Vehicle Cost Profile) remains exactly as blocked as it was in `Phase-4A-Vehicle-Cost-Profile-Planning.md` — this review does not supply any of the missing tyre/service/insurance/licensing/depreciation numbers.
 
 ---
 
-## 8. Open Items Carried Forward
+## 7. Open Items Carried Forward
 
-1. **Fleet classification** — what are `NP186678`, `NPS79356`, `BV56VMGP`, and `ND4222`? Needs a human answer before 004A (Vehicle Registry) can be seeded with anything beyond the two already-governed vehicles.
-2. **Multi-supplier scope** — is Midlands Petroleum the only fuel account for this fleet, or does `Kondeni Fuels Sales 2026.xlsx`'s other tabs (e.g. the other petroleum-named sheet) also need importing for a complete picture? Affects whether 004B's first import is complete or partial.
-3. **Renumbering confirmation** — Section 6, above.
-4. **Vehicle Cost Profile inputs** — unchanged from `Vehicle-Cost-Input-Sheet.md`; still waiting on real tyre/service/insurance/licensing/depreciation figures.
+1. **Fleet classification** — what are `NP186678`, `NPS79356`, `BV56VMGP`, and `ND4222`? Needs a human answer before `004A.1` (Vehicle Registry) can be seeded with anything beyond the two already-governed vehicles.
+2. **Multi-supplier scope** — is Midlands Petroleum the only fuel account for this fleet, or does `Kondeni Fuels Sales 2026.xlsx`'s other tabs (e.g. the other petroleum-named sheet) also need importing for a complete picture? Affects whether `004A.3`'s first import is complete or partial.
+3. **Vehicle Cost Profile inputs** — unchanged from `Vehicle-Cost-Input-Sheet.md`; still waiting on real tyre/service/insurance/licensing/depreciation figures.
