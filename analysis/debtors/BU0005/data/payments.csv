@@ -1,0 +1,4 @@
+debtor_code,payment_doc,payment_date,stat_batch,lpg_slice,lpg_target_doc,rounding_slice,allocation_tier,rounding_journal_tier,notes
+BU0005,00043092,2026-01-16,STAT 122,1027.87,00048766,2.13,TIER1_CONFIRMED,JOURNAL_PENDING,DETRANS ref split confirmed
+BU0005,00043648,2026-03-11,STAT 124,2697.51,00049566,2.49,TIER1_INFERRED,JOURNAL_PENDING,Split inferred; DETRANS pending
+BU0005,00044065,2026-04-21,STAT 125,1159.38,00050193,10.62,TIER1_PENDING_SIGNOFF,JOURNAL_PENDING,11d inv→receipt lag — review doc

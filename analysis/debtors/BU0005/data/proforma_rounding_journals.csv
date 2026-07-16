@@ -1,0 +1,5 @@
+payment_doc,payment_date,journal_post_date,journal_amount,journal_sign,ref_no,proforma_doc,notes
+00016579+00016837,2022-11-15,2022-11-15,1.81,negative,00016195,PROFORMA-DJ-BU0005-000,D/N2406 rounding — cash R1495 vs LPG R1493.19
+00043092,2026-01-16,2026-01-16,2.13,negative,,PROFORMA-DJ-BU0005-001,Rounding slice STAT 122
+00043648,2026-03-11,2026-03-11,2.49,negative,00049566,PROFORMA-DJ-BU0005-002,Rounding slice STAT 124
+00044065,2026-04-21,2026-04-21,10.62,negative,00050193,PROFORMA-DJ-BU0005-003,Rounding slice STAT 125

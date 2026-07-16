@@ -1,0 +1,4 @@
+debtor_code,payment_doc,payment_date,batch_ref,amount,lpg_target_doc,lpg_amount,rounding_slice,notes
+BU0005,00013353,2022-04-16,CASH T7000327,1980.00,00012969,1980.00,0.00,Exact header match
+BU0005,00016579,2022-10-27,CASH T0000040,1200.00,00016195,1493.19,,Partial 1 of 2 — see 00016837
+BU0005,00016837,2022-11-15,CASH T0000043,295.00,00016195,1493.19,1.81,Combined R1495 vs LPG R1493.19

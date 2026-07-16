@@ -1,0 +1,39 @@
+{
+  "debtorCode": "BU0005",
+  "clientName": "CHOBOZA - BULWER",
+  "status": "active",
+  "reconState": "in-progress",
+  "financials": {
+    "totalOutstanding": 3450.17,
+    "lastInvoiceDate": "2026-04-10",
+    "lastPaymentDate": "2026-04-21",
+    "agedDebt180Plus": 203.57
+  },
+  "collections": {
+    "actionRequired": false,
+    "actionType": null,
+    "dateSent": null,
+    "deadlineDate": null,
+    "nextAction": null,
+    "nextActionDate": null,
+    "notes": "Turn 2 complete. 3 STAT batches (122/124/125); all blank ref_no. Open LPG inv 00050949 R2,087.22 + residual R1,362.95. No collection until reconState complete."
+  },
+  "history": [
+    {
+      "date": "2026-07-13",
+      "event": "Turn 1 scaffold: lane confirmed allocation (not settlement_discount). Commercial model locked — no settlement discount, unit of work = invoice ref_no, LPG-only match target. ERP TXT and full ledger export pending in raw/. Evidence from global aged-debt TXT + april_dump snippet only."
+    },
+    {
+      "date": "2026-07-13",
+      "event": "Turn 2: ingested raw/BU0005.TXT (CURRENT, 19 rows, Jan–Jun 2026). Balance R3,450.17 reconciles. 3 STAT payments; pilot allocation on 00044065/STAT 125 vs inv 00050193 — +R10.62 variance, Tier 5. Deliverables: BASELINE_v1, Allocation_Pilot_STAT125, invoices/payments CSVs."
+    },
+    {
+      "date": "2026-07-15",
+      "event": "Operator ruling: rounding slices (R2.13/R2.49/R10.62) intentional → DISCOUNT ALLOWED journals. DETRANS confirms STAT 122 split. Pilot review: inv 00050193 2026-04-10 vs receipt 2026-04-21 (11d). Finance checklist + proforma journals created. Pre-2026 TXT confirmed available — pending intake."
+    },
+    {
+      "date": "2026-07-16",
+      "event": "Ingested raw/BU00052023.TXT (2022 activity). B/F bridge: close R1,378.19 = legacy R1,380.00 − D/N2406 rounding R1.81. CURRENT residual R1,362.95 = B/F − STAT rounding R15.24. Added TASK-BU0005-000 (R1.81). Report: BU0005_BF_Bridge_v1.md."
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+payment_doc,payment_date,target_doc,allocated_lpg,variance,allocation_status,review_required
+00043092,2026-01-16,00048766,1027.87,2.13,PROBABLE,true
+00043648,2026-03-11,00049566,2697.51,2.49,PROBABLE,true
+00044065,2026-04-21,00050193,1159.38,10.62,PROBABLE,true

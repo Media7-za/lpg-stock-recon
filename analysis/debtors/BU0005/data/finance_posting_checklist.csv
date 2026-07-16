@@ -1,0 +1,5 @@
+task_id,payment_doc,payment_date,stat_batch,lpg_target_doc,lpg_amount,rounding_amount,journal_type,journal_post_date,journal_amount,journal_sign,status,notes
+TASK-BU0005-000,00016579+00016837,2022-10-27,,(00016195),1493.19,1.81,DISCOUNT ALLOWED,2022-11-15,1.81,negative,OPEN,D/N2406 cash R1200+R295 vs LPG; post date = final payment
+TASK-BU0005-001,00043092,2026-01-16,STAT 122,00048766,1027.87,2.13,DISCOUNT ALLOWED,2026-01-16,2.13,negative,OPEN,Allocation detail confirmed in DETRANS — ref split exists
+TASK-BU0005-002,00043648,2026-03-11,STAT 124,00049566,2697.51,2.49,DISCOUNT ALLOWED,2026-03-11,2.49,negative,OPEN,Inferred split — allocation detail not in DETRANS yet
+TASK-BU0005-003,00044065,2026-04-21,STAT 125,00050193,1159.38,10.62,DISCOUNT ALLOWED,2026-04-21,10.62,negative,OPEN,Operator ruling 2026-07-15 — intentional rounding
