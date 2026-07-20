@@ -1,0 +1,13 @@
+{
+  "original_filename": "WO0001P16TOP17.TXT",
+  "original_upload_path": "analysis/debtors/WO0001/data/WO0001P16TOP17.TXT",
+  "committed_canonical_path": "analysis/debtors/WO0001/raw/WO0001P16TOP17.TXT",
+  "sha256": "57199c801af6083b210fe760eb74f9bc7130a990c00b84140b922c51710ffb83",
+  "received_date": "2026-07-20",
+  "operator_confirmation": {
+    "fresh_file_uploaded": true,
+    "partial_export_intentional": true,
+    "confirmation_note": "Operator confirmed partial P16–P17 export is acceptable ('partial is fine')"
+  },
+  "commit_sha": null
+}

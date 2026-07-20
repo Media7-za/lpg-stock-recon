@@ -4,12 +4,33 @@
   "generated_at": "2026-07-20T15:04:00Z",
   "generated_by": "cursor",
   "supersedes_turn": 8,
-  "source_as_at": "2026-07-20",
+  "source_as_at": "2026-07-01",
+  "source_as_at_basis": "Last transaction date in WO001CURRENT.TXT; the TXT header does not state an explicit period-end date.",
+  "erp_freshness": {
+    "repository_latest_file": "WO001CURRENT.TXT",
+    "repository_latest_path": "analysis/debtors/WO0001/reports/WO001CURRENT.TXT",
+    "balance": 88768.73,
+    "currency": "ZAR",
+    "period_end": null,
+    "last_transaction_date": "2026-07-01",
+    "repository_commit": "4035c3270781a288005bae8232511849dc3c12db",
+    "evidence_as_at": "2026-07-01",
+    "operator_confirmation": "pending",
+    "confirmation_date": null,
+    "status": "LATEST_IN_REPOSITORY",
+    "balance_classification": "ASSERTED_STALE_PENDING_OPERATOR_CONFIRMATION",
+    "fresh_upload_requested": true,
+    "live_debtor_communications": "blocked",
+    "reconciliation_closure": "blocked",
+    "registry_ratification_dependent_on_current_balance": "blocked"
+  },
   "erp_anchor": {
     "amount": 88768.73,
     "currency": "ZAR",
     "as_at": "2026-07-01",
     "source": "ERP TXT refresh (WO001CURRENT.TXT)",
+    "status": "LATEST_IN_REPOSITORY",
+    "balance_classification": "ASSERTED_STALE_PENDING_OPERATOR_CONFIRMATION",
     "canonical_source": "analysis/debtors/WO0001/reports/WO001CURRENT.TXT"
   },
   "portfolio_anchor": {
@@ -46,8 +67,13 @@
     },
     {
       "path": "bridge_register.json",
-      "canonical_source": "analysis/debtors/WO0001/data/unallocated_credit_bridge.json",
-      "purpose": "Turn 9 credit bridge snapshot (canonical superseded by Turn 10)"
+      "canonical_source": null,
+      "reconstructed_from": [
+        "analysis/debtors/WO0001/reports/WO0001_Statement_Bridge_v3.md",
+        "analysis/debtors/WO0001/reports/WO0001_Turn9_Worker_Report.md"
+      ],
+      "provenance_status": "RECONSTRUCTED_SNAPSHOT",
+      "purpose": "Turn 9 credit bridge reconstructed after the canonical JSON was superseded by Turn 10"
     },
     {
       "path": "allocation_other_edges.csv",
@@ -72,7 +98,7 @@
     {
       "path": "erp_current_extract.txt",
       "canonical_source": "analysis/debtors/WO0001/reports/WO001CURRENT.TXT",
-      "purpose": "ERP CURRENT balance extract for staleness review"
+      "purpose": "ERP extract copy — LATEST_IN_REPOSITORY; operator freshness confirmation pending"
     },
     {
       "path": "decision_inputs.md",
@@ -133,6 +159,12 @@
       "status": "FAIL",
       "result": "pending",
       "required": "residual <= tolerance"
+    },
+    {
+      "name": "erp_freshness_gate",
+      "status": "FAIL",
+      "result": "pending",
+      "required": "operator_confirmation != pending"
     }
   ],
   "operator_decisions_required": [
@@ -142,5 +174,10 @@
     "Review residual R314.52 — do not set reconState complete",
     "Regenerate any debtor communications against ERP CURRENT R88,768.73 (not portfolio R110,789.36)"
   ],
-  "staleness_warning": "Portfolio anchor R110,789.36 (2026-06-03) differs from ERP CURRENT R88,768.73 (2026-07-01) by R-22,020.63. Previously drafted communications are stale."
+  "staleness_warning": "Portfolio anchor R110,789.36 (2026-06-03) differs from ERP CURRENT R88,768.73 (2026-07-01) by R-22,020.63. Previously drafted communications are stale.",
+  "subsequently_superseded_by": {
+    "file": "WO0001P16TOP17.TXT",
+    "evidence_as_at": "2026-07-13",
+    "recorded_in_turn": 11
+  }
 }

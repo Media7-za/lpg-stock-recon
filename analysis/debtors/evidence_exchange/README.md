@@ -60,7 +60,51 @@ Every turn folder **must** contain `manifest.json` using the schema in `template
 
 ---
 
-## 4. Review rules
+## 4. ERP freshness gate (mandatory)
+
+> **The newest ERP extract in the repository is not automatically the current ERP position.** Before any live financial conclusion, the operator must either upload a fresh ERP extract or explicitly confirm that the repository file is still the latest available.
+
+Every debtor turn involving a **balance**, **allocation reconciliation**, **statement generation**, **debtor communication**, **payment position**, **registry ratification**, or **reconciliation closure** must begin with the ERP freshness gate.
+
+### Gate procedure
+
+Before treating any ERP TXT (or equivalent extract) as the current financial anchor:
+
+1. Identify the newest ERP extract in the repository for that debtor.
+2. Record: filename, explicit period-end (if stated), last transaction date, current balance, and repository commit/modification context where available.
+3. Compare the evidence date with the current operating date.
+4. Ask the operator:
+
+   > The latest ERP extract currently available is `<filename>`, with balance `<amount>` and evidence dated `<date>`. Is this still the latest ERP export, or should you upload a fresh ERP TXT file before we continue?
+
+5. **STOP** financial reconciliation work until either:
+   - the operator uploads a newer export; or
+   - the operator **explicitly confirms** the existing extract is the latest available.
+
+Do **not** infer operator confirmation from silence.
+
+### Evidence status before confirmation
+
+| Label | Meaning |
+| :--- | :--- |
+| `LATEST_IN_REPOSITORY` | Newest file stored in repo — **not** operator-confirmed as current ERP |
+| `CURRENT_CONFIRMED_BY_OPERATOR` | Operator explicitly confirmed no newer export exists |
+| `SUPERSEDED` | Replaced by a newer upload |
+
+Until confirmed, classify the balance as **`ASSERTED_STALE_PENDING_OPERATOR_CONFIRMATION`**. It may archive a historical turn but must **not** be used to:
+
+- generate or approve live debtor communications
+- recommend a collection amount
+- close reconciliation
+- ratify allocation overrides dependent on the current balance
+- declare a statement current
+- supersede a later operator-supplied balance
+
+Record gate state in every manifest under `erp_freshness` (see `templates/TURN_MANIFEST.template.json`).
+
+---
+
+## 5. Review rules
 
 1. **Self-contained bundles** — Each turn folder must be sufficient for independent review without repo or database access. Canonical source paths are recorded in `manifest.json` → `artifacts[].canonical_source`.
 
@@ -78,7 +122,7 @@ Every turn folder **must** contain `manifest.json` using the schema in `template
 
 ---
 
-## 5. Turn export rule
+## 6. Turn export rule
 
 At the end of every debtor turn, Cursor exports relevant review artifacts to:
 
@@ -90,7 +134,7 @@ Use `templates/TURN_BUNDLE_CHECKLIST.md` before publishing a bundle.
 
 ---
 
-## 6. Current bundles
+## 7. Current bundles
 
 | Debtor | Turn | Outcome | Residual | Path |
 | :--- | ---: | :--- | ---: | :--- |

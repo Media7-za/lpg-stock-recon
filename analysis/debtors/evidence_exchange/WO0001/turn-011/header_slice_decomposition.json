@@ -1,0 +1,121 @@
+{
+  "export_file": "WO0001P16TOP17.TXT",
+  "epistemic_labels": {
+    "header_current_balance": {
+      "amount": 56743.98,
+      "label": "ASSERTED_CURRENT_HEADER_BALANCE"
+    },
+    "slice_closing_balance": {
+      "amount": 20375.35,
+      "label": "ASSERTED_PERIOD_SLICE_CLOSING"
+    }
+  },
+  "difference": {
+    "expression": "56743.98 - 20375.35",
+    "amount": 36368.63,
+    "label": "COMPUTED_HEADER_MINUS_SLICE"
+  },
+  "header_fields": {
+    "current_balance": 56743.98,
+    "ud_pay_cheques": -36368.63,
+    "credit_claims": 0,
+    "total_excluding_ud_claims": 36368.63
+  },
+  "slice_mechanics": {
+    "export_scope": "partial_period_P16_P17_with_balance_bf",
+    "include_flags": "UD PAYMENTS, UD CHEQUES, CREDIT CLAIMS",
+    "exclude_flags": "ALLOCATION DETAIL",
+    "balance_brought_forward": {
+      "amount": 60329.29,
+      "running_balance": 60329.29
+    },
+    "ud_payment_rows": [
+      {
+        "line": "2",
+        "doc": "00017714",
+        "date": "16/01/2023",
+        "amount": -11635.81,
+        "balance_after": 48693.48
+      },
+      {
+        "line": "3",
+        "doc": "00017783",
+        "date": "24/01/2023",
+        "amount": -12219.27,
+        "balance_after": 36474.21
+      },
+      {
+        "line": "4",
+        "doc": "00035421",
+        "date": "11/12/2024",
+        "amount": -12513.55,
+        "balance_after": 23960.66
+      }
+    ],
+    "ud_payment_sum": -36368.63,
+    "period_transaction_rows": 22,
+    "period_transaction_sum": -3585.31,
+    "recomputed_slice_close": 20375.35,
+    "last_transaction": {
+      "doc": "00045195",
+      "date": "13/07/2026",
+      "entry": "Payment",
+      "amount": -11310,
+      "balance": 20375.35
+    },
+    "last_transaction_date": "2026-07-13"
+  },
+  "structural_decomposition": [
+    {
+      "step": 1,
+      "identity": "header_minus_slice",
+      "expression": "56743.98 - 20375.35",
+      "result": 36368.63,
+      "holds": true
+    },
+    {
+      "step": 2,
+      "identity": "difference_equals_abs_ud_pay_cheques_header",
+      "expression": "|UD PAY/CHEQUES| = |-36368.63|",
+      "lhs": 36368.63,
+      "rhs": 36368.63,
+      "holds": true
+    },
+    {
+      "step": 3,
+      "identity": "ud_header_equals_sum_of_ud_payment_rows",
+      "header_ud": -36368.63,
+      "row_sum": -36368.63,
+      "holds": true
+    },
+    {
+      "step": 4,
+      "identity": "slice_close_equals_bf_plus_ud_plus_period_txns",
+      "expression": "60329.29 + (-36368.630000000005) + (-3585.31)",
+      "result": 20375.35,
+      "expected": 20375.35,
+      "holds": true
+    },
+    {
+      "step": 5,
+      "identity": "header_equals_slice_close_plus_abs_ud_pool",
+      "expression": "20375.35 + |-36368.63|",
+      "result": 56743.98,
+      "expected": 56743.98,
+      "holds": true,
+      "interpretation": "ERP CURRENT BALANCE = period-slice closing balance + undeducted payment/cheque pool (UD PAY/CHEQUES). The slice running balance after Ud Paymnt rows is NOT the header CURRENT BALANCE."
+    },
+    {
+      "step": 6,
+      "identity": "total_excluding_ud_claims_field_vs_slice_close",
+      "note": "Header field TOTAL EXCLUDING UD/CLAIMS equals |UD PAY/CHEQUES| (36368.63), NOT slice closing (20375.35). Field label does not mean slice closing.",
+      "field_value": 36368.63,
+      "slice_closing": 20375.35,
+      "holds_equality_with_slice": false
+    }
+  ],
+  "identity_checks_summary": {
+    "all_core_identities_hold": true,
+    "header_represents_full_account": "UNPROVEN — partial P16–P17 export with B/F; scope validation pending"
+  }
+}

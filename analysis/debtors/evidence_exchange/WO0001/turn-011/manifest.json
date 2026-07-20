@@ -1,0 +1,164 @@
+{
+  "debtor_code": "WO0001",
+  "turn": 11,
+  "generated_at": "2026-07-20T19:30:00Z",
+  "generated_by": "cursor",
+  "supersedes_turn": 9,
+  "objective": "Ingest and validate WO0001P16TOP17.TXT as the operator-confirmed partial ERP export, determine the meaning of the header balance versus slice closing balance, and identify every downstream artifact invalidated by the new anchor.",
+  "source_as_at": "2026-07-13",
+  "source_as_at_basis": "Last transaction date in WO0001P16TOP17.TXT (Payment 45195, 2026-07-13). Partial P16–P17 export; header CURRENT BALANCE scope not yet validated as full account position.",
+  "erp_freshness": {
+    "repository_latest_file": "WO0001P16TOP17.TXT",
+    "repository_latest_path": "analysis/debtors/WO0001/raw/WO0001P16TOP17.TXT",
+    "operator_confirmation": "fresh_file_uploaded",
+    "scope_confirmation": "partial_export_confirmed",
+    "status": "CURRENT_CONFIRMED_PARTIAL_EXPORT",
+    "header_current_balance": 56743.98,
+    "slice_closing_balance": 20375.35,
+    "last_transaction_date": "2026-07-13",
+    "supersedes": "WO001CURRENT.TXT",
+    "sha256": "57199c801af6083b210fe760eb74f9bc7130a990c00b84140b922c51710ffb83",
+    "received_date": "2026-07-20",
+    "operator_partial_scope_confirmed": true
+  },
+  "epistemic_classification": {
+    "56743.98": "ASSERTED_CURRENT_HEADER_BALANCE",
+    "20375.35": "ASSERTED_PERIOD_SLICE_CLOSING",
+    "36368.63": "COMPUTED_HEADER_MINUS_SLICE",
+    "note": "Neither header nor slice closing is PROVEN as the full account position — partial export with unresolved scope."
+  },
+  "live_debtor_communications": "blocked_pending_scope_validation",
+  "reconciliation_closure": "blocked",
+  "balance_dependent_ratification": "blocked",
+  "erp_anchor": {
+    "amount": 56743.98,
+    "currency": "ZAR",
+    "as_at": "2026-07-13",
+    "source": "WO0001P16TOP17.TXT header CURRENT BALANCE",
+    "status": "CURRENT_CONFIRMED_PARTIAL_EXPORT",
+    "balance_classification": "ASSERTED_CURRENT_HEADER_BALANCE",
+    "canonical_source": "analysis/debtors/WO0001/raw/WO0001P16TOP17.TXT",
+    "slice_closing_balance": 20375.35,
+    "slice_classification": "ASSERTED_PERIOD_SLICE_CLOSING",
+    "supersedes": {
+      "file": "WO001CURRENT.TXT",
+      "path": "analysis/debtors/WO0001/reports/WO001CURRENT.TXT",
+      "amount": 88768.73,
+      "as_at": "2026-07-01"
+    }
+  },
+  "portfolio_anchor": {
+    "amount": 110789.36,
+    "currency": "ZAR",
+    "as_at": "2026-06-03",
+    "source": "dashboard_metrics.json / Statement_Account_v1",
+    "canonical_source": "analysis/debtors/WO0001/data/dashboard_metrics.json",
+    "status": "UNAFFECTED_BY_TURN_11_INTAKE"
+  },
+  "lane": "erp_freshness",
+  "outcome": "STOP",
+  "recon_state": "pending",
+  "residual": {
+    "amount": 314.52,
+    "tolerance": 0.05,
+    "unit": "ZAR",
+    "basis": "Turn 9/10 allocation arithmetic (portfolio anchor 2026-06-03)",
+    "turn_11_status": "NOT_RECOMPUTED — residual cannot be carried forward unchanged without recomputation against new ERP evidence; recomputation blocked pending scope validation"
+  },
+  "artifacts": [
+    {
+      "path": "worker_report.md",
+      "canonical_source": null,
+      "purpose": "Turn 11 ERP freshness intake and downstream classification report"
+    },
+    {
+      "path": "header_slice_decomposition.json",
+      "canonical_source": null,
+      "purpose": "Structural header-versus-slice identity checks from export mechanics"
+    },
+    {
+      "path": "downstream_effects.md",
+      "canonical_source": null,
+      "purpose": "Read-only stale/current/unaffected classification of downstream artifacts"
+    },
+    {
+      "path": "source_intake.json",
+      "canonical_source": "analysis/debtors/WO0001/raw/WO0001P16TOP17.TXT",
+      "purpose": "Raw extract intake metadata — filename, paths, checksum, operator confirmation"
+    },
+    {
+      "path": "WO0001P16TOP17.TXT",
+      "canonical_source": "analysis/debtors/WO0001/raw/WO0001P16TOP17.TXT",
+      "purpose": "Operator-confirmed partial ERP export (review copy)"
+    }
+  ],
+  "proven_identities": [
+    {
+      "name": "Header minus slice",
+      "result": 36368.63,
+      "identity": "56743.98 − 20375.35 = 36368.63"
+    },
+    {
+      "name": "Difference equals |UD PAY/CHEQUES|",
+      "result": 36368.63,
+      "identity": "|−36368.63| = 36368.63"
+    },
+    {
+      "name": "UD header equals Ud Paymnt row sum",
+      "result": -36368.63,
+      "identity": "−11635.81 − 12219.27 − 12513.55 = −36368.63"
+    },
+    {
+      "name": "Slice roll-forward",
+      "result": 20375.35,
+      "identity": "60329.29 + (−36368.63) + (−3585.31) = 20375.35"
+    },
+    {
+      "name": "Header reconstruction",
+      "result": 56743.98,
+      "identity": "20375.35 + 36368.63 = 56743.98"
+    }
+  ],
+  "asserted_items": [
+    {
+      "name": "ERP header CURRENT BALANCE",
+      "amount": 56743.98,
+      "label": "ASSERTED_CURRENT_HEADER_BALANCE",
+      "status": "scope_validation_pending"
+    },
+    {
+      "name": "Period slice closing balance",
+      "amount": 20375.35,
+      "label": "ASSERTED_PERIOD_SLICE_CLOSING",
+      "status": "scope_validation_pending"
+    }
+  ],
+  "invariants": [
+    {
+      "name": "allocation residual",
+      "status": "FAIL",
+      "result": 314.52,
+      "required": "<= 0.05",
+      "note": "Turn 9/10 value retained historically; not revalidated against new ERP in this turn"
+    },
+    {
+      "name": "erp_scope_validation",
+      "status": "FAIL",
+      "result": "partial_export_unreconciled_to_full_account",
+      "required": "header CURRENT BALANCE confirmed as full account position"
+    },
+    {
+      "name": "live_comms_gate",
+      "status": "FAIL",
+      "result": "blocked_pending_scope_validation",
+      "required": "scope validated + statement regenerated + cent-match"
+    }
+  ],
+  "operator_decisions_required": [
+    "Confirm whether header CURRENT BALANCE R56,743.98 represents the full WO0001 account position",
+    "Upload full CURRENT ledger export if partial P16–P17 slice is insufficient for communication amount",
+    "Rule out or capture post-2026-07-13 payments/credits before any live communication",
+    "Do not ratify balance-dependent overrides until scope validation completes"
+  ],
+  "staleness_warning": "WO001CURRENT.TXT (R88,768.73 @ 2026-07-01) superseded for freshness purposes. Turn 9 allocation arithmetic and residual R314.52 remain historically anchored to portfolio 2026-06-03 until recomputed. All debtor-facing statements and communications drafted against prior ERP extracts are stale."
+}

@@ -5,11 +5,32 @@
   "generated_by": "cursor",
   "supersedes_turn": null,
   "source_as_at": "<YYYY-MM-DD>",
+  "source_as_at_basis": "<How source_as_at was derived — e.g. last transaction date in TXT>",
+  "erp_freshness": {
+    "repository_latest_file": "<FILENAME>.TXT",
+    "repository_latest_path": "analysis/debtors/<DEBTOR_CODE>/reports/<file>",
+    "balance": 0.0,
+    "currency": "ZAR",
+    "period_end": null,
+    "last_transaction_date": "<YYYY-MM-DD>",
+    "repository_commit": null,
+    "evidence_as_at": "<YYYY-MM-DD>",
+    "operator_confirmation": "pending",
+    "confirmation_date": null,
+    "status": "LATEST_IN_REPOSITORY",
+    "balance_classification": "ASSERTED_STALE_PENDING_OPERATOR_CONFIRMATION",
+    "fresh_upload_requested": true,
+    "live_debtor_communications": "blocked",
+    "reconciliation_closure": "blocked",
+    "registry_ratification_dependent_on_current_balance": "blocked"
+  },
   "erp_anchor": {
     "amount": 0.0,
     "currency": "ZAR",
     "as_at": "<YYYY-MM-DD>",
-    "source": "<artifact name or query description>",
+    "source": "<artifact name>",
+    "status": "LATEST_IN_REPOSITORY",
+    "balance_classification": "ASSERTED_STALE_PENDING_OPERATOR_CONFIRMATION",
     "canonical_source": "analysis/debtors/<DEBTOR_CODE>/reports/<file>"
   },
   "portfolio_anchor": {

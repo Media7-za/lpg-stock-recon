@@ -12,9 +12,20 @@ Complete before publishing a turn folder to the Evidence Exchange.
 - [ ] Superseded turn recorded if applicable (`supersedes_turn`)
 - [ ] Source as-at date recorded (`source_as_at`)
 
+## ERP Freshness Gate
+
+- [ ] Newest ERP extract in the repository identified
+- [ ] ERP evidence date compared with the current operating date
+- [ ] Operator asked whether a newer ERP export is available
+- [ ] Operator response recorded
+- [ ] Existing file not called CURRENT before operator confirmation
+- [ ] Live comms and reconciliation closure blocked while confirmation is pending
+
 ## Anchors
 
 - [ ] ERP anchor amount, as-at date, and source artifact recorded
+- [ ] `erp_freshness.status` is `LATEST_IN_REPOSITORY` until operator confirms
+- [ ] Balance classified `ASSERTED_STALE_PENDING_OPERATOR_CONFIRMATION` when gate pending
 - [ ] Portfolio anchor recorded when allocation work references dashboard metrics
 - [ ] Canonical source path for each anchor in manifest
 - [ ] Staleness warning set when current ERP ≠ portfolio anchor

@@ -26,7 +26,7 @@
 | `analysis/debtors/evidence_exchange/templates/TURN_BUNDLE_CHECKLIST.md` | Pre-publish checklist |
 | `analysis/debtors/evidence_exchange/WO0001/turn-009/manifest.json` | Turn 9 bundle manifest |
 | `analysis/debtors/evidence_exchange/WO0001/turn-009/decision_inputs.md` | Operator decision queue |
-| `analysis/debtors/evidence_exchange/WO0001/turn-009/bridge_register.json` | Turn 9 bridge snapshot (reconstructed) |
+| `analysis/debtors/evidence_exchange/WO0001/turn-009/bridge_register.json` | Turn 9 bridge snapshot (`RECONSTRUCTED_SNAPSHOT`; not a direct canonical copy) |
 | `analysis/debtors/evidence_exchange/SETUP_WORKER_REPORT.md` | This report |
 
 ---
@@ -51,7 +51,7 @@
 | Expected (example schema) | Status |
 | :--- | :--- |
 | `residual_decomposition.md` | **Not produced in Turn 9** — created in Turn 10 (`WO0001_Residual_Decomposition.md`). Not included in Turn 9 bundle. |
-| `unallocated_credit_bridge.json` (Turn 9) | **Canonical superseded** — Turn 10 overwrote with Turn 10 analysis. Reconstructed as `bridge_register.json` from Turn 9 statement bridge. |
+| `unallocated_credit_bridge.json` (Turn 9) | **Canonical superseded** — Turn 10 overwrote with Turn 10 analysis. Reconstructed as `bridge_register.json` from `WO0001_Statement_Bridge_v3.md` and `WO0001_Turn9_Worker_Report.md` (`manifest.json`: `provenance_status: RECONSTRUCTED_SNAPSHOT`, `canonical_source: null`). |
 
 ---
 
@@ -86,3 +86,23 @@ None. All exchange paths are new; canonical paths unchanged.
 ## STOP conditions
 
 None triggered. WO0001 Turn 9 bundle published.
+
+---
+
+## Manifest corrections (2026-07-20)
+
+| Field | Before | After |
+| :--- | :--- | :--- |
+| `source_as_at` | `2026-07-20` | `2026-07-01` |
+| `source_as_at_basis` | *(absent)* | Last transaction date in WO001CURRENT.TXT |
+| `generated_at` | `2026-07-20T15:04:00Z` | unchanged (bundle production time) |
+| `artifacts[].bridge_register.json.canonical_source` | `unallocated_credit_bridge.json` | `null` |
+| `artifacts[].bridge_register.json.provenance_status` | *(absent)* | `RECONSTRUCTED_SNAPSHOT` |
+
+Evidence values (residual, anchors, proven identities) unchanged. No canonical files modified.
+
+---
+
+## ERP freshness gate (2026-07-20)
+
+Framework and orchestrator skill updated with mandatory ERP freshness gate. WO0001 Turn 9 manifest corrected: `WO001CURRENT.TXT` classified `LATEST_IN_REPOSITORY`; operator confirmation `pending`.

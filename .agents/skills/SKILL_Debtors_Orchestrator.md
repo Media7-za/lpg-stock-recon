@@ -29,6 +29,7 @@ Read these before orchestrating:
 | 2 | `analysis/debtors/shared/ACTION_PROMPTS.md` | Customer collection messages (human sends) |
 | 2 | `analysis/debtors/shared/docs/DEBTORS_ORCHESTRATION_PRD.md` | Decisions log + acceptance criteria |
 | 2 | `analysis/debtors/shared/docs/DEBTORS_ORCHESTRATION_ROADMAP.md` | Phase plan + milestones |
+| 2 | `analysis/debtors/evidence_exchange/README.md` | Evidence Exchange + **ERP freshness gate** |
 | 2a | `.agents/skills/SKILL_Human_ERP_Agent.md` | Human finance clerk playbook |
 | 2a | `.agents/skills/SKILL_Human_Collections_Agent.md` | Human collections / controller playbook |
 | 2a | `.agents/skills/SKILL_Human_Sources_Agent.md` | Human evidence intake playbook |
@@ -55,6 +56,34 @@ npm run debtors:parse-backlog
 
 ## 3. Orchestration loop
 
+### ERP freshness gate (mandatory — run first)
+
+Before any turn involving a balance, allocation reconciliation, statement generation, debtor communication, payment position, registry ratification, or reconciliation closure:
+
+1. Identify the newest ERP TXT or equivalent extract in the repository for that debtor.
+2. Record: filename, period-end (if stated), last transaction date, balance, repository commit/modification context.
+3. Compare evidence date with the current operating date.
+4. Ask the operator:
+
+   > The latest ERP extract currently available is `<filename>`, with balance `<amount>` and evidence dated `<date>`. Is this still the latest ERP export, or should you upload a fresh ERP TXT file before we continue?
+
+5. **STOP** until the operator uploads a newer export **or explicitly confirms** the repository file is still the latest. Do **not** infer confirmation from silence.
+
+**Labels before confirmation:**
+
+| Field | Value |
+| :--- | :--- |
+| File status | `LATEST_IN_REPOSITORY` — not `CURRENT_ERP` |
+| Balance classification | `ASSERTED_STALE_PENDING_OPERATOR_CONFIRMATION` |
+
+While pending, block: live comms, collection amounts, reconciliation closure, balance-dependent override ratification, and “current statement” claims. Historical archival turns may proceed with manifest flag `erp_freshness.operator_confirmation: pending`.
+
+Record gate state in Evidence Exchange manifests (`analysis/debtors/evidence_exchange/templates/TURN_MANIFEST.template.json`). See `evidence_exchange/README.md` §4.
+
+Queue Sources Agent intake in `HUMAN_TASKS.md` when a fresh export is required.
+
+---
+
 1. **Ingest** — Confirm `portfolio_candidates.csv` is current (`debtors:parse-backlog` if new global TXT).
 2. **Plan** — Pick **one** account (or one phase). Do not parallelise finance-dependent lanes.
 3. **Dispatch** — Launch worker with lane + definition of done (see §4).
@@ -74,6 +103,7 @@ Role: Debtors Orchestrator — read .agents/skills/SKILL_Debtors_Orchestrator.md
 You triage and plan; you do NOT run deep recon, touch DB, ratify registries, or edit account artifacts yourself.
 
 This session:
+0. ERP freshness gate — identify newest debtor ERP extract; ask operator to confirm or upload before any live financial conclusion
 1. npm run debtors:sync
 2. Read DEBTORS_DASHBOARD.md + analysis/debtors/shared/HUMAN_TASKS.md
 3. Summarise: priority queue, reconState per active account, open human tasks, collection-blocked exposure
@@ -92,6 +122,11 @@ Chat is not source of truth — cite repo paths only.
 
 ```text
 Role: Repo worker — execute the turn brief below. Do NOT replan portfolio or change reconState unless the brief says so.
+
+ERP freshness gate (mandatory first step if turn involves balance, allocation, statement, comms, payment position, ratification, or closure):
+- Identify newest ERP extract in repo; record filename, dates, balance
+- Ask operator to confirm latest or upload fresh TXT
+- STOP until explicit confirmation or upload; label file LATEST_IN_REPOSITORY until then
 
 Read first:
 - [lane skill path from brief]
