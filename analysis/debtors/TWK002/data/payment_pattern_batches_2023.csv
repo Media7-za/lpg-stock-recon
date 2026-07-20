@@ -1,0 +1,7 @@
+batch_id,remittance_paid_date,erp_payment_doc,erp_payment_date,erp_stat,erp_link_status,remittance_gross,remittance_cash,remittance_discount,cash_plus_discount,erp_payment_gross,erp_variance,line_count,line_net_sum,line_discount_sum,model_b_match,match_status,notes
+BATCH-2023-06-26,2023-06-26,00022182,2023-07-03,STAT:92,LINKED,46424.87,45264.25,1160.62,46424.87,-46424.87,0.0,5,45264.25,1160.62,True,FULL_MATCH,Cash + discount = remittance gross; lines reconcile
+BATCH-2023-07-26,2023-07-26,00023115,2023-07-26,STAT 92,LINKED,8145.79,7942.14,203.65,8145.79,-8145.79,0.0,2,7942.14,203.65,True,FULL_MATCH,Cash + discount = remittance gross; lines reconcile
+BATCH-2023-08-28,2023-08-28,00023836,2023-09-01,STAT 93,LINKED,27393.41,26924.19,469.22,27393.41,-27738.41,345.0,18,26924.19,469.22,True,ERP_GROSS_VARIANCE,ERP over-posted R345.00; remittance Model B matches
+BATCH-2023-09-26,2023-09-26,00024560,2023-09-26,STAT 94,LINKED,14684.27,14317.17,367.10,14684.27,-14684.27,0.0,9,14317.17,367.10,True,FULL_MATCH,Cash + discount = remittance gross; lines reconcile
+BATCH-2023-10-26,2023-10-26,00025906,2023-11-08,STAT 95,LINKED,17064.38,16637.78,426.60,17064.38,-17064.38,0.0,8,16637.78,426.60,True,FULL_MATCH,Cash + discount = remittance gross; lines reconcile
+BATCH-2023-11-27,2023-11-27,00026681,2023-11-29,STAT 96,LINKED,31527.29,30825.36,701.93,31527.29,-31872.29,345.0,9,30825.36,701.93,True,ERP_GROSS_VARIANCE,ERP over-posted R345.00; remittance Model B matches

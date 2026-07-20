@@ -1,0 +1,163 @@
+# MD0003 — Payment Allocation v1
+
+> **SUPERSEDED — Wrong skill applied.** MD0003 is a **monthly STAT batch payer**, not invoice-linked.
+> Use `MD0003_2025_Payment_Pattern_Analysis.md` and `MD0003_2026_Payment_Pattern_Analysis.md` instead.
+> See `MD0003_Onboarding_Status.md` for corrected skill selection.
+
+**Period:** 2025-01-01 → 2026-07-16
+**Skill:** `SKILL_Payment_To_Invoice_Allocation.md`
+**Method:** LPG-only open balance at payment date + explicit ref_no cross-check
+**Generated:** 2026-07-16
+
+---
+
+## 1. Executive Summary
+
+| Metric | Count | Amount |
+| :--- | ---: | ---: |
+| Payment documents analysed | 20 | — |
+| Tier 1 & 2 Confirmed | 67 | R272 645.24 |
+| Tier 4 Probable | 0 | R0.00 |
+| Tier 5 Unallocated / Review | 10 | R29 216.02 |
+| ERP stated balance (portfolio) | — | R12 005.45 |
+
+---
+
+## 2. Confirmed Allocations (Tier 1 & 2)
+
+| Payment Doc | Date | STAT Ref | Segment Ref | Amount | Target Invoice | Inv Date | Match Target (LPG) | Variance | Type |
+| :--- | :--- | :--- | :--- | ---: | :--- | :--- | ---: | ---: | :--- |
+| 35876 | 2025-01-01 | STAT:111 | 38480 | R7 402.84 | 38480 | 2024-11-21 | R7 402.84 | R0.00 | OPEN_BALANCE_MATCH |
+| 35876 | 2025-01-01 | STAT:111 | 38428 | R8 883.41 | 38428 | 2024-11-20 | R8 883.41 | R0.00 | OPEN_BALANCE_MATCH |
+| 35876 | 2025-01-01 | STAT:111 | 38238 | R2 961.14 | 38238 | 2024-11-12 | R2 961.14 | R0.00 | OPEN_BALANCE_MATCH |
+| 37143 | 2025-02-02 | STAT:112 | 38757 | R4 441.70 | 38757 | 2024-12-01 | R4 441.70 | R0.00 | OPEN_BALANCE_MATCH |
+| 37143 | 2025-02-02 | STAT:112 | 38918 | R6 176.51 | 38918 | 2024-12-08 | R6 176.51 | R0.00 | EXPLICIT_REF |
+| 37143 | 2025-02-02 | STAT:112 | 39277 | R4 632.38 | 39277 | 2024-12-20 | R4 632.38 | R0.00 | EXPLICIT_REF |
+| 37262 | 2025-03-02 | STAT:113 | 39784 | R4 653.98 | 39784 | 2025-01-10 | R4 653.98 | R0.00 | OPEN_BALANCE_MATCH |
+| 37263 | 2025-03-02 | STAT:113 | 39842 | R3 102.65 | 39842 | 2025-01-13 | R3 102.65 | R0.00 | OPEN_BALANCE_MATCH |
+| 37263 | 2025-03-02 | STAT:113 | 40112 | R4 653.98 | 40112 | 2025-01-22 | R4 653.98 | R0.00 | OPEN_BALANCE_MATCH |
+| 37263 | 2025-03-02 | STAT:113 | 40016 | R9 307.96 | 40016 | 2025-01-19 | R9 307.96 | R0.00 | OPEN_BALANCE_MATCH |
+| 37817 | 2025-03-31 | STAT:114 | 40954 | R3 126.64 | 40954 | 2025-02-23 | R3 126.64 | R0.00 | OPEN_BALANCE_MATCH |
+| 37817 | 2025-03-31 | STAT:114 | 40803 | R3 126.64 | 40803 | 2025-02-17 | R3 126.64 | R0.00 | OPEN_BALANCE_MATCH |
+| 37817 | 2025-03-31 | STAT:114 | 41010 | R4 689.96 | 41010 | 2025-02-25 | R4 689.96 | R0.00 | OPEN_BALANCE_MATCH |
+| 37817 | 2025-03-31 | STAT:114 | 40661 | R4 689.96 | 40661 | 2025-02-11 | R4 689.96 | R0.00 | OPEN_BALANCE_MATCH |
+| 38372 | 2025-05-01 | STAT:115 | 41324 | R4 689.96 | 41324 | 2025-03-07 | R4 689.96 | R0.00 | OPEN_BALANCE_MATCH |
+| 39145 | 2025-06-01 | STAT:116 | 42676 | R3 808.83 | 42676 | 2025-04-29 | R3 808.83 | R0.00 | OPEN_BALANCE_MATCH |
+| 39145 | 2025-06-01 | STAT:116 | 42046 | R2 539.22 | 42046 | 2025-04-06 | R2 539.22 | R0.00 | OPEN_BALANCE_MATCH |
+| 39145 | 2025-06-01 | STAT:116 | 42092 | R3 808.83 | 42092 | 2025-04-03 | R3 808.83 | R0.00 | OPEN_BALANCE_MATCH |
+| 39145 | 2025-06-01 | STAT:116 | 42279 | R3 808.83 | 42279 | 2025-04-14 | R3 808.83 | R0.00 | OPEN_BALANCE_MATCH |
+| 39145 | 2025-06-01 | STAT:116 | 42318 | R10 156.89 | 42318 | 2025-04-15 | R10 156.89 | R0.00 | OPEN_BALANCE_MATCH |
+| 39816 | 2025-06-30 | STAT:117 | 43062 | R3 808.83 | 43062 | 2025-05-13 | R3 808.83 | R0.00 | OPEN_BALANCE_MATCH |
+| 39816 | 2025-06-30 | STAT:117 | 43387 | R2 577.63 | 43387 | 2025-05-26 | R2 577.63 | R0.00 | OPEN_BALANCE_MATCH |
+| 39816 | 2025-06-30 | STAT:117 | 43377 | R3 866.45 | 43377 | 2025-05-26 | R3 866.45 | R0.00 | OPEN_BALANCE_MATCH |
+| 40430 | 2025-07-31 | STAT:118 | 44136 | R3 755.57 | 44136 | 2025-06-22 | R3 755.57 | R0.00 | OPEN_BALANCE_MATCH |
+| 41044 | 2025-08-31 | STAT:119 | 44634 | R2 456.12 | 44634 | 2025-07-07 | R2 456.12 | R0.00 | OPEN_BALANCE_MATCH |
+| 41044 | 2025-08-31 | STAT:119 | 44937 | R3 684.19 | 44937 | 2025-07-17 | R3 684.19 | R0.00 | OPEN_BALANCE_MATCH |
+| 41044 | 2025-08-31 | STAT:119 | 44439 | R3 755.57 | 44439 | 2025-07-01 | R3 755.57 | R0.00 | OPEN_BALANCE_MATCH |
+| 41501 | 2025-09-30 | STAT:120 | 45787 | R150.02 | 45787 | 2025-08-19 | R150.02 | R0.00 | OPEN_BALANCE_MATCH |
+| 41501 | 2025-09-30 | STAT:120 | 45778 | R2 398.72 | 45778 | 2025-08-19 | R2 398.72 | R0.00 | OPEN_BALANCE_MATCH |
+| 41501 | 2025-09-30 | STAT:120 | 45435 | R3 684.19 | 45435 | 2025-08-05 | R3 684.19 | R0.00 | OPEN_BALANCE_MATCH |
+| 42051 | 2025-10-31 | STAT:121 | 45437 | R4 912.25 | 45437 | 2025-08-05 | R4 912.25 | R0.00 | OPEN_BALANCE_MATCH |
+| 42051 | 2025-10-31 | STAT:121 | 46055 | R4 797.43 | 46055 | 2025-08-31 | R4 797.43 | R0.00 | OPEN_BALANCE_MATCH |
+| 42051 | 2025-10-31 | STAT:121 | 45895 | R3 598.07 | 45895 | 2025-08-25 | R3 598.07 | R0.00 | OPEN_BALANCE_MATCH |
+| 42051 | 2025-10-31 | STAT:121 | 43721 | R3 866.45 | 43721 | 2025-06-08 | R3 866.45 | R0.00 | OPEN_BALANCE_MATCH |
+| 42051 | 2025-10-31 | STAT:121 | 46760 | R2 288.04 | 46760 | 2025-09-29 | R2 288.04 | R0.00 | OPEN_BALANCE_MATCH |
+| 42051 | 2025-10-31 | STAT:121 | 46724 | R3 432.06 | 46724 | 2025-09-28 | R3 432.06 | R0.00 | OPEN_BALANCE_MATCH |
+| 42051 | 2025-10-31 | STAT:121 | 46444 | R2 740.88 | 46444 | 2025-09-16 | R2 740.88 | R0.00 | OPEN_BALANCE_MATCH |
+| 42051 | 2025-10-31 | STAT:121 | 46334 | R3 432.06 | 46334 | 2025-09-11 | R3 432.06 | R0.00 | OPEN_BALANCE_MATCH |
+| 42051 | 2025-10-31 | STAT:121 | 46075 | R3 598.07 | 46075 | 2025-09-01 | R3 598.07 | R0.00 | OPEN_BALANCE_MATCH |
+| 42051 | 2025-10-31 | STAT:121 | 43319 | R2 577.63 | 43319 | 2025-05-23 | R2 577.63 | R0.00 | OPEN_BALANCE_MATCH |
+| 42440 | 2025-11-27 | STAT:121 | 44872 | R6 140.31 | 44872 | 2025-07-15 | R6 140.31 | R0.00 | OPEN_BALANCE_MATCH |
+| 42440 | 2025-11-27 | STAT:121 | 45160 | R3 684.19 | 45160 | 2025-07-25 | R3 684.19 | R0.00 | OPEN_BALANCE_MATCH |
+| 42440 | 2025-11-27 | STAT:121 | 46861 | R3 432.06 | 46861 | 2025-10-02 | R3 432.06 | R0.00 | OPEN_BALANCE_MATCH |
+| 42440 | 2025-11-27 | STAT:121 | 47094 | R3 432.06 | 47094 | 2025-10-13 | R3 432.06 | R0.00 | OPEN_BALANCE_MATCH |
+| 42440 | 2025-11-27 | STAT:121 | 47101 | R5 720.10 | 47101 | 2025-10-14 | R5 720.10 | R0.00 | OPEN_BALANCE_MATCH |
+| 42440 | 2025-11-27 | STAT:121 | 47558 | R3 360.06 | 47558 | 2025-11-07 | R3 360.06 | R0.00 | OPEN_BALANCE_MATCH |
+| 42440 | 2025-11-27 | STAT:121 | 47333 | R3 432.06 | 47333 | 2025-10-26 | R3 432.06 | R0.00 | OPEN_BALANCE_MATCH |
+| 42440 | 2025-11-27 | STAT:121 | 47622 | R2 240.04 | 47622 | 2025-11-11 | R2 240.04 | R0.00 | OPEN_BALANCE_MATCH |
+| 42440 | 2025-11-27 | STAT:121 | 47827 | R5 600.10 | 47827 | 2025-11-19 | R5 600.10 | R0.00 | OPEN_BALANCE_MATCH |
+| 42440 | 2025-11-27 | STAT:121 | 47828 | R3 360.06 | 47828 | 2025-11-19 | R3 360.06 | R0.00 | OPEN_BALANCE_MATCH |
+| 42858 | 2025-12-30 | STAT:122 | 43878 | R7 511.13 | 43878 | 2025-06-11 | R7 511.13 | R0.00 | OPEN_BALANCE_MATCH |
+| 43239 | 2026-02-01 | STAT:123 | 48190 | R2 252.18 | 48190 | 2025-12-09 | R2 252.18 | R0.00 | OPEN_BALANCE_MATCH |
+| 43239 | 2026-02-01 | STAT:123 | 48019 | R3 360.06 | 48019 | 2025-11-30 | R3 360.06 | R0.00 | OPEN_BALANCE_MATCH |
+| 43239 | 2026-02-01 | STAT:123 | 48165 | R3 378.27 | 48165 | 2025-12-08 | R3 378.27 | R0.00 | OPEN_BALANCE_MATCH |
+| 43239 | 2026-02-01 | STAT:123 | 48523 | R3 378.27 | 48523 | 2025-12-28 | R3 378.27 | R0.00 | OPEN_BALANCE_MATCH |
+| 43239 | 2026-02-01 | STAT:123 | 48372 | R5 630.46 | 48372 | 2025-12-18 | R5 630.46 | R0.00 | OPEN_BALANCE_MATCH |
+| 43494 | 2026-03-01 | STAT:124 | 48737 | R3 378.27 | 48737 | 2026-01-11 | R3 378.27 | R0.00 | OPEN_BALANCE_MATCH |
+| 43494 | 2026-03-01 | STAT:124 | 48784 | R2 252.18 | 48784 | 2026-01-13 | R2 252.18 | R0.00 | OPEN_BALANCE_MATCH |
+| 43494 | 2026-03-01 | STAT:124 | 48906 | R3 403.63 | 48906 | 2026-01-21 | R3 403.63 | R0.00 | OPEN_BALANCE_MATCH |
+| 43494 | 2026-03-01 | STAT:124 | 48919 | R4 869.09 | 48919 | 2026-01-22 | R4 869.09 | R0.00 | OPEN_BALANCE_MATCH |
+| 43854 | 2026-03-31 | STAT:125 | 49128 | R3 443.48 | 49128 | 2026-02-05 | R3 443.48 | R0.00 | OPEN_BALANCE_MATCH |
+| 43854 | 2026-03-31 | STAT:125 | 49166 | R2 295.65 | 49166 | 2026-02-09 | R2 295.65 | R0.00 | OPEN_BALANCE_MATCH |
+| 43854 | 2026-03-31 | STAT:125 | 49322 | R3 443.48 | 49322 | 2026-02-18 | R3 443.48 | R0.00 | OPEN_BALANCE_MATCH |
+| 43854 | 2026-03-31 | STAT:125 | 49443 | R4 591.31 | 49443 | 2026-02-25 | R4 591.31 | R0.00 | OPEN_BALANCE_MATCH |
+| 44561 | 2026-05-31 | STAT:127 | 50429 | R3 904.26 | 50429 | 2026-04-29 | R3 904.26 | R0.00 | OPEN_BALANCE_MATCH |
+| 44561 | 2026-05-31 | STAT:127 | 50234 | R3 904.26 | 50234 | 2026-04-14 | R3 904.26 | R0.00 | OPEN_BALANCE_MATCH |
+| 44561 | 2026-05-31 | STAT:127 | 50524 | R5 205.68 | 50524 | 2026-05-05 | R5 205.68 | R0.00 | OPEN_BALANCE_MATCH |
+
+---
+
+## 3. Credit Note Offsets Applied
+
+| CN Doc | CN Date | Ref Invoice | CN Amount (LPG) | Effect on Open Balance |
+| :--- | :--- | :--- | ---: | :--- |
+| 12220 | 2025-04-06 | 42011 | R-4 689.96 | Net open → R0.00 |
+| 12548 | 2025-05-22 | 43290 | R-2 577.63 | Net open → R0.00 |
+| 13916 | 2025-11-19 | 47734 | R-5 600.10 | Net open → R0.00 |
+| 13917 | 2025-11-19 | 47763 | R-3 360.06 | Net open → R0.00 |
+| 14385 | 2026-02-05 | 49119 | R-3 443.48 | Net open → R0.00 |
+
+---
+
+## 4. Probable / Review Required (Tier 4)
+
+*No Tier 4 probable allocations.*
+
+---
+
+## 5. Unallocated Pool (Tier 5)
+
+| Payment Doc | Date | STAT Ref | Amount | Notes |
+| :--- | :--- | :--- | ---: | :--- |
+| 37143 | 2025-02-02 | STAT:112 | R44.74 | Material blank-ref slice on ref batch |
+| 37144 | 2025-02-02 | STAT:112 | R3 552.14 | REVIEW_REF_VARIANCE |
+| 37144 | 2025-02-02 | STAT:112 | R889.56 | Material blank-ref slice on ref batch |
+| 42051 | 2025-10-31 | STAT:121 | R57.50 | CYL-only ref — no LPG settlement |
+| 42051 | 2025-10-31 | STAT:121 | R469.87 | Material blank-ref slice on ref batch |
+| 42440 | 2025-11-27 | STAT:121 | R3 070.77 | Prepayment / DN-lag — payment before invoice date |
+| 42440 | 2025-11-27 | STAT:121 | R4 039.36 | Material blank-ref slice on ref batch |
+| 42858 | 2025-12-30 | STAT:122 | R2 016.80 | REVIEW_REF_VARIANCE |
+| 43494 | 2026-03-01 | STAT:124 | R57.50 | CYL-only ref — no LPG settlement |
+| 44231 | 2026-05-04 | STAT:126 | R15 017.78 | No ref_no; open-balance and combination tiers exhausted |
+
+### Other review items (truncation / ref variance / partial)
+
+| Payment Doc | Date | Segment Ref | Amount | Target | Variance | Type |
+| :--- | :--- | :--- | ---: | :--- | ---: | :--- |
+| 42858 | 2025-12-30 | 48372 | R202.33 | 48372 | R5 428.13 | OPEN_BALANCE_PARTIAL |
+
+---
+
+## 6. Reconciliation Bridge
+
+| Component | Amount |
+| :--- | ---: |
+| ERP stated balance | R12 005.45 |
+| Sum allocated to LPG invoices (confirmed) | R272 645.24 |
+| Sum unallocated payments (Tier 5) | R29 216.02 |
+| Open LPG invoices post-allocation (informational) | R235 305.14 |
+| **Bridge variance** | **R-252 515.71** |
+
+> Bridge is indicative until MD0003 CURRENT.TXT is ingested. Unallocated blank-ref batches require operator review before promotion.
+
+---
+
+## 7. Artifacts
+
+| File | Rows |
+| :--- | ---: |
+| `data/allocation_edges.csv` | 78 |
+| `data/allocation_edges_2025.csv` | 60 |
+| `data/allocation_edges_2026.csv` | 18 |
+
+*Generated by `scripts/allocation_ingest.mjs` per SKILL_Payment_To_Invoice_Allocation.md*

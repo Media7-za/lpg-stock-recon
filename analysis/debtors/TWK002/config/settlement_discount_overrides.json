@@ -1,0 +1,250 @@
+{
+  "debtorCode": "TWK002",
+  "doctrineVersion": "settlement-discount-v2",
+  "discountRate": 0.025,
+  "tolerancePct": 0.001,
+  "paymentTermsDays": 30,
+  "termsBasis": "invoice_month_end_plus_30_days",
+  "registryVersion": 2,
+  "approvalPolicy": "Tier-1 remittance advice is authoritative for discount amounts. Overrides document deviations from naive 2.5% \u00d7 gross.",
+  "overrides": [
+    {
+      "override_id": "EXC-0001",
+      "doc_no": "00020607",
+      "batch_id": "BATCH-2023-08-28",
+      "override_type": "LATE_PAYMENT_NO_DISCOUNT",
+      "discount_rate_applied": 0.0,
+      "remittance_discount": 0.0,
+      "theoretical_discount_2_5": 86.25,
+      "gross_amount": 3450.0,
+      "payable_amount": 3450.0,
+      "payment_date": "2023-08-28",
+      "invoice_date": "2023-05-24",
+      "terms_deadline": "2023-06-30",
+      "days_past_terms": 59,
+      "approval_status": "approved",
+      "evidence_source": [
+        "remittance_advice",
+        "raw/Remittances/28.08.2023.pdf"
+      ],
+      "reason": "Invoice paid 59 days after May month-end + 30-day terms. Remittance shows R0 discount.",
+      "notes": "EMPTIES pair D/N 4777; CN 00005038 on same batch reverses discount on related slice only."
+    },
+    {
+      "override_id": "EXC-0002",
+      "doc_no": "00021123",
+      "batch_id": "BATCH-2023-08-28",
+      "override_type": "LATE_PAYMENT_NO_DISCOUNT",
+      "discount_rate_applied": 0.0,
+      "remittance_discount": 0.0,
+      "theoretical_discount_2_5": 129.38,
+      "gross_amount": 5175.0,
+      "payable_amount": 5175.0,
+      "payment_date": "2023-08-28",
+      "invoice_date": "2023-06-08",
+      "terms_deadline": "2023-07-30",
+      "days_past_terms": 29,
+      "approval_status": "approved",
+      "evidence_source": [
+        "remittance_advice",
+        "operator_analysis"
+      ],
+      "reason": "Paid 29 days after June month-end + 30-day terms. TWK remittance grants no discount.",
+      "notes": "EMPTIES pair D/N 4675; operator analysis flagged before Tier-1 remittance confirmed."
+    },
+    {
+      "override_id": "EXC-0003",
+      "doc_no": "00023075",
+      "batch_id": "BATCH-2023-09-26",
+      "override_type": "PARTIAL_SETTLEMENT",
+      "discount_rate_applied": 0.025,
+      "remittance_discount": 89.97,
+      "theoretical_discount_2_5": 98.6,
+      "gross_amount": 3943.81,
+      "payable_amount": 3598.81,
+      "payment_date": "2023-09-26",
+      "invoice_date": "2023-08-03",
+      "terms_deadline": "2023-09-02",
+      "days_past_terms": 24,
+      "approval_status": "approved",
+      "evidence_source": [
+        "remittance_advice",
+        "deposit_detail"
+      ],
+      "reason": "R345.00 settled outside this remittance (deposit 00023836 partial on doc 23077/23075). Discount on payable slice R3,598.81 only.",
+      "notes": "Prior slice R345.00 linked to Aug ERP deposit variance pattern."
+    },
+    {
+      "override_id": "EXC-0004",
+      "doc_no": "00024011",
+      "batch_id": "BATCH-2023-10-26",
+      "override_type": "PARTIAL_SETTLEMENT",
+      "discount_rate_applied": 0.025,
+      "remittance_discount": 127.05,
+      "theoretical_discount_2_5": 213.3,
+      "gross_amount": 8532.19,
+      "payable_amount": 5082.19,
+      "payment_date": "2023-10-26",
+      "invoice_date": "2023-09-01",
+      "terms_deadline": "2023-10-01",
+      "days_past_terms": 25,
+      "approval_status": "approved",
+      "evidence_source": [
+        "remittance_advice"
+      ],
+      "reason": "First payment slice R5,082.19 of R8,532.19 invoice. Discount 2.5% on slice = R127.05.",
+      "notes": "Residual R3,450.00 settled on BATCH-2023-11-27."
+    },
+    {
+      "override_id": "EXC-0005",
+      "doc_no": "00024011",
+      "batch_id": "BATCH-2023-11-27",
+      "override_type": "CROSS_BATCH_RESIDUAL_NO_DISCOUNT",
+      "discount_rate_applied": 0.0,
+      "remittance_discount": 0.0,
+      "theoretical_discount_2_5": 86.25,
+      "gross_amount": 8532.19,
+      "payable_amount": 3450.0,
+      "payment_date": "2023-11-27",
+      "invoice_date": "2023-09-01",
+      "terms_deadline": "2023-10-01",
+      "days_past_terms": 58,
+      "approval_status": "approved",
+      "evidence_source": [
+        "remittance_advice"
+      ],
+      "reason": "Residual balance after EXC-0004. ALREADY PAID R5,082.19 on prior batch \u2014 no further discount on R3,450.00.",
+      "notes": "Remittance ALREADY PAID column R5,082.19; discount taken on first slice only."
+    },
+    {
+      "override_id": "EXC-0006",
+      "doc_no": "5845/5875",
+      "batch_id": "BATCH-2023-09-26",
+      "override_type": "COMPOSITE_REMITTANCE_LINE",
+      "discount_rate_applied": 0.025,
+      "remittance_discount": -4.93,
+      "theoretical_discount_2_5": -4.93,
+      "gross_amount": -197.17,
+      "payable_amount": -197.17,
+      "payment_date": "2023-09-26",
+      "invoice_date": "2023-08-14",
+      "terms_deadline": null,
+      "days_past_terms": null,
+      "approval_status": "approved",
+      "evidence_source": [
+        "remittance_advice"
+      ],
+      "reason": "Remittance combines CN pair 5845/5875 as single SC/IN line. Maps to ERP CNs 00005845 and 00005875.",
+      "notes": "ERP gross CN 00005845 is R5,520 vs remittance R5,175 \u2014 separate reconciliation item."
+    },
+    {
+      "override_id": "EXC-0007",
+      "doc_no": "STMT-DIFF-AUG23",
+      "batch_id": "BATCH-2023-09-26",
+      "override_type": "STATEMENT_ROUNDING",
+      "discount_rate_applied": 0.0,
+      "remittance_discount": 0.0,
+      "theoretical_discount_2_5": 0.0,
+      "gross_amount": -0.02,
+      "payable_amount": -0.02,
+      "payment_date": "2023-09-26",
+      "invoice_date": "2023-08-31",
+      "terms_deadline": null,
+      "days_past_terms": null,
+      "approval_status": "approved",
+      "evidence_source": [
+        "remittance_advice"
+      ],
+      "reason": "TWK statement difference line \u2014 no ERP document; exclude from journal ref splits.",
+      "notes": "Not posted to ERP; absorbed in batch total."
+    },
+    {
+      "override_id": "EXC-2024-0001",
+      "doc_no": "00023075",
+      "batch_id": "BATCH-2024-03-26",
+      "override_type": "PARTIAL_SETTLEMENT",
+      "discount_rate_applied": 0.0,
+      "remittance_discount": 0.0,
+      "theoretical_discount_2_5": 8.63,
+      "gross_amount": 3943.81,
+      "payable_amount": 345.0,
+      "payment_date": "2024-03-26",
+      "invoice_date": "2023-08-03",
+      "approval_status": "approved",
+      "reason": "Final R345 residual; ALREADY PAID R3,598.81 on Sep 2023 batch",
+      "evidence_source": [
+        "raw/Remittances/26.03.2024.pdf"
+      ]
+    },
+    {
+      "override_id": "EXC-2024-0002",
+      "doc_no": "00029141",
+      "batch_id": "BATCH-2024-04-26",
+      "override_type": "LATE_PAYMENT_NO_DISCOUNT",
+      "discount_rate_applied": 0.0,
+      "remittance_discount": 0.0,
+      "theoretical_discount_2_5": 345.0,
+      "gross_amount": 13800.0,
+      "payable_amount": 13800.0,
+      "payment_date": "2024-04-26",
+      "invoice_date": "2024-01-31",
+      "approval_status": "approved",
+      "reason": "Remittance shows R0 discount on Jan-31 invoice paid Apr-26",
+      "evidence_source": [
+        "raw/Remittances/26.04.2024.pdf"
+      ]
+    },
+    {
+      "override_id": "EXC-2024-0003",
+      "doc_no": "00033801",
+      "batch_id": "BATCH-2024-09-26",
+      "override_type": "LATE_PAYMENT_NO_DISCOUNT",
+      "discount_rate_applied": 0.0,
+      "remittance_discount": 0.0,
+      "theoretical_discount_2_5": 301.88,
+      "gross_amount": 12075.0,
+      "payable_amount": 12075.0,
+      "payment_date": "2024-09-26",
+      "invoice_date": "2024-07-04",
+      "approval_status": "approved",
+      "reason": "No discount on remittance despite 2.5% terms",
+      "evidence_source": [
+        "raw/Remittances/26.09.2024.pdf"
+      ]
+    },
+    {
+      "override_id": "EXC-2024-0004",
+      "doc_no": "CONSOLIDATED",
+      "batch_id": "BATCH-2024-09-26",
+      "override_type": "NET_NEGATIVE_DISCOUNT",
+      "discount_rate_applied": null,
+      "remittance_discount": -233.1,
+      "theoretical_discount_2_5": null,
+      "gross_amount": 2751.17,
+      "payable_amount": 2751.17,
+      "payment_date": "2024-09-26",
+      "approval_status": "approved",
+      "reason": "CN reversals exceed invoice discounts; journal posts +R233.10",
+      "evidence_source": [
+        "raw/Remittances/26.09.2024.pdf"
+      ]
+    },
+    {
+      "override_id": "EXC-2024-0005",
+      "doc_no": "CATCHUP-2023",
+      "batch_id": "BATCH-2024-03-26",
+      "override_type": "LATE_CATCHUP_BATCH",
+      "discount_rate_applied": null,
+      "remittance_discount": 506.36,
+      "theoretical_discount_2_5": null,
+      "gross_amount": 74116.54,
+      "payable_amount": 74116.54,
+      "payment_date": "2024-03-26",
+      "approval_status": "approved",
+      "reason": "8 late-2023 docs at 100%; discount only on Jan-Feb 2024 lines",
+      "evidence_source": [
+        "raw/Remittances/26.03.2024.pdf"
+      ]
+    }
+  ]
+}

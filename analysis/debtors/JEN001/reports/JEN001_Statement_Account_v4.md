@@ -1,18 +1,19 @@
-# Statement of Account: Jennings Gas (JEN001) - Version 4 (Canonical Settlement Allocation Doctrine)
-**Period:** 1 January 2026 → 31 May 2026 &nbsp;|&nbsp; **Account:** JEN001
-**Opening Balance B/F:** R9,082.81 (ERP verified — source: `analysis/debtors/JEN001/raw/JEN001.TXT` Line 14)
+# Statement of Account: Spoon Eatery (JEN001) - Version 4 (Canonical Settlement Allocation Doctrine)
+**Period:** Jan 2026 → Jul 2026 &nbsp;|&nbsp; **Account:** JEN001
+**Opening Balance B/F:** R9,082.81 (ERP verified — source: `analysis/debtors/JEN001/raw/JEN00116JULY.TXT` JEN00116JULY.TXT line 119 — balance before payment 42917)
+**Last regenerated:** 2026-07-16 from ERP TXT (`reconcile_debtor_v4_from_txt.mjs`)
 
 ---
 
 ## Part 1: Combined Financial Statement (LPG Gas & Cylinder Deposits)
-*Tracks all gas invoiced, cylinder deposits, and payments received since 1 January 2026. Matching cylinder invoice/credit note pairs (which cancel out exactly) are stripped from this view for readability. This combined ledger directly reconciles with the ERP running balance.*
+*Tracks all gas invoiced, cylinder deposits, and payments received since Jan 2026. Matching cylinder invoice/credit note pairs (which cancel out exactly) are stripped from this view for readability. This combined ledger directly reconciles with the ERP running balance.*
 
 ### January 2026
 
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
 | **01 Jan** | **Opening Balance** | — | | **9,082.81** |
-| 07 Jan 2026 | Payment | 00042917 | -9,082.81 | 0.00 |
+| 07 Jan 2026 | Payment | 42917 | -9,082.81 | 0.00 |
 | 08 Jan 2026 | Invoice | 48675 | 3,032.41 | 3,032.41 |
 
 ---
@@ -23,7 +24,7 @@
 | :--- | :--- | :--- | ---: | ---: |
 | **01 Feb** | **Opening Balance** | — | | **3,032.41** |
 | 02 Feb 2026 | Invoice | 49067 | 3,052.49 | 6,084.90 |
-| 17 Feb 2026 | Payment | 00043367 | -3,032.41 | 3,052.49 |
+| 17 Feb 2026 | Payment | 43367 | -3,032.41 | 3,052.49 |
 | 17 Feb 2026 | Invoice | 49287 | 3,084.02 | 6,136.51 |
 | 23 Feb 2026 | Invoice | 49379 | 3,084.02 | 9,220.53 |
 
@@ -35,7 +36,7 @@
 | :--- | :--- | :--- | ---: | ---: |
 | **01 Mar** | **Opening Balance** | — | | **9,220.53** |
 | 06 Mar 2026 | Invoice | 49609 | 2,589.05 | 11,809.58 |
-| 12 Mar 2026 | Payment | 00043638 | -9,220.53 | 2,589.05 |
+| 12 Mar 2026 | Payment | 43638 | -9,220.53 | 2,589.05 |
 | 16 Mar 2026 | Invoice | 49752 | 3,597.41 | 6,186.46 |
 | 16 Mar 2026 | Invoice | 49753 | 5,175.00 | 11,361.46 |
 | 17 Mar 2026 | Crd Note | 14601 | -4,657.50 | 6,703.96 |
@@ -50,7 +51,7 @@
 | 02 Apr 2026 | Invoice | 50051 | 4,578.50 | 11,282.46 |
 | 02 Apr 2026 | Invoice | 50052 | 7,245.00 | 18,527.46 |
 | 02 Apr 2026 | Crd Note | 14698 | -5,692.50 | 12,834.96 |
-| 08 Apr 2026 | Payment | 00043927 | -6,703.96 | 6,131.00 |
+| 08 Apr 2026 | Payment | 43927 | -6,703.96 | 6,131.00 |
 | 09 Apr 2026 | Invoice | 50146 | 3,448.83 | 9,579.83 |
 | 20 Apr 2026 | Invoice | 50318 | 3,448.83 | 13,028.66 |
 
@@ -61,15 +62,51 @@
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
 | **01 May** | **Opening Balance** | — | | **13,028.66** |
-| 06 May 2026 | Invoice | 50536 | 5,082.47 | 18,111.13 |
-| 06 May 2026 | Invoice | 50537 | 7,245.00 | 25,356.13 |
-| 07 May 2026 | Crd Note | 14864 | -5,865.00 | 19,491.13 |
-| 18 May 2026 | Invoice | 50753 | 3,951.91 | 23,443.04 |
+| 05 May 2026 | Invoice | 50536 | 5,082.47 | 18,111.13 |
+| 05 May 2026 | Invoice | 50537 | 7,245.00 | 25,356.13 |
+| 05 May 2026 | Invoice | 50939 | 7,245.00 | 32,601.13 |
+| 06 May 2026 | Crd Note | 14864 | -5,865.00 | 26,736.13 |
+| 06 May 2026 | Crd Note | 14994 | -1,380.00 | 25,356.13 |
+| 06 May 2026 | Crd Note | 14995 | -6,210.00 | 19,146.13 |
+| 18 May 2026 | Invoice | 50753 | 3,951.91 | 23,098.04 |
+| 18 May 2026 | Invoice | 50754 | 4,140.00 | 27,238.04 |
+| 19 May 2026 | Crd Note | 14922 | -4,140.00 | 23,098.04 |
+
+---
+
+### June 2026
+
+| Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
+| :--- | :--- | :--- | ---: | ---: |
+| **01 Jun** | **Opening Balance** | — | | **23,098.04** |
+| 01 Jun 2026 | Invoice | 50970 | 3,293.25 | 26,391.29 |
+| 01 Jun 2026 | Invoice | 50971 | 3,450.00 | 29,841.29 |
+| 02 Jun 2026 | Crd Note | 15007 | -5,520.00 | 24,321.29 |
+| 11 Jun 2026 | Invoice | 51154 | 4,866.88 | 29,188.17 |
+| 11 Jun 2026 | Invoice | 51155 | 5,692.50 | 34,880.67 |
+| 15 Jun 2026 | Crd Note | 15066 | -5,692.50 | 29,188.17 |
+| 23 Jun 2026 | Invoice | 51387 | 3,934.93 | 33,123.10 |
+| 23 Jun 2026 | Invoice | 51388 | 4,140.00 | 37,263.10 |
+| 24 Jun 2026 | Crd Note | 15114 | -5,175.00 | 32,088.10 |
+| 25 Jun 2026 | Payment | 44878 | -10,000.00 | 22,088.10 |
+
+---
+
+### July 2026
+
+| Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
+| :--- | :--- | :--- | ---: | ---: |
+| **01 Jul** | **Opening Balance** | — | | **22,088.10** |
+| 03 Jul 2026 | Invoice | 51564 | 623.88 | 22,711.98 |
+| 07 Jul 2026 | Invoice | 51669 | 4,887.10 | 27,599.08 |
+| 07 Jul 2026 | Crd Note | 15205 | -4,887.10 | 22,711.98 |
+| 08 Jul 2026 | Invoice | 51691 | 4,887.10 | 27,599.08 |
+| 14 Jul 2026 | Invoice | 51823 | 935.81 | 28,534.89 |
 
 ---
 
 ## Part 2: Cylinder (CYL) Ledger (Physical Asset Tracker)
-*Cylinders are tracked purely by physical count. The Opening Balance on 01 January 2026 correctly incorporates the legacy migration deficit of -1 cylinder of 9.1.*
+*Cylinders are tracked purely by physical count. Opening balances per `config/statement_v4.json`.*
 
 ### January 2026
 | Date | Entry Type | Doc # | 14kg Qty | 19kg Qty | 9kg Qty | D.1 Qty | S.1 Qty |
@@ -125,11 +162,32 @@
 | Date | Entry Type | Doc # | 14kg Qty | 19kg Qty | 9kg Qty | D.1 Qty | S.1 Qty |
 | :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: |
 | **01 May** | **Opening Balance** | — | **0** | **0** | **3** | **0** | **0** |
-| 06 May 2026 | Invoice | 50537 | 0 | +6 | +6 | 0 | 0 |
-| 07 May 2026 | Crd Note | 14864 | 0 | -4 | -6 | 0 | 0 |
+| 05 May 2026 | Invoice | 50537 | 0 | +6 | +6 | 0 | 0 |
+| 06 May 2026 | Crd Note | 14864 | 0 | -4 | -6 | 0 | 0 |
 | 18 May 2026 | Invoice | 50754 | 0 | +6 | 0 | 0 | 0 |
 | 19 May 2026 | Crd Note | 14922 | 0 | -6 | 0 | 0 | 0 |
 | **End May** | **Closing Balance** | — | **0** | **2** | **3** | **0** | **0** |
+
+---
+
+### June 2026
+| Date | Entry Type | Doc # | 14kg Qty | 19kg Qty | 9kg Qty | D.1 Qty | S.1 Qty |
+| :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: |
+| **01 Jun** | **Opening Balance** | — | **0** | **2** | **3** | **0** | **0** |
+| 01 Jun 2026 | Invoice | 50971 | 0 | +5 | 0 | 0 | 0 |
+| 02 Jun 2026 | Crd Note | 15007 | 0 | -5 | -4 | 0 | 0 |
+| 15 Jun 2026 | Crd Note | 15066 | 0 | -6 | -3 | 0 | 0 |
+| 23 Jun 2026 | Invoice | 51388 | 0 | +6 | 0 | 0 | 0 |
+| 24 Jun 2026 | Crd Note | 15114 | 0 | -6 | -2 | 0 | 0 |
+| **End Jun** | **Closing Balance** | — | **0** | **-4** | **-6** | **0** | **0** |
+
+---
+
+### July 2026
+| Date | Entry Type | Doc # | 14kg Qty | 19kg Qty | 9kg Qty | D.1 Qty | S.1 Qty |
+| :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: |
+| **01 Jul** | **Opening Balance** | — | **0** | **-4** | **-6** | **0** | **0** |
+| **End Jul** | **Closing Balance** | — | **0** | **-4** | **-6** | **0** | **0** |
 
 ---
 
@@ -142,26 +200,26 @@
 
 | Component | Amount |
 |---|---:|
-| LPG Gas Debt | R20,510.54 |
-| Cylinder Financial Balance | R2,932.50 |
-| **Total Debtor Balance** | **R23,443.04** |
+| LPG Gas Debt | R34,399.89 |
+| Cylinder Financial Balance | R-5,865.00 |
+| **Total Debtor Balance** | **R28,534.89** |
 
 ### 2. Custody Position
 
 | SKU | Net Returnable Qty | Deposit Rate | Custody Exposure |
 |---|---:|---:|---:|
-| 19kg | 2 | R690.00 | R1,380.00 |
-| 9kg | 3 | R517.50 | R1,552.50 |
-| **Total** | **5** | — | **R2,932.50** |
+| 19kg | -4 | R690.00 | R-2,760.00 |
+| 9kg | -6 | R517.50 | R-3,105.00 |
+| **Total** | **-10** | — | **R-5,865.00** |
 
 ### 3. Reconciliation Position
 
 | Check | Financial | Custody | Variance |
 |---|---:|---:|---:|
-| Cylinder Position | R2,932.50 | R2,932.50 | R0.00 |
+| Cylinder Position | R-5,865.00 | R-5,865.00 | R0.00 |
 
-**ERP Combined Balance:** R23,443.04  
-**Reconstructed Balance:** R23,443.04  
+**ERP Combined Balance (TXT header):** R28,534.89  
+**Reconstructed Balance (Part 1):** R28,534.89  
 **Variance:** R0.00
 
 <!-- DEBTOR_POSITION_WORKSPACE_END -->

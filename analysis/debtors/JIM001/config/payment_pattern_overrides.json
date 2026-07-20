@@ -422,6 +422,7 @@
       "approved_date": "2026-06-16",
       "reason": "Apr-Nov 2024 payments are better represented as a pooled settlement window than rigid monthly one-to-one matches.",
       "evidence_source": ["settlement_windows.csv", "gross payment amount", "monthly LPG total"],
+      "reconciled_month": "2024-04 to 2024-11",
       "summary_note": "* **2024-04 / 2024-11 Settlement Window:** Docs 32896, 33810, 34425, 35270, 36139, and 36988 settle the Apr-Nov 2024 LPG statement window as a pooled batch. Individual monthly variances self-cancel within the window."
     },
     {
@@ -437,6 +438,7 @@
       "approved_by": "human",
       "approved_date": "2026-06-16",
       "reason": "Part of documented Apr-Nov 2024 pooled settlement window.",
+      "reconciled_month": "2024-04 to 2024-11",
       "evidence_source": ["settlement_windows.csv", "gross payment amount", "monthly LPG total"]
     },
     {
@@ -452,6 +454,7 @@
       "approved_by": "human",
       "approved_date": "2026-06-16",
       "reason": "Part of documented Apr-Nov 2024 pooled settlement window.",
+      "reconciled_month": "2024-04 to 2024-11",
       "evidence_source": ["settlement_windows.csv", "gross payment amount", "monthly LPG total"]
     },
     {
@@ -467,6 +470,7 @@
       "approved_by": "human",
       "approved_date": "2026-06-16",
       "reason": "Part of documented Apr-Nov 2024 pooled settlement window.",
+      "reconciled_month": "2024-04 to 2024-11",
       "evidence_source": ["settlement_windows.csv", "gross payment amount", "monthly LPG total"]
     },
     {
@@ -482,6 +486,7 @@
       "approved_by": "human",
       "approved_date": "2026-06-16",
       "reason": "Part of documented Apr-Nov 2024 pooled settlement window.",
+      "reconciled_month": "2024-04 to 2024-11",
       "evidence_source": ["settlement_windows.csv", "gross payment amount", "monthly LPG total"]
     },
     {
@@ -497,6 +502,7 @@
       "approved_by": "human",
       "approved_date": "2026-06-16",
       "reason": "Part of documented Apr-Nov 2024 pooled settlement window.",
+      "reconciled_month": "2024-04 to 2024-11",
       "evidence_source": ["settlement_windows.csv", "gross payment amount", "monthly LPG total"]
     },
     {

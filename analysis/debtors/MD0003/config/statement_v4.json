@@ -1,0 +1,23 @@
+{
+  "debtorCode": "MD0003",
+  "debtorName": "BLUFF MEAT SUPPLY(PTY) LTD",
+  "txtPath": "analysis/debtors/MD0003/raw/MD0003CURRENT.TXT",
+  "periodStart": "2025-01-01",
+  "combinedBf": 52607.52,
+  "bfSourceNote": "MD0003CURRENT.TXT line 14 — BALANCE B/F before 2025 payment sequence",
+  "cylOpeningFinancial": 0.0,
+  "cylOpeningQty": {
+    "14.1": 0,
+    "19.1": 0,
+    "9.1": 0,
+    "D.1": 0,
+    "S.1": 0
+  },
+  "skuRates": {
+    "14.1": 575,
+    "19.1": 690,
+    "9.1": 517.5,
+    "D.1": 1150,
+    "S.1": 1150
+  }
+}

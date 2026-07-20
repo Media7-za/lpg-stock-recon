@@ -33,7 +33,7 @@ ALLOC_FILE = os.path.join(OUTPUT_DIR, "allocation_edges.csv")
 
 SUPABASE_URL = os.environ.get(
     "SUPABASE_URL",
-    "postgresql+psycopg2://postgres.oqhpxnaadahohwkslive:lpg-stock-recon@aws-0-eu-west-1.pooler.supabase.com:5432/postgres"
+    os.environ['DATABASE_URL']
 )
 
 

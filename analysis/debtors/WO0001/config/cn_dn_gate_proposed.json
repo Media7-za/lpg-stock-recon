@@ -1,0 +1,13 @@
+{
+  "version": "2026-07-20",
+  "account": "WO0001",
+  "tier3b": {
+    "dn_key_matching": true,
+    "cn_lag_min": -1,
+    "cn_lag_max": 5,
+    "lpg_tolerance": 0.05,
+    "approval_status": "proposed"
+  },
+  "dn_discovered_count": 5,
+  "phantom_open_closed": 59440.76
+}

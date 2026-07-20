@@ -1,0 +1,11 @@
+{
+  "debtorCode": "MOZ002",
+  "doctrineVersion": "settlement-discount-v1-draft",
+  "discountRate": null,
+  "tolerancePct": 0.001,
+  "paymentTermsDays": null,
+  "termsBasis": null,
+  "registryVersion": 0,
+  "approvalPolicy": "Tier-1 remittance advice is authoritative for discount amounts. Overrides document deviations from naive discount formula once rate is confirmed.",
+  "overrides": []
+}

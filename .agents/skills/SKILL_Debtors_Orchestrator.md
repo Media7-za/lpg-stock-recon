@@ -3,7 +3,8 @@ name: debtors-orchestrator
 description: >
   Portfolio orchestrator for debtor account analysis. Use when triaging the global
   aged-debt backlog, dispatching worker agents per recon lane, viewing the dashboard,
-  or queueing human tasks (ERP finance, creditor controller, customer comms).
+  queueing human tasks (ERP finance, creditor controller, customer comms), applying
+  orchestration methods, drafting turn briefs, or gating writes on evidence doctrine.
 ---
 
 # Debtors Orchestrator Skill
@@ -31,6 +32,7 @@ Read these before orchestrating:
 | 2a | `.agents/skills/SKILL_Human_ERP_Agent.md` | Human finance clerk playbook |
 | 2a | `.agents/skills/SKILL_Human_Collections_Agent.md` | Human collections / controller playbook |
 | 2a | `.agents/skills/SKILL_Human_Sources_Agent.md` | Human evidence intake playbook |
+| 3 | `.agents/skills/SKILL_Debtor_Statement_v4_From_TXT.md` | Statement layout + **canonical** line-level evidence doctrine |
 | 3 | `.agents/skills/debtors-analysis_Skill.md` | General reconciliation worker; **JIM001** = payment-pattern, not allocation |
 | 3 | `analysis/debtors/shared/docs/DEBTOR_POSITION_WORKSPACE.md` | LPG + custody position model |
 | 3 | `.agents/skills/SKILL_Payment_To_Invoice_Allocation.md` | Allocation lane (**WO0001** only) |
@@ -60,6 +62,64 @@ npm run debtors:parse-backlog
 5. **Sync** — `npm run debtors:sync` after any `project.json` change.
 6. **Report** — Summarise orchestrator KPIs from dashboard.
 
+### Session openers (copy-paste)
+
+Paste one block at the **start** of a new chat. Attach `@SKILL_Debtors_Orchestrator.md` (portfolio) or the lane skill (worker).
+
+**Portfolio / orchestrator session**
+
+```text
+Role: Debtors Orchestrator — read .agents/skills/SKILL_Debtors_Orchestrator.md first.
+
+You triage and plan; you do NOT run deep recon, touch DB, ratify registries, or edit account artifacts yourself.
+
+This session:
+1. npm run debtors:sync
+2. Read DEBTORS_DASHBOARD.md + analysis/debtors/shared/HUMAN_TASKS.md
+3. Summarise: priority queue, reconState per active account, open human tasks, collection-blocked exposure
+4. Pick ONE account or ONE bounded phase (no parallel finance-dependent lanes)
+5. Output:
+   - Recommended next action (dispatch worker | queue human | defer)
+   - Lane + worker skill if dispatching
+   - Turn brief (§5.5 template) ready to paste into a new worker chat
+   - Any HUMAN_TASKS.md rows to append (draft only — I approve before write)
+
+Do not change project.json, registries, edges, or reconState in this session unless I explicitly say "execute as repo agent."
+Chat is not source of truth — cite repo paths only.
+```
+
+**Worker session** (new chat after orchestrator brief)
+
+```text
+Role: Repo worker — execute the turn brief below. Do NOT replan portfolio or change reconState unless the brief says so.
+
+Read first:
+- [lane skill path from brief]
+- analysis/debtors/[CODE]/project.json
+- analysis/debtors/[CODE]/reports/[CODE]_Onboarding_Status.md
+
+Evidence: SKILL_Debtor_Statement_v4_From_TXT.md § Doctrine addendum (canonical for line-level lanes).
+
+--- TURN BRIEF (from orchestrator) ---
+[paste brief here]
+--- END BRIEF ---
+
+Run steps in order. STOP at any STOP condition and report — do not improvise.
+When done: list artifacts touched + npm run debtors:sync result. Defer project.json to PM skill if material.
+```
+
+**Return from human task** (orchestrator resumes planning)
+
+```text
+Role: Debtors Orchestrator — resume after human task.
+
+Human completed: [H-00x / description]
+Evidence received: [file paths or "none"]
+
+Re-read onboarding status + dashboard. Update plan only — draft turn brief for repo worker if recon can proceed.
+Do not ratify on my behalf unless I paste explicit approval.
+```
+
 ## 4. Recon lanes (routing)
 
 **Worker lanes** — dispatch Cursor workers:
@@ -79,7 +139,107 @@ npm run debtors:parse-backlog
 
 **Gate:** Never set `status: collection` unless `reconState: complete` (`DEBTOR_STATE_MACHINE.md`).
 
-## 5. Human agents
+## 5. Orchestration Methods
+
+Distilled from MOZ002 Turns 5–7j (Jul 2026).
+
+Roles: **Operator** (human — finance authority, ratification, debtor contact) ·
+**Orchestrator** (top-down synthesis layer — plans turns, reviews evidence, drafts briefs/comms) ·
+**Repo agent** (Cursor — queries, scripts, artifacts) · **ERP/DB** (data source).
+
+### 1. Role separation (non-negotiable)
+
+| Layer | May do | May never do |
+| :--- | :--- | :--- |
+| Orchestrator | Synthesize state, cross-check artifacts, generate hypotheses, write briefs, draft comms, render visuals | Touch DB/repo/ERP; ratify registry entries; contact debtors |
+| Repo agent | Read freely; write **only** downstream of ledger evidence or operator ratification | Infer-then-write; hand-patch generated CSVs; apply staged registries |
+| Operator | Ratify, rule, contact, rotate credentials | — (authority terminates here) |
+
+A conclusion that changes if a human-captured field (`ref_no`, clerk text) is deleted was never proven.
+
+### 2. Epistemic bookkeeping
+
+Every material number carries one of three tags at every turn:
+
+| Tag | Meaning | Test |
+| :--- | :--- | :--- |
+| **PROVEN** | Closes under an identity or conservation law | Sums to an external anchor to the cent (TXT closing, qty conservation) |
+| **ASSERTED** | Stated by an artifact, not yet closed | Awaiting decomposition/itemization |
+| **ASSUMED** | Supplied by hypothesis or registry inference | Must carry a kill condition |
+
+Rules:
+- A variance explained in prose is **not** reconciled. Itemize line-by-line with dates or leave it ASSERTED.
+- A label is only worth what stands behind it: `CONFIRMED_OPERATOR_OVERRIDE` requires an operator; "ground truth" may not cite the heuristic's own prior output as evidence.
+- Quantized domains (values that are multiples of a unit, e.g. shell modules) defeat cent-precision: compensating errors produce exact-looking ties. Only full decomposition discriminates.
+- Every hypothesis ships with a kill condition ("if Step 1 finds nothing, STOP"). Being wrong costs one turn, not a wrong ledger.
+
+### 3. Evidence hierarchy
+
+| Rank | Class | Use |
+| :--- | :--- | :--- |
+| Canonical | Line quantities (`transaction_items`) | Decides. Conservation: Σout − Σin = net held, per SKU |
+| Structural | DN references, doc pairing | Groups; never settles |
+| Advisory | `ref_no`, clerk allocations, header desc regex | Corroborates; never decides globally. Invoice-linked allocation lane may treat cent-aligned `ref_no` as confirmatory — see [`SKILL_Payment_To_Invoice_Allocation.md` §3](SKILL_Payment_To_Invoice_Allocation.md#3-source-of-truth-hierarchy-invoice-linked-debtors) (payer-class scope; potential conflict — operator ruling if both apply). Regex only as flagged fallback for TXT-only docs |
+| Derived | Value | Never input. Residuals must decompose to integer units at a dated price; non-integer = defect flag, not rounding |
+
+**Lane membership is a property of the line, not the document.** Doc-level partitioning manufactures phantom cross-lane residuals exactly one unit-module wide.
+
+Implementation rules (SKU sets, regex fallback mechanics, four-lane identity construction): see [`SKILL_Debtor_Statement_v4_From_TXT.md` § Doctrine addendum — line-level lanes (canonical)](SKILL_Debtor_Statement_v4_From_TXT.md#doctrine-addendum--line-level-lanes-turn-7i-moz002).
+
+### 4. Write-gating & registries
+
+- Writes are conditional steps inside briefs, gated on the evidence produced by earlier read-only steps.
+- Registries are **staged → diffed → ratified**: proposals never self-apply; the diff names every entry that changes and the rand impact.
+- Registries carry self-checks: Σ outstanding qty per class **must** equal net custody per class. Artifact says `INVARIANT_FAIL — DO NOT RATIFY` and stops; no ratification request on a failing invariant. The check reads both sides from live data — a hardcoded side is theatre.
+- Every closed ruling gets **tripwires**: named future events that reopen it automatically (a ref-bearing payment citing the settled twin; a warehouse ruling changing SKU classes; a debtor remittance for an unallocated credit).
+- Re-runs must be idempotent: overrides live in config, applied by ingest — never patched into outputs.
+
+### 5. Turn-brief template
+
+```
+Turn <id> — <objective, one line>
+Objective / context (incl. what is pending with the operator)
+Method constraint (evidence doctrine line; what may NOT decide)
+Step 1..n  — each marked read-only or write-conditional-on-Step-k
+STOP conditions — where the agent halts and reports instead of improvising
+Outputs — exact artifact paths
+Tripwires — recorded in registry/override notes
+Out of scope — what this turn must not touch (edges, reconState, debtor contact…)
+```
+
+Closing turns close; they do not open. Investigation turns are read-only by default.
+
+### 6. Communications
+
+- Statements present the debtor's view: gross invoices + credits separately (never the netted position), tickable line-by-line against *their* records.
+- Blank-ref queries are framed as tidying *their* credit, with an "apply to oldest — one-line confirmation" option; the reply becomes the operator evidence that converts an unallocated credit into a confirmed edge (tripwire class c).
+- Acknowledge applied payments explicitly ("applied in full settlement of invoice N") — puts the allocation of a blank-ref payment on record.
+- **Staleness gate:** the attachment must match the email to the cent; regenerate customer HTML from the same closing figure before send. Any portfolio delta (new TXT slice) invalidates drafted comms until restated.
+
+### 7. Failure modes observed (audit for these)
+
+| Failure | Signature |
+| :--- | :--- |
+| Value-inferred registry entries | Residuals inferred from value patterns; quantities show FULL_CLEAR |
+| Doc-level lanes | Empty lane ≠ 0 by exactly one unit-module; typo'd EMPTY headers regex-missed |
+| Circular ground truth | Prior heuristic output cited as ledger evidence for the same ruling |
+| Sign errors in bridges | Credits added as exposure; "variance" that is really a mis-signed identity |
+| Prose reconciliation | Named examples ≠ itemization; buckets that don't sum to the stated net |
+| Half-hardcoded invariants | One side of a self-check as a constant (`reg = 0`) |
+| Snapshot query defects | CN sign flipped; confirmed edges not deducted; curated subsets presented as full pools |
+| Duplicate headers | JOIN doubling line values; audit blast radius across lanes when found |
+| Stale comms | Letter drafted against a superseded closing balance |
+| Credentials in scripts | Connection strings as env-var fallbacks; TLS verification disabled |
+
+### 8. Sequencing doctrine
+
+1. Cheap ledger traces before debtor contact (one bad edge and a broken snapshot can explain most "anomalies").
+2. Ground truth before edge writes; behaviour template only when the ledger cannot discriminate — and then labelled as such pending ratification.
+3. Fix the data defect, then re-test the hypothesis against the corrected pool.
+4. Close on identities, not ties: four-lane line-level sum to TXT closing exact; bridge residual reduced to named, registered micro-items.
+5. Board the endgame: convert all remaining work into explicit operator decisions (ratify / close / send), each with a recommendation.
+
+## 6. Human agents
 
 Three human roles — skill files in `.agents/skills/`:
 
@@ -97,7 +257,7 @@ Three human roles — skill files in `.agents/skills/`:
 
 **Planning docs:** `analysis/debtors/shared/docs/DEBTORS_ORCHESTRATION_PRD.md` · `DEBTORS_ORCHESTRATION_ROADMAP.md`
 
-## 6. Work order template
+## 7. Work order template
 
 When dispatching a worker, state:
 
@@ -112,7 +272,7 @@ definitionOfDone:
 humanTasks: [H-006 Collections sign-off FIRST, then H-003–H-005 ERP, then H-007 TXT]
 ```
 
-## 7. Delegation
+## 8. Delegation
 
 | You (orchestrator) | Worker agent |
 | :--- | :--- |
@@ -122,7 +282,7 @@ humanTasks: [H-006 Collections sign-off FIRST, then H-003–H-005 ERP, then H-00
 
 For single-debtor `project.json` edits, defer to **SKILL_Debtors_Project_Manager.md**.
 
-## 8. MVP scope (do not over-build)
+## 9. MVP scope (do not over-build)
 
 - Dashboard = **markdown** (`DEBTORS_DASHBOARD.md`), not HTML.
 - Per-debtor finance HTML (e.g. TWK control panel) stays account-local.

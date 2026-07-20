@@ -1,0 +1,44 @@
+{
+  "debtorCode": "MD0003",
+  "clientName": "BLUFF MEAT SUPPLY(PTY) LTD",
+  "status": "active",
+  "reconState": "in-progress",
+  "financials": {
+    "totalOutstanding": 16371.56,
+    "lastInvoiceDate": "2026-07-15",
+    "lastPaymentDate": "2026-07-01",
+    "agedDebt180Plus": 0.0,
+    "balanceSource": "MD0003CURRENT.TXT header 2026-07-16"
+  },
+  "collections": {
+    "actionRequired": false,
+    "actionType": null,
+    "dateSent": null,
+    "deadlineDate": null,
+    "nextAction": null,
+    "nextActionDate": null,
+    "notes": "Monthly STAT batch payer (30T). Skill: lpg-payment-pattern-analysis — NOT invoice-linked. 2026 gross matches: 43854→Feb, 44231→Mar, 44561→Apr. 2025 Alloc-heavy docs need override mapping."
+  },
+  "history": [
+    {
+      "date": "2026-07-16",
+      "event": "Onboarded MD0003 (Bluff Meat Supply). Portfolio balance R12,005.45 (30T). Initial misclassification as invoice-linked — corrected after operator confirm: pays monthly STAT batch payments."
+    },
+    {
+      "date": "2026-07-16",
+      "event": "Turn 1 (corrected): Ran lpg-payment-pattern-analysis 2025+2026. 2026: 44231 R15,017.78 matches Mar-2026 statement at gross level (not Tier 5). 2025: 8 skipped months — Alloc mirror docs undercount signed sum; overrides pending."
+    },
+    {
+      "date": "2026-07-16",
+      "event": "Remittance ingested: COD advice 01.11.2025 (7 duplicate PDFs → 1 canonical). Payment 42051 R35,770.31 VERIFIED_SPLIT_BATCH — 9 LPG refs cent-exact; CYL 46445 remittance R3,105 vs ERP R57.50 flagged. Manifest + MD0003_Remittance_Payment_42051.md."
+    },
+    {
+      "date": "2026-07-16",
+      "event": "Remittance ingested: COD advice 01.01.2023 (re (1).pdf). Payment 17669 R12,025.08 STAT207 — perfect 4-invoice match (16425–16615). gaz (7).pdf duplicate of Nov-2025 advice. Override RM-17669 registered."
+    },
+    {
+      "date": "2026-07-16",
+      "event": "CURRENT.TXT ingested: erp_current_ledger.csv (232 lines), balance R16,371.56. Payment 44972 STAT:128 confirmed for Jul-2026 remittance. Override v6 for 2026-05. statement_v4.json scaffolded."
+    }
+  ]
+}

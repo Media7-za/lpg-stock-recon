@@ -1,0 +1,133 @@
+# MD0003 — ERP Agent Data Pull Results
+
+Generated: 2026-07-17  
+Account filter: `account_no = 'MD0003'` (canonical — no BLUFF_MEAT_SUPPLY_PTY_LTD field in DB)
+
+## Schema adaptations
+
+| Prompt assumption | Actual schema |
+| :--- | :--- |
+| `journal_entries` | **Table does not exist** — use Payment `ref_no` slices |
+| `inv_date` | `tx_date` on `transaction_headers` |
+| `posting_status` | **Not present** — use remittance + CURRENT.TXT for posted cash |
+| `Credit Note` | `Crd Note` |
+| MONTH()/YEAR() | PostgreSQL `EXTRACT` / date ranges |
+
+```
+
+=== GAP 1: CYL deposit posting (46445, 48927) ===
+
+NOTE: journal_entries table does NOT exist. Payment ref_no slices used as posting proxy.
+
+Invoice CYL lines:
+doc_no,inv_date,sku,qty,unit_price,line_total
+46445,2025-09-16,19.1,1,600,690
+46445,2025-09-16,S.1,2,1050,2415
+48927,2026-01-21,14.1,1,550,632.5
+48927,2026-01-21,S.1,4,1050,4830
+
+Payment ref slices (posting proxy):
+payment_doc,pmt_date,ref_no,pmt_slice,batch_ref
+42051,2025-10-31,00046445,-57.5,STAT:121
+43494,2026-03-01,00048927,57.5,STAT:124
+
+Header totals:
+46445: header R3105.00, payment slice R57.50, variance R3047.50
+48927: header R5462.50, payment slice R57.50, variance R5405.00
+
+Linked credit notes:
+cn_doc,cn_date,ref_no,cn_total
+13494,2025-09-16,00046445,-3445.0
+14328,2026-01-23,00048927,-6240
+
+=== GAP 2: August 2025 LPG invoices vs payment refs ===
+
+doc_no,inv_date,lpg_total,pmt_41501,pmt_42051,alloc_type
+45435,2025-08-05,3684.19,3684.19,,41501
+45437,2025-08-05,4912.25,,4912.25,42051
+45778,2025-08-19,2398.72,2398.72,,41501
+45787,2025-08-19,150.02,150.02,,41501
+45895,2025-08-25,3598.07,,3598.07,42051
+
+SUMMARY GAP 2:
+Total LPG billed Aug 2025 (invoice date in Aug),14743.25
+Cash applied via 41501 (Aug refs only),6232.93
+Cash applied via 42051 (Aug refs only),8510.32
+Total cash applied to Aug LPG refs,14743.25
+Overpay vs Aug billing month,0.00
+41501 full payment gross,6232.93
+42051 Aug ref subset,8510.32 (42051 also pays Sep/May refs)
+
+=== GAP 3: June 2026 universe + ledger open + doc 50671 ===
+
+June 2026 invoices (by inv date + lane):
+doc_no,inv_date,debt_group,line_total,header_total
+50996,2026-06-01,LPG,5822.54,5822.54
+50997,2026-06-01,CYL,4830.00,4830
+50998,2026-06-01,OTHER,349.99,349.99000000000003
+51099,2026-06-08,LPG,4345.45,4345.4499999999996
+51100,2026-06-08,CYL,3622.50,3622.5
+51398,2026-06-23,LPG,4345.45,4345.4499999999996
+51399,2026-06-23,CYL,3622.50,3622.5
+51470,2026-06-28,LPG,5039.52,5039.5200000000005
+51471,2026-06-28,CYL,4772.50,4772.5
+
+SUMMARY GAP 3:
+Jun 2026 LPG billing month (DB calendar),19552.96
+Period-16 LPG net on ledger (CN paired),19552.96
+Balance after payment 44972 (CURRENT.TXT),7639.34
+Current header balance (CURRENT.TXT 2026-07-16),16371.56
+Jul activity after 44972 (LPG net approx),8732.22
+
+doc 50671 (May-dated, paid on 44972 — NOT prepay):
+  doc 50671 date 2026-05-13 LPG line 4539.72 header 4539.7200000000004
+44972 ref slices for May remittance pool:
+
+INVALID FRAME: Jun billed minus 50671 prepay = 15013.24 — Bluff does NOT prepay.
+50671 posted 2026-05-14, paid 2026-07-01 in May STAT:128 batch alongside 50524/50867/50886.
+CORRECT: Ledger open after 44972 = 7639.34; current open = 16371.56. STAT:129 amount = remittance when posted (~Aug 2026).
+
+=== SECONDARY: Credit notes 2025-2026 ===
+
+cn_doc,cn_date,cn_total,target_inv,target_date,target_total,same_day
+15145,2026-06-28,-4772.5,51471,2026-06-28,4772.5,Y
+15116,2026-06-23,-3622.5,51399,2026-06-23,3622.5,Y
+15037,2026-06-08,-3622.5,51100,2026-06-08,3622.5,Y
+15017,2026-06-02,-4830,50997,2026-06-01,4830,N
+14970,2026-05-25,-2415,50868,2026-05-24,2415,N
+14858,2026-05-05,-5460,50525,2026-05-05,4830,Y
+14822,2026-04-30,-4095.0,50430,2026-04-28,3622.5,N
+14822,2026-04-30,-4095.0,50430,2026-04-29,3622.5,N
+14822,2026-04-29,-3622.5,50430,2026-04-28,3622.5,N
+14822,2026-04-29,-3622.5,50430,2026-04-29,3622.5,Y
+14759,2026-04-14,-3622.5,50235,2026-04-14,3622.5,Y
+14759,2026-04-14,-3622.5,50235,2026-04-14,3622.5,Y
+14759,2026-04-14,-4095.0,50235,2026-04-14,3622.5,Y
+14759,2026-04-14,-4095.0,50235,2026-04-14,3622.5,Y
+14712,2026-04-06,-4830,50101,2026-04-05,4830,N
+14712,2026-04-06,-4830,50101,2026-04-05,4830,N
+14712,2026-04-06,-5460,50101,2026-04-05,4830,N
+14712,2026-04-06,-5460,50101,2026-04-05,4830,N
+14692,2026-03-31,-3622.5,50014,2026-03-30,3622.5,N
+14692,2026-03-31,-4095.0,50014,2026-03-30,3622.5,N
+14684,2026-03-30,-4095.0,50005,2026-03-29,3622.5,N
+14652,2026-03-24,-1365.0,49906,2026-03-24,1207.5,Y
+14612,2026-03-17,-4095.0,49797,2026-03-17,3622.5,Y
+14535,2026-03-04,-4095.0,49574,2026-03-03,3622.5,N
+14494,2026-02-27,-5460,49444,2026-02-25,4830,N
+14454,2026-02-18,-4095.0,49323,2026-02-18,3622.5,Y
+14408,2026-02-09,-2730,49167,2026-02-09,2415,Y
+14385,2026-02-05,-3892.63,49119,2026-02-05,3443.48,Y
+14386,2026-02-05,-4095.0,49120,2026-02-05,3622.5,Y
+14328,2026-01-23,-6240,48927,2026-01-21,5462.5,N
+14322,2026-01-22,-4095.0,48907,2026-01-21,3622.5,N
+14325,2026-01-22,-6175.0,48920,2026-01-22,5462.5,Y
+14269,2026-01-14,-2730,48785,2026-01-13,2415,N
+14251,2026-01-11,-4095.0,48738,2026-01-11,3622.5,Y
+14172,2025-12-28,-4095.0,48524,2025-12-28,3622.5,Y
+14121,2025-12-18,-6825.0,48373,2025-12-18,6037.5,Y
+14042,2025-12-09,-2730,48191,2025-12-09,2415,Y
+14036,2025-12-08,-4095.0,48166,2025-12-08,3622.5,Y
+13986,2025-12-01,-4095.0,48021,2025-11-30,3622.5,N
+13916,2025-11-19,-6330.55,47734,2025-11-17,5600.10,N
+```

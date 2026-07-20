@@ -18,6 +18,15 @@ Generated on 2026-06-16 | Tolerance: R5.00
 | **2018-12** | R9,000.02 | — | — | R0.00 | — | +R9,000.02 | **Skipped Month:** Statement was completely unpaid. |
 | **TOTAL** | **R9,000.02** | | | **-R0.00** | | **R9,000.02** | **Net balance change for 2018.** |
 
+### 2.1 Candidate Invoice Details for Underpayments
+
+| Underpaid Month | Underpaid Amount | Candidate Doc | Invoice Date | LPG Gas Items | Line Total |
+| :--- | :---: | :---: | :---: | :--- | ---: |
+| — | — | — | — | No Pattern 2 candidate invoice underpayments identified for this period. | — |
+
+**Investigation Notes:**
+* No candidate invoice details were identified for this period; skipped statements are listed separately below where applicable.
+
 ### 2.2 Skipped Statements (Unpaid Months)
 
 | Skipped Month | Billed Amount | Payment Status | Investigation / Action Notes |
@@ -34,14 +43,14 @@ Cylinder container transactions were strictly ledger-only loop of returns and we
 
 | Sequence | Payment Doc | Payment Date | Payment Amount | Reconciled Month | Status / Reconciliation Notes |
 | :--- | :---: | :---: | :---: | :---: | :--- |
-| **Doc 4832** | 4832 | 2018-12-18 | −R3,750.00 | | ✅ Present. |
-| **Doc 4839** | 4839 | 2018-12-29 | −R4,250.00 | | ✅ Present. |
-| **Doc 4807** | 4807 | 2019-01-05 | −R700.01 | | ✅ Present. |
-| **Doc 4898** | 4898 | 2019-01-09 | −R8,500.00 | | ✅ Present. |
-| **Doc 4841** | 4841 | 2019-01-10 | −R700.01 | | ✅ Present. |
-| **Doc 4904** | 4904 | 2019-01-21 | −R7,000.00 | | ✅ Present. |
-| **Doc 5043** | 5043 | 2019-02-07 | −R4,870.00 | | ✅ Present. |
-| **Doc 5047** | 5047 | 2019-02-19 | −R6,827.39 | | ✅ Present. |
+| **Doc 4832** | 4832 | 2018-12-18 | −R3,750.00 | — | ✅ Present. |
+| **Doc 4839** | 4839 | 2018-12-29 | −R4,250.00 | — | ✅ Present. |
+| **Doc 4807** | 4807 | 2019-01-05 | −R700.01 | — | ✅ Present. |
+| **Doc 4898** | 4898 | 2019-01-09 | −R8,500.00 | — | ✅ Present. |
+| **Doc 4841** | 4841 | 2019-01-10 | −R700.01 | — | ✅ Present. |
+| **Doc 4904** | 4904 | 2019-01-21 | −R7,000.00 | — | ✅ Present. |
+| **Doc 5043** | 5043 | 2019-02-07 | −R4,870.00 | — | ✅ Present. |
+| **Doc 5047** | 5047 | 2019-02-19 | −R6,827.39 | — | ✅ Present. |
 
 ### 4.1 Ledger-Wide Historical Balance Reconciliation (View A/B)
 
@@ -78,7 +87,7 @@ This section reconciles the lifetime-to-date ledger balances starting from the o
 
 ### 4.2 Reconciling Ledger Balance Movement (View A/B) vs. Invoice Settlement Pool
 
-This section reconciles the lifetime ledger balance movement (**View A/B** net change of **R9,000.02**) to the matching payments allocated in the monthly settlement pool (**Section 2** net change of **R-27,597.39**):
+This section reconciles the lifetime ledger balance movement (**View A/B** net change of **R9,000.02**) to the matching payments allocated in the monthly settlement pool (**Section 2** net change of **R9,000.02**):
 
 #### Ledger Balance Movement (View A/B Totals)
 
@@ -93,19 +102,19 @@ This section reconciles the lifetime ledger balance movement (**View A/B** net c
 | Line Item | Amount |
 | :--- | ---: |
 | Net LPG Gas Billed | R9,000.02 |
-| Payment Allocations (Settling 2018 Invoices) | −R36,597.41 |
-| **Net Variance Outstanding** | **+R-27,597.39** |
+| Payment Allocations (Settling 2018 Invoices) | −R0.00 |
+| **Net Variance Outstanding** | **+R9,000.02** |
 
 #### Mathematical Bridge — Cumulative Ledger to Settlement Pool Proof
 
-The exact difference of **R36,597.41** between the Ledger Balance Movement (+R9,000.02) and the Monthly Table (+R-27,597.39) is proven by mapping all non-cash items, journals, and timing boundary-crossing payments:
+The exact difference of **R0.00** between the Ledger Balance Movement (+R9,000.02) and the Monthly Table (+R9,000.02) is proven by mapping all non-cash items, journals, and timing boundary-crossing payments:
 
 | Reconciliation Component | Amount | Description |
 | :--- | ---: | :--- |
 | Cylinder Net Movement | R0.00 | Ledger-only returns & debits (excluded from LPG cash pool) |
 | ERP Journal Adjustments | R8,000.00 | ERP adjustments posted in year 2018 |
-| Cash Timing Boundary Shift | R28,597.41 | Payments crossing the calendar year boundary |
-| **Total Reconciliation Variance** | **R36,597.41** | ✅ Matches difference |
+| Cash Timing Boundary Shift | R-8,000.00 | Payments crossing the calendar year boundary |
+| **Total Reconciliation Variance** | **R0.00** | ✅ Matches difference |
 
 ---
 

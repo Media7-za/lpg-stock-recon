@@ -1,0 +1,52 @@
+batch_id,line_type,doc_no,doc_date,our_ref,original_amount,discount_amount,net_amount,discount_eligible,on_remittance,source_type,notes
+BATCH-2023-06-26,Invoice,00019704,2023-04-28,102273,9509.10,237.73,9271.37,true,true,remittance_advice,
+BATCH-2023-06-26,Invoice,00019706,2023-04-28,102027,11362.00,284.05,11077.95,true,true,remittance_advice,
+BATCH-2023-06-26,Invoice,00019768,2023-04-29,103336,10726.82,268.17,10458.65,true,true,remittance_advice,
+BATCH-2023-06-26,Invoice,00019769,2023-04-29,102029,12558.00,313.95,12244.05,true,true,remittance_advice,
+BATCH-2023-06-26,Invoice,00020606,2023-05-24,103337,2268.95,56.72,2212.23,true,true,remittance_advice,
+BATCH-2023-07-26,Invoice,00021122,2023-06-08,103671,3491.05,87.28,3403.77,true,true,remittance_advice,
+BATCH-2023-07-26,Invoice,00021594,2023-06-23,103686,4654.74,116.37,4538.37,true,true,remittance_advice,
+BATCH-2023-08-28,Invoice,00020607,2023-05-24,104664,3450.00,0.00,3450.00,false,true,remittance_advice,No discount per remittance — late/exception invoice
+BATCH-2023-08-28,Invoice,00021123,2023-06-08,105002,5175.00,0.00,5175.00,false,true,remittance_advice,No discount per remittance — late/exception invoice
+BATCH-2023-08-28,Invoice,00021597,2023-06-23,104663,6900.00,172.50,6727.50,true,true,remittance_advice,
+BATCH-2023-08-28,Invoice,00022058,2023-07-06,105003,7245.00,181.13,7063.87,true,true,remittance_advice,
+BATCH-2023-08-28,Invoice,00022060,2023-07-06,105040,7059.90,176.50,6883.40,true,true,remittance_advice,Gas invoice — not in operator analysis screenshot
+BATCH-2023-08-28,Invoice,00022255,2023-07-12,104665,5359.00,133.98,5225.02,true,true,remittance_advice,Gas invoice — not in operator analysis screenshot
+BATCH-2023-08-28,Invoice,00022268,2023-07-12,105001,6900.00,172.50,6727.50,true,true,remittance_advice,
+BATCH-2023-08-28,Crd Note,00005038,2023-07-20,999999,-3105.00,-77.63,-3027.37,true,true,remittance_advice,SC/IN on remittance; CN discount reversal
+BATCH-2023-08-28,Crd Note,00005308,2023-07-20,999999,-6555.00,-163.88,-6391.12,true,true,remittance_advice,
+BATCH-2023-08-28,Crd Note,00005498,2023-07-20,999999,-6900.00,-172.50,-6727.50,true,true,remittance_advice,
+BATCH-2023-08-28,Invoice,00022626,2023-07-21,105165,8621.01,215.53,8405.48,true,true,remittance_advice,Gas invoice — not in operator analysis screenshot
+BATCH-2023-08-28,Invoice,00022627,2023-07-21,105166,10350.00,258.75,10091.25,true,true,remittance_advice,
+BATCH-2023-08-28,Invoice,00022702,2023-07-24,104852,2213.50,55.34,2158.16,true,true,remittance_advice,Gas invoice — not in operator analysis screenshot
+BATCH-2023-08-28,Invoice,00022739,2023-07-24,105167,1725.00,43.13,1681.87,true,true,remittance_advice,
+BATCH-2023-08-28,Crd Note,00005603,2023-07-26,999999,-7590.00,-189.75,-7400.25,true,true,remittance_advice,
+BATCH-2023-08-28,Crd Note,00005155,2023-07-31,999999,-5175.00,-129.38,-5045.62,true,true,remittance_advice,Remittance shows doc 5155
+BATCH-2023-08-28,Crd Note,00005443,2023-08-02,999999,-6210.00,-155.25,-6054.75,true,true,remittance_advice,
+BATCH-2023-08-28,Crd Note,00005632,2023-08-04,999999,-2070.00,-51.75,-2018.25,true,true,remittance_advice,
+BATCH-2023-09-26,Invoice,00023075,2023-08-03,105565,3943.81,89.97,3508.84,true,true,remittance_advice,"Payable R3,598.81 on remittance — R345 partial already settled"
+BATCH-2023-09-26,Invoice,00023077,2023-08-03,105566,6900.00,172.50,6727.50,true,true,remittance_advice,
+BATCH-2023-09-26,Crd Note,00005768,2023-08-08,999999,-4830.00,-120.75,-4709.25,true,true,remittance_advice,
+BATCH-2023-09-26,Invoice,00023311,2023-08-10,105598,7142.65,178.57,6964.08,true,true,remittance_advice,
+BATCH-2023-09-26,Invoice,00023312,2023-08-10,105599,7590.00,189.75,7400.25,true,true,remittance_advice,
+BATCH-2023-09-26,Crd Note,00005845,2023-08-14,999999,-5175.00,-129.38,-5045.62,true,true,remittance_advice,
+BATCH-2023-09-26,Crd Note,5845/5875,2023-08-14,999999,-197.17,-4.93,-192.24,true,true,remittance_advice,Composite CN pair on remittance
+BATCH-2023-09-26,Crd Note,00005875,2023-08-16,999999,-345.00,-8.63,-336.37,true,true,remittance_advice,
+BATCH-2023-09-26,Invoice,STMT-DIFF-AUG23,2023-08-31,276104,-0.02,0.00,-0.02,false,true,remittance_advice,Statement rounding — no ERP doc
+BATCH-2023-10-26,Invoice,00024011,2023-09-01,107756,8532.19,127.05,4955.14,true,true,remittance_advice,"Payable R5,082.19 — balance R3,450.00 on Nov batch"
+BATCH-2023-10-26,Invoice,00024012,2023-09-01,107755,10350.00,258.75,10091.25,true,true,remittance_advice,
+BATCH-2023-10-26,Invoice,00024201,2023-09-06,107757,8532.19,213.30,8318.89,true,true,remittance_advice,
+BATCH-2023-10-26,Invoice,00024202,2023-09-06,107758,10350.00,258.75,10091.25,true,true,remittance_advice,
+BATCH-2023-10-26,Invoice,00025043,2023-10-02,107759,11040.00,276.00,10764.00,true,true,remittance_advice,
+BATCH-2023-10-26,Crd Note,00006078,2023-10-11,999999,-10350.00,-258.75,-10091.25,true,true,remittance_advice,
+BATCH-2023-10-26,Crd Note,00006134,2023-10-11,999999,-6900.00,-172.50,-6727.50,true,true,remittance_advice,
+BATCH-2023-10-26,Crd Note,00006387,2023-10-11,999999,-11040.00,-276.00,-10764.00,true,true,remittance_advice,
+BATCH-2023-11-27,Invoice,00024011,2023-09-01,107756,8532.19,0.00,3450.00,false,true,remittance_advice,"ALREADY PAID R5,082.19 on prior batch — no discount on residual"
+BATCH-2023-11-27,Invoice,00025042,2023-10-02,109327,8330.42,208.26,8122.16,true,true,remittance_advice,
+BATCH-2023-11-27,Invoice,00025293,2023-10-09,109328,7466.86,186.67,7280.19,true,true,remittance_advice,
+BATCH-2023-11-27,Invoice,00025294,2023-10-09,109329,4140.00,103.50,4036.50,true,true,remittance_advice,
+BATCH-2023-11-27,Crd Note,00006461,2023-10-25,999999,-3450.00,-86.25,-3363.75,true,true,remittance_advice,
+BATCH-2023-11-27,Crd Note,00006462,2023-10-25,999999,-4485.00,-112.13,-4372.87,true,true,remittance_advice,
+BATCH-2023-11-27,Invoice,00026027,2023-10-31,109331,13315.01,332.88,12982.13,true,true,remittance_advice,
+BATCH-2023-11-27,Invoice,00026033,2023-10-31,109332,13800.00,345.00,13455.00,true,true,remittance_advice,
+BATCH-2023-11-27,Crd Note,00006667,2023-11-07,999999,-11040.00,-276.00,-10764.00,true,true,remittance_advice,

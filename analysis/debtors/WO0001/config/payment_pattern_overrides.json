@@ -1,0 +1,67 @@
+[
+  {
+    "payment_doc": "00030504",
+    "payment_date": "2024-05-06",
+    "target_doc": "31468",
+    "allocated_amount": 12206.18,
+    "override_type": "VERIFIED_SPLIT_BATCH",
+    "approval_status": "approved",
+    "approved_by": "operator",
+    "approved_date": "2026-07-01",
+    "reason": "Split payment of R23,230.00 matches Inv 31468 (R12,206.18) and Inv 31751 (R11,024.84) with R1.02 rounding variance.",
+    "evidence_source": "ledger_reconstruction",
+    "reconciled_month": "2024-05"
+  },
+  {
+    "payment_doc": "00030504",
+    "payment_date": "2024-05-06",
+    "target_doc": "31751",
+    "allocated_amount": 11023.82,
+    "override_type": "VERIFIED_SPLIT_BATCH",
+    "approval_status": "approved",
+    "approved_by": "operator",
+    "approved_date": "2026-07-01",
+    "reason": "Split payment of R23,230.00 matches Inv 31468 (R12,206.18) and Inv 31751 (R11,024.84) with R1.02 rounding variance.",
+    "evidence_source": "ledger_reconstruction",
+    "reconciled_month": "2024-05"
+  },
+  {
+    "payment_doc": "00036043",
+    "payment_date": "2025-01-15",
+    "target_doc": "39701",
+    "allocated_amount": 11673.11,
+    "override_type": "VERIFIED_SPLIT_BATCH",
+    "approval_status": "approved",
+    "approved_by": "operator",
+    "approved_date": "2026-07-01",
+    "reason": "Split payment of R26,126.00 matches Inv 39701 (R11,673.11) and Inv 39491 (R14,645.25) with R192.36 rounding/credit variance.",
+    "evidence_source": "ledger_reconstruction",
+    "reconciled_month": "2025-01"
+  },
+  {
+    "payment_doc": "00036043",
+    "payment_date": "2025-01-15",
+    "target_doc": "39491",
+    "allocated_amount": 14452.89,
+    "override_type": "VERIFIED_SPLIT_BATCH",
+    "approval_status": "approved",
+    "approved_by": "operator",
+    "approved_date": "2026-07-01",
+    "reason": "Split payment of R26,126.00 matches Inv 39701 (R11,673.11) and Inv 39491 (R14,645.25) with R192.36 rounding/credit variance.",
+    "evidence_source": "ledger_reconstruction",
+    "reconciled_month": "2025-01"
+  },
+  {
+    "payment_doc": "00042429",
+    "payment_date": "2025-11-28",
+    "target_doc": "47876",
+    "allocated_amount": 6560.57,
+    "override_type": "VERIFIED_EXPLICIT_REF",
+    "approval_status": "approved",
+    "approved_by": "operator",
+    "approved_date": "2026-07-01",
+    "reason": "Gross payment of R8,361.00 matches Invoice 47876 gross R8,360.57 (including R1,800.00 non-VAT OTHER line item). Allocated LPG portion of R6,560.57.",
+    "evidence_source": "ledger_reconstruction",
+    "reconciled_month": "2025-11"
+  }
+]

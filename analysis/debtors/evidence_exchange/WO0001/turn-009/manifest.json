@@ -1,0 +1,146 @@
+{
+  "debtor_code": "WO0001",
+  "turn": 9,
+  "generated_at": "2026-07-20T15:04:00Z",
+  "generated_by": "cursor",
+  "supersedes_turn": 8,
+  "source_as_at": "2026-07-20",
+  "erp_anchor": {
+    "amount": 88768.73,
+    "currency": "ZAR",
+    "as_at": "2026-07-01",
+    "source": "ERP TXT refresh (WO001CURRENT.TXT)",
+    "canonical_source": "analysis/debtors/WO0001/reports/WO001CURRENT.TXT"
+  },
+  "portfolio_anchor": {
+    "amount": 110789.36,
+    "currency": "ZAR",
+    "as_at": "2026-06-03",
+    "source": "dashboard_metrics.json / Statement_Account_v1",
+    "canonical_source": "analysis/debtors/WO0001/data/dashboard_metrics.json"
+  },
+  "lane": "allocation",
+  "outcome": "STOP",
+  "recon_state": "pending",
+  "residual": {
+    "amount": 314.52,
+    "tolerance": 0.05,
+    "unit": "ZAR",
+    "basis": "adjusted_engine_open 93158.70 − dashboard_lpg 92844.18"
+  },
+  "artifacts": [
+    {
+      "path": "worker_report.md",
+      "canonical_source": "analysis/debtors/WO0001/reports/WO0001_Turn9_Worker_Report.md",
+      "purpose": "Turn 9 execution report"
+    },
+    {
+      "path": "statement_bridge.md",
+      "canonical_source": "analysis/debtors/WO0001/reports/WO0001_Statement_Bridge_v3.md",
+      "purpose": "Statement bridge v3 — OTHER-lane pass + credit bridge"
+    },
+    {
+      "path": "allocation_outstanding.md",
+      "canonical_source": "analysis/debtors/WO0001/reports/WO0001_Allocation_Outstanding.md",
+      "purpose": "Full ledger outstanding after Turn 9 bridge"
+    },
+    {
+      "path": "bridge_register.json",
+      "canonical_source": "analysis/debtors/WO0001/data/unallocated_credit_bridge.json",
+      "purpose": "Turn 9 credit bridge snapshot (canonical superseded by Turn 10)"
+    },
+    {
+      "path": "allocation_other_edges.csv",
+      "canonical_source": "analysis/debtors/WO0001/data/allocation_other_edges.csv",
+      "purpose": "7 OTHER-lane explicit-ref matches staged"
+    },
+    {
+      "path": "allocation_overrides_proposed.json",
+      "canonical_source": "analysis/debtors/WO0001/config/allocation_overrides_proposed.json",
+      "purpose": "Staged overrides — trunc + OTHER (not ratified)"
+    },
+    {
+      "path": "cn_dn_gate_proposed.json",
+      "canonical_source": "analysis/debtors/WO0001/config/cn_dn_gate_proposed.json",
+      "purpose": "Turn 8 DN-gate proposal — pending ratification"
+    },
+    {
+      "path": "allocation_edges.csv",
+      "canonical_source": "analysis/debtors/WO0001/data/allocation_edges.csv",
+      "purpose": "Read-only allocation graph (unchanged in Turn 9)"
+    },
+    {
+      "path": "erp_current_extract.txt",
+      "canonical_source": "analysis/debtors/WO0001/reports/WO001CURRENT.TXT",
+      "purpose": "ERP CURRENT balance extract for staleness review"
+    },
+    {
+      "path": "decision_inputs.md",
+      "canonical_source": null,
+      "purpose": "Operator ratification and staleness decision queue"
+    }
+  ],
+  "proven_identities": [
+    {
+      "name": "Inv 41067 DN-lag instalment",
+      "result": 8612.52,
+      "identity": "sum(UNALLOCATED ref 41067) = inv41067.engineOpen"
+    },
+    {
+      "name": "OTHER-lane cent-aligned matches",
+      "result": 54310.0,
+      "count": 7
+    },
+    {
+      "name": "Gap partition",
+      "result": "8929.95 = 8612.52 + 2.91 + 314.52"
+    },
+    {
+      "name": "LPG + CYL = ERP portfolio anchor",
+      "result": 110789.36,
+      "identity": "92844.18 + 17945.18"
+    }
+  ],
+  "asserted_items": [
+    {
+      "name": "BR-002 truncation micro-open closure",
+      "amount": 2.91,
+      "invoices": 10,
+      "status": "pending_operator_ratification"
+    }
+  ],
+  "assumed_hypotheses": [
+    {
+      "name": "39895 DN-lag tail",
+      "estimate": 2070,
+      "kill_condition": "ERP per-invoice LPG open at anchor contradicts"
+    },
+    {
+      "name": "11882/12112 partial tails",
+      "estimate": 2760,
+      "kill_condition": "Cent-perfect identity to residual R314.52 not found"
+    }
+  ],
+  "invariants": [
+    {
+      "name": "allocation residual",
+      "status": "FAIL",
+      "result": 314.52,
+      "required": "<= 0.05"
+    },
+    {
+      "name": "recon_state complete gate",
+      "status": "FAIL",
+      "result": "pending",
+      "required": "residual <= tolerance"
+    }
+  ],
+  "operator_decisions_required": [
+    "Ratify 7 OTHER-lane overrides in allocation_overrides_proposed.json",
+    "Ratify 4 truncation overrides in allocation_overrides_proposed.json",
+    "Ratify cn_dn_gate_proposed.json (Turn 8 carry)",
+    "Review residual R314.52 — do not set reconState complete",
+    "Regenerate any debtor communications against ERP CURRENT R88,768.73 (not portfolio R110,789.36)"
+  ],
+  "staleness_warning": "Portfolio anchor R110,789.36 (2026-06-03) differs from ERP CURRENT R88,768.73 (2026-07-01) by R-22,020.63. Previously drafted communications are stale."
+}

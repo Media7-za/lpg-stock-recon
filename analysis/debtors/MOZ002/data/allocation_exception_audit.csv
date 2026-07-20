@@ -1,0 +1,38 @@
+exception_id,doc_type,doc_no,doc_date,amount,target_ref,exception_type,approval_status,residual_open,reason
+EX-0001,credit_note,00012081,2025-03-17,-2415,DN#4438-EMPTY,PARTIAL_EMPTY_RETURN,approved,517.5,Operator bulk-confirmed 2026-07-16: same 1-cylinder-short pattern as CN 00014741.
+EX-0002,credit_note,00012174,2025-04-02,-2415,DN#12836-EMPTY,PARTIAL_EMPTY_RETURN,approved,517.5,Operator bulk-confirmed 2026-07-16: same 1-cylinder-short pattern as CN 00014741.
+EX-0003,credit_note,00012369,2025-04-29,-2415,DN#13110-EMPTY,PARTIAL_EMPTY_RETURN,approved,517.5,Operator bulk-confirmed 2026-07-16: same 1-cylinder-short pattern as CN 00014741.
+EX-0004,credit_note,00012468,2025-05-13,-2415,DN#12076-EMPTY,PARTIAL_EMPTY_RETURN,approved,517.5,Operator bulk-confirmed 2026-07-16: same 1-cylinder-short pattern as CN 00014741.
+EX-0005,credit_note,00012535,2025-05-22,-2415,DN#12106-EMPTY,PARTIAL_EMPTY_RETURN,approved,517.5,Operator bulk-confirmed 2026-07-16: same 1-cylinder-short pattern as CN 00014741.
+EX-0006,credit_note,00012639,2025-06-06,-2415,DN#12149-EMPTY,PARTIAL_EMPTY_RETURN,approved,517.5,Operator bulk-confirmed 2026-07-16: same 1-cylinder-short pattern as CN 00014741.
+EX-0007,credit_note,00012710,2025-06-12,-2415,DN#12560-E,MPTY,PARTIAL_EMPTY_RETURN,approved,517.5,Operator bulk-confirmed 2026-07-16: same 1-cylinder-short pattern as CN 00014741.
+EX-0008,credit_note,00012812,2025-06-25,-2415,DN#12325-EMPTY,PARTIAL_EMPTY_RETURN,approved,517.5,Operator bulk-confirmed 2026-07-16: same 1-cylinder-short pattern as CN 00014741.
+EX-0009,credit_note,00012872,2025-07-01,-2415,DN#12349-EMPTY,PARTIAL_EMPTY_RETURN,approved,517.5,Operator bulk-confirmed 2026-07-16: same 1-cylinder-short pattern as CN 00014741.
+EX-0010,credit_note,00013165,2025-08-08,-2415,DN#20072-- EMPTY,PARTIAL_EMPTY_RETURN,approved,517.5,Operator bulk-confirmed 2026-07-16: same 1-cylinder-short pattern as CN 00014741.
+EX-0011,credit_note,00013602,2025-10-03,-2415,DN#21092-EPTY,PARTIAL_EMPTY_RETURN,approved,517.5,Operator bulk-confirmed 2026-07-16: same 1-cylinder-short pattern as CN 00014741.
+EX-0012,credit_note,00013931,2025-11-22,-2415,DN#20859-EMPTY,PARTIAL_EMPTY_RETURN,approved,517.5,Operator bulk-confirmed 2026-07-16: same 1-cylinder-short pattern as CN 00014741.
+EX-0013,credit_note,00014007,2025-12-04,-2415,DN20893 EMPTY,PARTIAL_EMPTY_RETURN,approved,517.5,Operator bulk-confirmed 2026-07-16: same 1-cylinder-short pattern as CN 00014741.
+EX-0014,credit_note,00014666,2026-03-26,-2415,DN-21985-EMPTY,PARTIAL_EMPTY_RETURN,approved,517.5,Operator bulk-confirmed 2026-07-16: same 1-cylinder-short pattern as CN 00014741.
+EX-0015,credit_note,00014741,2026-04-10,-2415,DN-22161-EMPTY,PARTIAL_EMPTY_RETURN,approved,517.5,"Customer returned 1 x 9kg cylinder short. CN R2,415.00 on empty invoice; residual R517.50 (= R450 + 15% VAT) remains open."
+EX-0016,credit_note,00015166,2026-07-03,-2415,DN#22538=EMPTY,PARTIAL_EMPTY_RETURN,approved,517.5,Operator bulk-confirmed 2026-07-16: same 1-cylinder-short pattern as CN 00014741.
+EX-0017,credit_note,00012082,2025-03-17,-517.5,DN#4438-EMPTY,RESIDUAL_CYL_RETURN,approved,,"Residual 1 x 9kg cylinder deposit credit (R517.50 incl) on empty invoice — companion to partial R2,415.00 return pattern."
+EX-0018,payment,00041529,2025-10-06,-0.01,,PAYMENT_CASH_NET,approved,,Payment doc 00041529 is a CASH payment (TXT net R0.01). DB holds internal deposit-allocation splits across empty-invoice refs — not credit notes.
+EX-0019,payment_allocation_slice,00041529,2025-10-06,-1207.5,00044404,REJECTED_CYL_SLICE_EXCLUDED,rejected,,Operator confirmed: payments are not allocated to CYL slices for MOZ002. ERP internal split — empty settlement via credit notes only.
+EX-0020,payment_allocation_slice,00041529,2025-10-06,-1035,00043462,REJECTED_CYL_SLICE_EXCLUDED,rejected,,Operator confirmed: payments are not allocated to CYL slices for MOZ002. ERP internal split — empty settlement via credit notes only.
+EX-0021,payment_allocation_slice,00041529,2025-10-06,-517.5,00043246,REJECTED_CYL_SLICE_EXCLUDED,rejected,,Operator confirmed: payments are not allocated to CYL slices for MOZ002. ERP internal split — empty settlement via credit notes only.
+EX-0022,payment_allocation_slice,00041529,2025-10-06,-517.5,00043082,REJECTED_CYL_SLICE_EXCLUDED,rejected,,Operator confirmed: payments are not allocated to CYL slices for MOZ002. ERP internal split — empty settlement via credit notes only.
+EX-0023,payment_allocation_slice,00041529,2025-10-06,-1207.5,00045721,REJECTED_CYL_SLICE_EXCLUDED,rejected,,Operator confirmed: payments are not allocated to CYL slices for MOZ002. ERP internal split — empty settlement via credit notes only.
+EX-0024,payment_allocation_slice,00041529,2025-10-06,-517.5,00047590,REJECTED_CYL_SLICE_EXCLUDED,rejected,,Operator confirmed: payments are not allocated to CYL slices for MOZ002. ERP internal split — empty settlement via credit notes only.
+EX-0025,payment_allocation_slice,00041529,2025-10-06,-1207.5,00048096,REJECTED_CYL_SLICE_EXCLUDED,rejected,,Operator confirmed: payments are not allocated to CYL slices for MOZ002. ERP internal split — empty settlement via credit notes only.
+EX-0026,payment_allocation_slice,00041529,2025-10-06,-1725,00048348,REJECTED_CYL_SLICE_EXCLUDED,rejected,,Operator confirmed: payments are not allocated to CYL slices for MOZ002. ERP internal split — empty settlement via credit notes only.
+EX-0027,payment_allocation_slice,00041529,2025-10-06,-0.01,00048940,REJECTED_CYL_SLICE_EXCLUDED,rejected,,Operator confirmed: payments are not allocated to CYL slices for MOZ002. ERP internal split — empty settlement via credit notes only.
+EX-0028,payment,00044227,2026-05-07,-4978.91,,VERIFIED_UNALLOCATED,approved,operator,On-account credit R4,978.91 — ERP-mirrored (STAT 125, blank ref). Operator-ratified VERIFIED_UNALLOCATED 2026-07-20; not invoice-linked.
+EX-0029,payment,00043234,2026-02-04,-0.01,,ROUNDING_RESIDUAL,approved,,R0.01 micro-residual paired with confirmed 48940 allocation on same payment doc.
+EX-0030,payment,00044963,2026-07-02,-3292.77,00051431,CONFIRMED_PAYMENT_ALLOCATION,approved,,Operator confirmed: payment 44963 clears invoice 51431.
+EX-0031,payment,00044659,2026-06-11,-4798.04,00051077,CONFIRMED_PAYMENT_ALLOCATION,approved,,Operator confirmed: 44659 clears 51077.
+EX-0032,payment,00045104,2026-07-09,-4536.47,00051526,CONFIRMED_PAYMENT_ALLOCATION,approved,,Operator confirmed: 45104 clears 51526.
+EX-0033,invoice,00051432,2026-06-25,2932.5,DN#22662=EMPTY,CONFIRMED_EMPTY_CN_CLEARANCE,approved,,"Operator confirmed: empty invoice 51432 cleared by CN 15128 (DN#22662=EMPTY). CN R4,140.00 vs invoice R2,932.50."
+EX-0034,invoice,00051527,2026-07-02,3622.5,DN#22538=EMPTY,OUTSTANDING_PARTIAL_EMPTY,approved,517.5,Operator confirmed R517.50 residual after CN 15166.
+EX-0035,invoice,00050657,2026-05-13,5004.42,DN#22385,CLOSED_BY_PAYMENT_45202,approved,45202,Cleared by payment 45202 (MOZ002P17.TXT 2026-07-16).
+EX-0038,payment,00045202,2026-07-16,-5004.42,00050657,CONFIRMED_PAYMENT_ALLOCATION,approved,,MOZ002P17.TXT: cent-exact to 50657; DB sync pending.
+EX-0036,invoice,00051790,2026-07-13,4140,DN#22810=EMPTY,CONFIRMED_EMPTY_CN_CLEARANCE,approved,,"Operator confirmed: empty invoice 51790 cleared by CN 15254. CN R5,347.50 = R4,140.00 + 1 x s.1 extra return R1,207.50 (prior invoices)."

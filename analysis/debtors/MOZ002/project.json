@@ -1,0 +1,117 @@
+{
+  "debtorCode": "MOZ002",
+  "clientName": "MOZAMBIK",
+  "status": "active",
+  "reconState": "complete",
+  "reconClosed": "2026-07-20",
+  "closingBasis": {
+    "fourLaneIdentity": {
+      "method": "line-level partition",
+      "lpg": 181398.05,
+      "empty_cyl": 0,
+      "payments": -168383.55,
+      "total": 13014.5,
+      "txtClosing": 13014.5,
+      "variance": 0
+    },
+    "bridgeSubset": {
+      "openLpgPool": 17993.42,
+      "verifiedUnallocated44227": -4978.91,
+      "reconstructed": 13014.51,
+      "txtClosing": 13014.5,
+      "variance": -0.01,
+      "varianceExplained": "EX-0029 payment 43234 rounding cent"
+    },
+    "cylCustody": {
+      "registryVersion": "10.2",
+      "status": "RATIFIED_PROVISIONAL_MERGE",
+      "invariantPass": true,
+      "outstandingShells": 0,
+      "mergeNote": "S.1/D.1 merged pending warehouse confirmation"
+    }
+  },
+  "financials": {
+    "totalOutstanding": 22898.47,
+    "lastInvoiceDate": "2026-07-13",
+    "lastPaymentDate": "2026-07-16",
+    "agedDebt180Plus": 3190.07,
+    "erpTxtClosing": 8010.08,
+    "erpTxtClosingAsOf": "2026-07-16",
+    "erpTxtSource": "raw/MOZ002P17.TXT"
+  },
+  "collections": {
+    "actionRequired": false,
+    "actionType": null,
+    "dateSent": null,
+    "deadlineDate": null,
+    "nextAction": null,
+    "nextActionDate": null,
+    "notes": "Recon complete 2026-07-20. P17 catch-up 2026-07-16: 45202 clears 50657; ERP closing R8,010.08. Open LPG: 49143, 50528, 51789. Verified on-account 44227 R4,978.91."
+  },
+  "history": [
+    {
+      "date": "2026-07-13",
+      "event": "Turn 1: scaffold created. Doctrine v1 draft (provisional). Portfolio triage was defer/B; STAT 125 payments observed in april_dump. No ERP TXT or remittance PDFs in raw/ yet."
+    },
+    {
+      "date": "2026-07-16",
+      "event": "Turn 1 refresh: commercial model locked — settlement NONE, discount NONE, unit of work invoice ref_no. Lane re-routed from settlement_discount to allocation. Allocation doctrine v1 + empty payment_pattern_overrides.json. Apr 2026 snippet: 4 STAT 125 payments, 3 exact gross ref_no matches, 0 discount journals."
+    },
+    {
+      "date": "2026-07-16",
+      "event": "Turn 1 lock-in: scope 2025–2026; LPG-only match base (WO0001 style); CN 00014741 registered — customer returned 1 x 9kg cyl short (R517.50 residual on empty inv 00050174). MOZ002CURRENT.TXT ingested: 40 payments STAT 112–128, Mar 2025–Jul 2026."
+    },
+    {
+      "date": "2026-07-16",
+      "event": "Turn 2 pilot Apr 2026: 4/4 payments CONFIRMED_REF_LPG_MATCH via DB ref_no (R12,445.19). CN 00014741 partial empty return validated. allocation_edges.csv + MOZ002_Allocation_Pilot_2026-04.md. reconState → in-progress."
+    },
+    {
+      "date": "2026-07-16",
+      "event": "Turn 3 full 2025–2026 ingest: 38 payment docs, 61 allocation edges, 51 confirmed (R151,294.84). 10 review (payment 41529 multi-slice partial CYL, 44227 unallocated). Scripts/allocation_ingest.mjs + MOZ002_Payment_Allocation_v1.md + allocation_edges_2025/2026.csv."
+    },
+    {
+      "date": "2026-07-16",
+      "event": "Turn 4 exceptions: 16 partial R2,415 empty CNs + R517.50 residual CN bulk-approved (1-cylinder-short). 41529 classified as Payment/CASH with deposit-allocation slices. 44227 UNALLOCATED pending. allocation_exception_audit.csv (29 rows)."
+    },
+    {
+      "date": "2026-07-16",
+      "event": "Turn 5 statement: MOZ002_Statement_Account_v1.md — TXT close R13,014.50 vs portfolio R22,898.47; 51 confirmed allocations R151,294.84; open items 44227, partial-empty residuals R8,280, Jul-2026 tail docs."
+    },
+    {
+      "date": "2026-07-16",
+      "event": "Operator override: payment 44963 → invoice 51431 (R3,292.77 cent-exact). CONFIRMED_OPERATOR_OVERRIDE added to allocation_edges. Registry v3."
+    },
+    {
+      "date": "2026-07-16",
+      "event": "Operator overrides: 44659 → 51077 (R4,798.04), 45104 → 51526 (R4,536.47). Registry v4. 54 confirmed allocation edges."
+    },
+    {
+      "date": "2026-07-16",
+      "event": "Operator confirmed outstanding: 50657 LPG R5,004.42 (not 44227); empty 51432 R2,932.50; 51527 residual R517.50. Registry v5."
+    },
+    {
+      "date": "2026-07-16",
+      "event": "Correction: empty invoice 51432 cleared by CN 15128 (DN#22662=EMPTY) — removed from outstanding. Registry v6."
+    },
+    {
+      "date": "2026-07-16",
+      "event": "Operator confirmed: empty invoice 51790 cleared by CN 15254 (DN#22810=EMPTY). CN includes 1 x s.1 extra return R1,207.50 from prior invoices. Registry v7."
+    },
+    {
+      "date": "2026-07-16",
+      "event": "Operator doctrine: payments NOT allocated to CYL slices for MOZ002. Payment 41529 ERP splits (R7,935.01 gross) excluded — empties via CNs only. Registry v8."
+    },
+    {
+      "date": "2026-07-16",
+      "event": "Skill run (Payment-to-Invoice Allocation): allocation_ingest.mjs enhanced — LPG-only, operator overrides wired, 55 edges, 54 confirmed R163,404.63, Tier 5 44227 R4,978.91 only. Skill §8 report + bridge. debtors:sync PASS."
+    },
+    {
+      "date": "2026-07-20",
+      "event": "Turn 7 close-out (7a–7j): line-level four-lane identity R13,014.50 exact; bridge Δ −R0.01 = EX-0029/43234; CYL registry v10.2 RATIFIED_PROVISIONAL_MERGE (invariant PASS, 0 shells); 44227 VERIFIED_UNALLOCATED; EX-0037 operator-ratified; reconState → complete."
+    },
+    {
+      "date": "2026-07-20",
+      "event": "Portfolio catch-up: MOZ002P17.TXT — payment 45202 (2026-07-16, R5,004.42) clears invoice 50657. ERP closing R13,014.50 → R8,010.08. EX-0038 registered; DB sync pending."
+    }
+  ]
+}

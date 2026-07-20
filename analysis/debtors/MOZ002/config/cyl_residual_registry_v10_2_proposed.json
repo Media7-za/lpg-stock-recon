@@ -1,0 +1,152 @@
+{
+  "debtorCode": "MOZ002",
+  "registryVersion": "10.2",
+  "status": "RATIFIED_ARCHIVED",
+  "promotedTo": "config/cyl_residual_registry.json",
+  "ratifiedBy": "operator",
+  "ratifiedDate": "2026-07-20",
+  "supersedes": "cyl_residual_registry_v10_1_proposed.json (INVARIANT_FAIL)",
+  "doctrine": "Lane membership is a property of the line, not the document.",
+  "invariantCheck": {
+    "rule": "Σ registry outstanding qty = net custody qty per SKU class (basis d line-level, merged S.1/D.1 provisional)",
+    "pass": true,
+    "rows": [
+      {
+        "class": "9.1",
+        "registry_outstanding_qty": 0,
+        "custody_basis_d_qty": 0
+      },
+      {
+        "class": "S.1/D.1_merged",
+        "registry_outstanding_qty": 0,
+        "custody_basis_d_qty": 0
+      }
+    ]
+  },
+  "summary": {
+    "v9_residual_total": 8280,
+    "v10_1_status": "INVARIANT_FAIL",
+    "v10_2_outstanding": 0,
+    "closed_by_float": 6,
+    "superseded": 11,
+    "cross_lane_wash": 1
+  },
+  "entries": [
+    {
+      "id": "EX-0001",
+      "v10_status": "SUPERSEDED_VALUE_INFERRED",
+      "v10_residual_open": 0
+    },
+    {
+      "id": "EX-0002",
+      "v10_status": "SUPERSEDED_VALUE_INFERRED",
+      "v10_residual_open": 0
+    },
+    {
+      "id": "EX-0003",
+      "v10_status": "SUPERSEDED_VALUE_INFERRED",
+      "v10_residual_open": 0
+    },
+    {
+      "id": "EX-0004",
+      "v10_status": "SUPERSEDED_VALUE_INFERRED",
+      "v10_residual_open": 0
+    },
+    {
+      "id": "EX-0006",
+      "v10_status": "SUPERSEDED_VALUE_INFERRED",
+      "v10_residual_open": 0
+    },
+    {
+      "id": "EX-0007",
+      "v10_status": "SUPERSEDED_VALUE_INFERRED",
+      "v10_residual_open": 0
+    },
+    {
+      "id": "EX-0008",
+      "v10_status": "SUPERSEDED_VALUE_INFERRED",
+      "v10_residual_open": 0
+    },
+    {
+      "id": "EX-0010",
+      "v10_status": "SUPERSEDED_VALUE_INFERRED",
+      "v10_residual_open": 0
+    },
+    {
+      "id": "EX-0011",
+      "v10_status": "SUPERSEDED_VALUE_INFERRED",
+      "v10_residual_open": 0
+    },
+    {
+      "id": "EX-0012",
+      "v10_status": "SUPERSEDED_VALUE_INFERRED",
+      "v10_residual_open": 0
+    },
+    {
+      "id": "EX-0014",
+      "v10_status": "SUPERSEDED_VALUE_INFERRED",
+      "v10_residual_open": 0
+    },
+    {
+      "id": "EX-0005",
+      "v10_status": "CLOSED_BY_14113",
+      "v10_sku": "9.1",
+      "v10_qty_short": 0,
+      "v10_residual_open": 0,
+      "mechanism": "14113 2×9.1 double-return DN#21716-EMPTY repays 12535 float"
+    },
+    {
+      "id": "EX-0015",
+      "v10_status": "CLOSED_BY_14856",
+      "v10_sku": "9.1",
+      "v10_qty_short": 0,
+      "v10_residual_open": 0,
+      "mechanism": "14856 3×9.1 over-return DN#22222-EMPTY"
+    },
+    {
+      "id": "EX-0009",
+      "v10_status": "CLOSED_BY_13251",
+      "v10_sku": "S.1",
+      "v10_qty_short": 0,
+      "v10_residual_open": 0,
+      "mechanism": "13251 vs 45721 DN#20515-EMPTY"
+    },
+    {
+      "id": "EX-0013",
+      "v10_status": "CLOSED_BY_15128",
+      "v10_sku": "S.1",
+      "v10_qty_short": 0,
+      "v10_residual_open": 0,
+      "mechanism": "15128 vs 51432 DN#22662=EMPTY"
+    },
+    {
+      "id": "EX-0016",
+      "v10_status": "CLOSED_BY_15254",
+      "v10_sku": "S.1",
+      "v10_qty_short": 0,
+      "v10_residual_open": 0,
+      "mechanism": "15254 vs 51790 DN#22810=EMPTY cluster"
+    },
+    {
+      "id": "EX-0034",
+      "v10_status": "CLOSED_BY_15254",
+      "v10_sku": "S.1",
+      "v10_qty_short": 0,
+      "v10_residual_open": 0,
+      "mechanism": "51527/15166 DN#22538=EMPTY closed by 15254/51790"
+    },
+    {
+      "id": "EX-WASH-0001",
+      "v10_status": "CROSS_LANE_WASH",
+      "v10_residual_open": 0,
+      "charge_doc": "43859",
+      "credit_doc": "12710",
+      "dn_cluster": "DN#12560-E,MPTY",
+      "charge_shell_val": 2415,
+      "credit_shell_val": -2415,
+      "net_shell_val": 0,
+      "doc_level_phantom_dissolved": -1207.5,
+      "mechanism": "Shell charge Inv 43859 (R2 415,00) + CN 12710 (-R2 415,00) net R0,00 on LPG-classified headers; reclassified to empty lane at line level. Dissolves Turn 7h doc-level empty phantom -R1 207,50."
+    }
+  ]
+}

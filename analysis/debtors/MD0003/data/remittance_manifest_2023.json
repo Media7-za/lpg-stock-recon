@@ -1,0 +1,30 @@
+{
+  "debtorCode": "MD0003",
+  "payerName": "BLUFF MEAT SUPPLY (PTY) LTD",
+  "supplierName": "GAZ EXPRESS",
+  "supplierAccountOnRemittance": "GAZ001",
+  "sourceFiles": [
+    {
+      "path": "raw/Remittances/01.01.2023.pdf",
+      "originalPath": "/Users/admin/Downloads/re (1).pdf"
+  "batches": [
+    {
+      "batchId": "RM-2023-01-01",
+      "remittanceDate": "2023-01-01",
+      "paymentReference": "000151222080",
+      "erpPaymentDoc": "17669",
+      "erpPaymentDate": "2023-01-03",
+      "erpBatchRef": "STAT207",
+      "remittanceTotal": 12025.08,
+      "discountTotal": 0.0,
+      "status": "Posted",
+      "lineCount": 4
+    }
+  ],
+  "lines": [
+    { "batchId": "RM-2023-01-01", "docNo": "16425", "invoiceDate": "2022-11-13", "paymentAmount": 1273.05, "grossAmount": 1273.05, "discount": 0.0 },
+    { "batchId": "RM-2023-01-01", "docNo": "16474", "invoiceDate": "2022-11-17", "paymentAmount": 4032.01, "grossAmount": 4032.01, "discount": 0.0 },
+    { "batchId": "RM-2023-01-01", "docNo": "16544", "invoiceDate": "2022-11-20", "paymentAmount": 2688.01, "grossAmount": 2688.01, "discount": 0.0 },
+    { "batchId": "RM-2023-01-01", "docNo": "16615", "invoiceDate": "2022-11-28", "paymentAmount": 4032.01, "grossAmount": 4032.01, "discount": 0.0 }
+  ]
+}

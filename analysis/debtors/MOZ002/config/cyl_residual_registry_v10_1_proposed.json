@@ -1,0 +1,134 @@
+{
+  "debtorCode": "MOZ002",
+  "registryVersion": "10.1",
+  "status": "INVARIANT_FAIL_DO_NOT_RATIFY",
+  "invariantCheck": {
+    "rule": "Σ registry outstanding qty = net custody qty per SKU class (basis d, merged S.1/D.1 provisional)",
+    "pass": false,
+    "rows": [
+      {
+        "class": "9.1",
+        "registry_outstanding_qty": 0,
+        "custody_basis_d_qty": 0
+      },
+      {
+        "class": "S.1/D.1_merged",
+        "registry_outstanding_qty": 0,
+        "custody_basis_d_qty": -1
+      }
+    ]
+  },
+  "summary": {
+    "v9_residual_total": 8280,
+    "v10_outstanding": 4140,
+    "v10_1_outstanding": 0,
+    "closed_by_float": 6,
+    "superseded": 11
+  },
+  "invariantNote": "Registry post-closure outstanding qty = 0 for S.1/D.1; custody basis (d) cluster sum = -1. Three +1×S.1 short clusters (DN#12349-EMPTY, DN#22538=EMPTY, DN20893 EMPTY) pair to three −1×S.1 over-credit clusters (20515, 22662, 22810). Remaining unmatched over-credit: DN#21716-EMPTY (-1×S.1, -R1 725,00). Financial empty-lane -R1 207,50 = -1×R1,207.50 shell module. Resolve before ratification.",
+  "entries": [
+    {
+      "id": "EX-0001",
+      "v10_status": "SUPERSEDED_VALUE_INFERRED",
+      "v10_residual_open": 0
+    },
+    {
+      "id": "EX-0002",
+      "v10_status": "SUPERSEDED_VALUE_INFERRED",
+      "v10_residual_open": 0
+    },
+    {
+      "id": "EX-0003",
+      "v10_status": "SUPERSEDED_VALUE_INFERRED",
+      "v10_residual_open": 0
+    },
+    {
+      "id": "EX-0004",
+      "v10_status": "SUPERSEDED_VALUE_INFERRED",
+      "v10_residual_open": 0
+    },
+    {
+      "id": "EX-0006",
+      "v10_status": "SUPERSEDED_VALUE_INFERRED",
+      "v10_residual_open": 0
+    },
+    {
+      "id": "EX-0007",
+      "v10_status": "SUPERSEDED_VALUE_INFERRED",
+      "v10_residual_open": 0
+    },
+    {
+      "id": "EX-0008",
+      "v10_status": "SUPERSEDED_VALUE_INFERRED",
+      "v10_residual_open": 0
+    },
+    {
+      "id": "EX-0010",
+      "v10_status": "SUPERSEDED_VALUE_INFERRED",
+      "v10_residual_open": 0
+    },
+    {
+      "id": "EX-0011",
+      "v10_status": "SUPERSEDED_VALUE_INFERRED",
+      "v10_residual_open": 0
+    },
+    {
+      "id": "EX-0012",
+      "v10_status": "SUPERSEDED_VALUE_INFERRED",
+      "v10_residual_open": 0
+    },
+    {
+      "id": "EX-0014",
+      "v10_status": "SUPERSEDED_VALUE_INFERRED",
+      "v10_residual_open": 0
+    },
+    {
+      "id": "EX-0005",
+      "v10_status": "CLOSED_BY_14113",
+      "v10_sku": "9.1",
+      "v10_qty_short": 0,
+      "v10_residual_open": 0,
+      "mechanism": "14113 2×9.1 double-return (2025-12-18) repays 12535 float"
+    },
+    {
+      "id": "EX-0015",
+      "v10_status": "CLOSED_BY_14856",
+      "v10_sku": "9.1",
+      "v10_qty_short": 0,
+      "v10_residual_open": 0,
+      "mechanism": "14856 3×9.1 over-return DN#22222-EMPTY (2026-05-06)"
+    },
+    {
+      "id": "EX-0009",
+      "v10_status": "CLOSED_BY_13251",
+      "v10_sku": "S.1",
+      "v10_qty_short": 0,
+      "v10_residual_open": 0,
+      "mechanism": "13251 vs 45721 over-credit R1,207.50 DN#20515-EMPTY (2025-08-18)"
+    },
+    {
+      "id": "EX-0013",
+      "v10_status": "CLOSED_BY_15128",
+      "v10_sku": "S.1",
+      "v10_qty_short": 0,
+      "v10_residual_open": 0,
+      "mechanism": "15128 vs 51432 over-credit R1,207.50 DN#22662=EMPTY (2026-06-26)"
+    },
+    {
+      "id": "EX-0016",
+      "v10_status": "CLOSED_BY_15254",
+      "v10_sku": "S.1",
+      "v10_qty_short": 0,
+      "v10_residual_open": 0,
+      "mechanism": "15254 vs 51790 over-credit; 51527/15166 cluster"
+    },
+    {
+      "id": "EX-0034",
+      "v10_status": "CLOSED_BY_15254",
+      "v10_sku": "S.1",
+      "v10_qty_short": 0,
+      "v10_residual_open": 0,
+      "mechanism": "51527/15166 cluster closed by 15254"
+    }
+  ]
+}

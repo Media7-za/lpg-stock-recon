@@ -1,0 +1,11 @@
+task_id,batch_id,post_date,erp_action,amount,ref_summary,erp_status,evidence_source,priority,notes
+TASK-2024-0001,BATCH-2024-03-26,2024-03-26,POST_DISCOUNT_ALLOWED_JOURNAL,-506.36,Consolidated per remittance batch,MISSING,remittance_advice,HIGH,"ERP 00029684 gross R77,692.03; journal R506.36 missing"
+TASK-2024-0002,BATCH-2024-04-26,2024-04-26,POST_DISCOUNT_ALLOWED_JOURNAL,-375.1,Consolidated per remittance batch,MISSING,remittance_advice,HIGH,"ERP 00030419 gross R28,428.84; journal R375.10 missing"
+TASK-2024-0003,BATCH-2024-05-27,2024-05-27,POST_DISCOUNT_ALLOWED_JOURNAL,-300.54,Consolidated per remittance batch,MISSING,remittance_advice,HIGH,"ERP 00031365 gross R11,721.10; journal R300.54 missing"
+TASK-2024-0004,BATCH-2024-06-26,2024-06-26,POST_DISCOUNT_ALLOWED_JOURNAL,-956.28,Consolidated per remittance batch,MISSING,remittance_advice,HIGH,"ERP 00031558 gross R39,057.53; journal R956.28 missing"
+TASK-2024-0005,BATCH-2024-07-26,2024-07-26,POST_DISCOUNT_ALLOWED_JOURNAL,-429.16,Consolidated per remittance batch,MISSING,remittance_advice,HIGH,"ERP 00032332 gross R18,061.64; journal R429.16 missing"
+TASK-2024-0006,BATCH-2024-08-26,2024-08-26,POST_DISCOUNT_ALLOWED_JOURNAL,-543.52,Consolidated per remittance batch,MISSING,remittance_advice,HIGH,"ERP 00033224 gross R22,338.84; journal R543.52 missing"
+TASK-2024-0007,BATCH-2024-09-26,2024-09-26,POST_DISCOUNT_ALLOWED_JOURNAL,233.1,Consolidated per remittance batch,MISSING,remittance_advice,HIGH,"ERP 00033921 gross R2,984.27; journal R-233.10 missing"
+TASK-2024-0008,BATCH-2024-10-26,2024-10-26,POST_DISCOUNT_ALLOWED_JOURNAL,-598.0,Consolidated per remittance batch,PARTIAL,remittance_advice,HIGH,ERP journal 00000334 posted R385.04; remittance R983.04; remaining R598.00
+TASK-2024-0009,BATCH-2024-11-26,2024-11-26,POST_DISCOUNT_ALLOWED_JOURNAL,-552.04,Consolidated per remittance batch,MISSING,remittance_advice,HIGH,"ERP 00035263 gross R22,581.72; journal R552.04 missing"
+TASK-2024-0010,BATCH-2024-12-27,2024-12-27,POST_DISCOUNT_ALLOWED_JOURNAL,-310.37,Consolidated per remittance batch,MISSING,remittance_advice,HIGH,"ERP 00036195 gross R12,104.70; journal R310.37 missing"

@@ -1,0 +1,204 @@
+{
+  "baseline": 24,
+  "dn_discovered": 5,
+  "offsets": [
+    {
+      "cnDoc": "13",
+      "targetInv": "126",
+      "cnLpg": 3935.57,
+      "gate": "ref_no"
+    },
+    {
+      "cnDoc": "32",
+      "targetInv": "330",
+      "cnLpg": 2755.88,
+      "gate": "ref_no"
+    },
+    {
+      "cnDoc": "33",
+      "targetInv": "331",
+      "cnLpg": 3182.66,
+      "gate": "ref_no"
+    },
+    {
+      "cnDoc": "153",
+      "targetInv": "1132",
+      "cnLpg": 2709.73,
+      "gate": "ref_no"
+    },
+    {
+      "cnDoc": "205",
+      "targetInv": "1589",
+      "cnLpg": 4691.91,
+      "gate": "ref_no"
+    },
+    {
+      "cnDoc": "222",
+      "targetInv": "1684",
+      "cnLpg": 3525.95,
+      "gate": "ref_no"
+    },
+    {
+      "cnDoc": "248",
+      "targetInv": "1893",
+      "cnLpg": 929.51,
+      "gate": "ref_no",
+      "partial": true
+    },
+    {
+      "cnDoc": "258",
+      "targetInv": "1952",
+      "cnLpg": 315.34,
+      "gate": "ref_no",
+      "partial": true
+    },
+    {
+      "cnDoc": "403",
+      "targetInv": "2754",
+      "cnLpg": 157.99,
+      "gate": "ref_no",
+      "partial": true
+    },
+    {
+      "cnDoc": "1746",
+      "targetInv": "8919",
+      "cnLpg": 10126.96,
+      "gate": "ref_no"
+    },
+    {
+      "cnDoc": "3212",
+      "targetInv": "12213",
+      "cnLpg": 10999.92,
+      "gate": "ref_no"
+    },
+    {
+      "cnDoc": "3250",
+      "targetInv": "12331",
+      "cnLpg": 11474.91,
+      "gate": "ref_no"
+    },
+    {
+      "cnDoc": "3384",
+      "targetInv": "12972",
+      "cnLpg": 10599.61,
+      "gate": "ref_no"
+    },
+    {
+      "cnDoc": "3387",
+      "targetInv": "12973",
+      "cnLpg": 11993.47,
+      "gate": "ref_no"
+    },
+    {
+      "cnDoc": "6618",
+      "targetInv": "25859",
+      "cnLpg": 7449.76,
+      "gate": "ref_no"
+    },
+    {
+      "cnDoc": "6892",
+      "targetInv": "26841",
+      "cnLpg": 8357.57,
+      "gate": "ref_no"
+    },
+    {
+      "cnDoc": "7354",
+      "targetInv": "28865",
+      "cnLpg": 7943.17,
+      "gate": "ref_no"
+    },
+    {
+      "cnDoc": "7355",
+      "targetInv": "28866",
+      "cnLpg": 1240.16,
+      "gate": "ref_no"
+    },
+    {
+      "cnDoc": "9276",
+      "targetInv": "34007",
+      "cnLpg": 399.45,
+      "gate": "ref_no",
+      "partial": true
+    },
+    {
+      "cnDoc": "11896",
+      "targetInv": "40727",
+      "cnLpg": 12989.39,
+      "gate": "ref_no"
+    },
+    {
+      "cnDoc": "12886",
+      "targetInv": "44430",
+      "cnLpg": 9097.39,
+      "gate": "ref_no"
+    },
+    {
+      "cnDoc": "13203",
+      "targetInv": "45582",
+      "cnLpg": 12431.63,
+      "gate": "ref_no"
+    },
+    {
+      "cnDoc": "14608",
+      "targetInv": "49778",
+      "cnLpg": 6664.56,
+      "gate": "ref_no"
+    },
+    {
+      "cnDoc": "15011",
+      "targetInv": "50988",
+      "cnLpg": 13128.29,
+      "gate": "ref_no"
+    },
+    {
+      "cnDoc": "8139",
+      "targetInv": "31379",
+      "cnLpg": 10782.64,
+      "gate": "dn_key",
+      "dnKey": "8799",
+      "cnDate": "2024-04-18",
+      "invDate": "2024-04-16",
+      "lagDays": 2
+    },
+    {
+      "cnDoc": "14595",
+      "targetInv": "49682",
+      "cnLpg": 13895.01,
+      "gate": "dn_key",
+      "dnKey": "21959",
+      "cnDate": "2026-03-15",
+      "invDate": "2026-03-10",
+      "lagDays": 5
+    },
+    {
+      "cnDoc": "14670",
+      "targetInv": "49968",
+      "cnLpg": 8759.77,
+      "gate": "dn_key",
+      "dnKey": "22031",
+      "cnDate": "2026-03-26",
+      "invDate": "2026-03-27",
+      "lagDays": -1
+    },
+    {
+      "cnDoc": "14829",
+      "targetInv": "50459",
+      "cnLpg": 11835.47,
+      "gate": "dn_key",
+      "dnKey": "22357",
+      "cnDate": "2026-04-29",
+      "invDate": "2026-04-30",
+      "lagDays": -1
+    },
+    {
+      "cnDoc": "15010",
+      "targetInv": "50937",
+      "cnLpg": 14167.87,
+      "gate": "dn_key",
+      "dnKey": "22450",
+      "cnDate": "2026-06-01",
+      "invDate": "2026-05-28",
+      "lagDays": 4
+    }
+  ]
+}

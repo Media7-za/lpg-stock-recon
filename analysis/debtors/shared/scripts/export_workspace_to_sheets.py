@@ -14,7 +14,7 @@ from openpyxl.utils import get_column_letter
 import warnings
 warnings.filterwarnings('ignore')
 
-SUPABASE_URL = "postgresql+psycopg2://postgres.oqhpxnaadahohwkslive:lpg-stock-recon@aws-0-eu-west-1.pooler.supabase.com:5432/postgres"
+SUPABASE_URL = os.environ['DATABASE_URL']
 
 # Cylinder Rates Mapping
 SKU_RATES = {

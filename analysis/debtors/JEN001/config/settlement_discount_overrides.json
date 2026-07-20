@@ -1,0 +1,10 @@
+{
+  "debtorCode": "JEN001",
+  "applicable": false,
+  "doctrineVersion": "settlement-discount-na",
+  "discountRate": 0,
+  "tolerancePct": 0.001,
+  "registryVersion": 1,
+  "approvalPolicy": "Settlement discount not applicable for JEN001. Do not populate unless commercial terms change.",
+  "overrides": []
+}

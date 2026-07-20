@@ -1,0 +1,23 @@
+{
+  "debtorCode": "JEN001",
+  "debtorName": "Spoon Eatery",
+  "txtPath": "analysis/debtors/JEN001/raw/JEN00116JULY.TXT",
+  "periodStart": "2026-01-01",
+  "combinedBf": 9082.81,
+  "bfSourceNote": "JEN00116JULY.TXT line 119 — balance before payment 42917",
+  "cylOpeningFinancial": -517.5,
+  "cylOpeningQty": {
+    "14.1": 0,
+    "19.1": 0,
+    "9.1": -1,
+    "D.1": 0,
+    "S.1": 0
+  },
+  "skuRates": {
+    "14.1": 575,
+    "19.1": 690,
+    "9.1": 517.5,
+    "D.1": 1150,
+    "S.1": 1150
+  }
+}

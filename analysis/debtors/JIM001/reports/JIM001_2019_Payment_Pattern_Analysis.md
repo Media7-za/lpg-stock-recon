@@ -35,6 +35,15 @@ Generated on 2026-06-16 | Tolerance: R5.00
 | **2019-12** | R12,731.05 | — | — | R0.00 | — | +R12,731.05 | **Skipped Month:** Statement was completely unpaid. |
 | **TOTAL** | **R147,444.57** | | | **-R63,920.00** | | **R83,524.57** | **Net balance change for 2019.** |
 
+### 2.1 Candidate Invoice Details for Underpayments
+
+| Underpaid Month | Underpaid Amount | Candidate Doc | Invoice Date | LPG Gas Items | Line Total |
+| :--- | :---: | :---: | :---: | :--- | ---: |
+| — | — | — | — | No Pattern 2 candidate invoice underpayments identified for this period. | — |
+
+**Investigation Notes:**
+* No candidate invoice details were identified for this period; skipped statements are listed separately below where applicable.
+
 ### 2.2 Skipped Statements (Unpaid Months)
 
 | Skipped Month | Billed Amount | Payment Status | Investigation / Action Notes |
@@ -57,24 +66,24 @@ Cylinder container transactions were strictly ledger-only loop of returns and we
 
 | Sequence | Payment Doc | Payment Date | Payment Amount | Reconciled Month | Status / Reconciliation Notes |
 | :--- | :---: | :---: | :---: | :---: | :--- |
-| **Doc 4807** | 4807 | 2019-01-05 | −R700.01 | | ✅ Present. |
-| **Doc 4898** | 4898 | 2019-01-09 | −R8,500.00 | | ✅ Present. |
-| **Doc 4841** | 4841 | 2019-01-10 | −R700.01 | | ✅ Present. |
-| **Doc 4904** | 4904 | 2019-01-21 | −R7,000.00 | | ✅ Present. |
-| **Doc 5043** | 5043 | 2019-02-07 | −R4,870.00 | | ✅ Present. |
-| **Doc 5047** | 5047 | 2019-02-19 | −R6,827.39 | | ✅ Present. |
-| **Doc 5437** | 5437 | 2019-04-24 | −R9,925.00 | | ✅ Present. |
-| **Doc 5436** | 5436 | 2019-05-06 | −R13,505.00 | | ✅ Present. |
-| **Doc 5618** | 5618 | 2019-06-20 | −R8,625.00 | | ✅ Present. |
-| **Doc 5804** | 5804 | 2019-07-04 | −R12,750.00 | | ✅ Present. |
-| **Doc 5226** | 5226 | 2019-07-08 | −R3,000.00 | | ✅ Present. |
-| **Doc 5876** | 5876 | 2019-08-06 | −R14,429.00 | | ✅ Present. |
-| **Doc 5988** | 5988 | 2019-09-04 | −R13,875.00 | | ✅ Present. |
-| **Doc 6104** | 6104 | 2019-10-21 | −R13,875.00 | | ✅ Present. |
-| **Doc 6316** | 6316 | 2019-12-09 | −R10,875.00 | | ✅ Present. |
-| **Doc 6381** | 6381 | 2019-12-24 | −R930.00 | | ✅ Present. |
-| **Doc 6376** | 6376 | 2019-12-27 | −R12,915.00 | | ✅ Present. |
-| **Doc 6423** | 6423 | 2020-01-17 | −R12,715.00 | | ✅ Present. |
+| **Doc 4807** | 4807 | 2019-01-05 | −R700.01 | — | ✅ Present. |
+| **Doc 4898** | 4898 | 2019-01-09 | −R8,500.00 | — | ✅ Present. |
+| **Doc 4841** | 4841 | 2019-01-10 | −R700.01 | — | ✅ Present. |
+| **Doc 4904** | 4904 | 2019-01-21 | −R7,000.00 | — | ✅ Present. |
+| **Doc 5043** | 5043 | 2019-02-07 | −R4,870.00 | — | ✅ Present. |
+| **Doc 5047** | 5047 | 2019-02-19 | −R6,827.39 | — | ✅ Present. |
+| **Doc 5437** | 5437 | 2019-04-24 | −R9,925.00 | — | ✅ Present. |
+| **Doc 5436** | 5436 | 2019-05-06 | −R13,505.00 | 2019-04 | ✅ Present. |
+| **Doc 5618** | 5618 | 2019-06-20 | −R8,625.00 | — | ✅ Present. |
+| **Doc 5804** | 5804 | 2019-07-04 | −R12,750.00 | 2019-06 | ✅ Present. |
+| **Doc 5226** | 5226 | 2019-07-08 | −R3,000.00 | — | ✅ Present. |
+| **Doc 5876** | 5876 | 2019-08-06 | −R14,429.00 | — | ✅ Present. |
+| **Doc 5988** | 5988 | 2019-09-04 | −R13,875.00 | 2019-08 | ✅ Present. |
+| **Doc 6104** | 6104 | 2019-10-21 | −R13,875.00 | — | ✅ Present. |
+| **Doc 6316** | 6316 | 2019-12-09 | −R10,875.00 | 2019-10 | ✅ Present. |
+| **Doc 6381** | 6381 | 2019-12-24 | −R930.00 | — | ✅ Present. |
+| **Doc 6376** | 6376 | 2019-12-27 | −R12,915.00 | 2019-11 | ✅ Present. |
+| **Doc 6423** | 6423 | 2020-01-17 | −R12,715.00 | — | ✅ Present. |
 
 ### 4.1 Ledger-Wide Historical Balance Reconciliation (View A/B)
 
@@ -111,7 +120,7 @@ This section reconciles the lifetime-to-date ledger balances starting from the o
 
 ### 4.2 Reconciling Ledger Balance Movement (View A/B) vs. Invoice Settlement Pool
 
-This section reconciles the lifetime ledger balance movement (**View A/B** net change of **R3,838.16**) to the matching payments allocated in the monthly settlement pool (**Section 2** net change of **R8,328.18**):
+This section reconciles the lifetime ledger balance movement (**View A/B** net change of **R3,838.16**) to the matching payments allocated in the monthly settlement pool (**Section 2** net change of **R83,524.57**):
 
 #### Ledger Balance Movement (View A/B Totals)
 
@@ -126,19 +135,19 @@ This section reconciles the lifetime ledger balance movement (**View A/B** net c
 | Line Item | Amount |
 | :--- | ---: |
 | Net LPG Gas Billed | R147,444.57 |
-| Payment Allocations (Settling 2019 Invoices) | −R139,116.39 |
-| **Net Variance Outstanding** | **+R8,328.18** |
+| Payment Allocations (Settling 2019 Invoices) | −R63,920.00 |
+| **Net Variance Outstanding** | **+R83,524.57** |
 
 #### Mathematical Bridge — Cumulative Ledger to Settlement Pool Proof
 
-The exact difference of **R-4,490.02** between the Ledger Balance Movement (+R3,838.16) and the Monthly Table (+R8,328.18) is proven by mapping all non-cash items, journals, and timing boundary-crossing payments:
+The exact difference of **R-79,686.41** between the Ledger Balance Movement (+R3,838.16) and the Monthly Table (+R83,524.57) is proven by mapping all non-cash items, journals, and timing boundary-crossing payments:
 
 | Reconciliation Component | Amount | Description |
 | :--- | ---: | :--- |
 | Cylinder Net Movement | R345.00 | Ledger-only returns & debits (excluded from LPG cash pool) |
 | ERP Journal Adjustments | R-650.00 | ERP adjustments posted in year 2019 |
-| Cash Timing Boundary Shift | R-4,185.02 | Payments crossing the calendar year boundary |
-| **Total Reconciliation Variance** | **R-4,490.02** | ✅ Matches difference |
+| Cash Timing Boundary Shift | R-79,381.41 | Payments crossing the calendar year boundary |
+| **Total Reconciliation Variance** | **R-79,686.41** | ✅ Matches difference |
 
 ---
 

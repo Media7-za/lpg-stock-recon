@@ -1,0 +1,50 @@
+{
+  "debtor_code": "<DEBTOR_CODE>",
+  "turn": 0,
+  "generated_at": "<ISO-8601-UTC>",
+  "generated_by": "cursor",
+  "supersedes_turn": null,
+  "source_as_at": "<YYYY-MM-DD>",
+  "erp_anchor": {
+    "amount": 0.0,
+    "currency": "ZAR",
+    "as_at": "<YYYY-MM-DD>",
+    "source": "<artifact name or query description>",
+    "canonical_source": "analysis/debtors/<DEBTOR_CODE>/reports/<file>"
+  },
+  "portfolio_anchor": {
+    "amount": 0.0,
+    "currency": "ZAR",
+    "as_at": "<YYYY-MM-DD>",
+    "source": "<artifact name>",
+    "canonical_source": "analysis/debtors/<DEBTOR_CODE>/data/dashboard_metrics.json"
+  },
+  "lane": "<lane>",
+  "outcome": "PASS | STOP | PARTIAL",
+  "recon_state": "pending | complete",
+  "residual": {
+    "amount": 0.0,
+    "tolerance": 0.05,
+    "unit": "ZAR"
+  },
+  "artifacts": [
+    {
+      "path": "worker_report.md",
+      "canonical_source": "analysis/debtors/<DEBTOR_CODE>/reports/<DEBTOR>_TurnNNN_Worker_Report.md",
+      "purpose": "Turn execution report"
+    }
+  ],
+  "proven_identities": [],
+  "asserted_items": [],
+  "assumed_hypotheses": [],
+  "invariants": [
+    {
+      "name": "allocation residual",
+      "status": "PASS | FAIL",
+      "result": 0.0,
+      "required": "<= 0.05"
+    }
+  ],
+  "operator_decisions_required": [],
+  "staleness_warning": null
+}

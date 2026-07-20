@@ -1,12 +1,12 @@
 {
   "debtorCode": "JEN001",
-  "clientName": "JEN001 Client Placeholder",
+  "clientName": "JENS SPOON PTY LTD",
   "status": "active",
-  "reconState": "pending",
+  "reconState": "in-progress",
   "financials": {
-    "totalOutstanding": 0,
-    "lastInvoiceDate": null,
-    "lastPaymentDate": null,
+    "totalOutstanding": 28534.89,
+    "lastInvoiceDate": "2026-07-14",
+    "lastPaymentDate": "2026-06-25",
     "agedDebt180Plus": 0
   },
   "collections": {
@@ -14,12 +14,22 @@
     "actionType": null,
     "dateSent": null,
     "deadlineDate": null,
-    "notes": "Placeholder initialization."
+    "nextAction": null,
+    "nextActionDate": null,
+    "notes": "v4 statement rebuilt from JEN00116JULY.TXT. ERP R28,534.89 — Part 1 R0.00 variance. Review: doc 50939 duplicate EMPTY; 51154/51155 DB Part 2 gap."
   },
   "history": [
     {
       "date": "2026-06-15",
       "event": "Initialized micro-project tracking."
+    },
+    {
+      "date": "2026-07-16",
+      "event": "DB v4 extend attempt via reconcile_jen_v4_extended.mjs — closing R11,873.72. Superseded by TXT ingest."
+    },
+    {
+      "date": "2026-07-16",
+      "event": "Rebuilt JEN001_Statement_Account_v4.md from JEN00116JULY.TXT via reconcile_jen_v4_from_txt.mjs. Part 1 R0.00 variance to ERP R28,534.89. Period Jan–14 Jul 2026."
     }
   ]
 }

@@ -1,0 +1,186 @@
+{
+  "debtorCode": "MOZ002",
+  "registryVersion": 10,
+  "status": "PROPOSED_NOT_APPLIED",
+  "supersedes": "payment_pattern_overrides.json registryVersion 9",
+  "evidenceDoctrine": "transaction_items quantities canonical; headers secondary; value derived never input",
+  "approvalPolicy": "Operator ratification required before replacing v9 PARTIAL_EMPTY_RETURN entries. v9 remains live until approved.",
+  "generated": "2026-07-19",
+  "sourceReport": "reports/MOZ002_CYL_Movement_v2.md",
+  "summary": {
+    "v9_residual_total": 8280,
+    "v10_outstanding_total": 4140,
+    "superseded_count": 11,
+    "closed_count": 1,
+    "outstanding_count": 4
+  },
+  "entries": [
+    {
+      "id": "EX-0001",
+      "doc_no": "00012081",
+      "v9_residual_open": 517.5,
+      "v10_status": "SUPERSEDED_VALUE_INFERRED",
+      "v10_classification": "FULL_CLEAR",
+      "v10_residual_open": 0,
+      "evidence": "DN#4438-EMPTY cluster nets 0×9.1, 0×S.1 with companion CN 12082 (-1×9.1)"
+    },
+    {
+      "id": "EX-0002",
+      "doc_no": "00012174",
+      "v9_residual_open": 517.5,
+      "v10_status": "SUPERSEDED_VALUE_INFERRED",
+      "v10_classification": "FULL_CLEAR",
+      "v10_residual_open": 0,
+      "evidence": "DN#12836-EMPTY: inv 2×S.1, CN 2×S.1 — balanced"
+    },
+    {
+      "id": "EX-0003",
+      "doc_no": "00012369",
+      "v9_residual_open": 517.5,
+      "v10_status": "SUPERSEDED_VALUE_INFERRED",
+      "v10_classification": "FULL_CLEAR",
+      "v10_residual_open": 0,
+      "evidence": "DN#13110-EMPTY: inv 2×S.1, CN 2×S.1 — balanced"
+    },
+    {
+      "id": "EX-0004",
+      "doc_no": "00012468",
+      "v9_residual_open": 517.5,
+      "v10_status": "SUPERSEDED_VALUE_INFERRED",
+      "v10_classification": "FULL_CLEAR",
+      "v10_residual_open": 0,
+      "evidence": "DN#12076-EMPTY: inv 2×S.1, CN 2×S.1 — balanced"
+    },
+    {
+      "id": "EX-0005",
+      "doc_no": "00012535",
+      "v9_residual_open": 517.5,
+      "v10_status": "QTY_SHORT",
+      "v10_classification": "QTY_SHORT",
+      "v10_sku": "9.1",
+      "v10_qty_short": 1,
+      "v10_residual_open": 517.5,
+      "evidence": "DN#12106-EMPTY: inv 43246 1×9.1+2×S.1; CN 12535 returns 2×S.1 only — 9.1 float unpaid"
+    },
+    {
+      "id": "EX-0006",
+      "doc_no": "00012639",
+      "v9_residual_open": 517.5,
+      "v10_status": "SUPERSEDED_VALUE_INFERRED",
+      "v10_classification": "FULL_CLEAR",
+      "v10_residual_open": 0,
+      "evidence": "DN#12149-EMPTY cluster nets 0 with companion CN 12640 (-1×9.1)"
+    },
+    {
+      "id": "EX-0007",
+      "doc_no": "00012710",
+      "v9_residual_open": 517.5,
+      "v10_status": "SUPERSEDED_VALUE_INFERRED",
+      "v10_classification": "FULL_CLEAR",
+      "v10_residual_open": 0,
+      "evidence": "DN#12560-E,MPTY: inv 2×S.1, CN 2×S.1 — balanced"
+    },
+    {
+      "id": "EX-0008",
+      "doc_no": "00012812",
+      "v9_residual_open": 517.5,
+      "v10_status": "SUPERSEDED_VALUE_INFERRED",
+      "v10_classification": "FULL_CLEAR",
+      "v10_residual_open": 0,
+      "evidence": "DN#12325-EMPTY: inv 2×S.1, CN 2×S.1 — balanced"
+    },
+    {
+      "id": "EX-0009",
+      "doc_no": "00012872",
+      "v9_residual_open": 517.5,
+      "v10_status": "QTY_SHORT",
+      "v10_classification": "QTY_SHORT",
+      "v10_sku": "S.1",
+      "v10_qty_short": 1,
+      "v10_residual_open": 1207.5,
+      "evidence": "DN#12349-EMPTY: inv 44404 3×S.1, CN 12872 2×S.1 — 1×S.1 short (not 9.1)"
+    },
+    {
+      "id": "EX-0010",
+      "doc_no": "00013165",
+      "v9_residual_open": 517.5,
+      "v10_status": "SUPERSEDED_VALUE_INFERRED",
+      "v10_classification": "FULL_CLEAR",
+      "v10_residual_open": 0,
+      "evidence": "DN#20072-- EMPTY: inv 2×S.1, CN 2×S.1 — balanced"
+    },
+    {
+      "id": "EX-0011",
+      "doc_no": "00013602",
+      "v9_residual_open": 517.5,
+      "v10_status": "SUPERSEDED_VALUE_INFERRED",
+      "v10_classification": "FULL_CLEAR",
+      "v10_residual_open": 0,
+      "evidence": "DN#21092-EPTY: inv 2×S.1, CN 2×S.1 — balanced"
+    },
+    {
+      "id": "EX-0012",
+      "doc_no": "00013931",
+      "v9_residual_open": 517.5,
+      "v10_status": "SUPERSEDED_VALUE_INFERRED",
+      "v10_classification": "FULL_CLEAR",
+      "v10_residual_open": 0,
+      "evidence": "DN#20859-EMPTY: inv 2×S.1, CN 2×S.1 — balanced"
+    },
+    {
+      "id": "EX-0013",
+      "doc_no": "00014007",
+      "v9_residual_open": 517.5,
+      "v10_status": "QTY_SHORT",
+      "v10_classification": "QTY_SHORT",
+      "v10_sku": "S.1",
+      "v10_qty_short": 1,
+      "v10_residual_open": 1207.5,
+      "evidence": "DN20893 EMPTY: inv 48096 3×S.1, CN 14007 2×S.1 — 1×S.1 short"
+    },
+    {
+      "id": "EX-0014",
+      "doc_no": "00014666",
+      "v9_residual_open": 517.5,
+      "v10_status": "SUPERSEDED_VALUE_INFERRED",
+      "v10_classification": "FULL_CLEAR",
+      "v10_residual_open": 0,
+      "evidence": "DN-21985-EMPTY: inv 2×D.1, CN 2×D.1 — balanced"
+    },
+    {
+      "id": "EX-0015",
+      "doc_no": "00014741",
+      "v9_residual_open": 517.5,
+      "v10_status": "CLOSED_BY_14856",
+      "v10_classification": "PHYSICALLY_REPAID",
+      "v10_sku": "9.1",
+      "v10_qty_short": 0,
+      "v10_residual_open": 0,
+      "evidence": "Line-less CN; 1×9.1 short after derived 2×S.1 return on 50174 extinguished by DN#22222 CN 14856 over-return 2026-05-06; closing 9.1 net 0"
+    },
+    {
+      "id": "EX-0016",
+      "doc_no": "00015166",
+      "v9_residual_open": 517.5,
+      "v10_status": "QTY_SHORT",
+      "v10_classification": "QTY_SHORT_TXT_ONLY",
+      "v10_sku": "S.1",
+      "v10_qty_short": 1,
+      "v10_residual_open": 1207.5,
+      "related_invoice": "00051527",
+      "evidence": "Absent from DB; TXT pair 51527 +3622.50 / 15166 -2415.00 → 1×S.1 short pending DB ingest"
+    },
+    {
+      "id": "EX-0034",
+      "doc_no": "00051527",
+      "v9_residual_open": 517.5,
+      "v10_status": "QTY_SHORT",
+      "v10_classification": "OUTSTANDING_PARTIAL_EMPTY_TXT",
+      "v10_sku": "S.1",
+      "v10_qty_short": 1,
+      "v10_residual_open": 1207.5,
+      "related_cn": "00015166",
+      "evidence": "TXT-only invoice; paired partial CN 15166 — 3×S.1 out, 2×S.1 returned"
+    }
+  ]
+}

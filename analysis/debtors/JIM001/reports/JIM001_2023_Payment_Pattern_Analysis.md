@@ -10,7 +10,7 @@ Generated on 2026-06-16 | Tolerance: R5.00
 * **Permanent Outstanding Anomalies:** **R3,947.80**
   * **2023-03 Underpayment:** Billed **R16,111.50**, R702.04 unmatched (STAT:91 residual underpayment).
   * **2023-08 Underpayment:** Billed **R15,766.57**, R3,245.76 unmatched (STAT:97 underpayment).
-* **Pattern 3 Corrections Applied (exact mirrors — self-cancelling):**
+* **Timing / Settlement Corrections Applied (self-cancelling):**
   * **2023-08 / 2023-09:** Aug underpaid R3,245.76 ↔ Sep STAT:98 residual R3,245.76 mirror carry. Treated as FULLY SETTLED.
 * **Arrears Catch-Up Payments Received:** **-R0.00**
 
@@ -53,18 +53,18 @@ Cylinder container transactions were strictly ledger-only loop of returns and we
 
 | Sequence | Payment Doc | Payment Date | Payment Amount | Reconciled Month | Status / Reconciliation Notes |
 | :--- | :---: | :---: | :---: | :---: | :--- |
-| **Doc 17777** | 17777 | 2023-01-19 | −R10,825.92 | | ✅ Present. |
-| **Doc 18185** | 18185 | 2023-02-13 | −R25,184.36 | | ✅ Present. |
-| **Doc 19176** | 19176 | 2023-03-22 | −R11,335.68 | | ✅ Present. |
-| **Doc 20357** | 20357 | 2023-05-02 | −R12,343.07 | | ✅ Present. |
-| **Doc 21193** | 21193 | 2023-05-31 | −R15,409.46 | | ✅ Present. |
-| **Doc 22711** | 22711 | 2023-07-21 | −R15,140.69 | | ✅ Present. |
-| **Doc 23280** | 23280 | 2023-08-11 | −R13,806.77 | | ✅ Present. |
-| **Doc 23977** | 23977 | 2023-09-05 | −R16,964.84 | | ✅ Present. |
-| **Doc 25394** | 25394 | 2023-10-24 | −R13,911.54 | | ✅ Present. |
-| **Doc 26601** | 26601 | 2023-11-29 | −R12,520.81 | | ✅ Present. |
-| **Doc 27468** | 27468 | 2023-12-29 | −R24,801.28 | | ✅ Present. |
-| **Doc 28893** | 28893 | 2024-02-20 | −R14,208.48 | | ✅ Present. |
+| **Doc 17777** | 17777 | 2023-01-19 | −R10,825.92 | 2022-11 | ✅ Present. |
+| **Doc 18185** | 18185 | 2023-02-13 | −R25,184.36 | 2022-12 | ✅ Present. |
+| **Doc 19176** | 19176 | 2023-03-22 | −R11,335.68 | 2023-01 | ✅ Present. |
+| **Doc 20357** | 20357 | 2023-05-02 | −R12,343.07 | 2023-02 | ✅ Present. |
+| **Doc 21193** | 21193 | 2023-05-31 | −R15,409.46 | 2023-03 | ✅ Present. |
+| **Doc 22711** | 22711 | 2023-07-21 | −R15,140.69 | 2023-04 | ✅ Present. |
+| **Doc 23280** | 23280 | 2023-08-11 | −R13,806.77 | 2023-05 | ✅ Present. |
+| **Doc 23977** | 23977 | 2023-09-05 | −R16,964.84 | 2023-06 | ✅ Present. |
+| **Doc 25394** | 25394 | 2023-10-24 | −R13,911.54 | 2023-07 | ✅ Present. |
+| **Doc 26601** | 26601 | 2023-11-29 | −R12,520.81 | 2023-08 | ✅ Present. |
+| **Doc 27468** | 27468 | 2023-12-29 | −R24,801.28 | 2023-09 | ✅ Present. |
+| **Doc 28893** | 28893 | 2024-02-20 | −R14,208.48 | 2023-11 | ✅ Present. |
 
 ### 4.1 Ledger-Wide Historical Balance Reconciliation (View A/B)
 
@@ -101,7 +101,7 @@ This section reconciles the lifetime-to-date ledger balances starting from the o
 
 ### 4.2 Reconciling Ledger Balance Movement (View A/B) vs. Invoice Settlement Pool
 
-This section reconciles the lifetime ledger balance movement (**View A/B** net change of **R-5,454.66**) to the matching payments allocated in the monthly settlement pool (**Section 2** net change of **R-8,331.22**):
+This section reconciles the lifetime ledger balance movement (**View A/B** net change of **R-5,454.66**) to the matching payments allocated in the monthly settlement pool (**Section 2** net change of **R-17,739.02**):
 
 #### Ledger Balance Movement (View A/B Totals)
 
@@ -116,19 +116,19 @@ This section reconciles the lifetime ledger balance movement (**View A/B** net c
 | Line Item | Amount |
 | :--- | ---: |
 | Net LPG Gas Billed | R167,295.76 |
-| Payment Allocations (Settling 2023 Invoices) | −R175,626.98 |
-| **Net Variance Outstanding** | **+R-8,331.22** |
+| Payment Allocations (Settling 2023 Invoices) | −R185,034.78 |
+| **Net Variance Outstanding** | **+R-17,739.02** |
 
 #### Mathematical Bridge — Cumulative Ledger to Settlement Pool Proof
 
-The exact difference of **R2,876.56** between the Ledger Balance Movement (+R-5,454.66) and the Monthly Table (+R-8,331.22) is proven by mapping all non-cash items, journals, and timing boundary-crossing payments:
+The exact difference of **R12,284.36** between the Ledger Balance Movement (+R-5,454.66) and the Monthly Table (+R-17,739.02) is proven by mapping all non-cash items, journals, and timing boundary-crossing payments:
 
 | Reconciliation Component | Amount | Description |
 | :--- | ---: | :--- |
 | Cylinder Net Movement | R-506.00 | Ledger-only returns & debits (excluded from LPG cash pool) |
 | ERP Journal Adjustments | R0.00 | ERP adjustments posted in year 2023 |
-| Cash Timing Boundary Shift | R3,382.56 | Payments crossing the calendar year boundary (Nov/Dec 22 exit, Late 23 enter) |
-| **Total Reconciliation Variance** | **R2,876.56** | ✅ Matches difference exactly |
+| Cash Timing Boundary Shift | R12,790.36 | Payments crossing the calendar year boundary (Nov/Dec 22 exit, Late 23 enter) |
+| **Total Reconciliation Variance** | **R12,284.36** | ✅ Matches difference exactly |
 
 ##### Cash Timing Boundary Shift Breakdown:
 | Sequence | Doc | Payment Date | Amount | Boundary Crossing |
@@ -138,11 +138,11 @@ The exact difference of **R2,876.56** between the Ledger Balance Movement (+R-5,
 | Doc 28893 | 28893 | 2024-02-20 | +R14,208.48 | Paid in 2024, settles **Nov 2023** → enters 2023 pool |
 | Doc 30269 | 30269 | 2024-04-24 | +R16,151.04 | Paid in 2024, settles **Oct 2023** → enters 2023 pool |
 | Doc 35270 | 35270 | 2024-12-04 | +R18,441.12 | Paid in 2024, settles **Dec 2023** → enters 2023 pool |
-| | | | **R3,382.56** | ✅ Matches cash timing shift exactly |
+| | | | **R12,790.36** | ✅ Matches cash timing shift exactly |
 
 > **Proof:**
-> `Ledger Movement (R-5,454.66) − Monthly Variance (R-8,331.22) = Cylinder (R-506.00) + Cash Timing Shift (R3,382.56)`
-> `R2,876.56 = R-506.00 + R3,382.56` ✅
+> `Ledger Movement (R-5,454.66) − Monthly Variance (R-17,739.02) = Cylinder (R-506.00) + Cash Timing Shift (R12,790.36)`
+> `R12,284.36 = R-506.00 + R12,790.36` ✅
 
 ---
 

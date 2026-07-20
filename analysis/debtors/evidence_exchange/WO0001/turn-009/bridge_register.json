@@ -1,0 +1,44 @@
+{
+  "turn": "WO0001-9",
+  "anchor": "2026-06-03",
+  "dashboard_lpg": 92844.18,
+  "engine_open_sum": 101774.13,
+  "gap_before_bridge": 8929.95,
+  "bridge_items": [
+    {
+      "id": "BR-001",
+      "category": "DN_LAG_INSTALMENT",
+      "invoice": "41067",
+      "amount": 8612.52,
+      "tag": "PROVEN",
+      "reason": "Four DN-lag prepay slices sum R8,612.52 = inv41067 engine-open.",
+      "payment_docs": ["36494", "36462", "36787", "36969"]
+    },
+    {
+      "id": "BR-002",
+      "category": "TRUNCATION_MICRO_OPEN",
+      "invoice": "(10 invoices)",
+      "amount": 2.91,
+      "tag": "ASSERTED",
+      "reason": "Whole-Rand payment truncation; pending override ratification.",
+      "invoices": [
+        { "doc": "10711", "micro": 0.38 },
+        { "doc": "13325", "micro": 0.15 },
+        { "doc": "15777", "micro": 0.30 },
+        { "doc": "25364", "micro": 0.29 },
+        { "doc": "27787", "micro": 0.40 },
+        { "doc": "47514", "micro": 0.30 },
+        { "doc": "49021", "micro": 0.36 },
+        { "doc": "49138", "micro": 0.08 },
+        { "doc": "49213", "micro": 0.12 },
+        { "doc": "49973", "micro": 0.53 }
+      ]
+    }
+  ],
+  "bridge_credit_total": 8615.43,
+  "adjusted_engine_open": 93158.7,
+  "residual_gap": 314.52,
+  "other_lane_matches": 7,
+  "other_lane_sum": 54310.0,
+  "note": "Turn 9 snapshot. Canonical data/unallocated_credit_bridge.json superseded by Turn 10 analysis."
+}

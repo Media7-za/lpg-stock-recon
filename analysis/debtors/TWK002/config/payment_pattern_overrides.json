@@ -1,0 +1,344 @@
+{
+  "debtor": "TWK002",
+  "registry_version": 1,
+  "methodology": "remittance-batch-discount-aware-v1",
+  "approval_policy": "Tier-1 remittance advice is authoritative. Overrides lock verified batch settlement matches.",
+  "overrides": [
+    {
+      "year": 2023,
+      "batch_id": "BATCH-2023-06-26",
+      "payment_doc": "00022182",
+      "payment_date": "2023-07-03",
+      "remittance_paid_date": "2023-06-26",
+      "amount": 46424.87,
+      "cash_amount": 45264.25,
+      "discount_amount": 1160.62,
+      "variance": 0.0,
+      "notes": "Model B full match. STAT:92.",
+      "override_type": "VERIFIED_REMITTANCE_BATCH_MATCH",
+      "approval_status": "approved",
+      "approved_by": "analysis",
+      "approved_date": "2026-07-12",
+      "reason": "Remittance gross equals cash plus 2.5% discount journal.",
+      "evidence_source": [
+        "raw/Remittances/26.06.2023.pdf",
+        "data/remittance_batches_2023.csv"
+      ]
+    },
+    {
+      "year": 2023,
+      "batch_id": "BATCH-2023-07-26",
+      "payment_doc": "00023115",
+      "payment_date": "2023-07-26",
+      "remittance_paid_date": "2023-07-26",
+      "amount": 8145.79,
+      "cash_amount": 7942.14,
+      "discount_amount": 203.65,
+      "variance": 0.0,
+      "notes": "Model B full match. STAT 92.",
+      "override_type": "VERIFIED_REMITTANCE_BATCH_MATCH",
+      "approval_status": "approved",
+      "approved_by": "analysis",
+      "approved_date": "2026-07-12",
+      "reason": "Remittance gross equals cash plus 2.5% discount journal.",
+      "evidence_source": [
+        "raw/Remittances/26.07.2023.pdf",
+        "data/remittance_batches_2023.csv"
+      ]
+    },
+    {
+      "year": 2023,
+      "batch_id": "BATCH-2023-08-28",
+      "payment_doc": "00023836",
+      "payment_date": "2023-09-01",
+      "remittance_paid_date": "2023-08-28",
+      "amount": 27393.41,
+      "cash_amount": 26924.19,
+      "discount_amount": 469.22,
+      "variance": 345.0,
+      "notes": "Model B remittance match. ERP gross +R345 vs remittance \u2014 deposit variance.",
+      "override_type": "VERIFIED_REMITTANCE_BATCH_MATCH",
+      "approval_status": "approved",
+      "approved_by": "analysis",
+      "approved_date": "2026-07-12",
+      "reason": "Cash plus discount equals remittance gross; ERP over-post flagged separately.",
+      "evidence_source": [
+        "raw/Remittances/28.08.2023.pdf",
+        "reports/TWK002_Pilot_Batch_2023-08-28.md"
+      ]
+    },
+    {
+      "year": 2023,
+      "batch_id": "BATCH-2023-09-26",
+      "payment_doc": "00024560",
+      "payment_date": "2023-09-26",
+      "remittance_paid_date": "2023-09-26",
+      "amount": 14684.27,
+      "cash_amount": 14317.17,
+      "discount_amount": 367.1,
+      "variance": 0.0,
+      "notes": "Model B full match. STAT 94.",
+      "override_type": "VERIFIED_REMITTANCE_BATCH_MATCH",
+      "approval_status": "approved",
+      "approved_by": "analysis",
+      "approved_date": "2026-07-12",
+      "reason": "Remittance gross equals cash plus 2.5% discount journal.",
+      "evidence_source": [
+        "raw/Remittances/26.09.2023.pdf",
+        "data/remittance_batches_2023.csv"
+      ]
+    },
+    {
+      "year": 2023,
+      "batch_id": "BATCH-2023-10-26",
+      "payment_doc": "00025906",
+      "payment_date": "2023-11-08",
+      "remittance_paid_date": "2023-10-26",
+      "amount": 17064.38,
+      "cash_amount": 16637.78,
+      "discount_amount": 426.6,
+      "variance": 0.0,
+      "notes": "Model B full match. STAT 95. ERP post lag 13 days.",
+      "override_type": "VERIFIED_REMITTANCE_BATCH_MATCH",
+      "approval_status": "approved",
+      "approved_by": "analysis",
+      "approved_date": "2026-07-12",
+      "reason": "Remittance gross equals cash plus 2.5% discount journal.",
+      "evidence_source": [
+        "raw/Remittances/26.10.2023.pdf",
+        "data/remittance_batches_2023.csv"
+      ]
+    },
+    {
+      "year": 2023,
+      "batch_id": "BATCH-2023-11-27",
+      "payment_doc": "00026681",
+      "payment_date": "2023-11-29",
+      "remittance_paid_date": "2023-11-27",
+      "amount": 31527.29,
+      "cash_amount": 30825.36,
+      "discount_amount": 701.93,
+      "variance": 345.0,
+      "notes": "Model B remittance match. ERP gross +R345. ALREADY PAID R5,082.19 on doc 24011.",
+      "override_type": "VERIFIED_REMITTANCE_BATCH_MATCH",
+      "approval_status": "approved",
+      "approved_by": "analysis",
+      "approved_date": "2026-07-12",
+      "reason": "Cash plus discount equals remittance gross; cross-batch 24011 partial documented in overrides.",
+      "evidence_source": [
+        "raw/Remittances/27.11.2023.pdf",
+        "config/settlement_discount_overrides.json"
+      ]
+    },
+    {
+      "year": 2024,
+      "batch_id": "BATCH-2024-03-26",
+      "payment_doc": "00029684",
+      "payment_date": "2024-03-27",
+      "remittance_paid_date": "2024-03-26",
+      "amount": 74116.54,
+      "cash_amount": 73610.18,
+      "discount_amount": 506.36,
+      "variance": 3575.49,
+      "notes": "Catch-up batch: many late-2023 docs at 100% (no discount). ALREADY PAID R3,598.81 on doc 23075 residual.; ERP gross +R3,575.49 vs remittance",
+      "override_type": "VERIFIED_REMITTANCE_BATCH_MATCH",
+      "approval_status": "approved",
+      "approved_by": "analysis",
+      "approved_date": "2026-07-12",
+      "reason": "Tier-1 remittance advice ingested; cash + discount = gross",
+      "evidence_source": [
+        "raw/Remittances/26.03.2024.pdf",
+        "data/remittance_batches_2024.csv"
+      ]
+    },
+    {
+      "year": 2024,
+      "batch_id": "BATCH-2024-04-26",
+      "payment_doc": "00030419",
+      "payment_date": "2024-04-25",
+      "remittance_paid_date": "2024-04-26",
+      "amount": 28803.94,
+      "cash_amount": 28428.84,
+      "discount_amount": 375.1,
+      "variance": -375.1,
+      "notes": "Remittance Model B match; ERP linkage pending TXT refresh",
+      "override_type": "VERIFIED_REMITTANCE_BATCH_MATCH",
+      "approval_status": "approved",
+      "approved_by": "analysis",
+      "approved_date": "2026-07-12",
+      "reason": "Tier-1 remittance advice ingested; cash + discount = gross",
+      "evidence_source": [
+        "raw/Remittances/26.04.2024.pdf",
+        "data/remittance_batches_2024.csv"
+      ]
+    },
+    {
+      "year": 2024,
+      "batch_id": "BATCH-2024-05-27",
+      "payment_doc": "00031365",
+      "payment_date": "2024-05-27",
+      "remittance_paid_date": "2024-05-27",
+      "amount": 12021.64,
+      "cash_amount": 11721.1,
+      "discount_amount": 300.54,
+      "variance": -300.54,
+      "notes": "Remittance Model B match; ERP linkage pending TXT refresh",
+      "override_type": "VERIFIED_REMITTANCE_BATCH_MATCH",
+      "approval_status": "approved",
+      "approved_by": "analysis",
+      "approved_date": "2026-07-12",
+      "reason": "Tier-1 remittance advice ingested; cash + discount = gross",
+      "evidence_source": [
+        "raw/Remittances/27.05.2024.pdf",
+        "data/remittance_batches_2024.csv"
+      ]
+    },
+    {
+      "year": 2024,
+      "batch_id": "BATCH-2024-06-26",
+      "payment_doc": "00031558",
+      "payment_date": "2024-06-26",
+      "remittance_paid_date": "2024-06-26",
+      "amount": 38251.26,
+      "cash_amount": 37294.98,
+      "discount_amount": 956.28,
+      "variance": 806.27,
+      "notes": "ERP gross +R806.27 vs remittance",
+      "override_type": "VERIFIED_REMITTANCE_BATCH_MATCH",
+      "approval_status": "approved",
+      "approved_by": "analysis",
+      "approved_date": "2026-07-12",
+      "reason": "Tier-1 remittance advice ingested; cash + discount = gross",
+      "evidence_source": [
+        "raw/Remittances/26.06.2024.pdf",
+        "data/remittance_batches_2024.csv"
+      ]
+    },
+    {
+      "year": 2024,
+      "batch_id": "BATCH-2024-07-26",
+      "payment_doc": "00032332",
+      "payment_date": "2024-07-30",
+      "remittance_paid_date": "2024-07-26",
+      "amount": 17166.51,
+      "cash_amount": 16737.35,
+      "discount_amount": 429.16,
+      "variance": 895.13,
+      "notes": "ERP gross +R895.13 vs remittance",
+      "override_type": "VERIFIED_REMITTANCE_BATCH_MATCH",
+      "approval_status": "approved",
+      "approved_by": "analysis",
+      "approved_date": "2026-07-12",
+      "reason": "Tier-1 remittance advice ingested; cash + discount = gross",
+      "evidence_source": [
+        "raw/Remittances/26.07.2024.pdf",
+        "data/remittance_batches_2024.csv"
+      ]
+    },
+    {
+      "year": 2024,
+      "batch_id": "BATCH-2024-08-26",
+      "payment_doc": "00033224",
+      "payment_date": "2024-08-26",
+      "remittance_paid_date": "2024-08-26",
+      "amount": 21740.84,
+      "cash_amount": 21197.32,
+      "discount_amount": 543.52,
+      "variance": 598.0,
+      "notes": "ERP gross +R598.00 vs remittance",
+      "override_type": "VERIFIED_REMITTANCE_BATCH_MATCH",
+      "approval_status": "approved",
+      "approved_by": "analysis",
+      "approved_date": "2026-07-12",
+      "reason": "Tier-1 remittance advice ingested; cash + discount = gross",
+      "evidence_source": [
+        "raw/Remittances/26.08.2024.pdf",
+        "data/remittance_batches_2024.csv"
+      ]
+    },
+    {
+      "year": 2024,
+      "batch_id": "BATCH-2024-09-26",
+      "payment_doc": "00033921",
+      "payment_date": "2024-09-26",
+      "remittance_paid_date": "2024-09-26",
+      "amount": 2751.17,
+      "cash_amount": 2984.27,
+      "discount_amount": -233.1,
+      "variance": 233.1,
+      "notes": "Net negative discount \u2014 CN reversals exceed invoice discounts; cash exceeds gross payable.; ERP gross +R233.10 vs remittance",
+      "override_type": "VERIFIED_REMITTANCE_BATCH_MATCH",
+      "approval_status": "approved",
+      "approved_by": "analysis",
+      "approved_date": "2026-07-12",
+      "reason": "Tier-1 remittance advice ingested; cash + discount = gross",
+      "evidence_source": [
+        "raw/Remittances/26.09.2024.pdf",
+        "data/remittance_batches_2024.csv"
+      ]
+    },
+    {
+      "year": 2024,
+      "batch_id": "BATCH-2024-10-26",
+      "payment_doc": "00034518",
+      "payment_date": "2024-10-26",
+      "remittance_paid_date": "2024-10-26",
+      "amount": 39321.49,
+      "cash_amount": 38338.45,
+      "discount_amount": 983.04,
+      "variance": -983.04,
+      "notes": "Remittance Model B match; ERP linkage pending TXT refresh",
+      "override_type": "VERIFIED_REMITTANCE_BATCH_MATCH",
+      "approval_status": "approved",
+      "approved_by": "analysis",
+      "approved_date": "2026-07-12",
+      "reason": "Tier-1 remittance advice ingested; cash + discount = gross",
+      "evidence_source": [
+        "raw/Remittances/26.10.2024.pdf",
+        "data/remittance_batches_2024.csv"
+      ]
+    },
+    {
+      "year": 2024,
+      "batch_id": "BATCH-2024-11-26",
+      "payment_doc": "00035263",
+      "payment_date": "2024-12-10",
+      "remittance_paid_date": "2024-11-26",
+      "amount": 22081.71,
+      "cash_amount": 21529.67,
+      "discount_amount": 552.04,
+      "variance": 500.01,
+      "notes": "ERP gross +R500.01 vs remittance",
+      "override_type": "VERIFIED_REMITTANCE_BATCH_MATCH",
+      "approval_status": "approved",
+      "approved_by": "analysis",
+      "approved_date": "2026-07-12",
+      "reason": "Tier-1 remittance advice ingested; cash + discount = gross",
+      "evidence_source": [
+        "raw/Remittances/26.11.2024.pdf",
+        "data/remittance_batches_2024.csv"
+      ]
+    },
+    {
+      "year": 2024,
+      "batch_id": "BATCH-2024-12-27",
+      "payment_doc": "00036195",
+      "payment_date": "2024-12-27",
+      "remittance_paid_date": "2024-12-27",
+      "amount": 12415.07,
+      "cash_amount": 12104.7,
+      "discount_amount": 310.37,
+      "variance": -310.37,
+      "notes": "Remittance Model B match; ERP linkage pending TXT refresh",
+      "override_type": "VERIFIED_REMITTANCE_BATCH_MATCH",
+      "approval_status": "approved",
+      "approved_by": "analysis",
+      "approved_date": "2026-07-12",
+      "reason": "Tier-1 remittance advice ingested; cash + discount = gross",
+      "evidence_source": [
+        "raw/Remittances/27.12.2024.pdf",
+        "data/remittance_batches_2024.csv"
+      ]
+    }
+  ]
+}

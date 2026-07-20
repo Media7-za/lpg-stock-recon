@@ -1,0 +1,32 @@
+# cyl_residual_registry v10 → v10.1 proposed diff
+
+**Status:** INVARIANT_FAIL_DO_NOT_RATIFY
+
+| ID | v10 status | v10 qty/residual | v10.1 status | v10.1 qty/residual |
+| :--- | :--- | :--- | :--- | :--- |
+| EX-0001 | SUPERSEDED_VALUE_INFERRED | R0,00 | SUPERSEDED_VALUE_INFERRED | R0,00 |
+| EX-0002 | SUPERSEDED_VALUE_INFERRED | R0,00 | SUPERSEDED_VALUE_INFERRED | R0,00 |
+| EX-0003 | SUPERSEDED_VALUE_INFERRED | R0,00 | SUPERSEDED_VALUE_INFERRED | R0,00 |
+| EX-0004 | SUPERSEDED_VALUE_INFERRED | R0,00 | SUPERSEDED_VALUE_INFERRED | R0,00 |
+| EX-0006 | SUPERSEDED_VALUE_INFERRED | R0,00 | SUPERSEDED_VALUE_INFERRED | R0,00 |
+| EX-0007 | SUPERSEDED_VALUE_INFERRED | R0,00 | SUPERSEDED_VALUE_INFERRED | R0,00 |
+| EX-0008 | SUPERSEDED_VALUE_INFERRED | R0,00 | SUPERSEDED_VALUE_INFERRED | R0,00 |
+| EX-0010 | SUPERSEDED_VALUE_INFERRED | R0,00 | SUPERSEDED_VALUE_INFERRED | R0,00 |
+| EX-0011 | SUPERSEDED_VALUE_INFERRED | R0,00 | SUPERSEDED_VALUE_INFERRED | R0,00 |
+| EX-0012 | SUPERSEDED_VALUE_INFERRED | R0,00 | SUPERSEDED_VALUE_INFERRED | R0,00 |
+| EX-0014 | SUPERSEDED_VALUE_INFERRED | R0,00 | SUPERSEDED_VALUE_INFERRED | R0,00 |
+| EX-0005 | QTY_SHORT | 1×9.1 / R517,50 | CLOSED_BY_14113 | 0×9.1 / R0,00 |
+| EX-0015 | CLOSED_BY_14856 | 0×9.1 / R0,00 | CLOSED_BY_14856 | 0×9.1 / R0,00 |
+| EX-0009 | QTY_SHORT | 1×S.1 / R1 207,50 | CLOSED_BY_13251 | 0×S.1 / R0,00 |
+| EX-0013 | QTY_SHORT | 1×S.1 / R1 207,50 | CLOSED_BY_15128 | 0×S.1 / R0,00 |
+| EX-0016 | QTY_SHORT | 1×S.1 / R1 207,50 | CLOSED_BY_15254 | 0×S.1 / R0,00 |
+| EX-0034 | QTY_SHORT | 1×S.1 / R1 207,50 | CLOSED_BY_15254 | 0×S.1 / R0,00 |
+
+## Invariant check
+
+| Class | v10.1 registry qty | Custody (d) | Pass |
+| :--- | ---: | ---: | :--- |
+| 9.1 | 0 | 0 | yes |
+| S.1/D.1 | 0 | -1 | no |
+
+**Note:** Registry post-closure outstanding qty = 0 for S.1/D.1; custody basis (d) cluster sum = -1. Three +1×S.1 short clusters (DN#12349-EMPTY, DN#22538=EMPTY, DN20893 EMPTY) pair to three −1×S.1 over-credit clusters (20515, 22662, 22810). Remaining unmatched over-credit: DN#21716-EMPTY (-1×S.1, -R1 725,00). Financial empty-lane -R1 207,50 = -1×R1,207.50 shell module. Resolve before ratification.

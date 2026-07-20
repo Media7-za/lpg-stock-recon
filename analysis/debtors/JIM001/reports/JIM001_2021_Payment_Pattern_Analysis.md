@@ -29,6 +29,15 @@ Generated on 2026-06-16 | Tolerance: R5.00
 | **2021-12** | R12,399.78 | — | — | R0.00 | — | +R12,399.78 | **Skipped Month:** Statement was completely unpaid. |
 | **TOTAL** | **R123,260.01** | | | **-R81,151.70** | | **R42,108.31** | **Net balance change for 2021.** |
 
+### 2.1 Candidate Invoice Details for Underpayments
+
+| Underpaid Month | Underpaid Amount | Candidate Doc | Invoice Date | LPG Gas Items | Line Total |
+| :--- | :---: | :---: | :---: | :--- | ---: |
+| — | — | — | — | No Pattern 2 candidate invoice underpayments identified for this period. | — |
+
+**Investigation Notes:**
+* No candidate invoice details were identified for this period; skipped statements are listed separately below where applicable.
+
 ### 2.2 Skipped Statements (Unpaid Months)
 
 | Skipped Month | Billed Amount | Payment Status | Investigation / Action Notes |
@@ -47,16 +56,16 @@ Cylinder container transactions were strictly ledger-only loop of returns and we
 
 | Sequence | Payment Doc | Payment Date | Payment Amount | Reconciled Month | Status / Reconciliation Notes |
 | :--- | :---: | :---: | :---: | :---: | :--- |
-| **Doc 8420** | 8420 | 2021-04-09 | −R12,518.21 | | ✅ Present. |
-| **Doc 8764** | 8764 | 2021-05-11 | −R9,765.76 | | ✅ Present. |
-| **Doc 9315** | 9315 | 2021-06-03 | −R12,222.90 | | ✅ Present. |
-| **Doc 9996** | 9996 | 2021-07-01 | −R11,292.11 | | ✅ Present. |
-| **Doc 10226** | 10226 | 2021-08-05 | −R9,079.94 | | ✅ Present. |
-| **Doc 10584** | 10584 | 2021-09-02 | −R13,012.50 | | ✅ Present. |
-| **Doc 11068** | 11068 | 2021-10-07 | −R13,260.28 | | ✅ Present. |
-| **Doc 11558** | 11558 | 2021-11-04 | −R12,929.71 | | ✅ Present. |
-| **Doc 12146** | 12146 | 2021-12-20 | −R12,160.30 | | ✅ Present. |
-| **Doc 12719** | 12719 | 2022-01-31 | −R17,018.30 | | ✅ Present. |
+| **Doc 8420** | 8420 | 2021-04-09 | −R12,518.21 | 2021-03 | ✅ Present. |
+| **Doc 8764** | 8764 | 2021-05-11 | −R9,765.76 | 2021-04 | ✅ Present. |
+| **Doc 9315** | 9315 | 2021-06-03 | −R12,222.90 | 2021-05 | ✅ Present. |
+| **Doc 9996** | 9996 | 2021-07-01 | −R11,292.11 | 2021-06 | ✅ Present. |
+| **Doc 10226** | 10226 | 2021-08-05 | −R9,079.94 | 2021-07 | ✅ Present. |
+| **Doc 10584** | 10584 | 2021-09-02 | −R13,012.50 | 2021-08 | ✅ Present. |
+| **Doc 11068** | 11068 | 2021-10-07 | −R13,260.28 | 2021-09 | ✅ Present. |
+| **Doc 11558** | 11558 | 2021-11-04 | −R12,929.71 | — | ✅ Present. |
+| **Doc 12146** | 12146 | 2021-12-20 | −R12,160.30 | — | ✅ Present. |
+| **Doc 12719** | 12719 | 2022-01-31 | −R17,018.30 | — | ✅ Present. |
 
 ### 4.1 Ledger-Wide Historical Balance Reconciliation (View A/B)
 
@@ -93,7 +102,7 @@ This section reconciles the lifetime-to-date ledger balances starting from the o
 
 ### 4.2 Reconciling Ledger Balance Movement (View A/B) vs. Invoice Settlement Pool
 
-This section reconciles the lifetime ledger balance movement (**View A/B** net change of **R15,638.30**) to the matching payments allocated in the monthly settlement pool (**Section 2** net change of **R0.00**):
+This section reconciles the lifetime ledger balance movement (**View A/B** net change of **R15,638.30**) to the matching payments allocated in the monthly settlement pool (**Section 2** net change of **R42,108.31**):
 
 #### Ledger Balance Movement (View A/B Totals)
 
@@ -108,19 +117,19 @@ This section reconciles the lifetime ledger balance movement (**View A/B** net c
 | Line Item | Amount |
 | :--- | ---: |
 | Net LPG Gas Billed | R123,260.01 |
-| Payment Allocations (Settling 2021 Invoices) | −R123,260.01 |
-| **Net Variance Outstanding** | **+R0.00** |
+| Payment Allocations (Settling 2021 Invoices) | −R81,151.70 |
+| **Net Variance Outstanding** | **+R42,108.31** |
 
 #### Mathematical Bridge — Cumulative Ledger to Settlement Pool Proof
 
-The exact difference of **R15,638.30** between the Ledger Balance Movement (+R15,638.30) and the Monthly Table (+R0.00) is proven by mapping all non-cash items, journals, and timing boundary-crossing payments:
+The exact difference of **R-26,470.01** between the Ledger Balance Movement (+R15,638.30) and the Monthly Table (+R42,108.31) is proven by mapping all non-cash items, journals, and timing boundary-crossing payments:
 
 | Reconciliation Component | Amount | Description |
 | :--- | ---: | :--- |
 | Cylinder Net Movement | R-1,380.00 | Ledger-only returns & debits (excluded from LPG cash pool) |
 | ERP Journal Adjustments | R0.00 | ERP adjustments posted in year 2021 |
-| Cash Timing Boundary Shift | R17,018.30 | Payments crossing the calendar year boundary |
-| **Total Reconciliation Variance** | **R15,638.30** | ✅ Matches difference |
+| Cash Timing Boundary Shift | R-25,090.01 | Payments crossing the calendar year boundary |
+| **Total Reconciliation Variance** | **R-26,470.01** | ✅ Matches difference |
 
 ---
 

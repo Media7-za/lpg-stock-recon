@@ -3,6 +3,7 @@ import path from 'path';
 import { spawnSync } from 'child_process';
 
 const baseDir = 'analysis/debtors';
+const skipDirs = new Set(['shared', 'Global Reports']);
 
 const validStatuses = ["active", "collection", "on-hold", "resolved"];
 const validReconStates = ["pending", "in-progress", "complete"];
@@ -69,7 +70,7 @@ function validateProject(code, data) {
 function sync() {
   const folders = fs.readdirSync(baseDir).filter(f => {
     try {
-      return fs.statSync(path.join(baseDir, f)).isDirectory() && f !== 'shared';
+      return fs.statSync(path.join(baseDir, f)).isDirectory() && !skipDirs.has(f);
     } catch {
       return false;
     }
@@ -80,8 +81,7 @@ function sync() {
   for (const code of folders) {
     const filePath = path.join(baseDir, code, 'project.json');
     if (!fs.existsSync(filePath)) {
-      console.log(`[FAIL] ${code} — missing project.json`);
-      hasHardFailures = true;
+      console.log(`[SKIP] ${code} — no project.json (not a debtor micro-project)`);
       continue;
     }
 

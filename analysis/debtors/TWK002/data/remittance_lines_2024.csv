@@ -1,0 +1,56 @@
+batch_id,line_type,doc_no,doc_date,our_ref,original_amount,discount_amount,net_amount,discount_eligible,on_remittance,source_type,notes
+BATCH-2024-03-26,Invoice,00023075,2023-08-03,105565,3943.81,0,345,false,true,remittance_advice,"Residual R345 — ALREADY PAID R3,598.81 in Sep 2023"
+BATCH-2024-03-26,Invoice,00026554,2023-11-14,109659,10350,0,10350,false,true,remittance_advice,Late catch-up — no discount
+BATCH-2024-03-26,Invoice,00026577,2023-11-14,109659,8764.79,0,8764.79,false,true,remittance_advice,Late catch-up — no discount
+BATCH-2024-03-26,Crd Note,00006810,2023-11-22,999999,-10005,0,-10005,false,true,remittance_advice,
+BATCH-2024-03-26,Invoice,00027340,2023-12-06,110902,23007.6,0,23007.6,false,true,remittance_advice,Late catch-up — no discount
+BATCH-2024-03-26,Invoice,00027341,2023-12-06,110903,19320,0,19320,false,true,remittance_advice,Late catch-up — no discount
+BATCH-2024-03-26,Crd Note,00006990,2023-12-11,999999,-16215,0,-16215,false,true,remittance_advice,
+BATCH-2024-03-26,Invoice,00027764,2023-12-19,110917,13119.2,0,13119.2,false,true,remittance_advice,Late catch-up — no discount
+BATCH-2024-03-26,Invoice,00027765,2023-12-19,110916,13800,0,13800,false,true,remittance_advice,Late catch-up — no discount
+BATCH-2024-03-26,Crd Note,00007127,2024-01-09,999999,-8625,0,-8625,false,true,remittance_advice,
+BATCH-2024-03-26,Invoice,00028766,2024-01-18,323157,8625,215.63,8409.37,true,true,remittance_advice,
+BATCH-2024-03-26,Invoice,00028765,2024-01-18,112406,10732.43,268.31,10464.12,true,true,remittance_advice,
+BATCH-2024-03-26,Crd Note,00007332,2024-01-23,999999,-8625,-215.63,-8409.37,true,true,remittance_advice,
+BATCH-2024-03-26,Invoice,00029140,2024-01-31,323479,14650.14,366.25,14283.89,true,true,remittance_advice,
+BATCH-2024-03-26,Crd Note,00007410,2024-02-06,999999,-18285,-457.13,-17827.87,true,true,remittance_advice,
+BATCH-2024-03-26,Invoice,00029889,2024-02-26,324270,11363.38,284.08,11079.3,true,true,remittance_advice,
+BATCH-2024-03-26,Invoice,00029890,2024-02-26,324271,17940,448.5,17491.5,true,true,remittance_advice,
+BATCH-2024-03-26,Crd Note,00007547,2024-02-28,999999,-16146,-403.65,-15742.35,true,true,remittance_advice,
+BATCH-2024-04-26,Invoice,00029141,2024-01-31,325070,13800,0,13800,false,true,remittance_advice,No discount on remittance
+BATCH-2024-04-26,Invoice,00030762,2024-03-27,325157,15003.94,375.1,14628.84,true,true,remittance_advice,
+BATCH-2024-04-26,Invoice,00030763,2024-03-27,325155,23920,598,23322,true,true,remittance_advice,
+BATCH-2024-04-26,Crd Note,00007848,2024-03-28,999999,-23920,-598,-23322,true,true,remittance_advice,
+BATCH-2024-05-27,Invoice,00031404,2024-04-18,325657,10825.64,270.64,10555,true,true,remittance_advice,
+BATCH-2024-05-27,Invoice,00031405,2024-04-18,325685,17940,448.5,17491.5,true,true,remittance_advice,
+BATCH-2024-05-27,Crd Note,00008120,2024-04-19,999999,-16744,-418.6,-16325.4,true,true,remittance_advice,
+BATCH-2024-06-26,Invoice,00031907,2024-05-06,326238,10677.41,266.94,10410.47,true,true,remittance_advice,
+BATCH-2024-06-26,Invoice,00031908,2024-05-06,326237,17940,448.5,17491.5,true,true,remittance_advice,
+BATCH-2024-06-26,Crd Note,00008324,2024-05-07,999999,-16744,-418.6,-16325.4,true,true,remittance_advice,
+BATCH-2024-06-26,Invoice,00032419,2024-05-24,326561,17956.15,448.9,17507.25,true,true,remittance_advice,
+BATCH-2024-06-26,Invoice,00032425,2024-05-24,326560,28106,702.65,27403.35,true,true,remittance_advice,
+BATCH-2024-06-26,Crd Note,00008530,2024-06-06,999999,-19136,-478.4,-18657.6,true,true,remittance_advice,
+BATCH-2024-06-26,Crd Note,00008700,2024-06-07,999999,-548.3,-13.71,-534.59,true,true,remittance_advice,
+BATCH-2024-07-26,Crd Note,00008913,2024-06-20,999999,-25116,-627.9,-24488.1,true,true,remittance_advice,
+BATCH-2024-07-26,Invoice,00033277,2024-06-20,327305,15372.51,384.31,14988.2,true,true,remittance_advice,
+BATCH-2024-07-26,Invoice,00033278,2024-06-20,327306,26910,672.75,26237.25,true,true,remittance_advice,
+BATCH-2024-08-26,Invoice,00033800,2024-07-04,327725,8724.99,218.12,8506.87,true,true,remittance_advice,
+BATCH-2024-08-26,Invoice,00034342,2024-07-18,327962,13613.85,340.35,13273.5,true,true,remittance_advice,
+BATCH-2024-08-26,Invoice,00034343,2024-07-18,328033,19136,478.4,18657.6,true,true,remittance_advice,
+BATCH-2024-08-26,Crd Note,00009426,2024-07-30,999999,-19734,-493.35,-19240.65,true,true,remittance_advice,
+BATCH-2024-09-26,Invoice,00033801,2024-07-04,327724,12075,0,12075,false,true,remittance_advice,No discount — late/terms exception
+BATCH-2024-09-26,Crd Note,00009393,2024-07-17,999999,-20930,-523.25,-20406.75,true,true,remittance_advice,
+BATCH-2024-09-26,Invoice,00035091,2024-08-08,328610,11606.17,290.15,11316.02,true,true,remittance_advice,
+BATCH-2024-09-26,Invoice,00035092,2024-08-08,328611,22724,568.1,22155.9,true,true,remittance_advice,
+BATCH-2024-09-26,Crd Note,00009769,2024-08-14,999999,-22724,-568.1,-22155.9,true,true,remittance_advice,
+BATCH-2024-10-26,Invoice,00036005,2024-09-06,329416,15401.49,385.04,15016.45,true,true,remittance_advice,
+BATCH-2024-10-26,Invoice,00036006,2024-09-06,329415,23920,598,23322,true,true,remittance_advice,
+BATCH-2024-11-26,Invoice,00036926,2024-10-03,330139,21036.66,525.92,20510.74,true,true,remittance_advice,
+BATCH-2024-11-26,Invoice,00037189,2024-10-03,330216,21045,526.13,20518.87,true,true,remittance_advice,
+BATCH-2024-11-26,Crd Note,00010617,2024-10-23,999999,-17100.02,-427.5,-16672.52,true,true,remittance_advice,
+BATCH-2024-11-26,Crd Note,00010189,2024-10-28,999999,-25611.05,-640.28,-24970.77,true,true,remittance_advice,
+BATCH-2024-11-26,Invoice,00037817,2024-10-31,330894,20296.12,507.4,19788.72,true,true,remittance_advice,
+BATCH-2024-11-26,Invoice,00037818,2024-10-31,330893,20700,517.5,20182.5,true,true,remittance_advice,
+BATCH-2024-11-26,Crd Note,00011003,2024-11-01,999999,-18285,-457.13,-17827.87,true,true,remittance_advice,
+BATCH-2024-12-27,Invoice,00038582,2024-11-26,331553,34840.07,871,33969.07,true,true,remittance_advice,
+BATCH-2024-12-27,Crd Note,00011320,2024-12-06,999999,-22425,-560.63,-21864.37,true,true,remittance_advice,

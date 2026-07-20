@@ -1,0 +1,162 @@
+{
+  "turn": "WO0001-10",
+  "anchor": "2026-06-03",
+  "dashboard_lpg": 92844.18,
+  "recomputed": {
+    "engine_open_sum": 101774.13,
+    "gap_before_bridge": 8929.95,
+    "br001_dn_lag_41067": 8612.52,
+    "br001_equals_inv41067_open": true,
+    "br002_trunc_micro_sum": 2.91,
+    "br002_trunc_invoices": [
+      {
+        "doc": "10711",
+        "micro": 0.38
+      },
+      {
+        "doc": "13325",
+        "micro": 0.15
+      },
+      {
+        "doc": "15777",
+        "micro": 0.3
+      },
+      {
+        "doc": "25364",
+        "micro": 0.29
+      },
+      {
+        "doc": "27787",
+        "micro": 0.4
+      },
+      {
+        "doc": "47514",
+        "micro": 0.3
+      },
+      {
+        "doc": "49021",
+        "micro": 0.36
+      },
+      {
+        "doc": "49138",
+        "micro": 0.08
+      },
+      {
+        "doc": "49213",
+        "micro": 0.12
+      },
+      {
+        "doc": "49973",
+        "micro": 0.53
+      }
+    ],
+    "bridge_credit_total": 8615.43,
+    "adjusted_engine_open": 93158.7,
+    "residual_gap": 314.52,
+    "partition_identity": {
+      "lhs": 8929.95,
+      "rhs": 8929.95,
+      "holds": true,
+      "formula": "BR-001 + BR-002 + residual = gap_before_bridge"
+    },
+    "arithmetic": {
+      "gap_minus_bridge": 314.52,
+      "equals_residual": true
+    }
+  },
+  "bridge_items": [
+    {
+      "id": "BR-001",
+      "category": "DN_LAG_INSTALMENT",
+      "invoice": "41067",
+      "amount": 8612.52,
+      "tag": "PROVEN",
+      "identity": "sum(UNALLOCATED slices ref 41067) = inv41067.engineOpen"
+    },
+    {
+      "id": "BR-002",
+      "category": "TRUNCATION_MICRO_OPEN",
+      "amount": 2.91,
+      "tag": "PROVEN_SUM_ASSERTED_CLOSE",
+      "identity": "sum(engineOpen ≤ R1 on 10 invoices); ERP closure requires override ratification"
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "H-A",
+      "label": "39895 DN-lag prepay",
+      "invLpg": 8013.92,
+      "engineOpen": 5986.64,
+      "unallocSum": 8056.64,
+      "allocSum": 2027.28,
+      "totalCash": 10083.92,
+      "prepayOverLpg": 42.72,
+      "excessPrepayOverOpen": 2070,
+      "p35345Total": 12513.55,
+      "p35345Slices": [
+        {
+          "ref": "31751",
+          "amt": 4456.91,
+          "type": "OPEN_BALANCE_MATCH"
+        },
+        {
+          "ref": "39895",
+          "amt": 8056.64,
+          "type": "UNALLOCATED"
+        }
+      ],
+      "explainsResidual": "NO",
+      "verdict": "REJECTED",
+      "reason": "No tested quantity equals R314.52 (prepay R8056.64, over-LPG R42.72, excess-over-open R2070, engine-open R5986.64)."
+    },
+    {
+      "id": "H-B",
+      "label": "11882/12112 partial tails",
+      "tail11882": 1380,
+      "tail12112": 1380,
+      "sum": 2760,
+      "partialDeltaNotes": "Both edges note Δ−R1,380.00 vs net open at payment date",
+      "explainsResidual": "NO",
+      "verdict": "REJECTED",
+      "reason": "Sum R2760 ≠ R314.52 (ΔR2445.48)."
+    },
+    {
+      "id": "H-C",
+      "label": "39063/35691 duplicate-header",
+      "inv39063Lpg": 13089.82,
+      "inv39164Lpg": 13089.82,
+      "sameLpgAmount": true,
+      "dn39063": [
+        "11143"
+      ],
+      "dn39164": [
+        "0840"
+      ],
+      "sameDn": false,
+      "engineOpen39063": 13089.82,
+      "engineOpen39164": 0,
+      "p35691Amt": 13089.82,
+      "p35691Type": "UNALLOCATED",
+      "p35691Notes": "Open balance mismatch (OVERPAY, Δ4427.50 vs net open 8662.32). ERP ref cross-check agrees (39164).",
+      "open39164At35691": 0,
+      "p36042Targets": [
+        {
+          "ref": "39164",
+          "alloc": 13089.82
+        },
+        {
+          "ref": "38848",
+          "alloc": 14594.36
+        }
+      ],
+      "explainsResidual": "NO",
+      "verdict": "REJECTED",
+      "reason": "Distinct DN keys (11143 vs 0840); 39164 closed via Pmt 36042 before 35691; 35691 UNALLOCATED R13089.82 is duplicate-overpay, not R314.52."
+    }
+  ],
+  "stop": {
+    "residual_leq_tol": false,
+    "single_mechanism_found": false,
+    "action": "STOP"
+  }
+}

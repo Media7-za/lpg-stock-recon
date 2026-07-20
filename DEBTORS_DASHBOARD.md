@@ -1,6 +1,6 @@
 # Debtors Portfolio Management Dashboard
 
-*Last Updated: 2026-07-16*
+*Last Updated: 2026-07-20*
 
 > **View dashboard:** `npm run debtors:sync` then read this file. Orchestrator skill: `.agents/skills/SKILL_Debtors_Orchestrator.md`
 
@@ -8,24 +8,24 @@
 
 | KPI | Value |
 |---|---|
-| **Recon in progress** | 2 |
-| **Collection-blocked exposure** (recon ≠ complete, actionable) | **R226 681,71** |
-| **Open human tasks** | 0 ([queue](analysis/debtors/shared/HUMAN_TASKS.md)) |
+| **Recon in progress** | 4 |
+| **Collection-blocked exposure** (recon ≠ complete, actionable) | **R248 689,69** |
+| **Open human tasks** | 7 ([queue](analysis/debtors/shared/HUMAN_TASKS.md)) |
 | **Tier A backlog (not in portfolio)** | 10 |
 | **Backlog candidates (parsed)** | 68 ([CSV](analysis/debtors/shared/data/portfolio_candidates.csv)) |
-| **Recon complete rate** | 25% (3/12) |
+| **Recon complete rate** | 31% (4/13) |
 
 ## 📊 Portfolio Summary
 
 | Metric | Value |
 |---|---|
-| **Accounts** | 12 |
-| **Recon Complete** | 3 |
-| **Recon In Progress** | 2 |
-| **Recon Pending** | 7 |
+| **Accounts** | 13 |
+| **Recon Complete** | 4 |
+| **Recon In Progress** | 4 |
+| **Recon Pending** | 5 |
 | **Collection Active** | 2 |
 | **Legal** | 0 |
-| **Total Outstanding** | **R499 479,32** |
+| **Total Outstanding** | **R544 385,77** |
 | **180+ Debt** | **R202 038,79** |
 | **LOD Issued** | 1 |
 | **Awaiting Response** | 0 |
@@ -38,15 +38,16 @@ Accounts are automatically sorted by Risk Score using the Collections Intelligen
 |---|---|---|---|---|---|---|---|
 | **100** | [WES004](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/WES004/) | West Coast Fish & Chips | ✅ Complete | 🔴 COLLECTION | R36 216,20 | R7 443,73 | ⚠️ **letter-of-demand** (by 2026-06-29) |
 | **40** | [JIM001](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/JIM001/) | Jim Gas | ✅ Complete | 🟢 ACTIVE | R140 297,23 | R73 007,40 | None |
+| **40** | [MOZ002](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/MOZ002/) | MOZAMBIK | ✅ Complete | 🟢 ACTIVE | R22 898,47 | R3 190,07 | None |
 | **40** | [TAN001](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/TAN001/) | Tanya Lehman | ✅ Complete | 🔴 COLLECTION | R96 284,18 | R66 565,10 | ⚠️ **draft_lod** (by 2026-06-16) |
 | **30** | [BU0005](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/BU0005/) | CHOBOZA - BULWER | 🔄 In Progress | 🟢 ACTIVE | R3 450,17 | R203,57 | None |
-| **30** | [MOZ002](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/MOZ002/) | MOZ002 | ⏳ Pending | 🟢 ACTIVE | R22 898,47 | R3 190,07 | None |
 | **30** | [WO0001](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/WO0001/) | L3 Cash and Carry | ⏳ Pending | 🟢 ACTIVE | R110 789,36 | R51 628,92 | None |
 | **25** | [TWK002](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/TWK002/) | TWK AGRI PTY LTD | 🔄 In Progress | 🟢 ACTIVE | R89 543,71 | R0,00 | None |
 | **0** | [BU0009](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/BU0009/) | BU0009 Client Placeholder | ⏳ Pending | 🟢 ACTIVE | R0,00 | R0,00 | None |
 | **0** | [FAM000](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/FAM000/) | FAM000 Client Placeholder | ⏳ Pending | 🟢 ACTIVE | R0,00 | R0,00 | None |
 | **0** | [FAM001](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/FAM001/) | FAM001 Client Placeholder | ⏳ Pending | 🟢 ACTIVE | R0,00 | R0,00 | None |
-| **0** | [JEN001](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/JEN001/) | JEN001 Client Placeholder | ⏳ Pending | 🟢 ACTIVE | R0,00 | R0,00 | None |
+| **0** | [JEN001](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/JEN001/) | JENS SPOON PTY LTD | 🔄 In Progress | 🟢 ACTIVE | R28 534,89 | R0,00 | None |
+| **0** | [MD0003](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/MD0003/) | BLUFF MEAT SUPPLY(PTY) LTD | 🔄 In Progress | 🟢 ACTIVE | R16 371,56 | R0,00 | None |
 | **0** | [SA0001](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/SA0001/) | SA0001 Client Placeholder | ⏳ Pending | 🟢 ACTIVE | R0,00 | R0,00 | None |
 
 ---

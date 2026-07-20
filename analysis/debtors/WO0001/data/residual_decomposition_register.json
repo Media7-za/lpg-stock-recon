@@ -1,0 +1,266 @@
+{
+  "turn": "WO0001-10",
+  "anchor": "2026-06-03",
+  "totals": {
+    "engine_open_sum": 101774.13,
+    "bridge_credit_sum": 8615.43,
+    "adjusted_open_sum": 93158.7,
+    "dashboard_lpg": 92844.18,
+    "residual_gap": 314.52
+  },
+  "invoices": [
+    {
+      "invoice": "10711",
+      "date": "2021-10-15",
+      "lpg": 10977.38,
+      "netLpg": 10977.38,
+      "paid": 10977,
+      "engineOpen": 0.38,
+      "bridgeCredit": 0.38,
+      "bridgeId": "BR-002",
+      "adjustedOpen": 0
+    },
+    {
+      "invoice": "11838",
+      "date": "2021-12-29",
+      "lpg": 9519.99,
+      "netLpg": 9519.99,
+      "paid": 0,
+      "engineOpen": 9519.99,
+      "bridgeCredit": 0,
+      "bridgeId": null,
+      "adjustedOpen": 9519.99
+    },
+    {
+      "invoice": "11882",
+      "date": "2022-01-04",
+      "lpg": 9744.87,
+      "netLpg": 9744.87,
+      "paid": 8364.87,
+      "engineOpen": 1380,
+      "bridgeCredit": 0,
+      "bridgeId": null,
+      "adjustedOpen": 1380
+    },
+    {
+      "invoice": "12112",
+      "date": "2022-01-31",
+      "lpg": 7924.94,
+      "netLpg": 7924.94,
+      "paid": 6544.94,
+      "engineOpen": 1380,
+      "bridgeCredit": 0,
+      "bridgeId": null,
+      "adjustedOpen": 1380
+    },
+    {
+      "invoice": "13325",
+      "date": "2022-05-06",
+      "lpg": 12957.15,
+      "netLpg": 12957.15,
+      "paid": 12957,
+      "engineOpen": 0.15,
+      "bridgeCredit": 0.15,
+      "bridgeId": "BR-002",
+      "adjustedOpen": 0
+    },
+    {
+      "invoice": "15370",
+      "date": "2022-08-29",
+      "lpg": 16859.92,
+      "netLpg": 16859.92,
+      "paid": 16677.06,
+      "engineOpen": 182.86,
+      "bridgeCredit": 0,
+      "bridgeId": null,
+      "adjustedOpen": 182.86
+    },
+    {
+      "invoice": "15777",
+      "date": "2022-09-22",
+      "lpg": 12330.3,
+      "netLpg": 12330.3,
+      "paid": 12330,
+      "engineOpen": 0.3,
+      "bridgeCredit": 0.3,
+      "bridgeId": "BR-002",
+      "adjustedOpen": 0
+    },
+    {
+      "invoice": "17163",
+      "date": "2023-01-03",
+      "lpg": 11635.81,
+      "netLpg": 11635.81,
+      "paid": 0,
+      "engineOpen": 11635.81,
+      "bridgeCredit": 0,
+      "bridgeId": null,
+      "adjustedOpen": 11635.81
+    },
+    {
+      "invoice": "17312",
+      "date": "2023-01-17",
+      "lpg": 12219.27,
+      "netLpg": 12219.27,
+      "paid": 0,
+      "engineOpen": 12219.27,
+      "bridgeCredit": 0,
+      "bridgeId": null,
+      "adjustedOpen": 12219.27
+    },
+    {
+      "invoice": "25364",
+      "date": "2023-10-10",
+      "lpg": 12537.29,
+      "netLpg": 12537.29,
+      "paid": 12537,
+      "engineOpen": 0.29,
+      "bridgeCredit": 0.29,
+      "bridgeId": "BR-002",
+      "adjustedOpen": 0
+    },
+    {
+      "invoice": "27787",
+      "date": "2023-12-18",
+      "lpg": 11334.4,
+      "netLpg": 11334.4,
+      "paid": 11334,
+      "engineOpen": 0.4,
+      "bridgeCredit": 0.4,
+      "bridgeId": "BR-002",
+      "adjustedOpen": 0
+    },
+    {
+      "invoice": "30255",
+      "date": "2024-03-08",
+      "lpg": 11662.3,
+      "netLpg": 11662.3,
+      "paid": 3552.33,
+      "engineOpen": 8109.97,
+      "bridgeCredit": 0,
+      "bridgeId": null,
+      "adjustedOpen": 8109.97
+    },
+    {
+      "invoice": "38727",
+      "date": "2024-11-29",
+      "lpg": 12513.55,
+      "netLpg": 12513.55,
+      "paid": 0,
+      "engineOpen": 12513.55,
+      "bridgeCredit": 0,
+      "bridgeId": null,
+      "adjustedOpen": 12513.55
+    },
+    {
+      "invoice": "39063",
+      "date": "2024-12-13",
+      "lpg": 13089.82,
+      "netLpg": 13089.82,
+      "paid": 0,
+      "engineOpen": 13089.82,
+      "bridgeCredit": 0,
+      "bridgeId": null,
+      "adjustedOpen": 13089.82
+    },
+    {
+      "invoice": "39491",
+      "date": "2024-12-30",
+      "lpg": 14645.25,
+      "netLpg": 14645.25,
+      "paid": 10322.57,
+      "engineOpen": 4322.68,
+      "bridgeCredit": 0,
+      "bridgeId": null,
+      "adjustedOpen": 4322.68
+    },
+    {
+      "invoice": "39895",
+      "date": "2025-01-14",
+      "lpg": 8013.92,
+      "netLpg": 8013.92,
+      "paid": 2027.28,
+      "engineOpen": 5986.64,
+      "bridgeCredit": 0,
+      "bridgeId": null,
+      "adjustedOpen": 5986.64
+    },
+    {
+      "invoice": "41067",
+      "date": "2025-02-27",
+      "lpg": 15306.73,
+      "netLpg": 15306.73,
+      "paid": 6694.21,
+      "engineOpen": 8612.52,
+      "bridgeCredit": 8612.52,
+      "bridgeId": "BR-001",
+      "adjustedOpen": 0
+    },
+    {
+      "invoice": "47514",
+      "date": "2025-11-04",
+      "lpg": 10068.3,
+      "netLpg": 10068.3,
+      "paid": 10068,
+      "engineOpen": 0.3,
+      "bridgeCredit": 0.3,
+      "bridgeId": "BR-002",
+      "adjustedOpen": 0
+    },
+    {
+      "invoice": "49021",
+      "date": "2026-01-29",
+      "lpg": 9510.36,
+      "netLpg": 9510.36,
+      "paid": 9510,
+      "engineOpen": 0.36,
+      "bridgeCredit": 0.36,
+      "bridgeId": "BR-002",
+      "adjustedOpen": 0
+    },
+    {
+      "invoice": "49138",
+      "date": "2026-02-06",
+      "lpg": 9410.08,
+      "netLpg": 9410.08,
+      "paid": 9410,
+      "engineOpen": 0.08,
+      "bridgeCredit": 0.08,
+      "bridgeId": "BR-002",
+      "adjustedOpen": 0
+    },
+    {
+      "invoice": "49213",
+      "date": "2026-02-11",
+      "lpg": 8195.12,
+      "netLpg": 8195.12,
+      "paid": 8195,
+      "engineOpen": 0.12,
+      "bridgeCredit": 0.12,
+      "bridgeId": "BR-002",
+      "adjustedOpen": 0
+    },
+    {
+      "invoice": "49973",
+      "date": "2026-03-27",
+      "lpg": 9896.53,
+      "netLpg": 9896.53,
+      "paid": 9896,
+      "engineOpen": 0.53,
+      "bridgeCredit": 0.53,
+      "bridgeId": "BR-002",
+      "adjustedOpen": 0
+    },
+    {
+      "invoice": "51007",
+      "date": "2026-06-01",
+      "lpg": 12818.11,
+      "netLpg": 12818.11,
+      "paid": 0,
+      "engineOpen": 12818.11,
+      "bridgeCredit": 0,
+      "bridgeId": null,
+      "adjustedOpen": 12818.11
+    }
+  ]
+}

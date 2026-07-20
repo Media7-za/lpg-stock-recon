@@ -1,0 +1,7 @@
+{
+  "debtor": "JEN001",
+  "registry_version": 1,
+  "lane": "stripped_gas_payment_pattern",
+  "approval_policy": "Only human-approved overrides with reason and evidence_source may be applied.",
+  "overrides": []
+}

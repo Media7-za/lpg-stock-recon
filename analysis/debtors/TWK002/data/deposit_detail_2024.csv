@@ -1,0 +1,21 @@
+receipt_doc,doc_no,deposit_amount,deposit_discount,deposit_total,source_type,notes
+00029684,00026577,8326.56,438.23,8764.79,erp_deposit_detail,Late catch-up — remittance R0 discount; deposit applies R438.23 (5% effective on gross)
+00029684,00027340,21857.22,1150.38,23007.60,erp_deposit_detail,Late catch-up — remittance R0 discount; deposit applies R1,150.38
+00029684,00027764,12463.24,655.96,13119.20,erp_deposit_detail,Late catch-up — remittance R0 discount; deposit applies R655.96
+00029684,00028765,10195.80,536.62,10732.42,erp_deposit_detail,Remittance disc R268.31; deposit doubles to R536.62
+00029684,00029140,13917.63,732.50,14650.13,erp_deposit_detail,Remittance disc R366.25; deposit doubles to R732.50
+00029684,00029889,6849.73,568.16,7417.89,erp_deposit_detail,Partial — remittance gross R11,363.38; deposit total only R7,417.89
+00031558,00031907,10143.54,533.87,10677.41,erp_deposit_detail,Matches remittance gross; disc R533.87 vs remit R266.94 (doubled)
+00031558,00031908,1136.20,59.80,1196.00,erp_deposit_detail,Partial — remittance gross R17,940; deposit total R1,196.00
+00031558,00032419,16687.28,720.38,17407.66,erp_deposit_detail,Partial vs remittance gross R17,956.15; excess disc
+00031558,00032425,8521.50,448.50,8970.00,erp_deposit_detail,Partial vs remittance gross R28,106; deposit total R8,970
+00031558,,806.46,0.00,806.46,erp_deposit_detail,Orphan slice — no invoice reference; unattributed cash line
+00032332,00029890,0.00,594.59,594.59,erp_deposit_detail,Discount-only — prior Mar batch doc; orphan component
+00032332,00031405,0.00,300.54,300.54,erp_deposit_detail,Discount-only — prior May batch doc; orphan component
+00032332,00033277,14943.35,429.16,15372.51,erp_deposit_detail,Matches remittance gross; cash+disc align
+00032332,00033278,1794.00,0.00,1794.00,erp_deposit_detail,Partial — remittance gross R26,910; deposit amount R1,794 only
+00033224,00033800,8154.23,570.76,8724.99,erp_deposit_detail,Remittance disc R218.12; deposit R570.76 (inflated equal split)
+00033224,00034342,13043.09,570.76,13613.85,erp_deposit_detail,Remittance disc R340.35; deposit R570.76 (inflated equal split)
+00035263,00036926,21036.66,525.92,21562.58,erp_deposit_detail,Full amount + twin discount — matches remittance gross
+00035263,00037189,0.00,526.13,526.13,erp_deposit_detail,Discount-only twin line — orphan component R526.13
+00035263,00037817,493.01,0.00,493.01,erp_deposit_detail,Partial — remittance gross R20,296.12; deposit R493.01 only

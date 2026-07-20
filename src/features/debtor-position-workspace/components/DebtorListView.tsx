@@ -1,6 +1,9 @@
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Search } from 'lucide-react';
 import { useDebtorList } from '../hooks/useDebtorWorkspace';
 import { StatusBadge } from './StatusBadge';
+import { probeKnowledgeBundle } from '../../investigation-workspace';
 
 function formatZAR(value: number): string {
   const abs = Math.abs(value);
@@ -19,6 +22,23 @@ function formatPeriod(from: string, to: string): string {
 export function DebtorListView() {
   const debtors = useDebtorList();
   const navigate = useNavigate();
+  const [investigationReady, setInvestigationReady] = useState<Record<string, boolean>>({});
+
+  useEffect(() => {
+    if (!debtors.length) return;
+    let cancelled = false;
+    (async () => {
+      const entries = await Promise.all(
+        debtors.map(async (d) => [d.debtorCode, await probeKnowledgeBundle(d.debtorCode)] as const)
+      );
+      if (!cancelled) {
+        setInvestigationReady(Object.fromEntries(entries));
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [debtors]);
 
   return (
     <div className="p-6 max-w-5xl mx-auto">
@@ -33,42 +53,58 @@ export function DebtorListView() {
         {debtors.map((debtor) => {
           const cylVar = debtor.reconciliationPosition.cylinderVariance;
           const erpVar = debtor.reconciliationPosition.erpVariance;
+          const canInvestigate = investigationReady[debtor.debtorCode];
           return (
-            <button
+            <div
               key={debtor.debtorCode}
-              onClick={() => navigate(`/debtors/${debtor.debtorCode}`)}
-              className="w-full text-left bg-surface border border-border rounded-xl p-5 hover:border-border/60 hover:bg-surface-elevated transition-colors"
+              className="w-full bg-surface border border-border rounded-xl p-5 hover:border-border/60 hover:bg-surface-elevated transition-colors"
             >
-              <div className="flex flex-wrap items-center gap-3 mb-3">
-                <span className="font-mono text-xs font-black text-text-secondary bg-surface-elevated px-2 py-0.5 rounded">
-                  {debtor.debtorCode}
-                </span>
-                <span className="text-base font-black text-text-primary">{debtor.debtorName}</span>
-                <StatusBadge status={debtor.status} />
-                <span className="ml-auto text-xs text-text-secondary">
-                  {formatPeriod(debtor.period.from, debtor.period.to)}
-                </span>
-              </div>
+              <button
+                type="button"
+                onClick={() => navigate(`/debtors/${debtor.debtorCode}`)}
+                className="w-full text-left"
+              >
+                <div className="flex flex-wrap items-center gap-3 mb-3">
+                  <span className="font-mono text-xs font-black text-text-secondary bg-surface-elevated px-2 py-0.5 rounded">
+                    {debtor.debtorCode}
+                  </span>
+                  <span className="text-base font-black text-text-primary">{debtor.debtorName}</span>
+                  <StatusBadge status={debtor.status} />
+                  <span className="ml-auto text-xs text-text-secondary">
+                    {formatPeriod(debtor.period.from, debtor.period.to)}
+                  </span>
+                </div>
 
-              <div className="grid grid-cols-3 gap-4">
-                <div>
-                  <p className="text-[11px] font-black uppercase tracking-wider text-text-secondary mb-0.5">Total Balance</p>
-                  <p className="font-mono font-bold text-text-primary">{formatZAR(debtor.financialPosition.totalDebtorBalance)}</p>
+                <div className="grid grid-cols-3 gap-4">
+                  <div>
+                    <p className="text-[11px] font-black uppercase tracking-wider text-text-secondary mb-0.5">Total Balance</p>
+                    <p className="font-mono font-bold text-text-primary">{formatZAR(debtor.financialPosition.totalDebtorBalance)}</p>
+                  </div>
+                  <div>
+                    <p className="text-[11px] font-black uppercase tracking-wider text-text-secondary mb-0.5">ERP Variance</p>
+                    <p className={`font-mono font-bold ${erpVar === 0 ? 'text-text-secondary' : 'text-amber-400'}`}>
+                      {formatZAR(erpVar)}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-[11px] font-black uppercase tracking-wider text-text-secondary mb-0.5">Cyl Variance</p>
+                    <p className={`font-mono font-bold ${cylVar === 0 ? 'text-text-secondary' : 'text-amber-400'}`}>
+                      {formatZAR(cylVar)}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-[11px] font-black uppercase tracking-wider text-text-secondary mb-0.5">ERP Variance</p>
-                  <p className={`font-mono font-bold ${erpVar === 0 ? 'text-text-secondary' : 'text-amber-400'}`}>
-                    {formatZAR(erpVar)}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-[11px] font-black uppercase tracking-wider text-text-secondary mb-0.5">Cyl Variance</p>
-                  <p className={`font-mono font-bold ${cylVar === 0 ? 'text-text-secondary' : 'text-amber-400'}`}>
-                    {formatZAR(cylVar)}
-                  </p>
-                </div>
-              </div>
-            </button>
+              </button>
+              {canInvestigate && (
+                <button
+                  type="button"
+                  onClick={() => navigate(`/debtors/${debtor.debtorCode}/investigate`)}
+                  className="mt-4 inline-flex items-center gap-1 text-xs font-black text-sky-400 hover:underline"
+                >
+                  <Search className="w-3 h-3" />
+                  Investigate allocation
+                </button>
+              )}
+            </div>
           );
         })}
       </div>

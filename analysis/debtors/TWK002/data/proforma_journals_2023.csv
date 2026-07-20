@@ -1,0 +1,54 @@
+batch_id,post_date,journal_type,consolidated_amount,ref_doc_no,ref_discount_amount,evidence_source,review_required,notes
+BATCH-2023-06-26,2023-06-26,DISCOUNT_ALLOWED,-1160.62,CONSOLIDATED,-1160.62,remittance_advice,false,Ref splits sum to consolidated amount
+BATCH-2023-06-26,2023-06-26,DISCOUNT_ALLOWED,-1160.62,00019704,237.73,remittance_advice,false,
+BATCH-2023-06-26,2023-06-26,DISCOUNT_ALLOWED,-1160.62,00019706,284.05,remittance_advice,false,
+BATCH-2023-06-26,2023-06-26,DISCOUNT_ALLOWED,-1160.62,00019768,268.17,remittance_advice,false,
+BATCH-2023-06-26,2023-06-26,DISCOUNT_ALLOWED,-1160.62,00019769,313.95,remittance_advice,false,
+BATCH-2023-06-26,2023-06-26,DISCOUNT_ALLOWED,-1160.62,00020606,56.72,remittance_advice,false,
+BATCH-2023-07-26,2023-07-26,DISCOUNT_ALLOWED,-203.65,CONSOLIDATED,-203.65,remittance_advice,false,Ref splits sum to consolidated amount
+BATCH-2023-07-26,2023-07-26,DISCOUNT_ALLOWED,-203.65,00021122,87.28,remittance_advice,false,
+BATCH-2023-07-26,2023-07-26,DISCOUNT_ALLOWED,-203.65,00021594,116.37,remittance_advice,false,
+BATCH-2023-08-28,2023-08-28,DISCOUNT_ALLOWED,-469.22,CONSOLIDATED,-469.22,remittance_advice,true,Ref splits sum to consolidated amount
+BATCH-2023-08-28,2023-08-28,DISCOUNT_ALLOWED,-469.22,00021597,172.5,remittance_advice,false,
+BATCH-2023-08-28,2023-08-28,DISCOUNT_ALLOWED,-469.22,00022058,181.13,remittance_advice,false,
+BATCH-2023-08-28,2023-08-28,DISCOUNT_ALLOWED,-469.22,00022060,176.5,remittance_advice,false,Gas invoice — not in operator analysis screenshot
+BATCH-2023-08-28,2023-08-28,DISCOUNT_ALLOWED,-469.22,00022255,133.98,remittance_advice,false,Gas invoice — not in operator analysis screenshot
+BATCH-2023-08-28,2023-08-28,DISCOUNT_ALLOWED,-469.22,00022268,172.5,remittance_advice,false,
+BATCH-2023-08-28,2023-08-28,DISCOUNT_ALLOWED,-469.22,00005038,-77.63,remittance_advice,false,SC/IN on remittance; CN discount reversal
+BATCH-2023-08-28,2023-08-28,DISCOUNT_ALLOWED,-469.22,00005308,-163.88,remittance_advice,false,
+BATCH-2023-08-28,2023-08-28,DISCOUNT_ALLOWED,-469.22,00005498,-172.5,remittance_advice,false,
+BATCH-2023-08-28,2023-08-28,DISCOUNT_ALLOWED,-469.22,00022626,215.53,remittance_advice,false,Gas invoice — not in operator analysis screenshot
+BATCH-2023-08-28,2023-08-28,DISCOUNT_ALLOWED,-469.22,00022627,258.75,remittance_advice,false,
+BATCH-2023-08-28,2023-08-28,DISCOUNT_ALLOWED,-469.22,00022702,55.34,remittance_advice,false,Gas invoice — not in operator analysis screenshot
+BATCH-2023-08-28,2023-08-28,DISCOUNT_ALLOWED,-469.22,00022739,43.13,remittance_advice,false,
+BATCH-2023-08-28,2023-08-28,DISCOUNT_ALLOWED,-469.22,00005603,-189.75,remittance_advice,false,
+BATCH-2023-08-28,2023-08-28,DISCOUNT_ALLOWED,-469.22,00005155,-129.38,remittance_advice,false,Remittance shows doc 5155
+BATCH-2023-08-28,2023-08-28,DISCOUNT_ALLOWED,-469.22,00005443,-155.25,remittance_advice,false,
+BATCH-2023-08-28,2023-08-28,DISCOUNT_ALLOWED,-469.22,00005632,-51.75,remittance_advice,false,
+BATCH-2023-09-26,2023-09-26,DISCOUNT_ALLOWED,-367.1,CONSOLIDATED,-367.1,remittance_advice,false,Ref splits sum to consolidated amount
+BATCH-2023-09-26,2023-09-26,DISCOUNT_ALLOWED,-367.1,00023075,89.97,remittance_advice,false,"Payable R3,598.81 on remittance — R345 partial already settled"
+BATCH-2023-09-26,2023-09-26,DISCOUNT_ALLOWED,-367.1,00023077,172.5,remittance_advice,false,
+BATCH-2023-09-26,2023-09-26,DISCOUNT_ALLOWED,-367.1,00005768,-120.75,remittance_advice,false,
+BATCH-2023-09-26,2023-09-26,DISCOUNT_ALLOWED,-367.1,00023311,178.57,remittance_advice,false,
+BATCH-2023-09-26,2023-09-26,DISCOUNT_ALLOWED,-367.1,00023312,189.75,remittance_advice,false,
+BATCH-2023-09-26,2023-09-26,DISCOUNT_ALLOWED,-367.1,00005845,-129.38,remittance_advice,false,
+BATCH-2023-09-26,2023-09-26,DISCOUNT_ALLOWED,-367.1,5845/5875,-4.93,remittance_advice,false,Composite CN pair on remittance
+BATCH-2023-09-26,2023-09-26,DISCOUNT_ALLOWED,-367.1,00005875,-8.63,remittance_advice,false,
+BATCH-2023-10-26,2023-10-26,DISCOUNT_ALLOWED,-426.6,CONSOLIDATED,-426.6,remittance_advice,false,Ref splits sum to consolidated amount
+BATCH-2023-10-26,2023-10-26,DISCOUNT_ALLOWED,-426.6,00024011,127.05,remittance_advice,false,"Payable R5,082.19 — balance R3,450.00 on Nov batch"
+BATCH-2023-10-26,2023-10-26,DISCOUNT_ALLOWED,-426.6,00024012,258.75,remittance_advice,false,
+BATCH-2023-10-26,2023-10-26,DISCOUNT_ALLOWED,-426.6,00024201,213.3,remittance_advice,false,
+BATCH-2023-10-26,2023-10-26,DISCOUNT_ALLOWED,-426.6,00024202,258.75,remittance_advice,false,
+BATCH-2023-10-26,2023-10-26,DISCOUNT_ALLOWED,-426.6,00025043,276.0,remittance_advice,false,
+BATCH-2023-10-26,2023-10-26,DISCOUNT_ALLOWED,-426.6,00006078,-258.75,remittance_advice,false,
+BATCH-2023-10-26,2023-10-26,DISCOUNT_ALLOWED,-426.6,00006134,-172.5,remittance_advice,false,
+BATCH-2023-10-26,2023-10-26,DISCOUNT_ALLOWED,-426.6,00006387,-276.0,remittance_advice,false,
+BATCH-2023-11-27,2023-11-27,DISCOUNT_ALLOWED,-701.93,CONSOLIDATED,-701.93,remittance_advice,true,Ref splits sum to consolidated amount
+BATCH-2023-11-27,2023-11-27,DISCOUNT_ALLOWED,-701.93,00025042,208.26,remittance_advice,false,
+BATCH-2023-11-27,2023-11-27,DISCOUNT_ALLOWED,-701.93,00025293,186.67,remittance_advice,false,
+BATCH-2023-11-27,2023-11-27,DISCOUNT_ALLOWED,-701.93,00025294,103.5,remittance_advice,false,
+BATCH-2023-11-27,2023-11-27,DISCOUNT_ALLOWED,-701.93,00006461,-86.25,remittance_advice,false,
+BATCH-2023-11-27,2023-11-27,DISCOUNT_ALLOWED,-701.93,00006462,-112.13,remittance_advice,false,
+BATCH-2023-11-27,2023-11-27,DISCOUNT_ALLOWED,-701.93,00026027,332.88,remittance_advice,false,
+BATCH-2023-11-27,2023-11-27,DISCOUNT_ALLOWED,-701.93,00026033,345.0,remittance_advice,false,
+BATCH-2023-11-27,2023-11-27,DISCOUNT_ALLOWED,-701.93,00006667,-276.0,remittance_advice,false,

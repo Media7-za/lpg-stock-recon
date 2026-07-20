@@ -2,7 +2,7 @@ import pandas as pd
 import psycopg2
 import os
 
-SUPABASE_URL = "postgresql://postgres.oqhpxnaadahohwkslive:lpg-stock-recon@aws-0-eu-west-1.pooler.supabase.com:5432/postgres"
+SUPABASE_URL = os.environ['DATABASE_URL']
 
 # SQL Queries
 sql_statement = """

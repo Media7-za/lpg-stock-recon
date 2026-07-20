@@ -1,0 +1,8 @@
+allocation_id,payment_doc,payment_date,batch_ref,payment_amount,target_doc,target_date,target_lane,target_amount,allocated_amount,residual_after_allocation,allocation_type,evidence_source,confidence,commercially_confirmed,review_required,notes,source_edge_id
+AL-O-001,00040110,2025-07-06,STAT 116,12000,44564,2025-07-04,OTHER,12000,12000,0,OTHER_LANE_EXPLICIT_REF,ERP_LEDGER,Confirmed,false,false,OTHER-only invoice; LPG=0. Cent-aligned ref 44564 → OTHER R12000.00.,AL-0235
+AL-O-002,00040276,2025-07-27,STAT 116,12000,44977,2025-07-18,OTHER,12000,12000,0,OTHER_LANE_EXPLICIT_REF,ERP_LEDGER,Confirmed,false,false,OTHER-only invoice; LPG=0. Cent-aligned ref 44977 → OTHER R12000.00.,AL-0238
+AL-O-003,00040452,2025-08-04,STAT 117,6000,45769,2025-07-28,OTHER,6000,6000,0,OTHER_LANE_EXPLICIT_REF,ERP_LEDGER,Confirmed,false,false,OTHER-only invoice; LPG=0. Cent-aligned ref 45769 → OTHER R6000.00.,AL-0239
+AL-O-004,00041648,2025-10-13,T2000228,910,47092,2025-10-13,OTHER,910,910,0,OTHER_LANE_EXPLICIT_REF,ERP_LEDGER,Confirmed,false,false,OTHER-only invoice; LPG=0. Cent-aligned ref 47092 → OTHER R910.00.,AL-0252
+AL-O-005,00041963,2025-10-26,STAT 119,6500,44131,2025-06-20,OTHER,6500,6500,0,OTHER_LANE_EXPLICIT_REF,ERP_LEDGER,Confirmed,false,false,OTHER-only invoice; LPG=0. Cent-aligned ref 44131 → OTHER R6500.00.,AL-0260
+AL-O-006,00041963,2025-10-26,STAT 119,11400,45589,2025-08-05,OTHER,11400,11400,0,OTHER_LANE_EXPLICIT_REF,ERP_LEDGER,Confirmed,false,false,OTHER-only invoice; LPG=0. Cent-aligned ref 45589 → OTHER R11400.00.,AL-0261
+AL-O-007,00043139,2026-01-26,STAT 122,5500,48871,2026-01-19,OTHER,5500,5500,0,OTHER_LANE_EXPLICIT_REF,ERP_LEDGER,Confirmed,false,false,OTHER-only invoice; LPG=0. Cent-aligned ref 48871 → OTHER R5500.00.,AL-0276

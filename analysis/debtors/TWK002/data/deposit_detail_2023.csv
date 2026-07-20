@@ -1,0 +1,11 @@
+receipt_doc,doc_no,deposit_amount,deposit_discount,deposit_total,source_type,notes
+00023836,00020607,345.00,0.00,345.00,erp_deposit_detail,Partial allocation — not full remittance net R3,450.00
+00023836,00021597,345.00,0.00,345.00,erp_deposit_detail,Partial allocation
+00023836,00022058,1035.00,0.00,1035.00,erp_deposit_detail,Partial allocation
+00023836,00022060,6883.40,176.50,7059.90,erp_deposit_detail,Matches remittance discount split
+00023836,00022255,5225.02,133.98,5359.00,erp_deposit_detail,Matches remittance discount split
+00023836,00022626,8405.48,215.53,8621.01,erp_deposit_detail,Matches remittance discount split
+00023836,00022627,2527.13,232.87,2760.00,erp_deposit_detail,Partial vs remittance net R10,091.25
+00023836,00022702,2158.16,55.34,2213.50,erp_deposit_detail,Matches remittance discount split
+00023836,00022739,-345.00,0.00,-345.00,erp_deposit_detail,CN slice on deposit
+00023836,00023077,345.00,0.00,345.00,erp_deposit_detail,Not on remittance advice — Aug invoice partial

@@ -1,0 +1,39 @@
+{
+  "debtorCode": "MD0003",
+  "payerName": "BLUFF MEAT SUPPLY (PTY) LTD",
+  "supplierName": "GAZ EXPRESS",
+  "supplierAccountOnRemittance": "GAZ001",
+  "sourceFiles": [
+    {
+      "path": "raw/Remittances/01.11.2025.pdf",
+      "originalPath": "/Users/admin/Downloads/gaz.pdf",
+      "note": "Canonical copy; duplicates (gaz.pdf–gaz (7).pdf) removed from raw/Remittances"
+    }
+  ],
+  "batches": [
+    {
+      "batchId": "RM-2025-11-01",
+      "remittanceDate": "2025-11-01",
+      "paymentReference": "000000000110925210",
+      "erpPaymentDoc": "42051",
+      "erpPaymentDate": "2025-11-01",
+      "erpBatchRef": "STAT:121",
+      "remittanceTotal": 35770.31,
+      "discountTotal": 0.0,
+      "status": "Posted",
+      "lineCount": 10
+    }
+  ],
+  "lines": [
+    { "batchId": "RM-2025-11-01", "docNo": "43721", "invoiceDate": "2025-09-30", "paymentAmount": 3866.45, "grossAmount": 3866.45, "discount": 0.0 },
+    { "batchId": "RM-2025-11-01", "docNo": "45437", "invoiceDate": "2025-09-30", "paymentAmount": 4912.25, "grossAmount": 4912.25, "discount": 0.0 },
+    { "batchId": "RM-2025-11-01", "docNo": "45895", "invoiceDate": "2025-09-30", "paymentAmount": 3598.07, "grossAmount": 3598.07, "discount": 0.0 },
+    { "batchId": "RM-2025-11-01", "docNo": "46055", "invoiceDate": "2025-09-09", "paymentAmount": 4797.43, "grossAmount": 4797.43, "discount": 0.0 },
+    { "batchId": "RM-2025-11-01", "docNo": "46075", "invoiceDate": "2025-09-09", "paymentAmount": 3598.07, "grossAmount": 3598.07, "discount": 0.0 },
+    { "batchId": "RM-2025-11-01", "docNo": "46334", "invoiceDate": "2025-09-30", "paymentAmount": 3432.06, "grossAmount": 3432.06, "discount": 0.0 },
+    { "batchId": "RM-2025-11-01", "docNo": "46444", "invoiceDate": "2025-09-30", "paymentAmount": 2740.88, "grossAmount": 2740.88, "discount": 0.0 },
+    { "batchId": "RM-2025-11-01", "docNo": "46445", "invoiceDate": "2025-09-30", "paymentAmount": 3105.0, "grossAmount": 3105.0, "discount": 0.0, "lane": "CYL" },
+    { "batchId": "RM-2025-11-01", "docNo": "46724", "invoiceDate": "2025-09-09", "paymentAmount": 3432.06, "grossAmount": 3432.06, "discount": 0.0 },
+    { "batchId": "RM-2025-11-01", "docNo": "46760", "invoiceDate": "2025-09-09", "paymentAmount": 2288.04, "grossAmount": 2288.04, "discount": 0.0 }
+  ]
+}

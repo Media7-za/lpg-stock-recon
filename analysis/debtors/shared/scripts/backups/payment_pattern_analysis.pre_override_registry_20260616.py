@@ -5,7 +5,7 @@ import pandas as pd
 from datetime import datetime
 from sqlalchemy import create_engine, text
 
-SUPABASE_URL = "postgresql+psycopg2://postgres.oqhpxnaadahohwkslive:lpg-stock-recon@aws-0-eu-west-1.pooler.supabase.com:5432/postgres"
+SUPABASE_URL = os.environ['DATABASE_URL']
 
 def main():
     parser = argparse.ArgumentParser(description="Payment Pattern Analysis & Cumulative Balance Audit")

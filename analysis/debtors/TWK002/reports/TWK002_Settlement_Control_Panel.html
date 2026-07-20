@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TWK002 — Settlement Discount Control Panel</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #181b24;
+      --border: #2a2f3d;
+      --text: #e8eaef;
+      --muted: #9aa3b5;
+      --accent: #4c8dff;
+      --warn: #e5a84b;
+      --ok: #5cb87a;
+      --mono: "SF Mono", "Consolas", monospace;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.45;
+    }
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 24px 20px 48px; }
+    h1 { font-size: 1.5rem; font-weight: 800; margin: 0 0 4px; }
+    .sub { color: var(--muted); font-size: 0.85rem; margin-bottom: 20px; }
+    .callout {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      padding: 12px 14px;
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+    }
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .kpi {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 14px;
+    }
+    .kpi label { display: block; font-size: 0.65rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+    .kpi .val { font-family: var(--mono); font-size: 1.25rem; font-weight: 700; margin-top: 6px; }
+    .toolbar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 16px; }
+    select, button {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 8px 12px;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+    button.active { border-color: var(--accent); color: var(--accent); }
+    .grid2 { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 16px; }
+    @media (max-width: 900px) { .grid2 { grid-template-columns: 1fr; } }
+    section { margin-bottom: 24px; }
+    h2 { font-size: 0.75rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin: 0 0 10px; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+    th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); }
+    th { color: var(--muted); font-weight: 700; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    td.num { text-align: right; font-family: var(--mono); }
+    tr:hover td { background: rgba(76, 141, 255, 0.06); }
+    tr.sel td { background: rgba(76, 141, 255, 0.12); }
+    tr.warn td { background: rgba(229, 168, 75, 0.08); }
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 14px;
+    }
+    .badge {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border: 1px solid var(--border);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .badge.warn { border-color: var(--warn); color: var(--warn); }
+    .badge.neutral { color: var(--muted); }
+    .badge.info { border-color: var(--accent); color: var(--accent); }
+    .task {
+      border-bottom: 1px solid var(--border);
+      padding: 12px 0;
+    }
+    .task:last-child { border-bottom: 0; }
+    .task h3 { margin: 0 0 4px; font-size: 0.9rem; }
+    .task .meta { color: var(--muted); font-size: 0.78rem; margin-bottom: 8px; }
+    .checks { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.8rem; }
+    .checks label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+    .bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; font-size: 0.78rem; }
+    .bar-row .lbl { width: 72px; color: var(--muted); flex-shrink: 0; }
+    .bar-row .track { flex: 1; height: 10px; background: var(--border); }
+    .bar-row .fill { height: 100%; background: var(--warn); }
+    .bar-row .amt { width: 72px; text-align: right; font-family: var(--mono); }
+    .artifacts a { color: var(--accent); text-decoration: none; font-size: 0.82rem; }
+    .artifacts li { margin-bottom: 6px; }
+    .detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin: 10px 0; }
+    .detail-grid div label { font-size: 0.65rem; color: var(--muted); display: block; }
+    .detail-grid div span { font-family: var(--mono); font-weight: 600; }
+    .panel.flash { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .row-btn { background: transparent; border: 0; color: var(--accent); padding: 0; text-decoration: underline; cursor: pointer; font: inherit; }
+    .checks button[data-view] { margin-left: auto; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <p class="badge info">TWK002</p>
+    <h1>Settlement Discount Control Panel</h1>
+    <p class="sub">Model B · remittance-authoritative · Generated 2026-07-12 · Static HTML (open in any browser)</p>
+
+    <div class="callout">
+      <strong>Model B:</strong> Payment = remittance cash · Journal = remittance discount · Gross = cash + journal.
+      Orphan slices sit in deposit <em>DISCOUNT</em>, not AMOUNT (confirmed on five 2024 receipts).
+    </div>
+
+    <div class="kpis" id="kpis"></div>
+
+    <div class="toolbar">
+      <label>Year <select id="yearFilter"><option value="all">All</option><option value="2023">2023</option><option value="2024" selected>2024</option></select></label>
+      <span class="progress" id="progressLabel"></span>
+    </div>
+
+    <div class="grid2">
+      <section id="batchTableSection">
+        <h2>Remittance batches</h2>
+        <div class="panel" style="padding:0; overflow:auto">
+          <table id="batchTable"><thead><tr>
+            <th>Paid</th><th>Receipt</th><th class="num">Cash</th><th class="num">Journal</th><th class="num">Orphan</th><th>Type</th>
+          </tr></thead><tbody></tbody></table>
+        </div>
+      </section>
+      <section id="batchDetailSection">
+        <h2>Batch detail</h2>
+        <div class="panel" id="batchDetail"></div>
+        <h2 style="margin-top:16px">Orphan slices (ZAR)</h2>
+        <div class="panel" id="orphanBars"></div>
+      </section>
+    </div>
+
+    <section id="depositSection" style="display:none">
+      <h2>Deposit detail</h2>
+      <div class="panel" style="padding:0; overflow:auto">
+        <table id="depositTable"><thead><tr>
+          <th>Doc</th><th class="num">Amount</th><th class="num">Discount</th><th class="num">Total</th><th>Note</th>
+        </tr></thead><tbody></tbody></table>
+      </div>
+    </section>
+
+    <section>
+      <h2>Finance posting checklist</h2>
+      <div class="panel" id="checklist"></div>
+    </section>
+
+    <section>
+      <h2>Artifact index</h2>
+      <ul class="artifacts" id="artifacts"></ul>
+    </section>
+  </div>
+
+<script>
+const BATCHES = [{"id":"BATCH-2023-06-26","year":2023,"paid":"26 Jun 2023","receipt":"00022182","erpGross":46424.87,"cash":45264.25,"journal":1160.62,"gross":46424.87,"orphan":0,"kind":"cash_only","paymentAdjust":false,"depositFix":false},{"id":"BATCH-2023-07-26","year":2023,"paid":"26 Jul 2023","receipt":"00023115","erpGross":8145.79,"cash":7942.14,"journal":203.65,"gross":8145.79,"orphan":0,"kind":"cash_only","paymentAdjust":false,"depositFix":false},{"id":"BATCH-2023-08-28","year":2023,"paid":"28 Aug 2023","receipt":"00023836","erpGross":27738.41,"cash":26924.19,"journal":469.22,"gross":27393.41,"orphan":345,"kind":"over_post","paymentAdjust":true,"depositFix":true,"notes":"R345 orphan"},{"id":"BATCH-2023-09-26","year":2023,"paid":"26 Sep 2023","receipt":"00024560","erpGross":14684.27,"cash":14317.17,"journal":367.1,"gross":14684.27,"orphan":0,"kind":"cash_only","paymentAdjust":false,"depositFix":false},{"id":"BATCH-2023-10-26","year":2023,"paid":"26 Oct 2023","receipt":"00025906","erpGross":17064.38,"cash":16637.78,"journal":426.6,"gross":17064.38,"orphan":0,"kind":"cash_only","paymentAdjust":false,"depositFix":false},{"id":"BATCH-2023-11-27","year":2023,"paid":"27 Nov 2023","receipt":"00026681","erpGross":31872.29,"cash":30825.36,"journal":701.93,"gross":31527.29,"orphan":345,"kind":"over_post","paymentAdjust":true,"depositFix":true,"notes":"R345 orphan"},{"id":"BATCH-2024-03-26","year":2024,"paid":"26 Mar 2024","receipt":"00029684","erpGross":77692.03,"cash":73610.18,"journal":506.36,"gross":74116.54,"orphan":3575.49,"kind":"over_post","paymentAdjust":true,"depositFix":true,"notes":"Catch-up; already-paid on 23075"},{"id":"BATCH-2024-04-26","year":2024,"paid":"26 Apr 2024","receipt":"00030419","erpGross":28428.84,"cash":28428.84,"journal":375.1,"gross":28803.94,"orphan":0,"kind":"cash_only","paymentAdjust":false,"depositFix":false},{"id":"BATCH-2024-05-27","year":2024,"paid":"27 May 2024","receipt":"00031365","erpGross":11721.1,"cash":11721.1,"journal":300.54,"gross":12021.64,"orphan":0,"kind":"cash_only","paymentAdjust":false,"depositFix":false},{"id":"BATCH-2024-06-26","year":2024,"paid":"26 Jun 2024","receipt":"00031558","erpGross":39057.53,"cash":37294.98,"journal":956.28,"gross":38251.26,"orphan":806.27,"kind":"over_post","paymentAdjust":true,"depositFix":true,"notes":"Blank orphan R806.46"},{"id":"BATCH-2024-07-26","year":2024,"paid":"26 Jul 2024","receipt":"00032332","erpGross":18061.64,"cash":16737.35,"journal":429.16,"gross":17166.51,"orphan":895.13,"kind":"over_post","paymentAdjust":true,"depositFix":true,"notes":"Stale 29890 + 31405"},{"id":"BATCH-2024-08-26","year":2024,"paid":"26 Aug 2024","receipt":"00033224","erpGross":22338.84,"cash":21197.32,"journal":543.52,"gross":21740.84,"orphan":598,"kind":"over_post","paymentAdjust":true,"depositFix":true,"notes":"Stale R598"},{"id":"BATCH-2024-09-26","year":2024,"paid":"26 Sep 2024","receipt":"00033921","erpGross":2984.27,"cash":2984.27,"journal":-233.1,"gross":2751.17,"orphan":0,"kind":"cash_only","paymentAdjust":false,"depositFix":false,"notes":"Positive journal R233.10"},{"id":"BATCH-2024-10-26","year":2024,"paid":"26 Oct 2024","receipt":"00034518","erpGross":38338.45,"cash":38338.45,"journal":983.04,"gross":39321.49,"orphan":0,"kind":"partial_journal","paymentAdjust":false,"depositFix":false,"notes":"Reverse 00000334; post R983.04"},{"id":"BATCH-2024-11-26","year":2024,"paid":"26 Nov 2024","receipt":"00035263","erpGross":22581.72,"cash":21529.67,"journal":552.04,"gross":22081.71,"orphan":500.01,"kind":"over_post","paymentAdjust":true,"depositFix":true,"notes":"Discount-only 37189"},{"id":"BATCH-2024-12-27","year":2024,"paid":"27 Dec 2024","receipt":"00036195","erpGross":12104.7,"cash":12104.7,"journal":310.37,"gross":12415.07,"orphan":0,"kind":"cash_only","paymentAdjust":false,"depositFix":false}];
+
+const DEPOSITS = [{"receipt":"00029684","doc":"00026577","amount":8326.56,"discount":438.23,"total":8764.79,"note":"Invented discount"},{"receipt":"00029684","doc":"00027340","amount":21857.22,"discount":1150.38,"total":23007.6,"note":"Invented discount"},{"receipt":"00029684","doc":"00027764","amount":12463.24,"discount":655.96,"total":13119.2,"note":"Invented discount"},{"receipt":"00029684","doc":"00028765","amount":10195.8,"discount":536.62,"total":10732.42,"note":"Doubled discount"},{"receipt":"00029684","doc":"00029140","amount":13917.63,"discount":732.5,"total":14650.13,"note":"Doubled discount"},{"receipt":"00029684","doc":"00029889","amount":6849.73,"discount":568.16,"total":7417.89,"note":"Partial"},{"receipt":"00031558","doc":"00031907","amount":10143.54,"discount":533.87,"total":10677.41,"note":"Doubled discount"},{"receipt":"00031558","doc":"00031908","amount":1136.2,"discount":59.8,"total":1196,"note":"Heavy partial"},{"receipt":"00031558","doc":"00032419","amount":16687.28,"discount":720.38,"total":17407.66,"note":"Partial"},{"receipt":"00031558","doc":"00032425","amount":8521.5,"discount":448.5,"total":8970,"note":"Heavy partial"},{"receipt":"00031558","doc":"(blank)","amount":806.46,"discount":0,"total":806.46,"note":"Orphan line"},{"receipt":"00032332","doc":"00029890","amount":0,"discount":594.59,"total":594.59,"note":"Mar leak"},{"receipt":"00032332","doc":"00031405","amount":0,"discount":300.54,"total":300.54,"note":"May leak"},{"receipt":"00032332","doc":"00033277","amount":14943.35,"discount":429.16,"total":15372.51,"note":"OK"},{"receipt":"00032332","doc":"00033278","amount":1794,"discount":0,"total":1794,"note":"Partial"},{"receipt":"00033224","doc":"00033800","amount":8154.23,"discount":570.76,"total":8724.99,"note":"Equal split"},{"receipt":"00033224","doc":"00034342","amount":13043.09,"discount":570.76,"total":13613.85,"note":"Equal split"},{"receipt":"00035263","doc":"00036926","amount":21036.66,"discount":525.92,"total":21562.58,"note":"Full twin"},{"receipt":"00035263","doc":"00037189","amount":0,"discount":526.13,"total":526.13,"note":"Discount-only"},{"receipt":"00035263","doc":"00037817","amount":493.01,"discount":0,"total":493.01,"note":"Partial"}];
+
+const TASKS = [{"id":"TASK-0001","year":2023,"batchId":"BATCH-2023-06-26","receipt":"00022182","label":"Jun 2023","paymentAdjust":false,"depositFix":false,"journalLabel":"R-1,160.62"},{"id":"TASK-0002","year":2023,"batchId":"BATCH-2023-07-26","receipt":"00023115","label":"Jul 2023","paymentAdjust":false,"depositFix":false,"journalLabel":"R-203.65"},{"id":"TASK-0003","year":2023,"batchId":"BATCH-2023-08-28","receipt":"00023836","label":"Aug 2023","paymentAdjust":true,"depositFix":true,"journalLabel":"R-469.22"},{"id":"TASK-0004","year":2023,"batchId":"BATCH-2023-09-26","receipt":"00024560","label":"Sep 2023","paymentAdjust":false,"depositFix":false,"journalLabel":"R-367.10"},{"id":"TASK-0005","year":2023,"batchId":"BATCH-2023-10-26","receipt":"00025906","label":"Oct 2023","paymentAdjust":false,"depositFix":false,"journalLabel":"R-426.60"},{"id":"TASK-0006","year":2023,"batchId":"BATCH-2023-11-27","receipt":"00026681","label":"Nov 2023","paymentAdjust":true,"depositFix":true,"journalLabel":"R-701.93"},{"id":"TASK-2024-0001","year":2024,"batchId":"BATCH-2024-03-26","receipt":"00029684","label":"Mar 2024","paymentAdjust":true,"depositFix":true,"journalLabel":"R-506.36"},{"id":"TASK-2024-0002","year":2024,"batchId":"BATCH-2024-04-26","receipt":"00030419","label":"Apr 2024","paymentAdjust":false,"depositFix":false,"journalLabel":"R-375.10"},{"id":"TASK-2024-0003","year":2024,"batchId":"BATCH-2024-05-27","receipt":"00031365","label":"May 2024","paymentAdjust":false,"depositFix":false,"journalLabel":"R-300.54"},{"id":"TASK-2024-0004","year":2024,"batchId":"BATCH-2024-06-26","receipt":"00031558","label":"Jun 2024","paymentAdjust":true,"depositFix":true,"journalLabel":"R-956.28"},{"id":"TASK-2024-0005","year":2024,"batchId":"BATCH-2024-07-26","receipt":"00032332","label":"Jul 2024","paymentAdjust":true,"depositFix":true,"journalLabel":"R-429.16"},{"id":"TASK-2024-0006","year":2024,"batchId":"BATCH-2024-08-26","receipt":"00033224","label":"Aug 2024","paymentAdjust":true,"depositFix":true,"journalLabel":"R-543.52"},{"id":"TASK-2024-0007","year":2024,"batchId":"BATCH-2024-09-26","receipt":"00033921","label":"Sep 2024","paymentAdjust":false,"depositFix":false,"journalLabel":"R+233.10"},{"id":"TASK-2024-0008","year":2024,"batchId":"BATCH-2024-10-26","receipt":"00034518","label":"Oct 2024","paymentAdjust":false,"depositFix":false,"journalLabel":"R-983.04"},{"id":"TASK-2024-0009","year":2024,"batchId":"BATCH-2024-11-26","receipt":"00035263","label":"Nov 2024","paymentAdjust":true,"depositFix":true,"journalLabel":"R-552.04"},{"id":"TASK-2024-0010","year":2024,"batchId":"BATCH-2024-12-27","receipt":"00036195","label":"Dec 2024","paymentAdjust":false,"depositFix":false,"journalLabel":"R-310.37"}];
+
+const ARTIFACTS = [
+  ["Finance checklist MD", "../reports/TWK002_Finance_Posting_Checklist.md"],
+  ["Over-post investigation", "../reports/TWK002_Overpost_Investigation_2024.md"],
+  ["Recreated ledger 2024", "../reports/TWK002_Recreated_Ledger_2024.md"],
+  ["Posting tick-off CSV", "../data/finance_posting_checklist.csv"],
+  ["Deposit detail CSV", "../data/deposit_detail_2024.csv"],
+  ["Doctrine v2", "../docs/TWK002_Settlement_Discount_Doctrine_v2.md"],
+  ["Doctrine v1 (archive)", "../docs/TWK002_Settlement_Discount_Doctrine_v1.md"],
+];
+
+const LS_KEY = "twk002_posting_progress";
+let selectedBatch = "BATCH-2024-06-26";
+let progress = JSON.parse(localStorage.getItem(LS_KEY) || "{}");
+
+function zar(n) {
+  const abs = Math.abs(n);
+  const s = abs.toLocaleString("en-ZA", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  return n < 0 ? `R-${s}` : `R${s}`;
+}
+function journalLabel(j) {
+  if (j < 0) return `R+${Math.abs(j).toLocaleString("en-ZA", { minimumFractionDigits: 2 })}`;
+  return zar(-j);
+}
+function kindBadge(k) {
+  if (k === "over_post") return '<span class="badge warn">Over-post</span>';
+  if (k === "partial_journal") return '<span class="badge info">Partial</span>';
+  return '<span class="badge neutral">Cash-only</span>';
+}
+function saveProgress() { localStorage.setItem(LS_KEY, JSON.stringify(progress)); }
+function taskDone(t) {
+  const p = progress[t.id] || {};
+  return (!t.paymentAdjust || p.payment) && (!t.depositFix || p.deposit) && p.journal && p.verified;
+}
+
+function renderKpis() {
+  const done = TASKS.filter(taskDone).length;
+  document.getElementById("kpis").innerHTML = `
+    <div class="kpi"><label>Batches</label><div class="val">16</div></div>
+    <div class="kpi"><label>Journals (net)</label><div class="val">R-8,052.43</div></div>
+    <div class="kpi"><label>Orphan strip</label><div class="val">R7,064.90</div></div>
+    <div class="kpi"><label>Checklist</label><div class="val">${done} / 16</div></div>`;
+  document.getElementById("progressLabel").textContent = `Posting progress: ${done} / 16 tasks complete`;
+}
+
+function selectBatch(batchId, opts = {}) {
+  const batch = BATCHES.find(b => b.id === batchId);
+  if (!batch) return;
+  selectedBatch = batchId;
+  const yf = document.getElementById("yearFilter");
+  const yearStr = String(batch.year);
+  if (yf.value !== "all" && yf.value !== yearStr) {
+    yf.value = yearStr;
+  }
+  renderAll();
+  if (opts.scroll !== false) {
+    const target = document.getElementById("batchDetailSection");
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
+    const panel = document.getElementById("batchDetail");
+    panel.classList.add("flash");
+    setTimeout(() => panel.classList.remove("flash"), 1200);
+  }
+}
+
+function renderBatches() {
+  const yf = document.getElementById("yearFilter").value;
+  const rows = BATCHES.filter(b => yf === "all" || String(b.year) === yf);
+  const tbody = document.querySelector("#batchTable tbody");
+  tbody.innerHTML = rows.map(b => `
+    <tr class="${b.id === selectedBatch ? "sel" : ""} ${b.orphan > 0 ? "warn" : ""}" data-id="${b.id}">
+      <td><button type="button" class="row-btn" data-id="${b.id}">${b.paid}</button></td>
+      <td>${b.receipt}</td>
+      <td class="num">${zar(b.cash)}</td>
+      <td class="num">${journalLabel(b.journal)}</td>
+      <td class="num">${b.orphan ? zar(b.orphan) : "—"}</td>
+      <td>${kindBadge(b.kind)}</td>
+    </tr>`).join("");
+  tbody.querySelectorAll(".row-btn").forEach(btn => btn.addEventListener("click", () => {
+    selectBatch(btn.dataset.id, { scroll: false });
+  }));
+}
+
+function renderDetail() {
+  const b = BATCHES.find(x => x.id === selectedBatch);
+  const el = document.getElementById("batchDetail");
+  if (!b) { el.innerHTML = "<p>Select a batch</p>"; return; }
+  el.innerHTML = `
+    <p><strong>${b.id}</strong></p>
+    <div class="detail-grid">
+      <div><label>ERP gross</label><span>${zar(b.erpGross)}</span></div>
+      <div><label>Cash</label><span>${zar(b.cash)}</span></div>
+      <div><label>Journal</label><span>${journalLabel(b.journal)}</span></div>
+      <div><label>Gross</label><span>${zar(b.gross)}</span></div>
+    </div>
+    <p style="font-size:0.8rem;color:var(--muted)">Check: ${zar(b.cash)} + ${journalLabel(b.journal)} = ${zar(b.gross)}</p>
+    ${b.notes ? `<p style="font-size:0.82rem">${b.notes}</p>` : ""}`;
+}
+
+function renderOrphanBars() {
+  const items = BATCHES.filter(b => b.orphan > 0);
+  const max = Math.max(...items.map(b => b.orphan));
+  document.getElementById("orphanBars").innerHTML = items.map(b => `
+    <div class="bar-row">
+      <span class="lbl">${b.paid.replace(" 20", " '")}</span>
+      <div class="track"><div class="fill" style="width:${(b.orphan / max) * 100}%"></div></div>
+      <span class="amt">${zar(b.orphan)}</span>
+    </div>`).join("");
+}
+
+function renderDeposits() {
+  const b = BATCHES.find(x => x.id === selectedBatch);
+  const sec = document.getElementById("depositSection");
+  const lines = b ? DEPOSITS.filter(d => d.receipt === b.receipt) : [];
+  if (!lines.length) { sec.style.display = "none"; return; }
+  sec.style.display = "block";
+  document.querySelector("#depositSection h2").textContent = `Deposit detail — ${b.receipt}`;
+  document.querySelector("#depositTable tbody").innerHTML = lines.map(d => `
+    <tr class="${d.doc === "(blank)" || d.amount === 0 ? "warn" : ""}">
+      <td>${d.doc}</td><td class="num">${zar(d.amount)}</td><td class="num">${zar(d.discount)}</td>
+      <td class="num">${zar(d.total)}</td><td>${d.note}</td>
+    </tr>`).join("");
+}
+
+function renderChecklist() {
+  const el = document.getElementById("checklist");
+  el.innerHTML = TASKS.map(t => {
+    const p = progress[t.id] || {};
+    return `<div class="task" data-task="${t.id}">
+      <h3>${t.id} · ${t.label} <span class="badge neutral">${t.year}</span></h3>
+      <p class="meta">${t.receipt} · Journal ${t.journalLabel}</p>
+      <div class="checks">
+        ${t.paymentAdjust ? `<label><input type="checkbox" data-f="payment" data-t="${t.id}" ${p.payment?"checked":""}/> Payment adjusted</label>` : ""}
+        ${t.depositFix ? `<label><input type="checkbox" data-f="deposit" data-t="${t.id}" ${p.deposit?"checked":""}/> Deposit fixed</label>` : ""}
+        <label><input type="checkbox" data-f="journal" data-t="${t.id}" ${p.journal?"checked":""}/> Journal posted</label>
+        <label><input type="checkbox" data-f="verified" data-t="${t.id}" ${p.verified?"checked":""}/> Gross verified</label>
+        <button type="button" data-view="${t.batchId}">View batch</button>
+      </div>
+    </div>`;
+  }).join("");
+  el.querySelectorAll("input[type=checkbox]").forEach(cb => cb.addEventListener("change", e => {
+    const id = e.target.dataset.t, f = e.target.dataset.f;
+    progress[id] = progress[id] || {};
+    progress[id][f] = e.target.checked;
+    saveProgress(); renderKpis();
+  }));
+  el.querySelectorAll("button[data-view]").forEach(btn => btn.addEventListener("click", () => {
+    selectBatch(btn.dataset.view);
+  }));
+}
+
+function renderArtifacts() {
+  document.getElementById("artifacts").innerHTML = ARTIFACTS.map(([l, p]) => `<li><a href="${p}">${l}</a> — <code>${p}</code></li>`).join("");
+}
+
+function renderAll() {
+  renderKpis(); renderBatches(); renderDetail(); renderOrphanBars(); renderDeposits(); renderChecklist();
+}
+
+document.getElementById("yearFilter").addEventListener("change", renderBatches);
+renderArtifacts();
+renderAll();
+</script>
+</body>
+</html>

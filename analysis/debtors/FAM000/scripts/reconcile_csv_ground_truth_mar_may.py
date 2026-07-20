@@ -1,8 +1,9 @@
+import os
 import pandas as pd
 from sqlalchemy import create_engine, text
 from datetime import datetime
 
-SUPABASE_URL = "postgresql+psycopg2://postgres.oqhpxnaadahohwkslive:lpg-stock-recon@aws-0-eu-west-1.pooler.supabase.com:5432/postgres"
+SUPABASE_URL = os.environ['DATABASE_URL']
 
 def run_csv_reconciliation():
     engine = create_engine(SUPABASE_URL)

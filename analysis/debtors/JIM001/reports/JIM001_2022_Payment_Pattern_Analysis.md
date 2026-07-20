@@ -12,7 +12,7 @@ Generated on 2026-06-16 | Tolerance: R5.00
   * **2022-05 Underpayment:** Billed **R18,947.57**, R1,671.90 unmatched. *(Pattern 2 — possible cross-batch carry. See Section 2.1 for candidate invoices.)*
   * **2022-06 Underpayment:** Billed **R16,103.76**, R1,614.81 unmatched. *(Pattern 2 — possible cross-batch carry. See Section 2.1 for candidate invoices.)*
   * **2022-08 Overpayment (Surplus):** Net billed **R15,337.50**, paid **R15,885.27** (surplus of **-R547.77**). Treated as unallocated surplus.
-* **Pattern 3 Corrections Applied (exact mirrors — self-cancelling):**
+* **Timing / Settlement Corrections Applied (self-cancelling):**
   * **2022-09 / 2022-10:** Sep underpaid R2,767.68 ↔ Oct STAT:206 residual R2,767.68. Treated as FULLY SETTLED.
   * **2022-11 / 2022-12:** Nov overpaid R2,686.08 ↔ Dec underpaid R2,686.08. Treated as FULLY SETTLED.
 * **Arrears Catch-Up Payments Received:** **-R0.00**
@@ -25,14 +25,14 @@ Generated on 2026-06-16 | Tolerance: R5.00
 | **2022-02** | R13,949.00 | 2022-04-12 | 13583 | −R13,949.00 | −R0.00 | R0.00 | Paid in full. |
 | **2022-03** | R14,943.48 | — | — | R0.00 | −R0.00 | R14,943.48 | **STAT:199 Gap:** No payment matched. Bank recon investigation pending. |
 | **2022-04** | R18,184.64 | 2022-06-01 | 14135 | −R18,184.64 | −R0.00 | R0.00 | Paid in full. |
-| **2022-05** | R18,947.57 | 2022-07-26 | 15071 | −R17,275.67 | −R0.00 | R1,671.90 | Underpaid R1,671.90. Possible cross-batch carry — see Section 2.1 for candidates. |
-| **2022-06** | R16,103.76 | 2022-08-11 | 15473 | −R14,488.95 | −R0.00 | R1,614.81 | Underpaid R1,614.81. Possible cross-batch carry — see Section 2.1 for candidates. |
+| **2022-05** | R18,947.57 | 2022-07-26 | 15071 | −R17,275.67 | −R0.00 | R1,671.90 | Underpaid R1,671.90. Possible cross-batch carry - see Section 2.1 for candidates. |
+| **2022-06** | R16,103.76 | 2022-08-11 | 15473 | −R14,488.95 | −R0.00 | R1,614.81 | Underpaid R1,614.81. Possible cross-batch carry - see Section 2.1 for candidates. |
 | **2022-07** | R17,169.29 | 2022-09-10 | 15987 | −R17,169.29 | −R0.00 | R0.00 | Paid in full. |
 | **2022-08** | R15,337.50 | 2022-10-20 | 16648 | −R15,885.27 | −R0.00 | −R547.77 | **Overpaid R547.77:** Gross payment of R15,885.27 logged against net billed LPG. (Net after credits R3,834.38.) |
-| **2022-09** | R16,606.08 | 2022-11-24 | 17073 | −R13,838.40 | −R0.00 | R2,767.68 | **Pattern 3 — Mirror carry:** R2,767.68 residual covered by STAT:206 (Oct payment). Treated as fully settled. |
-| **2022-10** | R15,222.24 | 2022-12-19 | 17578 | −R17,989.92 | −R0.00 | −R2,767.68 | **Pattern 3 — Mirror carry:** STAT:206 payment includes R2,767.68 residual for Sep. Treated as fully settled. |
-| **2022-11** | R8,139.84 | 2023-01-19 | 17777 | −R10,825.92 | −R0.00 | −R2,686.08 | **Pattern 3 — Mirror carry:** Overpaid R2,686.08 offset against Dec shortfall. Treated as fully settled. (Net after credits R5,372.16.) |
-| **2022-12** | R27,870.44 | 2023-02-13 | 18185 | −R25,184.36 | −R0.00 | R2,686.08 | **Pattern 3 — Mirror carry:** R2,686.08 shortfall offset by Nov overpayment. Treated as fully settled. |
+| **2022-09** | R16,606.08 | 2022-11-24 | 17073 | −R13,838.40 | −R0.00 | R2,767.68 | **Pattern 3 - Mirror carry:** R2,767.68 residual covered by STAT:206 (Oct payment). Treated as fully settled. |
+| **2022-10** | R15,222.24 | 2022-12-19 | 17578 | −R17,989.92 | −R0.00 | −R2,767.68 | **Pattern 3 - Mirror carry:** STAT:206 payment includes R2,767.68 residual for Sep. Treated as fully settled. |
+| **2022-11** | R8,139.84 | 2023-01-19 | 17777 | −R10,825.92 | −R0.00 | −R2,686.08 | **Pattern 3 - Mirror carry:** Overpaid R2,686.08 offset against Dec shortfall. Treated as fully settled. (Net after credits R5,372.16.) |
+| **2022-12** | R27,870.44 | 2023-02-13 | 18185 | −R25,184.36 | −R0.00 | R2,686.08 | **Pattern 3 - Mirror carry:** R2,686.08 shortfall offset by Nov overpayment. Treated as fully settled. |
 | **TOTAL** | **R197,456.42** | | | **-R179,774.00** | | **R17,682.42** | **Net balance change for 2022.** |
 
 ### 2.1 Candidate Invoice Details for Underpayments

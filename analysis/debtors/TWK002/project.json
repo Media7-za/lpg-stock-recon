@@ -1,0 +1,55 @@
+{
+  "debtorCode": "TWK002",
+  "clientName": "TWK AGRI PTY LTD",
+  "status": "active",
+  "reconState": "in-progress",
+  "financials": {
+    "totalOutstanding": 89543.71,
+    "lastInvoiceDate": "2024-02-26",
+    "lastPaymentDate": "2023-11-29",
+    "agedDebt180Plus": 0
+  },
+  "collections": {
+    "actionRequired": false,
+    "actionType": null,
+    "dateSent": null,
+    "deadlineDate": null,
+    "nextAction": null,
+    "nextActionDate": null,
+  "notes": "2023–2024 remittances linked. Doctrine v2. Finance catch-up posting in progress (Path B journals)."
+  },
+  "history": [
+    {
+      "date": "2026-07-12",
+      "event": "Turn 2 pilot batch: ingested remittance advice 28.08.2023.pdf (B226/KRD4029225). Cash R26,924.19 + discount R469.22 = gross R27,393.41. Linked to ERP receipt 00023836 (gross R27,738.41, +R345 variance)."
+    },
+    {
+      "date": "2026-07-12",
+      "event": "Turn 3: ingested all 6×2023 remittance PDFs from raw/Remittances/. Total discount R3,329.12 across 6 batches; 0 DISCOUNT ALLOWED journals in TXT. Deliverable 1: reports/TWK002_Missing_Discount_Journals_2023.md."
+    },
+    {
+      "date": "2026-07-12",
+      "event": "Turn 4: populated settlement_discount_overrides.json with 7 invoice exceptions (20607, 21123, 23075 partial, 24011 cross-batch, composite CN, stmt rounding). Expanded proforma_journals_2023.csv ref splits for all 6 batches."
+    },
+    {
+      "date": "2026-07-12",
+      "event": "Turn 5: recreated_ledger_2023.csv — 6 payments adjusted to remittance cash, 6 PROFORMA-DJ journals inserted on remittance dates. 2023 settlement R145,240.01; closing +R690 vs ERP."
+    },
+    {
+      "date": "2026-07-12",
+      "event": "Turn 6: TWK002_2023_Payment_Pattern_Analysis.md — discount-aware remittance-batch matching. All 6 batches FULL_MATCH Model B. payment_pattern_overrides.json populated."
+    },
+    {
+      "date": "2026-07-12",
+      "event": "2024 extension: ingested 10 remittance PDFs (Mar–Dec 2024). Total discount R4,723.31. TXT has no 2024 payments — ERP linkage PENDING. Combined 2023–2024 discount R8,052.43."
+    },
+    {
+      "date": "2026-07-12",
+      "event": "Linked raw/TWK0022024.TXT: 10 ERP payments STAT 100–109 mapped to remittance batches. 5 cash-only + 5 over-post. Partial journal 00000334 R385.04 posted Oct batch."
+    },
+    {
+      "date": "2026-07-13",
+      "event": "Doctrine v2: 2024 over-post family, Path B catch-up journals, exception types, already_paid rule. Finance posting in progress (2023 journals 00000490/491; Mar 00000492/493; Jun 00000494)."
+    }
+  ]
+}

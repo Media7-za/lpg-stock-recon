@@ -1,0 +1,7 @@
+task_id,batch_id,post_date,erp_action,amount,ref_summary,erp_status,evidence_source,priority,notes
+TASK-0001,BATCH-2023-06-26,2023-06-26,POST_DISCOUNT_ALLOWED_JOURNAL,-1160.62,Consolidated per remittance batch,MISSING,remittance_advice,HIGH,"Cash posted ERP 00022182 gross 46,424.87; journal R1,160.62 missing in TXT"
+TASK-0002,BATCH-2023-07-26,2023-07-26,POST_DISCOUNT_ALLOWED_JOURNAL,-203.65,Consolidated per remittance batch,MISSING,remittance_advice,HIGH,"Cash posted ERP 00023115 gross 8,145.79; journal R203.65 missing in TXT"
+TASK-0003,BATCH-2023-08-28,2023-08-28,POST_DISCOUNT_ALLOWED_JOURNAL,-469.22,Consolidated per remittance batch,MISSING,remittance_advice,HIGH,"Cash posted ERP 00023836 gross 27,738.41; journal R469.22 missing in TXT; ERP variance R345.00"
+TASK-0004,BATCH-2023-09-26,2023-09-26,POST_DISCOUNT_ALLOWED_JOURNAL,-367.1,Consolidated per remittance batch,MISSING,remittance_advice,HIGH,"Cash posted ERP 00024560 gross 14,684.27; journal R367.10 missing in TXT"
+TASK-0005,BATCH-2023-10-26,2023-10-26,POST_DISCOUNT_ALLOWED_JOURNAL,-426.6,Consolidated per remittance batch,MISSING,remittance_advice,HIGH,"Cash posted ERP 00025906 gross 17,064.38; journal R426.60 missing in TXT"
+TASK-0006,BATCH-2023-11-27,2023-11-27,POST_DISCOUNT_ALLOWED_JOURNAL,-701.93,Consolidated per remittance batch,MISSING,remittance_advice,HIGH,"Cash posted ERP 00026681 gross 31,872.29; journal R701.93 missing in TXT; ERP variance R345.00"

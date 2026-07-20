@@ -6,7 +6,7 @@ import pandas as pd
 from datetime import datetime
 from sqlalchemy import create_engine, text
 
-SUPABASE_URL = "postgresql+psycopg2://postgres.oqhpxnaadahohwkslive:lpg-stock-recon@aws-0-eu-west-1.pooler.supabase.com:5432/postgres"
+SUPABASE_URL = os.environ['DATABASE_URL']
 
 REQUIRED_OVERRIDE_FIELDS = {
     "year",
@@ -66,6 +66,7 @@ def load_payment_overrides(debtor_code):
             "amount": float(override["amount"]),
             "var": float(override["variance"]),
             "notes": str(override["notes"]),
+            "reconciled_month": override.get("reconciled_month", month_key),
             "summary_note": override.get("summary_note"),
         }
 
@@ -229,6 +230,7 @@ def main():
             permanent_anomalies = []
             timing_anomalies = []
             arrears_payments = []
+            applied_reconciled_month_by_doc = {}
             
             paid_sum = 0.0
             permanent_anomalies_sum = 0.0
@@ -325,6 +327,8 @@ def main():
                     
                     p_amt_str = f"−R{p_amt:,.2f}" if p_amt > 0 else "R0.00"
                     var_val_str = f"R{var_val:,.2f}" if var_val > 0 else (f"−R{abs(var_val):,.2f}" if var_val < 0 else "R0.00")
+                    if p_doc != "—":
+                        applied_reconciled_month_by_doc[p_doc] = ovr.get("reconciled_month", m_str)
                     
                     table_rows.append(f"| **{m_str}** | R{amt:,.2f} | {p_date_str} | {p_doc} | {p_amt_str} | −R0.00 | {var_val_str} | {notes} |")
                     
@@ -371,7 +375,8 @@ def main():
                                 'notes': f"Surplus paid on top of {m_str} statement."
                             })
                             arrears_payments_sum += arrears_val
-                            
+                        
+                        applied_reconciled_month_by_doc[p_doc] = m_str
                         table_rows.append(f"| **{m_str}** | R{amt:,.2f} | {p_date_str} | {p_doc} | -R{p_amt:,.2f} | -R{arrears_val:,.2f} | R{var_val:,.2f} | Paid in full. |")
                     else:
                         table_rows.append(f"| **{m_str}** | R{amt:,.2f} | — | — | R0.00 | — | +R{amt:,.2f} | **Skipped Month:** Statement was completely unpaid. |")
@@ -474,6 +479,18 @@ def main():
             # Print Payment Sequence Table
             f.write("| Sequence | Payment Doc | Payment Date | Payment Amount | Reconciled Month | Status / Reconciliation Notes |\n")
             f.write("| :--- | :---: | :---: | :---: | :---: | :--- |\n")
+
+            reconciled_month_by_doc = {}
+            for (override_year, _), override in approved_overrides.items():
+                if override["doc"] == "—":
+                    continue
+                if override_year == y:
+                    reconciled_month_by_doc[override["doc"]] = override["reconciled_month"]
+            reconciled_month_by_doc.update(applied_reconciled_month_by_doc)
+            for _, override in approved_overrides.items():
+                if override["doc"] == "—":
+                    continue
+                reconciled_month_by_doc.setdefault(override["doc"], override["reconciled_month"])
             
             # Let's check the batch refs present
             batches_found = [p['batch_ref'] for p in y_all_pmts]
@@ -497,7 +514,8 @@ def main():
             else:
                 # Fallback for other years: just print the payments listed in y_all_pmts using Doc number
                 for p in y_all_pmts:
-                    f.write(f"| **Doc {p['clean_doc']}** | {p['clean_doc']} | {p['date'].strftime('%Y-%m-%d')} | −R{abs(p['amount']):,.2f} | | ✅ Present. |\n")
+                    reconciled_month = reconciled_month_by_doc.get(p['clean_doc'], "—")
+                    f.write(f"| **Doc {p['clean_doc']}** | {p['clean_doc']} | {p['date'].strftime('%Y-%m-%d')} | −R{abs(p['amount']):,.2f} | {reconciled_month} | ✅ Present. |\n")
                 f.write("\n")
 
             # Section 4.1: Ledger-Wide Historical Balance Reconciliation (View A/B)
