@@ -71,7 +71,32 @@ export default function LoginScreen() {
         >
           {submitting ? 'Signing in…' : 'Sign In'}
         </button>
+
+        <div className="pt-4 border-t border-border space-y-3">
+          <div className="text-center">
+            <span className="px-2 py-0.5 text-[10px] font-bold tracking-wider uppercase bg-amber-500/10 text-amber-500 rounded-full border border-amber-500/20">
+              Dev Bypass Options
+            </span>
+            <p className="mt-1 text-[11px] text-text-secondary">No password required. Select a role to log in locally:</p>
+          </div>
+          <div className="grid grid-cols-3 gap-2">
+            {(['Depot Manager', 'Invoice Clerk', 'Yard Counter'] as const).map((role) => (
+              <button
+                key={role}
+                type="button"
+                onClick={() => {
+                  localStorage.setItem('bypass_auth_role', role);
+                  window.location.reload();
+                }}
+                className="py-1.5 px-1 bg-surface-elevated hover:bg-surface-elevated/80 border border-border hover:border-amber-500/50 rounded text-[11px] font-medium text-text-primary hover:text-amber-500 transition-all text-center leading-tight"
+              >
+                {role}
+              </button>
+            ))}
+          </div>
+        </div>
       </form>
     </div>
   );
 }
+

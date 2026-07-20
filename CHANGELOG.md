@@ -40,14 +40,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Added a database users inspection script [manage-auth-users.mjs](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/scripts/manage-auth-users.mjs) to query Supabase auth users directly via PostgreSQL.
+- Added local development bypass options on [LoginScreen.tsx](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/src/components/auth/LoginScreen.tsx) and [Header.tsx](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/src/components/layout/Header.tsx), permitting quick local login as Depot Manager, Invoice Clerk, or Yard Counter without password credentials.
+- Added graph-derived **Allocation Group IDs** (transitive connected components) to the payment allocation engine, grouping interrelated invoices, credit notes, and payments.
+- Added a new `allocation_group_id` column to the output `allocation_edges.csv`.
+- Added a chronological combined matching simulation script (`scratch/combine_and_recon.mjs`) to test multi-year debtor ledger reconciliation across boundary statement files.
+
+
+### Changed
+- Grouped confirmed allocations in generated markdown reports by their derived `AllocationGroupID`.
+- Overhauled the production database allocation script [payment_doc_allocation.mjs](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/shared/scripts/payment_doc_allocation.mjs) to prioritize split combination matches, enforce strict lag-window proximity (3-15 days), and completely ignore database payment ref_no mapping (preventing clerk auto-allocation noise).
+- Refined Credit Note matching in [payment_doc_allocation.mjs](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/shared/scripts/payment_doc_allocation.mjs) to sum only the LPG gas lines (filtering by `v.debt_group = 'LPG'`), correcting cylinder credit note target distortions and enabling automatic matching of Payment `36494` to Invoice `39895`.
+
+### Removed
+- Removed the chronological FIFO cascade fallback matching from the WO0001 production runner entirely, leaving unmatched items as unallocated residuals.
+
+### Fixed
+- Fixed credit note timing lags and duplicate matching bugs in [payment_doc_allocation.mjs](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/shared/scripts/payment_doc_allocation.mjs) by expanding the mapping window to `[-2, 7]` days and adding matched invoice tracking deduplication.
+
+### Added (Debtors Orchestration)
+- Added **Debtors Orchestrator MVP**: `SKILL_Debtors_Orchestrator.md`, `parse_global_aged_debt.mjs`, orchestrator KPIs in `DEBTORS_DASHBOARD.md`, `HUMAN_TASKS.md` queue, `debtors:parse-backlog` npm script.
+- Added **three human agent skills**: `SKILL_Human_ERP_Agent.md`, `SKILL_Human_Collections_Agent.md`, `SKILL_Human_Sources_Agent.md`.
+- Added **DEBTORS_ORCHESTRATION_PRD.md** and **DEBTORS_ORCHESTRATION_ROADMAP.md** — decisions log, actor model, phase plan.
+
+### Changed (Debtors Orchestration)
+- Renamed human roles in `HUMAN_TASKS.md` to ERP Agent, Collections Agent, Sources Agent (merged prior 4-role split).
+- `debtors:sync` now skips folders without `project.json` (e.g. `Global Reports/`).
+- Doc consistency pass: H-006 gates H-003–H-005; `Blocked by` column; JIM001 lane fix; D10 aggregate vs account wording; collections as human lane in orchestrator skill.
+
+### Added (Slices)
 - Added **Rule 13 (Gross Flow Overpayment & Surplus Allocation Rule)** to the global business rules (`analysis/debtors/shared/docs/business_rules.md`) to govern how payment surpluses are documented and carried forward.
 - Added **Payment Pattern Analysis & Cumulative Balance Audit** CLI automation script (`payment_pattern_analysis.py`), which queries transaction data directly from Supabase (or falls back to local CSVs) with configurable discrepancy tolerance (`--tolerance`, default R5.00).
 - Generated full 2018–2026 annual payment pattern analysis reports for debtor **JIM001** (`analysis/debtors/JIM001/reports/JIM001_YYYY_Payment_Pattern_Analysis.md`).
 - Reconciled 2023 and 2024 calendar year payment pattern overrides in `payment_pattern_analysis.py` for debtor **JIM001** to eliminate duplicate allocations (Doc 31179 and Doc 30269).
 - Replaced payment sequence prefix references (from `STAT:xx` to standard ERP `Doc xxxxx` numbers) in reports and CLI script to maintain ground-truth alignment.
 - Regenerated all 2018–2026 reports for **JIM001** ensuring correct math, unallocated pools, and boundary shift tables.
-
-### Changed
 - Reconciled August 2022 for debtor **JIM001** using the gross flow methodology, registering the full payment of R15,885.27 against the month, resulting in a variance of -R547.77 (representing the unallocated surplus paid) and correcting the payment pattern analysis table and totals.
 - Consolidated Section 4 of JIM001's 2022 report into a unified STAT Sequence & Payment Flow table, and added a detailed mathematical reconciliation between the payment settlement pool (R179,774.00) and calendar-year ERP headers (R160,782.02).
 - Added Section 5 (Unallocated Payment Pool) to JIM001's 2022 report listing genuine, non-pattern payment surpluses (STAT196 and STAT204) for 2022.

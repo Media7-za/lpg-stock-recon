@@ -10,6 +10,13 @@ export function useAuth() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        const bypassedRole = localStorage.getItem('bypass_auth_role') as UserRole;
+        if (bypassedRole) {
+            setUserRole(bypassedRole);
+            setLoading(false);
+            return;
+        }
+
         if (!supabase) {
             // No Supabase project configured at all — nothing to authenticate
             // against, so fall back to a local-dev stub role.
@@ -27,11 +34,29 @@ export function useAuth() {
         supabase.auth.getSession().then(({ data }) => applySession(data.session));
 
         const { data: subscription } = supabase.auth.onAuthStateChange((_event, nextSession) => {
-            applySession(nextSession);
+            // Only update session if not in bypass mode
+            const activeBypass = localStorage.getItem('bypass_auth_role');
+            if (!activeBypass) {
+                applySession(nextSession);
+            }
         });
 
         return () => subscription.subscription.unsubscribe();
     }, []);
 
-    return { userRole, session, loading, isAuthenticated: !!supabase ? !!session : true };
+    const logout = async () => {
+        localStorage.removeItem('bypass_auth_role');
+        if (supabase) {
+            await supabase.auth.signOut();
+        }
+        setUserRole(null);
+        setSession(null);
+        window.location.href = '/';
+    };
+
+    const isBypassed = typeof window !== 'undefined' && !!localStorage.getItem('bypass_auth_role');
+    const isAuthenticated = isBypassed ? true : (!!supabase ? !!session : true);
+
+    return { userRole, session, loading, isAuthenticated, isBypassed, logout };
 }
+
