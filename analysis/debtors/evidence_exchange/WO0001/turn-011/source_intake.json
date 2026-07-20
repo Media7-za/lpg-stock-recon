@@ -9,5 +9,5 @@
     "partial_export_intentional": true,
     "confirmation_note": "Operator confirmed partial P16–P17 export is acceptable ('partial is fine')"
   },
-  "commit_sha": null
+  "commit_sha": "c437543"
 }
