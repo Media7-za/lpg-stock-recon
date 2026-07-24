@@ -78,9 +78,9 @@ stored in the debtor workspace (`allocation_edges.csv` + narrative report).
 
 ## 3. Source-of-Truth Hierarchy (Invoice-Linked Debtors)
 
-> **Global evidence doctrine** (four-rank class table, line-level lanes, conservation invariants): canonical in [`SKILL_Debtor_Statement_v4_From_TXT.md` § Doctrine addendum — line-level lanes](SKILL_Debtor_Statement_v4_From_TXT.md#doctrine-addendum--line-level-lanes-turn-7i-moz002); summarized in [`SKILL_Debtors_Orchestrator.md` §5 · §3](SKILL_Debtors_Orchestrator.md#3-evidence-hierarchy). **This section** governs payment→invoice **matching** for invoice-linked payers only.
+> **Constitutional doctrine:** `analysis/debtors/shared/DEBTORS_DOCTRINE.md` §§1–4 · **D14** (ref_no payer-class exception) · **D15** (edge vs epistemic labels). **Global evidence doctrine** (four-rank class table, line-level lanes, conservation invariants): scoped-canonical in `SKILL_Debtor_Statement_v4_From_TXT.md` § Doctrine addendum; summarized in `SKILL_Debtors_Orchestrator.md` §5 · §3. **This section** governs payment→invoice **matching** for invoice-linked payers only — scoped-canonical for matching; edit matching rules here.
 
-For this payer class, the matching hierarchy **inverts** the monthly-batch skill:
+For this payer class, the matching hierarchy **inverts** the monthly-batch skill — within **D14** constraints:
 
 | High-confidence (use first) | Lower-confidence (fallback only) |
 | :--- | :--- |
@@ -96,8 +96,21 @@ For this payer class, the matching hierarchy **inverts** the monthly-batch skill
 | AGR / OTHER SKU lines | Out of LPG payment matching scope |
 
 > **Intent rule:** When `ref_no` matches `doc_no` and amounts align within
-> tolerance, classify as **Confirmed** via `EXPLICIT_ALLOCATION`. Do not downgrade
-> to "best-fit" unless the link is broken or amounts diverge beyond tolerance.
+> tolerance, classify as **Confirmed** via `EXPLICIT_ALLOCATION` — only after
+> **D14** provenance verification (Turn 8b Step 1). Do not downgrade to "best-fit"
+> unless the link is broken or amounts diverge beyond tolerance.
+
+### 3.1 REF_DECIDED label (D14 implementation — ratified 2026-07-22)
+
+Any allocation edge where a **reference broke a residual tie** — not merely corroborated an **amount-unique** match — must carry:
+
+| Field | Requirement |
+| :--- | :--- |
+| **Edge status** | `REF_DECIDED` (not `CONFIRMED_REF_LPG_MATCH` alone) |
+| **Tripwire** | Armed — a future contradicting document (remittance, ERP correction, alternate ref-bearing payment) **reopens** the edge |
+| **Epistemic note** | Per **D15:** edge label `REF_DECIDED` ≠ epistemic **PROVEN** until the allocation closes within a full identity or conservation result |
+
+Amount-unique lag matches without ref tie-break (e.g. cent-exact single candidate) do **not** use `REF_DECIDED` unless a reference was the discriminant.
 
 ---
 

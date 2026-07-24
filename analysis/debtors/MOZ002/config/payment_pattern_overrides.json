@@ -698,7 +698,8 @@
       "evidence_source": [
         "raw/MOZ002P17.TXT",
         "raw/MOZ002CURRENT.TXT"
-      ]
+      ],
+      "ratified_by_operator": "2026-07-22"
     }
   ],
   "cylResidualRegistry": "config/cyl_residual_registry.json",

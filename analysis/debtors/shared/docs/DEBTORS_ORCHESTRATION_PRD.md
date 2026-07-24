@@ -2,7 +2,7 @@
 
 **Slice:** Debtors Portfolio Management — Orchestration MVP  
 **Status:** Approved / In delivery  
-**Last updated:** 2026-07-13  
+**Last updated:** 2026-07-21  
 **Owner:** Debtors slice (AR / reconciliation)
 
 ---
@@ -86,6 +86,16 @@ Decisions from Jul 2026 exploration (TWK002 branch + orchestrator sessions):
 | D10 | **Collection-blocked exposure KPI** | Surfaces **aggregate** blocked exposure (R200k portfolio KPI); e.g. WO0001 alone is R110k pending recon | Only collection-active count |
 | D11 | **Chat transcripts not source of truth** | Repo artifacts survive branch switches | Rely on Cursor chat memory |
 | D12 | **`reconState: in-progress` display** | TWK002 visible in priority queue | Binary pending/complete only |
+| D13 | **Projection primary operator artifact; doctrine consolidated** | Single constitutional file `DEBTORS_DOCTRINE.md`; governance §7; projections max 5 questions | Ad-hoc doctrine in skills/docs |
+
+**Ruling (2026-07-20, operator-ratified — Turn 10):** Projection is the primary operator artifact; doctrine consolidated to `DEBTORS_DOCTRINE.md`; governance per constitutional §7.
+
+| # | Decision | Rationale | Rejected alternative |
+| :---: | :--- | :--- | :--- |
+| D14 | **`ref_no` advisory globally; payer-class exception in allocation lane** | Customer-authored bank-import refs may corroborate/close when candidate set already constrained; clerk-keyed/mixed provenance never elevated; conflicting evidence → STOP; Turn 8b Step 1 activation | Global elevation of ref_no (Turn 8b C1 open) |
+| D15 | **Edge labels ≠ epistemic tags** | `Confirmed` edge is not `PROVEN` until closed identity/conservation; glossary separates allocation confidence from fact tags | Using Confirmed and PROVEN interchangeably |
+
+**Ratified 2026-07-22 (Turn 11C — operator):** D14 and D15 committed to `DEBTORS_DOCTRINE.md` §4; supersede pending C1 status in Operator View and orchestrator conflict notes.
 
 ---
 

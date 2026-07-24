@@ -19,6 +19,7 @@ Read these before orchestrating:
 
 | Tier | Document | Purpose |
 | :---: | :--- | :--- |
+| 1 | `analysis/debtors/shared/DEBTORS_DOCTRINE.md` | **Constitutional doctrine** — evidence, projections, governance |
 | 1 | `.agents/skills/SKILL_Debtors_Project_Manager.md` | `project.json` updates, sync, collection prompts |
 | 1 | `analysis/debtors/shared/PROJECT_SCHEMA.md` | Debtor micro-project contract |
 | 1 | `analysis/debtors/shared/DEBTOR_STATE_MACHINE.md` | `reconState` / `status` gates |
@@ -176,6 +177,8 @@ Do not ratify on my behalf unless I paste explicit approval.
 
 ## 5. Orchestration Methods
 
+> **Constitutional doctrine:** `analysis/debtors/shared/DEBTORS_DOCTRINE.md` — this section summarizes methods and turn-brief enforcement; edit constitutional text there only (operator-ratified amendments).
+
 Distilled from MOZ002 Turns 5–7j (Jul 2026).
 
 Roles: **Operator** (human — finance authority, ratification, debtor contact) ·
@@ -214,7 +217,7 @@ Rules:
 | :--- | :--- | :--- |
 | Canonical | Line quantities (`transaction_items`) | Decides. Conservation: Σout − Σin = net held, per SKU |
 | Structural | DN references, doc pairing | Groups; never settles |
-| Advisory | `ref_no`, clerk allocations, header desc regex | Corroborates; never decides globally. Invoice-linked allocation lane may treat cent-aligned `ref_no` as confirmatory — see [`SKILL_Payment_To_Invoice_Allocation.md` §3](SKILL_Payment_To_Invoice_Allocation.md#3-source-of-truth-hierarchy-invoice-linked-debtors) (payer-class scope; potential conflict — operator ruling if both apply). Regex only as flagged fallback for TXT-only docs |
+| Advisory | `ref_no`, clerk allocations, header desc regex | Corroborates; never decides globally (**D14:** allocation-lane payer-class exception — `DEBTORS_DOCTRINE.md` §4). Regex only as flagged fallback for TXT-only docs |
 | Derived | Value | Never input. Residuals must decompose to integer units at a dated price; non-integer = defect flag, not rounding |
 
 **Lane membership is a property of the line, not the document.** Doc-level partitioning manufactures phantom cross-lane residuals exactly one unit-module wide.

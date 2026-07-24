@@ -20,6 +20,8 @@ This skill defines the strict methodology and layout requirements for generating
 
 ## 2. Source-of-Truth Hierarchy
 
+> Superseded for **global `ref_no` rank** by `DEBTORS_DOCTRINE.md` §4 **D14** (Advisory globally; allocation-lane payer-class exception committed 2026-07-22). **This table remains scoped-canonical for monthly batch payers** (JIM001 class).
+
 To maintain audit integrity, you must adhere to the following data classifications:
 
 | Canonical Truths (System/Bank Verified) | Non-Truths (Clerical Allocations / Labels) |
