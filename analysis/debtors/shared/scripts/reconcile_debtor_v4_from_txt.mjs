@@ -398,8 +398,10 @@ ${custodyLines.length ? custodyLines.map((l) => `| ${l.label} | ${l.qty} | R${fm
     debtorName: cfg.debtorName,
     period: { from: cfg.periodStart, to: lastIso },
     version: 'v4',
-    status:
-      Math.abs(erpVariance) < 0.02 && Math.abs(cylVariance) < 1 ? 'clean' : 'review',
+    // Application workflow status only (DebtorWorkspaceStatus) — not constitutional
+    // reconState, not D17/D18 collections eligibility, not ingestGate.displayStatus.
+    workspaceStatus:
+      Math.abs(erpVariance) < 0.02 && Math.abs(cylVariance) < 1 ? 'clean' : 'pending_review',
     lastGeneratedAt: new Date().toISOString(),
     source: txtRel,
     financialPosition: {

@@ -6,7 +6,7 @@
     "to": "2026-07-14"
   },
   "version": "v4",
-  "status": "clean",
+  "workspaceStatus": "clean",
   "lastGeneratedAt": "2026-07-16T13:24:38.136Z",
   "source": "analysis/debtors/JEN001/raw/JEN00116JULY.TXT",
   "financialPosition": {

@@ -48,8 +48,16 @@ export interface DebtorWorkspaceState {
   debtorCode: string;
   debtorName: string;
   period: { from: string; to: string };
-  version: 'v4';
-  status: DebtorWorkspaceStatus;
+  version: 'v4' | 'v5';
+  /**
+   * Application workflow status only — where this generated statement sits in the
+   * human review/send workflow. It does NOT represent constitutional reconciliation
+   * state (`project.json.reconState`), collections eligibility (D17/D18), or ingest
+   * health (`ingestGate.displayStatus`). A workspace may legitimately be
+   * `pending_review` even when reconciliation is constitutionally closed — the two
+   * questions are independent and must never be inferred from one another.
+   */
+  workspaceStatus: DebtorWorkspaceStatus;
   lastGeneratedAt?: string;
   financialPosition: {
     lpgGasDebt: number;

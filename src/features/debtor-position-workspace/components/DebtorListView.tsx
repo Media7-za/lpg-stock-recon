@@ -69,7 +69,7 @@ export function DebtorListView() {
                     {debtor.debtorCode}
                   </span>
                   <span className="text-base font-black text-text-primary">{debtor.debtorName}</span>
-                  <StatusBadge status={debtor.status} />
+                  <StatusBadge status={debtor.workspaceStatus} />
                   <span className="ml-auto text-xs text-text-secondary">
                     {formatPeriod(debtor.period.from, debtor.period.to)}
                   </span>

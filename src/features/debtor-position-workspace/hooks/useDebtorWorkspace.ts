@@ -4,9 +4,9 @@ import FAM000 from '../data/fixtures/FAM000.v4.json';
 import TAN001 from '../data/fixtures/TAN001.v4.json';
 
 const FIXTURES: Record<string, DebtorWorkspaceState> = {
-  JEN001: JEN001 as DebtorWorkspaceState,
-  FAM000: FAM000 as DebtorWorkspaceState,
-  TAN001: TAN001 as DebtorWorkspaceState,
+  JEN001: JEN001 as unknown as DebtorWorkspaceState,
+  FAM000: FAM000 as unknown as DebtorWorkspaceState,
+  TAN001: TAN001 as unknown as DebtorWorkspaceState,
 };
 
 export function useDebtorWorkspace(debtorCode: string): DebtorWorkspaceState | null {

@@ -1,0 +1,51 @@
+{
+  "debtorCode": "IVE001",
+  "debtorName": "ST IVES",
+  "period": {
+    "from": "2026-01-01",
+    "to": "2026-07-15"
+  },
+  "version": "v5",
+  "workspaceStatus": "pending_review",
+  "lastGeneratedAt": "2026-07-24T04:45:43.264Z",
+  "source": "analysis/debtors/IVE001/raw/IVE001X22072026.TXT",
+  "financialPosition": {
+    "lpgGasDebt": 2879.99,
+    "cylinderFinancialBalance": 0,
+    "totalDebtorBalance": 2879.99,
+    "erpStatedBalance": 2879.99,
+    "erpVariance": 0,
+    "subLedgerVariance": 0
+  },
+  "custodyPosition": {
+    "totalCustodyExposure": 5750,
+    "lines": [
+      {
+        "sku": "D.1",
+        "label": "D.1",
+        "qty": -1,
+        "depositRate": 1150,
+        "exposure": -1150
+      },
+      {
+        "sku": "S.1",
+        "label": "S.1",
+        "qty": 6,
+        "depositRate": 1150,
+        "exposure": 6900
+      }
+    ]
+  },
+  "reconciliationPosition": {
+    "cylinderVariance": -5750,
+    "erpVariance": 0,
+    "subLedgerVariance": 0,
+    "exceptions": [
+      "Part 1B financial vs Part 2 custody — check DB ingest vs TXT"
+    ]
+  },
+  "artifacts": {
+    "statementMarkdown": "analysis/debtors/IVE001/reports/IVE001_Statement_Account_v5.md",
+    "txtSource": "analysis/debtors/IVE001/raw/IVE001X22072026.TXT"
+  }
+}

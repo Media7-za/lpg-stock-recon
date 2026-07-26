@@ -1,0 +1,51 @@
+{
+  "debtorCode": "BR0001",
+  "debtorName": "BRENELL  DESSERTS",
+  "period": {
+    "from": "2026-01-01",
+    "to": "2026-07-20"
+  },
+  "version": "v5",
+  "workspaceStatus": "pending_review",
+  "lastGeneratedAt": "2026-07-22T13:54:12.428Z",
+  "source": "analysis/debtors/BR0001/raw/BR0001P1TOP17.TXT",
+  "financialPosition": {
+    "lpgGasDebt": 21363.66,
+    "cylinderFinancialBalance": -690,
+    "totalDebtorBalance": 20673.66,
+    "erpStatedBalance": 20673.66,
+    "erpVariance": 0,
+    "subLedgerVariance": 0
+  },
+  "custodyPosition": {
+    "totalCustodyExposure": -5290,
+    "lines": [
+      {
+        "sku": "19.1",
+        "label": "19kg",
+        "qty": -1,
+        "depositRate": 690,
+        "exposure": -690
+      },
+      {
+        "sku": "S.1",
+        "label": "S.1",
+        "qty": -4,
+        "depositRate": 1150,
+        "exposure": -4600
+      }
+    ]
+  },
+  "reconciliationPosition": {
+    "cylinderVariance": 4600,
+    "erpVariance": 0,
+    "subLedgerVariance": 0,
+    "exceptions": [
+      "Part 1B financial vs Part 2 custody — check DB ingest vs TXT"
+    ]
+  },
+  "artifacts": {
+    "statementMarkdown": "analysis/debtors/BR0001/reports/BR0001_Statement_Account_v5.md",
+    "txtSource": "analysis/debtors/BR0001/raw/BR0001P1TOP17.TXT"
+  }
+}

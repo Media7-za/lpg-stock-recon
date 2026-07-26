@@ -48,7 +48,7 @@ export function DebtorWorkspacePage() {
             {workspace.debtorCode}
           </span>
           <h1 className="text-xl font-black text-text-primary">{workspace.debtorName}</h1>
-          <StatusBadge status={workspace.status} />
+          <StatusBadge status={workspace.workspaceStatus} />
         </div>
         <div className="flex flex-wrap gap-6 mt-3">
           <div>

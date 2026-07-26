@@ -3,7 +3,7 @@
   "debtorName": "Tanya Lehman",
   "period": { "from": "2026-01-01", "to": "2026-05-31" },
   "version": "v4",
-  "status": "erp_exception",
+  "workspaceStatus": "erp_exception",
   "lastGeneratedAt": "2026-05-31T00:00:00+02:00",
   "financialPosition": {
     "lpgGasDebt": 95111.42,
