@@ -112,7 +112,9 @@ This session:
 5. Output:
    - Recommended next action (dispatch worker | queue human | defer)
    - Lane + worker skill if dispatching
-   - Turn brief (§5.5 template) ready to paste into a new worker chat
+   - Turn brief (§5.5 template) — draft it for my approval, then write it to
+     analysis/debtors/evidence_exchange/[CODE]/turn-[NNN]/turn_brief.md (I approve before write).
+     The worker reads that path; briefs are not handed over by chat paste.
    - Any HUMAN_TASKS.md rows to append (draft only — I approve before write)
 
 Do not change project.json, registries, edges, or reconState in this session unless I explicitly say "execute as repo agent."
@@ -129,18 +131,19 @@ ERP freshness gate (mandatory first step if turn involves balance, allocation, s
 - Ask operator to confirm latest or upload fresh TXT
 - STOP until explicit confirmation or upload; label file LATEST_IN_REPOSITORY until then
 
+Turn brief: analysis/debtors/evidence_exchange/[CODE]/turn-[NNN]/turn_brief.md
+Read it from the repo — do not accept a brief pasted into chat. If that file is absent, STOP and report.
+
 Read first:
-- [lane skill path from brief]
+- the turn brief above (lane method path is named in its §0 header)
 - analysis/debtors/[CODE]/project.json
 - analysis/debtors/[CODE]/reports/[CODE]_Onboarding_Status.md
 
 Evidence: SKILL_Debtor_Statement_v4_From_TXT.md § Doctrine addendum (canonical for line-level lanes).
 
---- TURN BRIEF (from orchestrator) ---
-[paste brief here]
---- END BRIEF ---
-
 Run steps in order. STOP at any STOP condition and report — do not improvise.
+Acceptance gates (brief §7) are separate: derivation, ERP-anchor validation, invariants PASS,
+Operator View generated and inspected, debtors:sync clean, manifest.json complete.
 When done: list artifacts touched + npm run debtors:sync result. Defer project.json to PM skill if material.
 ```
 
@@ -165,15 +168,16 @@ Do not ratify on my behalf unless I paste explicit approval.
 | `settlement_discount` | Remittance batches; missing `DISCOUNT ALLOWED` | TWK002 doctrine v2 + finance checklist |
 | `allocation` | Payment ref_no / deposit allocation mismatch | `SKILL_Payment_To_Invoice_Allocation.md` (**WO0001**) · **BU0005:** `SKILL_BU0005_Allocation_Worker.md` |
 | `position_recon` | Standard ERP TXT; baseline + pattern | `debtors-analysis_Skill.md` (+ payment pattern for **JIM001**) |
-| `defer` | COD micro-balance, empties-only, unallocated | No worker — skip |
+| `position_recon` + statement | Full Statement of Account required | **v4** — combined Part 1, EMPTY-pair stripping (**MOZ002**): `SKILL_Debtor_Statement_v4_From_TXT.md` · **v5** — split LPG/CYL deposit sub-ledgers, Part 1A/1B (**JEN001** — reference implementation; JEN001's ratified lane record is still v4, v5 artifacts uncommitted): `SKILL_Debtor_Statement_v5_From_TXT.md`. Statement layout skills are `position_recon`-only — never `allocation` or `settlement_discount` |
+| `defer` | COD micro-balance, empties-only, unallocated | No worker dispatched — **not a disposal.** Record basis, as-at date, threshold/reason, and reopening condition in the account's onboarding status. `defer` is a triage hint from `portfolio_candidates.csv`, revisable on new evidence — **MOZ002** was triaged `defer`/tier B and later reconciled to `complete` |
 
 **Human lane** — do not dispatch a worker; queue the Collections Agent:
 
 | Lane | When | Playbook |
 | :--- | :--- | :--- |
-| `collections` | `reconState: complete` + 180+ aged / LOD | `SKILL_Human_Collections_Agent.md` + `ACTION_PROMPTS.md` |
+| `collections` | **D17** gate met (below). Ageing 180+ / LOD sets **priority**, not eligibility | `SKILL_Human_Collections_Agent.md` + `ACTION_PROMPTS.md` |
 
-**Gate:** Never set `status: collection` unless `reconState: complete` (`DEBTOR_STATE_MACHINE.md`).
+**Gate (D17):** Never set `status: collection` unless **all three** hold — (a) `reconState: complete`, meaning constitutional closure and **not** a workbench session marked `COMPLETE` (**D16**); (b) a stated collectable balance under Constitution §2 (`ERP balance − Σ ratified holds`), bridge itemized and registered; (c) no unresolved dispute, stale source, unratified hold, or open identity blocking it. Aged accounts failing (b) or (c) route to **human review**, not collections. Enforcement: `DEBTOR_STATE_MACHINE.md` Rule 1.
 
 ## 5. Orchestration Methods
 
@@ -233,6 +237,9 @@ Implementation rules (SKU sets, regex fallback mechanics, four-lane identity con
 - Re-runs must be idempotent: overrides live in config, applied by ingest — never patched into outputs.
 
 ### 5. Turn-brief template
+
+**Fillable instance:** `analysis/debtors/evidence_exchange/templates/TURN_BRIEF.template.md`.
+Briefs are **repo artifacts, not chat pastes** — write to `evidence_exchange/<CODE>/turn-<NNN>/turn_brief.md` so the instruction lives in the same versioned folder as the evidence it produces. The skeleton below is canonical for the field list; the template file must not add or rename sections without amending it here first.
 
 ```
 Turn <id> — <objective, one line>

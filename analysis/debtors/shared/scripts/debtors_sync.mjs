@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { spawnSync } from 'child_process';
+import { fileURLToPath } from 'url';
 
 const baseDir = 'analysis/debtors';
 const skipDirs = new Set(['shared', 'Global Reports']);
@@ -10,7 +11,7 @@ const validReconStates = ["pending", "in-progress", "complete"];
 
 let hasHardFailures = false;
 
-function validateProject(code, data) {
+export function validateProject(code, data) {
   let errors = [];
   let warnings = [];
 
@@ -56,6 +57,36 @@ function validateProject(code, data) {
     if (data.reconState !== 'complete') errors.push('STATE MACHINE: Cannot be in collection without reconState complete');
     if (!data.collections?.actionRequired) errors.push('STATE MACHINE: collection status requires actionRequired = true');
     if (!data.collections?.actionType) errors.push('STATE MACHINE: collection status requires actionType');
+
+    // D17 collections gate — DEBTORS_DOCTRINE.md §4 (D17), Collectable Rule §2.
+    // Fails CLOSED: absence of evidence is never treated as absence of a blocker.
+    // Age (financials.agedDebt180Plus) sets priority only and is deliberately NOT read here.
+    const c = data.financials?.collectable;
+    if (c === undefined) {
+      errors.push('D17(b): financials.collectable missing — collectable balance must be stated under Constitution §2 (ERP balance − Σ ratified holds). SCHEMA GAP: field not yet in PROJECT_SCHEMA.md; cannot infer from totalOutstanding or age');
+    } else {
+      if (typeof c.amount !== 'number') errors.push('D17(b): financials.collectable.amount missing or not a number');
+      if (typeof c.ratifiedHoldsTotal !== 'number') errors.push('D17(b): financials.collectable.ratifiedHoldsTotal missing or not a number — holds must be quantified, not implied');
+      if (!c.asAt) errors.push('D17(b): financials.collectable.asAt missing — collectable balance requires a dated source');
+      if (!c.basis) errors.push('D17(b): financials.collectable.basis missing — basis of derivation must be stated');
+      if (c.operatorConfirmation !== 'confirmed') {
+        errors.push(`D17(b): financials.collectable.operatorConfirmation is "${c.operatorConfirmation ?? 'absent'}" — source is stale/unconfirmed until "confirmed"`);
+      }
+      if (typeof c.amount === 'number' && typeof c.ratifiedHoldsTotal === 'number'
+          && typeof data.financials?.totalOutstanding === 'number') {
+        const expected = data.financials.totalOutstanding - c.ratifiedHoldsTotal;
+        if (Math.abs(expected - c.amount) > 0.05) {
+          errors.push(`D17(b): collectable ${c.amount} ≠ totalOutstanding ${data.financials.totalOutstanding} − ratifiedHolds ${c.ratifiedHoldsTotal} (= ${expected.toFixed(2)}); bridge must be itemized and registered`);
+        }
+      }
+    }
+
+    const blockers = data.collections?.blockers;
+    if (!Array.isArray(blockers)) {
+      errors.push('D17(c): collections.blockers missing or not an array — an empty array affirms "no blocking dispute, stale source, unratified hold, or open identity". SCHEMA GAP: field not yet in PROJECT_SCHEMA.md');
+    } else if (blockers.length > 0) {
+      errors.push(`D17(c): ${blockers.length} unresolved blocker(s) — route to human review, not collections: ${blockers.map(b => (typeof b === 'string' ? b : b?.type ?? 'unspecified')).join(', ')}`);
+    }
   }
   
   if (data.status === 'resolved') {
@@ -123,4 +154,7 @@ function sync() {
   }
 }
 
-sync();
+// Run only when executed directly, so validateProject can be imported by tests.
+if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1])) {
+  sync();
+}

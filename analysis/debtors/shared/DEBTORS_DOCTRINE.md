@@ -86,6 +86,32 @@ Implementation: `SKILL_Payment_To_Invoice_Allocation.md` §3 · `REF_DECIDED` la
 
 Glossary: use **PROVEN / ASSERTED / ASSUMED** on balances, quantities, and closure conclusions; use **Confirmed / REF_DECIDED / VERIFIED_UNALLOCATED** (etc.) on allocation edges — do not treat them as interchangeable.
 
+### D16 — Workbench `COMPLETE` is a UI state, not a reconciliation state (ratified 2026-07-26)
+
+*Amends:* §2 (closure semantics) · *Implemented in:* `AR_Recon_Workflow.md` §19.2
+
+A session or account may show status `COMPLETE` in the LSR-5 / `AR_Recon_Workflow.md` workflow **without** ERP balance convergence, full invoice settlement, cylinder custody return, or zero suspense. That state records only that an operator has finished working the account for now.
+
+It therefore:
+
+- confers **no** `PROVEN` status (per **D15**, closure requires an anchored identity or conservation result);
+- does **not** satisfy `reconState: complete` under this Constitution;
+- leaves workbench outputs tagged **ASSERTED** except where independently anchored.
+
+**Display requirement.** Every derived view that shows an account's status must display **both** labels — workbench status **and** constitutional `reconState` — wherever they diverge. Never the workbench label alone. A single status field can be read confidently when it should not be; two fields that disagree cannot.
+
+### D17 — Collections gate requires a collectable balance, not just age (ratified 2026-07-26)
+
+*Amends:* §2 (Collectable Rule) · *Implemented in:* `DEBTOR_STATE_MACHINE.md` · `SKILL_Debtors_Orchestrator.md` §4
+
+`status: collection` requires **all** of:
+
+1. `reconState: complete` — existing gate, unchanged;
+2. a **stated collectable balance** under the §2 Collectable Rule (`ERP balance − Σ ratified holds`), with any bridge itemized, dated, and registered;
+3. **no** unresolved dispute, stale source, unratified hold, or open identity blocking that balance.
+
+**Age never establishes truth-readiness.** Ageing determines collections *priority* after eligibility is met. An aged account with an open dispute or an unratified hold routes to **human review**, not to the collections lane.
+
 ### Scoped-canonical implementation (do not duplicate here)
 
 | Topic | Constitutional home for implementation |
@@ -138,6 +164,8 @@ Full rules: `SKILL_Debtors_Orchestrator.md` §5.2 Epistemic bookkeeping.
 **Ratified 2026-07-20 (Turn 10):** Projection is the primary operator artifact; doctrine consolidated here; governance per §7.
 
 **Ratified 2026-07-22 (Turn 11C):** D14 (`ref_no` payer-class exception) and D15 (edge vs epistemic labels) — supersede Turn 10 pending C1 status.
+
+**Ratified 2026-07-26 (Turn 14b):** D16 (workbench `COMPLETE` is a UI state, not a reconciliation state — promotes `AR_Recon_Workflow.md` §19.2 from an application clause to constitutional rule, adds the dual-label display requirement) and D17 (collections gate requires a stated collectable balance and no blocking dispute or hold; age sets priority, not eligibility).
 
 ---
 

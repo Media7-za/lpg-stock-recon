@@ -1,5 +1,7 @@
 # Debtor State Machine
 
+> **Constitutional coupling:** `DEBTORS_DOCTRINE.md` §1 (state is derived) · §7 (governance). This file defines **valid transitions** for derived portfolio state (ALIGNED).
+
 This document governs the allowed state transitions for debtor micro-projects to prevent data corruption and ensure logical workflow progression. It outlines the valid lifecycles between the `reconState` and `status` fields defined in `PROJECT_SCHEMA.md`.
 
 ## Lifecycle Stages
@@ -28,7 +30,7 @@ The debtor portfolio management slice divides operations into two distinct track
 **Valid States:** `active`, `collection`, `on-hold`, `resolved`
 
 ### Allowed Transitions:
-- **`active` ➔ `collection`**: When a debtor falls deeply into arrears (e.g., >180 days aged debt) and formal action is required.
+- **`active` ➔ `collection`**: Only when the **D17** eligibility gate is met (see Strict Coupling Rule 1). Ageing (e.g. >180 days) sets **priority** among eligible accounts — it does **not** by itself authorise the transition.
 - **`collection` ➔ `active`**: When the debtor settles the aged debt or signs an acceptable payment plan, returning the account to good standing.
 - **`active` ➔ `on-hold` / `collection` ➔ `on-hold`**: When management halts operations (e.g., pending a legal dispute or internal audit).
 - **`on-hold` ➔ `active` / `collection`**: When the hold is lifted.
@@ -41,8 +43,14 @@ The debtor portfolio management slice divides operations into two distinct track
 
 To maintain portfolio integrity, the `debtors:sync` validator enforces these cross-field rules:
 
-1. **No Collections Without Recon:** 
-   You **cannot** transition `status` to `collection` unless `reconState` is strictly `complete`. You cannot demand payment on a ledger that hasn't been verified.
+1. **No Collections Without a Collectable Balance (D17):**
+   You **cannot** transition `status` to `collection` unless **all three** hold:
+
+   a. `reconState` is strictly `complete` — constitutional closure, **not** a workbench session marked `COMPLETE` (**D16**: that state confers no `PROVEN` status and does not satisfy `reconState: complete`);
+   b. a **stated collectable balance** exists under the §2 Collectable Rule (`ERP balance − Σ ratified holds`), with any bridge itemized, dated, and registered;
+   c. **no** unresolved dispute, stale source, unratified hold, or open identity blocks that balance.
+
+   You cannot demand payment on a ledger that hasn't been verified. An aged account failing (b) or (c) routes to **human review**, not to the collections lane.
    
 2. **Action Required Flag:**
    If `status` is `collection`, then `collections.actionRequired` **must** be `true` and `collections.actionType` **cannot** be null.

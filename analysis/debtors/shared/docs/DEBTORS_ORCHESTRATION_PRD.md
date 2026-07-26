@@ -101,15 +101,20 @@ Decisions from Jul 2026 exploration (TWK002 branch + orchestrator sessions):
 
 ## 6. Recon lanes
 
+> **Canonical routing:** `.agents/skills/SKILL_Debtors_Orchestrator.md` §4. This table states the *product requirement* that lanes exist and what each is for; it is **not** a second source of routing truth. Any change to §4 must be reflected here in the same commit — disagreement between the two is a validation failure.
+
 | Lane | Signal | Exemplar account | Worker playbook |
 | :--- | :--- | :--- | :--- |
 | `settlement_discount` | Remittance batches; missing `DISCOUNT ALLOWED` | TWK002 | Doctrine v2 + finance checklist |
-| `allocation` | Payment `ref_no` / allocation edges | WO0001 | `SKILL_Payment_To_Invoice_Allocation.md` |
+| `allocation` | Payment `ref_no` / allocation edges | WO0001, BU0005 | `SKILL_Payment_To_Invoice_Allocation.md` · `SKILL_BU0005_Allocation_Worker.md` |
 | `position_recon` | Standard ERP TXT + baseline / payment pattern | WES004, **JIM001** | `debtors-analysis_Skill.md` |
+| `position_recon` + statement | Full Statement of Account required | MOZ002 (v4) · **JEN001** — ratified record is **v4**; v5 generated but uncommitted, migration unconfirmed | `SKILL_Debtor_Statement_v4_From_TXT.md` · `SKILL_Debtor_Statement_v5_From_TXT.md` |
 | `collections` | `reconState: complete` + 180+ aged | WES004, TAN001 | `ACTION_PROMPTS.md` |
-| `defer` | COD micro-balance, empties, credit balance | INC002, JEN001 (scaffold) | No worker |
+| `defer` | COD micro-balance, empties, credit balance | BU0002, IVE001 | No worker dispatched — **not a disposal.** Requires recorded basis, as-at date, threshold/reason, reopening condition |
 
 **JIM001 nuance:** Complete recon via **payment-pattern** analysis — not allocation skill.
+
+**`defer` is revisable.** MOZ002 was triaged `defer`/tier B and later reconciled to `complete`. Treat the tier hint in `portfolio_candidates.csv` as triage input, never as a decision to stop.
 
 ---
 

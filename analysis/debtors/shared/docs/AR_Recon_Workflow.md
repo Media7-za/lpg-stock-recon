@@ -22,6 +22,8 @@ The core workflow principle is:
 > Operators do not reconcile raw ERP rows.  
 > Operators reconcile prepared domain projections generated from normalized Supabase artifacts.
 
+> Superseded for **debtors portfolio constitutional truth** by `DEBTORS_DOCTRINE.md` §§1–2 (evidence canonical; projections regenerated). Retained as LSR-5 AR Workbench operator workflow history (May 2026 era).
+
 ---
 
 ## 2. Workflow Scope
@@ -889,6 +891,10 @@ all invoices fully settled
 all CYL custody fully returned
 zero suspense
 ```
+
+> **Constitutional consequence — D16** (`analysis/debtors/shared/DEBTORS_DOCTRINE.md`). Because none of the above is required, session state `COMPLETE` records **workflow completion only**. It confers no `PROVEN` status and does **not** satisfy `reconState: complete`. Workbench outputs remain **ASSERTED** except where independently anchored.
+>
+> Any view surfacing this status must display it **alongside** the constitutional `reconState` wherever the two diverge — never the workbench label alone.
 
 ### 19.3 Completion screen
 
