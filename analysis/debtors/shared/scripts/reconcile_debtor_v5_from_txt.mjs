@@ -572,15 +572,22 @@ ${custodyBlockedNote}
       cylinderVariance: cylVariance,
       erpVariance,
       subLedgerVariance,
+      // Typed per StatementException (debtorWorkspace.ts). basis: 'ASSERTED' — a
+      // computed variance is a stated fact, not yet closed to zero (not PROVEN) and
+      // not a hypothesis (not ASSUMED). status: 'open' — freshly detected on this
+      // run; resolution is a human/evidence action, never assumed by the generator.
+      // Boundary: these are Statement-of-Account exceptions only — NEVER copied into
+      // collections.blockers. A D18 blocker requires its own evidence-backed
+      // assessment, not an inference from statement variance.
       exceptions: [
         ...(Math.abs(erpVariance) >= 0.02
-          ? ['Part 1 bridge differs from ERP TXT header']
+          ? [{ type: 'VARIANCE', basis: 'ASSERTED', status: 'open', description: 'Part 1 bridge differs from ERP TXT header' }]
           : []),
         ...(Math.abs(subLedgerVariance) >= 0.02
-          ? ['Part 1A + 1B closing does not tie to combined running balance']
+          ? [{ type: 'VARIANCE', basis: 'ASSERTED', status: 'open', description: 'Part 1A + 1B closing does not tie to combined running balance' }]
           : []),
         ...(Math.abs(cylVariance) >= 1
-          ? ['Part 1B financial vs Part 2 custody — check DB ingest vs TXT']
+          ? [{ type: 'CUSTODY', basis: 'ASSERTED', status: 'open', description: 'Part 1B financial vs Part 2 custody — check DB ingest vs TXT' }]
           : []),
       ],
     },
