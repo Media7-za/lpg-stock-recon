@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { evaluateD17Gate } from './debtors_sync.mjs';
 
 const baseDir = 'analysis/debtors';
 const candidatesPath = path.join(baseDir, 'shared/data/portfolio_candidates.csv');
@@ -35,6 +36,20 @@ function calculateIntelligence(p) {
 // Action Prompting Engine (Slice 005C)
 function generateActionPrompt(p) {
   if (p.status !== 'collection' && p.status !== 'legal') return null;
+
+  // D17 gate — DEBTORS_DOCTRINE.md §4. A blocked account stays visible (see renderConsole),
+  // but no demand text may be drafted for it: drafting a payment demand IS presenting the
+  // balance as collectable, which is precisely what D17 withholds.
+  const gate = evaluateD17Gate(p);
+  if (gate.blocked) {
+    return {
+      reason: `COLLECTIONS_BLOCKED — D17 gate not satisfied (${gate.reasons.length} unmet condition(s)).`,
+      recommendedAction: 'Human review — resolve D17 conditions with evidence. No debtor contact.',
+      suggestedMessage: null,
+      blocked: true,
+      blockedReasons: gate.reasons,
+    };
+  }
 
   const total = formatCurrency(p.financials?.totalOutstanding || 0);
   const aged = formatCurrency(p.financials?.agedDebt180Plus || 0);
@@ -144,6 +159,7 @@ function formatReconState(reconState) {
 
 // Function to render console dashboard
 function renderConsole(projects) {
+  const blockedRows = [];
   console.log('\n========================================================================================================');
   console.log('                 LPG STOCK RECON — DEBTORS PRIORITY QUEUE & METRICS');
   console.log('========================================================================================================');
@@ -185,6 +201,13 @@ function renderConsole(projects) {
     else if (status === 'on-hold') statusStr = '🟡 ' + statusStr;
     else if (status === 'resolved') statusStr = '🔵 ' + statusStr;
 
+    // D17: a blocked account stays on the register but must never read as collectable.
+    const d17 = evaluateD17Gate(p);
+    if (d17.blocked) {
+      statusStr = '⛔ COLLECTIONS_BLOCKED';
+      blockedRows.push({ code, reasons: d17.reasons });
+    }
+
     console.log([
       risk.padEnd(4),
       code.padEnd(8),
@@ -209,6 +232,15 @@ function renderConsole(projects) {
     ''.padEnd(20)
   ].join(' | '));
   console.log('========================================================================================================\n');
+
+  if (blockedRows.length > 0) {
+    console.log('⛔ D17 COLLECTIONS_BLOCKED — visible above, but NOT collections-ready. No debtor contact.');
+    for (const b of blockedRows) {
+      console.log(`   ${b.code}:`);
+      b.reasons.forEach(r => console.log(`     - ${r}`));
+    }
+    console.log();
+  }
 }
 
 // Function to generate Markdown Dashboard file
@@ -292,7 +324,10 @@ function generateMarkdown(projects, outputPath) {
     const recon = formatReconState(p.reconState);
     
     let statusStr = p.status.toUpperCase();
-    if (p.status === 'collection') statusStr = '🔴 COLLECTION';
+    const d17 = evaluateD17Gate(p);
+    if (d17.blocked) {
+      statusStr = '⛔ COLLECTIONS_BLOCKED';
+    } else if (p.status === 'collection') statusStr = '🔴 COLLECTION';
     else if (p.status === 'active') statusStr = '🟢 ACTIVE';
     else if (p.status === 'on-hold') statusStr = '🟡 ON HOLD';
     else if (p.status === 'resolved') statusStr = '🔵 RESOLVED';
@@ -337,8 +372,16 @@ function generateActionPromptsMarkdown(projects, outputPath) {
       md += `## ${code} — ${name}\n`;
       md += `- **Reason:** ${p._prompt.reason}\n`;
       md += `- **Recommended Action:** ${p._prompt.recommendedAction}\n`;
-      md += `- **Suggested Message:**\n\n`;
-      md += `> ` + p._prompt.suggestedMessage.replace(/\n/g, '\n> ') + `\n\n`;
+      if (p._prompt.blocked) {
+        // D17: no demand text is drafted for a blocked account. Drafting one would
+        // present the balance as collectable, which is exactly what D17 withholds.
+        md += `- **⛔ COLLECTIONS_BLOCKED — no message may be drafted or sent.** Unmet D17 conditions:\n\n`;
+        p._prompt.blockedReasons.forEach(r => { md += `  - ${r}\n`; });
+        md += `\n`;
+      } else {
+        md += `- **Suggested Message:**\n\n`;
+        md += `> ` + p._prompt.suggestedMessage.replace(/\n/g, '\n> ') + `\n\n`;
+      }
       md += `---\n\n`;
     }
   }

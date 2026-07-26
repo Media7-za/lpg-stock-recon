@@ -1,6 +1,6 @@
 # Debtors Portfolio Management Dashboard
 
-*Last Updated: 2026-07-20*
+*Last Updated: 2026-07-26*
 
 > **View dashboard:** `npm run debtors:sync` then read this file. Orchestrator skill: `.agents/skills/SKILL_Debtors_Orchestrator.md`
 
@@ -10,7 +10,7 @@
 |---|---|
 | **Recon in progress** | 4 |
 | **Collection-blocked exposure** (recon ≠ complete, actionable) | **R248 689,69** |
-| **Open human tasks** | 7 ([queue](analysis/debtors/shared/HUMAN_TASKS.md)) |
+| **Open human tasks** | 8 ([queue](analysis/debtors/shared/HUMAN_TASKS.md)) |
 | **Tier A backlog (not in portfolio)** | 10 |
 | **Backlog candidates (parsed)** | 68 ([CSV](analysis/debtors/shared/data/portfolio_candidates.csv)) |
 | **Recon complete rate** | 31% (4/13) |
@@ -36,11 +36,11 @@ Accounts are automatically sorted by Risk Score using the Collections Intelligen
 
 | Risk | Code | Client Name | Recon State | Workflow Status | Outstanding | Aged 180d+ | Next Action |
 |---|---|---|---|---|---|---|---|
-| **100** | [WES004](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/WES004/) | West Coast Fish & Chips | ✅ Complete | 🔴 COLLECTION | R36 216,20 | R7 443,73 | ⚠️ **letter-of-demand** (by 2026-06-29) |
+| **100** | [WES004](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/WES004/) | West Coast Fish & Chips | ✅ Complete | ⛔ COLLECTIONS_BLOCKED | R36 216,20 | R7 443,73 | ⚠️ **letter-of-demand** (by 2026-06-29) |
+| **55** | [BU0005](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/BU0005/) | CHOBOZA - BULWER | 🔄 In Progress | 🟢 ACTIVE | R3 450,17 | R203,57 | None |
 | **40** | [JIM001](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/JIM001/) | Jim Gas | ✅ Complete | 🟢 ACTIVE | R140 297,23 | R73 007,40 | None |
 | **40** | [MOZ002](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/MOZ002/) | MOZAMBIK | ✅ Complete | 🟢 ACTIVE | R22 898,47 | R3 190,07 | None |
-| **40** | [TAN001](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/TAN001/) | Tanya Lehman | ✅ Complete | 🔴 COLLECTION | R96 284,18 | R66 565,10 | ⚠️ **draft_lod** (by 2026-06-16) |
-| **30** | [BU0005](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/BU0005/) | CHOBOZA - BULWER | 🔄 In Progress | 🟢 ACTIVE | R3 450,17 | R203,57 | None |
+| **40** | [TAN001](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/TAN001/) | Tanya Lehman | ✅ Complete | ⛔ COLLECTIONS_BLOCKED | R96 284,18 | R66 565,10 | ⚠️ **draft_lod** (by 2026-06-16) |
 | **30** | [WO0001](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/WO0001/) | L3 Cash and Carry | ⏳ Pending | 🟢 ACTIVE | R110 789,36 | R51 628,92 | None |
 | **25** | [TWK002](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/TWK002/) | TWK AGRI PTY LTD | 🔄 In Progress | 🟢 ACTIVE | R89 543,71 | R0,00 | None |
 | **0** | [BU0009](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/BU0009/) | BU0009 Client Placeholder | ⏳ Pending | 🟢 ACTIVE | R0,00 | R0,00 | None |

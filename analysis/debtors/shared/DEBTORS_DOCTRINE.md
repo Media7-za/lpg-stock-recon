@@ -112,6 +112,50 @@ It therefore:
 
 **Age never establishes truth-readiness.** Ageing determines collections *priority* after eligibility is met. An aged account with an open dispute or an unratified hold routes to **human review**, not to the collections lane.
 
+### D18 — Collectable-balance contract; projection validity is separable from collections eligibility (ratified 2026-07-26)
+
+*Amends:* §2 (Collectable Rule) · *Implemented in:* `PROJECT_SCHEMA.md` · `debtors_sync.mjs` · `debtors_dashboard.mjs`
+
+**(1) Schema — `financials.collectable`.** The inspectable §2 identity lives in:
+
+```json
+{
+  "amount": 0.0,
+  "erpBalance": 0.0,
+  "ratifiedHoldsTotal": 0.0,
+  "asAt": "YYYY-MM-DD",
+  "source": "path/to/anchor/artifact",
+  "basis": "PROVEN",
+  "operatorConfirmation": "confirmed"
+}
+```
+
+- Identity: `amount = erpBalance − ratifiedHoldsTotal` (bridge itemized when they diverge).
+- `basis`: `PROVEN` | `ASSERTED` | `STALE` — **only `PROVEN` closes** collections eligibility.
+- `totalOutstanding` is a multi-code exposure aggregate and is **never** the ERP anchor.
+
+**(2) Schema — `collections.blockers`.** An array of:
+
+```json
+{
+  "type": "DISPUTE|STALE_SOURCE|UNRESOLVED_IDENTITY|HOLD|OTHER",
+  "status": "open|resolved",
+  "description": "string",
+  "source": "artifact ref",
+  "asAt": "YYYY-MM-DD"
+}
+```
+
+- `[]` = **assessed and clear**.
+- **Absent field** = **not assessed** → fails closed.
+- Only **`open`** blockers gate; **`resolved`** entries are retained as history.
+
+**(3) Separation.** Projection validity (may we generate and display the account?) is distinct from collections eligibility (may a human act on it as collectable?). A missing D18 contract blocks the **second only**. A blocked account:
+
+- **must** remain visible on the register;
+- **must** be labelled `COLLECTIONS_BLOCKED` in every operator-facing projection;
+- **must not** have demand text drafted — drafting a payment demand **is** presenting the balance as collectable.
+
 ### Scoped-canonical implementation (do not duplicate here)
 
 | Topic | Constitutional home for implementation |
@@ -166,6 +210,8 @@ Full rules: `SKILL_Debtors_Orchestrator.md` §5.2 Epistemic bookkeeping.
 **Ratified 2026-07-22 (Turn 11C):** D14 (`ref_no` payer-class exception) and D15 (edge vs epistemic labels) — supersede Turn 10 pending C1 status.
 
 **Ratified 2026-07-26 (Turn 14b):** D16 (workbench `COMPLETE` is a UI state, not a reconciliation state — promotes `AR_Recon_Workflow.md` §19.2 from an application clause to constitutional rule, adds the dual-label display requirement) and D17 (collections gate requires a stated collectable balance and no blocking dispute or hold; age sets priority, not eligibility).
+
+**Ratified 2026-07-26 (Turn 14c):** D18 (collectable-balance and blocker contract in `PROJECT_SCHEMA.md`; projection validity separable from collections eligibility; blocked accounts remain visible, labelled `COLLECTIONS_BLOCKED`, with demand drafting prohibited).
 
 ---
 
