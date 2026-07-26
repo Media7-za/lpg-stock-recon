@@ -528,6 +528,13 @@ ${custodyBlockedNote}
   fs.mkdirSync(path.dirname(cfg.reportPath), { recursive: true });
   fs.writeFileSync(cfg.reportPath, md);
 
+  // Boundary (DEBTORS_DOCTRINE.md D18 / PROJECT_PROJECTION_SCHEMA.md "collectable —
+  // derivation rule"): this generator computes Statement-of-Account sub-ledger
+  // positions only (LPG gas debt, cylinder financial balance, custody exposure,
+  // reconciliation variances). It must NEVER compute or emit a `collectable` field.
+  // If a collectable figure is ever needed on this fixture, it must be read verbatim
+  // from project.json.financials.collectable — never derived here from ERP TXT rows,
+  // totalOutstanding, aged balances, or the statement arithmetic below.
   const fixture = {
     debtorCode: cfg.debtorCode,
     debtorName: cfg.debtorName,
