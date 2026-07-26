@@ -30,6 +30,10 @@
     {
       "date": "2026-07-16",
       "event": "Rebuilt JEN001_Statement_Account_v4.md from JEN00116JULY.TXT via reconcile_jen_v4_from_txt.mjs. Part 1 R0.00 variance to ERP R28,534.89. Period Jan–14 Jul 2026."
+    },
+    {
+      "date": "2026-07-22",
+      "event": "Ingest coverage validator: STALE_PARTIAL — 51154/51155 MISSING_HEADER_AND_LINES; custody gate BLOCKED. Reports: JEN001_INGEST_COVERAGE_2026-07-22.json, JEN001_Ingest_Gate_Projection.md."
     }
   ]
 }
