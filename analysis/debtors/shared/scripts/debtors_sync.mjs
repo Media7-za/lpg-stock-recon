@@ -9,6 +9,11 @@ const skipDirs = new Set(['shared', 'Global Reports']);
 const validStatuses = ["active", "collection", "on-hold", "resolved"];
 const validReconStates = ["pending", "in-progress", "complete"];
 
+const VALID_INGEST_GATE_STATUS = ['pass', 'fail', 'unverified'];
+const VALID_INGEST_FRESHNESS = ['current', 'stale', 'unverified'];
+const VALID_INGEST_COVERAGE = ['complete', 'partial', 'unverified'];
+const VALID_INGEST_BLOCKED_SCOPES = ['custody', 'sku_analysis', 'allocation', 'financial_bridge_from_txt'];
+
 let hasHardFailures = false;
 const blockedAccounts = [];
 
@@ -73,6 +78,71 @@ export function evaluateD17Gate(data) {
   return { blocked: reasons.length > 0, reasons };
 }
 
+/**
+ * D19 ingest-gate structural check — DEBTORS_DOCTRINE.md D19.
+ *
+ * `ingestGate` is canonical but OPTIONAL: absent → WARN only (D19 migration
+ * model — no existing debtor has this populated today, none should be
+ * retroactively broken for lacking it). Present-but-malformed → hard error,
+ * same severity class as any other schema-gap error in `validateProject`.
+ *
+ * This function does not trust the object's own self-reported `status` value
+ * as proof of validity — same discipline as evaluateD17Gate not trusting
+ * financials.collectable blindly. It independently checks required fields
+ * and enum membership.
+ *
+ * Independence (D19): never reads/sets reconState, collections.blockers, or
+ * workspaceStatus. A malformed or absent ingestGate must never be copied
+ * into collections.blockers automatically.
+ *
+ * @returns {{ errors: string[], warnings: string[] }}
+ */
+export function evaluateIngestGate(data) {
+  const errors = [];
+  const warnings = [];
+  const gate = data?.ingestGate;
+
+  if (gate === undefined) {
+    warnings.push(
+      'ingestGate absent (D19 migration model — WARN only). Any conclusion claiming custody/SKU/allocation ' +
+      'closure must still treat this as ingestBlockedScopes: ["custody","sku_analysis","allocation"] — absence is never clearance.'
+    );
+    return { errors, warnings };
+  }
+
+  if (typeof gate !== 'object' || gate === null || Array.isArray(gate)) {
+    errors.push('D19: ingestGate present but not an object — malformed');
+    return { errors, warnings };
+  }
+
+  if (!VALID_INGEST_GATE_STATUS.includes(gate.status)) {
+    errors.push(`D19: ingestGate.status invalid or missing: ${gate.status}`);
+  }
+  if (!VALID_INGEST_FRESHNESS.includes(gate.ingestFreshness)) {
+    errors.push(`D19: ingestGate.ingestFreshness invalid or missing: ${gate.ingestFreshness}`);
+  }
+  if (!VALID_INGEST_COVERAGE.includes(gate.ingestCoverage)) {
+    errors.push(`D19: ingestGate.ingestCoverage invalid or missing: ${gate.ingestCoverage}`);
+  }
+  if (typeof gate.displayStatus !== 'string' || !gate.displayStatus) {
+    errors.push('D19: ingestGate.displayStatus missing or not a string');
+  }
+  if (!gate.asAt) errors.push('D19: ingestGate.asAt missing');
+  if (!gate.reportPath) errors.push('D19: ingestGate.reportPath missing');
+
+  if (!Array.isArray(gate.ingestBlockedScopes)) {
+    errors.push('D19: ingestGate.ingestBlockedScopes missing or not an array');
+  } else {
+    for (const scope of gate.ingestBlockedScopes) {
+      if (!VALID_INGEST_BLOCKED_SCOPES.includes(scope)) {
+        errors.push(`D19: ingestGate.ingestBlockedScopes contains unrecognised scope "${scope}"`);
+      }
+    }
+  }
+
+  return { errors, warnings };
+}
+
 export function validateProject(code, data) {
   let errors = [];
   let warnings = [];
@@ -113,6 +183,11 @@ export function validateProject(code, data) {
   if (!Array.isArray(data.history) || data.history.length === 0) {
     warnings.push('history array empty or missing');
   }
+
+  // Ingest gate (D19): absent is a warning; present-but-malformed is a hard error.
+  const ingestGateResult = evaluateIngestGate(data);
+  errors = errors.concat(ingestGateResult.errors);
+  warnings = warnings.concat(ingestGateResult.warnings);
 
   // Collections eligibility (D17) is evaluated separately from projection validity:
   // a blocked account stays visible in the dashboard but may never be acted on as collectable.

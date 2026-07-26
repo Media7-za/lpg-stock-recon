@@ -395,8 +395,16 @@ async function main() {
     // D18's `collections.blockers`: this is which analytical *lanes* cannot
     // close due to missing source coverage, not which account conditions
     // prohibit a collections action.
+    // D19: `status` is schema validity ("can this object be trusted?"), never
+    // computed from ingestFreshness/ingestCoverage — that conflation is exactly
+    // what D19 eliminates. Reaching this line means the report object above was
+    // successfully built and is well-formed, regardless of what it reports about
+    // ingest health — a stale/partial report is still a trustworthy report.
+    // There is no code path here that reaches this line with a malformed object;
+    // a genuine construction failure throws (see main().catch) and no report is
+    // written at all — which downstream reads as 'unverified' (absent), not 'fail'.
     ingest_gate: {
-      status: gaps.length === 0 && ingestFreshness !== 'unverified' ? 'pass' : 'fail',
+      status: 'pass',
       ingestBlockedScopes: blockedScopes,
     },
     documents,

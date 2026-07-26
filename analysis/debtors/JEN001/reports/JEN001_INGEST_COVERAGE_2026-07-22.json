@@ -22,7 +22,7 @@
     "allocation": "BLOCKED"
   },
   "ingest_gate": {
-    "status": "fail",
+    "status": "pass",
     "ingestBlockedScopes": [
       "custody",
       "sku_analysis",

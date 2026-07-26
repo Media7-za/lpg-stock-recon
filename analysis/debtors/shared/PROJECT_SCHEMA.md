@@ -49,6 +49,16 @@ Every `project.json` must adhere strictly to this JSON structure:
       }
     ]
   },
+  "ingestGate": {
+    "status": "pass | fail | unverified",
+    "ingestFreshness": "current | stale | unverified",
+    "ingestCoverage": "complete | partial | unverified",
+    "displayStatus": "string",
+    "asAt": "YYYY-MM-DD",
+    "reportPath": "string",
+    "ingestBlockedScopes": ["custody | sku_analysis | allocation | financial_bridge_from_txt"],
+    "exceptions": []
+  },
   "history": [
     {
       "date": "YYYY-MM-DD",
@@ -100,9 +110,21 @@ Every `project.json` must adhere strictly to this JSON structure:
 - **`date`** *(Required)*: String (ISO 8601 Date `YYYY-MM-DD`).
 - **`event`** *(Required)*: String. A concise description of the state change or action taken.
 
+### 5. Ingest Gate Object *(Optional — D19)*
+Canonical but **not required on every account** — only accounts whose recon claims custody, SKU, or allocation conclusions have anything for this object to gate. Absent is a WARN, not a FAIL; a present-but-malformed object is a hard FAIL.
+
+- **`status`** *(Required if object present)*: `"pass"` | `"fail"` | `"unverified"` — **schema validity only**, per D19. `pass` = this object is present and well-formed; `fail` = present but malformed (bad enum, missing field, malformed path); `unverified` = no validated object exists. **Never** computed from `ingestFreshness`/`ingestCoverage` — that would create two overlapping expressions of ingest health.
+- **`ingestFreshness`** *(Required if object present)*: `"current"` | `"stale"` | `"unverified"`. Are DB feeds at least as recent as the statement TXT?
+- **`ingestCoverage`** *(Required if object present)*: `"complete"` | `"partial"` | `"unverified"`. Does every TXT doc resolve to its expected header/line state?
+- **`displayStatus`** *(Required if object present)*: String, derived from freshness × coverage (e.g. `"CURRENT_PARTIAL"`).
+- **`asAt`**, **`reportPath`** *(Required if object present)*: Date and path of the underlying coverage report.
+- **`ingestBlockedScopes`** *(Required if object present)*: Array, subset of `"custody"` | `"sku_analysis"` | `"allocation"` | `"financial_bridge_from_txt"`. An absent `ingestGate` is treated identically to this array containing `["custody", "sku_analysis", "allocation"]` — **absence is never read as clearance** for those conclusions (D19).
+- **`exceptions`**: Reserved, currently always `[]`.
+- **Independence (D19):** does not confer `reconState: complete`; does not satisfy D17/D18 collections eligibility and is **never** auto-copied into `collections.blockers`; does not set or read `workspaceStatus`.
+
 ---
 > **Note on Validation Strictness:**
 > The `debtors:sync` pipeline enforces this schema.
-> - **FAIL (Exit 1):** Missing required fields, invalid enums, invalid JSON syntax, or invalid state transitions.
-> - **WARN (Stdout):** Missing optional fields, generic placeholder values, or suspiciously empty history arrays.
+> - **FAIL (Exit 1):** Missing required fields, invalid enums, invalid JSON syntax, invalid state transitions, or a present-but-malformed `ingestGate` (**D19**).
+> - **WARN (Stdout):** Missing optional fields, generic placeholder values, suspiciously empty history arrays, or an absent `ingestGate` (**D19** migration model — not a retroactive failure for existing debtors).
 > - **COLLECTIONS_BLOCKED (Exit 2):** Projection valid but D17/D18 collections eligibility not met — dashboard still generated; demand drafting suppressed (**D18**).
