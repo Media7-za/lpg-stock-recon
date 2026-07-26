@@ -1,6 +1,9 @@
-# Ingest Gate — Staged Schema Addition (not yet in project.json)
+# Ingest Gate — Ratified Schema (D19), Implementation Pending
 
-> **Status:** STAGED — pilot on JEN001 coverage artifacts before `project.json` migration.  
+> **Status:** **Ratified as canonical (D19, `DEBTORS_DOCTRINE.md`), optional on `project.json`.**
+> Mechanism is ratified; `PROJECT_SCHEMA.md` promotion and the `status`-field fix in
+> `validate_txt_db_coverage.mjs` (shipped Turn B1, commit `269d8ce`, computes `status`
+> operationally — **not yet aligned to D19**) remain a separate implementation turn.
 > **Replaces:** Single coarse `ingestState` field (rejected).  
 > **Constitutional fit:** Derived evidence first; compact gate in projection; tripwire `INGEST_DOC_MISSING`.
 
@@ -8,6 +11,14 @@
 > health only. No financial truth. No reconciliation closure. No collections eligibility
 > (D17/D18). No workspace workflow state (`workspaceStatus`). A `pass` here means source
 > documents resolve to their expected header/line state — nothing more.
+
+> **D19 — `status` is schema validity, not ingest health.** `status: pass|fail|unverified`
+> answers only "can I trust this `ingestGate` object?" — `pass` = present and well-formed,
+> `fail` = present but malformed (bad enum, missing field, malformed path), `unverified` =
+> no validated object exists. It must **never** be computed from `ingestFreshness` /
+> `ingestCoverage` — that creates two overlapping expressions of ingest health that can
+> drift apart. Operational health lives exclusively in the two dimensions below plus
+> `ingestBlockedScopes` and `displayStatus`.
 
 ---
 
@@ -26,7 +37,7 @@ CURRENT_COMPLETE | CURRENT_PARTIAL | STALE_COMPLETE | STALE_PARTIAL | UNVERIFIED
 
 ---
 
-## Staged `project.json` fragment (post-pilot)
+## Ratified `project.json` fragment (D19 — promotion into `PROJECT_SCHEMA.md` pending)
 
 ```json
 {
@@ -42,6 +53,9 @@ CURRENT_COMPLETE | CURRENT_PARTIAL | STALE_COMPLETE | STALE_PARTIAL | UNVERIFIED
   }
 }
 ```
+
+`status` here means schema validity (D19) — `pass` because the object above is well-formed,
+independent of `ingestFreshness`/`ingestCoverage` showing partial/stale.
 
 **Not staged yet:** `financialReconState`, `custodyReconState`, `allocationReconState` — use gate + operator projection until MVP proves need.
 
@@ -95,7 +109,7 @@ CURRENT_COMPLETE | CURRENT_PARTIAL | STALE_COMPLETE | STALE_PARTIAL | UNVERIFIED
 | :--- | :--- |
 | **Sources / DataHub** | TXT + DTRX + ITEMS same session; run `debtors:ingest-check` before marking intake complete |
 | **Coverage artifact** | `validate_txt_db_coverage.mjs` — evidence, not silent PASS/FAIL |
-| **debtors:sync** | *(future)* Read latest coverage JSON; warn if `ingestGate.status === fail` |
+| **debtors:sync** | *(pending — see status banner above)* Per D19: **FAIL (hard)** if `ingestGate` is present but malformed (`status: fail`); **WARN** if `ingestGate` is absent entirely (migration model, §"Migration" in D19) |
 | **Generators** | Block custody conclusions; emit `INGEST_GAP` rows; never infer SKU from paired CN |
 
 ---

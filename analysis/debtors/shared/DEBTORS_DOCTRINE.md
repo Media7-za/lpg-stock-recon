@@ -156,6 +156,48 @@ It therefore:
 - **must** be labelled `COLLECTIONS_BLOCKED` in every operator-facing projection;
 - **must not** have demand text drafted — drafting a payment demand **is** presenting the balance as collectable.
 
+### D19 — `ingestGate` is canonical but optional; `status` is schema validity, not ingest health (ratified 2026-07-26)
+
+*Amends:* §2 (evidence hierarchy — source completeness) · *Implemented in:* `PROJECT_SCHEMA.md` (pending) · `INGEST_GATE_SCHEMA_STAGED.md` · `analysis/debtors/shared/scripts/validate_txt_db_coverage.mjs` (pending)
+
+**(1) Canonical, optional.** `ingestGate` becomes a recognised `project.json` field. It is **not required** on every account — only accounts whose recon claims custody, SKU, or allocation conclusions have anything for it to gate.
+
+**(2) Schema.**
+
+```json
+{
+  "ingestGate": {
+    "status": "pass | fail | unverified",
+    "ingestFreshness": "current | stale | unverified",
+    "ingestCoverage": "complete | partial | unverified",
+    "displayStatus": "CURRENT_PARTIAL",
+    "asAt": "YYYY-MM-DD",
+    "reportPath": "analysis/debtors/[CODE]/reports/[CODE]_INGEST_COVERAGE_[date].json",
+    "ingestBlockedScopes": ["custody", "sku_analysis", "allocation", "financial_bridge_from_txt"],
+    "exceptions": []
+  }
+}
+```
+
+**(3) `status` is schema validity, not an operational assessment.** This is the refinement that distinguishes D19 from the original staged draft:
+
+- `pass` — the `ingestGate` object is present and internally well-formed (required sub-fields present, values from the declared enums).
+- `fail` — the object is present but malformed (bad enum, missing field, malformed path).
+- `unverified` — no validated `ingestGate` exists yet.
+
+`status` answers **"can I trust this object?"** only. It must **never** be computed from freshness or coverage results — that would create two overlapping expressions of ingest health (`status` and the freshness/coverage combination) that can silently drift apart. Operational ingest health is expressed exclusively by `ingestFreshness`, `ingestCoverage`, `ingestBlockedScopes`, and `displayStatus`.
+
+**(4) Fail-closed on the claim, not on the schema.** `ingestGate` absent is not itself a hard failure. But **absence is never read as clearance**: any conclusion claiming custody, SKU, or allocation closure must treat a missing `ingestGate` identically to `ingestBlockedScopes: ["custody", "sku_analysis", "allocation"]` — the same non-inference discipline as D17(b)/D18 applied to ingest health instead of collectable balance. A malformed-but-present `ingestGate` (`status: fail`) is a hard validation failure, same severity class as a D17/D18 schema-gap error.
+
+**(5) Independence from reconState, collections, workspaceStatus.** Three boundaries, mirroring D16's separation:
+
+- **Does not confer `reconState: complete`** — financial reconciliation may close purely from TXT while `ingestGate` shows blocked custody (the pre-existing ERP Ingest Completeness Rule in `INGEST_GATE_SCHEMA_STAGED.md`).
+- **Does not satisfy D17/D18 collections eligibility**, and a failing `ingestGate` must **never** be auto-copied into `collections.blockers` — populating a blocker from ingest evidence still requires its own D18 evidence-backed assessment, exactly the non-inference rule B3 already established for statement exceptions.
+- **Does not set or read `workspaceStatus`** — independent axis, same as D16.
+- **Open dependency, not resolved by this ruling:** `ingestGate` is designed to gate custody/SKU/allocation *conclusions*, but no ratified doctrine yet defines what a custody conclusion is or requires (custody doctrine has no dedicated constitutional home — open work, unrelated to this ruling). D19 ratifies the gate mechanism; it does not retroactively close that gap.
+
+**(6) Migration.** No existing debtor has `ingestGate` populated today. Validators must **warn**, not fail, on its absence for any pre-existing account; a hard failure applies only to a malformed-but-present object. Retroactively failing `debtors:sync` for the 13 accounts that never populated this field — including four already `reconState: complete` — is not an acceptable consequence of ratifying this schema.
+
 ### Scoped-canonical implementation (do not duplicate here)
 
 | Topic | Constitutional home for implementation |
@@ -212,6 +254,8 @@ Full rules: `SKILL_Debtors_Orchestrator.md` §5.2 Epistemic bookkeeping.
 **Ratified 2026-07-26 (Turn 14b):** D16 (workbench `COMPLETE` is a UI state, not a reconciliation state — promotes `AR_Recon_Workflow.md` §19.2 from an application clause to constitutional rule, adds the dual-label display requirement) and D17 (collections gate requires a stated collectable balance and no blocking dispute or hold; age sets priority, not eligibility).
 
 **Ratified 2026-07-26 (Turn 14c):** D18 (collectable-balance and blocker contract in `PROJECT_SCHEMA.md`; projection validity separable from collections eligibility; blocked accounts remain visible, labelled `COLLECTIONS_BLOCKED`, with demand drafting prohibited).
+
+**Ratified 2026-07-26 (Turn B4):** D19 (`ingestGate` canonical but optional in `project.json`; `status` redefined as schema validity — not ingest health — to prevent it overlapping with `ingestFreshness`/`ingestCoverage`; absence never read as clearance for custody/SKU/allocation claims; no auto-population of `collections.blockers`; existing debtors migrate under a warning model, not retroactive failure). **Implementation pending** — `PROJECT_SCHEMA.md` promotion, and the `status` field in the already-shipped `validate_txt_db_coverage.mjs` (Turn B1, commit `269d8ce`), are not yet aligned to this ruling; see flag below.
 
 ---
 
