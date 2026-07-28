@@ -190,11 +190,32 @@ means adding a row here and a migration, not just hoping the prompt handles it.
 | Phase | Scope |
 |---|---|
 | **MVP (this PRD)** | One new table (`solicitation_queue`) plus new columns on `commercial_customers`, intent-mapping logic, Claude Code session as the only interface, manual "show today's targets" trigger. |
-| **Phase 1b — customer coverage backfill** *(scoped, not started)* | `commercial_customers` currently holds **4 rows**, all created in a single batch on 2026-07-02 — a pilot seed, not an ongoing onboarding process. The real ERP ledger (`transaction_items`) has **856 distinct `account_no`s**, of which only 6 are mapped into `commercial_customer_accounts` (covering those same 4 customers). The other ~850 accounts have no `commercial_customers` entity at all, so they are structurally invisible to solicitation today — not because they aren't overdue, but because there's nothing for a `solicitation_queue` row to attach to. Deliberately scoped as separate follow-up work (grouping/deduping the remaining accounts into commercial customers, likely reusing whatever process created the original 4) rather than done as part of this MVP. |
+| **Phase 1b — customer coverage backfill** *(scoped, next up — see §8a)* | Onboard the other ~850 real ERP accounts into `commercial_customers`/`commercial_customer_accounts` so they're no longer structurally invisible to solicitation. Not started; full scope in §8a. |
 | **Phase 2** | Scheduled daily push (cron/Routine) that pre-computes the day's queue instead of computing it on demand. |
 | **Phase 3** | Slack/Telegram **or plain claude.ai chat** front-end for the same loop, if operators need to work from a phone instead of a terminal. A claude.ai chat with the Supabase connector enabled (Settings → Connectors) hits the same `execute_sql`/`apply_migration` tools this session uses — no CLI, no repo access needed, since the loop is 100% SQL against Supabase. Requires a paid claude.ai plan (custom connectors are gated to Pro/Max/Team/Enterprise). |
 | **Phase 3a — context bootstrapping** *(done)* | A fresh chat session with only DB access has none of this document's context, and the Supabase project has 40+ tables — nothing stops it from anchoring on the wrong customer table the way this session initially assumed `accounts` before discovering it was empty. Solved with a `SOLICITATION_RULEBOOK` row in `app_config` (jsonb, mirroring the existing `RECON_SCORING_WEIGHTS` pattern in the debtors domain) that acts as a **table scope map**, not just a rules list: an `in_scope_tables` map (`commercial_customers`, `commercial_customer_accounts`, `solicitation_queue`, `transaction_items`, `item_classifications` — one line each on what it's for), an `explicitly_not_this_workflow` map (`accounts` — 0 rows, decoy; `customers` — unrelated WhatsApp-dispatch feature; `reconciliation_*`/`bank_*`/`allocation_*`/`match_*` — debtors domain), the intent table, the push-query shape, and the last-order LPG filter rule including the doc_no/tx_date trap discovered live in this session (a single order date can be split across separate content vs. deposit documents — tie-breaking on `doc_no` silently picks the wrong one). A claude.ai **Project** whose custom instructions say "read `app_config.SOLICITATION_RULEBOOK` before running any query" completes the bootstrap — every new chat in that Project inherits it, the rulebook stays correct even from a different client since it lives with the data, and updating it is an UPDATE statement, not a re-onboarding exercise. |
 | **Phase 4** | Multi-operator support: rep-level queue partitioning (via existing `SalesRep` model), roles/auth. |
+
+## 8a. Phase 1b Scope: Customer Coverage Backfill
+
+**Objective:** onboard the ~850 real ERP accounts not currently in `commercial_customers` so solicitation coverage matches the actual customer base, not just the 4-account pilot. Scoped now, **not executed yet** — this is the plan, ready to run once the open questions below are answered.
+
+**Steps:**
+
+1. **Filter to accounts worth onboarding.** Only `account_no`s with at least one order matching the existing LPG-content filter (§5/rulebook) should get a `commercial_customers` row — some accounts in `transaction_items` carry only non-LPG lines (potatoes, onions, fertilizer show up in the ledger too; these are multi-line-of-business ERP accounts, not solicitation candidates).
+2. **Grouping — the hard part, and the one to get conservative about.** `account_no` isn't always 1:1 with a real business: Impendle Wholesale already spans 3 accounts (`active`, `historical`, `empties_deposit`). Default to **1 account = 1 commercial_customer** unless account names match exactly or near-exactly; do **not** auto-merge on fuzzy similarity. Under-grouping (two rows for one real business) is cosmetic and fixable later; over-grouping (one row wrongly serving two businesses) misattributes contact info and call history — a real operational mistake, not a cosmetic one. Flag near-duplicate names for human review instead of guessing.
+3. **Compute `avg_cycle_days`** the same way as the pilot 4: median gap between distinct LPG order dates, excluding gaps under 3 days. Needs an explicit low-confidence fallback for accounts with too few order dates to trust a median (e.g., fewer than 3 gap observations) — flag those rather than writing a shaky number.
+4. **Derive initial `commercial_status`** (`active_customer`/`win_back`/`dormant_customer`) from real recency vs. computed cycle. Needs an explicit threshold rule, sanity-checked against the existing 4 pilot labels before trusting it at scale.
+5. **Leave `primary_contact`/`contact_phone` null**, same as the pilot reset — operators fill them in on first real contact.
+6. **Create `solicitation_queue` rows** only for accounts that clear steps 1–2, using the same `commercial_customer_last_order` view + `avg_cycle_days` formula already in production.
+
+**Before running it for real:** preview the backfill (counts, sample rows, any flagged near-duplicate names) rather than writing ~850 rows straight to the live table in one shot — same caution the pilot's migrations went through.
+
+**Open questions to settle first:**
+- What counts as "worth onboarding" — any LPG order ever, or only within some recency window?
+- Exact thresholds for `active`/`win_back`/`dormant` classification.
+- How to handle accounts with too few order dates for a trustworthy `avg_cycle_days`.
+- Manual review process for near-duplicate account names, and who does that review.
 
 ## 9. Risks
 
