@@ -36,12 +36,15 @@ Claude Code (or equivalent) chat session.
 Same three-step loop already proven in the debtors workflow, applied to solicitation:
 
 1. **Push** — Operator: *"Show today's targets."* Agent queries `solicitation_queue` for
-   `status = 'PENDING' AND predicted_due_date <= today`, joined to `commercial_customers`, ordered
-   by how overdue each customer is. Agent renders **one target at a time** — name, contact, last
-   order's LPG line items (deposits excluded — see §5), suggested script — and waits for that
-   target's outcome before showing the next. (We deliberately chose one-at-a-time over a batch
-   list: with prose-only replies that don't always name the customer, one-at-a-time removes any
-   risk of misattributing a reply to the wrong target.)
+   `status = 'PENDING' AND predicted_due_date <= today`, joined to `commercial_customers` and (for
+   display only, never for filtering) left-joined to the `commercial_customer_last_order` view
+   (§5) — never `commercial_customers.last_order_date` directly, which is a writable cache that
+   drifted from reality once already. Rows are ordered by how overdue each customer is. Agent
+   renders **one target at a time** — name, contact, last order's LPG line items (deposits
+   excluded — see §5), suggested script — and waits for that target's outcome before showing the
+   next. (We deliberately chose one-at-a-time over a batch list: with prose-only replies that
+   don't always name the customer, one-at-a-time removes any risk of misattributing a reply to the
+   wrong target.)
 2. **Action** — Operator calls/texts the customer, then replies in plain text
    (e.g. *"Ordered standard batch for Friday"*, *"Snooze 10 days, has stock"*, *"No answer, try
    tomorrow"*).
@@ -110,6 +113,44 @@ SKUs (e.g. `9.3`, `19.3`, refill-suffix codes) aren't classified — so the filt
 not a commonly-ordered aggregate — cheaper to compute and gives the operator a concrete, specific
 script ("last time you ordered X and Y...") rather than a vague summary. Revisit an aggregate
 fallback later for long-dormant accounts where the last order may be stale.
+
+Grouping must be by **most recent matching date, not most recent doc_no** — this ERP sometimes
+splits a single order into separate documents on the same date (one for LPG content, one for the
+cylinder deposit), and tie-breaking on `doc_no` can silently select the deposit-only document,
+producing an empty or wrong "last order" for a customer who did order that day. Found live during
+the Tandoor simulation in this session.
+
+**`commercial_customers.last_order_date` is not the source of truth.** It's a column written
+directly by the `ORDERED` intent, and during live testing (a separate claude.ai chat session
+exercising this same rulebook) it was caught showing dates for Tandoor and Impendle with **no
+corresponding `transaction_items` row** — nothing kept it reconciled against the real ledger. Fixed
+two ways: (1) reverted the two drifted values back to their real last-LPG-order dates (Tandoor →
+2026-07-02, Impendle → 2026-06-11), and (2) added a view so "last order" is never trusted from a
+stored column again:
+
+```sql
+create view commercial_customer_last_order as
+select cca.commercial_customer_id,
+       max(ti.tx_date) as last_lpg_order_date
+from commercial_customer_accounts cca
+join transaction_items ti on ti.account_no = cca.account_no
+left join item_classifications ic on ic.stock_no = ti.stock_no
+where (
+    ic.business_bucket = 'LPG_CONTENT'
+    or (ic.business_bucket is null and ti.description ilike '%LPG%' and ti.description not ilike '%CYLINDER DEPOSIT%')
+  )
+  and ti.qty > 0
+group by cca.commercial_customer_id;
+```
+
+A view needs no refresh job — every read recomputes `MAX(tx_date)` live from `transaction_items`,
+so there's no staleness window to manage and nothing that can drift by construction. The push query
+(§4/§6) now joins this view for display instead of reading `commercial_customers.last_order_date`.
+Tradeoff: recomputed on every read instead of an O(1) column lookup — trivial at the current
+~169k-row scale; if the ledger grows large enough for that to matter, the fallback is a materialized
+view refreshed on a schedule, not reverting to a manually-written column. The `ORDERED` intent still
+writes `last_order_date` as a rough cache for other purposes, but nothing should display it as the
+"last order" date going forward.
 
 ## 6. Operator Reply → Intent Mapping
 
