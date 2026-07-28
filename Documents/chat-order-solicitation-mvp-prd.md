@@ -98,6 +98,7 @@ The agent classifies each free-text reply into a closed set of intents before wr
 | `SNOOZE` | "snooze 10 days", "still has stock" | queue row → `SNOOZED`; `predicted_due_date` += N days (default 7 if unspecified) |
 | `NO_ANSWER` | "no answer", "try again tomorrow" | queue row stays `PENDING`; `predicted_due_date` = tomorrow |
 | `DECLINED` | "not reordering", "switched supplier" | queue row → `DECLINED`; profile `active` = false, flagged for follow-up review |
+| `UPDATE_CONTACT` | "Sipho isn't the contact anymore, it's Jane, 082...", "number changed to..." | updates the profile's `primary_contact` / `contact_phone` directly. Not tied to a queue row — can be issued at any point in a session, doesn't advance or affect the queue. |
 | `CLARIFY` | anything that doesn't match the above with confidence | agent asks a follow-up question; nothing is written |
 
 This table is the actual spec — not a suggestion the model improvises around. Adding a new intent
