@@ -204,7 +204,15 @@ means adding a row here and a migration, not just hoping the prompt handles it.
 - **Single point of failure (one operator, one session).** Acceptable for MVP; Phase 4 addresses
   multi-operator.
 - **`avg_cycle_days` drift** if customers change ordering patterns. Recompute as a rolling average
-  on each `ORDERED` event rather than a fixed constant.
+  on each `ORDERED` event rather than a fixed constant. **Update:** the placeholder values (30/21/
+  14/60) from initial seeding have been replaced with real numbers computed from actual order gaps
+  in `transaction_items` — median gap between distinct LPG order dates, excluding gaps under 3 days
+  (same-week reissue noise, not real reorder cadence) and using median rather than mean so each
+  customer's one big dormancy gap (the reason they're flagged `win_back`/`dormant_customer` in the
+  first place) doesn't inflate their "normal" cadence. Real values: Impendle 14, Siyaya 7,
+  Slindokuhle 9, Tandoor 7 — all notably more frequent than the original placeholder guesses.
+  `solicitation_queue.predicted_due_date` was recomputed from these; as of today all four are
+  already overdue under the corrected cadence.
 
 ## 10. Success Metrics
 
