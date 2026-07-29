@@ -232,8 +232,9 @@ means adding a row here and a migration, not just hoping the prompt handles it.
    inherent fuzziness (a real sole-proprietor business trading under an owner's name would
    false-positive), these are **flagged for review via `REVIEW_FLAGGED`, not auto-excluded** (step 6
    below) — a wrong auto-exclude permanently drops a real business from ever being called, worse than
-   the review overhead. **Confirmed business total: 232** (down from the original 339 once suppliers
-   were removed and the individual-name regex was fixed).
+   the review overhead. **Confirmed business total: 230** (down from the original 339 once suppliers
+   were removed, the individual-name regex was fixed, and Siyathuthuka Farms was manually excluded
+   as stale — step 2 below).
 2. **Grouping — the hard part, and the one to get conservative about.** `account_no` isn't always 1:1 with a real business: Impendle Wholesale already spans 3 accounts (`active`, `historical`, `empties_deposit`). Default to **1 account = 1 commercial_customer** unless account names match exactly or near-exactly; do **not** auto-merge on fuzzy similarity. Under-grouping (two rows for one real business) is cosmetic and fixable later; over-grouping (one row wrongly serving two businesses) misattributes contact info and call history — a real operational mistake, not a cosmetic one. Flag near-duplicate names for human review instead of guessing.
 
    **Resolution of the 17 near-duplicate-name groups** *(decided 2026-07-29)*: reviewed individually
@@ -246,8 +247,13 @@ means adding a row here and a migration, not just hoping the prompt handles it.
    check) coincidentally sharing a name with the real customer account `CS0027`, which stands alone,
    unmerged. **Already routed to `REVIEW_FLAGGED`, no separate merge decision needed:** Jeanette Nagel
    (2 accounts) — an individual-name collision, resolved by sub-filter B above regardless of grouping.
-   **Still open:** Siyathuthuka Farms (2 accounts, brief overlap 2021–2022, tiny volume) — merge,
-   keep separate, or exclude as stale is still the operator's call.
+   **Resolved:** Siyathuthuka Farms (`SIY002`, `SIYA00`) — confirmed **different, unrelated
+   accounts** despite sharing a name (not a merge candidate at all), and both **manually excluded
+   from the backfill** as stale/churned (operator judgment on these two specifically — brief
+   2021–2022 overlap, tiny volume). This is a one-off manual exclusion, not a change to the general
+   `churned_lead` policy (§8a step 4) — accounts crossing 90 days inactive still get a `PENDING`
+   queue row with a reactivation script by default; these two were judged not worth pursuing at all.
+   Drops confirmed-business count from 232 to **230**.
 3. **Compute `avg_cycle_days`** the same way as the pilot 4: median gap between distinct LPG order dates, excluding gaps under 3 days. Needs an explicit low-confidence fallback for accounts with too few order dates to trust a median (e.g., fewer than 3 gap observations) — flag those rather than writing a shaky number.
 4. **Derive initial `commercial_status`** (`active_customer`/`win_back`/`dormant_customer`) using the
    canonical ratio rule *(decided and applied 2026-07-28)*: `ratio = (current_date -
