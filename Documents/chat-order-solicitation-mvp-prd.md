@@ -205,7 +205,17 @@ means adding a row here and a migration, not just hoping the prompt handles it.
 1. **Filter to accounts worth onboarding.** Only `account_no`s with at least one order matching the existing LPG-content filter (§5/rulebook) should get a `commercial_customers` row — some accounts in `transaction_items` carry only non-LPG lines (potatoes, onions, fertilizer show up in the ledger too; these are multi-line-of-business ERP accounts, not solicitation candidates).
 2. **Grouping — the hard part, and the one to get conservative about.** `account_no` isn't always 1:1 with a real business: Impendle Wholesale already spans 3 accounts (`active`, `historical`, `empties_deposit`). Default to **1 account = 1 commercial_customer** unless account names match exactly or near-exactly; do **not** auto-merge on fuzzy similarity. Under-grouping (two rows for one real business) is cosmetic and fixable later; over-grouping (one row wrongly serving two businesses) misattributes contact info and call history — a real operational mistake, not a cosmetic one. Flag near-duplicate names for human review instead of guessing.
 3. **Compute `avg_cycle_days`** the same way as the pilot 4: median gap between distinct LPG order dates, excluding gaps under 3 days. Needs an explicit low-confidence fallback for accounts with too few order dates to trust a median (e.g., fewer than 3 gap observations) — flag those rather than writing a shaky number.
-4. **Derive initial `commercial_status`** (`active_customer`/`win_back`/`dormant_customer`) from real recency vs. computed cycle. Needs an explicit threshold rule, sanity-checked against the existing 4 pilot labels before trusting it at scale.
+4. **Derive initial `commercial_status`** (`active_customer`/`win_back`/`dormant_customer`) using the
+   canonical ratio rule *(decided and applied 2026-07-28)*: `ratio = (current_date -
+   last_lpg_order_date) / avg_cycle_days`, via the `commercial_customer_last_order` view — `ratio
+   <= 1.5` → `active_customer`; `1.5 < ratio <= 3` → `win_back`; `ratio > 3` → `dormant_customer`.
+   This is a **standalone** rule, not one reverse-engineered from the pilot: checking the 4 pilot
+   customers' original manually-set labels against their real ratios showed no consistent threshold
+   existed — Siyaya was labeled `active_customer` at a 5.86x ratio, higher than the `win_back`
+   (3.86x) and `dormant_customer` (3.43x) accounts. Rather than leave that inconsistency in place,
+   all 4 pilot customers were reclassified under this rule (3 of 4 changed: Slindokuhle
+   active→win_back, Tandoor win_back→dormant, Siyaya active→dormant). Apply the same rule to every
+   Phase 1b backfill customer so classification is consistent across the whole customer base.
 5. **Leave `primary_contact`/`contact_phone` null**, same as the pilot reset — operators fill them in on first real contact.
 6. **Create `solicitation_queue` rows** only for accounts that clear steps 1–2, using the same `commercial_customer_last_order` view + `avg_cycle_days` formula already in production.
 
