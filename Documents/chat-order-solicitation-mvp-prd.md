@@ -202,7 +202,22 @@ means adding a row here and a migration, not just hoping the prompt handles it.
 
 **Steps:**
 
-1. **Filter to accounts worth onboarding.** Only `account_no`s with at least one order matching the existing LPG-content filter (§5/rulebook) should get a `commercial_customers` row — some accounts in `transaction_items` carry only non-LPG lines (potatoes, onions, fertilizer show up in the ledger too; these are multi-line-of-business ERP accounts, not solicitation candidates).
+1. **Filter to accounts worth onboarding.** Only `account_no`s with at least one order matching the existing LPG-content filter (§5/rulebook) should get a `commercial_customers` row — some accounts in `transaction_items` carry only non-LPG lines (potatoes, onions, fertilizer show up in the ledger too; these are multi-line-of-business ERP accounts, not solicitation candidates). This leaves **596** candidates out of 850 unmapped accounts.
+
+   **Sub-filter — exclude non-business accounts** *(decided 2026-07-28)*: a preview of the 596 found
+   two categories that shouldn't get an outbound-solicitation call at all — generic bucket accounts
+   (e.g. `CS0000 "Cash Sales - Pensioner"`) with no single person behind them, and accounts that
+   read as individual/household names rather than businesses. Classified with:
+   `generic_bucket` = name matches `%cash sale%`/`%cod account%`/`%walk in%`/`%general account%`/
+   `%sundry%`/`%counter sale%` (**18** accounts, low ambiguity, hard-excluded automatically);
+   `looks_like_individual` = no business-indicator keyword (a ~50-term list: `pty`, `cc`, `ltd`,
+   `enterprise`, `wholesale`, `restaurant`, `market`, `farm`, etc.) AND the name is a plain 2–3-word
+   pattern (**239** accounts — 40% of the 596, much bigger than expected from a first manual sample).
+   Given that scale and that the heuristic is fuzzy (a real sole-proprietor business trading under an
+   owner's name would false-positive here), the 239 are **flagged for a human review pass, not
+   auto-excluded** — a wrong auto-exclude permanently drops a real business from ever being called,
+   which is a worse failure than a few minutes of manual scanning. Remaining safe-to-backfill count
+   pending that review: **339** confirmed businesses, +however many of the 239 clear review.
 2. **Grouping — the hard part, and the one to get conservative about.** `account_no` isn't always 1:1 with a real business: Impendle Wholesale already spans 3 accounts (`active`, `historical`, `empties_deposit`). Default to **1 account = 1 commercial_customer** unless account names match exactly or near-exactly; do **not** auto-merge on fuzzy similarity. Under-grouping (two rows for one real business) is cosmetic and fixable later; over-grouping (one row wrongly serving two businesses) misattributes contact info and call history — a real operational mistake, not a cosmetic one. Flag near-duplicate names for human review instead of guessing.
 3. **Compute `avg_cycle_days`** the same way as the pilot 4: median gap between distinct LPG order dates, excluding gaps under 3 days. Needs an explicit low-confidence fallback for accounts with too few order dates to trust a median (e.g., fewer than 3 gap observations) — flag those rather than writing a shaky number.
 4. **Derive initial `commercial_status`** (`active_customer`/`win_back`/`dormant_customer`) using the
@@ -221,11 +236,17 @@ means adding a row here and a migration, not just hoping the prompt handles it.
 
 **Before running it for real:** preview the backfill (counts, sample rows, any flagged near-duplicate names) rather than writing ~850 rows straight to the live table in one shot — same caution the pilot's migrations went through.
 
-**Open questions to settle first:**
-- What counts as "worth onboarding" — any LPG order ever, or only within some recency window?
-- Exact thresholds for `active`/`win_back`/`dormant` classification.
-- How to handle accounts with too few order dates for a trustworthy `avg_cycle_days`.
-- Manual review process for near-duplicate account names, and who does that review.
+**Open questions — status as of 2026-07-28:**
+- ~~What counts as "worth onboarding"~~ — **settled**: any real LPG order ever (596 of 850). Recency
+  window (271 of 596 ordered within 2 years) was surfaced but not adopted as a hard filter.
+- ~~Exact thresholds for `active`/`win_back`/`dormant`~~ — **settled**: standalone ratio rule, §5/§8a
+  step 4 above.
+- ~~Non-business accounts (generic buckets, individual names)~~ — **settled**: 18 hard-excluded, 239
+  flagged for human review (this step, above).
+- **Still open**: how to handle the 319-vs-277 split for `avg_cycle_days` confidence — accounts with
+  fewer than 4 order dates need an explicit fallback value rather than a shaky median.
+- **Still open**: who does the 239-account manual review, and on what cadence.
+- **Still open**: manual review process for the 17 near-duplicate-name grouping collisions (step 2).
 
 ## 9. Risks
 
