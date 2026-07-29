@@ -163,6 +163,8 @@ The agent classifies each free-text reply into a closed set of intents before wr
 | `NO_ANSWER` | "no answer", "try again tomorrow" | queue row stays `PENDING`; `predicted_due_date` = tomorrow |
 | `DECLINED` | "not reordering", "switched supplier" | queue row → `DECLINED`; `commercial_status` updated to a churn/dormant state, flagged for follow-up review |
 | `UPDATE_CONTACT` | "Sipho isn't the contact anymore, it's Jane, 082...", "number changed to..." | updates `commercial_customers.primary_contact` / `contact_phone` directly. Not tied to a queue row — can be issued at any point in a session, doesn't advance or affect the queue. |
+| `IGNORE_INDIVIDUAL` | "ignore - individual", "that's a person, not a business" | only valid on a `REVIEW_FLAGGED` queue row (§8a). `commercial_customers.commercial_status` → `excluded_not_business` (permanent); the flagged queue row is closed. Never resurfaces, including on future backfill runs. |
+| `CONFIRM_BUSINESS` | "no, that's a real business", "keep it" | only valid on a `REVIEW_FLAGGED` queue row. Queue row → `PENDING` with a real `predicted_due_date` computed the normal way — joins the standard solicitation loop from that point on. |
 | `CLARIFY` | anything that doesn't match the above with confidence | agent asks a follow-up question; nothing is written |
 
 This table is the actual spec — not a suggestion the model improvises around. Adding a new intent
@@ -232,21 +234,31 @@ means adding a row here and a migration, not just hoping the prompt handles it.
    active→win_back, Tandoor win_back→dormant, Siyaya active→dormant). Apply the same rule to every
    Phase 1b backfill customer so classification is consistent across the whole customer base.
 5. **Leave `primary_contact`/`contact_phone` null**, same as the pilot reset — operators fill them in on first real contact.
-6. **Create `solicitation_queue` rows** only for accounts that clear steps 1–2, using the same `commercial_customer_last_order` view + `avg_cycle_days` formula already in production.
+6. **Create `solicitation_queue` rows** for confirmed businesses using the same `commercial_customer_last_order` view + `avg_cycle_days` formula already in production — `status = 'PENDING'` as normal. For the flagged individual-looking accounts (§8a step 1 sub-filter), create the row with **`status = 'REVIEW_FLAGGED'`** instead — a new queue status that's invisible to the normal push query (which only selects `PENDING`), surfaced instead by a separate *"show flagged accounts"* command. The operator resolves each one inline with `IGNORE_INDIVIDUAL` (permanent exclusion — `commercial_customers.commercial_status` → `excluded_not_business`) or `CONFIRM_BUSINESS` (converts the row to a normal `PENDING` target). This is how review ownership works going forward *(decided 2026-07-28)*: the same operator running the call queue does it, inline, on an ongoing basis — not a separate one-time reviewer or scheduled batch pass. Any future account that trips the same individual-name heuristic lands in `REVIEW_FLAGGED` automatically and gets resolved the same way.
 
 **Before running it for real:** preview the backfill (counts, sample rows, any flagged near-duplicate names) rather than writing ~850 rows straight to the live table in one shot — same caution the pilot's migrations went through.
 
 **Open questions — status as of 2026-07-28:**
-- ~~What counts as "worth onboarding"~~ — **settled**: any real LPG order ever (596 of 850). Recency
-  window (271 of 596 ordered within 2 years) was surfaced but not adopted as a hard filter.
+- ~~What counts as "worth onboarding"~~ — **settled**: any real LPG order ever (596 of 850).
 - ~~Exact thresholds for `active`/`win_back`/`dormant`~~ — **settled**: standalone ratio rule, §5/§8a
   step 4 above.
 - ~~Non-business accounts (generic buckets, individual names)~~ — **settled**: 18 hard-excluded, 239
-  flagged for human review (this step, above).
-- **Still open**: how to handle the 319-vs-277 split for `avg_cycle_days` confidence — accounts with
-  fewer than 4 order dates need an explicit fallback value rather than a shaky median.
-- **Still open**: who does the 239-account manual review, and on what cadence.
-- **Still open**: manual review process for the 17 near-duplicate-name grouping collisions (step 2).
+  routed to the `REVIEW_FLAGGED` inline mechanism (step 6 above).
+- ~~Who does the review, and on what cadence~~ — **settled**: the same operator running the call
+  queue, inline, ongoing — via `REVIEW_FLAGGED`/`IGNORE_INDIVIDUAL`/`CONFIRM_BUSINESS` (§6, step 6
+  above). Not a separate reviewer or scheduled batch.
+- ~~`avg_cycle_days` fallback for low-confidence accounts~~ — **settled**: within the 339 confirmed
+  businesses, 198 have a trustworthy median (≥3 gap observations) and 141 don't. Fallback for the
+  141: **16 days**, the median `avg_cycle_days` of the 198 trustworthy peers — a population-derived
+  number, not another guess. Self-corrects to the account's own real median once it accumulates
+  enough order history, same as the original design intent.
+- **Still open**: recency-window scope. Within the 339 confirmed businesses, 155 ordered within the
+  last 2 years and 184 haven't — recommended reading: back the 155 now, treat the 184 as a separate
+  "verify-still-trading, then win-back" batch rather than immediate `PENDING` targets, since a
+  business dormant 2+ years may simply be closed rather than churned. Not yet decided.
+- **Still open**: manual review process for the 17 near-duplicate-name grouping collisions (step 2)
+  — distinct from the individual/business review above; this is about whether multiple account_nos
+  belong to one real business, not whether the business itself is real.
 
 ## 9. Risks
 
