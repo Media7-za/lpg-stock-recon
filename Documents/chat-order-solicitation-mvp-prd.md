@@ -206,21 +206,48 @@ means adding a row here and a migration, not just hoping the prompt handles it.
 
 1. **Filter to accounts worth onboarding.** Only `account_no`s with at least one order matching the existing LPG-content filter (§5/rulebook) should get a `commercial_customers` row — some accounts in `transaction_items` carry only non-LPG lines (potatoes, onions, fertilizer show up in the ledger too; these are multi-line-of-business ERP accounts, not solicitation candidates). This leaves **596** candidates out of 850 unmapped accounts.
 
-   **Sub-filter — exclude non-business accounts** *(decided 2026-07-28)*: a preview of the 596 found
-   two categories that shouldn't get an outbound-solicitation call at all — generic bucket accounts
-   (e.g. `CS0000 "Cash Sales - Pensioner"`) with no single person behind them, and accounts that
-   read as individual/household names rather than businesses. Classified with:
-   `generic_bucket` = name matches `%cash sale%`/`%cod account%`/`%walk in%`/`%general account%`/
-   `%sundry%`/`%counter sale%` (**18** accounts, low ambiguity, hard-excluded automatically);
-   `looks_like_individual` = no business-indicator keyword (a ~50-term list: `pty`, `cc`, `ltd`,
-   `enterprise`, `wholesale`, `restaurant`, `market`, `farm`, etc.) AND the name is a plain 2–3-word
-   pattern (**239** accounts — 40% of the 596, much bigger than expected from a first manual sample).
-   Given that scale and that the heuristic is fuzzy (a real sole-proprietor business trading under an
-   owner's name would false-positive here), the 239 are **flagged for a human review pass, not
-   auto-excluded** — a wrong auto-exclude permanently drops a real business from ever being called,
-   which is a worse failure than a few minutes of manual scanning. Remaining safe-to-backfill count
-   pending that review: **339** confirmed businesses, +however many of the 239 clear review.
+   **Sub-filter A — exclude supplier accounts** *(decided and refined 2026-07-29)*: a name-based
+   check first caught `Easigas (Pty) Ltd` and `Oryx`/`Oryx Energy` (LPG brand names themselves,
+   clearly supplier/inter-company accounts, not customers) among the near-duplicate groups (§8a
+   step 2). Verifying *why* confirmed a much stronger, name-independent signal: these accounts'
+   `transaction_items.entry_type` is 100% `GRV`/`Deb Note` (goods **received** from a supplier) with
+   **zero** `Invoice`/`Crd Note` entries (goods sold **to** a customer) — the ERP's own record of
+   which side of the transaction this account is on. Applying that structurally across all 596
+   candidates found **37 pure-supplier accounts** (`has_invoice_side = false`), not just the 7 caught
+   by name — no ambiguity, no review needed, this is a clean binary split (zero "mixed" accounts
+   found). Hard-excluded automatically. One manual exception on top: `EAS001` has real invoice
+   activity (a single 2018 order) so fails the structural test, but is still excluded since it's
+   literally the supplier's own company name — a judgment call, not a rule. **38 total** supplier
+   exclusions (37 structural + 1 manual).
+
+   **Sub-filter B — exclude/flag non-business accounts** *(decided 2026-07-28, corrected 2026-07-29)*:
+   of the remaining 559 real customer-side accounts, `generic_bucket` = name matches `%cash sale%`/
+   `%cod account%`/`%walk in%`/`%general account%`/`%sundry%`/`%counter sale%` (**18** accounts, low
+   ambiguity, hard-excluded automatically). `looks_like_individual` = no business-indicator keyword
+   (a ~50-term list: `pty`, `cc`, `ltd`, `enterprise`, `wholesale`, `restaurant`, `market`, `farm`,
+   etc.) AND the name is a plain 1–3-word pattern. The original regex only matched 2–3 words and
+   missed **single-word personal names** (`Richard`, `Ross`, `Vanessa`, `William` — found via the
+   near-duplicate review, §8a step 2) — fixed to also catch 1-word names, which moved the count from
+   239 to **308** (a big jump: over half the remaining pool). Given that scale and the heuristic's
+   inherent fuzziness (a real sole-proprietor business trading under an owner's name would
+   false-positive), these are **flagged for review via `REVIEW_FLAGGED`, not auto-excluded** (step 6
+   below) — a wrong auto-exclude permanently drops a real business from ever being called, worse than
+   the review overhead. **Confirmed business total: 232** (down from the original 339 once suppliers
+   were removed and the individual-name regex was fixed).
 2. **Grouping — the hard part, and the one to get conservative about.** `account_no` isn't always 1:1 with a real business: Impendle Wholesale already spans 3 accounts (`active`, `historical`, `empties_deposit`). Default to **1 account = 1 commercial_customer** unless account names match exactly or near-exactly; do **not** auto-merge on fuzzy similarity. Under-grouping (two rows for one real business) is cosmetic and fixable later; over-grouping (one row wrongly serving two businesses) misattributes contact info and call history — a real operational mistake, not a cosmetic one. Flag near-duplicate names for human review instead of guessing.
+
+   **Resolution of the 17 near-duplicate-name groups** *(decided 2026-07-29)*: reviewed individually
+   rather than built into automated tooling — only 38 accounts, a one-time list, not worth machinery.
+   **Merge into one `commercial_customer` (7 groups, real overlapping/sequential order history under
+   an identical name):** Al Riaz, DSB Chicken vs Fish, Emerald Flow (Pty) Ltd, Jaxx Restaurant, Mathew
+   New COD Account, MZM Distribution (Pty) Ltd, West Coast Fish & Chips. **Excluded as suppliers, not
+   merge candidates** (sub-filter A above): Easigas (Pty) Ltd, Oryx/Oryx Energy, and `001WOS` — the
+   "Works on Site" collision turned out to be a supplier account (confirmed via the same GRV-only
+   check) coincidentally sharing a name with the real customer account `CS0027`, which stands alone,
+   unmerged. **Already routed to `REVIEW_FLAGGED`, no separate merge decision needed:** Jeanette Nagel
+   (2 accounts) — an individual-name collision, resolved by sub-filter B above regardless of grouping.
+   **Still open:** Siyathuthuka Farms (2 accounts, brief overlap 2021–2022, tiny volume) — merge,
+   keep separate, or exclude as stale is still the operator's call.
 3. **Compute `avg_cycle_days`** the same way as the pilot 4: median gap between distinct LPG order dates, excluding gaps under 3 days. Needs an explicit low-confidence fallback for accounts with too few order dates to trust a median (e.g., fewer than 3 gap observations) — flag those rather than writing a shaky number.
 4. **Derive initial `commercial_status`** (`active_customer`/`win_back`/`dormant_customer`) using the
    canonical ratio rule *(decided and applied 2026-07-28)*: `ratio = (current_date -
