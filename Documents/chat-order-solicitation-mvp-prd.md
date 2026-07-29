@@ -260,6 +260,17 @@ means adding a row here and a migration, not just hoping the prompt handles it.
   — distinct from the individual/business review above; this is about whether multiple account_nos
   belong to one real business, not whether the business itself is real.
 
+**Flagged future direction (not designed, not scheduled):** an account inactive more than 3 months
+may not just be "very overdue" — it may be effectively churned, where re-engagement calls for a
+fresh-pitch conversation rather than a "want your usual again?" script. Possibly warrants its own
+lane/category rather than folding into the existing `commercial_status` values, and touches the
+recency-window question above directly (the 184 stale-2yr accounts are an extreme version of the
+same idea). Two open sub-questions once this gets picked up: (1) does crossing the threshold change
+where the account surfaces (same queue with a different script vs. a separate leads queue/command,
+mirroring the `REVIEW_FLAGGED` pattern), and (2) does it belong in `customer_lane` (currently
+encodes business type — wholesale/consuming/etc, a different axis) or its own field. Revisit
+alongside the recency-window decision above rather than as a separate effort.
+
 ## 9. Risks
 
 - **Misclassified intent silently corrupts state.** Mitigated by the closed intent set (§6) and
