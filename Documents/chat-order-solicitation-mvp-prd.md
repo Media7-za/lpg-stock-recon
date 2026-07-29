@@ -260,16 +260,24 @@ means adding a row here and a migration, not just hoping the prompt handles it.
   — distinct from the individual/business review above; this is about whether multiple account_nos
   belong to one real business, not whether the business itself is real.
 
-**Flagged future direction (not designed, not scheduled):** an account inactive more than 3 months
-may not just be "very overdue" — it may be effectively churned, where re-engagement calls for a
-fresh-pitch conversation rather than a "want your usual again?" script. Possibly warrants its own
-lane/category rather than folding into the existing `commercial_status` values, and touches the
-recency-window question above directly (the 184 stale-2yr accounts are an extreme version of the
-same idea). Two open sub-questions once this gets picked up: (1) does crossing the threshold change
-where the account surfaces (same queue with a different script vs. a separate leads queue/command,
-mirroring the `REVIEW_FLAGGED` pattern), and (2) does it belong in `customer_lane` (currently
-encodes business type — wholesale/consuming/etc, a different axis) or its own field. Revisit
-alongside the recency-window decision above rather than as a separate effort.
+**Churn-as-lead override** *(decided and applied 2026-07-29):* an account with
+`days_since_last_order > 90` gets `commercial_status = 'churned_lead'`, which **overrides** the
+ratio rule above — 90 days of total silence is a stronger, cycle-independent signal than a ratio
+that can flag a fast-cycle customer "dormant" after just 3 weeks. Deliberately kept minimal:
+
+- **No new lane, queue, or command.** Stays in `commercial_status` (a dynamic lifecycle field) —
+  explicitly not `customer_lane`, which encodes static business type (wholesale/consuming/etc), a
+  different axis. Surfaces through the same `solicitation_queue` `PENDING` push as everything else.
+- **Only the script changes.** A `churned_lead` brief uses a fresh-pitch/reactivation tone ("it's
+  been a while, we'd love to have you back — did something change?") instead of the standard
+  "want your usual again?" reorder script.
+- **Self-heals.** An `ORDERED` intent resets `last_order_date`; status recomputes back to
+  `active_customer` on the next read via the same ratio rule, no manual cleanup required — same
+  self-healing property as the rest of the status system.
+
+None of the 4 pilot customers currently cross 90 days (max is 41), so this doesn't change anything
+for the pilot today — it's forward-looking, validated to not misfire on the current data. Applies
+to Phase 1b backfill customers the same way, no separate logic needed.
 
 ## 9. Risks
 
