@@ -241,7 +241,10 @@ means adding a row here and a migration, not just hoping the prompt handles it.
 
 ## 8a. Phase 1b Scope: Customer Coverage Backfill
 
-**Objective:** onboard the ~850 real ERP accounts not currently in `commercial_customers` so solicitation coverage matches the actual customer base, not just the 4-account pilot. **Executed 2026-07-29** — 226 `commercial_customers` rows created (230 accounts, 4 merge groups), 230 `commercial_customer_accounts` mappings, 65 `PENDING` + 165 `LEAD` `solicitation_queue` rows. All steps below reflect what was actually run, not just planned; commercial-status values use the corrected vocabulary from §5a.
+**Objective:** onboard the ~850 real ERP accounts not currently in `commercial_customers` so solicitation coverage matches the actual customer base, not just the 4-account pilot. **Executed 2026-07-29 in two passes** — the first covered only the 230 `looks_like_business` accounts (226 customers, 65 `PENDING` + 165 `LEAD`); the 308 `REVIEW_FLAGGED`-bound accounts were designed but **not actually inserted** in that pass — a real execution gap, not just a documentation one, caught live when a customer asked about a specific real account (`MGC001`, "Maritzburg Golf Club") that turned out to exist nowhere in the system at all. A second pass closed the gap (see step 6 and the discovery note below it). **Final verified totals (queried directly, not hand-computed — see §5a's own lesson about
+double-checking): 536 `commercial_customers` rows, 536 `solicitation_queue` rows — 70 `PENDING`, 172
+`LEAD`, 294 `REVIEW_FLAGGED`.** All steps below reflect what was actually run, not just planned;
+commercial-status values use the corrected vocabulary from §5a.
 
 **Steps:**
 
@@ -309,8 +312,35 @@ means adding a row here and a migration, not just hoping the prompt handles it.
    and removed the redundant duplicate customer/queue rows). **Rule going forward:** before an
    exact-name match, normalize `AND`↔`&` and strip trailing `EMPTIES`/`DEPOSIT`/`DEPOSITS`/`SHELLS`/
    `CYLINDERS` — this is now how the whole `commercial_customers` table was re-scanned (found exactly
-   these 2 pairs, no others), and should be the standard check for any future backfill batch (Phase
-   1b's remaining ~330 accounts, or ongoing new-account onboarding), not just a one-time fix.
+   these 2 pairs, no others), and should be the standard check for any future backfill batch or
+   ongoing new-account onboarding, not just a one-time fix.
+
+   **Post-launch discovery #2 (2026-07-29, same live-testing session):** a customer asked about a
+   specific real account, `MGC001` "Maritzburg Golf Club" — real, active LPG order history (321
+   units, last order 2026-06-18), yet it existed **nowhere** in the system: not `PENDING`, not
+   `LEAD`, not even `REVIEW_FLAGGED`. Two compounding gaps, not one:
+   - **Execution gap.** The `REVIEW_FLAGGED` mechanism (step 6) was fully designed and documented but
+     the backfill actually run only inserted `looks_like_business` accounts — the 308
+     individual-flagged accounts were never created in the database at all, not even in the review
+     queue. Documentation described a mechanism that didn't exist yet.
+   - **Keyword-list gap.** Separately, `MGC001` also fails the individual-name business-keyword check
+     — `club` was never in the ~50-term list. Re-checking the full 308 against an expanded list
+     (adding `club`, `society`, `trust`, `centre`, `college`, `foundation`, `spar`, and similar
+     institutional terms) recovered **14** more real businesses this way, including several Spar
+     supermarket branches — confirms the keyword list is a real point of failure, not just a
+     completeness nicety, but also confirms the review queue is still necessary: the other 294 still
+     need it even with the expanded list.
+   Fixed by executing the actual missing backfill: 14 recovered accounts went through the normal
+   business pipeline (merge-collision-checked against both each other and the existing 226 — none
+   found), the remaining 294 got real `commercial_customers` rows with `solicitation_queue.status =
+   'REVIEW_FLAGGED'`. One more bug surfaced and fixed during this pass: 6 of those 308 accounts share
+   an exact duplicate name with another account in the same batch (`Al Riaz` ×3, `Richard` ×3,
+   `William`/`Vanessa`/`Ross`/`Jeanette Nagel` ×2 each — the same individual-name collisions already
+   known from §8a step 2) — a name-based join used to link staging rows back to their newly-created
+   customer IDs collapsed 14 accounts onto only 6 distinct customer references before this was caught
+   by comparing row counts. Re-paired correctly using each account's own `(last_order, avg_cycle_days)`
+   instead of name. No accounts were mis-mapped in the live tables — caught in the staging step, same
+   as every other error this backfill surfaced.
 3. **Compute `avg_cycle_days`** the same way as the pilot 4: median gap between distinct LPG order dates, excluding gaps under 3 days. Fallback for low-confidence accounts (fewer than 3 gap observations): **16 days**, the median of the trustworthy-confidence peer population (§ open questions below) — a population-derived number, not a guess.
 4. **Derive initial `commercial_status`** using the ratio rule, corrected to the real Pricing Desk
    vocabulary *(§5a — decided 2026-07-29, superseding the original 2026-07-28 version of this
