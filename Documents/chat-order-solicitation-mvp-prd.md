@@ -370,6 +370,19 @@ commercial-status values use the corrected vocabulary from §5a.
    it gets written* — the row-count check that caught discovery #2's join bug wouldn't have caught
    this one, since every row still got exactly one value, just the wrong one. The only thing that
    actually caught it was an operator questioning a specific number against the visible evidence.
+
+   **Post-launch discovery #4 (2026-07-29, immediately after #3) — a regression caused by fixing #3.**
+   The blanket `predicted_due_date` recompute in #3's fix (`UPDATE ... WHERE status = 'PENDING'`, no
+   further filter) clobbered two rows that had just been given a manual `NO_ANSWER` retry date
+   ("tomorrow") for DSB Chicken vs Fish and Maritzburg Golf Club — their `notes` and
+   `last_contacted_at` survived untouched, but `predicted_due_date` silently reverted to the
+   ledger-computed value, undoing real operator input. Caught immediately on the next *"show today's
+   targets"* (the stale row reappeared at the top instead of being held until tomorrow) and restored
+   both to their correct retry date. **Standing lesson:** a bulk data-quality fix must exclude rows
+   with recent operator-set state (`last_contacted_at` set, non-null `notes`) rather than
+   unconditionally overwriting every row matching a status filter — operator input should always
+   win over a recomputation, not the other way around. Any future bulk correction to
+   `solicitation_queue` needs this exclusion built in from the start.
 3. **Compute `avg_cycle_days`** the same way as the pilot 4: median gap between distinct LPG order dates, excluding gaps under 3 days. Fallback for low-confidence accounts (fewer than 3 gap observations): **16 days**, the median of the trustworthy-confidence peer population (§ open questions below) — a population-derived number, not a guess.
 4. **Derive initial `commercial_status`** using the ratio rule, corrected to the real Pricing Desk
    vocabulary *(§5a — decided 2026-07-29, superseding the original 2026-07-28 version of this
