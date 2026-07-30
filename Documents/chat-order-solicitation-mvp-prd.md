@@ -152,6 +152,43 @@ view refreshed on a schedule, not reverting to a manually-written column. The `O
 writes `last_order_date` as a rough cache for other purposes, but nothing should display it as the
 "last order" date going forward.
 
+### 5a. Cross-Feature Collision: Pricing Desk Owns `commercial_customers`
+
+**Discovered 2026-07-29, mid-backfill, the hard way** — a real `commercial_status` CHECK constraint
+rejected a write. `commercial_customers` is not a table this MVP owns; it's the backing store for
+an entire other feature in this codebase, **Pricing Desk** (Commercial Decision Records, Customer
+Intelligence — see `docs/Pricing-Desk/COMMERCIAL_GLOSSARY.md`), with its own formally documented
+vocabulary that predates this PRD. (Checked for a second overlapping system too — an "OSS" Brain
+with a task engine, `src/mcp.ts`, and an `ingest-erp` Edge Function described in a separate prior
+agent session — but no matching files or tables exist anywhere in this repo/project; that system, if
+real, lives elsewhere and isn't a live collision here.)
+
+The actual `commercial_status` CHECK constraint allows exactly: `new_prospect`, `active_customer`,
+`dormant_customer`, `win_back`, `churn_risk`, `lost`. Every status value this PRD invented up to
+this point (`churned_lead`, `excluded_not_business`) is **not valid** — the first attempt to write
+`churned_lead` to a real row failed outright. Rather than widen a constraint owned by another
+feature, the ratio-rule tiers were remapped onto the real vocabulary — which turned out to be a
+better fit, not just a workaround, since Pricing Desk's own glossary describes `win_back` as exactly
+the "churned, actively being reactivated" concept this PRD had reinvented from scratch:
+
+| This PRD's original invented value | → | Real Pricing Desk value | Meaning |
+|---|---|---|---|
+| `active_customer` (ratio ≤1.5) | → | `active_customer` | unchanged |
+| `win_back` (ratio 1.5–3x) | → | **`churn_risk`** | "starting to slip" — better fit than the original name |
+| `dormant_customer` (ratio >3x) | → | `dormant_customer` | unchanged |
+| `churned_lead` (>90 days absolute, overrides ratio) | → | **`win_back`** | reuses the app's own term for reactivation targets |
+| `excluded_not_business` (`IGNORE_INDIVIDUAL` target) | → | **`lost`** | closest available terminal state; also used for confirmed-dead leads (`LEAD_DEAD`, §6) — two different intents converging on one status, distinguished by which path wrote it and the row's `notes` |
+
+Applied retroactively to the 4 pilot customers and the full Phase 1b backfill (§8a) — this is not a
+future-facing correction, it's already live. `solicitation_queue.status` (`PENDING`/`LEAD`/etc.) is
+**not** affected by this constraint — that table belongs to this MVP, not Pricing Desk, so it keeps
+its own workflow vocabulary freely. Only `commercial_customers.commercial_status` was constrained.
+
+**Standing lesson, not just a one-time fix:** `list_tables` was run at the very start of this PRD and
+correctly found `commercial_customers` was real and populated — but nobody checked whether an
+existing CHECK constraint or another feature's documentation governed its *values*, only its
+*shape*. Any future column reused from an existing table needs both checked, not just one.
+
 ## 6. Operator Reply → Intent Mapping
 
 The agent classifies each free-text reply into a closed set of intents before writing anything:
@@ -163,8 +200,12 @@ The agent classifies each free-text reply into a closed set of intents before wr
 | `NO_ANSWER` | "no answer", "try again tomorrow" | queue row stays `PENDING`; `predicted_due_date` = tomorrow |
 | `DECLINED` | "not reordering", "switched supplier" | queue row → `DECLINED`; `commercial_status` updated to a churn/dormant state, flagged for follow-up review |
 | `UPDATE_CONTACT` | "Sipho isn't the contact anymore, it's Jane, 082...", "number changed to..." | updates `commercial_customers.primary_contact` / `contact_phone` directly. Not tied to a queue row — can be issued at any point in a session, doesn't advance or affect the queue. |
-| `IGNORE_INDIVIDUAL` | "ignore - individual", "that's a person, not a business" | only valid on a `REVIEW_FLAGGED` queue row (§8a). `commercial_customers.commercial_status` → `excluded_not_business` (permanent); the flagged queue row is closed. Never resurfaces, including on future backfill runs. |
+| `IGNORE_INDIVIDUAL` | "ignore - individual", "that's a person, not a business" | only valid on a `REVIEW_FLAGGED` queue row (§8a). `commercial_customers.commercial_status` → `lost` (permanent, §5a); the flagged queue row is closed. Never resurfaces, including on future backfill runs. |
 | `CONFIRM_BUSINESS` | "no, that's a real business", "keep it" | only valid on a `REVIEW_FLAGGED` queue row. Queue row → `PENDING` with a real `predicted_due_date` computed the normal way — joins the standard solicitation loop from that point on. |
+| `LEAD_CONTACTED` | "contacted the lead, following up" | only valid on a `LEAD` queue row (§8a leads desk). Logged in `notes`; row stays `LEAD` with a follow-up date (`predicted_due_date` repurposed as next-follow-up-date for lead rows). |
+| `LEAD_INTERESTED` | "wants pricing", "interested, call back Thursday" | only valid on a `LEAD` queue row. Row stays `LEAD`; follow-up date set from the reply (shorter default than a bare contact). |
+| `LEAD_CONVERTED` | "placed a new order" | only valid on a `LEAD` queue row. Same effect as `ORDERED` (§ above) — `last_order_date` = today, row closes, a new `PENDING` row is created at `today + avg_cycle_days`. `commercial_status` recomputes back to `active_customer` on the next read via the normal ratio rule — self-healing, no manual cleanup. |
+| `LEAD_DEAD` | "closed down", "no longer trading" | only valid on a `LEAD` queue row. `commercial_status` → `lost` (permanent, same terminal state as `IGNORE_INDIVIDUAL`, §5a); queue row closes. This is how the leads desk resolves the "might just be closed" risk one call at a time instead of guessing at backfill time. |
 | `CLARIFY` | anything that doesn't match the above with confidence | agent asks a follow-up question; nothing is written |
 
 This table is the actual spec — not a suggestion the model improvises around. Adding a new intent
@@ -192,7 +233,7 @@ means adding a row here and a migration, not just hoping the prompt handles it.
 | Phase | Scope |
 |---|---|
 | **MVP (this PRD)** | One new table (`solicitation_queue`) plus new columns on `commercial_customers`, intent-mapping logic, Claude Code session as the only interface, manual "show today's targets" trigger. |
-| **Phase 1b — customer coverage backfill** *(scoped, next up — see §8a)* | Onboard the other ~850 real ERP accounts into `commercial_customers`/`commercial_customer_accounts` so they're no longer structurally invisible to solicitation. Not started; full scope in §8a. |
+| **Phase 1b — customer coverage backfill** *(done — see §8a)* | Onboarded 226 confirmed businesses (230 real ERP accounts) into `commercial_customers`/`commercial_customer_accounts`. 165 routed to the new leads desk (`win_back`/`LEAD`), 61 to the normal reorder desk (`PENDING`). 308 individual-looking accounts sit in `REVIEW_FLAGGED`, resolved by the operator inline as they come up (§6). Full detail in §8a. |
 | **Phase 2** | Scheduled daily push (cron/Routine) that pre-computes the day's queue instead of computing it on demand. |
 | **Phase 3** | Slack/Telegram **or plain claude.ai chat** front-end for the same loop, if operators need to work from a phone instead of a terminal. A claude.ai chat with the Supabase connector enabled (Settings → Connectors) hits the same `execute_sql`/`apply_migration` tools this session uses — no CLI, no repo access needed, since the loop is 100% SQL against Supabase. Requires a paid claude.ai plan (custom connectors are gated to Pro/Max/Team/Enterprise). |
 | **Phase 3a — context bootstrapping** *(done)* | A fresh chat session with only DB access has none of this document's context, and the Supabase project has 40+ tables — nothing stops it from anchoring on the wrong customer table the way this session initially assumed `accounts` before discovering it was empty. Solved with a `SOLICITATION_RULEBOOK` row in `app_config` (jsonb, mirroring the existing `RECON_SCORING_WEIGHTS` pattern in the debtors domain) that acts as a **table scope map**, not just a rules list: an `in_scope_tables` map (`commercial_customers`, `commercial_customer_accounts`, `solicitation_queue`, `transaction_items`, `item_classifications` — one line each on what it's for), an `explicitly_not_this_workflow` map (`accounts` — 0 rows, decoy; `customers` — unrelated WhatsApp-dispatch feature; `reconciliation_*`/`bank_*`/`allocation_*`/`match_*` — debtors domain), the intent table, the push-query shape, and the last-order LPG filter rule including the doc_no/tx_date trap discovered live in this session (a single order date can be split across separate content vs. deposit documents — tie-breaking on `doc_no` silently picks the wrong one). A claude.ai **Project** whose custom instructions say "read `app_config.SOLICITATION_RULEBOOK` before running any query" completes the bootstrap — every new chat in that Project inherits it, the rulebook stays correct even from a different client since it lives with the data, and updating it is an UPDATE statement, not a re-onboarding exercise. |
@@ -200,7 +241,7 @@ means adding a row here and a migration, not just hoping the prompt handles it.
 
 ## 8a. Phase 1b Scope: Customer Coverage Backfill
 
-**Objective:** onboard the ~850 real ERP accounts not currently in `commercial_customers` so solicitation coverage matches the actual customer base, not just the 4-account pilot. Scoped now, **not executed yet** — this is the plan, ready to run once the open questions below are answered.
+**Objective:** onboard the ~850 real ERP accounts not currently in `commercial_customers` so solicitation coverage matches the actual customer base, not just the 4-account pilot. **Executed 2026-07-29** — 226 `commercial_customers` rows created (230 accounts, 4 merge groups), 230 `commercial_customer_accounts` mappings, 65 `PENDING` + 165 `LEAD` `solicitation_queue` rows. All steps below reflect what was actually run, not just planned; commercial-status values use the corrected vocabulary from §5a.
 
 **Steps:**
 
@@ -251,66 +292,80 @@ means adding a row here and a migration, not just hoping the prompt handles it.
    accounts** despite sharing a name (not a merge candidate at all), and both **manually excluded
    from the backfill** as stale/churned (operator judgment on these two specifically — brief
    2021–2022 overlap, tiny volume). This is a one-off manual exclusion, not a change to the general
-   `churned_lead` policy (§8a step 4) — accounts crossing 90 days inactive still get a `PENDING`
-   queue row with a reactivation script by default; these two were judged not worth pursuing at all.
-   Drops confirmed-business count from 232 to **230**.
-3. **Compute `avg_cycle_days`** the same way as the pilot 4: median gap between distinct LPG order dates, excluding gaps under 3 days. Needs an explicit low-confidence fallback for accounts with too few order dates to trust a median (e.g., fewer than 3 gap observations) — flag those rather than writing a shaky number.
-4. **Derive initial `commercial_status`** (`active_customer`/`win_back`/`dormant_customer`) using the
-   canonical ratio rule *(decided and applied 2026-07-28)*: `ratio = (current_date -
-   last_lpg_order_date) / avg_cycle_days`, via the `commercial_customer_last_order` view — `ratio
-   <= 1.5` → `active_customer`; `1.5 < ratio <= 3` → `win_back`; `ratio > 3` → `dormant_customer`.
-   This is a **standalone** rule, not one reverse-engineered from the pilot: checking the 4 pilot
-   customers' original manually-set labels against their real ratios showed no consistent threshold
-   existed — Siyaya was labeled `active_customer` at a 5.86x ratio, higher than the `win_back`
-   (3.86x) and `dormant_customer` (3.43x) accounts. Rather than leave that inconsistency in place,
-   all 4 pilot customers were reclassified under this rule (3 of 4 changed: Slindokuhle
-   active→win_back, Tandoor win_back→dormant, Siyaya active→dormant). Apply the same rule to every
-   Phase 1b backfill customer so classification is consistent across the whole customer base.
+   `win_back`-as-90-day-override policy (§5a, §8a step 4) — accounts crossing 90 days inactive still
+   get routed to the leads desk (`LEAD` queue row) by default; these two were judged not worth
+   pursuing at all, in either desk. Drops confirmed-business count from 232 to **230**.
+3. **Compute `avg_cycle_days`** the same way as the pilot 4: median gap between distinct LPG order dates, excluding gaps under 3 days. Fallback for low-confidence accounts (fewer than 3 gap observations): **16 days**, the median of the trustworthy-confidence peer population (§ open questions below) — a population-derived number, not a guess.
+4. **Derive initial `commercial_status`** using the ratio rule, corrected to the real Pricing Desk
+   vocabulary *(§5a — decided 2026-07-29, superseding the original 2026-07-28 version of this
+   step)*: `ratio = (current_date - last_lpg_order_date) / avg_cycle_days`, via the
+   `commercial_customer_last_order` view. `days_since_last_order > 90` → **`win_back`** (overrides
+   the ratio — this is the leads-desk routing signal, see step 6). Otherwise: `ratio <= 1.5` →
+   `active_customer`; `1.5 < ratio <= 3` → **`churn_risk`**; `ratio > 3` → `dormant_customer`. Applied
+   to all 226 backfilled customer groups and retroactively to the 4 pilot customers.
 5. **Leave `primary_contact`/`contact_phone` null**, same as the pilot reset — operators fill them in on first real contact.
-6. **Create `solicitation_queue` rows** for confirmed businesses using the same `commercial_customer_last_order` view + `avg_cycle_days` formula already in production — `status = 'PENDING'` as normal. For the flagged individual-looking accounts (§8a step 1 sub-filter), create the row with **`status = 'REVIEW_FLAGGED'`** instead — a new queue status that's invisible to the normal push query (which only selects `PENDING`), surfaced instead by a separate *"show flagged accounts"* command. The operator resolves each one inline with `IGNORE_INDIVIDUAL` (permanent exclusion — `commercial_customers.commercial_status` → `excluded_not_business`) or `CONFIRM_BUSINESS` (converts the row to a normal `PENDING` target). This is how review ownership works going forward *(decided 2026-07-28)*: the same operator running the call queue does it, inline, on an ongoing basis — not a separate one-time reviewer or scheduled batch pass. Any future account that trips the same individual-name heuristic lands in `REVIEW_FLAGGED` automatically and gets resolved the same way.
+6. **Create `solicitation_queue` rows**, split by desk: `commercial_status = 'win_back'` (90+ days
+   inactive) → **leads desk**, `status = 'LEAD'`, `predicted_due_date` repurposed as next-follow-up
+   date (set to today so they're immediately actionable); everything else → **reorder desk**,
+   `status = 'PENDING'` with a real due date from `last_lpg_order_date + avg_cycle_days`. For the
+   flagged individual-looking accounts (§8a step 1 sub-filter), the row is `status = 'REVIEW_FLAGGED'`
+   instead of either desk — invisible to both normal pushes, surfaced only by *"show flagged
+   accounts"*. Operator resolves inline with `IGNORE_INDIVIDUAL`/`CONFIRM_BUSINESS` (review desk) or
+   `LEAD_CONTACTED`/`LEAD_INTERESTED`/`LEAD_CONVERTED`/`LEAD_DEAD` (leads desk) — all four leads-desk
+   intents and the two-desk model are documented in §6. This is how review ownership and lead
+   management both work going forward *(decided 2026-07-28, extended 2026-07-29)*: the same operator
+   running the call queue does it, inline, ongoing — not a separate reviewer, not a scheduled batch.
 
-**Before running it for real:** preview the backfill (counts, sample rows, any flagged near-duplicate names) rather than writing ~850 rows straight to the live table in one shot — same caution the pilot's migrations went through.
+**Executed 2026-07-29**, staged first in a scratch table to verify counts before writing to the real
+tables (same caution the earlier pilot migrations went through) — see results at the top of §8a.
 
-**Open questions — status as of 2026-07-28:**
-- ~~What counts as "worth onboarding"~~ — **settled**: any real LPG order ever (596 of 850).
-- ~~Exact thresholds for `active`/`win_back`/`dormant`~~ — **settled**: standalone ratio rule, §5/§8a
-  step 4 above.
-- ~~Non-business accounts (generic buckets, individual names)~~ — **settled**: 18 hard-excluded, 239
-  routed to the `REVIEW_FLAGGED` inline mechanism (step 6 above).
-- ~~Who does the review, and on what cadence~~ — **settled**: the same operator running the call
-  queue, inline, ongoing — via `REVIEW_FLAGGED`/`IGNORE_INDIVIDUAL`/`CONFIRM_BUSINESS` (§6, step 6
-  above). Not a separate reviewer or scheduled batch.
-- ~~`avg_cycle_days` fallback for low-confidence accounts~~ — **settled**: within the 339 confirmed
-  businesses, 198 have a trustworthy median (≥3 gap observations) and 141 don't. Fallback for the
-  141: **16 days**, the median `avg_cycle_days` of the 198 trustworthy peers — a population-derived
-  number, not another guess. Self-corrects to the account's own real median once it accumulates
-  enough order history, same as the original design intent.
-- **Still open**: recency-window scope. Within the 339 confirmed businesses, 155 ordered within the
-  last 2 years and 184 haven't — recommended reading: back the 155 now, treat the 184 as a separate
-  "verify-still-trading, then win-back" batch rather than immediate `PENDING` targets, since a
-  business dormant 2+ years may simply be closed rather than churned. Not yet decided.
-- **Still open**: manual review process for the 17 near-duplicate-name grouping collisions (step 2)
-  — distinct from the individual/business review above; this is about whether multiple account_nos
-  belong to one real business, not whether the business itself is real.
+**Open questions — final status, all settled as of 2026-07-29:**
+- ~~What counts as "worth onboarding"~~ — any real LPG order ever (597 of 850), minus 38 supplier
+  accounts (§8a step 1 sub-filter A) = 559 real customer-side accounts.
+- ~~Exact thresholds for status~~ — ratio rule using the real Pricing Desk vocabulary, §5a/step 4.
+- ~~Non-business accounts~~ — 18 hard-excluded (generic buckets); **308** (not the earlier 239 —
+  corrected when the individual-name regex was fixed to also catch single-word names) routed to
+  `REVIEW_FLAGGED`.
+- ~~Who does the review, and on what cadence~~ — the same operator, inline, ongoing, via
+  `REVIEW_FLAGGED`/`IGNORE_INDIVIDUAL`/`CONFIRM_BUSINESS`.
+- ~~`avg_cycle_days` fallback~~ — 16 days, the population median of trustworthy-confidence peers.
+- ~~Recency-window scope~~ — **superseded by the two-desk model below**, rather than decided as a
+  cutoff. Every confirmed business gets backfilled regardless of how stale; age determines which
+  desk it lands in, not whether it gets onboarded at all.
+- ~~Near-duplicate-name grouping (17 collisions)~~ — all resolved: 4 clean merges (corrected down
+  from an initial 7 — 3 were reclassified as supplier/individual/generic once the structural rules
+  were applied, catching errors in the original manual scan), 3 excluded as suppliers, 1 already
+  handled by the individual-name path, 1 manually excluded as stale (Siyathuthuka Farms).
 
-**Churn-as-lead override** *(decided and applied 2026-07-29):* an account with
-`days_since_last_order > 90` gets `commercial_status = 'churned_lead'`, which **overrides** the
-ratio rule above — 90 days of total silence is a stronger, cycle-independent signal than a ratio
-that can flag a fast-cycle customer "dormant" after just 3 weeks. Deliberately kept minimal:
+**Leads desk — churn as a separate pipeline, not a different script** *(superseded 2026-07-29 by
+operator request; see below for what this replaced)*: an account with `days_since_last_order > 90`
+gets `commercial_status = 'win_back'` (§5a), which overrides the ratio rule — 90 days of total
+silence is a stronger, cycle-independent signal than a ratio that can flag a fast-cycle customer
+"dormant" after just 3 weeks. Originally this was designed to be script-only (same `PENDING` queue,
+different brief tone) — but a `win_back` customer isn't resolved in one call the way a reorder is,
+and pre-judging the ~39% of the backfill population that's over 3 years dormant as "probably closed"
+was exactly the kind of guess this PRD kept getting burned for making elsewhere. The fix: a real
+second pipeline instead of a label.
 
-- **No new lane, queue, or command.** Stays in `commercial_status` (a dynamic lifecycle field) —
-  explicitly not `customer_lane`, which encodes static business type (wholesale/consuming/etc), a
-  different axis. Surfaces through the same `solicitation_queue` `PENDING` push as everything else.
-- **Only the script changes.** A `churned_lead` brief uses a fresh-pitch/reactivation tone ("it's
-  been a while, we'd love to have you back — did something change?") instead of the standard
-  "want your usual again?" reorder script.
-- **Self-heals.** An `ORDERED` intent resets `last_order_date`; status recomputes back to
-  `active_customer` on the next read via the same ratio rule, no manual cleanup required — same
-  self-healing property as the rest of the status system.
+- **Two desks, one table.** `solicitation_queue.status = 'LEAD'` (not `commercial_status` — that
+  stays constrained to Pricing Desk's vocabulary, §5a) makes a `win_back` customer invisible to the
+  normal *"show today's targets"* push, surfaced instead by a separate ***"show leads"*** command —
+  same pattern as `REVIEW_FLAGGED`, applied to a second, structurally different lane of work.
+- **Own intent set** (§6): `LEAD_CONTACTED`, `LEAD_INTERESTED`, `LEAD_CONVERTED`, `LEAD_DEAD` — a
+  lead conversation isn't a one-call `ORDERED`/`SNOOZE`/`NO_ANSWER` cycle. `LEAD_CONVERTED` folds
+  back into the normal reorder loop (same effect as `ORDERED`); `LEAD_DEAD` sets `commercial_status`
+  to `lost` — this is how the "might just be closed" question gets answered per-account, one real
+  call at a time, instead of guessed at backfill time with a recency cutoff.
+- **Same operator, different turn.** No new role needed yet: reorder desk daily (due dates are
+  time-sensitive), leads desk in dedicated sessions with slack time (leads have no real urgency
+  ordering). The two commands enforce the split naturally — a session only ever surfaces one kind of
+  brief. If a second person eventually takes leads, nothing about the data model changes; the desks
+  are already separate.
 
-None of the 4 pilot customers currently cross 90 days (max is 41), so this doesn't change anything
-for the pilot today — it's forward-looking, validated to not misfire on the current data. Applies
-to Phase 1b backfill customers the same way, no separate logic needed.
+Applied to the full Phase 1b backfill (§8a): 165 of 230 confirmed businesses landed in `win_back`/
+`LEAD` — a much bigger fraction than the pilot's zero suggested, since none of the original 4
+customers happened to cross 90 days. Self-heals same as everywhere else: `LEAD_CONVERTED` resets
+`last_order_date`, and `commercial_status` recomputes back to `active_customer` on the next read.
 
 ## 9. Risks
 
