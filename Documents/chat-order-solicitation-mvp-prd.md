@@ -206,10 +206,23 @@ The agent classifies each free-text reply into a closed set of intents before wr
 | `LEAD_INTERESTED` | "wants pricing", "interested, call back Thursday" | only valid on a `LEAD` queue row. Row stays `LEAD`; follow-up date set from the reply (shorter default than a bare contact). |
 | `LEAD_CONVERTED` | "placed a new order" | only valid on a `LEAD` queue row. Same effect as `ORDERED` (§ above) — `last_order_date` = today, row closes, a new `PENDING` row is created at `today + avg_cycle_days`. `commercial_status` recomputes back to `active_customer` on the next read via the normal ratio rule — self-healing, no manual cleanup. |
 | `LEAD_DEAD` | "closed down", "no longer trading" | only valid on a `LEAD` queue row. `commercial_status` → `lost` (permanent, same terminal state as `IGNORE_INDIVIDUAL`, §5a); queue row closes. This is how the leads desk resolves the "might just be closed" risk one call at a time instead of guessing at backfill time. |
+| `ACCOUNT_ON_HOLD` | "on hold due to nonpayment", "credit hold", "account suspended" | *(added 2026-07-30)* valid from any desk. `solicitation_queue.status` → **`ON_HOLD`** — a new queue status, invisible to all three existing desks the same way `LEAD`/`REVIEW_FLAGGED` already are (no new exclusion logic needed elsewhere, since every push only ever selects its own status). Not an operator-cleared state — see the auto-lift mechanic below. |
 | `CLARIFY` | anything that doesn't match the above with confidence | agent asks a follow-up question; nothing is written |
 
 This table is the actual spec — not a suggestion the model improvises around. Adding a new intent
 means adding a row here and a migration, not just hoping the prompt handles it.
+
+**`ON_HOLD` auto-lift** *(decided 2026-07-30, this domain is collections/debtors territory that
+solicitation doesn't otherwise track — see `.agent/AGENT_WORKFLOW.md` for the actual debtors
+workflow)*: an account goes on hold for nonpayment, not because it stopped ordering — so lifting it
+should follow the same self-healing pattern as everything else here (`ORDERED`, `LEAD_CONVERTED`),
+not a manual "clear the hold" step. Before computing any push (`"show today's targets"` or `"show
+leads"`), check every `ON_HOLD` row for a new `Invoice`-type row in `transaction_items` — any
+product, not LPG-specific, since the signal is "they're transacting again," not a reorder cycle —
+with `tx_date` after the hold's `updated_at`. If found, the row falls back through the normal
+`commercial_status`/desk-routing logic automatically, same as any other customer. `solicitation_queue.status` was confirmed to have **no CHECK constraint** (checked directly, given
+§5a's lesson about `commercial_customers.commercial_status`) before writing `ON_HOLD` to it — this
+table is fully ours, unlike that one.
 
 ## 7. Session Mechanics
 
