@@ -280,21 +280,37 @@ means adding a row here and a migration, not just hoping the prompt handles it.
 
    **Resolution of the 17 near-duplicate-name groups** *(decided 2026-07-29)*: reviewed individually
    rather than built into automated tooling — only 38 accounts, a one-time list, not worth machinery.
-   **Merge into one `commercial_customer` (7 groups, real overlapping/sequential order history under
-   an identical name):** Al Riaz, DSB Chicken vs Fish, Emerald Flow (Pty) Ltd, Jaxx Restaurant, Mathew
-   New COD Account, MZM Distribution (Pty) Ltd, West Coast Fish & Chips. **Excluded as suppliers, not
-   merge candidates** (sub-filter A above): Easigas (Pty) Ltd, Oryx/Oryx Energy, and `001WOS` — the
-   "Works on Site" collision turned out to be a supplier account (confirmed via the same GRV-only
-   check) coincidentally sharing a name with the real customer account `CS0027`, which stands alone,
+   Initial manual read called 7 clean merges, but **staging the backfill before writing to the real
+   tables caught 3 of those 7 as wrong** once the structural rules were applied consistently: `Al
+   Riaz` is a real customer-side account but reads as an individual name (routed to `REVIEW_FLAGGED`,
+   not merged); `Mathew New COD Account` matches the generic-bucket pattern (hard-excluded, not
+   merged); `MZM Distribution (Pty) Ltd` is **100% GRV/Deb-Note** — a supplier, not a customer at all
+   (sub-filter A). **Actual clean merges: 4** — DSB Chicken vs Fish, Emerald Flow (Pty) Ltd, Jaxx
+   Restaurant, West Coast Fish & Chips. **Excluded as suppliers** (sub-filter A): Easigas (Pty) Ltd,
+   Oryx/Oryx Energy, and `001WOS` — the "Works on Site" collision turned out to be a supplier account
+   coincidentally sharing a name with the real customer account `CS0027`, which stands alone,
    unmerged. **Already routed to `REVIEW_FLAGGED`, no separate merge decision needed:** Jeanette Nagel
-   (2 accounts) — an individual-name collision, resolved by sub-filter B above regardless of grouping.
-   **Resolved:** Siyathuthuka Farms (`SIY002`, `SIYA00`) — confirmed **different, unrelated
-   accounts** despite sharing a name (not a merge candidate at all), and both **manually excluded
-   from the backfill** as stale/churned (operator judgment on these two specifically — brief
-   2021–2022 overlap, tiny volume). This is a one-off manual exclusion, not a change to the general
-   `win_back`-as-90-day-override policy (§5a, §8a step 4) — accounts crossing 90 days inactive still
-   get routed to the leads desk (`LEAD` queue row) by default; these two were judged not worth
-   pursuing at all, in either desk. Drops confirmed-business count from 232 to **230**.
+   (2 accounts) — an individual-name collision, resolved by sub-filter B regardless of grouping.
+   **Manually excluded as stale:** Siyathuthuka Farms (`SIY002`, `SIYA00`) — confirmed **different,
+   unrelated accounts** despite sharing a name (not a merge candidate), both excluded from the
+   backfill per operator judgment (brief 2021–2022 overlap, tiny volume) — a one-off exclusion, not a
+   change to the general `win_back` policy. Drops confirmed-business count from 232 to **230**.
+
+   **Post-launch discovery (2026-07-29, live testing after the backfill went live):** the exact-name
+   grouping rule missed real merges where the name varies by **"AND" vs "&"** or carries an
+   **`EMPTIES`/`DEPOSIT` suffix** — neither normalized before the exact-match check. Found two: `L3
+   Cash and Carry` / `L3 Cash & Carry Empties`, and (ironically, on a group already merged once for
+   its *other* two accounts) a third sibling of West Coast Fish & Chips spelled `West Coast Fish and
+   Chips`. Both produced a **false churn signal** — the sibling account looked like a 100+ day
+   `win_back` lead on the leads desk while the real business was actively ordering every ~10–14 days
+   under its other account. Not cosmetic under-grouping as originally assumed (§8a step 2 framing) —
+   a real false signal an operator could act on incorrectly. Fixed by merging both (re-pointed the
+   stale account into the real customer as an `empties_deposit` role, matching the Impendle pattern,
+   and removed the redundant duplicate customer/queue rows). **Rule going forward:** before an
+   exact-name match, normalize `AND`↔`&` and strip trailing `EMPTIES`/`DEPOSIT`/`DEPOSITS`/`SHELLS`/
+   `CYLINDERS` — this is now how the whole `commercial_customers` table was re-scanned (found exactly
+   these 2 pairs, no others), and should be the standard check for any future backfill batch (Phase
+   1b's remaining ~330 accounts, or ongoing new-account onboarding), not just a one-time fix.
 3. **Compute `avg_cycle_days`** the same way as the pilot 4: median gap between distinct LPG order dates, excluding gaps under 3 days. Fallback for low-confidence accounts (fewer than 3 gap observations): **16 days**, the median of the trustworthy-confidence peer population (§ open questions below) — a population-derived number, not a guess.
 4. **Derive initial `commercial_status`** using the ratio rule, corrected to the real Pricing Desk
    vocabulary *(§5a — decided 2026-07-29, superseding the original 2026-07-28 version of this
