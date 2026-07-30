@@ -341,6 +341,35 @@ commercial-status values use the corrected vocabulary from §5a.
    by comparing row counts. Re-paired correctly using each account's own `(last_order, avg_cycle_days)`
    instead of name. No accounts were mis-mapped in the live tables — caught in the staging step, same
    as every other error this backfill surfaced.
+
+   **Post-launch discovery #3 (2026-07-29, the most serious one) — live, not staged, and it reached
+   real data.** An operator asked why `MGC001`'s `avg_cycle_days` showed **8 days** when the visible
+   order history didn't obviously support that number. Recomputing it directly found the real value
+   is **10 days** — the stored 8 was wrong, and not by a rounding difference. Root cause: the second
+   backfill pass (discovery #2 above) computed `avg_cycle_days` with:
+   ```sql
+   update phase1b2_staging s set avg_cycle_days = coalesce(c.median_cycle, 16), ...
+   from cycle c
+   where c.account_no = s.account_no or true
+   ```
+   `or true` makes the join condition always match, turning an intended per-account lookup into an
+   unintentional cross join — `UPDATE ... FROM` with multiple matches per row resolves to whichever
+   match Postgres evaluates last, so most of that batch's `avg_cycle_days` ended up as an **arbitrary
+   other account's** median cycle, not its own. **Unlike every prior bug in this backfill, this one
+   reached the live tables** — discoveries #1 and #2's mistakes were all caught in a staging table
+   before any real row was touched; this one wasn't staged at the value level (only the row-linkage
+   was staged and verified — the cycle computation itself was applied directly). Checked the blast
+   radius: **301 of 536 customers (56%)** had a wrong `avg_cycle_days`. Fixed by recomputing correctly
+   at the customer level (combining all mapped accounts per customer, the same method that worked for
+   the first pass) and propagating the correction through `commercial_status` and
+   `solicitation_queue.predicted_due_date`. Net effect: `win_back` count moved from 172 to 400 overall
+   (the increase landed entirely inside `REVIEW_FLAGGED`, which is status-independent, so **no
+   `PENDING`/`LEAD` queue-routing changes were actually needed** — verified by cross-tabulating queue
+   status against commercial status post-fix, not assumed). **Standing lesson:** staging a write
+   doesn't protect against a bug in the *value being computed*, only against bugs in *whether/where
+   it gets written* — the row-count check that caught discovery #2's join bug wouldn't have caught
+   this one, since every row still got exactly one value, just the wrong one. The only thing that
+   actually caught it was an operator questioning a specific number against the visible evidence.
 3. **Compute `avg_cycle_days`** the same way as the pilot 4: median gap between distinct LPG order dates, excluding gaps under 3 days. Fallback for low-confidence accounts (fewer than 3 gap observations): **16 days**, the median of the trustworthy-confidence peer population (§ open questions below) — a population-derived number, not a guess.
 4. **Derive initial `commercial_status`** using the ratio rule, corrected to the real Pricing Desk
    vocabulary *(§5a — decided 2026-07-29, superseding the original 2026-07-28 version of this
