@@ -191,14 +191,26 @@ existing CHECK constraint or another feature's documentation governed its *value
 
 ## 6. Operator Reply → Intent Mapping
 
+**Standing write rule** *(added 2026-07-31, mandatory, applies to every intent below)*: every write
+to `solicitation_queue` must set `notes` (the raw operator reply text, verbatim) **and**
+`last_contacted_at = now()` **and** `updated_at = now()` — no exceptions. This table has no separate
+`audit_log` (§5); these fields *are* the audit trail. This is stated once here, prominently, because
+a fresh session (a real test, from a separate claude.ai chat via the connector, §8 Phase 3) correctly
+derived the status/date logic for `NO_ANSWER` from the intent table below but **omitted `notes` and
+`last_contacted_at`** — the effect column doesn't repeat this requirement for every row, and a
+prose description can lose detail a literal template can't. Fixed two ways: this rule stated once
+here rather than implied only by §5, and literal SQL templates for every intent now live in the
+live `SOLICITATION_RULEBOOK` (`app_config.intent_sql_templates`) — copy-and-fill is harder to get
+subtly wrong than deriving a query fresh from a natural-language summary each time.
+
 The agent classifies each free-text reply into a closed set of intents before writing anything:
 
 | Intent | Trigger examples | Effect |
 |---|---|---|
 | `ORDERED` | "ordered standard batch for Friday", "reorder $1,200" | queue row → `ORDERED`; `commercial_customers.last_order_date` = today; new queue row created at `today + avg_cycle_days` |
-| `SNOOZE` | "snooze 10 days", "still has stock" | queue row → `SNOOZED`; `predicted_due_date` += N days (default 7 if unspecified) |
+| `SNOOZE` | "snooze 10 days", "still has stock" | **fixed 2026-07-31** (was `→ SNOOZED`, a status with no built-in revert path — silently permanent). Queue row **stays `PENDING`**, same as `NO_ANSWER` — only `predicted_due_date` += N days (default 7 if unspecified). |
 | `NO_ANSWER` | "no answer", "try again tomorrow" | queue row stays `PENDING`; `predicted_due_date` = tomorrow |
-| `DECLINED` | "not reordering", "switched supplier" | queue row → `DECLINED`; `commercial_status` updated to a churn/dormant state, flagged for follow-up review |
+| `DECLINED` | "not reordering", "switched supplier" | **fixed 2026-07-31** (was vaguely "a churn/dormant state", written before §5a's real vocabulary existed). Queue row → `DECLINED`; `commercial_customers.commercial_status` → `lost` — same terminal marker as `IGNORE_INDIVIDUAL`/`LEAD_DEAD`. |
 | `UPDATE_CONTACT` | "Sipho isn't the contact anymore, it's Jane, 082...", "number changed to..." | updates `commercial_customers.primary_contact` / `contact_phone` directly. Not tied to a queue row — can be issued at any point in a session, doesn't advance or affect the queue. |
 | `IGNORE_INDIVIDUAL` | "ignore - individual", "that's a person, not a business" | only valid on a `REVIEW_FLAGGED` queue row (§8a). `commercial_customers.commercial_status` → `lost` (permanent, §5a); the flagged queue row is closed. Never resurfaces, including on future backfill runs. |
 | `CONFIRM_BUSINESS` | "no, that's a real business", "keep it" | only valid on a `REVIEW_FLAGGED` queue row. Queue row → `PENDING` with a real `predicted_due_date` computed the normal way — joins the standard solicitation loop from that point on. |
