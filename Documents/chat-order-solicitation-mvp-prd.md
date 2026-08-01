@@ -148,9 +148,31 @@ so there's no staleness window to manage and nothing that can drift by construct
 (§4/§6) now joins this view for display instead of reading `commercial_customers.last_order_date`.
 Tradeoff: recomputed on every read instead of an O(1) column lookup — trivial at the current
 ~169k-row scale; if the ledger grows large enough for that to matter, the fallback is a materialized
-view refreshed on a schedule, not reverting to a manually-written column. The `ORDERED` intent still
-writes `last_order_date` as a rough cache for other purposes, but nothing should display it as the
-"last order" date going forward.
+view refreshed on a schedule, not reverting to a manually-written column.
+
+**`ORDERED`/`LEAD_CONVERTED` no longer write `last_order_date` at all** *(decided 2026-07-31)*. The
+column was kept as "a rough cache for other purposes" in the original version of this section, but
+nothing in the live system actually reads it for any purpose — checked directly before removing the
+write. It drifted twice independently (once caught by an external claude.ai test session, once
+rediscovered live by a second session testing Siyaya, and in Impendle's case it drifted **stale in
+the other direction** — a genuine new order came in that the cached write never picked up), each
+time requiring a manual re-sync. A value nothing reads and that repeatedly needs manual correction
+isn't a cache, it's a liability. The column itself wasn't dropped — `commercial_customers` is
+Pricing Desk's table (§5a), not this MVP's to alter — solicitation simply stopped writing to it.
+
+**Important limit this correction surfaces, stated precisely so it isn't overclaimed:** neither
+`ORDERED` nor `LEAD_CONVERTED` writes to `transaction_items` (nor should they — that's the real ERP
+ledger, populated by ERP sync, not something a chat session should fabricate rows into). This means
+`commercial_customer_last_order` and `commercial_status` do **not** update immediately when an
+operator logs an order — they only reflect it once the real ERP sync actually ingests that invoice,
+on its own timing, outside this workflow's control. This was already true even when `last_order_date`
+was being written (that write never touched `transaction_items` either, so the view was always the
+one lagging). **What *is* immediate and fully within this workflow's control is queue routing**: the
+`ORDERED`/`LEAD_CONVERTED` row closes and a new `PENDING` row is created at the correct future date
+directly from `solicitation_queue`/`commercial_customers.avg_cycle_days`, with no dependency on
+`transaction_items` catching up. Operationally, that's what actually matters — the customer
+correctly stops appearing in "today's targets" until their real next due date, whether or not the
+displayed `commercial_status` on their record has caught up yet.
 
 ### 5a. Cross-Feature Collision: Pricing Desk Owns `commercial_customers`
 
@@ -207,7 +229,7 @@ The agent classifies each free-text reply into a closed set of intents before wr
 
 | Intent | Trigger examples | Effect |
 |---|---|---|
-| `ORDERED` | "ordered standard batch for Friday", "reorder $1,200" | queue row → `ORDERED`; `commercial_customers.last_order_date` = today; new queue row created at `today + avg_cycle_days` |
+| `ORDERED` | "ordered standard batch for Friday", "reorder $1,200" | queue row → `ORDERED`; new queue row created at `today + avg_cycle_days`. **No longer writes `commercial_customers.last_order_date`** (§5, decided 2026-07-31) — nothing reads it, and it repeatedly drifted. |
 | `SNOOZE` | "snooze 10 days", "still has stock" | **fixed 2026-07-31** (was `→ SNOOZED`, a status with no built-in revert path — silently permanent). Queue row **stays `PENDING`**, same as `NO_ANSWER` — only `predicted_due_date` += N days (default 7 if unspecified). |
 | `NO_ANSWER` | "no answer", "try again tomorrow" | queue row stays `PENDING`; `predicted_due_date` = tomorrow |
 | `DECLINED` | "not reordering", "switched supplier" | **fixed 2026-07-31** (was vaguely "a churn/dormant state", written before §5a's real vocabulary existed). Queue row → `DECLINED`; `commercial_customers.commercial_status` → `lost` — same terminal marker as `IGNORE_INDIVIDUAL`/`LEAD_DEAD`. |
@@ -216,7 +238,7 @@ The agent classifies each free-text reply into a closed set of intents before wr
 | `CONFIRM_BUSINESS` | "no, that's a real business", "keep it" | only valid on a `REVIEW_FLAGGED` queue row. Queue row → `PENDING` with a real `predicted_due_date` computed the normal way — joins the standard solicitation loop from that point on. |
 | `LEAD_CONTACTED` | "contacted the lead, following up" | only valid on a `LEAD` queue row (§8a leads desk). Logged in `notes`; row stays `LEAD` with a follow-up date (`predicted_due_date` repurposed as next-follow-up-date for lead rows). |
 | `LEAD_INTERESTED` | "wants pricing", "interested, call back Thursday" | only valid on a `LEAD` queue row. Row stays `LEAD`; follow-up date set from the reply (shorter default than a bare contact). |
-| `LEAD_CONVERTED` | "placed a new order" | only valid on a `LEAD` queue row. Same effect as `ORDERED` (§ above) — `last_order_date` = today, row closes, a new `PENDING` row is created at `today + avg_cycle_days`. `commercial_status` recomputes back to `active_customer` on the next read via the normal ratio rule — self-healing, no manual cleanup. |
+| `LEAD_CONVERTED` | "placed a new order" | only valid on a `LEAD` queue row. Same effect as `ORDERED` (§ above) — row closes, a new `PENDING` row is created at `today + avg_cycle_days`. Queue routing is immediate and self-healing regardless of `last_order_date`/ERP timing (§5 — removed 2026-07-31, and neither this nor `ORDERED` writes to `transaction_items`); `commercial_status` itself only catches up to `active_customer` once real ERP sync ingests the actual invoice. |
 | `LEAD_DEAD` | "closed down", "no longer trading" | only valid on a `LEAD` queue row. `commercial_status` → `lost` (permanent, same terminal state as `IGNORE_INDIVIDUAL`, §5a); queue row closes. This is how the leads desk resolves the "might just be closed" risk one call at a time instead of guessing at backfill time. |
 | `ACCOUNT_ON_HOLD` | "on hold due to nonpayment", "credit hold", "account suspended" | *(added 2026-07-30)* valid from any desk. `solicitation_queue.status` → **`ON_HOLD`** — a new queue status, invisible to all three existing desks the same way `LEAD`/`REVIEW_FLAGGED` already are (no new exclusion logic needed elsewhere, since every push only ever selects its own status). Not an operator-cleared state — see the auto-lift mechanic below. |
 | `CLARIFY` | anything that doesn't match the above with confidence | agent asks a follow-up question; nothing is written |
@@ -478,8 +500,10 @@ second pipeline instead of a label.
 
 Applied to the full Phase 1b backfill (§8a): 165 of 230 confirmed businesses landed in `win_back`/
 `LEAD` — a much bigger fraction than the pilot's zero suggested, since none of the original 4
-customers happened to cross 90 days. Self-heals same as everywhere else: `LEAD_CONVERTED` resets
-`last_order_date`, and `commercial_status` recomputes back to `active_customer` on the next read.
+customers happened to cross 90 days. Queue routing self-heals immediately on `LEAD_CONVERTED` (§6);
+`commercial_status` catches up to `active_customer` once real ERP sync ingests the actual invoice,
+same limit noted in §5 — neither this workflow's writes nor the removed `last_order_date` column
+ever touched `transaction_items` directly.
 
 ## 9. Risks
 
