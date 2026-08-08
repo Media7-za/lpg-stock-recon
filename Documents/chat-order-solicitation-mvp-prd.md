@@ -522,6 +522,20 @@ ever touched `transaction_items` directly.
   Slindokuhle 9, Tandoor 7 — all notably more frequent than the original placeholder guesses.
   `solicitation_queue.predicted_due_date` was recomputed from these; as of today all four are
   already overdue under the corrected cadence.
+- **`ORDERED` executions that skip the follow-up `PENDING` insert silently drop a customer out of
+  the reorder cycle entirely** — found 2026-08-04 via a backend handover document that flagged this
+  as a suspected gap in the manual-testing session, then verified against live data rather than
+  taken on faith: **all 15** `ORDERED` rows live in `solicitation_queue` at the time had zero
+  follow-up row, confirming it as real and current, not a stale claim (the two `ORDERED` executions
+  earlier in *this* session's history did include the insert correctly, but those specific rows were
+  wiped during the later "make it live" reset — the 15 live ones are all from a separate session's
+  continued, independent use of the same rulebook). Backfilled all 15 using each row's `updated_at`
+  (when `ORDERED` was recorded) as the order-date proxy, since neither `last_order_date` nor
+  `transaction_items` gives a better anchor (§5). **This is exactly the kind of error the standing
+  write rule and SQL templates (§6) exist to prevent** — a session correctly identified the intent
+  and updated the row's status, but didn't execute the template's second statement. Worth a periodic
+  integrity check (any `ORDERED` row with no newer `PENDING` row for the same customer) rather than
+  assuming template adherence from an `ORDERED` status alone.
 
 ## 10. Success Metrics
 
