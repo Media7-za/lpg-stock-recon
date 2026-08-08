@@ -44,7 +44,10 @@ Same three-step loop already proven in the debtors workflow, applied to solicita
    excluded — see §5), suggested script — and waits for that target's outcome before showing the
    next. (We deliberately chose one-at-a-time over a batch list: with prose-only replies that
    don't always name the customer, one-at-a-time removes any risk of misattributing a reply to the
-   wrong target.)
+   wrong target.) **Confirmed 2026-08-04**: a backend handover document claimed a "batch of 5"
+   was found workable in practice — checked with the other session that produced that behavior; it
+   was a temporary speed-oriented workflow test, not a validated alternative to this design.
+   One-at-a-time remains the actual spec; disregard that line in the handover doc.
 2. **Action** — Operator calls/texts the customer, then replies in plain text
    (e.g. *"Ordered standard batch for Friday"*, *"Snooze 10 days, has stock"*, *"No answer, try
    tomorrow"*).
