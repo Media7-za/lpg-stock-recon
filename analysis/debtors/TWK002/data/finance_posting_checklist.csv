@@ -1,17 +1,17 @@
 task_id,year,batch_id,remittance_paid_date,erp_receipt,step_b_payment_adjust,erp_gross,correct_cash,step_c_deposit_fix,orphan_strip,journal_post_date,journal_amount,journal_sign,proforma_doc,status,payment_done,deposit_done,journal_done,verified_gross,clerk_initials,completed_date,notes
-TASK-0001,2023,BATCH-2023-06-26,2023-06-26,00022182,false,-46424.87,-45264.25,false,0,2023-06-26,-1160.62,negative,PROFORMA-DJ-01,OPEN,false,false,false,false,,,Payment already at gross; journal missing only
-TASK-0002,2023,BATCH-2023-07-26,2023-07-26,00023115,false,-8145.79,-7942.14,false,0,2023-07-26,-203.65,negative,PROFORMA-DJ-02,OPEN,false,false,false,false,,,
-TASK-0003,2023,BATCH-2023-08-28,2023-08-28,00023836,true,-27738.41,-26924.19,true,345,2023-08-28,-469.22,negative,PROFORMA-DJ-03,OPEN,false,false,false,false,,,Strip R345 orphan from deposit discount
-TASK-0004,2023,BATCH-2023-09-26,2023-09-26,00024560,false,-14684.27,-14317.17,false,0,2023-09-26,-367.10,negative,PROFORMA-DJ-04,OPEN,false,false,false,false,,,
-TASK-0005,2023,BATCH-2023-10-26,2023-10-26,00025906,false,-17064.38,-16637.78,false,0,2023-10-26,-426.60,negative,PROFORMA-DJ-05,OPEN,false,false,false,false,,,
-TASK-0006,2023,BATCH-2023-11-27,2023-11-27,00026681,true,-31872.29,-30825.36,true,345,2023-11-27,-701.93,negative,PROFORMA-DJ-06,OPEN,false,false,false,false,,,Strip R345 orphan from deposit discount
-TASK-2024-0001,2024,BATCH-2024-03-26,2024-03-26,00029684,true,-77692.03,-73610.18,true,3575.49,2024-03-26,-506.36,negative,PROFORMA-DJ-07,OPEN,false,false,false,false,,,Catch-up batch; do not re-embed already-paid R3598.81 on 23075
-TASK-2024-0002,2024,BATCH-2024-04-26,2024-04-26,00030419,false,-28428.84,-28428.84,false,0,2024-04-26,-375.10,negative,PROFORMA-DJ-08,OPEN,false,false,false,false,,,Cash-only — journal only
-TASK-2024-0003,2024,BATCH-2024-05-27,2024-05-27,00031365,false,-11721.10,-11721.10,false,0,2024-05-27,-300.54,negative,PROFORMA-DJ-09,OPEN,false,false,false,false,,,Cash-only — journal only
-TASK-2024-0004,2024,BATCH-2024-06-26,2024-06-26,00031558,true,-39057.53,-37294.98,true,806.27,2024-06-26,-956.28,negative,PROFORMA-DJ-10,OPEN,false,false,false,false,,,Delete blank orphan line R806.46 on deposit
-TASK-2024-0005,2024,BATCH-2024-07-26,2024-07-26,00032332,true,-18061.64,-16737.35,true,895.13,2024-07-26,-429.16,negative,PROFORMA-DJ-11,OPEN,false,false,false,false,,,Delete discount-only rows 29890 and 31405
-TASK-2024-0006,2024,BATCH-2024-08-26,2024-08-26,00033224,true,-22338.84,-21197.32,true,598.00,2024-08-26,-543.52,negative,PROFORMA-DJ-12,OPEN,false,false,false,false,,,Fix equal R570.76 split; add missing CN 09426
-TASK-2024-0007,2024,BATCH-2024-09-26,2024-09-26,00033921,false,-2984.27,-2984.27,false,0,2024-09-26,233.10,positive,PROFORMA-DJ-13,OPEN,false,false,false,false,,,Net negative discount — post positive journal
-TASK-2024-0008,2024,BATCH-2024-10-26,2024-10-26,00034518,false,-38338.45,-38338.45,false,0,2024-10-26,-983.04,negative,PROFORMA-DJ-14,OPEN,false,false,false,false,,,Reverse partial 00000334 R385.04; post full R983.04
-TASK-2024-0009,2024,BATCH-2024-11-26,2024-11-26,00035263,true,-22581.72,-21529.67,true,500.01,2024-11-26,-552.04,negative,PROFORMA-DJ-15,OPEN,false,false,false,false,,,Delete discount-only row 37189; add missing CNs
-TASK-2024-0010,2024,BATCH-2024-12-27,2024-12-27,00036195,false,-12104.70,-12104.70,false,0,2024-12-27,-310.37,negative,PROFORMA-DJ-16,OPEN,false,false,false,false,,,Cash-only — journal only
+TASK-0001,2023,BATCH-2023-06-26,2023-06-26,00022182,false,-46424.87,-45264.25,false,0,2026-07-12,-1160.62,negative,PROFORMA-DJ-01,DONE,false,false,true,true,,2026-08-09,Path B: 00000491 line 26.06.2023; 00000490 payment correction
+TASK-0002,2023,BATCH-2023-07-26,2023-07-26,00023115,false,-8145.79,-7942.14,false,0,2026-07-12,-203.65,negative,PROFORMA-DJ-02,DONE,false,false,true,true,,2026-08-09,Path B: 00000491 line 26.07.2023
+TASK-0003,2023,BATCH-2023-08-28,2023-08-28,00023836,true,-27738.41,-26924.19,true,345,2026-07-12,-469.22,negative,PROFORMA-DJ-03,DONE,false,false,true,true,,2026-08-09,Path B: 00000491 28.08.2023; orphan in 00000490 strip
+TASK-0004,2023,BATCH-2023-09-26,2023-09-26,00024560,false,-14684.27,-14317.17,false,0,2026-07-12,-367.10,negative,PROFORMA-DJ-04,DONE,false,false,true,true,,2026-08-09,Path B: 00000491 26.09.2023
+TASK-0005,2023,BATCH-2023-10-26,2023-10-26,00025906,false,-17064.38,-16637.78,false,0,2026-07-12,-426.60,negative,PROFORMA-DJ-05,DONE,false,false,true,true,,2026-08-09,Path B: 00000491 26.10.2023
+TASK-0006,2023,BATCH-2023-11-27,2023-11-27,00026681,true,-31872.29,-30825.36,true,345,2026-07-12,-701.93,negative,PROFORMA-DJ-06,DONE,false,false,true,true,,2026-08-09,Path B: 00000491 27.11.2023; orphan in 00000490 strip
+TASK-2024-0001,2024,BATCH-2024-03-26,2024-03-26,00029684,true,-77692.03,-73610.18,true,3575.49,2026-03-01,-506.36,negative,PROFORMA-DJ-07,DONE,false,false,true,true,,2026-08-09,Path B: 00000492 + 00000493
+TASK-2024-0002,2024,BATCH-2024-04-26,2024-04-26,00030419,false,-28428.84,-28428.84,false,0,2026-08-09,-375.10,negative,PROFORMA-DJ-08,DONE,false,false,true,true,,2026-08-09,Hygiene: 00000504
+TASK-2024-0003,2024,BATCH-2024-05-27,2024-05-27,00031365,false,-11721.10,-11721.10,false,0,2026-07-23,-300.54,negative,PROFORMA-DJ-09,DONE,false,false,true,true,,2026-08-09,00000500
+TASK-2024-0004,2024,BATCH-2024-06-26,2024-06-26,00031558,true,-39057.53,-37294.98,true,806.27,2025-03-01,-956.28,negative,PROFORMA-DJ-10,DONE,false,false,true,true,,2026-08-09,Path B: 00000494
+TASK-2024-0005,2024,BATCH-2024-07-26,2024-07-26,00032332,true,-18061.64,-16737.35,true,895.13,2025-03-01,-429.16,negative,PROFORMA-DJ-11,DONE,false,false,true,true,,2026-08-09,Path B: 00000495
+TASK-2024-0006,2024,BATCH-2024-08-26,2024-08-26,00033224,true,-22338.84,-21197.32,true,598.00,2025-03-01,-543.52,negative,PROFORMA-DJ-12,DONE,false,false,true,true,,2026-08-09,Path B: 00000496
+TASK-2024-0007,2024,BATCH-2024-09-26,2024-09-26,00033921,false,-2984.27,-2984.27,false,0,2026-07-23,233.10,positive,PROFORMA-DJ-13,DONE,false,false,true,true,,2026-08-09,00000499 + hygiene 00000505 (+108.19)
+TASK-2024-0008,2024,BATCH-2024-10-26,2024-10-26,00034518,false,-38338.45,-38338.45,false,0,2026-07-23,-983.04,negative,PROFORMA-DJ-14,DONE,false,false,true,true,,2026-08-09,00000334 reversed; 00000501 + hygiene 00000506 (-233.10)
+TASK-2024-0009,2024,BATCH-2024-11-26,2024-11-26,00035263,true,-22581.72,-21529.67,true,500.01,2026-08-09,-552.04,negative,PROFORMA-DJ-15,DONE,false,false,true,true,,2026-08-09,Hygiene: 00000503 (net TWK002 +500.01)
+TASK-2024-0010,2024,BATCH-2024-12-27,2024-12-27,00036195,false,-12104.70,-12104.70,false,0,2026-07-23,-310.37,negative,PROFORMA-DJ-16,DONE,false,false,true,true,,2026-08-09,00000502

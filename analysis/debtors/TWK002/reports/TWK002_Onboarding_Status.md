@@ -1,7 +1,19 @@
 # TWK002 — Onboarding Status
 
-**Updated:** 2026-07-12  
-**Scope:** 2023 complete · **2024 linked** via `raw/TWK0022024.TXT`
+**Updated:** 2026-08-09  
+**Scope:** 2023–2024 analysis complete · **ERP catch-up posted** (Path B) · `reconState: complete`
+
+---
+
+## Finance posting sign-off (2026-08-09)
+
+| Item | Status |
+| :--- | :---: |
+| Checklist | `data/finance_posting_checklist.csv` — **16/16 DONE** |
+| Validation TXT | `raw/TWK002CURRENT.TXT` · `raw/TWK002CURRENT09082026.TXT` |
+| CURRENT balance | **R118,867.24** |
+| Method | Path B journals (payment/deposit headers unchanged) |
+| Optional | Deposit line cleanup; 2025 remittances / STAT 110 |
 
 ---
 
@@ -148,10 +160,9 @@ All **6 remittance batches** = `FULL_MATCH` under Model B (cash + discount = gro
 
 ### Future scope
 
-- ~~Recreated ledger 2024~~ ✅
-- ~~Over-post variance investigation (5 batches)~~ ✅
-- ERP journal posting sign-off (Path B catch-up — see doctrine v2 §4)
-- 2025 remittances + STAT 110 partial
+- ~~ERP journal posting sign-off (Path B catch-up)~~ ✅ 2026-08-09
+- 2025 remittances + STAT 110 partial (`00036467`)
+- Optional deposit detail cleanup (Path A)
 
 ---
 

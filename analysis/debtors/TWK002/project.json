@@ -2,11 +2,11 @@
   "debtorCode": "TWK002",
   "clientName": "TWK AGRI PTY LTD",
   "status": "active",
-  "reconState": "in-progress",
+  "reconState": "complete",
   "financials": {
-    "totalOutstanding": 89543.71,
-    "lastInvoiceDate": "2024-02-26",
-    "lastPaymentDate": "2023-11-29",
+    "totalOutstanding": 118867.24,
+    "lastInvoiceDate": "2026-07-31",
+    "lastPaymentDate": "2026-02-25",
     "agedDebt180Plus": 0
   },
   "collections": {
@@ -16,7 +16,7 @@
     "deadlineDate": null,
     "nextAction": null,
     "nextActionDate": null,
-  "notes": "2023–2024 remittances linked. Doctrine v2. Finance catch-up posting in progress (Path B journals)."
+    "notes": "2023–2024 settlement discount catch-up posted (Path B journals 00000490–506). Validated raw/TWK002CURRENT.TXT 2026-08-09. Deposit detail cleanup optional."
   },
   "history": [
     {
@@ -50,6 +50,10 @@
     {
       "date": "2026-07-13",
       "event": "Doctrine v2: 2024 over-post family, Path B catch-up journals, exception types, already_paid rule. Finance posting in progress (2023 journals 00000490/491; Mar 00000492/493; Jun 00000494)."
+    },
+    {
+      "date": "2026-08-09",
+      "event": "Finance sign-off: 16/16 remittance batches posted via Path B (journals 00000490–506 incl. hygiene 503–506). TXT raw/TWK002CURRENT.TXT balance R118,867.24. reconState complete."
     }
   ]
 }
