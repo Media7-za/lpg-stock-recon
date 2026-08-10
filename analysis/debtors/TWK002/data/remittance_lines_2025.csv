@@ -1,0 +1,19 @@
+batch_id,line_type,doc_no,doc_date,our_ref,original_amount,discount_amount,net_amount,discount_eligible,on_remittance,source_type,notes
+BATCH-2025-01-31,Invoice,00039022,2024-12-13,331262,20381.05,509.53,19871.52,true,true,remittance_advice,
+BATCH-2025-01-31,Crd Note,00011475,2024-12-20,999999,-15870.00,-396.75,-15473.25,true,true,remittance_advice,
+BATCH-2025-03-31,Invoice,00039683,2025-01-08,332606,26765.92,0,26765.92,false,true,remittance_advice,No discount on line
+BATCH-2025-03-31,Invoice,00040081,2025-01-22,332895,15608.03,390.20,15217.83,true,true,remittance_advice,
+BATCH-2025-03-31,Crd Note,00011648,2025-01-23,999999,-15870.00,-396.75,-15473.25,true,true,remittance_advice,
+BATCH-2025-03-31,Crd Note,00011743,2025-01-23,999999,-10350.00,-258.75,-10091.25,true,true,remittance_advice,
+BATCH-2025-03-31,Invoice,00040459,2025-02-05,821408,22945.95,573.65,22372.30,true,true,remittance_advice,
+BATCH-2025-03-31,Crd Note,00011821,2025-02-06,999999,-13282.50,-332.06,-12950.44,true,true,remittance_advice,
+BATCH-2025-03-31,Invoice,00040950,2025-02-24,944585,25457.87,636.45,24821.42,true,true,remittance_advice,
+BATCH-2025-03-31,Crd Note,00011953,2025-02-26,999999,-15352.50,-383.81,-14968.69,true,true,remittance_advice,
+BATCH-2025-05-31,Invoice,00041747,2025-03-26,334503,32064.13,495.94,19341.56,true,true,remittance_advice,Payable R19837.50 on advice
+BATCH-2025-05-31,Crd Note,00012131,2025-04-01,999999,-6900.00,-172.50,-6727.50,true,true,remittance_advice,Advice ref 012131/12131
+BATCH-2025-05-31,Crd Note,00012131,2025-04-01,999999,-12937.50,-323.44,-12614.06,true,true,remittance_advice,Split CN lines on advice
+BATCH-2025-05-31,Invoice,00042050,2025-04-07,334962,20133.97,503.35,19630.62,true,true,remittance_advice,
+BATCH-2025-05-31,Crd Note,00012214,2025-04-08,999999,-12075.00,-301.88,-11773.12,true,true,remittance_advice,
+BATCH-2025-05-31,Crd Note,00012215,2025-04-08,999999,-1249.77,-31.24,-1218.53,true,true,remittance_advice,
+BATCH-2025-05-31,Invoice,00042468,2025-04-23,335101,7713.58,192.84,7520.74,true,true,remittance_advice,
+BATCH-2025-05-31,Invoice,00042470,2025-04-23,335100,1236.86,30.92,1205.94,true,true,remittance_advice,

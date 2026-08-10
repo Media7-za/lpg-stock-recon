@@ -4,7 +4,7 @@
   "status": "active",
   "reconState": "complete",
   "financials": {
-    "totalOutstanding": 118867.24,
+    "totalOutstanding": 117831.54,
     "lastInvoiceDate": "2026-07-31",
     "lastPaymentDate": "2026-02-25",
     "agedDebt180Plus": 0
@@ -16,7 +16,7 @@
     "deadlineDate": null,
     "nextAction": null,
     "nextActionDate": null,
-    "notes": "2023–2024 settlement discount catch-up posted (Path B journals 00000490–506). Validated raw/TWK002CURRENT.TXT 2026-08-09. Deposit detail cleanup optional."
+    "notes": "Customer statement: reports/TWK002_Statement_of_Account.md (R117,831.54 due, ref B226, 10 Aug 2026)."
   },
   "history": [
     {
@@ -54,6 +54,26 @@
     {
       "date": "2026-08-09",
       "event": "Finance sign-off: 16/16 remittance batches posted via Path B (journals 00000490–506 incl. hygiene 503–506). TXT raw/TWK002CURRENT.TXT balance R118,867.24. reconState complete."
+    },
+    {
+      "date": "2026-08-09",
+      "event": "Phase 2 opened: 2025 settlement discount. STAT 110 ERP 00036467 (R4,398.27) — PDF pending; finance_posting_checklist_2025_phase2.csv + TWK002_Phase2_2025_Kickoff.md."
+    },
+    {
+      "date": "2026-08-09",
+      "event": "Phase 2 ingest: STAT 110/112/114 linked from remittance PDFs (31.01, 31.03(1), 31.05). Three CASH_ONLY batches READY — discount journals R735.70 pending post."
+    },
+    {
+      "date": "2026-08-09",
+      "event": "Phase 2 posting: STAT 110/112/114 Path B discount journals posted (112.78 + 228.93 + 393.99 = R735.70). Checklist 3/3 DONE; TXT validation pending."
+    },
+    {
+      "date": "2026-08-10",
+      "event": "Phase 2 extension: STAT register 110–123; tranche 2 STAT 123 (00043500 R176,824.24) blocked on image PDF 18.02.2026.pdf; gap STATs 111/113/115–122 no ERP payment in exports."
+    },
+    {
+      "date": "2026-08-10",
+      "event": "Statement of Account v5 generated from DEBENQ_TWK002.TXT (Mar 2025–Aug 2026). Combined close R118,131.54; ERP variance R0.00; LPG R110,311.54 + CYL R7,820.00."
     }
   ]
 }

@@ -17,6 +17,7 @@
 | Settlement identity | `remittance_cash + net_discount_journal ≈ remittance_gross` |
 | Tolerance | **0.1%** of batch settled total |
 | Unit of work | **Remittance batch** (not calendar month) |
+| Multi-site ERP | TWK AGRI may post one remittance / one bank payment across **TWK002, TWK003, TWK004** (site debtor codes). Reconcile **Σ cash slices = remittance cash**; not three separate batches. |
 | Discount base | CYL / EMPTIES included (unlike JIM001 LPG-only strip) |
 
 ```text

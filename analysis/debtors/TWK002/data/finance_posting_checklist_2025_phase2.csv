@@ -1,0 +1,8 @@
+task_id,year,batch_id,remittance_paid_date,erp_receipt,step_b_payment_adjust,erp_gross,correct_cash,step_c_deposit_fix,orphan_strip,journal_post_date,journal_amount,journal_sign,proforma_doc,status,payment_done,deposit_done,journal_done,verified_gross,clerk_initials,completed_date,notes
+TASK-2025-EVID-01,2025,,,,false,,,false,,,,,,DONE,false,false,false,true,,2026-08-09,Ingested 31.01.2025.pdf; 31.03.2025(1).pdf; 31.05.2025.pdf → manifest + lines
+TASK-2025-0001,2025,BATCH-2025-01-31,2025-01-31,00036467,false,-4398.27,-4398.27,false,0,2025-01-31,-112.78,negative,PROFORMA-DJ-2025-01,DONE,false,false,true,true,,2026-08-09,Path B STAT 110; journal posted
+TASK-2025-0002,2025,BATCH-2025-03-31,2025-03-31,00037770,false,-35693.84,-35693.84,false,0,2025-03-31,-228.93,negative,PROFORMA-DJ-2025-02,DONE,false,false,true,true,,2026-08-09,Path B STAT 112; journal posted
+TASK-2025-0003,2025,BATCH-2025-05-31,2025-05-31,00039080,false,-15365.65,-15365.65,false,0,2025-05-31,-393.99,negative,PROFORMA-DJ-2025-03,DONE,false,false,true,true,,2026-08-09,Path B STAT 114; journal posted
+TASK-PH2-GAP-01,2025,,,,false,,,false,,,,,,CLOSED,false,false,false,true,,2026-08-10,STAT 111/113/115–122: no ERP payment in TXT exports; no remittance PDF on disk — not separate batches until evidence
+TASK-2026-EVID-01,2026,BATCH-2026-STAT-123,,00043500,false,-176824.24,,false,,,,,,DONE,false,false,false,true,,2026-08-10,18.02.2026.pdf text ingested → TWK002_STAT123_Remittance_2026-02-18.md
+TASK-2026-0001,2026,BATCH-2026-STAT-123,2026-02-28,00043500,false,-176824.24,-176824.24,false,0,2026-02-28,0,zero,PROFORMA-N/A,DONE,false,false,true,true,,2026-08-10,TWK002 slice R176824.24; full payment R240325.86 split TWK002/003/004 (DEBENQ); zero discount — no journal

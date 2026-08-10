@@ -1,0 +1,2 @@
+batch_id,advice_date,electronic_paid_date,gross_payable,discount_amount,cash_amount,already_paid,remittance_ref,captured_by,captured_date,notes
+BATCH-2026-STAT-123,2026-02-18,2026-02-28,240325.86,0.00,240325.86,19837.50,B226/KRD4041771,agent_pdf_text,2026-08-10,From 18.02.2026.pdf content stream (InterForm400)

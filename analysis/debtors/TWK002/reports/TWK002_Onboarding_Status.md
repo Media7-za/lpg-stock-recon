@@ -13,7 +13,17 @@
 | Validation TXT | `raw/TWK002CURRENT.TXT` · `raw/TWK002CURRENT09082026.TXT` |
 | CURRENT balance | **R118,867.24** |
 | Method | Path B journals (payment/deposit headers unchanged) |
-| Optional | Deposit line cleanup; 2025 remittances / STAT 110 |
+| Optional | Deposit line cleanup; **Phase 2** 2025 remittances — see kickoff report |
+
+---
+
+## Phase 2 — 2025 settlement discount (open)
+
+| Item | Status |
+| :--- | :---: |
+| **Phase 2 tranche 1** | STAT 110/112/114 — **posted** |
+| **Phase 2 tranche 2** | STAT 123 — blocked on `18.02.2026.pdf` footer; gaps 111/113/115–122 documented |
+| Kickoff / extension | `TWK002_Phase2_2025_Kickoff.md` · `TWK002_Phase2_Extension.md` |
 
 ---
 
@@ -161,7 +171,7 @@ All **6 remittance batches** = `FULL_MATCH` under Model B (cash + discount = gro
 ### Future scope
 
 - ~~ERP journal posting sign-off (Path B catch-up)~~ ✅ 2026-08-09
-- 2025 remittances + STAT 110 partial (`00036467`)
+- **Phase 2:** 2025 remittances — STAT 110 first (`00036467`); kickoff 2026-08-09
 - Optional deposit detail cleanup (Path A)
 
 ---

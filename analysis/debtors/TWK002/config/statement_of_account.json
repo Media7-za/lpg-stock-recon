@@ -1,0 +1,19 @@
+{
+  "debtorCode": "TWK002",
+  "customerName": "TWK AGRI PTY LTD",
+  "twkReference": "B226",
+  "businessHeader": [
+    "BELLA ENERGY SERVICES300 (PTY) LTD T/A GAZ EXPRESS",
+    "50 WINSTON ROAD",
+    "PIETERMARITZBURG",
+    "3201"
+  ],
+  "primaryTxt": "analysis/debtors/TWK002/raw/DEBENQ_TWK002.TXT",
+  "siteTxts": {
+    "TWK003": "analysis/debtors/TWK002/raw/DEBENQ_TWK003.TXT",
+    "TWK004": "analysis/debtors/TWK002/raw/DEBENQ_TWK004.TXT"
+  },
+  "outputDir": "analysis/debtors/TWK002/reports",
+  "outputBaseName": "TWK002_Statement_of_Account",
+  "pdfStylesheet": "analysis/debtors/TWK002/reports/statement_pdf.css"
+}

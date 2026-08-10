@@ -18,8 +18,10 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "debtors:sync": "node analysis/debtors/shared/scripts/debtors_sync.mjs",
+    "debtors:ingest-check": "node analysis/debtors/shared/scripts/validate_txt_db_coverage.mjs",
     "debtors:parse-backlog": "node analysis/debtors/shared/scripts/parse_global_aged_debt.mjs",
-    "debtors:knowledge-compile": "node analysis/debtors/shared/scripts/allocation_knowledge_compile.mjs"
+    "debtors:knowledge-compile": "node analysis/debtors/shared/scripts/allocation_knowledge_compile.mjs",
+    "twk002:statement": "node analysis/debtors/TWK002/scripts/generate_statement_of_account.mjs"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

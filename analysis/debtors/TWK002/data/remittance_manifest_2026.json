@@ -1,0 +1,40 @@
+{
+  "debtorCode": "TWK002",
+  "year": 2026,
+  "phase": "2-extension",
+  "doctrine": "docs/TWK002_Settlement_Discount_Doctrine_v2.md",
+  "status": "LINKED",
+  "ingested_date": "2026-08-10",
+  "notes": "STAT 123: one remittance / one bank payment 00043500. Commercially one TWK AGRI account (multi-site); ERP splits cash across TWK002+TWK003+TWK004 = R240,325.86. Zero discount.",
+  "batches": [
+    {
+      "batch_id": "BATCH-2026-STAT-123",
+      "source_file": "raw/Remittances/18.02.2026.pdf",
+      "source_file_format": "INTERFORM400_TEXT",
+      "remittance_ref": "B226/KRD4041771",
+      "advice_date": "2026-02-18",
+      "electronic_paid_date": "2026-02-28",
+      "footer_col1": 260163.36,
+      "already_paid": 19837.50,
+      "gross_payable": 240325.86,
+      "discount_amount": 0,
+      "cash_amount": 240325.86,
+      "erp_payment_doc": "00043500",
+      "erp_payment_date": "2026-02-25",
+      "erp_link_status": "LINKED",
+      "erp_payment_split": [
+        {"debtorCode": "TWK002", "amount": -176824.24, "source": "TWK002CURRENT23072026.TXT"},
+        {"debtorCode": "TWK003", "amount": -38501.31, "source": "raw/DEBENQ_TWK003.TXT"},
+        {"debtorCode": "TWK004", "amount": -25000.31, "source": "raw/DEBENQ_TWK004.TXT"}
+      ],
+      "erp_payment_gross": -240325.86,
+      "erp_gross_variance": 0,
+      "erp_cash_variance": 0,
+      "erp_stat": "STAT 123",
+      "match_type": "ZERO_DISCOUNT_MULTI_DEBTOR_SPLIT",
+      "partial_vs_full": "FULL_ON_ADVICE",
+      "line_count": 46,
+      "notes": "One commercial account (multi-site); ERP debtor split only. Sum of slices = remittance cash. TWK003 R-300 after slice — site-level hygiene optional."
+    }
+  ]
+}

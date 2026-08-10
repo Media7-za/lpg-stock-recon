@@ -30,6 +30,7 @@ prisma/*.db-journal
 
 # Local Python Environments
 .venv_fam/
+.venv-debtors-sys/
 
 # Temporary analysis & scratch scripts
 scratch/
