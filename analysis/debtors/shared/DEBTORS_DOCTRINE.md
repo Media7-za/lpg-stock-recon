@@ -204,7 +204,7 @@ It therefore:
 | :--- | :--- |
 | Line-level lanes, four-lane identity, CYL conservation | `SKILL_Debtor_Statement_v4_From_TXT.md` § Doctrine addendum — line-level lanes |
 | Invoice-linked payment→invoice matching | `analysis/debtors/shared/docs/ALLOCATION_DOCTRINE.md` + `SKILL_Payment_To_Invoice_Allocation.md` §3 |
-| Monthly batch payers (JIM001 class) | `skills/lpg-payment-pattern-analysis/SKILL.md` |
+| Monthly batch payers (JIM001 class) | `analysis/skills/lpg-payment-pattern-analysis/SKILL.md` |
 | Settlement discount lane | Account doctrine (e.g. TWK002 v2) |
 
 ---
@@ -214,7 +214,8 @@ It therefore:
 - **Write-gating:** Writes are conditional steps inside turn briefs, gated on evidence from earlier read-only steps.
 - **Staged registries:** Proposals never self-apply. Diff names every entry that changes and rand impact. Ratification is operator action.
 - **Invariant checks:** Σ registry outstanding qty per class **must** equal net custody per class. `INVARIANT_FAIL — DO NOT RATIFY` stops the turn. Both sides read from live data — hardcoded sides are theatre.
-- **Tripwires:** Every closed ruling records named future events that reopen it (twin-invoice payment, warehouse SKU reclassification, remittance for unallocated credit, ERP extract supersession, etc.).
+- **Invoice tag coverage:** Σ(open invoices) **must not exceed** the ERP `CURRENT BALANCE`. A breach proves settled debt is being carried as open and blocks customer-facing release. An open-invoice list is a hypothesis derived from ERP `INVNO` tagging, never ground truth; only the balance header is. Exports taken with `EXCLUDE: ALLOCATION DETAIL` cannot support invoice-level work at all. Gate: `npm run debtors:tag-check`. Rule: `docs/business_rules.md` §15.
+- **Tripwires:** Every closed ruling records named future events that reopen it (twin-invoice payment, warehouse SKU reclassification, remittance for unallocated credit, ERP extract supersession, etc.). A remittance advice naming an invoice the ledger still shows open reopens that invoice's status — the advice outranks ERP tagging.
 - **Idempotency:** Overrides live in config; ingest applies them — never patch generated CSVs by hand.
 
 Enforcement vehicle: turn brief template in orchestrator skill §5.5.

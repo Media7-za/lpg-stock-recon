@@ -61,15 +61,58 @@ npm run debtors:parse-backlog
 npm run debtors:sync
 ```
 
-## 6. Quality checklist (before marking DONE)
+## 6. Paired ERP export rule (mandatory for debtor recon)
+
+A sync session is **not complete** until all three artifacts exist for the **same ERP session / date range / same day**:
+
+| Artifact | Feed | Destination |
+| :--- | :--- | :--- |
+| Debtor **statement TXT** | Document manifest + running balance | `analysis/debtors/{CODE}/raw/` |
+| **DTRX** header export | `transaction_headers` | DataHub → Supabase |
+| **CURRENT / STTR** items export | `transaction_items` / line detail | DataHub → Supabase |
+
+Optional: operator manifest with paths + `exportBatchId` (see `analysis/debtors/shared/docs/INGEST_GATE_SCHEMA_STAGED.md`).
+
+**Do not** mark intake DONE on DTRX alone. After upload, run:
+
+```bash
+npm run debtors:ingest-check -- --debtor {CODE}
+npm run debtors:tag-check -- --debtor {CODE}
+```
+
+Intake is complete only when coverage is `CURRENT_COMPLETE` or exceptions are ratified in `config/ingest_exceptions.json`.
+
+### 6.1 The statement TXT must include allocation detail
+
+When exporting the debtor statement from ERP DEBENQ, **allocation detail must be included**. An export taken with the option off writes this line into the file header:
+
+```text
+"EXCLUDE:","ALLOCATION DETAIL"
+```
+
+That single line means the `INVNO` column is blank on every row, so no payment or credit note names the invoice it settles. The balance and ageing still work, but **no open-invoice list, statement of account, or payment allocation can be derived from that file at all** — and nothing downstream can compensate for tagging that was never exported.
+
+`debtors:tag-check` reports `UNUSABLE_EXPORT / EXPORT_LACKS_ALLOCATION_DETAIL` when this happens. The only fix is to re-export. At the 2026-08-11 portfolio sweep, 8 of 10 debtor exports had this defect, so check it every time rather than assuming.
+
+Quick check on any TXT you drop:
+
+```bash
+grep 'ALLOCATION DETAIL' analysis/debtors/{CODE}/raw/{FILE}.TXT   # must return nothing
+```
+
+## 7. Quality checklist (before marking DONE)
 
 - [ ] File opens and is readable (not corrupt PDF)
 - [ ] Correct debtor code folder
 - [ ] Date in filename matches document date where possible
 - [ ] No duplicate filename unless intentional variant `(1)`, `(2)`
 - [ ] For TXT: header shows expected account code and export period
+- [ ] **For TXT: header does NOT contain `EXCLUDE: ALLOCATION DETAIL`** (see §6.1 — re-export if it does)
+- [ ] **DTRX headers + ITEMS exports uploaded same session as statement TXT**
+- [ ] **`debtors:ingest-check` run; coverage report saved under `reports/`**
+- [ ] **`debtors:tag-check` run; not `UNUSABLE_EXPORT`**
 
-## 7. Handoff chain
+## 8. Handoff chain
 
 ```text
 Sources Agent uploads raw file
@@ -78,7 +121,7 @@ Sources Agent uploads raw file
   → ERP Agent or Collections Agent queue opens
 ```
 
-## 8. Task completion template
+## 9. Task completion template
 
 ```text
 Task: H-007

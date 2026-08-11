@@ -1,38 +1,53 @@
 #!/usr/bin/env node
 /**
  * Generate a customer-facing Statement of Account (opening balance, ageing,
- * open invoices) for TWK AGRI PTY LTD (TWK002 + linked site codes TWK003/TWK004)
- * directly from ERP DEBENQ TXT exports. No DATABASE_URL required.
+ * open invoices) for any debtor directly from ERP DEBENQ TXT exports.
+ * No DATABASE_URL required — pure TXT parsing.
  *
  * Usage:
- *   node analysis/debtors/TWK002/scripts/generate_statement_of_account.mjs [--as-at YYYY-MM-DD] [--pdf]
+ *   node analysis/debtors/shared/scripts/generate_statement_of_account.mjs \
+ *     --debtor [CODE] [--as-at YYYY-MM-DD] [--pdf] [--force]
  *
- * Config: analysis/debtors/TWK002/config/statement_of_account.json
+ * Config: analysis/debtors/[CODE]/config/statement_of_account.json
+ *   (template: analysis/debtors/shared/templates/statement_of_account_config.template.json)
  *
- * This captures the repeatable TWK002 customer-statement playbook run
- * interactively on 2026-08-10: parse open invoices from DEBENQ_TWK002.TXT,
- * roll up TWK003/TWK004 site balances, bucket ageing off invoice date, and
- * emit the same layout as TWK002_Statement_of_Account.md.
+ * This captures the repeatable customer-statement playbook first run
+ * interactively for TWK002 on 2026-08-10: parse open invoices from the
+ * primary DEBENQ TXT, roll up any linked site-code balances, bucket ageing
+ * off invoice date, and emit the same layout as
+ * TWK002_Statement_of_Account.md. See
+ * .agents/skills/SKILL_Debtor_Customer_Statement_From_TXT.md.
+ *
+ * Before writing, the invoice-tag coverage gate runs over the open-invoice
+ * list (see debenq_open_invoices.mjs). A BLOCKED gate aborts the run: it means
+ * an invoice the customer has already paid by remittance is about to be billed
+ * again. `--force` overrides, and should only be used with a reason recorded.
  */
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { spawnSync } from 'child_process';
+import {
+  round2,
+  displayDate,
+  fmtAmount,
+  parseDebenqWithRunning,
+  computeOpenInvoices,
+  analyseInvoiceTagCoverage,
+  loadRemittanceInvoiceDocs,
+  GATE_MEANING,
+  REMEDY,
+} from './debenq_open_invoices.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '../../../..');
 
-const PAYMENT_TYPES = new Set(['Payment', 'Journal', 'Ud Paymnt', 'Bank XFer']);
-
-function round2(n) {
-  return Math.round((n + Number.EPSILON) * 100) / 100;
-}
-
 function parseArgs(argv) {
-  const args = { asAt: null, pdf: false };
+  const args = { asAt: null, pdf: false, force: false };
   for (let i = 0; i < argv.length; i++) {
     if (argv[i] === '--as-at') args.asAt = argv[++i];
     else if (argv[i] === '--pdf') args.pdf = true;
+    else if (argv[i] === '--force') args.force = true;
     else if (argv[i] === '--debtor') args.debtor = argv[++i];
   }
   return args;
@@ -46,101 +61,42 @@ function loadConfig(debtorCode) {
     'config/statement_of_account.json',
   );
   if (!fs.existsSync(cfgPath)) {
-    throw new Error(`Missing config: ${cfgPath}`);
+    throw new Error(
+      `Missing config: ${cfgPath}\n` +
+        'Copy analysis/debtors/shared/templates/statement_of_account_config.template.json ' +
+        `into analysis/debtors/${debtorCode}/config/statement_of_account.json and fill it in.`,
+    );
   }
-  return JSON.parse(fs.readFileSync(cfgPath, 'utf8'));
+  const cfg = JSON.parse(fs.readFileSync(cfgPath, 'utf8'));
+  // Back-compat: TWK002's original config used a bespoke `twkReference` field.
+  cfg.referenceLabel = cfg.referenceLabel || 'Reference';
+  cfg.referenceValue = cfg.referenceValue || cfg.twkReference || '';
+  cfg.closedInvoiceOverrides = cfg.closedInvoiceOverrides || [];
+  return cfg;
 }
 
-function parseCsvLine(line) {
-  const out = [];
-  let cur = '';
-  let inQ = false;
-  for (const c of line) {
-    if (c === '"') {
-      inQ = !inQ;
-      continue;
-    }
-    if (c === ',' && !inQ) {
-      out.push(cur);
-      cur = '';
-      continue;
-    }
-    cur += c;
+function reportTagCoverage(debtorCode, cov) {
+  if (cov.gate === 'ALLOWED') {
+    console.log(`[${debtorCode}] Invoice tag coverage: ALLOWED (${cov.counts.clear} open invoices, all clear)`);
+    return;
   }
-  out.push(cur);
-  return out;
-}
-
-function normDoc(s) {
-  const d = String(s || '').replace(/\D/g, '');
-  return d ? String(parseInt(d, 10)) : '';
-}
-
-function parseTxtDate(s) {
-  const [d, m, y] = s.split('/');
-  const yyyy = y.length === 2 ? `20${y}` : y;
-  return `${yyyy}-${m.padStart(2, '0')}-${d.padStart(2, '0')}`;
-}
-
-function displayDate(iso) {
-  const d = new Date(`${iso}T12:00:00`);
-  return `${String(d.getDate()).padStart(2, '0')} ${d.toLocaleString('en-ZA', { month: 'short' })} ${d.getFullYear()}`;
-}
-
-/**
- * Open invoice model: Invoice sets base; Crd Note and invoice-tagged
- * Payment/Journal rows net against the matched invoice document. Rows with
- * no invno on a payment/journal are account-level (not invoice-specific) and
- * are absorbed into the reconciliation adjustment, not a per-invoice row.
- */
-function computeOpenInvoices(rows) {
-  const balance = new Map();
-  const meta = new Map();
-
-  for (const r of rows) {
-    if (r.entry === 'Invoice') {
-      meta.set(r.cleanDoc, { docno: r.docno, iso: r.iso, dn: r.dn });
-      balance.set(r.cleanDoc, round2((balance.get(r.cleanDoc) || 0) + r.amount));
-    } else if (r.entry === 'Crd Note') {
-      const target = r.invno || r.cleanDoc;
-      if (!target) continue;
-      balance.set(target, round2((balance.get(target) || 0) + r.amount));
-    } else if (PAYMENT_TYPES.has(r.entry) && r.invno) {
-      balance.set(r.invno, round2((balance.get(r.invno) || 0) + r.amount));
-    }
+  console.warn(`[${debtorCode}] Invoice tag coverage: ${cov.gate}`);
+  console.warn(`[${debtorCode}] ${GATE_MEANING[cov.gate]}`);
+  if (cov.blocking_reason) console.warn(`[${debtorCode}] REMEDY: ${REMEDY[cov.blocking_reason]}`);
+  if (cov.invariant.status === 'BREACHED') {
+    console.warn(
+      `[${debtorCode}]   INVARIANT BREACHED — Σ(open invoices) exceeds the ERP balance by R${fmtAmount(cov.invariant.overstated_by)}`,
+    );
   }
-
-  return [...balance.entries()]
-    .filter(([key, bal]) => bal > 0.005 && meta.has(key))
-    .map(([key, bal]) => ({ key, due: bal, ...meta.get(key) }))
-    .sort((a, b) => a.iso.localeCompare(b.iso) || a.docno.localeCompare(b.docno));
-}
-
-/** Parse a DEBENQ_*.TXT export, keeping the ERP running-balance column (p[10]). */
-function parseDebenqWithRunning(absPath) {
-  const txt = fs.readFileSync(absPath, 'utf8');
-  const headerBalance = Number(txt.match(/CURRENT BALANCE:","(-?[0-9.]+)"/)?.[1]);
-  const rows = [];
-  for (const line of txt.split('\n')) {
-    if (!/^"\d+"/.test(line.trim())) continue;
-    const p = parseCsvLine(line);
-    if (p.length < 11) continue;
-    const [, , docno, entry, date, invno, dn] = p;
-    const amount = round2(Number(p[9]));
-    const runningBalance = round2(Number(p[10]));
-    if (!date || !date.includes('/')) continue;
-    rows.push({
-      docno,
-      cleanDoc: normDoc(docno),
-      entry,
-      iso: parseTxtDate(date),
-      invno: normDoc(invno),
-      dn: (dn || '').trim(),
-      amount,
-      runningBalance,
-    });
+  for (const inv of cov.invoices) {
+    if (inv.risk === 'CLEAR') continue;
+    console.warn(
+      `[${debtorCode}]   ${inv.risk} inv ${inv.doc} (${inv.iso}, R${fmtAmount(inv.due)}) — ${inv.basis}`,
+    );
   }
-  return { headerBalance, rows };
+  console.warn(
+    `[${debtorCode}] Full detail: node analysis/debtors/shared/scripts/check_invoice_tag_coverage.mjs --debtor ${debtorCode} --write`,
+  );
 }
 
 function openingBalanceForMonth(rows, monthStartIso) {
@@ -168,10 +124,35 @@ function main() {
   const monthStartIso = `${asAtIso.slice(0, 7)}-01`;
 
   const primaryPath = path.join(ROOT, cfg.primaryTxt);
-  const { headerBalance: primaryHeader, rows: primaryRows } = parseDebenqWithRunning(primaryPath);
+  const {
+    headerBalance: primaryHeader,
+    balanceBf: primaryBf,
+    excludesAllocationDetail,
+    rows: primaryRows,
+  } = parseDebenqWithRunning(primaryPath);
 
-  const openInvoices = computeOpenInvoices(primaryRows);
+  const openInvoices = computeOpenInvoices(primaryRows, cfg.closedInvoiceOverrides);
   const openingBalance = openingBalanceForMonth(primaryRows, monthStartIso);
+
+  // Invoice-tag coverage gate — never bill a customer for an invoice their own
+  // remittance advice says they already paid. See debenq_open_invoices.mjs.
+  const tagCoverage = analyseInvoiceTagCoverage({
+    rows: primaryRows,
+    openInvoices,
+    headerBalance: primaryHeader,
+    balanceBf: primaryBf,
+    excludesAllocationDetail,
+    closedOverrides: cfg.closedInvoiceOverrides,
+    remittanceDocs: loadRemittanceInvoiceDocs(path.join(ROOT, 'analysis/debtors', debtorCode)),
+  });
+  reportTagCoverage(debtorCode, tagCoverage);
+  if ((tagCoverage.gate === 'BLOCKED' || tagCoverage.gate === 'UNUSABLE_EXPORT') && !args.force) {
+    console.error(
+      `[${debtorCode}] ABORTED — statement not written. Resolve the invoices above, or re-run with --force if you have a recorded reason.`,
+    );
+    process.exitCode = 1;
+    return;
+  }
 
   // Site roll-up (balances only — no invoice-level detail expected once cleared)
   const siteBalances = [];
@@ -208,7 +189,7 @@ function main() {
   });
   const monthLabel = asAt.toLocaleDateString('en-ZA', { month: 'long', year: 'numeric' });
 
-  const fmt = (n) => n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const fmt = fmtAmount;
 
   const lines = [];
   lines.push('# Statement of Account', '');
@@ -218,7 +199,9 @@ function main() {
   lines.push('', '---', '');
   lines.push(`**To:** ${cfg.customerName}  `);
   lines.push(`**Account:** ${debtorCode}  `);
-  lines.push(`**TWK reference:** ${cfg.twkReference}  `);
+  if (cfg.referenceValue) {
+    lines.push(`**${cfg.referenceLabel}:** ${cfg.referenceValue}  `);
+  }
   lines.push(`**Statement date:** ${asAtLabel}  `);
   lines.push('', '---', '', '## Account summary', '');
   lines.push('| | Amount (R) |');
@@ -253,11 +236,14 @@ function main() {
   for (const inv of openInvoices) {
     lines.push(`| ${inv.docno.replace(/^0+/, '') || inv.docno} | ${displayDate(inv.iso)} | ${inv.dn} | ${fmt(inv.due)} |`);
   }
+  const refSuffix = cfg.referenceValue
+    ? ` and quote reference **${cfg.referenceValue}**`
+    : '';
   lines.push(
     '',
     '---',
     '',
-    `Please remit **R${fmt(totalDue)}** and quote reference **${cfg.twkReference}** on payment. If payment has already been made, send proof of payment so we can allocate it promptly.`,
+    `Please remit **R${fmt(totalDue)}**${refSuffix} on payment. If payment has already been made, send proof of payment so we can allocate it promptly.`,
     '',
   );
 

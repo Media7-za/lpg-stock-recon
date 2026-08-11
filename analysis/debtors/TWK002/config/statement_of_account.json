@@ -1,7 +1,8 @@
 {
   "debtorCode": "TWK002",
   "customerName": "TWK AGRI PTY LTD",
-  "twkReference": "B226",
+  "referenceLabel": "TWK reference",
+  "referenceValue": "B226",
   "businessHeader": [
     "BELLA ENERGY SERVICES300 (PTY) LTD T/A GAZ EXPRESS",
     "50 WINSTON ROAD",
@@ -15,5 +16,15 @@
   },
   "outputDir": "analysis/debtors/TWK002/reports",
   "outputBaseName": "TWK002_Statement_of_Account",
-  "pdfStylesheet": "analysis/debtors/TWK002/reports/statement_pdf.css"
+  "pdfStylesheet": "analysis/debtors/TWK002/reports/statement_pdf.css",
+  "closedInvoiceOverrides": [
+    {
+      "doc": "42468",
+      "reason": "Paid via STAT 114 / BATCH-2025-05-31 remittance (31.05.2025.pdf), receipt 00039080 (30/05/2025). ERP never tagged a CN/payment row to this invno (untagged payment slice); Path B discount journal 00000509 (-R393.99) already posted for the batch on 2026-08-09. See TWK002_Phase2_2025_Linkage.md."
+    },
+    {
+      "doc": "42470",
+      "reason": "Paid via STAT 114 / BATCH-2025-05-31 remittance (31.05.2025.pdf), receipt 00039080 (30/05/2025). Same untagged-payment cause as invoice 42468 — see reason there."
+    }
+  ]
 }

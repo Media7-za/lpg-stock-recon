@@ -10,7 +10,7 @@ PIETERMARITZBURG
 **To:** TWK AGRI PTY LTD  
 **Account:** TWK002  
 **TWK reference:** B226  
-**Statement date:** 10 August 2026  
+**Statement date:** 11 August 2026  
 
 ---
 
@@ -29,7 +29,7 @@ PIETERMARITZBURG
 
 ## Aged balance (as at statement date)
 
-Age is calculated from **invoice date** to 10 August 2026.
+Age is calculated from **invoice date** to 11 August 2026.
 
 | Current | 30 day | 60 day | 90 day | 120 day | **Total due** |
 | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -43,8 +43,6 @@ Age is calculated from **invoice date** to 10 August 2026.
 
 | Inv | Inv date | DN / ref | **Due (R)** |
 | :--- | :--- | :--- | ---: |
-| 42468 | 23 Apr 2025 | DN#13029 | 7,713.58 |
-| 42470 | 23 Apr 2025 | DN#13030 | 1,236.86 |
 | 49208 | 12 Feb 2026 | DN#21535 | 13,468.47 |
 | 49606 | 06 Mar 2026 | DN#21950 | 8,277.21 |
 | 49882 | 24 Mar 2026 | DN-21976 | 8,858.97 |

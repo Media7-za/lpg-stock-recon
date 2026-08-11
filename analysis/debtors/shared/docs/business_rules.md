@@ -122,6 +122,9 @@ JOIN vw_clean_transactions v
 *   **Part 2 (Cylinders):** This section must purely reflect physical asset movement (Quantities). No financial/Rand values should be assigned or displayed for cylinders.
 
 ## 11. CYL Document Stripping Rule (ERP CSV Ground Truth Layer)
+
+> Superseded for **lane classification** by `DEBTORS_DOCTRINE.md` §4 + v4 skill Doctrine addendum (line-level lanes). Doc-level strip below applies to **CSV/TXT layer only when DB line detail is absent**.
+
 **Discovered during:** JEN001 reconciliation (May 2026).
 
 **Problem:** The ERP text export (`*.TXT`) produced by the CSV Ground Truth approach (Rule 8) includes both the gas-fill invoices **and** the paired cylinder-deposit invoices/credit notes in a single flat ledger. When computing the **LPG financial balance**, the cylinder rows must be identified and completely excluded before any running-balance calculation. Failure to strip them causes the financial totals to appear inflated (the deposit charge) and then deflated (the reversal), polluting the Gas ledger with noise.
@@ -202,3 +205,21 @@ Where:
 1. **Bulk-Payment Statement Allocation (Pattern 2):** When a monthly shortfall corresponds to specific unpaid invoice lines, log the month as `PARTIALLY_SETTLED`. Identify candidate invoices by matching line totals to the unpaid variance, and document them in Section 2.1.
 2. **Timing Mirror Carry Pattern (Pattern 3):** When a payment timing offset occurs (e.g. Month A is underpaid by `X` and Month B's payment is overpaid by exactly `X`), they represent a mirror carry. Treat both months as `FULLY SETTLED` in the summary, log the actual payments and variances in the ledger, and link them as mirror offsets.
 3. **Override Registry Doctrine:** Any verified patterns or timing mirror overrides must be hardcoded in the report generator override dictionaries (`jim22_overrides`, `jim23_overrides`, etc.) to prevent automated scripts from reverting them back to raw heuristic skipped states on compilation.
+
+## 15. Invoice Tag Coverage Rule (Open-Invoice Lists Are Hypotheses)
+**Discovered during:** TWK002 customer statement review (2026-08-11), when the customer's own remittance advice showed invoices 42468 and 42470 had been paid 15 months earlier while the statement still billed them.
+
+**Problem:** ERP settles an invoice by posting a Crd Note / Payment / Journal row whose `INVNO` column names the invoice it clears. That tagging is not reliable in two distinct ways, and the two have completely different remedies:
+
+1. **Untagged slice** — the export carries allocation detail, but an individual settlement row has a blank `INVNO`. The account running balance and `CURRENT BALANCE` header stay correct, but the money is not attributable to any invoice, so an already-paid invoice keeps showing as open indefinitely. TWK002's untagged R7,306.68 slice of payment `00039080` (STAT 114) is the reference case.
+2. **No allocation detail at all** — the export was taken with `"EXCLUDE:","ALLOCATION DETAIL"`, so `INVNO` is blank on every row. No open/closed status can be derived for any invoice. At the 2026-08-11 sweep this affected 8 of the 10 debtor exports in the repo.
+
+**Rules:**
+1. **An open-invoice list is a hypothesis, not a fact.** Only the ERP `CURRENT BALANCE` header is ground truth for what an account owes. The per-invoice breakdown is a reconstruction and inherits every gap in ERP's tagging.
+2. **Account invariant — Σ(open invoices) ≤ ERP `CURRENT BALANCE`.** A breach is proof that settled debt is being carried as open. Treat the breach as a *lower bound* on the error: understatement elsewhere can mask most of it (TWK002 breached by only R865.77 while the true error was R8,950.44).
+3. **Exports for invoice-level work must include allocation detail.** A TXT carrying `EXCLUDE: ALLOCATION DETAIL` supports balance and ageing work only. Deriving an open-invoice list from it is prohibited — re-export first.
+4. **Gate before customer-facing release.** Run `npm run debtors:tag-check -- --debtor [CODE]` before any statement, open-invoice list, or collections letter leaves the building. `BLOCKED` and `UNUSABLE_EXPORT` prohibit release; `REVIEW_REQUIRED` requires an evidence check first. Internal use (collections triage, ageing trend, portfolio totals) is unaffected — the account total is correct regardless.
+5. **Ratify, never patch.** An invoice proven settled by a remittance advice is retired through `closedInvoiceOverrides` in `config/statement_of_account.json`, recording the evidence reference. Never hand-edit a generated statement or report — the next regeneration would resurrect the error.
+6. **Remittance advices outrank ERP tagging.** Where the customer's advice and ERP's `INVNO` tagging disagree about whether an invoice is settled, the advice plus a reconciling batch total (remittance cash = ERP payment total for that receipt) wins.
+
+**Enforcement:** `analysis/debtors/shared/scripts/debenq_open_invoices.mjs` (shared model + gate), `check_invoice_tag_coverage.mjs` (CLI + portfolio sweep), contract tests in `debenq_open_invoices.test.mjs`. The statement generator refuses to write when the gate blocks.

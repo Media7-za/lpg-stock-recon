@@ -1,0 +1,19 @@
+{
+  "debtorCode": "[CODE]",
+  "customerName": "[CUSTOMER TRADING NAME FROM TXT HEADER]",
+  "referenceLabel": "Reference",
+  "referenceValue": "",
+  "businessHeader": [
+    "BELLA ENERGY SERVICES300 (PTY) LTD T/A GAZ EXPRESS",
+    "50 WINSTON ROAD",
+    "PIETERMARITZBURG",
+    "3201"
+  ],
+  "primaryTxt": "analysis/debtors/[CODE]/raw/DEBENQ_[CODE].TXT",
+  "siteTxts": {},
+  "outputDir": "analysis/debtors/[CODE]/reports",
+  "outputBaseName": "[CODE]_Statement_of_Account",
+  "pdfStylesheet": "analysis/debtors/shared/templates/statement_pdf.css",
+  "_comment_closedInvoiceOverrides": "Optional. List invoices proven paid (e.g. by a remittance advice) whose ERP CN/payment row was never tagged with that invno, so they'd otherwise wrongly show as open. Each entry: {\"doc\": \"[invoice no, digits only]\", \"reason\": \"[evidence/reference]\"}.",
+  "closedInvoiceOverrides": []
+}

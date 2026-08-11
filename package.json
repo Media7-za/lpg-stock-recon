@@ -21,7 +21,10 @@
     "debtors:ingest-check": "node analysis/debtors/shared/scripts/validate_txt_db_coverage.mjs",
     "debtors:parse-backlog": "node analysis/debtors/shared/scripts/parse_global_aged_debt.mjs",
     "debtors:knowledge-compile": "node analysis/debtors/shared/scripts/allocation_knowledge_compile.mjs",
-    "twk002:statement": "node analysis/debtors/TWK002/scripts/generate_statement_of_account.mjs"
+    "debtors:customer-statement": "node analysis/debtors/shared/scripts/generate_statement_of_account.mjs",
+    "debtors:tag-check": "node analysis/debtors/shared/scripts/check_invoice_tag_coverage.mjs",
+    "debtors:tag-check:all": "node analysis/debtors/shared/scripts/check_invoice_tag_coverage.mjs --all",
+    "debtors:test": "node --test analysis/debtors/shared/scripts/*.test.mjs"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

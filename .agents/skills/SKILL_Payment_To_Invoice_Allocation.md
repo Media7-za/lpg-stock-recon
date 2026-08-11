@@ -20,7 +20,7 @@ description: >-
 > `TRANSF | STAT 1xx` batches, 2–3 invoices cleared per EFT.
 >
 > **Do NOT use** for monthly consolidated batch payers (e.g. JIM001). Those accounts
-> require `skills/lpg-payment-pattern-analysis/SKILL.md`, which reconciles at the
+> require `analysis/skills/lpg-payment-pattern-analysis/SKILL.md`, which reconciles at the
 > gross monthly level and treats `ref_no` as clerical noise.
 
 ---
@@ -68,7 +68,7 @@ stored in the debtor workspace (`allocation_edges.csv` + narrative report).
 
 | Document | Role |
 | :--- | :--- |
-| `skills/lpg-payment-pattern-analysis/SKILL.md` | Monthly batch payers — **mutually exclusive** with this skill |
+| `analysis/skills/lpg-payment-pattern-analysis/SKILL.md` | Monthly batch payers — **mutually exclusive** with this skill |
 | `debtors-analysis_Skill.md` | Graph states, exception taxonomy — apply after edges are built |
 | `ALLOCATION_DOCTRINE.md` | Evidence tiers and cylinder settlement rules |
 | `business_rules.md` | VAT sign, Dual-Line Pattern, Rule 13 surplus, override registry doctrine |
@@ -231,6 +231,22 @@ When ignoring or cross-checking ERP `ref_no`:
 
 **WO0001 example (Pmt 36043):** Open on 2025-01-13 — Inv 38848 R2,540.18,
 39491 R10,322.57, 39701 R11,673.11 — slices match open exactly without reading ref.
+
+**Open balance is a reconstruction, not ground truth.** Every open-balance
+figure above is derived from ERP tagging (`ref_no` in the DB, `INVNO` in the
+TXT), and that tagging is incomplete: settlement rows are routinely posted with
+a blank tag, and some exports carry no allocation detail at all. An invoice can
+therefore show a positive open balance long after it was paid, which silently
+corrupts any allocation computed against it. Two guards:
+
+- **Invariant** — Σ(open invoices) must never exceed the ERP `CURRENT BALANCE`.
+  A breach proves settled debt is being carried as open; stop and reconcile
+  before allocating.
+- **Gate** — run `npm run debtors:tag-check -- --debtor [CODE]` before trusting
+  an open-balance set. `UNUSABLE_EXPORT` means the source has no tagging at all
+  and must be re-exported.
+
+Rule: `analysis/debtors/shared/docs/business_rules.md` §15.
 
 ---
 

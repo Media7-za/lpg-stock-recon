@@ -1,0 +1,298 @@
+{
+  "debtor": "TWK002",
+  "generated_at": "2026-08-11T12:58:20.391Z",
+  "statement_txt": "analysis/debtors/TWK002/raw/DEBENQ_TWK002.TXT",
+  "config_found": true,
+  "remittance_sources": 103,
+  "gate": "ALLOWED",
+  "blocking_reason": null,
+  "export_quality": "ALLOCATION_DETAIL_PRESENT",
+  "tagging": {
+    "settlement_rows": 95,
+    "tagged_rows": 76,
+    "tagged_pct": 80
+  },
+  "counts": {
+    "likely_paid": 0,
+    "stale_open": 0,
+    "clear": 11,
+    "unassessable": 0
+  },
+  "invariant": {
+    "name": "Σ(open invoices) ≤ ERP CURRENT BALANCE",
+    "status": "PASS",
+    "overstated_by": 0
+  },
+  "untagged_credits": [
+    {
+      "docno": "00037770",
+      "entry": "Payment",
+      "iso": "2025-03-28",
+      "dn": "TRANSF | STAT 112",
+      "amount": -35693.84
+    },
+    {
+      "docno": "00039080",
+      "entry": "Payment",
+      "iso": "2025-05-30",
+      "dn": "TRANSF | STAT 114",
+      "amount": -7306.68
+    },
+    {
+      "docno": "00043500",
+      "entry": "Payment",
+      "iso": "2026-02-25",
+      "dn": "TRANSF | STAT 123",
+      "amount": -1249.77
+    },
+    {
+      "docno": "00000491",
+      "entry": "Journal",
+      "iso": "2026-07-12",
+      "dn": "",
+      "amount": -203.65
+    },
+    {
+      "docno": "00000491",
+      "entry": "Journal",
+      "iso": "2026-07-12",
+      "dn": "",
+      "amount": -367.1
+    },
+    {
+      "docno": "00000491",
+      "entry": "Journal",
+      "iso": "2026-07-12",
+      "dn": "",
+      "amount": -426.6
+    },
+    {
+      "docno": "00000491",
+      "entry": "Journal",
+      "iso": "2026-07-12",
+      "dn": "",
+      "amount": -469.22
+    },
+    {
+      "docno": "00000491",
+      "entry": "Journal",
+      "iso": "2026-07-12",
+      "dn": "",
+      "amount": -701.93
+    },
+    {
+      "docno": "00000491",
+      "entry": "Journal",
+      "iso": "2026-07-12",
+      "dn": "",
+      "amount": -1160.62
+    },
+    {
+      "docno": "00000499",
+      "entry": "Journal",
+      "iso": "2026-07-23",
+      "dn": "",
+      "amount": -375.1
+    },
+    {
+      "docno": "00000499",
+      "entry": "Journal",
+      "iso": "2026-07-23",
+      "dn": "",
+      "amount": -552.04
+    },
+    {
+      "docno": "00000500",
+      "entry": "Journal",
+      "iso": "2026-07-23",
+      "dn": "",
+      "amount": -300.54
+    },
+    {
+      "docno": "00000501",
+      "entry": "Journal",
+      "iso": "2026-07-23",
+      "dn": "",
+      "amount": -983.04
+    },
+    {
+      "docno": "00000502",
+      "entry": "Journal",
+      "iso": "2026-07-23",
+      "dn": "",
+      "amount": -310.37
+    },
+    {
+      "docno": "00000507",
+      "entry": "Journal",
+      "iso": "2026-08-09",
+      "dn": "",
+      "amount": -112.78
+    },
+    {
+      "docno": "00000508",
+      "entry": "Journal",
+      "iso": "2026-08-09",
+      "dn": "",
+      "amount": -228.93
+    },
+    {
+      "docno": "00000509",
+      "entry": "Journal",
+      "iso": "2026-08-09",
+      "dn": "",
+      "amount": -393.99
+    }
+  ],
+  "untagged_credit_total": -50836.2,
+  "last_untagged_credit_date": "2026-08-09",
+  "stale_gap_days": 90,
+  "sum_open_invoices": 110046.87,
+  "header_balance": 118131.54,
+  "balance_bf": 38791.27,
+  "reconciliation_gap": 8084.67,
+  "ratified_closed": [
+    {
+      "doc": "42468",
+      "reason": "Paid via STAT 114 / BATCH-2025-05-31 remittance (31.05.2025.pdf), receipt 00039080 (30/05/2025). ERP never tagged a CN/payment row to this invno (untagged payment slice); Path B discount journal 00000509 (-R393.99) already posted for the batch on 2026-08-09. See TWK002_Phase2_2025_Linkage.md."
+    },
+    {
+      "doc": "42470",
+      "reason": "Paid via STAT 114 / BATCH-2025-05-31 remittance (31.05.2025.pdf), receipt 00039080 (30/05/2025). Same untagged-payment cause as invoice 42468 — see reason there."
+    }
+  ],
+  "invoices": [
+    {
+      "doc": "49208",
+      "key": "49208",
+      "iso": "2026-02-12",
+      "dn": "DN#21535",
+      "due": 13468.47,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 15,
+      "untagged_credit_pool_after_invoice": -7835.68
+    },
+    {
+      "doc": "49606",
+      "key": "49606",
+      "iso": "2026-03-06",
+      "dn": "DN#21950",
+      "due": 8277.21,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 14,
+      "untagged_credit_pool_after_invoice": -6585.91
+    },
+    {
+      "doc": "49882",
+      "key": "49882",
+      "iso": "2026-03-24",
+      "dn": "DN-21976",
+      "due": 8858.97,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 14,
+      "untagged_credit_pool_after_invoice": -6585.91
+    },
+    {
+      "doc": "50099",
+      "key": "50099",
+      "iso": "2026-04-06",
+      "dn": "DN-22046",
+      "due": 9010.16,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 14,
+      "untagged_credit_pool_after_invoice": -6585.91
+    },
+    {
+      "doc": "50439",
+      "key": "50439",
+      "iso": "2026-04-29",
+      "dn": "DN-21880",
+      "due": 5300.12,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 14,
+      "untagged_credit_pool_after_invoice": -6585.91
+    },
+    {
+      "doc": "50680",
+      "key": "50680",
+      "iso": "2026-05-14",
+      "dn": "DN#22709",
+      "due": 7245.45,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 14,
+      "untagged_credit_pool_after_invoice": -6585.91
+    },
+    {
+      "doc": "50898",
+      "key": "50898",
+      "iso": "2026-05-27",
+      "dn": "DN#22761",
+      "due": 8947.95,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 14,
+      "untagged_credit_pool_after_invoice": -6585.91
+    },
+    {
+      "doc": "51226",
+      "key": "51226",
+      "iso": "2026-06-15",
+      "dn": "DN#22904",
+      "due": 12471.98,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 14,
+      "untagged_credit_pool_after_invoice": -6585.91
+    },
+    {
+      "doc": "51496",
+      "key": "51496",
+      "iso": "2026-07-01",
+      "dn": "DN#22534",
+      "due": 12471.98,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 14,
+      "untagged_credit_pool_after_invoice": -6585.91
+    },
+    {
+      "doc": "51841",
+      "key": "51841",
+      "iso": "2026-07-15",
+      "dn": "DN#22576",
+      "due": 9607.49,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 8,
+      "untagged_credit_pool_after_invoice": -3256.79
+    },
+    {
+      "doc": "52241",
+      "key": "52241",
+      "iso": "2026-07-31",
+      "dn": "DN#24229",
+      "due": 14387.09,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 3,
+      "untagged_credit_pool_after_invoice": -735.7
+    }
+  ]
+}
