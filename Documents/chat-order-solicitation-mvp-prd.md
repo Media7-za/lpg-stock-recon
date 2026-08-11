@@ -557,3 +557,60 @@ ever touched `transaction_items` directly.
 - Reduction in accounts crossing `predicted_due_date` by >2x `avg_cycle_days` with no order
   (churn proxy).
 - Operator time per check-in session (should trend down as the loop replaces manual lookups).
+
+## 11. Related Feature: Payment Collections (Outstanding Payments)
+
+**Not part of the solicitation loop.** Requested 2026-08-11 by the operator: "certain customers'
+accounts are outstanding for payment, not related to or solicitation, but I would like it to be
+handled just like how we handle reviews, leads, etc." — i.e. reuse the desk/intent-panel/session-log
+*interaction pattern* this MVP established, without conflating collections state into
+`solicitation_queue` or `commercial_status` (which stays constrained to Pricing Desk's vocabulary,
+§5a). Built as a fully separate table, Edge Function, and route — `/payment-collections`, its own nav
+entry — that happens to look and behave like a fourth desk.
+
+**Decisions, asked directly rather than assumed (all confirmed with the operator 2026-08-11):**
+- **Data source:** manual only for now — an admin panel where amounts due and a statement-of-account
+  file are entered by hand. Not derived from the existing Debtors/aged-debt tables (out of scope for
+  now, could be revisited later).
+- **Relationship to the existing `ACCOUNT_ON_HOLD` intent:** explicitly *not* reused. `ACCOUNT_ON_HOLD`
+  stays as-is (silent, auto-lifting on a new `transaction_items` invoice row, §6) for other hold
+  reasons. This is a separate status domain on a separate table.
+- **One running balance per customer:** `outstanding_payments.commercial_customer_id` is `unique`.
+  Entering a new amount for a customer who already has a record upserts it (new amount, new statement,
+  status reset to `OUTSTANDING`) rather than creating a second open row.
+- **Auto-return: manual only.** Unlike `ACCOUNT_ON_HOLD`/`ORDERED`/`LEAD_CONVERTED`, there is no
+  self-healing check against `transaction_items`. A record only leaves the desk when an operator
+  explicitly logs "Payment received" — a new invoice appearing doesn't imply the *outstanding* amount
+  was paid.
+- **Access:** same role gate as the rest of Solicitation (`Depot Manager`, `Invoice Clerk`) — no new
+  role, consistent with the earlier "2." decision for Solicitation itself.
+
+**Schema** (`outstanding_payments`, migrated 2026-08-11):
+`id, commercial_customer_id (unique, fk -> commercial_customers), amount_due numeric(12,2),
+statement_url, statement_filename, status (OUTSTANDING|PAYMENT_PLAN|ESCALATED|PAID, CHECK
+constraint), follow_up_date, notes, last_contacted_at, created_at, updated_at`. RLS disabled, matching
+`solicitation_queue`'s existing pattern — access is mediated entirely by the Edge Function's
+service-role key, same as solicitation. Statement-of-account files live in a new public Storage
+bucket, `payment-statements`.
+
+**Backend:** `supabase/functions/payment-collections/index.ts` — `GET /customers` (search, for the
+admin form's picker), `GET /records` (desk list, excludes `PAID`), `POST /records` (admin
+create/upsert — accepts a base64-encoded file inline in the JSON body and uploads it server-side,
+since client-side Storage uploads require a real authenticated session and the dev `bypass_auth_role`
+flow doesn't have one — same reasoning that already governs how the Solicitation Edge Function reads
+`commercial_customers`, which requires `auth.role() = 'authenticated'` per its RLS policy), and
+`POST /records/classify` for the four outcomes below.
+
+**Outcomes** (all four requested by the operator, none deferred):
+- `PAYMENT_RECEIVED` → `status = PAID`, drops off the desk permanently.
+- `STILL_OUTSTANDING` → stays `OUTSTANDING`, `follow_up_date` pushed forward (default 7 days).
+- `ESCALATED` → `status = ESCALATED`, stays visible, flagged for a manager.
+- `PAYMENT_PLAN_AGREED` → `status = PAYMENT_PLAN`, `follow_up_date` set to the agreed check-in date
+  (default 14 days).
+
+**Frontend:** `src/features/payment-collections/` — same feature-slice shape as `solicitation`
+(types/lib/state/components), an admin entry form (debounced customer search, amount, file upload),
+and a desk console styled identically to the Solicitation console (amount due replaces the
+pressure-gauge overdue indicator as the salient number, same badge/intent-panel/session-log
+conventions) so operators get a consistent interaction model across both desks despite the backends
+being fully independent.
