@@ -1,0 +1,31 @@
+{
+  "creditorCode": "008ORY",
+  "creditorName": "ORYX ENERGY",
+  "type": "creditor",
+  "linkedAccounts": ["007ORY"],
+  "reconState": "reconciled-financial",
+  "reconVersion": "v5",
+  "periodStart": "2025-03-01",
+  "financials": {
+    "combinedBf": 0.0,
+    "ledgerTransactionsBalance": -121237.7,
+    "udChequesPay": 315876.33,
+    "erpCurrentBalance": -437114.03,
+    "totalPayable": -437114.03,
+    "currency": "ZAR",
+    "lastRowDate": "2026-08-14"
+  },
+  "reconciliation": {
+    "ledgerVariance": 0.0,
+    "erpVariance": 0.0,
+    "subLedgerVariance": 0.0
+  },
+  "ingestGate": {
+    "status": "unverified",
+    "note": "DATABASE_URL not wired in this environment; Part 1B/Part 2 custody unverified. Tier-3 ERP financial bridge reconciles to R0.00 (ledger + current-balance ties)."
+  },
+  "dataQuality": {
+    "txtSource": "AUTHORITATIVE",
+    "note": "008ORYCURRENT.TXT is the authoritative ERP creditor-enquiry export CREDENQ_2939 (full ledger from 06/03/2025, BALANCE B/F 0.00)."
+  }
+}

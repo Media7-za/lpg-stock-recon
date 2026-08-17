@@ -1,0 +1,50 @@
+{
+  "creditorCode": "008ORY",
+  "creditorName": "ORYX ENERGY",
+  "linkedAccounts": [
+    "007ORY"
+  ],
+  "period": {
+    "from": "2025-03-01",
+    "to": "2026-08-14"
+  },
+  "version": "v5",
+  "workspaceStatus": "pending_review",
+  "dbConnected": false,
+  "lastGeneratedAt": "2026-08-17T10:37:24.051Z",
+  "source": "analysis/creditors/008ORY/raw/008ORYCURRENT.TXT",
+  "financialPosition": {
+    "lpgGasPayable": 60922.3,
+    "cylinderFinancialBalance": -182160,
+    "ledgerTransactionsBalance": -121237.7,
+    "erpTotalTransactions": -121237.7,
+    "udChequesPay": 315876.33,
+    "erpCurrentBalance": -437114.03,
+    "totalCreditorBalance": -437114.03,
+    "transactionsVariance": 0,
+    "erpVariance": 0,
+    "subLedgerVariance": 0
+  },
+  "custodyPosition": {
+    "totalCustodyExposure": 0,
+    "lines": []
+  },
+  "reconciliationPosition": {
+    "cylinderVariance": -182160,
+    "transactionsVariance": 0,
+    "erpVariance": 0,
+    "subLedgerVariance": 0,
+    "exceptions": [
+      {
+        "type": "CUSTODY",
+        "basis": "ASSUMED",
+        "status": "open",
+        "description": "Custody unverified — DATABASE_URL not wired; Part 1B/Part 2 skipped"
+      }
+    ]
+  },
+  "artifacts": {
+    "statementMarkdown": "analysis/creditors/008ORY/reports/008ORY_Statement_Account_v5.md",
+    "txtSource": "analysis/creditors/008ORY/raw/008ORYCURRENT.TXT"
+  }
+}

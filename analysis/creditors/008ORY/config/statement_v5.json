@@ -1,0 +1,25 @@
+{
+  "creditorCode": "008ORY",
+  "creditorName": "ORYX ENERGY",
+  "linkedAccounts": ["007ORY"],
+  "txtPath": "analysis/creditors/008ORY/raw/008ORYCURRENT.TXT",
+  "periodStart": "2025-03-01",
+  "combinedBf": 0.0,
+  "bfSourceNote": "008ORYCURRENT.TXT line 1 — BALANCE B/F: 0.00 (authoritative ERP creditor-enquiry export CREDENQ_2939, full ledger from 06/03/2025)",
+  "cylOpeningFinancial": 0.0,
+  "paymentLane": "LPG",
+  "cylOpeningQty": {
+    "14.1": 0,
+    "19.1": 0,
+    "9.1": 0,
+    "D.1": 0,
+    "S.1": 0
+  },
+  "skuRates": {
+    "14.1": 575,
+    "19.1": 690,
+    "9.1": 517.5,
+    "D.1": 1150,
+    "S.1": 1150
+  }
+}
