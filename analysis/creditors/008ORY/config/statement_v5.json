@@ -1,0 +1,25 @@
+{
+  "creditorCode": "008ORY",
+  "creditorName": "ORYX ENERGY",
+  "linkedAccounts": ["007ORY"],
+  "txtPath": "analysis/creditors/008ORY/raw/008ORYCURRENT.TXT",
+  "periodStart": "2026-07-01",
+  "combinedBf": 115550.83,
+  "bfSourceNote": "008ORYCURRENT.TXT line 1 — BALANCE B/F before first July 2026 period row (INTERIM: derived from Oryx supplier-ledger opening totals Debit 6,525,913.48 / Credit 6,641,464.31; replace with authoritative ERP creditor-enquiry export)",
+  "cylOpeningFinancial": 0.0,
+  "paymentLane": "LPG",
+  "cylOpeningQty": {
+    "14.1": 0,
+    "19.1": 0,
+    "9.1": 0,
+    "D.1": 0,
+    "S.1": 0
+  },
+  "skuRates": {
+    "14.1": 575,
+    "19.1": 690,
+    "9.1": 517.5,
+    "D.1": 1150,
+    "S.1": 1150
+  }
+}

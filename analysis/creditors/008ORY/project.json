@@ -1,0 +1,24 @@
+{
+  "creditorCode": "008ORY",
+  "creditorName": "ORYX ENERGY",
+  "type": "creditor",
+  "linkedAccounts": ["007ORY"],
+  "reconState": "in-progress",
+  "reconVersion": "v5",
+  "periodStart": "2026-07-01",
+  "financials": {
+    "combinedBf": 115550.83,
+    "totalPayable": 257563.8,
+    "currency": "ZAR",
+    "lastGrvDate": "2026-07-08",
+    "lastPaymentDate": "2026-07-08"
+  },
+  "ingestGate": {
+    "status": "unverified",
+    "note": "DATABASE_URL not wired in this environment; Part 1B/Part 2 custody unverified. Tier-3 ERP financial bridge reconciles to R0.00."
+  },
+  "dataQuality": {
+    "txtSource": "INTERIM_SYNTHETIC",
+    "note": "008ORYCURRENT.TXT reconstructed from the July 2026 Oryx supplier-ledger excerpt. Replace with the authoritative ERP creditor-enquiry export before financial sign-off."
+  }
+}

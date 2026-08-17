@@ -24,7 +24,9 @@
     "debtors:customer-statement": "node analysis/debtors/shared/scripts/generate_statement_of_account.mjs",
     "debtors:tag-check": "node analysis/debtors/shared/scripts/check_invoice_tag_coverage.mjs",
     "debtors:tag-check:all": "node analysis/debtors/shared/scripts/check_invoice_tag_coverage.mjs --all",
-    "debtors:test": "node --test analysis/debtors/shared/scripts/*.test.mjs"
+    "debtors:test": "node --test analysis/debtors/shared/scripts/*.test.mjs",
+    "creditors:ingest-check": "node analysis/creditors/shared/scripts/validate_txt_db_coverage.mjs",
+    "creditors:statement-v5": "node analysis/creditors/shared/scripts/reconcile_creditor_v5_from_txt.mjs"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

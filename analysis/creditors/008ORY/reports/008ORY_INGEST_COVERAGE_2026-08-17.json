@@ -1,0 +1,339 @@
+{
+  "account_no": "008ORY",
+  "accounts": [
+    "008ORY",
+    "007ORY"
+  ],
+  "db_connected": false,
+  "generated_at": "2026-08-17T10:25:47.447Z",
+  "statement_txt": "analysis/creditors/008ORY/raw/008ORYCURRENT.TXT",
+  "period_start": "2026-07-01",
+  "txt_as_at": "2026-07-08",
+  "header_sync_as_at": null,
+  "items_sync_as_at": null,
+  "ingestFreshness": "unverified",
+  "ingestCoverage": "unverified",
+  "display_status": "UNVERIFIED",
+  "summary": {
+    "documents_in_txt": 18,
+    "healthy": 6,
+    "gaps": 12,
+    "db_only": 0
+  },
+  "gates": {
+    "financial_balance_from_txt": "ALLOWED",
+    "custody": "UNVERIFIED",
+    "sku_analysis": "UNVERIFIED",
+    "allocation": "UNVERIFIED"
+  },
+  "ingest_gate": {
+    "status": "pass",
+    "ingestBlockedScopes": [
+      "custody",
+      "sku_analysis",
+      "allocation"
+    ]
+  },
+  "documents": [
+    {
+      "doc_no": "31810",
+      "doc_type": "Deb Note",
+      "tx_date": "2026-07-01",
+      "ref_no": "SON2607ZA105000002",
+      "amount": -117300,
+      "in_txt": true,
+      "header_present": false,
+      "lines_present": false,
+      "required_ingest_shape": "header_and_lines",
+      "classification": "DB_UNVERIFIED",
+      "blocks": [
+        "custody",
+        "sku_analysis",
+        "allocation"
+      ],
+      "exception": null
+    },
+    {
+      "doc_no": "58291",
+      "doc_type": "GRV",
+      "tx_date": "2026-07-01",
+      "ref_no": "29062026",
+      "amount": 210161.67,
+      "in_txt": true,
+      "header_present": false,
+      "lines_present": false,
+      "required_ingest_shape": "header_and_lines",
+      "classification": "DB_UNVERIFIED",
+      "blocks": [
+        "custody",
+        "sku_analysis",
+        "allocation"
+      ],
+      "exception": null
+    },
+    {
+      "doc_no": "72010",
+      "doc_type": "Payment",
+      "tx_date": "2026-07-01",
+      "ref_no": "#022",
+      "amount": -41006.68,
+      "in_txt": true,
+      "header_present": false,
+      "lines_present": false,
+      "required_ingest_shape": "header_only",
+      "classification": "EXPECTED_HEADER_ONLY",
+      "blocks": [],
+      "exception": null
+    },
+    {
+      "doc_no": "31811",
+      "doc_type": "Deb Note",
+      "tx_date": "2026-07-02",
+      "ref_no": "SON2607ZA105000022",
+      "amount": -54337.5,
+      "in_txt": true,
+      "header_present": false,
+      "lines_present": false,
+      "required_ingest_shape": "header_and_lines",
+      "classification": "DB_UNVERIFIED",
+      "blocks": [
+        "custody",
+        "sku_analysis",
+        "allocation"
+      ],
+      "exception": null
+    },
+    {
+      "doc_no": "58292",
+      "doc_type": "GRV",
+      "tx_date": "2026-07-02",
+      "ref_no": "1072026",
+      "amount": 95343.18,
+      "in_txt": true,
+      "header_present": false,
+      "lines_present": false,
+      "required_ingest_shape": "header_and_lines",
+      "classification": "DB_UNVERIFIED",
+      "blocks": [
+        "custody",
+        "sku_analysis",
+        "allocation"
+      ],
+      "exception": null
+    },
+    {
+      "doc_no": "72011",
+      "doc_type": "Payment",
+      "tx_date": "2026-07-02",
+      "ref_no": "#031",
+      "amount": -32129.03,
+      "in_txt": true,
+      "header_present": false,
+      "lines_present": false,
+      "required_ingest_shape": "header_only",
+      "classification": "EXPECTED_HEADER_ONLY",
+      "blocks": [],
+      "exception": null
+    },
+    {
+      "doc_no": "72012",
+      "doc_type": "Payment",
+      "tx_date": "2026-07-02",
+      "ref_no": "#031",
+      "amount": -31000,
+      "in_txt": true,
+      "header_present": false,
+      "lines_present": false,
+      "required_ingest_shape": "header_only",
+      "classification": "EXPECTED_HEADER_ONLY",
+      "blocks": [],
+      "exception": null
+    },
+    {
+      "doc_no": "31812",
+      "doc_type": "Deb Note",
+      "tx_date": "2026-07-03",
+      "ref_no": "SON2607ZA105000031",
+      "amount": -86077.5,
+      "in_txt": true,
+      "header_present": false,
+      "lines_present": false,
+      "required_ingest_shape": "header_and_lines",
+      "classification": "DB_UNVERIFIED",
+      "blocks": [
+        "custody",
+        "sku_analysis",
+        "allocation"
+      ],
+      "exception": null
+    },
+    {
+      "doc_no": "58293",
+      "doc_type": "GRV",
+      "tx_date": "2026-07-03",
+      "ref_no": "2072026",
+      "amount": 152829.03,
+      "in_txt": true,
+      "header_present": false,
+      "lines_present": false,
+      "required_ingest_shape": "header_and_lines",
+      "classification": "DB_UNVERIFIED",
+      "blocks": [
+        "custody",
+        "sku_analysis",
+        "allocation"
+      ],
+      "exception": null
+    },
+    {
+      "doc_no": "31813",
+      "doc_type": "Deb Note",
+      "tx_date": "2026-07-04",
+      "ref_no": "SON2607ZA105000048",
+      "amount": -86825,
+      "in_txt": true,
+      "header_present": false,
+      "lines_present": false,
+      "required_ingest_shape": "header_and_lines",
+      "classification": "DB_UNVERIFIED",
+      "blocks": [
+        "custody",
+        "sku_analysis",
+        "allocation"
+      ],
+      "exception": null
+    },
+    {
+      "doc_no": "58294",
+      "doc_type": "GRV",
+      "tx_date": "2026-07-04",
+      "ref_no": "3072026",
+      "amount": 157964.3,
+      "in_txt": true,
+      "header_present": false,
+      "lines_present": false,
+      "required_ingest_shape": "header_and_lines",
+      "classification": "DB_UNVERIFIED",
+      "blocks": [
+        "custody",
+        "sku_analysis",
+        "allocation"
+      ],
+      "exception": null
+    },
+    {
+      "doc_no": "31814",
+      "doc_type": "Deb Note",
+      "tx_date": "2026-07-06",
+      "ref_no": "SON2607ZA105000054",
+      "amount": -10867.5,
+      "in_txt": true,
+      "header_present": false,
+      "lines_present": false,
+      "required_ingest_shape": "header_and_lines",
+      "classification": "DB_UNVERIFIED",
+      "blocks": [
+        "custody",
+        "sku_analysis",
+        "allocation"
+      ],
+      "exception": null
+    },
+    {
+      "doc_no": "58295",
+      "doc_type": "GRV",
+      "tx_date": "2026-07-06",
+      "ref_no": "SON2607ZA105000048",
+      "amount": 51205.3,
+      "in_txt": true,
+      "header_present": false,
+      "lines_present": false,
+      "required_ingest_shape": "header_and_lines",
+      "classification": "DB_UNVERIFIED",
+      "blocks": [
+        "custody",
+        "sku_analysis",
+        "allocation"
+      ],
+      "exception": null
+    },
+    {
+      "doc_no": "72013",
+      "doc_type": "Payment",
+      "tx_date": "2026-07-07",
+      "ref_no": "#084",
+      "amount": -84547.81,
+      "in_txt": true,
+      "header_present": false,
+      "lines_present": false,
+      "required_ingest_shape": "header_only",
+      "classification": "EXPECTED_HEADER_ONLY",
+      "blocks": [],
+      "exception": null
+    },
+    {
+      "doc_no": "31815",
+      "doc_type": "Deb Note",
+      "tx_date": "2026-07-08",
+      "ref_no": "SON2607ZA105000084",
+      "amount": -114425,
+      "in_txt": true,
+      "header_present": false,
+      "lines_present": false,
+      "required_ingest_shape": "header_and_lines",
+      "classification": "DB_UNVERIFIED",
+      "blocks": [
+        "custody",
+        "sku_analysis",
+        "allocation"
+      ],
+      "exception": null
+    },
+    {
+      "doc_no": "58296",
+      "doc_type": "GRV",
+      "tx_date": "2026-07-08",
+      "ref_no": "7072026",
+      "amount": 198972.8,
+      "in_txt": true,
+      "header_present": false,
+      "lines_present": false,
+      "required_ingest_shape": "header_and_lines",
+      "classification": "DB_UNVERIFIED",
+      "blocks": [
+        "custody",
+        "sku_analysis",
+        "allocation"
+      ],
+      "exception": null
+    },
+    {
+      "doc_no": "72014",
+      "doc_type": "Payment",
+      "tx_date": "2026-07-08",
+      "ref_no": "#0093",
+      "amount": -12677.29,
+      "in_txt": true,
+      "header_present": false,
+      "lines_present": false,
+      "required_ingest_shape": "header_only",
+      "classification": "EXPECTED_HEADER_ONLY",
+      "blocks": [],
+      "exception": null
+    },
+    {
+      "doc_no": "72015",
+      "doc_type": "Payment",
+      "tx_date": "2026-07-08",
+      "ref_no": "#084",
+      "amount": -53270,
+      "in_txt": true,
+      "header_present": false,
+      "lines_present": false,
+      "required_ingest_shape": "header_only",
+      "classification": "EXPECTED_HEADER_ONLY",
+      "blocks": [],
+      "exception": null
+    }
+  ]
+}
