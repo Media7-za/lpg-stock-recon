@@ -196,6 +196,16 @@ function docRank(entryType) {
 function parseTxtRows(filePath) {
   const txt = fs.readFileSync(filePath, 'utf8');
   const headerBalance = Number(txt.match(/CURRENT BALANCE:","(-?[0-9.]+)"/)?.[1]);
+  // Creditor-enquiry exports separate the itemised transaction ledger total from
+  // the current payable: CURRENT BALANCE = TOTAL TRANSACTIONS − UD CHEQUES/PAY
+  // (undeposited payments / Ud XFer). These lines are absent from simpler exports,
+  // in which case the ledger target falls back to CURRENT BALANCE and UD = 0.
+  const totalTxRaw = txt.match(/TOTAL TRANSACTIONS:\s*(-?[0-9.]+)/)?.[1];
+  const totalTransactions = totalTxRaw !== undefined ? Number(totalTxRaw) : null;
+  const udRaw =
+    txt.match(/UD CHEQUES\/PAY:","(-?[0-9.]+)"/)?.[1] ??
+    txt.match(/UD PAY\/CHEQUES:","(-?[0-9.]+)"/)?.[1];
+  const udCheques = udRaw !== undefined ? Number(udRaw) : 0;
   const rows = [];
   for (const line of txt.split('\n')) {
     if (!line.startsWith('"') || line.includes('LINE","PERIOD')) continue;
@@ -216,7 +226,7 @@ function parseTxtRows(filePath) {
       is_cyl_only: DOCUMENT_TYPES.has(p[3]) && isCylRef(p[6]),
     });
   }
-  return { rows, headerBalance };
+  return { rows, headerBalance, totalTransactions, udCheques };
 }
 
 function splitRowAmount(r, docSplit, cfg) {
@@ -425,7 +435,10 @@ async function main() {
   const creditorCode = parseArgs();
   const cfg = loadConfig(creditorCode);
   const accounts = [creditorCode, ...cfg.linkedAccounts];
-  const { rows, headerBalance } = parseTxtRows(cfg.txtPath);
+  const { rows, headerBalance, totalTransactions, udCheques } = parseTxtRows(cfg.txtPath);
+  // Primary reconciliation target = the itemised ledger total. When the export
+  // does not state TOTAL TRANSACTIONS (simpler formats), fall back to CURRENT BALANCE.
+  const ledgerTarget = totalTransactions ?? headerBalance;
 
   let docSplit = new Map();
   let part2 = [];
@@ -453,7 +466,12 @@ async function main() {
     docSplit,
   );
 
-  const erpVariance = round2(finalCombined - headerBalance);
+  // Tie 1 (primary): reconstructed ledger == ERP itemised transaction total.
+  const transactionsVariance = round2(finalCombined - ledgerTarget);
+  // Tie 2 (ERP): ledger balance less undeposited payments == ERP CURRENT BALANCE.
+  const currentBalanceVariance = round2(finalCombined - udCheques - headerBalance);
+  // Kept for the fixture/summary as the headline ERP tie.
+  const erpVariance = currentBalanceVariance;
   const subLedgerVariance = round2(finalLpg + finalCyl - finalCombined);
 
   const custodyLines = SKUS.map((sku) => ({
@@ -481,7 +499,7 @@ async function main() {
 **Combined Opening B/F:** R${fmt(cfg.combinedBf)} (ERP verified — source: \`${txtRel}\` ${cfg.bfSourceNote || ''})
 **LPG Opening B/F (1A):** R${fmt(cfg.lpgOpeningBf)} &nbsp;|&nbsp; **CYL Opening B/F (1B):** R${fmt(cfg.cylOpeningFinancial)}
 **Payment routing:** ${cfg.paymentLane} lane (payments post to Part 1A unless configured otherwise)
-**Direction:** GRV increases payable (+); Deb Note & Payment reduce it (−)
+**Direction:** balances reconstructed directly from the ERP TXT \`AMOUNT\` column signs (AP convention)
 **Last regenerated:** ${new Date().toISOString().slice(0, 10)} from ERP TXT (\`reconcile_creditor_v5_from_txt.mjs\`)
 
 ---
@@ -502,13 +520,20 @@ ${part1b.length ? part1b.join('\n\n---\n\n') : '_No CYL deposit activity in peri
 
 ## Part 1 — Reconciliation Bridge
 
+*Two-tier tie: (1) the reconstructed sub-ledgers equal the ERP itemised transaction
+total; (2) removing undeposited payments (UD Cheques/Pay) reaches the ERP \`CURRENT
+BALANCE\`. Both variances must be R0.00.*
+
 | Component | Closing (R) |
 | :--- | ---: |
 | Part 1A — LPG Gas Purchases | ${fmt(finalLpg)} |
 | Part 1B — CYL Deposits | ${fmt(finalCyl)} |
 | **Combined (1A + 1B)** | **${fmt(finalLpg + finalCyl)}** |
-| ERP \`CURRENT BALANCE\` (TXT header) | ${fmt(headerBalance)} |
-| **Variance (Combined − ERP)** | **${fmt(erpVariance)}** |
+| ERP \`TOTAL TRANSACTIONS\` (itemised ledger) | ${fmt(ledgerTarget)} |
+| **Ledger variance (Combined − TOTAL TRANSACTIONS)** | **${fmt(transactionsVariance)}** |
+| Less: UD Cheques / Pay (undeposited) | ${fmt(udCheques)} |
+| ERP \`CURRENT BALANCE\` (payable) | ${fmt(headerBalance)} |
+| **ERP variance ((Combined − UD) − CURRENT BALANCE)** | **${fmt(currentBalanceVariance)}** |
 
 ---
 
@@ -532,7 +557,9 @@ ${part2Empty ? '_No custody movement available (DB not wired or no CYL lines in 
 |---|---:|
 | LPG Gas Payable (Part 1A close) | R${fmt(finalLpg)} |
 | Cylinder Financial Balance (Part 1B close) | R${fmt(finalCyl)} |
-| **Total Creditor Balance (payable)** | **R${fmt(finalCombined)}** |
+| Itemised Ledger Balance (1A + 1B) | R${fmt(finalCombined)} |
+| Less: UD Cheques / Pay (undeposited) | R${fmt(udCheques)} |
+| **ERP Current Balance (payable)** | **R${fmt(headerBalance)}** |
 
 ### 2. Custody Position
 
@@ -543,14 +570,18 @@ ${custodyLines.length ? custodyLines.map((l) => `| ${l.label} | ${l.qty} | R${fm
 
 ### 3. Reconciliation Position
 
-| Check | Financial | Custody | Variance |
+| Check | Reconstructed | ERP | Variance |
 |---|---:|---:|---:|
-| Cylinder Position (1B vs custody) | R${fmt(finalCyl)} | R${fmt(totalCustodyExposure)} | R${fmt(cylVariance)} |
+| Ledger tie (1A + 1B vs TOTAL TRANSACTIONS) | R${fmt(finalCombined)} | R${fmt(ledgerTarget)} | R${fmt(transactionsVariance)} |
+| ERP tie ((Combined − UD) vs CURRENT BALANCE) | R${fmt(round2(finalCombined - udCheques))} | R${fmt(headerBalance)} | R${fmt(currentBalanceVariance)} |
 | Sub-ledger tie (1A + 1B vs combined) | R${fmt(finalCombined)} | — | R${fmt(subLedgerVariance)} |
+| Cylinder Position (1B vs custody) | R${fmt(finalCyl)} | R${fmt(totalCustodyExposure)} | R${fmt(cylVariance)} |
 ${custodyBlockedNote}
-**ERP Combined Balance (TXT header):** R${fmt(headerBalance)}  
+**ERP itemised ledger (TOTAL TRANSACTIONS):** R${fmt(ledgerTarget)}  
+**ERP current balance (CURRENT BALANCE, payable):** R${fmt(headerBalance)}  
+**UD Cheques / Pay (undeposited):** R${fmt(udCheques)}  
 **Reconstructed Balance (1A + 1B):** R${fmt(finalCombined)}  
-**Variance:** R${fmt(erpVariance)}
+**Ledger variance:** R${fmt(transactionsVariance)} · **ERP variance:** R${fmt(currentBalanceVariance)}
 
 <!-- CREDITOR_POSITION_WORKSPACE_END -->
 <!-- INTERNAL_ONLY_END -->
@@ -566,7 +597,10 @@ ${custodyBlockedNote}
     period: { from: cfg.periodStart, to: lastIso },
     version: 'v5',
     workspaceStatus:
-      Math.abs(erpVariance) < 0.02 && Math.abs(subLedgerVariance) < 0.02 && Math.abs(cylVariance) < 1
+      Math.abs(transactionsVariance) < 0.02 &&
+      Math.abs(currentBalanceVariance) < 0.02 &&
+      Math.abs(subLedgerVariance) < 0.02 &&
+      Math.abs(cylVariance) < 1
         ? 'clean'
         : 'pending_review',
     dbConnected,
@@ -575,8 +609,12 @@ ${custodyBlockedNote}
     financialPosition: {
       lpgGasPayable: finalLpg,
       cylinderFinancialBalance: finalCyl,
-      totalCreditorBalance: finalCombined,
-      erpStatedBalance: headerBalance,
+      ledgerTransactionsBalance: finalCombined,
+      erpTotalTransactions: ledgerTarget,
+      udChequesPay: udCheques,
+      erpCurrentBalance: headerBalance,
+      totalCreditorBalance: headerBalance,
+      transactionsVariance,
       erpVariance,
       subLedgerVariance,
     },
@@ -592,11 +630,15 @@ ${custodyBlockedNote}
     },
     reconciliationPosition: {
       cylinderVariance: cylVariance,
+      transactionsVariance,
       erpVariance,
       subLedgerVariance,
       exceptions: [
-        ...(Math.abs(erpVariance) >= 0.02
-          ? [{ type: 'VARIANCE', basis: 'ASSERTED', status: 'open', description: 'Part 1 bridge differs from ERP TXT header' }]
+        ...(Math.abs(transactionsVariance) >= 0.02
+          ? [{ type: 'VARIANCE', basis: 'ASSERTED', status: 'open', description: 'Reconstructed ledger does not tie to ERP TOTAL TRANSACTIONS' }]
+          : []),
+        ...(Math.abs(currentBalanceVariance) >= 0.02
+          ? [{ type: 'VARIANCE', basis: 'ASSERTED', status: 'open', description: 'Combined less UD Cheques/Pay does not tie to ERP CURRENT BALANCE' }]
           : []),
         ...(Math.abs(subLedgerVariance) >= 0.02
           ? [{ type: 'VARIANCE', basis: 'ASSERTED', status: 'open', description: 'Part 1A + 1B closing does not tie to combined running balance' }]
@@ -616,12 +658,13 @@ ${custodyBlockedNote}
   fs.mkdirSync(path.dirname(cfg.fixturePath), { recursive: true });
   fs.writeFileSync(cfg.fixturePath, `${JSON.stringify(fixture, null, 2)}\n`);
 
-  console.log(`[${cfg.creditorCode}] TXT header: R${fmt(headerBalance)}`);
+  console.log(`[${cfg.creditorCode}] ERP TOTAL TRANSACTIONS: R${fmt(ledgerTarget)}`);
+  console.log(`[${cfg.creditorCode}] ERP CURRENT BALANCE: R${fmt(headerBalance)} (UD Cheques/Pay R${fmt(udCheques)})`);
   console.log(`[${cfg.creditorCode}] Part 1A LPG close: R${fmt(finalLpg)}`);
   console.log(`[${cfg.creditorCode}] Part 1B CYL close: R${fmt(finalCyl)}`);
-  console.log(
-    `[${cfg.creditorCode}] Combined 1A+1B: R${fmt(finalCombined)} (ERP variance R${fmt(erpVariance)})`,
-  );
+  console.log(`[${cfg.creditorCode}] Combined 1A+1B: R${fmt(finalCombined)}`);
+  console.log(`[${cfg.creditorCode}] Ledger variance (vs TOTAL TRANSACTIONS): R${fmt(transactionsVariance)}`);
+  console.log(`[${cfg.creditorCode}] ERP variance (vs CURRENT BALANCE): R${fmt(currentBalanceVariance)}`);
   console.log(`[${cfg.creditorCode}] Sub-ledger tie variance: R${fmt(subLedgerVariance)}`);
   console.log(`[${cfg.creditorCode}] Custody exposure: R${fmt(totalCustodyExposure)}`);
   console.log(`Written ${cfg.reportPath}`);

@@ -5,19 +5,23 @@
     "007ORY"
   ],
   "period": {
-    "from": "2026-07-01",
-    "to": "2026-07-08"
+    "from": "2025-03-01",
+    "to": "2026-08-14"
   },
   "version": "v5",
-  "workspaceStatus": "clean",
+  "workspaceStatus": "pending_review",
   "dbConnected": false,
-  "lastGeneratedAt": "2026-08-17T10:26:36.148Z",
+  "lastGeneratedAt": "2026-08-17T10:37:24.051Z",
   "source": "analysis/creditors/008ORY/raw/008ORYCURRENT.TXT",
   "financialPosition": {
-    "lpgGasPayable": 257563.8,
-    "cylinderFinancialBalance": 0,
-    "totalCreditorBalance": 257563.8,
-    "erpStatedBalance": 257563.8,
+    "lpgGasPayable": 60922.3,
+    "cylinderFinancialBalance": -182160,
+    "ledgerTransactionsBalance": -121237.7,
+    "erpTotalTransactions": -121237.7,
+    "udChequesPay": 315876.33,
+    "erpCurrentBalance": -437114.03,
+    "totalCreditorBalance": -437114.03,
+    "transactionsVariance": 0,
     "erpVariance": 0,
     "subLedgerVariance": 0
   },
@@ -26,7 +30,8 @@
     "lines": []
   },
   "reconciliationPosition": {
-    "cylinderVariance": 0,
+    "cylinderVariance": -182160,
+    "transactionsVariance": 0,
     "erpVariance": 0,
     "subLedgerVariance": 0,
     "exceptions": [

@@ -45,6 +45,21 @@ Legacy supplier codes are treated as a single economic counterparty via
 `config.statement_v5.json.linkedAccounts` (e.g. `008ORY` links `007ORY`). DB coverage
 and line-split queries scope to `account_no = ANY([code, ...linkedAccounts])`.
 
+## C8 — Undeposited payments (two-tier bridge)
+Real creditor-enquiry exports separate the itemised transaction ledger from the payable:
+`CURRENT BALANCE = TOTAL TRANSACTIONS − UD CHEQUES/PAY`, where UD Cheques/Pay are
+undeposited payments (the `Ud XFer` rows). The v5 bridge therefore ties twice, both to
+**R0.00**:
+1. **Ledger tie:** reconstructed `1A + 1B` = ERP `TOTAL TRANSACTIONS`.
+2. **ERP tie:** `(Combined − UD Cheques/Pay)` = ERP `CURRENT BALANCE`.
+
+Simpler exports without these lines fall back to `CURRENT BALANCE` as the ledger target
+with `UD = 0`, so both ties collapse to the single classic check.
+
+Also note the AP sign convention in real exports: the `AMOUNT` column carries **GRV
+negative, Deb Note positive**. Balances are reconstructed directly from those signs, so no
+code-level flip is applied.
+
 ## C7 — Non-goals
 Do not edit debtor artifacts. Do not derive a `collectable`/`payable-now` figure inside
 the generator — the statement computes sub-ledger positions and variances only.

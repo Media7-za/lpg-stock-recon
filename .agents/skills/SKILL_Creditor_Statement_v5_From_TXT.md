@@ -21,8 +21,15 @@ artifacts.
    `creditorCode`, `creditorName`, `periodStart`, `combinedBf`, `paymentLane`, `linkedAccounts`.
 2. **Ingest gate** — `npm run creditors:ingest-check -- --creditor [CODE]` (needs `DATABASE_URL`).
 3. **Statement** — `npm run creditors:statement-v5 -- --creditor [CODE]`.
-4. **Sign-off** — require **ERP variance = R0.00** AND **sub-ledger tie = R0.00**. Custody
-   sign-off additionally needs a non-blocked ingest gate.
+4. **Sign-off** — require all financial ties = **R0.00**: the ledger tie (`1A + 1B` vs ERP
+   `TOTAL TRANSACTIONS`), the ERP tie (`Combined − UD Cheques/Pay` vs `CURRENT BALANCE`), and
+   the sub-ledger tie. Custody sign-off additionally needs a non-blocked ingest gate.
+
+## Two-tier bridge (real exports)
+`CURRENT BALANCE = TOTAL TRANSACTIONS − UD CHEQUES/PAY` (undeposited `Ud XFer` payments). The
+generator parses all three and reconciles both tiers to R0.00. AP sign convention in real
+exports: `AMOUNT` carries GRV negative / Deb Note positive; balances follow those signs
+directly. See `analysis/creditors/shared/docs/CREDITORS_DOCTRINE.md` (C8).
 
 ## DB-optional (TXT-only) mode
 Without `DATABASE_URL`, `creditors:statement-v5` skips Part 1B line-split and Part 2 custody
