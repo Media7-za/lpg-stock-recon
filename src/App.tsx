@@ -8,6 +8,7 @@ import TrendsDashboard from './components/trends/TrendsDashboard';
 import DataHub from './components/dashboard/DataHub';
 import AuditDashboard from './components/dashboard/AuditDashboard';
 import DispatchDashboard from './components/dispatch/DispatchDashboard';
+import ReceiptExtractionDashboard from './components/receipts/ReceiptExtractionDashboard';
 import ReconciliationWorkspace from './components/reconciliation/ReconciliationWorkspace';
 import { DebtorListView, DebtorWorkspacePage } from './features/debtor-position-workspace';
 import { InvestigationShell } from './features/investigation-workspace';
@@ -106,6 +107,11 @@ function App() {
                   <Route path="/dispatch" element={
                     <ProtectedRoute allowedRoles={['Depot Manager', 'Invoice Clerk']}>
                       <DispatchDashboard />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/receipts" element={
+                    <ProtectedRoute allowedRoles={['Yard Counter', 'Depot Manager', 'Invoice Clerk']}>
+                      <ReceiptExtractionDashboard />
                     </ProtectedRoute>
                   } />
                   <Route path="/debtors-recon/:accountNo" element={

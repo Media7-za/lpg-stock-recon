@@ -271,3 +271,58 @@ export interface ReconScoringWeights {
   DATE_PROXIMITY: number;
   NAME_SIMILARITY: number;
 }
+
+// --- Receipt Extraction (Vision OCR + Human-in-the-loop review) ---
+
+export type ReceiptDocumentType = 'delivery_note' | 'cylinder_returns' | 'other';
+
+export interface ReceiptLineItem {
+  description: string;
+  productCode: string | null;
+  orderedQty: number | null;
+  shippedQty: number | null;
+  unit: string | null;
+  confidence: number;
+}
+
+export interface ReceiptExtractedData {
+  documentType: ReceiptDocumentType;
+  supplier: string | null;
+  documentNumber: string | null;
+  documentDate: string | null;
+  customerName: string | null;
+  customerNumber: string | null;
+  lineItems: ReceiptLineItem[];
+  statedTotal: number | null;
+  handwrittenNotes: string[];
+  signaturesPresent: {
+    driver: boolean;
+    receivedBy: boolean;
+    approvedBy: boolean;
+  };
+  overallConfidence: number;
+  lowConfidenceFields: string[];
+}
+
+export type ReceiptReviewStatus = 'PENDING_REVIEW' | 'CONFIRMED' | 'REJECTED';
+export type ReceiptReviewDecision = 'ACCEPT' | 'REJECT' | 'MODIFY' | 'ESCALATE';
+
+export interface ReceiptExtraction {
+  id: string;
+  image_url: string;
+  document_type: ReceiptDocumentType | null;
+  supplier_name: string | null;
+  document_number: string | null;
+  document_date: string | null;
+  extracted_data: ReceiptExtractedData;
+  system_confidence: number;
+  status: ReceiptReviewStatus;
+  decision: ReceiptReviewDecision | null;
+  reviewed_data: ReceiptExtractedData | null;
+  human_confidence: number | null;
+  reason_codes: string[];
+  notes: string | null;
+  reviewed_by: string | null;
+  reviewed_at: string | null;
+  created_at: string;
+}

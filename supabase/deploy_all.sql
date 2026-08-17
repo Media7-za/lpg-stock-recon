@@ -242,3 +242,49 @@ CREATE TABLE IF NOT EXISTS financial_corrections (
 );
 
 CREATE INDEX IF NOT EXISTS idx_corrections_id ON financial_corrections(correction_id);
+
+-- 8. RECEIPT EXTRACTION MODULE (Vision-model OCR + human-in-the-loop review)
+CREATE TABLE IF NOT EXISTS receipt_extractions (
+    id                UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    image_url         TEXT NOT NULL,
+    document_type     TEXT,             -- e.g. 'delivery_note', 'cylinder_returns'
+    supplier_name     TEXT,
+    document_number   TEXT,
+    document_date     DATE,
+    extracted_data    JSONB NOT NULL,   -- raw structured result from the vision model
+    system_confidence INTEGER NOT NULL, -- 0-100, model's own overall confidence
+    status            TEXT NOT NULL DEFAULT 'PENDING_REVIEW'
+                        CHECK (status IN ('PENDING_REVIEW', 'CONFIRMED', 'REJECTED')),
+    decision          TEXT CHECK (decision IN ('ACCEPT', 'REJECT', 'MODIFY', 'ESCALATE')),
+    reviewed_data     JSONB,            -- human-corrected version of extracted_data, if modified
+    human_confidence  INTEGER,
+    reason_codes      TEXT[],
+    notes             TEXT,
+    reviewed_by       TEXT,
+    reviewed_at       TIMESTAMPTZ,
+    actor_id          UUID DEFAULT auth.uid(),
+    created_at        TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_receipt_extractions_status ON receipt_extractions(status);
+CREATE INDEX IF NOT EXISTS idx_receipt_extractions_document_number ON receipt_extractions(document_number);
+
+-- Storage bucket for the source receipt/delivery-note photos
+INSERT INTO storage.buckets (id, name, public)
+VALUES ('receipt-images', 'receipt-images', true)
+ON CONFLICT (id) DO NOTHING;
+
+CREATE POLICY "Staff can upload receipt images"
+ON storage.objects FOR INSERT
+TO authenticated
+WITH CHECK (bucket_id = 'receipt-images');
+
+CREATE POLICY "Staff can view receipt images"
+ON storage.objects FOR SELECT
+TO authenticated
+USING (bucket_id = 'receipt-images');
+
+CREATE POLICY "Managers can delete receipt images"
+ON storage.objects FOR DELETE
+TO authenticated
+USING (bucket_id = 'receipt-images' AND (auth.jwt() ->> 'role') = 'Depot Manager');
