@@ -6,23 +6,45 @@
  * trusted. Both must live together: the trust check is only meaningful if it
  * scores the exact same model the statement is built from.
  *
- * THE UNTAGGED-SLICE PROBLEM
- * --------------------------
+ * WHY ERP TAGGING IS NOT THE AUTHORITY (business_rules.md §3, §15)
+ * ----------------------------------------------------------------
  * ERP settles an invoice by posting a Crd Note / Payment / Journal row whose
- * INVNO column carries the invoice it clears. That tagging is NOT reliable:
- * ERP frequently posts a payment slice with a BLANK INVNO. The account
- * running balance (and therefore CURRENT BALANCE) is still correct, but the
- * per-invoice reconstruction below has no way to know which invoice that
- * money cleared — so an already-paid invoice keeps showing as open forever.
+ * INVNO column names the invoice it clears. Reliability differs sharply by
+ * entry type, and conflating the two is the mistake this module exists to
+ * stop:
+ *
+ *   Crd Note  — broadly canonical (~90% accurate, especially CYL deposit /
+ *               empty-return credits, which are posted against the originating
+ *               invoice as a matter of course). Usable as evidence.
+ *   Payment   — NOT trustworthy. ERP's built-in payment allocation is
+ *               historically broken (business_rules.md §3): slices are posted
+ *               untagged, mis-tagged, or split arbitrarily across invoices.
+ *               This is the whole reason this repo reconstructs allocation
+ *               from evidence instead of reading it out of ERP.
+ *
+ * So the per-invoice netting below is a SCREENING HYPOTHESIS, never a finding.
+ * Authority for whether an invoice is settled runs, in order:
+ *   1. the customer's remittance advice (with a reconciling batch total),
+ *   2. the evidence-based allocation lane (allocation_edges, open-balance-at-
+ *      payment-date tiers — SKILL_Payment_To_Invoice_Allocation.md),
+ *   3. ERP Crd Note tagging,
+ *   ×. ERP Payment tagging — corroboration at best, never proof.
+ *
+ * Many exports are deliberately taken with "EXCLUDE: ALLOCATION DETAIL" for
+ * exactly this reason. That is a considered posture, not a defect: the INVNO
+ * column those exports omit is the untrustworthy one. Such a TXT still gives a
+ * correct CURRENT BALANCE and ageing; it simply cannot yield an invoice-level
+ * open list on its own, and must not be pressed into doing so.
  *
  * Reference case: TWK002 invoices 42468 / 42470, settled 30/05/2025 by the
- * untagged R7,306.68 slice of payment 00039080 (STAT 114), still listed as
- * open on the customer statement 15 months later until caught by hand on
- * 2026-08-11. See analysis/debtors/TWK002/reports/TWK002_Stale_Open_Invoices_2026-08-11.md.
+ * untagged R7,306.68 slice of payment 00039080 (STAT 114), still billed on the
+ * customer statement 15 months later. The remittance advice caught it, not the
+ * ledger. See analysis/debtors/TWK002/reports/TWK002_Stale_Open_Invoices_2026-08-11.md.
  *
- * Consequence: an open-invoice list derived from this model is a HYPOTHESIS,
- * not a fact, for any invoice dated before an untagged credit row. Never send
- * one to a customer without running analyseInvoiceTagCoverage over it.
+ * What this module is therefore FOR: detecting contradictions between a
+ * reconstructed open list and harder evidence, before anything reaches a
+ * customer. Never send an open-invoice list without running
+ * analyseInvoiceTagCoverage over it.
  */
 import fs from 'fs';
 import path from 'path';
@@ -111,14 +133,34 @@ export function parseDebenqWithRunning(absPath) {
   return { headerBalance, balanceBf, excludesAllocationDetail, rows };
 }
 
-/** How much of the export's settlement activity actually names an invoice. */
+/**
+ * How much of the export's settlement activity names an invoice, split by
+ * entry type — the two carry very different weight. Crd Note tagging is
+ * broadly canonical and usable as evidence; Payment tagging is not
+ * trustworthy even when present (business_rules.md §3), so a high payment
+ * percentage is not reassurance.
+ */
 export function measureTaggingCoverage(rows) {
-  const settlement = rows.filter((r) => r.entry === 'Crd Note' || PAYMENT_TYPES.has(r.entry));
-  const tagged = settlement.filter((r) => r.invno);
+  const tally = (subset) => ({
+    rows: subset.length,
+    tagged: subset.filter((r) => r.invno).length,
+    pct: subset.length
+      ? Math.round((subset.filter((r) => r.invno).length / subset.length) * 1000) / 10
+      : null,
+  });
+
+  const creditNotes = rows.filter((r) => r.entry === 'Crd Note');
+  const payments = rows.filter((r) => PAYMENT_TYPES.has(r.entry));
+  const settlement = [...creditNotes, ...payments];
+
   return {
     settlement_rows: settlement.length,
-    tagged_rows: tagged.length,
-    tagged_pct: settlement.length ? Math.round((tagged.length / settlement.length) * 1000) / 10 : null,
+    tagged_rows: settlement.filter((r) => r.invno).length,
+    tagged_pct: settlement.length
+      ? Math.round((settlement.filter((r) => r.invno).length / settlement.length) * 1000) / 10
+      : null,
+    credit_note: tally(creditNotes),
+    payment: tally(payments),
   };
 }
 
@@ -269,10 +311,11 @@ export function analyseInvoiceTagCoverage({
   const tagging = measureTaggingCoverage(rows);
   const sorted = [...openInvoices].sort((a, b) => a.iso.localeCompare(b.iso));
 
-  // Export defect: no INVNO anywhere. Distinguished from the untagged-slice
-  // problem because the remedy is different — re-export from ERP with
-  // allocation detail, rather than investigate individual invoices. Scoring
-  // invoices here would flag every one of them and mean nothing.
+  // No INVNO anywhere — usually a deliberate export posture rather than a
+  // defect (see module header). Handled separately because the answer is to
+  // source the open list from the allocation lane, not to investigate
+  // individual invoices. Scoring invoices here would flag every one of them
+  // and mean nothing.
   const noAllocationDetail =
     excludesAllocationDetail || (tagging.settlement_rows >= 5 && tagging.tagged_rows === 0);
 
@@ -335,8 +378,8 @@ export function analyseInvoiceTagCoverage({
   let gate;
   let blockingReason = null;
   if (noAllocationDetail) {
-    gate = 'UNUSABLE_EXPORT';
-    blockingReason = 'EXPORT_LACKS_ALLOCATION_DETAIL';
+    gate = 'NOT_DERIVABLE_FROM_TXT';
+    blockingReason = 'NO_INVOICE_TAGGING_IN_EXPORT';
   } else if (counts.likely_paid > 0) {
     gate = 'BLOCKED';
     blockingReason = 'INVOICE_ON_REMITTANCE_STILL_OPEN';
@@ -350,10 +393,28 @@ export function analyseInvoiceTagCoverage({
     gate = 'ALLOWED';
   }
 
+  // Which checks actually ran. The LIKELY_PAID test is the only hard external
+  // evidence this gate has, and it needs extracted remittance lines — which
+  // exist for a minority of accounts and never will for most (advices are
+  // available for 3 accounts in total). Reporting this is not cosmetic: an
+  // ALLOWED with no evidence loaded means only the invariant and the staleness
+  // anomaly were exercised, and must not be read as "checked against the
+  // customer's own records".
+  const evidence = {
+    basis: remittanceDocs.size ? 'REMITTANCE_BACKED' : 'PATTERN_ONLY',
+    remittance_invoice_docs: remittanceDocs.size,
+    checks_run: ['INVARIANT', 'STALENESS_ANOMALY', ...(remittanceDocs.size ? ['REMITTANCE_CONTRADICTION'] : [])],
+    checks_inert: remittanceDocs.size ? [] : ['REMITTANCE_CONTRADICTION'],
+    note: remittanceDocs.size
+      ? null
+      : 'No extracted remittance lines for this account (data/remittance_lines_*.csv), so the remittance-contradiction check could not run. Settlement claims here rest on payment patterns, business rules and operator ratification — see business_rules.md §15, authority order B.',
+  };
+
   return {
     gate,
     blocking_reason: blockingReason,
     export_quality: noAllocationDetail ? 'NO_ALLOCATION_DETAIL' : 'ALLOCATION_DETAIL_PRESENT',
+    evidence,
     tagging,
     counts,
     invariant: {
@@ -384,21 +445,21 @@ export function analyseInvoiceTagCoverage({
 
 export const GATE_MEANING = {
   ALLOWED:
-    'Open-invoice list ties within the ERP balance and shows no marooned invoices. Safe for customer-facing use.',
+    'No contradiction found: the list ties within the ERP balance and no open invoice is marooned behind a payment gap. This is absence of evidence against the list, not proof it is right — ERP payment tagging is not authoritative (business_rules.md §3). Read it together with evidence.basis: REMITTANCE_BACKED means the customer’s own records were checked too; PATTERN_ONLY means they were not, because none exist, and the claim rests on the payment pattern and business rules instead.',
   REVIEW_REQUIRED:
-    'One or more open invoices are marooned behind a long payment gap and may already be settled by an untagged credit. Verify against remittance advices before sending to a customer. Internal use (collections triage, ageing trend) is unaffected — the account total is correct either way.',
+    'One or more open invoices are marooned behind a long payment gap and may already be settled by an untagged credit. Verify before sending to a customer — against remittance advices where they exist, otherwise against the account’s established payment pattern (business_rules.md §15, authority order B). Internal use (collections triage, ageing trend) is unaffected — the account total is correct either way.',
   BLOCKED:
     'The open-invoice list over-states the account, and/or lists an invoice the customer’s remittance advice says is paid. Releasing it would demand payment for settled debt. Resolve via closedInvoiceOverrides before release.',
-  UNUSABLE_EXPORT:
-    'This DEBENQ export was taken without allocation detail, so no row names the invoice it settles and no open-invoice list can be derived from it at all. The ERP CURRENT BALANCE header is still valid — only the per-invoice breakdown is impossible. Re-export from ERP with allocation detail included (Sources Agent task), then re-run.',
+  NOT_DERIVABLE_FROM_TXT:
+    'This export carries no invoice tagging, so an open-invoice list cannot be derived from the TXT alone. Usually deliberate rather than a defect — the omitted INVNO column is the untrustworthy one. The CURRENT BALANCE header and ageing remain valid; only the invoice-level breakdown must come from elsewhere.',
 };
 
 /** Remedy per blocking reason — different causes, genuinely different fixes. */
 export const REMEDY = {
-  EXPORT_LACKS_ALLOCATION_DETAIL:
-    'Re-export the account from ERP DEBENQ with allocation detail INCLUDED (the export must not carry "EXCLUDE: ALLOCATION DETAIL"). Nothing in the repo can compensate for tagging that was never exported.',
+  NO_INVOICE_TAGGING_IN_EXPORT:
+    'Do not try to fix this by trusting ERP tagging, and do not assume a re-export is the answer — it recovers only Crd Note tagging (broadly canonical, useful for CYL credits) while payment tagging stays non-authoritative either way (business_rules.md §3). Build the invoice-level view in the allocation lane instead. Where remittance advices exist (3 accounts) they lead. Otherwise work the pattern route: exact-sum tests against the account payment pattern, the business rules for that payer type, and operator ratification recorded in config — business_rules.md §15 authority order B, SKILL_Payment_To_Invoice_Allocation.md tiers.',
   INVOICE_ON_REMITTANCE_STILL_OPEN:
-    'For each flagged invoice, confirm the remittance batch reconciles (remittance cash = ERP payment total for that receipt). Where it does, ratify the invoice into closedInvoiceOverrides in config/statement_of_account.json with the evidence reference, then re-run.',
+    'For each flagged invoice, confirm the remittance batch reconciles (remittance cash = ERP payment total for that receipt). Where it does, ratify the invoice into closedInvoiceOverrides in config/statement_of_account.json with the evidence reference, then re-run. The advice outranks ERP tagging.',
   OPEN_LIST_OVERSTATES_ACCOUNT:
-    'The itemised list exceeds what the account owes, so settled debt is being carried as open. Reconcile the account remittance-by-remittance to identify which invoices the untagged credits cleared, then ratify them into closedInvoiceOverrides. Until then the open-invoice list must not go to the customer; the ERP balance total is still safe to quote.',
+    'The itemised list exceeds what the account owes, so settled debt is being carried as open. Identify which invoices the untagged credits cleared and ratify them into closedInvoiceOverrides. Route depends on what the account has: remittance-by-remittance where advices exist, otherwise the pattern route (exact-sum month tests, established payment cadence, operator ratification) per business_rules.md §15 authority order B. Until then the open-invoice list must not go to the customer; the ERP balance total is still safe to quote.',
 };

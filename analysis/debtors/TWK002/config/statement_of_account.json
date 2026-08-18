@@ -10,10 +10,8 @@
     "3201"
   ],
   "primaryTxt": "analysis/debtors/TWK002/raw/DEBENQ_TWK002.TXT",
-  "siteTxts": {
-    "TWK003": "analysis/debtors/TWK002/raw/DEBENQ_TWK003.TXT",
-    "TWK004": "analysis/debtors/TWK002/raw/DEBENQ_TWK004.TXT"
-  },
+  "_comment_siteTxts": "TWK003/TWK004 temporarily excluded — TWK002-only statement until site roll-up is revisited.",
+  "siteTxts": {},
   "outputDir": "analysis/debtors/TWK002/reports",
   "outputBaseName": "TWK002_Statement_of_Account",
   "pdfStylesheet": "analysis/debtors/TWK002/reports/statement_pdf.css",
@@ -25,6 +23,55 @@
     {
       "doc": "42470",
       "reason": "Paid via STAT 114 / BATCH-2025-05-31 remittance (31.05.2025.pdf), receipt 00039080 (30/05/2025). Same untagged-payment cause as invoice 42468 — see reason there."
+    }
+  ],
+  "_comment_collapseAccountLevel": "2026-08-11 operator decision: customer statement shows the R8,084.67 account-level subtotal as a single 'Opening balance' line, not the 7 itemised sub-lines. Detail stays ratified below (and in the backing reports) for internal/audit use; only the presentation on the generated statement changes. Collections/ageing work for now targets the R110,046.87 open invoices only.",
+  "collapseAccountLevelAsOpeningBalance": true,
+  "collapsedAccountLevelLabel": "Opening balance (pre–Mar 2025 carry and settled-period residual, not itemised below)",
+  "collapsedAccountLevelReference": "See balanceBridgeLines in this config for the 7 ratified sub-lines, and reports/TWK002_Pre_Mar2025_BF_Bridge_2026-08-11.md, reports/TWK002_Phantom_CN_Nets_Breakdown_2026-08-11.md, reports/TWK002_Balance_Bridge_Line_Investigation_2026-08-11.md for full provenance.",
+  "_comment_balanceBridgeLines": "Ratified lines for debt not on the open invoice table. Must sum (with any site adjustments the generator adds) to Balance due minus Σ open invoices. Regenerate from build_balance_bridge.mjs --write after TXT refresh. Kept itemised here for audit/internal use even though the customer statement now collapses these into one 'Opening balance' line (see collapseAccountLevelAsOpeningBalance above).",
+  "balanceBridgeLines": [
+    {
+      "id": "bf_carry",
+      "label": "BALANCE B/F (pre–Mar 2025 export window)",
+      "amount": 38791.27,
+      "reference": "TXT BALANCE B/F line — pre-window debt not on open invoice table. Full pre-Mar-2025 provenance (11 STAT batches, 2023-04 → 2025-02): TWK002_Pre_Mar2025_BF_Bridge_2026-08-11.md"
+    },
+    {
+      "id": "override_42468_42470",
+      "label": "Override invoices 42468/42470 (paid on remittance, ERP untagged)",
+      "amount": 8950.44,
+      "reference": "STAT 114 BATCH-2025-05-31; closedInvoiceOverrides"
+    },
+    {
+      "id": "phantom_cn_nets",
+      "label": "Path B phantom journal nets (invno refs without Invoice row)",
+      "amount": 9894.01,
+      "reference": "00000490–496, 00000492/493, 00000503–006; net +R690 = 2023 variance — detail: TWK002_Phantom_CN_Nets_Breakdown_2026-08-11.md"
+    },
+    {
+      "id": "stat112_untagged",
+      "label": "STAT 112 receipt 00037770 (fully untagged)",
+      "amount": -35693.84,
+      "reference": "BATCH-2025-03-31; remit cash R35,693.84 — see data/allocation_edges.csv AL-0109–0116 (8 REMITTANCE_EXPLICIT/CN_OFFSET edges)"
+    },
+    {
+      "id": "stat114_untagged",
+      "label": "STAT 114 untagged slice 00039080",
+      "amount": -7306.68,
+      "reference": "Partial slice; tagged sibling −R8,058.97 on inv 42050"
+    },
+    {
+      "id": "stat123_orphan",
+      "label": "STAT 123 orphan slice 00043500",
+      "amount": -1249.77,
+      "reference": "H-013/H-014; 19 tagged siblings on same receipt"
+    },
+    {
+      "id": "pathb_journals_untagged",
+      "label": "Path B discount journals (blank INVNO)",
+      "amount": -5300.76,
+      "reference": "00000491 (−R3,329.12), 00000499–502, 00000507–509"
     }
   ]
 }

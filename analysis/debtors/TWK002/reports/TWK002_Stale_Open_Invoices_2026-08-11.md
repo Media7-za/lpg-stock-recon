@@ -41,16 +41,18 @@ The open-invoice reconstruction is only as good as ERP's `invno` tagging, so any
 
 | Control | Where |
 | :--- | :--- |
-| Rule: open-invoice lists are hypotheses; Σ(open) ≤ ERP balance invariant; exports must include allocation detail | `shared/docs/business_rules.md` §15 |
+| Rule: open-invoice lists are hypotheses; Σ(open) ≤ ERP balance invariant; authority order for "is this invoice settled?"; no open list from payment tagging alone | `shared/docs/business_rules.md` §15 (extends §3) |
 | Invariant + tripwire | `shared/DEBTORS_DOCTRINE.md` §5 |
 | Shared open-invoice model + risk analysis | `shared/scripts/debenq_open_invoices.mjs` |
 | Gate CLI and portfolio sweep | `npm run debtors:tag-check[:all]` |
 | Statement generator refuses to write when the gate blocks | `generate_statement_of_account.mjs` |
 | Contract tests, with this case as a permanent regression fixture | `shared/scripts/debenq_open_invoices.test.mjs` |
-| Intake rejects exports lacking allocation detail | `SKILL_Human_Sources_Agent.md` §6.1 |
+| Intake records the export posture and flags accounts needing an invoice-level view | `SKILL_Human_Sources_Agent.md` §6.1 |
 
 Verified by regression: with the two overrides removed, the gate returns `BLOCKED`, names both invoices from the remittance evidence, independently reports the invariant breach of R865.77, and the statement generator aborts.
 
 **TWK002 specifically:** no other instances in the current window. STAT 110/112 batches predate the TXT export window; STAT 123's 20 lines were all explicitly tagged. The account now gates `ALLOWED`. `H-013`/`H-014` (STAT 123 shortfall) remain open and should re-run `debtors:tag-check` once a fresh full-history TXT lands.
 
-**Portfolio:** the same sweep found TWK002 is the *only* account with a customer-ready open-invoice list — eight exports carry no allocation detail at all and MD0003 over-states by R59,456.42. See `shared/reports/PORTFOLIO_Invoice_Tag_Coverage_2026-08-11.md`, tasks `H-016` / `H-017`.
+**Portfolio:** the same sweep found TWK002 is the *only* account whose open-invoice list currently survives the gate — MD0003 over-states by R59,456.42, and eight accounts carry no invoice tagging in their exports (deliberately, since that column is ERP's untrustworthy payment allocation) so their invoice-level view has to come from the allocation lane. See `shared/reports/PORTFOLIO_Invoice_Tag_Coverage_2026-08-11.md`, tasks `H-016` / `H-017`.
+
+**Root-cause note:** the ERP tagging weakness here is payment-side only. Across both accounts in the portfolio that export allocation detail, Crd Note tagging measured 100% — ERP does reliably attach credit notes (including CYL empty-return credits) to their originating invoice. Payment tagging measured 67.2% on TWK002 and 88.9% on MD0003, and every error found sat there. That asymmetry is why `business_rules.md` §3 exists and why this repo reconstructs payment allocation from remittance evidence rather than reading it out of ERP.

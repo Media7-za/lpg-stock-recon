@@ -2,9 +2,22 @@
   "debtorCode": "TWK002",
   "clientName": "TWK AGRI PTY LTD",
   "status": "active",
-  "reconState": "complete",
+  "reconState": "validation_pending",
+  "_comment_reconState": "Set to complete only after finance sign-off on 16-batch checklist + TXT validation. See docs/TWK002_Model_B_Position.md.",
+  "modelB": {
+    "authority": "remittance",
+    "phase": "2023-2024_catchup",
+    "positionDoc": "docs/TWK002_Model_B_Position.md",
+    "progress": {
+      "analysis": "complete",
+      "erpJournals": "mostly_done",
+      "formalSignOff": "pending",
+      "phase2_2025": "open"
+    }
+  },
   "financials": {
-    "totalOutstanding": 117831.54,
+    "totalOutstanding": 118131.54,
+    "totalOutstandingNote": "TWK002 ERP header only (site roll-up excluded 2026-08-11). Combined was R117,831.54 with TWK003 -300.",
     "lastInvoiceDate": "2026-07-31",
     "lastPaymentDate": "2026-02-25",
     "agedDebt180Plus": 0
@@ -16,7 +29,7 @@
     "deadlineDate": null,
     "nextAction": null,
     "nextActionDate": null,
-    "notes": "Customer statement: reports/TWK002_Statement_of_Account.md (R117,831.54 due, ref B226, 10 Aug 2026)."
+    "notes": "Model B north star: docs/TWK002_Model_B_Position.md. Customer statement: reports/TWK002_Statement_of_Account.md (TWK002-only R118,131.54, ref B226)."
   },
   "history": [
     {
@@ -72,8 +85,16 @@
       "event": "Phase 2 extension: STAT register 110–123; tranche 2 STAT 123 (00043500 R176,824.24) blocked on image PDF 18.02.2026.pdf; gap STATs 111/113/115–122 no ERP payment in exports."
     },
     {
-      "date": "2026-08-10",
-      "event": "Statement of Account v5 generated from DEBENQ_TWK002.TXT (Mar 2025–Aug 2026). Combined close R118,131.54; ERP variance R0.00; LPG R110,311.54 + CYL R7,820.00."
+      "date": "2026-08-11",
+      "event": "Model B position doc + balance bridge: TWK002-only statement R118,131.54 (open R110,046.87 + account-level R8,084.67). remittance-authoritative framing in docs/TWK002_Model_B_Position.md; reconState validation_pending until finance sign-off."
+    },
+    {
+      "date": "2026-08-11",
+      "event": "Bridge decomposed into 7 ratified sub-lines (bf_carry, override_42468_42470, phantom_cn_nets, stat112_untagged, stat114_untagged, stat123_orphan, pathb_journals_untagged) + pre-Mar-2025 B/F provenance built (11 STAT batches trace to R38,791.27 exactly; TWK002_Pre_Mar2025_BF_Bridge_2026-08-11.md)."
+    },
+    {
+      "date": "2026-08-11",
+      "event": "Operator scoping decision: customer statement now shows the R8,084.67 account-level subtotal as a single collapsed 'Opening balance' line (collapseAccountLevelAsOpeningBalance in config/statement_of_account.json) instead of the 7 itemised sub-lines. Detail stays ratified in config + backing reports for audit. Collections/ageing focus narrows to the R110,046.87 open invoices for now."
     }
   ]
 }

@@ -1,0 +1,52 @@
+{
+  "generated": "2026-08-11",
+  "gap": 8084.67,
+  "sumOpenInvoices": 110046.87,
+  "headerBalance": 118131.54,
+  "balanceBridgeLines": [
+    {
+      "id": "bf_carry",
+      "label": "BALANCE B/F (pre–Mar 2025 export window)",
+      "amount": 38791.27,
+      "reference": "TXT BALANCE B/F line — pre-window debt not on open invoice table"
+    },
+    {
+      "id": "override_42468_42470",
+      "label": "Override invoices 42468/42470 (paid on remittance, ERP untagged)",
+      "amount": 8950.44,
+      "reference": "STAT 114 BATCH-2025-05-31; closedInvoiceOverrides"
+    },
+    {
+      "id": "phantom_cn_nets",
+      "label": "Path B phantom journal nets (invno refs without Invoice row)",
+      "amount": 9894.01,
+      "reference": "00000490–496, 00000492/493, 00000503–006; net +R690 = 2023 variance"
+    },
+    {
+      "id": "stat112_untagged",
+      "label": "STAT 112 receipt 00037770 (fully untagged)",
+      "amount": -35693.84,
+      "reference": "BATCH-2025-03-31; remit cash R35,693.84"
+    },
+    {
+      "id": "stat114_untagged",
+      "label": "STAT 114 untagged slice 00039080",
+      "amount": -7306.68,
+      "reference": "Partial slice; tagged sibling −R8,058.97 on inv 42050"
+    },
+    {
+      "id": "stat123_orphan",
+      "label": "STAT 123 orphan slice 00043500",
+      "amount": -1249.77,
+      "reference": "H-013/H-014; 19 tagged siblings on same receipt"
+    },
+    {
+      "id": "pathb_journals_untagged",
+      "label": "Path B discount journals (blank INVNO)",
+      "amount": -5300.76,
+      "reference": "00000491 (−R3,329.12), 00000499–502, 00000507–509"
+    }
+  ],
+  "bridgeSum": 8084.67,
+  "ties": true
+}

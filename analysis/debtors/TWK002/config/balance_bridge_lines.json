@@ -1,0 +1,27 @@
+{
+  "debtorCode": "TWK002",
+  "generated": "2026-08-11",
+  "balanceBf": 38791.27,
+  "headerBalance": 118131.54,
+  "sumOpenInvoices": 110046.87,
+  "accountLevelPrimary": 8084.67,
+  "siteTotal": 0,
+  "totalDue": 118131.54,
+  "accountLevelOnStatement": 8084.67,
+  "bridgeLines": [
+    {
+      "id": "bf_and_settled_residual",
+      "label": "Opening balance and settled-period residual (not on invoice list below)",
+      "amount": 57635.72,
+      "reference": "Net of B/F R38,791.27 and export-window activity on invoices not in the open table — see TWK002_Balance_Gap_Investigation_2026-08-11.md"
+    },
+    {
+      "id": "untagged_settlements",
+      "label": "Untagged settlements (STAT payment slices and discount journals)",
+      "amount": -49551.05,
+      "reference": "ERP posted with blank INVNO — 00037770 (−R35,693.84), 00039080 (−R7,306.68), 00043500 (−R1,249.77), Path B journals 00000507–509"
+    }
+  ],
+  "bridgeSum": 8084.67,
+  "ties": true
+}

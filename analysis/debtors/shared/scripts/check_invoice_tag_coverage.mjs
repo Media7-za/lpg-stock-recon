@@ -143,10 +143,15 @@ function renderMarkdown(res) {
   L.push(`> ${GATE_MEANING[res.gate] || ''}`, '');
   L.push('---', '', '## Summary', '');
   L.push('| Metric | Value |', '| :--- | ---: |');
+  const pctCell = (t) =>
+    `${t.tagged} of ${t.rows}${t.pct != null ? ` (${t.pct}%)` : ''}`;
   L.push(`| Export allocation detail | ${res.export_quality === 'NO_ALLOCATION_DETAIL' ? '**ABSENT**' : 'present'} |`);
   L.push(
     `| Settlement rows naming an invoice | ${res.tagging.tagged_rows} of ${res.tagging.settlement_rows}${res.tagging.tagged_pct != null ? ` (${res.tagging.tagged_pct}%)` : ''} |`,
   );
+  L.push(`| — Crd Note rows tagged *(broadly canonical)* | ${pctCell(res.tagging.credit_note)} |`);
+  L.push(`| — Payment rows tagged *(not authoritative)* | ${pctCell(res.tagging.payment)} |`);
+  L.push(`| Evidence basis | **${res.evidence.basis}** |`);
   L.push(`| Open invoices assessed | ${res.invoices.length} |`);
   if (res.counts.unassessable) {
     L.push(`| — unassessable (no allocation detail) | **${res.counts.unassessable}** |`);
@@ -164,6 +169,23 @@ function renderMarkdown(res) {
     L.push(`| Reconciliation gap (header − Σ open) | R${fmtAmount(res.reconciliation_gap)} |`);
   }
   L.push(`| Ratified closed (overrides) | ${res.ratified_closed.length} |`);
+  L.push(
+    '',
+    'The two tagging rows are not equivalent. ERP tags Crd Notes to their originating invoice as a matter of course (CYL deposit / empty-return credits especially), so that percentage is meaningful evidence. ERP payment allocation is historically broken (`business_rules.md` §3) — a high payment percentage is not reassurance, and a low one is not necessarily an error. Authority over whether an invoice is settled rests with the allocation lane, never with this column.',
+  );
+
+  L.push('', '### Checks that ran', '');
+  if (res.evidence.basis === 'REMITTANCE_BACKED') {
+    L.push(
+      `**REMITTANCE_BACKED** — ${res.evidence.remittance_invoice_docs} invoice numbers were read from this account's extracted remittance lines, so the open list was tested against the customer's own record of what they paid. That is the strongest check available here.`,
+    );
+  } else {
+    L.push(
+      `**PATTERN_ONLY** — ${res.evidence.note}`,
+      '',
+      'Concretely: the remittance-contradiction check did **not** run on this account, so a clean result below rests on arithmetic (the invariant) and an anomaly heuristic (staleness) alone. Neither can detect a settled invoice whose credit was untagged *and* whose absence does not break the account total. Establishing settlement here requires the pattern route — exact-sum month tests, the account’s established payment cadence, the business rules for that payer type, and operator ratification recorded in config.',
+    );
+  }
 
   L.push('', '---', '', '## Invariant', '');
   L.push(`**${res.invariant.name}** — ${res.invariant.status === 'PASS' ? 'PASS' : `**${res.invariant.status}**`}`, '');
@@ -247,16 +269,16 @@ function runAll(args) {
 
   if (args.json) {
     console.log(JSON.stringify(results, null, 2));
-    if (results.some((r) => r.gate === 'BLOCKED' || r.gate === 'UNUSABLE_EXPORT')) process.exitCode = 1;
+    if (results.some((r) => r.gate === 'BLOCKED' || r.gate === 'NOT_DERIVABLE_FROM_TXT')) process.exitCode = 1;
     return;
   }
 
-  console.log('debtor   gate              tagged      open  flagged  invariant       blocking reason');
+  console.log('debtor   gate                    cn-tag  pay-tag  evidence          open  flagged  invariant       blocking reason');
   for (const r of results) {
-    const tagged = r.tagging.tagged_pct != null ? `${r.tagging.tagged_pct}%` : 'n/a';
+    const pct = (t) => (t.pct != null ? `${t.pct}%` : 'n/a');
     const flagged = r.counts.likely_paid + r.counts.stale_open + r.counts.unassessable;
     console.log(
-      `${r.debtor.padEnd(8)} ${r.gate.padEnd(17)} ${tagged.padStart(6)}  ${String(r.invoices.length).padStart(8)}  ${String(flagged).padStart(7)}  ${r.invariant.status.padEnd(14)}  ${r.blocking_reason || ''}`,
+      `${r.debtor.padEnd(8)} ${r.gate.padEnd(23)} ${pct(r.tagging.credit_note).padStart(6)}  ${pct(r.tagging.payment).padStart(6)}  ${r.evidence.basis.padEnd(16)}  ${String(r.invoices.length).padStart(4)}  ${String(flagged).padStart(7)}  ${r.invariant.status.padEnd(14)}  ${r.blocking_reason || ''}`,
     );
   }
 
@@ -264,8 +286,23 @@ function runAll(args) {
   for (const r of results.filter((x) => x.blocking_reason)) {
     byReason.set(r.blocking_reason, [...(byReason.get(r.blocking_reason) || []), r.debtor]);
   }
-  const attention = results.filter((r) => r.gate !== 'ALLOWED');
-  console.log(`\n${results.length} debtor(s) assessed · ${attention.length} needing attention`);
+  // NOT_DERIVABLE_FROM_TXT is a scope statement, not a fault — counting those
+  // accounts as "needing attention" would misrepresent a deliberate posture as
+  // a backlog of nine broken accounts.
+  const contradicted = results.filter((r) => r.gate === 'BLOCKED' || r.gate === 'REVIEW_REQUIRED');
+  const notDerivable = results.filter((r) => r.gate === 'NOT_DERIVABLE_FROM_TXT');
+  const patternOnly = results.filter((r) => r.evidence.basis === 'PATTERN_ONLY');
+  console.log(
+    `\n${results.length} debtor(s) assessed · ${contradicted.length} with a contradicted open list · ${notDerivable.length} not derivable from the TXT (invoice-level view belongs to the allocation lane)`,
+  );
+  if (patternOnly.length) {
+    console.log(
+      `\n${patternOnly.length} of ${results.length} account(s) are PATTERN_ONLY — no extracted remittance lines, so the remittance-contradiction check did not run: ${patternOnly.map((r) => r.debtor).join(', ')}`,
+    );
+    console.log(
+      '  Settlement claims on these accounts rest on payment patterns, business rules and operator ratification (business_rules.md §15 authority order B). A clean gate here is a weaker statement than on a REMITTANCE_BACKED account.',
+    );
+  }
   for (const [reason, debtors] of byReason) {
     console.log(`\n${reason} — ${debtors.join(', ')}`);
     console.log(`  ${REMEDY[reason]}`);
@@ -280,7 +317,7 @@ function runAll(args) {
     }
   }
 
-  if (results.some((r) => r.gate === 'BLOCKED' || r.gate === 'UNUSABLE_EXPORT')) process.exitCode = 1;
+  if (results.some((r) => r.gate === 'BLOCKED' || r.gate === 'NOT_DERIVABLE_FROM_TXT')) process.exitCode = 1;
 }
 
 function main() {
@@ -308,8 +345,9 @@ function main() {
   } else {
     console.log(`[${res.debtor}] Invoice tag coverage: ${res.gate}${res.blocking_reason ? ` (${res.blocking_reason})` : ''}`);
     console.log(
-      `[${res.debtor}] tagged=${res.tagging.tagged_rows}/${res.tagging.settlement_rows} settlement rows · open=${res.invoices.length} likely_paid=${res.counts.likely_paid} stale_open=${res.counts.stale_open} clear=${res.counts.clear} · invariant=${res.invariant.status}${res.invariant.overstated_by ? ` (over-stated by R${fmtAmount(res.invariant.overstated_by)})` : ''}`,
+      `[${res.debtor}] tagged: cn=${res.tagging.credit_note.tagged}/${res.tagging.credit_note.rows} pay=${res.tagging.payment.tagged}/${res.tagging.payment.rows} · open=${res.invoices.length} likely_paid=${res.counts.likely_paid} stale_open=${res.counts.stale_open} clear=${res.counts.clear} · invariant=${res.invariant.status}${res.invariant.overstated_by ? ` (over-stated by R${fmtAmount(res.invariant.overstated_by)})` : ''}`,
     );
+    console.log(`[${res.debtor}] evidence=${res.evidence.basis}${res.evidence.note ? ` — ${res.evidence.note}` : ` (${res.evidence.remittance_invoice_docs} invoice docs on remittance advices)`}`);
     if (res.blocking_reason) console.log(`[${res.debtor}] ${REMEDY[res.blocking_reason]}`);
     for (const inv of res.invoices.filter((i) => i.risk === 'LIKELY_PAID' || i.risk === 'STALE_OPEN')) {
       console.log(`[${res.debtor}]   ${inv.risk} inv ${inv.doc} (${inv.iso}, R${fmtAmount(inv.due)}) — ${inv.basis}`);

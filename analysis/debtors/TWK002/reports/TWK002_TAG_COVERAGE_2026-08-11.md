@@ -4,7 +4,7 @@
 **Source:** `analysis/debtors/TWK002/raw/DEBENQ_TWK002.TXT`  
 **Gate:** **ALLOWED**
 
-> Open-invoice list ties within the ERP balance and shows no marooned invoices. Safe for customer-facing use.
+> No contradiction found: the list ties within the ERP balance and no open invoice is marooned behind a payment gap. This is absence of evidence against the list, not proof it is right — ERP payment tagging is not authoritative (business_rules.md §3). Read it together with evidence.basis: REMITTANCE_BACKED means the customer’s own records were checked too; PATTERN_ONLY means they were not, because none exist, and the claim rests on the payment pattern and business rules instead.
 
 ---
 
@@ -14,6 +14,9 @@
 | :--- | ---: |
 | Export allocation detail | present |
 | Settlement rows naming an invoice | 76 of 95 (80%) |
+| — Crd Note rows tagged *(broadly canonical)* | 37 of 37 (100%) |
+| — Payment rows tagged *(not authoritative)* | 39 of 58 (67.2%) |
+| Evidence basis | **REMITTANCE_BACKED** |
 | Open invoices assessed | 11 |
 | — likely already paid | **0** |
 | — stale open (marooned behind a payment gap) | 0 |
@@ -25,6 +28,12 @@
 | ERP CURRENT BALANCE | R118,131.54 |
 | Reconciliation gap (header − Σ open) | R8,084.67 |
 | Ratified closed (overrides) | 2 |
+
+The two tagging rows are not equivalent. ERP tags Crd Notes to their originating invoice as a matter of course (CYL deposit / empty-return credits especially), so that percentage is meaningful evidence. ERP payment allocation is historically broken (`business_rules.md` §3) — a high payment percentage is not reassurance, and a low one is not necessarily an error. Authority over whether an invoice is settled rests with the allocation lane, never with this column.
+
+### Checks that ran
+
+**REMITTANCE_BACKED** — 103 invoice numbers were read from this account's extracted remittance lines, so the open list was tested against the customer's own record of what they paid. That is the strongest check available here.
 
 ---
 

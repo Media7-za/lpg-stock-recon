@@ -15,5 +15,7 @@
   "outputBaseName": "[CODE]_Statement_of_Account",
   "pdfStylesheet": "analysis/debtors/shared/templates/statement_pdf.css",
   "_comment_closedInvoiceOverrides": "Optional. List invoices proven paid (e.g. by a remittance advice) whose ERP CN/payment row was never tagged with that invno, so they'd otherwise wrongly show as open. Each entry: {\"doc\": \"[invoice no, digits only]\", \"reason\": \"[evidence/reference]\"}.",
-  "closedInvoiceOverrides": []
+  "closedInvoiceOverrides": [],
+  "_comment_balanceBridgeLines": "Optional. Ratified lines for account-level debt not on the open invoice table (opening carry, untagged settlements). Must sum with any site adjustments to Balance due minus Σ open invoices. TWK002: regenerate via analysis/debtors/TWK002/scripts/build_balance_bridge.mjs --write.",
+  "balanceBridgeLines": []
 }

@@ -72,15 +72,32 @@ function loadConfig(debtorCode) {
   cfg.referenceLabel = cfg.referenceLabel || 'Reference';
   cfg.referenceValue = cfg.referenceValue || cfg.twkReference || '';
   cfg.closedInvoiceOverrides = cfg.closedInvoiceOverrides || [];
+  cfg.balanceBridgeLines = cfg.balanceBridgeLines || [];
+  // Opt-in presentation override: collapse the itemised account-level bridge
+  // lines into a single "Opening balance" style row on the customer-facing
+  // statement, while still computing/validating the itemised lines
+  // internally against config so the detail isn't lost — just not exposed.
+  cfg.collapseAccountLevelAsOpeningBalance = cfg.collapseAccountLevelAsOpeningBalance || false;
+  cfg.collapsedAccountLevelLabel = cfg.collapsedAccountLevelLabel || 'Opening balance (pre-existing, not itemised below)';
   return cfg;
 }
 
 function reportTagCoverage(debtorCode, cov) {
   if (cov.gate === 'ALLOWED') {
-    console.log(`[${debtorCode}] Invoice tag coverage: ALLOWED (${cov.counts.clear} open invoices, all clear)`);
+    console.log(
+      `[${debtorCode}] Invoice tag coverage: ALLOWED (${cov.counts.clear} open invoices, all clear) · evidence=${cov.evidence.basis}`,
+    );
+    // A clean gate on a PATTERN_ONLY account did not consult the customer's own
+    // records, because there are none to consult. The operator has to know that
+    // before deciding whether to send an itemised table or only the balance.
+    if (cov.evidence.basis === 'PATTERN_ONLY') {
+      console.warn(
+        `[${debtorCode}] NOTE: no remittance advices for this account, so the remittance-contradiction check did not run — this ALLOWED rests on the invariant and the staleness heuristic only. See business_rules.md §15 authority order B.`,
+      );
+    }
     return;
   }
-  console.warn(`[${debtorCode}] Invoice tag coverage: ${cov.gate}`);
+  console.warn(`[${debtorCode}] Invoice tag coverage: ${cov.gate} · evidence=${cov.evidence.basis}`);
   console.warn(`[${debtorCode}] ${GATE_MEANING[cov.gate]}`);
   if (cov.blocking_reason) console.warn(`[${debtorCode}] REMEDY: ${REMEDY[cov.blocking_reason]}`);
   if (cov.invariant.status === 'BREACHED') {
@@ -122,6 +139,9 @@ function main() {
   const asAt = args.asAt ? new Date(`${args.asAt}T12:00:00`) : new Date();
   const asAtIso = asAt.toISOString().slice(0, 10);
   const monthStartIso = `${asAtIso.slice(0, 7)}-01`;
+  // Ageing is reported as at the last date of the prior month (i.e. the
+  // month-end the statement is drawn for), not the statement-run date.
+  const ageAsAt = new Date(new Date(`${monthStartIso}T12:00:00`).getTime() - 86400000);
 
   const primaryPath = path.join(ROOT, cfg.primaryTxt);
   const {
@@ -146,7 +166,7 @@ function main() {
     remittanceDocs: loadRemittanceInvoiceDocs(path.join(ROOT, 'analysis/debtors', debtorCode)),
   });
   reportTagCoverage(debtorCode, tagCoverage);
-  if ((tagCoverage.gate === 'BLOCKED' || tagCoverage.gate === 'UNUSABLE_EXPORT') && !args.force) {
+  if ((tagCoverage.gate === 'BLOCKED' || tagCoverage.gate === 'NOT_DERIVABLE_FROM_TXT') && !args.force) {
     console.error(
       `[${debtorCode}] ABORTED — statement not written. Resolve the invoices above, or re-run with --force if you have a recorded reason.`,
     );
@@ -168,19 +188,46 @@ function main() {
   const movementThisMonth =
     openingBalance != null ? round2(primaryHeader - openingBalance) : null;
 
-  // Ageing buckets from invoice-level open due, reconciled to totalDue via
-  // an adjustment placed in the oldest (120-day) bucket — the same
-  // reconciliation approach used for the manual 2026-08-10 statement.
+  // Ageing buckets from open invoice due only — no silent dump into 120-day.
+  // Account-level balance (header − Σ open invoices, plus site adjustments) is
+  // shown explicitly in its own section; see balanceBridgeLines in config.
   const buckets = { current: 0, d30: 0, d60: 0, d90: 0, d120: 0 };
   let sumOpenInvoices = 0;
   for (const inv of openInvoices) {
     const invDate = new Date(`${inv.iso}T12:00:00`);
-    const days = Math.floor((asAt - invDate) / 86400000);
+    const days = Math.floor((ageAsAt - invDate) / 86400000);
     buckets[ageBucket(days)] = round2(buckets[ageBucket(days)] + inv.due);
     sumOpenInvoices = round2(sumOpenInvoices + inv.due);
   }
-  const reconAdjustment = round2(totalDue - sumOpenInvoices);
-  buckets.d120 = round2(buckets.d120 + reconAdjustment);
+  const accountLevelTotal = round2(totalDue - sumOpenInvoices);
+
+  // Bridge lines: config first, else one auto line.
+  // when not already present in config (they also appear in Account summary).
+  const bridgeLines = [...(cfg.balanceBridgeLines || [])];
+  if (!bridgeLines.length && accountLevelTotal !== 0) {
+    bridgeLines.push({
+      label: 'Account-level balance (not on open invoices below)',
+      amount: accountLevelTotal,
+      reference: 'ERP running balance minus Σ open invoice Due — ratify in config/balanceBridgeLines',
+    });
+  }
+  for (const s of siteBalances) {
+    if (s.headerBalance === 0) continue;
+    const id = `site_${s.code.toLowerCase()}`;
+    if (bridgeLines.some((l) => l.id === id || l.label?.includes(s.code))) continue;
+    bridgeLines.push({
+      id,
+      label: `${s.code} site adjustment`,
+      amount: s.headerBalance,
+      reference: 'Linked ERP site code balance included in combined Balance due',
+    });
+  }
+  const bridgeSum = round2(bridgeLines.reduce((s, l) => s + l.amount, 0));
+  if (Math.abs(bridgeSum - accountLevelTotal) > 0.05) {
+    console.warn(
+      `[${debtorCode}] WARNING: balanceBridgeLines sum R${fmtAmount(bridgeSum)} ≠ account-level R${fmtAmount(accountLevelTotal)} — check config/statement_of_account.json`,
+    );
+  }
 
   const asAtLabel = asAt.toLocaleDateString('en-ZA', {
     day: '2-digit',
@@ -188,6 +235,11 @@ function main() {
     year: 'numeric',
   });
   const monthLabel = asAt.toLocaleDateString('en-ZA', { month: 'long', year: 'numeric' });
+  const ageAsAtLabel = ageAsAt.toLocaleDateString('en-ZA', {
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric',
+  });
 
   const fmt = fmtAmount;
 
@@ -215,44 +267,42 @@ function main() {
     lines.push(`| ${s.code} adjustment | ${fmt(s.headerBalance)} |`);
   }
   lines.push(`| **Balance due** | **${fmt(totalDue)}** |`);
-  lines.push('', '---', '', '## Aged balance (as at statement date)', '');
-  lines.push('Age is calculated from **invoice date** to ' + asAtLabel + '.', '');
-  lines.push('| Current | 30 day | 60 day | 90 day | 120 day | **Total due** |');
+  lines.push('', '---', '', '## Aged balance — open invoices', '');
+  lines.push('Age is calculated from **invoice date** to ' + ageAsAtLabel + '.', '');
+  lines.push('| Current | 30 day | 60 day | 90 day | 120+ day | **Subtotal** |');
   lines.push('| ---: | ---: | ---: | ---: | ---: | ---: |');
   lines.push(
-    `| ${fmt(buckets.current)} | ${fmt(buckets.d30)} | ${fmt(buckets.d60)} | ${fmt(buckets.d90)} | ${fmt(buckets.d120)} | **${fmt(totalDue)}** |`,
+    `| ${fmt(buckets.current)} | ${fmt(buckets.d30)} | ${fmt(buckets.d60)} | ${fmt(buckets.d90)} | ${fmt(buckets.d120)} | **${fmt(sumOpenInvoices)}** |`,
   );
-  lines.push(
-    '',
-    '*120 day column includes long-outstanding items and account-level adjustments not tied to a single invoice.*',
-    '',
-    '---',
-    '',
-    '## Open invoices',
-    '',
-  );
+  lines.push('', '---', '', '## Account-level balance', '');
+  const acctLevelNote = siteBalances.length
+    ? 'Debt not attributable to the open invoice lines below (opening carry, untagged settlements, site adjustments).'
+    : 'Debt not attributable to the open invoice lines below (opening carry, untagged settlements).';
+  lines.push(acctLevelNote, '');
+  lines.push('| | Amount (R) |');
+  lines.push('| :--- | ---: |');
+  if (cfg.collapseAccountLevelAsOpeningBalance) {
+    lines.push(`| ${cfg.collapsedAccountLevelLabel} | ${fmt(bridgeSum)} |`);
+  } else {
+    for (const line of bridgeLines) {
+      lines.push(`| ${line.label} | ${fmt(line.amount)} |`);
+    }
+  }
+  lines.push(`| **Account-level subtotal** | **${fmt(bridgeSum)}** |`);
+  lines.push(`| Open invoice subtotal (aged table above) | ${fmt(sumOpenInvoices)} |`);
+  lines.push(`| **Balance due** | **${fmt(totalDue)}** |`);
+  lines.push('', '---', '', '## Open invoices', '');
   lines.push('| Inv | Inv date | DN / ref | **Due (R)** |');
   lines.push('| :--- | :--- | :--- | ---: |');
   for (const inv of openInvoices) {
     lines.push(`| ${inv.docno.replace(/^0+/, '') || inv.docno} | ${displayDate(inv.iso)} | ${inv.dn} | ${fmt(inv.due)} |`);
   }
-  const refSuffix = cfg.referenceValue
-    ? ` and quote reference **${cfg.referenceValue}**`
-    : '';
-  lines.push(
-    '',
-    '---',
-    '',
-    `Please remit **R${fmt(totalDue)}**${refSuffix} on payment. If payment has already been made, send proof of payment so we can allocate it promptly.`,
-    '',
-  );
-
   const outDir = path.join(ROOT, cfg.outputDir);
   fs.mkdirSync(outDir, { recursive: true });
   const mdPath = path.join(outDir, `${cfg.outputBaseName}.md`);
   fs.writeFileSync(mdPath, lines.join('\n'));
   console.log(`[${debtorCode}] Statement written: ${mdPath}`);
-  console.log(`[${debtorCode}] Balance due: R${fmt(totalDue)}`);
+  console.log(`[${debtorCode}] Balance due: R${fmt(totalDue)} (open R${fmt(sumOpenInvoices)} + account-level R${fmt(bridgeSum)})`);
 
   if (args.pdf) {
     const stylesheet = path.join(ROOT, cfg.pdfStylesheet);

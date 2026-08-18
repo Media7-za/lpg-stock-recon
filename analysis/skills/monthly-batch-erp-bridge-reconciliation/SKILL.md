@@ -29,7 +29,7 @@ description: >-
 - **Full invoice gross only** — no partial-invoice payment. An invoice is either fully settled (listed on a verified remittance/month batch) or fully open.
 - Strip CYL `-EMPTY` deposit/credit-note pairs that net to R0; carry forward any residual (non-zero) pair as a separate CYL line.
 - Group by month, note whether that month has a matching remittance/STAT payment yet.
-- **Gate the schedule before using it:** `npm run debtors:tag-check -- --debtor [CODE]`. ERP tags settlement rows to invoices unreliably, so a schedule built from the ledger alone can carry already-paid invoices as open. The invariant Σ(open invoices) ≤ ERP `CURRENT BALANCE` must hold; `UNUSABLE_EXPORT` means the TXT has no allocation detail and the schedule cannot be built from it at all. Rule: `analysis/debtors/shared/docs/business_rules.md` §15.
+- **Gate the schedule before using it:** `npm run debtors:tag-check -- --debtor [CODE]`. ERP payment allocation is not trustworthy (`business_rules.md` §3), so a schedule built from the ledger alone can carry already-paid invoices as open. The invariant Σ(open invoices) ≤ ERP `CURRENT BALANCE` must hold; `NOT_DERIVABLE_FROM_TXT` means the TXT carries no invoice tagging, so the schedule must be built from remittance evidence (§2) rather than the ledger — that is the normal route for a STAT payer, not a blocker. Rule: `analysis/debtors/shared/docs/business_rules.md` §15.
 - **Remittance advices outrank ERP tagging.** For a STAT payer the advice is the better authority on which invoices a batch settled — that is the whole premise of §2. Where the two disagree and the batch total reconciles, believe the advice and ratify the invoice into `closedInvoiceOverrides`.
 
 ---
@@ -104,7 +104,8 @@ Worked example: MD0003/MD0004 (`MD0003_MD0004_Combined_Exposure.md`).
 | Rolling 30-day ageing for calendar-month billing cycles | Misstates which invoices are "current" vs "overdue" for a monthly biller |
 | Treating a reconstructed (no ledger export) balance as verified | Stock-transaction dumps have no payment rows — can't confirm a real balance |
 | Sending an open-invoice schedule without running `debtors:tag-check` | ERP leaves settlement rows untagged, so paid invoices stay on the schedule. TWK002 billed a customer for 15 months this way |
-| Building a schedule from a TXT exported with `EXCLUDE: ALLOCATION DETAIL` | No row names the invoice it settles, so every invoice looks open. Re-export instead |
+| Building a schedule from a TXT exported with `EXCLUDE: ALLOCATION DETAIL` | No row names the invoice it settles, so every invoice looks open. Build from remittance evidence (§2) instead |
+| Requesting a re-export "with allocation detail" to fix an allocation problem | Recovers only Crd Note tagging. ERP payment allocation is broken (§3) — a re-export never makes payment tags authoritative |
 
 ---
 

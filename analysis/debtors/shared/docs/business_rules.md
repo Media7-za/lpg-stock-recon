@@ -209,17 +209,51 @@ Where:
 ## 15. Invoice Tag Coverage Rule (Open-Invoice Lists Are Hypotheses)
 **Discovered during:** TWK002 customer statement review (2026-08-11), when the customer's own remittance advice showed invoices 42468 and 42470 had been paid 15 months earlier while the statement still billed them.
 
-**Problem:** ERP settles an invoice by posting a Crd Note / Payment / Journal row whose `INVNO` column names the invoice it clears. That tagging is not reliable in two distinct ways, and the two have completely different remedies:
+**Extends §3**, which already establishes that ERP's built-in payment allocation is historically broken. §15 states what follows for anything that itemises debt per invoice.
 
-1. **Untagged slice** — the export carries allocation detail, but an individual settlement row has a blank `INVNO`. The account running balance and `CURRENT BALANCE` header stay correct, but the money is not attributable to any invoice, so an already-paid invoice keeps showing as open indefinitely. TWK002's untagged R7,306.68 slice of payment `00039080` (STAT 114) is the reference case.
-2. **No allocation detail at all** — the export was taken with `"EXCLUDE:","ALLOCATION DETAIL"`, so `INVNO` is blank on every row. No open/closed status can be derived for any invoice. At the 2026-08-11 sweep this affected 8 of the 10 debtor exports in the repo.
+**Problem:** ERP settles an invoice by posting a Crd Note / Payment / Journal row whose `INVNO` column names the invoice it clears. Reliability differs sharply by entry type, and conflating the two is the error:
+
+| Entry type | Tagging reliability | Use |
+| :--- | :--- | :--- |
+| **Crd Note** | Broadly canonical — roughly 90% accurate, CYL deposit / empty-return credits especially, since they are posted against the originating invoice as a matter of course | Usable as evidence |
+| **Payment** | **Not trustworthy.** Slices are posted untagged, mis-tagged, or split arbitrarily (§3) | Corroboration at best, never proof |
+
+Two distinct situations arise, with genuinely different answers:
+
+1. **Untagged / mis-tagged payment slice** — the export carries allocation detail, but a settlement row has a blank or wrong `INVNO`. The account running balance and `CURRENT BALANCE` header stay correct, but the money is not attributable, so an already-paid invoice keeps showing as open indefinitely. TWK002's untagged R7,306.68 slice of payment `00039080` (STAT 114) is the reference case.
+2. **No allocation detail at all** — the export was taken with `"EXCLUDE:","ALLOCATION DETAIL"`, so `INVNO` is blank on every row. **This is normally deliberate, not a defect:** the column it omits is the untrustworthy one, and exporting it invites downstream code to believe it. At the 2026-08-11 sweep this was the posture on 8 of the 10 debtor exports in the repo. Such a TXT fully supports balance and ageing work; the invoice-level breakdown simply has to come from the allocation lane instead.
+
+**Authority order for "is this invoice settled?"**
+
+Which order applies depends on whether the account has remittance advices. **They exist for only 3 accounts**, so order B is the normal case, not the fallback.
+
+*Order A — remittance-backed accounts (TWK002, MD0003, +1):*
+
+1. The customer's remittance advice, with a reconciling batch total (remittance cash = ERP payment total for that receipt).
+2. The allocation lane — `data/allocation_edges.csv`, remittance manifests, open-balance-at-payment-date tiers (`SKILL_Payment_To_Invoice_Allocation.md`).
+3. ERP Crd Note tagging.
+4. ERP Payment tagging — never on its own.
+
+*Order B — pattern-only accounts (everything else):*
+
+1. **Exact-sum arithmetic.** A payment equal to the exact sum of a specific set of invoices (typically one billing month) is the strongest available evidence, and is deterministic rather than judgemental. Test this before any theory of application order.
+2. **The account's established payment pattern**, evidenced across cycles and recorded in `config/payment_pattern_overrides.json` — billing cadence, whether the payer settles whole invoices only, standing settlement discount, the mirror-carry pattern (§14). A *constant* gap across cycles is a pattern; a moving gap is a variance to investigate, not a pattern.
+3. **Business rules for the payer type** — §3 debt partitioning, CYL `-EMPTY` deposit/credit pair netting, monthly-cycle rather than rolling-30-day ageing for monthly billers.
+4. **Operator judgement**, recorded as a ratified scenario in `config/ratification_scenarios.json` or an entry in `closedInvoiceOverrides` stating the reasoning. Human inference is legitimate evidence here; unrecorded human inference is not, because the next regeneration silently discards it.
+5. ERP Crd Note tagging.
+6. ERP Payment tagging — never on its own.
+
+The invariant below is the arithmetic backstop under both orders and holds regardless of evidence available.
+
+**Evidence basis is reported, not assumed.** `debtors:tag-check` labels each account `REMITTANCE_BACKED` or `PATTERN_ONLY` and names which checks ran. On a `PATTERN_ONLY` account the remittance-contradiction check is inert, so a clean gate rests on the invariant and the staleness heuristic alone — a materially weaker statement than the same result on a remittance-backed account. Never quote a gate result without its basis.
 
 **Rules:**
-1. **An open-invoice list is a hypothesis, not a fact.** Only the ERP `CURRENT BALANCE` header is ground truth for what an account owes. The per-invoice breakdown is a reconstruction and inherits every gap in ERP's tagging.
+1. **An open-invoice list is a hypothesis, not a fact.** Only the ERP `CURRENT BALANCE` header is ground truth for what an account owes. The per-invoice breakdown is a reconstruction that inherits every weakness of ERP's payment tagging.
 2. **Account invariant — Σ(open invoices) ≤ ERP `CURRENT BALANCE`.** A breach is proof that settled debt is being carried as open. Treat the breach as a *lower bound* on the error: understatement elsewhere can mask most of it (TWK002 breached by only R865.77 while the true error was R8,950.44).
-3. **Exports for invoice-level work must include allocation detail.** A TXT carrying `EXCLUDE: ALLOCATION DETAIL` supports balance and ageing work only. Deriving an open-invoice list from it is prohibited — re-export first.
-4. **Gate before customer-facing release.** Run `npm run debtors:tag-check -- --debtor [CODE]` before any statement, open-invoice list, or collections letter leaves the building. `BLOCKED` and `UNUSABLE_EXPORT` prohibit release; `REVIEW_REQUIRED` requires an evidence check first. Internal use (collections triage, ageing trend, portfolio totals) is unaffected — the account total is correct regardless.
+3. **Never derive an open-invoice list from ERP payment tagging alone** — with or without allocation detail in the export. A TXT carrying `EXCLUDE: ALLOCATION DETAIL` cannot produce one at all; a TXT that includes it produces a screening hypothesis that still needs evidence behind it. Re-exporting with allocation detail recovers only Crd Note tagging; it does not make payment allocation trustworthy and never by itself makes a list customer-ready.
+4. **Gate before customer-facing release.** Run `npm run debtors:tag-check -- --debtor [CODE]` before any statement, open-invoice list, or collections letter leaves the building. `BLOCKED` and `NOT_DERIVABLE_FROM_TXT` prohibit release; `REVIEW_REQUIRED` requires an evidence check first. `ALLOWED` means no contradiction was found, not that the list is verified. Internal use (collections triage, ageing trend, portfolio totals) is unaffected — the account total is correct regardless.
 5. **Ratify, never patch.** An invoice proven settled by a remittance advice is retired through `closedInvoiceOverrides` in `config/statement_of_account.json`, recording the evidence reference. Never hand-edit a generated statement or report — the next regeneration would resurrect the error.
-6. **Remittance advices outrank ERP tagging.** Where the customer's advice and ERP's `INVNO` tagging disagree about whether an invoice is settled, the advice plus a reconciling batch total (remittance cash = ERP payment total for that receipt) wins.
+6. **Remittance advices outrank ERP tagging.** Where the customer's advice and ERP's `INVNO` tagging disagree about whether an invoice is settled, the advice plus a reconciling batch total wins.
+7. **Absent an advice, a settlement claim needs a recorded basis.** On a `PATTERN_ONLY` account, retiring an invoice requires naming which rung of order B carries it — exact-sum match, established pattern, business rule, or operator judgement — in the override's `reason`. "Appears paid" is not a basis. This is what makes a pattern-derived conclusion auditable a year later, and reviewable when the pattern changes.
 
-**Enforcement:** `analysis/debtors/shared/scripts/debenq_open_invoices.mjs` (shared model + gate), `check_invoice_tag_coverage.mjs` (CLI + portfolio sweep), contract tests in `debenq_open_invoices.test.mjs`. The statement generator refuses to write when the gate blocks.
+**Enforcement:** `analysis/debtors/shared/scripts/debenq_open_invoices.mjs` (shared model + gate, tagging reported separately per entry type), `check_invoice_tag_coverage.mjs` (CLI + portfolio sweep), contract tests in `debenq_open_invoices.test.mjs`. The statement generator refuses to write when the gate blocks.

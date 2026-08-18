@@ -17,6 +17,9 @@ import {
   computeOpenInvoices,
   findUntaggedCredits,
   analyseInvoiceTagCoverage,
+  measureTaggingCoverage,
+  GATE_MEANING,
+  REMEDY,
 } from './debenq_open_invoices.mjs';
 
 const row = (o) => ({ docno: '', cleanDoc: '', entry: '', iso: '', invno: '', dn: '', amount: 0, runningBalance: 0, ...o });
@@ -182,9 +185,11 @@ describe('STALE_OPEN — invoice marooned behind a long payment gap', () => {
 
 describe('export quality — an export taken without allocation detail', () => {
   // 8 of 10 portfolio exports were taken with "EXCLUDE: ALLOCATION DETAIL"
-  // (2026-08-11 sweep). Nothing names an invoice, so no open-invoice list can
-  // be derived at all. This is an export defect with an export remedy, and
-  // must never be reported as if individual invoices were suspicious.
+  // (2026-08-11 sweep) — a deliberate posture, since the omitted INVNO column
+  // is the untrustworthy one (business_rules.md §3). Nothing names an invoice,
+  // so no open list is derivable from the TXT alone, and the answer is to use
+  // the allocation lane. It must never be reported as if individual invoices
+  // were suspicious, nor as an export defect that re-exporting would cure.
   const rows = [
     invoice('1000', '2026-01-10', 500),
     untaggedPayment('9001', '2026-01-20', -100),
@@ -194,16 +199,24 @@ describe('export quality — an export taken without allocation detail', () => {
     untaggedPayment('9005', '2026-05-20', -100),
   ];
 
-  test('the declared EXCLUDE header yields UNUSABLE_EXPORT with an export remedy', () => {
+  test('the declared EXCLUDE header yields NOT_DERIVABLE_FROM_TXT', () => {
     const res = analyse(rows, { headerBalance: 0, excludesAllocationDetail: true });
-    assert.equal(res.gate, 'UNUSABLE_EXPORT');
-    assert.equal(res.blocking_reason, 'EXPORT_LACKS_ALLOCATION_DETAIL');
+    assert.equal(res.gate, 'NOT_DERIVABLE_FROM_TXT');
+    assert.equal(res.blocking_reason, 'NO_INVOICE_TAGGING_IN_EXPORT');
     assert.equal(res.export_quality, 'NO_ALLOCATION_DETAIL');
+  });
+
+  test('the remedy points at the allocation lane, not at re-exporting', () => {
+    const res = analyse(rows, { headerBalance: 0, excludesAllocationDetail: true });
+    const remedy = REMEDY[res.blocking_reason];
+    assert.match(remedy, /allocation lane/i);
+    assert.match(remedy, /do not assume a re-export is the answer/i);
+    assert.match(remedy, /only Crd Note tagging/i, 'must say what a re-export does and does not recover');
   });
 
   test('is detected behaviourally too, when no settlement row names an invoice', () => {
     const res = analyse(rows, { headerBalance: 0, excludesAllocationDetail: false });
-    assert.equal(res.gate, 'UNUSABLE_EXPORT');
+    assert.equal(res.gate, 'NOT_DERIVABLE_FROM_TXT');
   });
 
   test('every invoice is UNASSESSABLE, never dressed up as a per-invoice suspicion', () => {
@@ -236,6 +249,108 @@ describe('export quality — an export taken without allocation detail', () => {
     assert.equal(res.tagging.settlement_rows, 2);
     assert.equal(res.tagging.tagged_rows, 1);
     assert.equal(res.tagging.tagged_pct, 50);
+  });
+});
+
+describe('tagging coverage is split by entry type', () => {
+  // Crd Note tagging is broadly canonical (~90%, especially CYL deposit /
+  // empty-return credits); Payment tagging is not trustworthy even when
+  // present (business_rules.md §3). Reporting a single blended percentage
+  // would hide that distinction and imply false reassurance.
+  const rows = [
+    invoice('1000', '2026-01-10', 1000),
+    row({ docno: '5001', cleanDoc: '5001', entry: 'Crd Note', iso: '2026-01-11', invno: '1000', amount: -100 }),
+    row({ docno: '5002', cleanDoc: '5002', entry: 'Crd Note', iso: '2026-01-12', invno: '1000', amount: -100 }),
+    taggedPayment('9001', '2026-02-10', '1000', -100),
+    untaggedPayment('9002', '2026-02-11', -100),
+    untaggedPayment('9003', '2026-02-12', -100),
+    untaggedPayment('9004', '2026-02-13', -100),
+  ];
+
+  test('credit note and payment tagging are counted separately', () => {
+    const t = measureTaggingCoverage(rows);
+    assert.equal(t.credit_note.rows, 2);
+    assert.equal(t.credit_note.tagged, 2);
+    assert.equal(t.credit_note.pct, 100);
+    assert.equal(t.payment.rows, 4);
+    assert.equal(t.payment.tagged, 1);
+    assert.equal(t.payment.pct, 25);
+  });
+
+  test('the blended figure still reports, but never replaces the split', () => {
+    const t = measureTaggingCoverage(rows);
+    assert.equal(t.settlement_rows, 6);
+    assert.equal(t.tagged_rows, 3);
+    assert.equal(t.tagged_pct, 50);
+    assert.ok(t.credit_note && t.payment, 'split must always be present alongside the blend');
+  });
+
+  test('an entry type with no rows reports null rather than a misleading 0%', () => {
+    const t = measureTaggingCoverage([invoice('1000', '2026-01-10', 500)]);
+    assert.equal(t.credit_note.rows, 0);
+    assert.equal(t.credit_note.pct, null);
+    assert.equal(t.payment.pct, null);
+  });
+});
+
+describe('evidence basis is reported, so a clean gate is read correctly', () => {
+  // Remittance advices exist for 3 accounts out of the portfolio; at the
+  // 2026-08-11 sweep only TWK002 had them extracted into remittance_lines CSVs.
+  // The remittance-contradiction check is therefore inert on almost every
+  // account, and an ALLOWED there is a weaker claim than the same result on a
+  // remittance-backed account. The gate must say so rather than imply parity.
+  const rows = [invoice('1000', '2026-01-10', 500), taggedPayment('9001', '2026-02-10', '1000', -500)];
+
+  test('with no remittance lines the basis is PATTERN_ONLY and the check is declared inert', () => {
+    const res = analyse(rows, { headerBalance: 0 });
+    assert.equal(res.evidence.basis, 'PATTERN_ONLY');
+    assert.deepEqual(res.evidence.checks_inert, ['REMITTANCE_CONTRADICTION']);
+    assert.ok(!res.evidence.checks_run.includes('REMITTANCE_CONTRADICTION'));
+    assert.match(res.evidence.note, /pattern|business rules/i);
+  });
+
+  test('with remittance lines the basis is REMITTANCE_BACKED and nothing is inert', () => {
+    const res = analyse(rows, {
+      headerBalance: 0,
+      remittanceDocs: new Map([['1000', { batches: ['BATCH-1'], sources: ['remittance_lines_2026.csv'] }]]),
+    });
+    assert.equal(res.evidence.basis, 'REMITTANCE_BACKED');
+    assert.equal(res.evidence.remittance_invoice_docs, 1);
+    assert.deepEqual(res.evidence.checks_inert, []);
+    assert.ok(res.evidence.checks_run.includes('REMITTANCE_CONTRADICTION'));
+    assert.equal(res.evidence.note, null);
+  });
+
+  test('the invariant and staleness checks run under either basis', () => {
+    for (const opts of [{}, { remittanceDocs: new Map([['9999', { batches: [], sources: [] }]]) }]) {
+      const res = analyse(rows, { headerBalance: 0, ...opts });
+      assert.ok(res.evidence.checks_run.includes('INVARIANT'));
+      assert.ok(res.evidence.checks_run.includes('STALENESS_ANOMALY'));
+    }
+  });
+});
+
+describe('ALLOWED is absence of contradiction, not proof', () => {
+  // Guards against the gate being read as verification. ERP payment tagging is
+  // not authoritative, so a clean gate cannot promise the list is correct — a
+  // remittance advice can still overturn any line.
+  test('the ALLOWED wording does not claim the list is verified or safe outright', () => {
+    assert.match(GATE_MEANING.ALLOWED, /not proof|absence of evidence/i);
+    assert.match(GATE_MEANING.ALLOWED, /remittance/i);
+  });
+
+  test('the ALLOWED wording directs the reader to the evidence basis', () => {
+    assert.match(GATE_MEANING.ALLOWED, /PATTERN_ONLY/);
+    assert.match(GATE_MEANING.ALLOWED, /REMITTANCE_BACKED/);
+  });
+
+  test('no remedy sends the reader to remittance advices as the only route', () => {
+    // Most accounts have none and never will, so a remedy that assumes them is
+    // unactionable there.
+    for (const [reason, text] of Object.entries(REMEDY)) {
+      if (reason === 'INVOICE_ON_REMITTANCE_STILL_OPEN') continue; // by definition advice-driven
+      assert.match(text, /pattern|business_rules\.md §15|authority order B/i, `${reason} must offer a pattern route`);
+    }
   });
 });
 

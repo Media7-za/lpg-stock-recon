@@ -46,8 +46,8 @@ Steps:
    in customerName / referenceLabel / referenceValue / primaryTxt / siteTxts.
 2. Run the invoice-tag coverage gate FIRST:
    npm run debtors:tag-check -- --debtor [DEBTOR_CODE] --write
-   Stop and report if it is UNUSABLE_EXPORT or BLOCKED (see §3.1). Do not
-   work around it.
+   Stop and report if it is NOT_DERIVABLE_FROM_TXT or BLOCKED (see §3.1). Do
+   not work around it, and do not ask for a re-export to escape it.
 3. Run: npm run debtors:customer-statement -- --debtor [DEBTOR_CODE] --as-at [YYYY-MM-DD] --pdf
 4. Sanity-check: Balance due printed to console must equal the ERP
    CURRENT BALANCE header (+ any linked site balances) in the TXT.
@@ -61,12 +61,18 @@ Do not commit unless the operator asks.
 
 ## 1. Prerequisites
 
-1. Fresh `raw/DEBENQ_[CODE].TXT` **exported with allocation detail** — invoice
-   / CN / payment rows must carry a populated `INVNO` column. If the file
-   header contains `"EXCLUDE:","ALLOCATION DETAIL"` the export is unusable for
-   this skill and must be re-pulled from ERP (`SKILL_Human_Sources_Agent.md`
-   §6.1); at the 2026-08-11 sweep most exports in the repo had this defect, so
-   verify rather than assume. If the customer has linked ERP site codes sharing
+1. Fresh `raw/DEBENQ_[CODE].TXT` carrying a populated `INVNO` column on invoice
+   / CN / payment rows. If the header contains `"EXCLUDE:","ALLOCATION DETAIL"`
+   this skill cannot run on that file — but note that is the deliberate default
+   posture, not a defect, because the omitted column is ERP's untrustworthy
+   payment allocation (`business_rules.md` §3). At the 2026-08-11 sweep 8 of 10
+   exports were in that state, so verify rather than assume. **The answer is not
+   automatically a re-export:** an account in that state needs its invoice-level
+   view built through the allocation lane
+   (`SKILL_Payment_To_Invoice_Allocation.md`), and even a re-exported TXT only
+   restores Crd Note tagging — its payment tags carry no authority either way.
+   Escalate the choice to the operator (`H-016` is the standing instance of this
+   decision). If the customer has linked ERP site codes sharing
    a bank payment (e.g. one payment posted across multiple account codes),
    refresh those TXTs too — needed only for their `CURRENT BALANCE` header, not
    invoice-level detail.
@@ -109,11 +115,14 @@ Outputs:
    added to the primary account's as flat adjustment lines (credit/cleared,
    not itemised — only use this when a shared bank payment splits across
    ERP codes for one commercial customer).
-3. **Ageing** — invoice date → `--as-at`, bucketed Current/30/60/90/120 days.
-   The gap between Σ(open invoice due) and the reconciled **Balance due**
-   (account-level journals with no invoice ref) is folded into the
-   **120-day** bucket so the row always ties to the total.
-4. **Opening balance** — ERP running balance as of the last TXT row
+3. **Ageing** — invoice date → `--as-at`, bucketed Current/30/60/90/120+ days on
+   **open invoices only**. The aged subtotal equals Σ open invoice Due.
+4. **Account-level balance** — the gap between Balance due and Σ open invoices,
+   shown explicitly (not hidden in 120-day). Ratified lines live in
+   `balanceBridgeLines` in config; regenerate via account-specific bridge script
+   (TWK002: `scripts/build_balance_bridge.mjs --write`). Site adjustments from
+   `siteTxts` are appended automatically when not already in config.
+5. **Opening balance** — ERP running balance as of the last TXT row
    strictly before the 1st of the statement month; "movement this month" is
    the difference to the current balance (invoices + payments + journals
    combined, not broken out by type).
@@ -121,11 +130,26 @@ Outputs:
 ## 3.1 Invoice-tag coverage gate (mandatory before release)
 
 Only the ERP `CURRENT BALANCE` header is ground truth for what an account owes.
-The open-invoice table is reconstructed from ERP's `INVNO` tagging, and that
-tagging is unreliable — a payment posted with a blank `INVNO` still reduces the
-balance correctly but names no invoice, so an already-paid invoice keeps showing
-as open indefinitely. TWK002 billed a customer for invoices 42468 / 42470 for 15
-months after they were paid because of exactly this.
+The open-invoice table is reconstructed from ERP's `INVNO` tagging, and payment
+tagging is not trustworthy (`business_rules.md` §3) — a payment posted with a
+blank or wrong `INVNO` still reduces the balance correctly but names no invoice,
+so an already-paid invoice keeps showing as open indefinitely. TWK002 billed a
+customer for invoices 42468 / 42470 for 15 months because of exactly this, and
+it was the customer's remittance advice that caught it, not the ledger.
+
+So this table is a **screening hypothesis**. Where the account has remittance
+advices, they are the authority — the gate reads them, and where they contradict
+the reconstruction the advice wins.
+
+**Most accounts have no advices** (they exist for 3), so the gate reports an
+evidence basis alongside the verdict. `PATTERN_ONLY` means the
+remittance-contradiction check did not run and the result rests on the invariant
+plus a staleness heuristic. Neither can catch a settled invoice whose credit was
+untagged *and* whose omission does not break the account total, so on those
+accounts an `ALLOWED` is a genuinely weaker statement. Say which basis applied
+when you hand the statement back — the operator needs it to decide whether to
+send the itemised table or only the balance. Establishing settlement without an
+advice follows `business_rules.md` §15 authority order B.
 
 ```bash
 npm run debtors:tag-check -- --debtor [CODE] --write   # writes reports/[CODE]_TAG_COVERAGE_[date].{json,md}
@@ -134,13 +158,13 @@ npm run debtors:tag-check:all                          # portfolio sweep
 
 | Gate | Meaning | Action |
 | :--- | :--- | :--- |
-| `ALLOWED` | List ties within the ERP balance, no marooned invoices | Release |
+| `ALLOWED` | No contradiction found: list ties within the ERP balance, no marooned invoices | Release — but this is absence of evidence against the list, not verification. Report the evidence basis with it |
 | `REVIEW_REQUIRED` | An invoice is marooned behind a long payment gap and may be settled | Check it against the remittance advices covering the gap, then ratify or keep |
 | `BLOCKED` | The list over-states the account, or bills an invoice a remittance says is paid | **Do not release.** Reconcile, then ratify into `closedInvoiceOverrides` |
-| `UNUSABLE_EXPORT` | Export has no allocation detail — no invoice-level claim is derivable | **Do not release.** Re-export from ERP (Sources Agent) |
+| `NOT_DERIVABLE_FROM_TXT` | Export carries no invoice tagging — normally deliberate, not a defect | **Do not release.** Build the invoice-level view via the allocation lane; a re-export alone does not fix it (§1) |
 
 `generate_statement_of_account.mjs` runs this gate itself and **refuses to
-write** on `BLOCKED` / `UNUSABLE_EXPORT`. `--force` exists for a recorded
+write** on `BLOCKED` / `NOT_DERIVABLE_FROM_TXT`. `--force` exists for a recorded
 operator decision; using it to make an inconvenient gate go away is how a
 customer gets billed twice.
 

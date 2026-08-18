@@ -82,23 +82,27 @@ npm run debtors:tag-check -- --debtor {CODE}
 
 Intake is complete only when coverage is `CURRENT_COMPLETE` or exceptions are ratified in `config/ingest_exceptions.json`.
 
-### 6.1 The statement TXT must include allocation detail
+### 6.1 Record whether the statement TXT carries allocation detail
 
-When exporting the debtor statement from ERP DEBENQ, **allocation detail must be included**. An export taken with the option off writes this line into the file header:
+An export taken with the allocation-detail option off writes this line into the file header:
 
 ```text
 "EXCLUDE:","ALLOCATION DETAIL"
 ```
 
-That single line means the `INVNO` column is blank on every row, so no payment or credit note names the invoice it settles. The balance and ageing still work, but **no open-invoice list, statement of account, or payment allocation can be derived from that file at all** — and nothing downstream can compensate for tagging that was never exported.
+**This is not a defect and does not fail intake.** It means the `INVNO` column is blank on every row. That column is ERP's payment allocation, which is broken by long-standing finding (`business_rules.md` §3) — excluding it is the normal, deliberate posture, and is why this repo reconstructs allocation from evidence instead. Balance, ageing, and every reconciliation that works off the running balance are unaffected. At the 2026-08-11 sweep, 8 of 10 debtor exports were in this state.
 
-`debtors:tag-check` reports `UNUSABLE_EXPORT / EXPORT_LACKS_ALLOCATION_DETAIL` when this happens. The only fix is to re-export. At the 2026-08-11 portfolio sweep, 8 of 10 debtor exports had this defect, so check it every time rather than assuming.
+What it does mean: **no invoice-level open/closed status can be read out of that file**, so an open-invoice list or statement of account for that account has to come from the allocation lane (remittance advices → allocation edges). `debtors:tag-check` reports `NOT_DERIVABLE_FROM_TXT / NO_INVOICE_TAGGING_IN_EXPORT`, which is a statement of scope, not an error to chase.
 
-Quick check on any TXT you drop:
+Your job is to **record which posture the file is in** so downstream agents pick the right lane, and to flag it to the operator if an invoice-level deliverable is expected from that account:
 
 ```bash
-grep 'ALLOCATION DETAIL' analysis/debtors/{CODE}/raw/{FILE}.TXT   # must return nothing
+grep 'ALLOCATION DETAIL' analysis/debtors/{CODE}/raw/{FILE}.TXT
+# match    → invoice-level view must come from the allocation lane; note it in the intake log
+# no match → allocation detail present; Crd Note tagging (~90% canonical) is usable, payment tagging still is not
 ```
+
+Only pull a fresh export *with* allocation detail when the operator specifically wants CYL / credit-note detail, since Crd Note tagging is broadly canonical. Never request one on the theory that it will make payment allocation trustworthy — it will not.
 
 ## 7. Quality checklist (before marking DONE)
 
@@ -107,10 +111,10 @@ grep 'ALLOCATION DETAIL' analysis/debtors/{CODE}/raw/{FILE}.TXT   # must return 
 - [ ] Date in filename matches document date where possible
 - [ ] No duplicate filename unless intentional variant `(1)`, `(2)`
 - [ ] For TXT: header shows expected account code and export period
-- [ ] **For TXT: header does NOT contain `EXCLUDE: ALLOCATION DETAIL`** (see §6.1 — re-export if it does)
+- [ ] **For TXT: noted whether header contains `EXCLUDE: ALLOCATION DETAIL`** (see §6.1 — record the posture; not a failure)
 - [ ] **DTRX headers + ITEMS exports uploaded same session as statement TXT**
 - [ ] **`debtors:ingest-check` run; coverage report saved under `reports/`**
-- [ ] **`debtors:tag-check` run; not `UNUSABLE_EXPORT`**
+- [ ] **`debtors:tag-check` run; gate result reported to the operator**
 
 ## 8. Handoff chain
 

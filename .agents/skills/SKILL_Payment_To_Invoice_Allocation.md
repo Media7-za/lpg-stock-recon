@@ -234,17 +234,34 @@ When ignoring or cross-checking ERP `ref_no`:
 
 **Open balance is a reconstruction, not ground truth.** Every open-balance
 figure above is derived from ERP tagging (`ref_no` in the DB, `INVNO` in the
-TXT), and that tagging is incomplete: settlement rows are routinely posted with
-a blank tag, and some exports carry no allocation detail at all. An invoice can
-therefore show a positive open balance long after it was paid, which silently
-corrupts any allocation computed against it. Two guards:
+TXT). ERP payment allocation is broken by long-standing finding
+(`business_rules.md` §3) — which is precisely why this skill exists — so
+settlement rows are routinely untagged or mis-tagged, and many exports omit the
+column deliberately. An invoice can therefore show a positive open balance long
+after it was paid, which silently corrupts any allocation computed against it.
+Note the asymmetry: **Crd Note** tagging is broadly canonical (~90%, CYL
+deposit / empty-return credits especially) and can be leaned on; **Payment**
+tagging cannot, even when populated. Two guards:
 
 - **Invariant** — Σ(open invoices) must never exceed the ERP `CURRENT BALANCE`.
   A breach proves settled debt is being carried as open; stop and reconcile
   before allocating.
 - **Gate** — run `npm run debtors:tag-check -- --debtor [CODE]` before trusting
-  an open-balance set. `UNUSABLE_EXPORT` means the source has no tagging at all
-  and must be re-exported.
+  an open-balance set. `NOT_DERIVABLE_FROM_TXT` means that TXT carries no
+  tagging, so the open-balance set has to be built here, using the tier order
+  below, rather than read out of ERP.
+
+**Most accounts have no remittance advices.** They exist for 3 accounts in the
+portfolio; at the 2026-08-11 sweep only TWK002 had them extracted into
+`data/remittance_lines_*.csv`, so `debtors:tag-check` labels every other account
+`PATTERN_ONLY` and reports its remittance-contradiction check as inert. Plan for
+that: on a `PATTERN_ONLY` account the tier order below *is* the evidence, backed
+by the account's payment pattern, the business rules for that payer type, and
+operator judgement recorded in `config/payment_pattern_overrides.json` or
+`config/ratification_scenarios.json`. A pattern-derived settlement claim is
+legitimate; an unrecorded one is not, because regeneration discards it. Always
+state the basis alongside the conclusion — see `business_rules.md` §15 authority
+order B.
 
 Rule: `analysis/debtors/shared/docs/business_rules.md` §15.
 
