@@ -29,6 +29,8 @@ import { OrdersModuleLayout } from './components/layout/OrdersModuleLayout';
 import VehiclesPage from './pages/fleet/VehiclesPage';
 import DriversPage from './pages/fleet/DriversPage';
 import RoutesPage from './pages/fleet/RoutesPage';
+import ProductsPage from './pages/catalog/ProductsPage';
+import CustomersPage from './pages/customers/CustomersPage';
 
 function ProtectedRoute({ children, allowedRoles }: { children: React.ReactNode, allowedRoles: UserRole[] }) {
   const { userRole, loading } = useAuth();
@@ -83,6 +85,8 @@ function App() {
           <Route path="/vehicles" element={<OrdersModuleLayout><VehiclesPage /></OrdersModuleLayout>} />
           <Route path="/drivers" element={<OrdersModuleLayout><DriversPage /></OrdersModuleLayout>} />
           <Route path="/routes" element={<OrdersModuleLayout><RoutesPage /></OrdersModuleLayout>} />
+          <Route path="/products" element={<OrdersModuleLayout><ProductsPage /></OrdersModuleLayout>} />
+          <Route path="/customers" element={<OrdersModuleLayout><CustomersPage /></OrdersModuleLayout>} />
           <Route
             path="*"
             element={
