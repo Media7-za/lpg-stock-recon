@@ -33,6 +33,8 @@ import ProductsPage from './pages/catalog/ProductsPage';
 import CustomersPage from './pages/customers/CustomersPage';
 import NewOrderPage from './pages/orders/NewOrderPage';
 import EditOrderPage from './pages/orders/EditOrderPage';
+import TripsPage from './pages/trips/TripsPage';
+import NewTripPage from './pages/trips/NewTripPage';
 
 function ProtectedRoute({ children, allowedRoles }: { children: React.ReactNode, allowedRoles: UserRole[] }) {
   const { userRole, loading } = useAuth();
@@ -93,6 +95,11 @@ function App() {
               NOT mounted yet — deferred to Step 5, see Step 3 report. */}
           <Route path="/orders/new" element={<OrdersModuleLayout><NewOrderPage /></OrdersModuleLayout>} />
           <Route path="/orders/:id/edit" element={<OrdersModuleLayout><EditOrderPage /></OrdersModuleLayout>} />
+          {/* /trips/:id (detail) and /trips/:id/edit deliberately NOT mounted
+              yet — not built this step, see Step 4 report. TripsPage links to
+              them; those links 404 until a follow-up covers them. */}
+          <Route path="/trips" element={<OrdersModuleLayout><TripsPage /></OrdersModuleLayout>} />
+          <Route path="/trips/new" element={<OrdersModuleLayout><NewTripPage /></OrdersModuleLayout>} />
           <Route
             path="*"
             element={
