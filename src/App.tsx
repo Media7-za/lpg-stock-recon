@@ -31,6 +31,8 @@ import DriversPage from './pages/fleet/DriversPage';
 import RoutesPage from './pages/fleet/RoutesPage';
 import ProductsPage from './pages/catalog/ProductsPage';
 import CustomersPage from './pages/customers/CustomersPage';
+import NewOrderPage from './pages/orders/NewOrderPage';
+import EditOrderPage from './pages/orders/EditOrderPage';
 
 function ProtectedRoute({ children, allowedRoles }: { children: React.ReactNode, allowedRoles: UserRole[] }) {
   const { userRole, loading } = useAuth();
@@ -87,6 +89,10 @@ function App() {
           <Route path="/routes" element={<OrdersModuleLayout><RoutesPage /></OrdersModuleLayout>} />
           <Route path="/products" element={<OrdersModuleLayout><ProductsPage /></OrdersModuleLayout>} />
           <Route path="/customers" element={<OrdersModuleLayout><CustomersPage /></OrdersModuleLayout>} />
+          {/* /orders (list), /orders/:id (detail), /orders/history deliberately
+              NOT mounted yet — deferred to Step 5, see Step 3 report. */}
+          <Route path="/orders/new" element={<OrdersModuleLayout><NewOrderPage /></OrdersModuleLayout>} />
+          <Route path="/orders/:id/edit" element={<OrdersModuleLayout><EditOrderPage /></OrdersModuleLayout>} />
           <Route
             path="*"
             element={
