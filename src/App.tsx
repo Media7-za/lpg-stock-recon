@@ -25,6 +25,10 @@ import { PricingDeskHome, QuoteWorkspace, PricingDeskProvider } from './features
 import { useAuth, UserRole } from './hooks/useAuth';
 import LoginScreen from './components/auth/LoginScreen';
 import { Navigate } from 'react-router-dom';
+import { OrdersModuleLayout } from './components/layout/OrdersModuleLayout';
+import VehiclesPage from './pages/fleet/VehiclesPage';
+import DriversPage from './pages/fleet/DriversPage';
+import RoutesPage from './pages/fleet/RoutesPage';
 
 function ProtectedRoute({ children, allowedRoles }: { children: React.ReactNode, allowedRoles: UserRole[] }) {
   const { userRole, loading } = useAuth();
@@ -72,6 +76,13 @@ function App() {
             <Route path="exceptions" element={<ExceptionsView />} />
             <Route path="search" element={<SearchView />} />
           </Route>
+          {/* Orders-Module migration (Phase 4) — deliberately unguarded, no
+              ProtectedRoute: "skip auth for now" was an explicit decision for
+              these pages specifically. Own layout/nav chrome (OrdersModuleLayout),
+              separate from the existing Layout used below. */}
+          <Route path="/vehicles" element={<OrdersModuleLayout><VehiclesPage /></OrdersModuleLayout>} />
+          <Route path="/drivers" element={<OrdersModuleLayout><DriversPage /></OrdersModuleLayout>} />
+          <Route path="/routes" element={<OrdersModuleLayout><RoutesPage /></OrdersModuleLayout>} />
           <Route
             path="*"
             element={
