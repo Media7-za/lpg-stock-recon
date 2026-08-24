@@ -17,6 +17,31 @@ to reconcile against.
 
 ---
 
+## Guiding Principle — Closed-Loop Accountability
+
+This is the actual point of the epic, not a side effect of it: **every event
+that enters this pipeline must reach a visible, terminal status.** Nothing
+is allowed to sit in limbo with no recorded outcome. Concretely, every
+event this system tracks must end up as exactly one of:
+
+- **Captured** — a purchase has a posted `CardLedgerEntry` with a receipt
+  attached.
+- **Failed** — a request was submitted but could not be posted
+  (`CardCaptureRequest.status = REJECTED`), or a bank line/ledger entry
+  could not be matched by the statement deadline
+  (`status = EXCEPTION_UNRESOLVED`).
+- **Reconciled** — a `CardLedgerEntry` has a confirmed `CardReconMatch`
+  against a `CardStatementLine`.
+
+This is why both `CardStatementLine` and `CardLedgerEntry` carry an
+explicit status field below rather than being inferred from "does a match
+row exist" — an entity with no status is exactly the silent-disappearance
+failure mode this epic exists to close. Every status transition must be
+logged with actor + timestamp, same audit bar as the rest of the system
+(see Section C, Audit/sync implications).
+
+---
+
 ## Slice A — Card Purchase Capture Request
 
 ### A. Slice Frame
@@ -100,6 +125,11 @@ period.
   unmatched ledger entry (keyed wrong, wrong period) — shown separately.
 - Receipt image from Slice A displayed inline on each ledger entry during
   exception review.
+- Every `CardStatementLine` carries `status ∈ {UNMATCHED, MATCHED,
+  EXCEPTION_UNRESOLVED}`; every `CardLedgerEntry` carries
+  `reconciliationStatus ∈ {UNRECONCILED, RECONCILED, EXCEPTION_UNRESOLVED}`.
+  A line/entry with no status is not a valid state — see Guiding Principle
+  above.
 
 **Out of scope:**
 - Multi-card support — only one card/account exists today; deferred (see
@@ -139,7 +169,9 @@ period.
 **Domain entities:** `CardCaptureRequest`, `CardLedgerEntry`,
 `CardStatementLine`, `CardReconMatch`, `CardReconSession`
 **Session states touched:** New — `CardCaptureRequest.status`,
-`CardReconSession.status`. Neither reuses an existing state machine.
+`CardReconSession.status`, `CardStatementLine.status`,
+`CardLedgerEntry.reconciliationStatus`. None reuse an existing state
+machine.
 **Invariants touched:** INV-002 (date format), INV-005 (ID integrity — new
 FK contracts must be documented before code exists), INV-006 (status
 casing — a convention must be picked), INV-008 (analog: an unreconciled
@@ -171,10 +203,11 @@ rest of the system.
 | Every UI action wired | INV-003 | Submit / Run Batch / Match buttons need real handlers, or explicit `disabled` + `TODO: LSR-{ticket}` |
 | Dark theme tokens only | INV-004 | New screens use the existing Tailwind token set — no new component library |
 | ID type integrity | INV-005 | Contract fixed now: `CardReconMatch.statementLineId → CardStatementLine.id`, `CardReconMatch.ledgerEntryId → CardLedgerEntry.id` — never cross-assign |
-| Status casing convention | INV-006 | Match the `ReconciliationSession` precedent — ALL CAPS: `CardCaptureRequest.status ∈ {SUBMITTED, BATCHED, POSTED, REJECTED}`; `CardReconSession.status ∈ {OPEN, DRAFT, FINALIZED}` |
+| Status casing convention | INV-006 | Match the `ReconciliationSession` precedent — ALL CAPS: `CardCaptureRequest.status ∈ {SUBMITTED, BATCHED, POSTED, REJECTED}`; `CardReconSession.status ∈ {OPEN, DRAFT, FINALIZED}`; `CardStatementLine.status ∈ {UNMATCHED, MATCHED, EXCEPTION_UNRESOLVED}`; `CardLedgerEntry.reconciliationStatus ∈ {UNRECONCILED, RECONCILED, EXCEPTION_UNRESOLVED}` |
 | Variance is informational, never a silent gate | INV-008 (analog) | An unmatched bank line or ledger entry must be surfaced as a disclosed exception, never auto-written-off |
 | ZAR currency format | INV-009 | All amounts via `formatZAR()` |
 | Mandatory receipt attachment | Decided this session | `CardLedgerEntry` cannot exist without `receiptUrl` — enforced in the UI AND as a DB constraint, not just a UI nicety |
+| Closed-loop accountability — no event without a terminal status | Decided this session (Guiding Principle above) | Every `CardCaptureRequest`, `CardStatementLine`, and `CardLedgerEntry` must always resolve to a defined status. A record with a NULL/undefined status field, or a bank line silently dropped from an import, is a bug — not a display gap |
 
 ---
 
@@ -186,7 +219,7 @@ rest of the system.
 | 2 | Who assigns the GL/cost code — the cardholder at submission, or the Capture Clerk at batch-posting time? | Capture form design; whether cardholders need GL-code training | (a) Cardholder picks at submission, (b) Clerk assigns at posting, (c) Clerk can override cardholder's pick | Awaiting PM |
 | 3 | Who owns resolving Slice B exceptions — the same person who captures, or a separate reviewer/controller? | Role/permission model; whether a second-approver control is enforced in the state machine | (a) Single role, (b) capturer ≠ reconciler enforced by the system, (c) capturer ≠ reconciler by policy only, not enforced | Awaiting PM (raised earlier, still unresolved) |
 | 4 | Does Capture Request submission need to work offline (purchase happens in the field, no signal)? | Dexie store design; sync strategy for Slice A | (a) Always online, like `ReconciliationSession`, (b) offline-capable like the Yard Counter PWA | Awaiting PM |
-| 5 | When a bank line has no matching ledger entry after the monthly cycle closes, what resolution is required — must it block `FINALIZED`, or can it carry over as a standing exception? | Exception-lane design; `FINALIZED` gate rules for `CardReconSession` | (a) Blocks finalize, like `UNCLASSIFIED_EXCEPTION`, (b) non-blocking, like `Suspense-PMT` | Awaiting PM |
+| 5 | When a bank line has no matching ledger entry after the monthly cycle closes, must it block `FINALIZED`, or can it carry over as a standing exception? Either way it stays `EXCEPTION_UNRESOLVED` and visible per the Guiding Principle — this only decides whether it also blocks the session. | Exception-lane design; `FINALIZED` gate rules for `CardReconSession` | (a) Blocks finalize, like `UNCLASSIFIED_EXCEPTION`, (b) non-blocking, like `Suspense-PMT` | Awaiting PM |
 | 6 | Only one card exists today — should the schema still carry a `card_id` FK from day one, or is a single-card assumption acceptable to hardcode for MVP? | Schema design for `CardLedgerEntry` / `CardReconSession` | (a) Hardcode single card for MVP, add `card_id` later, (b) add `card_id` now even with one row, to avoid a migration later | Awaiting PM |
 
 ---
