@@ -102,8 +102,10 @@ Open Question 2 (GL code assignment), but Slice A works without it
 **Outputs that leave this slice:**
 - `PurchaseIntent` rows, consumed by Slice A for optional linking.
 
-**Reads from:** ledger account / project reference list (existing GL/cost
-code source — see Open Question 2).
+**Reads from:** ledger account / project reference list — **this does not
+exist anywhere in the codebase today** (verified: no GL/cost/ledger
+account table or screen in `prisma/schema.prisma` or `src/`). Treated
+here as "existing" was wrong; see Open Question 8.
 **Writes to:** `PurchaseIntent` (new).
 
 **Owns state:** YES
@@ -266,7 +268,10 @@ period.
 ### C. Dependency Map (all three slices)
 
 **Domain entities:** `PurchaseIntent`, `CardCaptureRequest`,
-`CardLedgerEntry`, `CardStatementLine`, `CardReconMatch`, `CardReconSession`
+`CardLedgerEntry`, `CardStatementLine`, `CardReconMatch`,
+`CardReconSession`, and possibly `LedgerAccount` (new master-data entity —
+see Open Question 8; this epic is the first thing in the codebase to need
+a GL/cost code reference table, none exists today)
 **Session states touched:** New — `PurchaseIntent.status`,
 `CardCaptureRequest.status`, `CardReconSession.status`,
 `CardStatementLine.status`, `CardLedgerEntry.reconciliationStatus`. None
@@ -300,7 +305,7 @@ rest of the system.
 
 | Constraint | Source | What it means for this slice |
 |---|---|---|
-| No hardcoded reference data | INV-001 | Card account(s) and GL/cost codes are fetched from DB, never hardcoded in the capture form |
+| No hardcoded reference data | INV-001 | Card account(s) and GL/cost codes are fetched from DB, never hardcoded in the capture form. **Currently unmet:** no such table exists yet in this codebase — see Open Question 8 |
 | `dd MMM yyyy` date display | INV-002 | Statement dates and capture dates use the shared `formatDate()` utility |
 | Every UI action wired | INV-003 | Submit / Run Batch / Match buttons need real handlers, or explicit `disabled` + `TODO: LSR-{ticket}` |
 | Dark theme tokens only | INV-004 | New screens use the existing Tailwind token set — no new component library |
@@ -329,6 +334,7 @@ rest of the system.
 | 5 | ~~When a bank line has no matching ledger entry after the monthly cycle closes, must it block `FINALIZED`, or can it carry over as a standing exception?~~ | Exception-lane design; `FINALIZED` gate rules for `CardReconSession` | **Resolved: blocks, with an explicit Cancel escape hatch.** `FINALIZED` is rejected while any `EXCEPTION_UNRESOLVED` item exists (like `UNCLASSIFIED_EXCEPTION`) — but unlike that lane, the reconciler can explicitly "Cancel Exception" with a required reason, moving it to `EXCEPTION_CANCELLED`: permanently visible and logged, no longer blocking. No silent non-blocking carryover — every exception ends in either a match or a reasoned, attributed cancellation. | **RESOLVED — PM Decision, 2026-08-24** |
 | 6 | Only one card exists today — should the schema still carry a `card_id` FK from day one, or is a single-card assumption acceptable to hardcode for MVP? | Schema design for `CardLedgerEntry` / `CardReconSession` | (a) Hardcode single card for MVP, add `card_id` later, (b) add `card_id` now even with one row, to avoid a migration later | Awaiting PM |
 | 7 | How long does an unlinked `PurchaseIntent` stay `OPEN` before it's surfaced as `ABANDONED`? | `PurchaseIntent` state machine — the exact `OPEN → ABANDONED` transition trigger | (a) Fixed window (e.g. 14/30 days), (b) never auto-transitions — stays `OPEN` indefinitely until manually marked, (c) tied to the next Slice B statement close | Awaiting PM |
+| 8 | **New — found during UX screen audit.** No GL/cost code or ledger account reference table exists anywhere in this codebase (verified by grep across `prisma/schema.prisma` and `src/`). Slice A0's account picker has nothing to read from, and INV-001 forbids hardcoding it. Does this epic build a new `LedgerAccount` entity + a minimal admin screen, or is there another source? | Slice A0 form design; `LedgerAccountAdmin` screen in/out of scope; whether Slice A0 can build at all without this | (a) Build a minimal `LedgerAccount` table + CRUD admin screen as part of this epic, (b) explicitly accept a hardcoded short list as a stated MVP exception to INV-001, (c) this reference data belongs to a different, already-planned epic — link to it instead of building here | Awaiting PM |
 
 ---
 
@@ -353,6 +359,6 @@ rules, or fuzzy matching.
 - [x] Scope boundary is explicit (in AND out)
 - [x] All dependencies named
 - [x] All constraints extracted from governance docs
-- [x] Open Questions Register complete — 3 open (Q2, Q6, Q7), 4 resolved (Q1, Q3, Q4, Q5)
+- [x] Open Questions Register complete — 4 open (Q2, Q6, Q7, Q8), 4 resolved (Q1, Q3, Q4, Q5)
 - [x] Offline implications stated (resolved — deferred to a later version)
 - Awaiting PM approval and resolution of open questions

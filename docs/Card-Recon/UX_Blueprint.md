@@ -1,6 +1,6 @@
 ## UX Flow — Credit Card Purchase Intent, Capture & Statement Reconciliation
 Produced by: UX-DESIGN-AGENT
-Slice Brief: `docs/Card-Recon/Slice_Brief.md` (3 open, 4 resolved)
+Slice Brief: `docs/Card-Recon/Slice_Brief.md` (4 open, 4 resolved)
 PRD approved: N/A — not yet produced (Stage 2 skipped at PM request)
 Architecture Note approved: N/A — not yet produced (Stage 3 skipped at PM request)
 Date: 2026-08-24
@@ -31,12 +31,16 @@ Date: 2026-08-24
 | Screen / Component | Path | Context | Status | What changes | Slice |
 |---|---|---|---|---|---|
 | Quick Request Form | `src/components/card-recon/PurchaseIntentQuickForm.tsx` | Mobile | New | Lightweight, optional pre-purchase intent log | A0 |
+| My Intents | `src/components/card-recon/MyPurchaseIntents.tsx` | Mobile | New | Cardholder's own intent history — `OPEN`/`FULFILLED`/`ABANDONED` (parallel to My Requests; closes an accountability gap Slice A0 otherwise leaves) | A0 |
 | Capture Request Form | `src/components/card-recon/CardCaptureForm.tsx` | Mobile | New | Mandatory receipt capture + submit, optional intent link | A |
 | My Requests | `src/components/card-recon/MyCaptureRequests.tsx` | Mobile | New | Cardholder's own request history with status | A |
-| Capture Queue | `src/components/card-recon/CardCaptureQueue.tsx` | Desktop | New | Capture Clerk reviews and posts (the "Run Batch" screen) | A |
+| Capture Queue | `src/components/card-recon/CardCaptureQueue.tsx` | Desktop | New | Capture Clerk reviews and posts (the "Run Batch" screen); single-request review is an inline expand-row here, not a separate screen | A |
 | Card Recon Dashboard | `src/components/card-recon/CardReconDashboard.tsx` | Desktop | New | Statement CSV upload (sole trigger) + session history | B |
-| Card Recon Workspace | `src/components/card-recon/CardReconWorkspace.tsx` | Desktop | New | Match/exception workbench, mirrors `ReconciliationWorkspace` | B |
+| Card Recon Workspace | `src/components/card-recon/CardReconWorkspace.tsx` | Desktop | New | Match/exception workbench, mirrors `ReconciliationWorkspace`; also renders `FINALIZED` sessions read-only — no separate history screen | B |
 | Status Pill (shared) | `src/components/card-recon/StatusPill.tsx` | Both | New | One badge component for every status enum in this epic | A0 / A / B |
+| Ledger Account Admin | `src/components/card-recon/LedgerAccountAdmin.tsx` | Desktop | **Blocked on Open Question 8** | Minimal CRUD for the GL/cost code reference list — **no such table exists anywhere in this codebase today**; this screen is required unless Q8 resolves to a hardcoded MVP exception to INV-001 | A0 (dependency) |
+
+**Deliberately not added:** a dedicated Activity Log / audit-trail screen. At this volume, the inline reason field + status pill on each item already carries the accountability weight the Guiding Principle asks for; a standalone log would be over-building for now.
 
 ---
 
@@ -416,4 +420,5 @@ Hidden from: no one — this is the one open surface in the whole epic
 - [x] Monetary values specified as `formatZAR()` — this domain is financial, not quantity-only
 - [x] Offline behavior (Open Question 4) — resolved, deferred to a later version
 - [x] Finalize gating (Open Question 5) — resolved, blocks with an explicit Cancel Exception escape hatch
-- Awaiting PM approval. Remaining Slice Brief open questions (Q2 GL override, Q6 multi-card schema, Q7 abandonment window) don't materially change this UX and can resolve during Stage 2 (PRD)
+- [ ] Ledger Account reference data (Open Question 8) — found during this screen audit; blocks the Quick Request Form's account picker until resolved
+- Awaiting PM approval. Q2 (GL override), Q6 (multi-card schema), and Q7 (abandonment window) don't materially change this UX and can resolve during Stage 2 (PRD). **Q8 is different — it may block Slice A0 from being buildable at all** until the PM picks an option
