@@ -349,6 +349,128 @@ model transaction_items {
   @@index([stock_no], map: "idx_items_stock_no")
 }
 
+// =============================================================================
+// Credit Card Purchase Intent, Capture & Statement Reconciliation
+// Docs: docs/Card-Recon/Slice_Brief.md, UX_Blueprint.md, Dev_Plan.md
+// Status fields are plain String (ALL CAPS, INV-006), not Prisma enums —
+// matches the PhysicalCountSession/ReconciliationReport precedent above,
+// not AllocationEvent's matchMethod enum, since these status vocabularies
+// are specific to this epic and not shared with existing enums.
+// =============================================================================
+
+model LedgerAccount {
+  id        String   @id @default(cuid())
+  code      String   @unique // immutable after creation — no update path
+  // exposes this field; enforced in the service layer, not the DB
+  name      String
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@map("ledger_accounts")
+}
+
+model PurchaseIntent {
+  id                String   @id @default(cuid())
+  description       String
+  ledgerAccountCode String   @map("ledger_account_code") // FK -> LedgerAccount.code
+  status            String   @default("OPEN") // OPEN | FULFILLED | ABANDONED
+  requestedBy       String   @map("requested_by")
+  requestedAt       DateTime @default(now()) @map("requested_at") @db.Timestamptz(6)
+
+  @@index([ledgerAccountCode])
+  @@index([status])
+  @@index([requestedBy])
+  @@map("purchase_intents")
+}
+
+model CardCaptureRequest {
+  id              String    @id @default(cuid())
+  intentId        String?   @map("intent_id") // FK -> PurchaseIntent.id
+  submittedBy     String    @map("submitted_by")
+  submittedAt     DateTime  @default(now()) @map("submitted_at") @db.Timestamptz(6)
+  amount          Decimal   @db.Decimal(18, 2)
+  purchaseDate    DateTime  @map("purchase_date") @db.Date
+  merchantNote    String?   @map("merchant_note")
+  receiptUrl      String    @map("receipt_url") // NOT NULL — mandatory (Slice Brief Section D)
+  status          String    @default("SUBMITTED") // SUBMITTED | BATCHED | POSTED | REJECTED
+  rejectionReason String?   @map("rejection_reason")
+  reviewedBy      String?   @map("reviewed_by")
+  reviewedAt      DateTime? @map("reviewed_at") @db.Timestamptz(6)
+
+  @@index([intentId])
+  @@index([status])
+  @@index([submittedBy])
+  @@map("card_capture_requests")
+}
+
+model CardLedgerEntry {
+  id                   String   @id @default(cuid())
+  captureRequestId     String   @map("capture_request_id") // FK -> CardCaptureRequest.id
+  capturedBy           String   @map("captured_by") // segregation-of-duties check field
+  vendor               String // fixed card identifier — single-card MVP
+  // assumption (Slice Brief Open Question 6)
+  reference            String // receipt's own reference
+  ledgerAccountCode    String   @map("ledger_account_code") // FK -> LedgerAccount.code
+  date                 DateTime @db.Date
+  amount               Decimal  @db.Decimal(18, 2)
+  receiptUrl           String   @map("receipt_url")
+  reconciliationStatus String   @default("UNRECONCILED") @map("reconciliation_status")
+  // UNRECONCILED | RECONCILED | EXCEPTION_UNRESOLVED | EXCEPTION_CANCELLED
+  postedBy             String   @map("posted_by") // the Capture Clerk
+  postedAt             DateTime @default(now()) @map("posted_at") @db.Timestamptz(6)
+
+  @@index([captureRequestId])
+  @@index([reconciliationStatus])
+  @@index([capturedBy])
+  @@index([ledgerAccountCode])
+  @@map("card_ledger_entries")
+}
+
+model CardStatementLine {
+  id           String    @id @default(cuid())
+  sessionId    String    @map("session_id") // FK -> CardReconSession.id
+  date         DateTime  @db.Date
+  description  String // raw bank description text
+  amount       Decimal   @db.Decimal(18, 2)
+  status       String    @default("UNMATCHED")
+  // UNMATCHED | MATCHED | EXCEPTION_UNRESOLVED | EXCEPTION_CANCELLED
+  cancelReason String?   @map("cancel_reason")
+  cancelledBy  String?   @map("cancelled_by")
+  cancelledAt  DateTime? @map("cancelled_at") @db.Timestamptz(6)
+
+  @@index([sessionId])
+  @@index([status])
+  @@map("card_statement_lines")
+}
+
+model CardReconMatch {
+  id              String   @id @default(cuid())
+  sessionId       String   @map("session_id") // FK -> CardReconSession.id
+  statementLineId String   @map("statement_line_id") // FK -> CardStatementLine.id
+  ledgerEntryId   String   @map("ledger_entry_id") // FK -> CardLedgerEntry.id
+  matchMethod     String   @map("match_method") // AUTO_EXACT | AUTO_FUZZY | MANUAL
+  matchedBy       String?  @map("matched_by") // null for AUTO_* — no human actor
+  matchedAt       DateTime @default(now()) @map("matched_at") @db.Timestamptz(6)
+
+  @@index([sessionId])
+  @@index([statementLineId])
+  @@index([ledgerEntryId])
+  @@map("card_recon_matches")
+}
+
+model CardReconSession {
+  id                String    @id @default(cuid())
+  status            String    @default("OPEN") // OPEN | DRAFT | FINALIZED
+  statementFilename String    @map("statement_filename")
+  importedBy        String    @map("imported_by")
+  importedAt        DateTime  @default(now()) @map("imported_at") @db.Timestamptz(6)
+  finalizedBy       String?   @map("finalized_by")
+  finalizedAt       DateTime? @map("finalized_at") @db.Timestamptz(6)
+
+  @@index([status])
+  @@map("card_recon_sessions")
+}
+
 enum UserRole {
   USER
   REVIEWER
