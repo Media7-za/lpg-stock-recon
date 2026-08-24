@@ -135,10 +135,16 @@ posting, not an afterthought.
   (Slice A0) — if linked, the intent's description and ledger
   account/project pre-fill the form and the intent moves to `FULFILLED`.
 - Request enters a queue with status `SUBMITTED`.
-- A batch action (manual "Run Batch" for MVP — see Open Question 1) picks up
-  `SUBMITTED` requests and posts each as a `CardLedgerEntry`: vendor = the
-  card account, reference = the receipt's own reference, GL/cost code, date,
-  amount, `receiptUrl`, and the linked `intentId` if one exists.
+- A manual "Run Batch" action (Open Question 1, resolved — see Section D)
+  lets the Capture Clerk review queued requests and post each as a
+  `CardLedgerEntry`: vendor = the card account, reference = the receipt's
+  own reference, GL/cost code, date, amount, `receiptUrl`, and the linked
+  `intentId` if one exists. No cron/scheduled auto-posting for MVP —
+  posting requires human review (receipt legibility, GL code
+  confirm/override) that a scheduler cannot perform.
+- The queue view surfaces pending count and the age of the oldest pending
+  request, so a neglected queue is visible rather than silent — the cheap
+  substitute for a scheduler.
 - Request status: `SUBMITTED → BATCHED → POSTED`, or `REJECTED` if the
   Capture Clerk cannot post it (bad amount, unreadable receipt).
 - Receipt file stored in a new Supabase Storage bucket (`card-receipts`),
@@ -152,7 +158,8 @@ posting, not an afterthought.
 
 **Events that enter this slice:**
 - Cardholder taps "Submit Receipt".
-- Capture Clerk triggers a batch run (or a scheduled job — TBD).
+- Capture Clerk manually triggers "Run Batch" — the sole posting trigger
+  for MVP (Open Question 1, resolved).
 
 **Outputs that leave this slice:**
 - Posted `CardLedgerEntry` rows — consumed by Slice B.
@@ -288,6 +295,7 @@ rest of the system.
 | Mandatory receipt attachment | Decided this session | `CardLedgerEntry` cannot exist without `receiptUrl` — enforced in the UI AND as a DB constraint, not just a UI nicety |
 | Closed-loop accountability — no event without a terminal status | Decided this session (Guiding Principle above) | Every `PurchaseIntent`, `CardCaptureRequest`, `CardStatementLine`, and `CardLedgerEntry` must always resolve to a defined status. A record with a NULL/undefined status field, or a bank line silently dropped from an import, is a bug — not a display gap |
 | Purchase Intent must never block the purchase | Decided this session (Slice A0) | `PurchaseIntent` submission has no validation that can prevent or delay a purchase — no required-field check runs against the cardholder's ability to buy. It is a log, never a gate |
+| No scheduled auto-posting — batch posting is a manual, reviewed action | PM Decision, Open Question 1 (resolved this session) | `CardCaptureRequest → CardLedgerEntry` posting only happens via the Capture Clerk's manual "Run Batch" action. No cron/scheduled job posts on its own — GL code confirmation and receipt review require a human. The queue view must surface pending count + oldest-pending age as the substitute safeguard against neglect |
 | Capturer ≠ reconciler on the same entry — segregation of duties | PM Decision, Open Question 3 (resolved this session) | The system checks `actorId ≠ CardLedgerEntry.capturedBy` before allowing any `MANUAL` match or exception clear in Slice B. `AUTO_EXACT`/`AUTO_FUZZY` matches are exempt — they're system-generated, not a self-attestation. This is enforced at the entry level, not via a separate fixed "reconciler" role — any user other than the original capturer may act |
 
 ---
@@ -296,7 +304,7 @@ rest of the system.
 
 | # | Question | Blocks | Options | Status |
 |---|---|---|---|---|
-| 1 | What actually triggers a batch run — a fixed schedule (cron) or a manual "Run Batch" button? | `CardCaptureRequest` state machine design; whether a scheduler is needed at all for MVP | (a) Manual button only for MVP, (b) weekly cron, (c) both — manual override on a schedule | Awaiting PM |
+| 1 | ~~What actually triggers a batch run — a fixed schedule (cron) or a manual "Run Batch" button?~~ | `CardCaptureRequest` state machine design; whether a scheduler is needed at all for MVP | **Resolved: (a)** — manual "Run Batch" only, no cron, for MVP. Posting requires human review (receipt legibility, GL code confirm/override) that a scheduler can't perform, so full automation was never really an option. Neglect risk covered by a UI safeguard instead of infrastructure: the queue view shows pending count + oldest-pending age. Scheduling stays an easy fast-follow if volume grows — the state machine doesn't change, only the trigger. | **RESOLVED — PM Decision, 2026-08-24** |
 | 2 | Who assigns the GL/cost code — **partially resolved**: Slice A0 has the cardholder pick it at intent time. Still open: can the Capture Clerk override it at batch-posting (e.g. the cardholder guessed wrong), and what happens when a capture arrives with no linked intent at all? | Capture form design; whether the Clerk has override authority | (a) Cardholder's Slice A0 pick is final, (b) Clerk can override at posting, (c) unlinked captures require the Clerk to pick from scratch | Awaiting PM |
 | 3 | ~~Who owns resolving Slice B exceptions — the same person who captures, or a separate reviewer/controller?~~ | Role/permission model; whether a second-approver control is enforced in the state machine | **Resolved: (b)** — capturer ≠ reconciler, enforced by the system at the entry level (`actorId ≠ capturedBy` on any `MANUAL` match/clear), not via a dedicated fixed "reconciler" role. Rationale: the front-end purchase has no real control (informal approval only), so this is the one place a compensating control can live; entry-level blocking gets that value without requiring dedicated staffing at low transaction volume. | **RESOLVED — PM Decision, 2026-08-24** |
 | 4 | Does Capture Request (and now Purchase Intent) submission need to work offline (purchase happens in the field, no signal)? | Dexie store design; sync strategy for Slice A0 and Slice A | (a) Always online, like `ReconciliationSession`, (b) offline-capable like the Yard Counter PWA | Awaiting PM |
@@ -327,6 +335,6 @@ rules, or fuzzy matching.
 - [x] Scope boundary is explicit (in AND out)
 - [x] All dependencies named
 - [x] All constraints extracted from governance docs
-- [x] Open Questions Register complete — 6 open, 1 resolved (Q3)
+- [x] Open Questions Register complete — 5 open, 2 resolved (Q1, Q3)
 - [x] Offline implications stated (flagged as open, not assumed)
 - Awaiting PM approval and resolution of open questions
