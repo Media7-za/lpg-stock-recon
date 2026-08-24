@@ -20,6 +20,15 @@ Date: 2026-08-24
 > components (see `src/lib/dispatchService.ts`, `src/lib/reconciliationEngine.ts`).
 > Everything below follows that pattern — no new "backend stage" exists
 > separately from "write the service file."
+>
+> **Updated since first written:** FR-CCR-RECEIPT-001 (a full PRD-style
+> requirement for receipt attachment, processing, and storage) arrived
+> after M0 had already shipped with a public storage bucket and a bare
+> `receiptUrl` field — both wrong against this FR. Fixed directly rather
+> than left as a known issue: `card-receipts` is now private with a
+> follow-up migration adding `receiptMimeType`/`receiptSizeBytes` (and
+> `receiptUploadedAt` on `CardLedgerEntry`), both already committed. The
+> receipt processing pipeline itself (Section 3) is new.
 
 ---
 
@@ -57,7 +66,11 @@ model CardCaptureRequest {
   amount           Decimal
   purchaseDate     DateTime
   merchantNote     String?
-  receiptUrl       String             // NOT NULL — mandatory (Slice Brief Section D)
+  receiptUrl       String             // NOT NULL — mandatory (Slice Brief Section D).
+                              // Private bucket object PATH, not a public URL — see
+                              // Section 2 (Storage) and FR-CCR-RECEIPT-001.
+  receiptMimeType  String             // image/jpeg or application/pdf, post-processing
+  receiptSizeBytes Int                // processed size, not the original upload size
   status           String    @default("SUBMITTED")
                               // SUBMITTED | BATCHED | POSTED | REJECTED
   rejectionReason  String?
@@ -77,6 +90,11 @@ model CardLedgerEntry {
   date                DateTime
   amount              Decimal
   receiptUrl          String            // mirrors CardCaptureRequest.receiptUrl
+  receiptMimeType     String            // mirrors CardCaptureRequest.receiptMimeType
+  receiptSizeBytes    Int               // mirrors CardCaptureRequest.receiptSizeBytes
+  receiptUploadedAt   DateTime          // when the file was ORIGINALLY uploaded at
+                                         // capture time — not postedAt, which is the
+                                         // Capture Clerk's later review action
   reconciliationStatus String  @default("UNRECONCILED")
                               // UNRECONCILED | RECONCILED | EXCEPTION_UNRESOLVED | EXCEPTION_CANCELLED
   postedBy            String            // the Capture Clerk
@@ -138,20 +156,39 @@ the implementation gap, not reopening a locked decision:**
 - `CardReconMatch.statementLineId → CardStatementLine.id` (never `.ledgerEntryId`'s type)
 - `CardReconMatch.ledgerEntryId → CardLedgerEntry.id` (never a `CardStatementLine.id`)
 
-**Migration classification:** entirely additive — seven new tables, zero
-changes to existing ones. No backfill needed, no destructive risk.
+**Migration classification:** entirely additive. Shipped as two migrations
+— `add_card_recon_foundation` (the seven tables, M0) and a follow-up
+`add_receipt_evidence_metadata` (the `receiptMimeType`/`receiptSizeBytes`/
+`receiptUploadedAt` columns above, added once FR-CCR-RECEIPT-001 specified
+what needed recording beyond the path). No backfill needed for either —
+both tables were still empty when the second migration was written — and
+no destructive risk in either case.
 
 ---
 
 ### 2. Storage
 
-New Supabase Storage bucket `card-receipts`, path convention mirroring
-`invoice-documents` in `DispatchDetailView.tsx`:
+New Supabase Storage bucket `card-receipts` — **private** (`public =
+false`), not the `invoice-documents` pattern, per FR-CCR-RECEIPT-001
+("not publicly accessible without authorization"). See
+`supabase/card_recon_storage.sql`.
+
+**Path convention — corrected from the original draft:** cannot be keyed
+by `captureRequestId` the way `invoice-documents` keys by `doc_no`,
+because the atomicity requirement (Section 3 below) uploads the file
+*before* the `CardCaptureRequest` row exists — there's no id yet to key
+off. Instead, generate a fresh random id client-side purely for the
+storage path (the `uuid` package is already a dependency):
 ```
-requests/{captureRequestId}_{timestamp}.{ext}
+requests/{uuid()}_{timestamp}.{ext}
 ```
-Both `CardCaptureRequest.receiptUrl` and `CardLedgerEntry.receiptUrl`
-store the same public URL once posted.
+`receiptUrl` on both `CardCaptureRequest` and `CardLedgerEntry` stores
+this **object path**, never a public URL — the app resolves a
+short-lived signed URL for display via `getReceiptSignedUrl(path)` (see
+Section 3). The path's own randomness is what "non-guessable" means here
+(FR-CCR-RECEIPT-001) — the RLS SELECT policy alone doesn't achieve that,
+since a signed URL bypasses RLS by design (see the comment in
+`card_recon_storage.sql`).
 
 ---
 
@@ -171,14 +208,48 @@ deactivateLedgerAccount(id): void                      // active = false only
 createPurchaseIntent(description, ledgerAccountCode): PurchaseIntent
 listMyPurchaseIntents(userId): PurchaseIntent[]
 
+// Slice A — receipt processing (FR-CCR-RECEIPT-001), client-side, pure
+// logic, no Supabase calls — lives in src/lib/receiptProcessing.ts, not
+// cardReconService.ts, so it's independently unit-testable
+processReceiptFile(file: File): Promise<ProcessedReceipt>
+  // ProcessedReceipt = { blob: Blob, mimeType: string, sizeBytes: number }
+  // JPEG/PNG/HEIC: HEIC input first decoded to JPEG (heic2any — the one
+  // new dependency this needs, see below), then createImageBitmap(file,
+  // { imageOrientation: 'from-image' }) for orientation correction,
+  // resize to <=2000px longest edge preserving aspect ratio, draw to an
+  // OffscreenCanvas, export via convertToBlob({ type: 'image/jpeg',
+  // quality: 0.8 }) — this canvas re-encode is what strips EXIF, no
+  // separate metadata-stripping step needed. If still >500KB, iteratively
+  // step quality down (0.8 -> 0.7 -> 0.6...) with a floor (0.5) below
+  // which it stops degrading and accepts the larger size, per "where
+  // this can be achieved without making the receipt unreadable."
+  // Re-decodes the output blob to confirm it renders; throws
+  // ReceiptUnreadableError if it doesn't (Step A.2's rejection path).
+  // PDF: skips all of the above, validates against the upload-size
+  // limit, returns the file unchanged as the blob.
+
 // Slice A
 submitCaptureRequest(fields, receiptFile, intentId?): CardCaptureRequest
-  // rejects if no receiptFile — INV mandatory-receipt check lives here,
-  // not just in the UI form
+  // ATOMIC per FR-CCR-RECEIPT-001: calls processReceiptFile() first,
+  // then uploads the resulting blob to card-receipts at a fresh
+  // uuid()-derived path (Section 2) — ONLY THEN inserts the
+  // CardCaptureRequest row with receiptUrl/receiptMimeType/
+  // receiptSizeBytes set from the upload result. If upload fails, no row
+  // is ever inserted — there is no insert-then-upload path to leave a
+  // partial record behind.
 listCaptureQueue(): CardCaptureRequest[]                // status = SUBMITTED
+getReceiptSignedUrl(path: string, ttlSeconds = 300): string
+  // wraps supabase.storage.from('card-receipts').createSignedUrl() —
+  // the only way this app ever displays a receipt; never store or reuse
+  // a permanent URL
 postCaptureRequest(id, ledgerAccountCode, actorId): CardLedgerEntry
-  // creates CardLedgerEntry, sets CardCaptureRequest.status = POSTED,
-  // and PurchaseIntent.status = FULFILLED if intentId was set
+  // Re-verifies the receipt object still exists in storage before
+  // proceeding (FR-CCR-RECEIPT-001 — "cannot be posted if its receipt
+  // file is missing or inaccessible"); throws if that check fails.
+  // Otherwise creates CardLedgerEntry (copying receiptUrl/
+  // receiptMimeType/receiptSizeBytes and the original submittedAt as
+  // receiptUploadedAt), sets CardCaptureRequest.status = POSTED, and
+  // PurchaseIntent.status = FULFILLED if intentId was set
 rejectCaptureRequest(id, reason, actorId): void
   // reverts linked PurchaseIntent to OPEN if one exists
 
@@ -246,9 +317,9 @@ into real PRs):
 - Exit criteria: a cardholder logs an intent, sees it in My Intents as `OPEN`
 
 **M3 — Slice A: Capture Request**
-- `CardCaptureForm.tsx`, `MyCaptureRequests.tsx`, `CardCaptureQueue.tsx`
+- `CardCaptureForm.tsx`, `MyCaptureRequests.tsx`, `CardCaptureQueue.tsx`, `src/lib/receiptProcessing.ts`
 - Depends on M2 for the optional intent-link picker (M3 still works standalone if M2 shipped but no intent exists)
-- Exit criteria: a cardholder submits a receipt, a Capture Clerk posts it, a `CardLedgerEntry` exists with `reconciliationStatus = UNRECONCILED`
+- Exit criteria: a cardholder submits a receipt, a Capture Clerk posts it, a `CardLedgerEntry` exists with `reconciliationStatus = UNRECONCILED`. Plus, per FR-CCR-RECEIPT-001's acceptance criteria: a JPEG/PNG/HEIC receipt from mobile is resized and normalized to JPEG before storage; a PDF receipt is accepted unprocessed; EXIF/location metadata is verifiably stripped; upload failure leaves no partial `CardCaptureRequest`; the stored receipt stays linked through to the resulting `CardLedgerEntry`
 
 **M4 — Slice B: Statement Reconciliation**
 - `CardReconDashboard.tsx`, `CardReconWorkspace.tsx`, matching engine, Cancel Exception flow, Finalize gate
@@ -272,6 +343,7 @@ into real PRs):
 **Unit (Vitest, matches `reconciliationEngine.test.ts` convention):**
 - `cardReconMatchEngine.test.ts` — `AUTO_EXACT`/`AUTO_FUZZY` logic against fixture bank lines + ledger entries, including the boundary case (date exactly N days apart)
 - `cardReconService.test.ts` — mandatory-receipt rejection, segregation-of-duties rejection, `canFinalize` with mixed exception states
+- `receiptProcessing.test.ts` — fixture images per FR-CCR-RECEIPT-001's acceptance criteria: a >2000px image gets resized, a PNG/HEIC input comes out as JPEG, output stays under jsdom/canvas-mockable size expectations, a corrupt/undecodable fixture throws `ReceiptUnreadableError`, a PDF fixture passes through unchanged. HEIC fixture decoding will need `heic2any` mocked or a real WASM-capable test environment — flag if Vitest's `jsdom` environment can't run it and Playwright-only coverage is the fallback
 
 **E2E (Playwright, matches existing `tests/e2e/` convention):**
 - One golden-path spec per milestone once M4 ships: intent → capture → post → import → auto-match → manual-match → cancel → finalize, asserting the exact status transitions at each step (not just that the UI doesn't crash)

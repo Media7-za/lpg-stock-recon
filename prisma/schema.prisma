@@ -384,18 +384,22 @@ model PurchaseIntent {
 }
 
 model CardCaptureRequest {
-  id              String    @id @default(cuid())
-  intentId        String?   @map("intent_id") // FK -> PurchaseIntent.id
-  submittedBy     String    @map("submitted_by")
-  submittedAt     DateTime  @default(now()) @map("submitted_at") @db.Timestamptz(6)
-  amount          Decimal   @db.Decimal(18, 2)
-  purchaseDate    DateTime  @map("purchase_date") @db.Date
-  merchantNote    String?   @map("merchant_note")
-  receiptUrl      String    @map("receipt_url") // NOT NULL — mandatory (Slice Brief Section D)
-  status          String    @default("SUBMITTED") // SUBMITTED | BATCHED | POSTED | REJECTED
-  rejectionReason String?   @map("rejection_reason")
-  reviewedBy      String?   @map("reviewed_by")
-  reviewedAt      DateTime? @map("reviewed_at") @db.Timestamptz(6)
+  id               String    @id @default(cuid())
+  intentId         String?   @map("intent_id") // FK -> PurchaseIntent.id
+  submittedBy      String    @map("submitted_by")
+  submittedAt      DateTime  @default(now()) @map("submitted_at") @db.Timestamptz(6)
+  amount           Decimal   @db.Decimal(18, 2)
+  purchaseDate     DateTime  @map("purchase_date") @db.Date
+  merchantNote     String?   @map("merchant_note")
+  receiptUrl       String    @map("receipt_url") // NOT NULL — mandatory (Slice Brief Section D).
+  // Stores the private bucket's object PATH, not a public URL — the app
+  // resolves a short-lived signed URL for display (FR-CCR-RECEIPT-001).
+  receiptMimeType  String    @map("receipt_mime_type") // image/jpeg or application/pdf post-processing
+  receiptSizeBytes Int       @map("receipt_size_bytes") // processed size, not the original upload size
+  status           String    @default("SUBMITTED") // SUBMITTED | BATCHED | POSTED | REJECTED
+  rejectionReason  String?   @map("rejection_reason")
+  reviewedBy       String?   @map("reviewed_by")
+  reviewedAt       DateTime? @map("reviewed_at") @db.Timestamptz(6)
 
   @@index([intentId])
   @@index([status])
@@ -413,7 +417,12 @@ model CardLedgerEntry {
   ledgerAccountCode    String   @map("ledger_account_code") // FK -> LedgerAccount.code
   date                 DateTime @db.Date
   amount               Decimal  @db.Decimal(18, 2)
-  receiptUrl           String   @map("receipt_url")
+  receiptUrl           String   @map("receipt_url") // private bucket object path — see CardCaptureRequest
+  receiptMimeType      String   @map("receipt_mime_type")
+  receiptSizeBytes     Int      @map("receipt_size_bytes")
+  receiptUploadedAt    DateTime @map("receipt_uploaded_at") @db.Timestamptz(6) // when the file was
+  // originally uploaded at capture time — NOT postedAt, which is the
+  // Capture Clerk's later review action
   reconciliationStatus String   @default("UNRECONCILED") @map("reconciliation_status")
   // UNRECONCILED | RECONCILED | EXCEPTION_UNRESOLVED | EXCEPTION_CANCELLED
   postedBy             String   @map("posted_by") // the Capture Clerk

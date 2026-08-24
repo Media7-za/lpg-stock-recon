@@ -193,8 +193,8 @@ posting, not an afterthought.
 ### B. Slice Boundary
 
 **In scope:**
-- Cardholder submits a Capture Request: receipt photo/scan (**mandatory**),
-  amount, date, free-text note/reference.
+- Cardholder submits a Capture Request: receipt evidence (**mandatory** —
+  see FR-CCR-RECEIPT-001 below), amount, date, free-text note/reference.
 - Optional: cardholder links the request to an open `PurchaseIntent`
   (Slice A0) — if linked, the intent's description and ledger
   account/project pre-fill the form and the intent moves to `FULFILLED`.
@@ -211,8 +211,46 @@ posting, not an afterthought.
   substitute for a scheduler.
 - Request status: `SUBMITTED → BATCHED → POSTED`, or `REJECTED` if the
   Capture Clerk cannot post it (bad amount, unreadable receipt).
-- Receipt file stored in a new Supabase Storage bucket (`card-receipts`),
-  same pattern as `invoice-documents` in `DispatchDetailView.tsx`.
+- Receipt file stored in a new Supabase Storage bucket (`card-receipts`)
+  — **private**, not the public pattern `invoice-documents` uses; see
+  FR-CCR-RECEIPT-001 below.
+
+**FR-CCR-RECEIPT-001 — Receipt Attachment and Storage Optimization**
+(supplied this session, incorporated in full — not summarized down):
+
+- Accepts a photo (JPEG/PNG/HEIC) or an existing file, or a digital PDF.
+  Never requires a traditional scanned document.
+- JPEG/PNG/HEIC uploads are processed client-side before storage:
+  orientation-corrected, resized to a max 2000px longest edge (aspect
+  ratio preserved), converted to JPEG at ~80% quality, EXIF metadata
+  (including location) stripped, targeted at ≤500KB where achievable
+  without making the receipt unreadable. A processed image that can't be
+  reliably rendered/read is rejected before submit.
+- PDFs are stored as uploaded, subject to the configured upload-size limit
+  — no image processing applied.
+- One processed evidence file per capture request; original is not
+  retained separately unless a future compliance need requires it.
+- Stored in `card-receipts`, at a unique, non-guessable path.
+- `receiptUrl`, MIME type, processed size, and upload timestamp are all
+  recorded (see Dev Plan's schema section for the exact fields).
+- **`CardLedgerEntry` cannot be created without a valid `receiptUrl`** —
+  already locked as a non-negotiable constraint below; this FR doesn't
+  change that, it specifies what "valid" means.
+- **Files are not publicly accessible without authorization** — this is
+  why the bucket is private, not the `invoice-documents` pattern (see
+  Dev Plan for the signed-URL access mechanism).
+- UI label is "Attach receipt", never "Scan receipt". Mobile offers both
+  "Take photo" and "Choose file". A preview is shown before submission.
+  Submit stays disabled until a valid receipt is attached. Processing and
+  upload progress are visible. On failure, the form retains every entered
+  field and allows retry — this applies to optimization failures and
+  upload failures alike, not just network errors.
+- Upload failure must not create a partial `CardCaptureRequest` or
+  `CardLedgerEntry` — see the atomicity requirement in Dev Plan's service
+  layer section.
+- A `CardLedgerEntry` cannot be posted if its receipt file is missing or
+  inaccessible — `postCaptureRequest` re-verifies the object exists
+  before creating the ledger entry, not just trusting the stored path.
 
 **Out of scope:**
 - Pre-purchase approval / PO workflow — the purchase itself stays
@@ -343,8 +381,11 @@ contracts must be documented before code exists, incl.
 → LedgerAccount.code`), INV-006 (status casing — a convention must be
 picked), INV-008 (analog: an unreconciled line is a disclosed state,
 never silently corrected), INV-009 (ZAR display)
-**Existing Supabase views/queries:** None reused directly — but the
-`invoice-documents` storage upload pattern is reused as-is.
+**Existing Supabase views/queries:** None reused directly. The
+`invoice-documents` storage *upload* pattern is a starting reference, but
+NOT reused as-is — that bucket is public; `card-receipts` is private per
+FR-CCR-RECEIPT-001, so access uses signed URLs, a new pattern for this
+codebase.
 **New Supabase views/queries needed:** `card_recon_summary` (mirrors
 `reconciliation_summary`), `card_capture_queue` (pending-request view for
 the Capture Clerk), `open_purchase_intents` (unlinked/`OPEN` intents, for
@@ -352,7 +393,10 @@ the linking picker in Slice A), `active_ledger_accounts` (for both pickers)
 **Dexie stores touched:** None — resolved by Open Question 4 (offline
 deferred to a later version).
 **External libraries:** PapaParse (already used), Supabase Storage
-(already used).
+(already used), `uuid` (already a dependency, now also used for storage
+paths — see Dev Plan Section 2), `heic2any` (new dependency —
+FR-CCR-RECEIPT-001's HEIC decode step; browsers can't decode HEIC via
+Canvas/`createImageBitmap` outside Safari on Apple hardware).
 **UI surfaces:** New — `LedgerAccountAdmin`, `PurchaseIntentQuickForm`,
 `MyPurchaseIntents`, `CardCaptureForm`, `MyCaptureRequests`,
 `CardCaptureQueue` (Capture Clerk batch view), `CardReconDashboard`,
@@ -378,6 +422,10 @@ rest of the system.
 | Variance is informational, never a silent gate | INV-008 (analog) | An unmatched bank line or ledger entry must be surfaced as a disclosed exception, never auto-written-off |
 | ZAR currency format | INV-009 | All amounts via `formatZAR()` |
 | Mandatory receipt attachment | Decided this session | `CardLedgerEntry` cannot exist without `receiptUrl` — enforced in the UI AND as a DB constraint, not just a UI nicety |
+| Receipt evidence is processed, not raw-stored — orientation, resize ≤2000px, JPEG ~80%, EXIF stripped, ≤500KB target | FR-CCR-RECEIPT-001 | PDFs pass through unprocessed subject to the upload-size limit; a processed image that can't be reliably read is rejected client-side before submit is even possible |
+| Receipt storage must not be publicly accessible without authorization | FR-CCR-RECEIPT-001 | `card-receipts` bucket is private (`public = false`), unlike the `invoice-documents` precedent — access is via authenticated session or a short-lived signed URL, never a permanent public link |
+| Capture submission is atomic — no partial records on failure | FR-CCR-RECEIPT-001 | A failed upload or processing step must not leave a `CardCaptureRequest` or `CardLedgerEntry` half-created; the DB write only happens after the file is successfully processed and stored |
+| UI copy: "Attach receipt", never "Scan receipt" | FR-CCR-RECEIPT-001 | Applies to every label, button, and empty/error state referencing this action across Slice A's screens |
 | Closed-loop accountability — no event without a terminal status | Decided this session (Guiding Principle above) | Every `PurchaseIntent`, `CardCaptureRequest`, `CardStatementLine`, and `CardLedgerEntry` must always resolve to a defined status. A record with a NULL/undefined status field, or a bank line silently dropped from an import, is a bug — not a display gap |
 | Purchase Intent must never block the purchase | Decided this session (Slice A0) | `PurchaseIntent` submission has no validation that can prevent or delay a purchase — no required-field check runs against the cardholder's ability to buy. It is a log, never a gate |
 | No scheduled auto-posting — batch posting is a manual, reviewed action | PM Decision, Open Question 1 (resolved this session) | `CardCaptureRequest → CardLedgerEntry` posting only happens via the Capture Clerk's manual "Run Batch" action. No cron/scheduled job posts on its own — GL code confirmation and receipt review require a human. The queue view must surface pending count + oldest-pending age as the substitute safeguard against neglect |

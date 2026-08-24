@@ -85,38 +85,74 @@ Step A0.2 — Actor: Types "litre of oil for the vehicle", picks a ledger
 
 ```
 Step A.1  — Actor: After the purchase, cardholder opens Capture Request
-                    Form.
-            System: Camera/file picker opens for the receipt (mandatory);
-                    if any OPEN PurchaseIntent exists, a "Link to a
-                    request?" picker appears above the form, pre-selected
-                    to the most recent OPEN intent if only one exists.
+                    Form, taps "Attach Receipt" (never "Scan Receipt" —
+                    FR-CCR-RECEIPT-001).
+            System: Presents two explicit options — "Take Photo" and
+                    "Choose File" (mobile) — plus a file picker on desktop.
+                    Accepts JPEG, PNG, HEIC, or PDF. If any OPEN
+                    PurchaseIntent exists, a "Link to a request?" picker
+                    appears above the form, pre-selected to the most
+                    recent OPEN intent if only one exists.
             State: No entity yet.
 
-Step A.2  — Actor: Attaches receipt photo, confirms amount + date
-                    (pre-filled from OCR-free manual entry is not in
-                    scope — cardholder types them), optionally links the
-                    intent, taps Submit.
-            System: Blocks submit until a receipt image is attached
-                    (Slice Brief Section D — Mandatory receipt attachment).
-                    On success, toast "Submitted — awaiting batch".
-            State: CardCaptureRequest created, status SUBMITTED. If
-                   linked, PurchaseIntent → FULFILLED.
+Step A.2  — Actor: Selects or captures a file.
+            System: For JPEG/PNG/HEIC: runs client-side processing
+                    (orientation correction, resize to ≤2000px longest
+                    edge, JPEG re-encode at ~80% quality, EXIF/location
+                    strip, iterative quality reduction targeting ≤500KB)
+                    with a visible progress indicator — this is NOT the
+                    same as the upload progress in Step A.3, and both are
+                    shown distinctly if they overlap. For PDF: skips
+                    processing, validates against the upload-size limit.
+                    On completion, shows a preview of the processed
+                    receipt. If the processed file can't be reliably
+                    rendered, rejects it before the user can proceed —
+                    see Unhappy Paths.
+            State: No entity yet — file is held client-side only, nothing
+                   is uploaded until Submit.
 
-Step A.3  — Actor: Capture Clerk opens Capture Queue (desktop).
+Step A.3  — Actor: Confirms amount + date (typed manually — OCR is out of
+                    scope), optionally links the intent, taps Submit.
+            System: Submit stays disabled until a valid processed receipt
+                    exists (Slice Brief Section D). On tap: uploads the
+                    processed file to `card-receipts` with a visible
+                    upload progress indicator, THEN — only after upload
+                    succeeds — creates the `CardCaptureRequest` row. If
+                    upload fails, the form retains every entered field
+                    (description, amount, date, intent link, and the
+                    already-processed file) and offers Retry; no partial
+                    `CardCaptureRequest` is ever created (FR-CCR-RECEIPT-001
+                    atomicity requirement). On success, toast "Submitted —
+                    awaiting batch".
+            State: CardCaptureRequest created, status SUBMITTED, with
+                   receiptUrl (private object path), receiptMimeType,
+                   receiptSizeBytes all set. If linked, PurchaseIntent →
+                   FULFILLED.
+
+Step A.4  — Actor: Capture Clerk opens Capture Queue (desktop).
             System: Shows all SUBMITTED requests, with a banner: "{n}
                     pending — oldest submitted {days} ago" (the
                     staleness safeguard from Open Question 1's
-                    resolution).
+                    resolution). Each row's receipt thumbnail is rendered
+                    from a short-lived signed URL, not a public link.
             State: No change — read view.
 
-Step A.4  — Actor: Clerk opens a request, reviews the receipt image and
+Step A.5  — Actor: Clerk opens a request, reviews the receipt image and
                     fields, confirms or overrides the GL/cost code, taps
                     "Post".
-            System: Row disappears from the queue; running batch summary
+            System: Re-verifies the receipt object still exists and is
+                    accessible in storage before proceeding (FR-CCR-RECEIPT-001
+                    — a ledger entry cannot be posted with a missing/
+                    inaccessible receipt); if that check fails, blocks
+                    posting with an explanatory message instead of
+                    silently creating a broken ledger entry. Otherwise:
+                    row disappears from the queue; running batch summary
                     updates ("3 posted this session").
             State: CardCaptureRequest → POSTED. CardLedgerEntry created
                    (vendor = card, reference = receipt ref, GL code,
-                   date, amount, receiptUrl, reconciliationStatus =
+                   date, amount, receiptUrl/receiptMimeType/
+                   receiptSizeBytes/receiptUploadedAt carried forward
+                   from the capture request, reconciliationStatus =
                    UNRECONCILED).
 ```
 
@@ -187,15 +223,30 @@ If **admin tries to deactivate an account that's the only account** (Slice A0/A 
 - Recovery action: Create a replacement account first, or confirm anyway.
 - System state: `LedgerAccount.active → false` if confirmed.
 
-If **receipt image missing at Capture Request submit**:
-- What the actor sees: Submit button stays disabled; inline text "Attach a photo of your receipt to continue."
-- Recovery action: Attach an image.
+If **receipt missing at Capture Request submit**:
+- What the actor sees: Submit button stays disabled; inline text "Attach your receipt to continue."
+- Recovery action: Attach a file.
 - System state: No `CardCaptureRequest` created.
+
+If **processed receipt can't be reliably rendered** (corrupt file, failed HEIC decode, degenerate image):
+- What the actor sees: Rejected immediately after processing, before Submit is even reachable — "Couldn't read this file — try another photo." Original selection is cleared; the rest of the form (description, amount, date, intent link) is untouched.
+- Recovery action: Attach a different file.
+- System state: No `CardCaptureRequest` created — this never reaches the upload step at all.
+
+If **image processing or upload fails** (browser crash mid-resize, network drop mid-upload):
+- What the actor sees: Toast "Couldn't process/save your receipt — check your connection" with a Retry button. Every entered field — description, amount, date, intent link, and the already-processed file if processing itself succeeded — is retained exactly as entered; nothing needs retyping.
+- Recovery action: Tap Retry (resumes from upload, not from scratch, if processing already succeeded).
+- System state: No `CardCaptureRequest` created until the full atomic sequence (process → upload → DB insert) completes — FR-CCR-RECEIPT-001's atomicity requirement.
 
 If **Capture Clerk rejects a request** (bad amount, unreadable receipt):
 - What the actor sees: Clerk selects a reason from a required dropdown (e.g. "Unreadable receipt", "Amount doesn't match receipt", "Duplicate"); cardholder later sees their request in My Requests with a `REJECTED` pill and the reason.
 - Recovery action: Cardholder resubmits a new Capture Request.
 - System state: `CardCaptureRequest.status → REJECTED`. No `CardLedgerEntry` created. Linked `PurchaseIntent`, if any, reverts to `OPEN` (the fulfillment didn't actually happen).
+
+If **the receipt object is missing or inaccessible when the Clerk taps Post** (deleted between submit and review, storage error):
+- What the actor sees: "Post" blocked with "Can't verify the receipt for this request — try again or reject it." — never silently posts a `CardLedgerEntry` with a broken receipt link.
+- Recovery action: Retry the check, or reject the request with a reason if the file is genuinely gone.
+- System state: `CardCaptureRequest` stays `SUBMITTED`/`BATCHED` — no `CardLedgerEntry` created (FR-CCR-RECEIPT-001).
 
 If **duplicate-looking Capture Request** (same amount + date + description as an existing one):
 - What the actor sees: A non-blocking warning banner on the clerk's review screen — "Possible duplicate of request #{id}, posted {date}" — not a hard block, since legitimate repeat purchases exist (e.g. fuel twice in a week).
@@ -266,11 +317,29 @@ Size: Large (min 44px tap target)
 Disabled when: never — always available, per "must never block the purchase"
 onClick: Opens PurchaseIntentQuickForm
 
+Button: "Attach Receipt" (Capture Request Form) — never "Scan Receipt"
+Context: Mobile
+Size: Large (min 44px tap target)
+Disabled when: never
+onClick: Opens the Take Photo / Choose File choice (mobile) or file picker (desktop)
+
+Button: "Take Photo" (within Attach Receipt flow)
+Context: Mobile
+Size: Large (min 44px tap target)
+Disabled when: never
+onClick: Opens the device camera; captured photo enters processing (Step A.2)
+
+Button: "Choose File" (within Attach Receipt flow)
+Context: Mobile + Desktop
+Size: Large (min 44px tap target)
+Disabled when: never
+onClick: Opens the file picker filtered to JPEG/PNG/HEIC/PDF; selection enters processing (Step A.2)
+
 Button: "Submit" (Capture Request Form)
 Context: Mobile
 Size: Large (min 44px tap target)
-Disabled when: no receipt image attached, OR amount/date empty
-onClick: Creates CardCaptureRequest (SUBMITTED); links PurchaseIntent if selected
+Disabled when: no successfully processed receipt attached, OR amount/date empty
+onClick: Uploads the processed file, then creates CardCaptureRequest (SUBMITTED) only after upload succeeds; links PurchaseIntent if selected
 
 Button: "Post" (Capture Queue row)
 Context: Desktop
@@ -328,10 +397,27 @@ Default: none selected
 Validation: required to submit a Quick Request; on Capture Request, pre-filled
             from a linked intent but always editable
 
-Field: Receipt image (Capture Request)
-Type: file / camera capture
-Validation: required — no submit without it (Mandatory receipt attachment, Slice Brief Section D)
-Error message: "Attach a photo of your receipt to continue"
+Field: Receipt (Capture Request)
+Type: file / camera capture — accepts JPEG, PNG, HEIC, PDF
+Validation: required — no submit without a successfully processed file
+            (Mandatory receipt attachment, Slice Brief Section D); a file
+            that fails to decode/render is rejected before it counts as
+            "attached" (FR-CCR-RECEIPT-001)
+Error message: "Attach your receipt to continue" (missing) / "Couldn't
+               read this file — try another photo" (unreadable)
+
+Component: Receipt processing indicator (Capture Request Form)
+Context: Mobile + Desktop
+Shows: a progress state while orientation/resize/re-encode/EXIF-strip
+       runs client-side (JPEG/PNG/HEIC only — PDFs skip straight to the
+       preview). Distinct from the later upload-progress indicator in
+       Step A.3, shown separately if both are visible in sequence.
+
+Component: Receipt preview (Capture Request Form)
+Context: Mobile + Desktop
+Shows: the processed image (or a PDF icon + filename for PDFs) before
+       Submit is enabled. Tap/click to view full-size in a modal.
+       Replacing the file restarts processing and preview.
 
 Field: Amount
 Type: number
@@ -383,8 +469,9 @@ Default sort: Date ASC
 
 **Quick Request Form / Capture Request Form**
 - Loading: N/A (local form, no fetch on open — except intent list, see below)
+- Processing (Capture Request Form only): visible progress indicator while the receipt is being resized/re-encoded client-side, distinct from the later upload-progress state
 - Empty: If no OPEN intents exist, the "Link to a request?" picker doesn't render at all — no empty dropdown
-- Error: Inline toast "Couldn't save — check your connection", form stays populated for retry
+- Error: Inline toast "Couldn't save — check your connection", form stays populated for retry — including the already-processed receipt file, not just the text fields (FR-CCR-RECEIPT-001)
 - Success: Toast confirmation, form clears
 - Offline: Not supported this version (Open Question 4, resolved — deferred) — see Unhappy Paths
 
@@ -464,7 +551,7 @@ Hidden from: no one — this is the one open surface in the whole epic
   - `CardStatementLine.status`: `UNMATCHED` amber, `MATCHED` green, `EXCEPTION_UNRESOLVED` red, `EXCEPTION_CANCELLED` purple
   - `CardReconSession`: `OPEN` blue, `DRAFT` amber, `FINALIZED` green
 - **Optimistic updates:** None for financial writes (Post, Match, Finalize) — these wait for Supabase confirmation given the transactional requirement in Slice Brief Section B; the Quick Request form may optimistically clear since it has no downstream financial effect.
-- **Receipt inline preview:** thumbnail in both Capture Queue and Recon Workspace; click to open full-size in a modal, never a new tab (keeps workspace context).
+- **Receipt inline preview:** thumbnail in both Capture Queue and Recon Workspace; click to open full-size in a modal, never a new tab (keeps workspace context). Rendered from a short-lived signed URL fetched on demand, never a stored public URL (`card-receipts` is a private bucket — FR-CCR-RECEIPT-001).
 - **Mobile-specific:** sticky "Submit" button at the bottom of both A0 and A forms; back navigation confirms discard if the form has unsaved text.
 - **Currency:** every monetary value uses the shared `formatZAR()` utility (INV-009) — unlike the quantity-only stock-count PWA, this epic is inherently financial and ZAR values are expected throughout.
 
@@ -483,4 +570,5 @@ Hidden from: no one — this is the one open surface in the whole epic
 - [x] Offline behavior (Open Question 4) — resolved, deferred to a later version
 - [x] Finalize gating (Open Question 5) — resolved, blocks with an explicit Cancel Exception escape hatch
 - [x] Ledger Account reference data (Open Question 8) — resolved: Slice 0 (Ledger Account Admin) builds the missing table + admin screen, fully specified above
+- [x] FR-CCR-RECEIPT-001 incorporated — Attach Receipt copy, Take Photo/Choose File, processing + upload progress shown distinctly, preview before submit, form-state-preserving retry on any failure, private-bucket signed-URL rendering, receipt re-verification before posting
 - Awaiting PM approval. Remaining Slice Brief open questions — Q2 (GL override), Q6 (multi-card schema), Q7 (abandonment window) — don't materially change this UX and can resolve during Stage 2 (PRD)
