@@ -110,8 +110,11 @@ period.
   volume.
 
 **Events that enter this slice:**
-- Depot Manager uploads the monthly statement CSV; a `CardReconSession` is
-  created.
+- The monthly card statement CSV is uploaded — this is the **sole** trigger
+  for the slice. There is no separate "Start Reconciliation" action: the
+  upload itself creates the `CardReconSession` (`OPEN`) and immediately
+  runs the `AUTO_EXACT`/`AUTO_FUZZY` match pass against posted
+  `CardLedgerEntry` rows, before the reconciler does anything manually.
 
 **Outputs that leave this slice:**
 - `CardReconMatch` records.
