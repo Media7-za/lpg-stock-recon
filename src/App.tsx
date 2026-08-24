@@ -22,6 +22,7 @@ import { ExceptionsView } from './features/investigation-workspace/views/Excepti
 import { SearchView } from './features/investigation-workspace/views/SearchView';
 import { DocumentListView } from './features/investigation-workspace/views/DocumentListView';
 import { PricingDeskHome, QuoteWorkspace, PricingDeskProvider } from './features/pricing-desk';
+import LedgerAccountAdmin from './components/card-recon/LedgerAccountAdmin';
 import { useAuth, UserRole } from './hooks/useAuth';
 import LoginScreen from './components/auth/LoginScreen';
 import { Navigate } from 'react-router-dom';
@@ -131,6 +132,11 @@ function App() {
                   <Route path="/pricing-desk/quote/:customerCode?" element={
                     <ProtectedRoute allowedRoles={['Depot Manager', 'Invoice Clerk']}>
                       <QuoteWorkspace />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/card-recon/ledger-accounts" element={
+                    <ProtectedRoute allowedRoles={['Depot Manager']}>
+                      <LedgerAccountAdmin />
                     </ProtectedRoute>
                   } />
                 </Routes>

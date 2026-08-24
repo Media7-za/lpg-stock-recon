@@ -361,3 +361,22 @@ with stated defaults, it doesn't resolve them:
   the intended answer is still the PM's call.
 - **Q6** — single-card assumption, as stated above.
 - **Q7** — manual-only abandonment, as stated above.
+
+**Found while building M1, not previously flagged:** the app's actual
+`UserRole` type (`src/hooks/useAuth.ts`) only has three values —
+`'Depot Manager' | 'Invoice Clerk' | 'Yard Counter'`. Every role the
+Slice Brief and UX Blueprint use — Cardholder, Capture Clerk, Finance
+Controller/reconciler, "admin" — has no corresponding entry. M1's
+`LedgerAccountAdmin` route is gated to `Depot Manager` (the existing role
+every other admin-only screen in this app already uses — `/upload`,
+`/data-agent`, `/trends`), since that's the closest real fit and adding
+new roles to the auth system is out of scope for a single admin screen.
+**This will hit every remaining milestone**, not just M1: M3's
+Capture-Clerk-only Capture Queue and M4's segregation-of-duties check
+(Open Question 3) both assume role distinctions that don't exist yet.
+The segregation-of-duties check itself still works — it compares actor
+*identity* (user id), not role — but "who is allowed to open the Capture
+Queue at all" has no real role to gate on beyond `Depot Manager` /
+`Invoice Clerk` today. Needs a PM decision before M3: extend `UserRole`
+with real new values, or reuse the existing three loosely (e.g. any
+`Depot Manager` or `Invoice Clerk` can act as Capture Clerk)?
