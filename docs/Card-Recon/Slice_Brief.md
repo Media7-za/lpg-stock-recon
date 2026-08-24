@@ -36,7 +36,8 @@ event this system tracks must end up as exactly one of:
 - **Failed** — a request was submitted but could not be posted
   (`CardCaptureRequest.status = REJECTED`), or a bank line/ledger entry
   could not be matched by the statement deadline
-  (`status = EXCEPTION_UNRESOLVED`).
+  (`status = EXCEPTION_UNRESOLVED`, or explicitly written off as
+  `EXCEPTION_CANCELLED` — see Open Question 5, resolved).
 - **Reconciled** — a `CardLedgerEntry` has a confirmed `CardReconMatch`
   against a `CardStatementLine`.
 
@@ -91,6 +92,8 @@ Open Question 2 (GL code assignment), but Slice A works without it
 - Budget or spend-limit checking against the intent — not in this epic.
 - Making the intent mandatory before a purchase — it stays optional by
   design.
+- Offline capability — **deferred to a later version** (Open Question 4,
+  resolved). This version requires connectivity to submit an intent.
 
 **Events that enter this slice:**
 - Cardholder opens the quick-request form and submits a description +
@@ -106,8 +109,8 @@ code source — see Open Question 2).
 **Owns state:** YES
 **Transactional:** NO
 **New session state:** YES — new state machine, `PurchaseIntent.status`.
-**Offline-capable:** Same open question as Slice A (Open Question 4) — if
-purchases happen in the field, intents likely need to as well.
+**Offline-capable:** NOT REQUIRED this version — deferred to a later
+version (Open Question 4, resolved). Requires connectivity to submit.
 **Position in flow:** UPSTREAM of Slice A; entirely optional.
 
 ---
@@ -155,6 +158,10 @@ posting, not an afterthought.
   informal-approval-only; this slice does not touch that.
 - Bank statement reconciliation — Slice B.
 - OCR / auto-extraction of receipt fields — manual entry only for MVP.
+- Offline capability — **deferred to a later version** (Open Question 4,
+  resolved). This version requires connectivity to submit a Capture
+  Request; a cardholder purchasing in the field waits until they're back
+  online.
 
 **Events that enter this slice:**
 - Cardholder taps "Submit Receipt".
@@ -172,7 +179,8 @@ posting, not an afterthought.
 **Owns state:** YES
 **Transactional:** Submission — NO. Batch posting — YES per request.
 **New session state:** YES — new state machine, `CardCaptureRequest.status`.
-**Offline-capable:** Open — see Open Question 4.
+**Offline-capable:** NOT REQUIRED this version — deferred to a later
+version (Open Question 4, resolved). Requires connectivity to submit.
 **Position in flow:** UPSTREAM of Slice B.
 
 ---
@@ -209,10 +217,18 @@ period.
 - Receipt image from Slice A displayed inline on each ledger entry during
   exception review.
 - Every `CardStatementLine` carries `status ∈ {UNMATCHED, MATCHED,
-  EXCEPTION_UNRESOLVED}`; every `CardLedgerEntry` carries
-  `reconciliationStatus ∈ {UNRECONCILED, RECONCILED, EXCEPTION_UNRESOLVED}`.
-  A line/entry with no status is not a valid state — see Guiding Principle
-  above.
+  EXCEPTION_UNRESOLVED, EXCEPTION_CANCELLED}`; every `CardLedgerEntry`
+  carries `reconciliationStatus ∈ {UNRECONCILED, RECONCILED,
+  EXCEPTION_UNRESOLVED, EXCEPTION_CANCELLED}`. A line/entry with no status
+  is not a valid state — see Guiding Principle above.
+- `FINALIZED` is blocked while any `EXCEPTION_UNRESOLVED` item exists on
+  either side (Open Question 5, resolved). The only way past a blocking
+  exception is an explicit **"Cancel Exception"** action — the reconciler
+  states a reason (required, same pattern as Capture Clerk rejection in
+  Slice A), and the item moves to `EXCEPTION_CANCELLED`: permanently
+  visible, logged with actor + reason + timestamp, but no longer blocking.
+  There is no silent non-blocking path — every exception either gets
+  matched or gets a reasoned, attributed cancellation.
 
 **Out of scope:**
 - Multi-card support — only one card/account exists today; deferred (see
@@ -272,8 +288,8 @@ the linking picker in Slice A)
 **UI surfaces:** New — `PurchaseIntentQuickForm`, `CardCaptureForm`,
 `CardCaptureQueue` (Capture Clerk batch view), `CardReconWorkspace`
 (mirrors `ReconciliationWorkspace`).
-**Offline implications:** Open for Slice A0 and Slice A (field
-submission); none for Slice B.
+**Offline implications:** None for this version — deferred (Open Question
+4, resolved) for Slice A0 and Slice A; none applicable to Slice B.
 **Audit/sync implications:** Every batch-post and every match/unmatch
 action must be logged with actor + timestamp — same audit-trail bar as the
 rest of the system.
@@ -289,7 +305,7 @@ rest of the system.
 | Every UI action wired | INV-003 | Submit / Run Batch / Match buttons need real handlers, or explicit `disabled` + `TODO: LSR-{ticket}` |
 | Dark theme tokens only | INV-004 | New screens use the existing Tailwind token set — no new component library |
 | ID type integrity | INV-005 | Contract fixed now: `CardReconMatch.statementLineId → CardStatementLine.id`, `CardReconMatch.ledgerEntryId → CardLedgerEntry.id` — never cross-assign |
-| Status casing convention | INV-006 | Match the `ReconciliationSession` precedent — ALL CAPS: `PurchaseIntent.status ∈ {OPEN, FULFILLED, ABANDONED}`; `CardCaptureRequest.status ∈ {SUBMITTED, BATCHED, POSTED, REJECTED}`; `CardReconSession.status ∈ {OPEN, DRAFT, FINALIZED}`; `CardStatementLine.status ∈ {UNMATCHED, MATCHED, EXCEPTION_UNRESOLVED}`; `CardLedgerEntry.reconciliationStatus ∈ {UNRECONCILED, RECONCILED, EXCEPTION_UNRESOLVED}` |
+| Status casing convention | INV-006 | Match the `ReconciliationSession` precedent — ALL CAPS: `PurchaseIntent.status ∈ {OPEN, FULFILLED, ABANDONED}`; `CardCaptureRequest.status ∈ {SUBMITTED, BATCHED, POSTED, REJECTED}`; `CardReconSession.status ∈ {OPEN, DRAFT, FINALIZED}`; `CardStatementLine.status ∈ {UNMATCHED, MATCHED, EXCEPTION_UNRESOLVED, EXCEPTION_CANCELLED}`; `CardLedgerEntry.reconciliationStatus ∈ {UNRECONCILED, RECONCILED, EXCEPTION_UNRESOLVED, EXCEPTION_CANCELLED}` |
 | Variance is informational, never a silent gate | INV-008 (analog) | An unmatched bank line or ledger entry must be surfaced as a disclosed exception, never auto-written-off |
 | ZAR currency format | INV-009 | All amounts via `formatZAR()` |
 | Mandatory receipt attachment | Decided this session | `CardLedgerEntry` cannot exist without `receiptUrl` — enforced in the UI AND as a DB constraint, not just a UI nicety |
@@ -297,6 +313,8 @@ rest of the system.
 | Purchase Intent must never block the purchase | Decided this session (Slice A0) | `PurchaseIntent` submission has no validation that can prevent or delay a purchase — no required-field check runs against the cardholder's ability to buy. It is a log, never a gate |
 | No scheduled auto-posting — batch posting is a manual, reviewed action | PM Decision, Open Question 1 (resolved this session) | `CardCaptureRequest → CardLedgerEntry` posting only happens via the Capture Clerk's manual "Run Batch" action. No cron/scheduled job posts on its own — GL code confirmation and receipt review require a human. The queue view must surface pending count + oldest-pending age as the substitute safeguard against neglect |
 | Capturer ≠ reconciler on the same entry — segregation of duties | PM Decision, Open Question 3 (resolved this session) | The system checks `actorId ≠ CardLedgerEntry.capturedBy` before allowing any `MANUAL` match or exception clear in Slice B. `AUTO_EXACT`/`AUTO_FUZZY` matches are exempt — they're system-generated, not a self-attestation. This is enforced at the entry level, not via a separate fixed "reconciler" role — any user other than the original capturer may act |
+| Unresolved exceptions block `FINALIZED`; only an explicit, reasoned Cancel lifts the block | PM Decision, Open Question 5 (resolved this session) | `CardReconSession → FINALIZED` is rejected (`409`) while any `EXCEPTION_UNRESOLVED` item exists. The only way past it is "Cancel Exception" — a required reason, logged with actor + timestamp, moving the item to `EXCEPTION_CANCELLED`. There is no non-blocking/silent-carryover path |
+| Offline capability deferred, not designed for this version | PM Decision, Open Question 4 (resolved this session) | Slice A0 and Slice A require connectivity to submit. No Dexie store, no offline queue, no sync-status indicator for this epic in this version. Revisit as a separate future slice if field connectivity becomes a real blocker |
 
 ---
 
@@ -307,8 +325,8 @@ rest of the system.
 | 1 | ~~What actually triggers a batch run — a fixed schedule (cron) or a manual "Run Batch" button?~~ | `CardCaptureRequest` state machine design; whether a scheduler is needed at all for MVP | **Resolved: (a)** — manual "Run Batch" only, no cron, for MVP. Posting requires human review (receipt legibility, GL code confirm/override) that a scheduler can't perform, so full automation was never really an option. Neglect risk covered by a UI safeguard instead of infrastructure: the queue view shows pending count + oldest-pending age. Scheduling stays an easy fast-follow if volume grows — the state machine doesn't change, only the trigger. | **RESOLVED — PM Decision, 2026-08-24** |
 | 2 | Who assigns the GL/cost code — **partially resolved**: Slice A0 has the cardholder pick it at intent time. Still open: can the Capture Clerk override it at batch-posting (e.g. the cardholder guessed wrong), and what happens when a capture arrives with no linked intent at all? | Capture form design; whether the Clerk has override authority | (a) Cardholder's Slice A0 pick is final, (b) Clerk can override at posting, (c) unlinked captures require the Clerk to pick from scratch | Awaiting PM |
 | 3 | ~~Who owns resolving Slice B exceptions — the same person who captures, or a separate reviewer/controller?~~ | Role/permission model; whether a second-approver control is enforced in the state machine | **Resolved: (b)** — capturer ≠ reconciler, enforced by the system at the entry level (`actorId ≠ capturedBy` on any `MANUAL` match/clear), not via a dedicated fixed "reconciler" role. Rationale: the front-end purchase has no real control (informal approval only), so this is the one place a compensating control can live; entry-level blocking gets that value without requiring dedicated staffing at low transaction volume. | **RESOLVED — PM Decision, 2026-08-24** |
-| 4 | Does Capture Request (and now Purchase Intent) submission need to work offline (purchase happens in the field, no signal)? | Dexie store design; sync strategy for Slice A0 and Slice A | (a) Always online, like `ReconciliationSession`, (b) offline-capable like the Yard Counter PWA | Awaiting PM |
-| 5 | When a bank line has no matching ledger entry after the monthly cycle closes, must it block `FINALIZED`, or can it carry over as a standing exception? Either way it stays `EXCEPTION_UNRESOLVED` and visible per the Guiding Principle — this only decides whether it also blocks the session. | Exception-lane design; `FINALIZED` gate rules for `CardReconSession` | (a) Blocks finalize, like `UNCLASSIFIED_EXCEPTION`, (b) non-blocking, like `Suspense-PMT` | Awaiting PM |
+| 4 | ~~Does Capture Request (and now Purchase Intent) submission need to work offline (purchase happens in the field, no signal)?~~ | Dexie store design; sync strategy for Slice A0 and Slice A | **Resolved: deferred to a later version.** Slice A0 and Slice A require connectivity for this version — no Dexie store, no offline queue, no sync indicator built now. Revisit as its own slice later if field connectivity becomes a real blocker. | **RESOLVED — PM Decision, 2026-08-24 (deferred)** |
+| 5 | ~~When a bank line has no matching ledger entry after the monthly cycle closes, must it block `FINALIZED`, or can it carry over as a standing exception?~~ | Exception-lane design; `FINALIZED` gate rules for `CardReconSession` | **Resolved: blocks, with an explicit Cancel escape hatch.** `FINALIZED` is rejected while any `EXCEPTION_UNRESOLVED` item exists (like `UNCLASSIFIED_EXCEPTION`) — but unlike that lane, the reconciler can explicitly "Cancel Exception" with a required reason, moving it to `EXCEPTION_CANCELLED`: permanently visible and logged, no longer blocking. No silent non-blocking carryover — every exception ends in either a match or a reasoned, attributed cancellation. | **RESOLVED — PM Decision, 2026-08-24** |
 | 6 | Only one card exists today — should the schema still carry a `card_id` FK from day one, or is a single-card assumption acceptable to hardcode for MVP? | Schema design for `CardLedgerEntry` / `CardReconSession` | (a) Hardcode single card for MVP, add `card_id` later, (b) add `card_id` now even with one row, to avoid a migration later | Awaiting PM |
 | 7 | How long does an unlinked `PurchaseIntent` stay `OPEN` before it's surfaced as `ABANDONED`? | `PurchaseIntent` state machine — the exact `OPEN → ABANDONED` transition trigger | (a) Fixed window (e.g. 14/30 days), (b) never auto-transitions — stays `OPEN` indefinitely until manually marked, (c) tied to the next Slice B statement close | Awaiting PM |
 
@@ -335,6 +353,6 @@ rules, or fuzzy matching.
 - [x] Scope boundary is explicit (in AND out)
 - [x] All dependencies named
 - [x] All constraints extracted from governance docs
-- [x] Open Questions Register complete — 5 open, 2 resolved (Q1, Q3)
-- [x] Offline implications stated (flagged as open, not assumed)
+- [x] Open Questions Register complete — 3 open (Q2, Q6, Q7), 4 resolved (Q1, Q3, Q4, Q5)
+- [x] Offline implications stated (resolved — deferred to a later version)
 - Awaiting PM approval and resolution of open questions

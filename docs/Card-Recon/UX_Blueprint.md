@@ -1,6 +1,6 @@
 ## UX Flow — Credit Card Purchase Intent, Capture & Statement Reconciliation
 Produced by: UX-DESIGN-AGENT
-Slice Brief: `docs/Card-Recon/Slice_Brief.md` (5 open, 2 resolved)
+Slice Brief: `docs/Card-Recon/Slice_Brief.md` (3 open, 4 resolved)
 PRD approved: N/A — not yet produced (Stage 2 skipped at PM request)
 Architecture Note approved: N/A — not yet produced (Stage 3 skipped at PM request)
 Date: 2026-08-24
@@ -11,18 +11,18 @@ Date: 2026-08-24
 > normally Stage 5, built from an approved PRD (Stage 2) and Architecture
 > Note (Stage 3). Neither exists for this epic yet. Everything below is
 > derived directly from the approved Slice Brief's Section D (constraints)
-> and Section E (Open Questions Register) in their place. Two open
-> questions change this document's content, not just its polish, and are
-> marked **PENDING** inline rather than silently resolved:
+> and Section E (Open Questions Register) in their place.
 >
-> - **Open Question 4** (offline capability for Slice A0/A) — every mobile
->   screen below is designed to work online-only for now; if Q4 resolves
->   to "offline-capable," the state coverage for those screens needs a
->   Dexie sync layer added, not a redesign.
-> - **Open Question 5** (does an unmatched bank line block `FINALIZED`) —
->   the Finalize button's exact disabled-condition is written as
->   **PENDING** below with both variants shown, so implementation isn't
->   blocked on it but also doesn't guess it.
+> Since first drafted, **Open Question 4** (offline capability) and
+> **Open Question 5** (Finalize gating) have both been resolved and are
+> reflected throughout below rather than left as PENDING:
+> - **Q4 — deferred to a later version.** Slice A0/A are online-only in
+>   this version; no Dexie store, no offline queue, no sync indicator.
+> - **Q5 — blocks, with an explicit Cancel escape hatch.** `FINALIZED` is
+>   rejected while any `EXCEPTION_UNRESOLVED` item exists; the reconciler
+>   can explicitly "Cancel Exception" with a required reason to lift the
+>   block on that item (→ `EXCEPTION_CANCELLED`), but there is no silent
+>   non-blocking path.
 
 ---
 
@@ -126,17 +126,27 @@ Step B.3  — Actor: Reconciler drags/selects a bank line and a ledger
                     otherwise the match confirms immediately.
             State: CardReconMatch (MANUAL). Both sides → MATCHED/RECONCILED.
 
-Step B.4  — Actor: Reconciler clicks "Finalize Session".
-            System: **PENDING Open Question 5.** If unresolved
-                    exceptions block finalize: button stays disabled
-                    with a count of blocking items, mirroring
-                    `UNCLASSIFIED_EXCEPTION`. If non-blocking: button is
-                    enabled with a confirmation dialog listing carried-
-                    over exceptions, mirroring `Suspense-PMT`. Build the
-                    disabled-condition as a single named function
-                    (`canFinalize(session)`) so this resolves without a
-                    UI rework either way.
-            State: CardReconSession → FINALIZED (when allowed).
+Step B.4  — Actor: (Optional, per remaining exception) Reconciler clicks
+                    "Cancel Exception" on an item they cannot match — a
+                    charge that turns out to be a bank fee, or a ledger
+                    entry that was a genuine duplicate.
+            System: Requires a reason (required dropdown/text, same
+                    pattern as Capture Clerk rejection in Slice A) before
+                    the action commits.
+            State: CardStatementLine.status or
+                   CardLedgerEntry.reconciliationStatus → EXCEPTION_CANCELLED.
+                   Logged with actor + reason + timestamp.
+
+Step B.5  — Actor: Reconciler clicks "Finalize Session".
+            System: Disabled — with a visible count and list — while any
+                    item is still `EXCEPTION_UNRESOLVED` (mirrors
+                    `UNCLASSIFIED_EXCEPTION`). `EXCEPTION_CANCELLED` items
+                    do not block. Once every item is `MATCHED`,
+                    `RECONCILED`, or `EXCEPTION_CANCELLED`, the button
+                    enables with a confirmation dialog: "Finalize this
+                    period? N items were cancelled with a reason — this
+                    cannot be undone."
+            State: CardReconSession → FINALIZED.
 ```
 
 ---
@@ -173,13 +183,24 @@ If **network error during statement upload or batch post**:
 - Recovery action: Retry once connection is restored.
 - System state: No partial writes — batch posting and session creation are transactional per Slice Brief Section B.
 
+If **reconciler attempts to Cancel Exception without a reason**:
+- What the actor sees: The action is blocked; inline text "A reason is required to cancel an exception."
+- Recovery action: Provide a reason.
+- System state: No status change — item stays `EXCEPTION_UNRESOLVED`.
+
+If **reconciler attempts to Finalize with unresolved exceptions remaining**:
+- What the actor sees: Finalize button stays disabled; a summary line above it reads "N items still need to be matched or cancelled before finalizing" with a jump-to-first-exception link.
+- Recovery action: Match or explicitly cancel every remaining exception.
+- System state: `CardReconSession` stays `OPEN`/`DRAFT` — `FINALIZED` is rejected server-side (`409`) even if the button were somehow clicked.
+
 If **empty queue / no exceptions / no open intents**:
 - What the actor sees: Never a blank screen — each list has a specific empty state (see State Coverage).
 - Recovery action: N/A — informational.
 
-If **offline submission** (Slice A0/A, mobile) — **PENDING Open Question 4**:
-- Until resolved: submission simply requires connectivity; offline shows "You're offline — reconnect to submit" and nothing queues locally.
-- If Q4 resolves to offline-capable: this becomes a Dexie-queued write with a `Pending sync` badge, matching the Yard Counter PWA pattern — noted here so the fallback path is intentional, not an oversight.
+If **offline** (Slice A0/A, mobile) — resolved, deferred to a later version (Open Question 4):
+- What the actor sees: "You're offline — reconnect to submit." Submit stays disabled while offline; nothing queues locally.
+- Recovery action: Reconnect and resubmit — the form retains what was typed.
+- System state: No entity created. This is a known, accepted limitation for this version, not a bug — a future slice can add a Dexie-queued write with a `Pending sync` badge, matching the Yard Counter PWA pattern, without changing this form's fields.
 
 ---
 
@@ -217,10 +238,16 @@ Size: Standard
 Disabled when: acting user === the ledger entry's capturedBy (segregation of duties)
 onClick: Creates CardReconMatch (MANUAL); both sides → MATCHED/RECONCILED
 
+Button: "Cancel Exception" (Recon Workspace, per unresolved item)
+Context: Desktop
+Size: Standard
+Disabled when: no reason provided
+onClick: item's status → EXCEPTION_CANCELLED, logged with actor + reason + timestamp
+
 Button: "Finalize Session"
 Context: Desktop
 Size: Standard
-Disabled when: PENDING Open Question 5 — see Step B.4
+Disabled when: any CardStatementLine.status or CardLedgerEntry.reconciliationStatus === EXCEPTION_UNRESOLVED exists in the session
 onClick: CardReconSession → FINALIZED
 ```
 
@@ -264,6 +291,10 @@ Default: most recent OPEN intent if exactly one exists, otherwise "None"
 Select: Rejection reason (Capture Queue)
 Options source: static list — "Unreadable receipt", "Amount mismatch", "Duplicate", "Other"
 Default: none selected — required
+
+Select: Cancel Exception reason (Recon Workspace)
+Options source: static list — "Bank fee, no receipt expected", "Duplicate charge", "Confirmed error, written off", "Other"
+Default: none selected — required
 ```
 
 **Tables (Desktop only):**
@@ -293,7 +324,7 @@ Default sort: Date ASC
 - Empty: If no OPEN intents exist, the "Link to a request?" picker doesn't render at all — no empty dropdown
 - Error: Inline toast "Couldn't save — check your connection", form stays populated for retry
 - Success: Toast confirmation, form clears
-- Offline: **PENDING Open Question 4** — see Unhappy Paths
+- Offline: Not supported this version (Open Question 4, resolved — deferred) — see Unhappy Paths
 
 **My Requests**
 - Loading: Skeleton rows
@@ -336,7 +367,14 @@ Disabled when: acting user === CardLedgerEntry.capturedBy for that specific
 
 Element: "Finalize Session"
 Visible to: Depot Manager / Finance Controller
-Disabled when: PENDING Open Question 5
+Disabled when: any EXCEPTION_UNRESOLVED item remains in the session
+               (Open Question 5, resolved — blocks with an explicit
+               Cancel escape hatch, not a silent carryover)
+
+Element: "Cancel Exception"
+Visible to: Depot Manager / Finance Controller
+Disabled when: no reason provided (same required-reason pattern as
+               Capture Clerk rejection)
 
 Element: "+ Quick Request" / Capture Request Form
 Visible to: any cardholder
@@ -349,14 +387,15 @@ Hidden from: no one — this is the one open surface in the whole epic
 
 - **Confirmation dialogs:**
   - Reject: "Reject this request? The cardholder will need to resubmit. — [Cancel] [Reject]"
-  - Finalize: exact text depends on Open Question 5's resolution — either "N unresolved exceptions must be cleared first" (blocking variant, no dialog, button stays disabled) or "M exceptions will carry over to next period. Finalize anyway? — [Cancel] [Finalize]" (non-blocking variant).
+  - Cancel Exception: no separate confirmation dialog — the required reason field itself is the deliberate-action gate.
+  - Finalize: "Finalize this period? N items were cancelled with a reason — this cannot be undone. — [Cancel] [Finalize]", shown only once the button is enabled (no unresolved exceptions remain).
 - **Toast / banner notifications:** success (green, 3s), error (red, persists until dismissed or retried), info (grey, 3s) — bottom-center on mobile, top-right on desktop.
 - **Staleness banner (Capture Queue):** "{n} pending — oldest submitted {days} ago", amber past 7 days, red past 14 days (provisional thresholds — not yet PM-confirmed, flagged for Stage 2).
 - **Status pill colors** (shared `StatusPill` component, one enum → one color mapping):
   - `PurchaseIntent`: `OPEN` grey, `FULFILLED` green, `ABANDONED` amber
   - `CardCaptureRequest`: `SUBMITTED` grey, `BATCHED` blue, `POSTED` green, `REJECTED` red
-  - `CardLedgerEntry.reconciliationStatus`: `UNRECONCILED` amber, `RECONCILED` green, `EXCEPTION_UNRESOLVED` red
-  - `CardStatementLine.status`: `UNMATCHED` amber, `MATCHED` green, `EXCEPTION_UNRESOLVED` red
+  - `CardLedgerEntry.reconciliationStatus`: `UNRECONCILED` amber, `RECONCILED` green, `EXCEPTION_UNRESOLVED` red, `EXCEPTION_CANCELLED` purple
+  - `CardStatementLine.status`: `UNMATCHED` amber, `MATCHED` green, `EXCEPTION_UNRESOLVED` red, `EXCEPTION_CANCELLED` purple
   - `CardReconSession`: `OPEN` blue, `DRAFT` amber, `FINALIZED` green
 - **Optimistic updates:** None for financial writes (Post, Match, Finalize) — these wait for Supabase confirmation given the transactional requirement in Slice Brief Section B; the Quick Request form may optimistically clear since it has no downstream financial effect.
 - **Receipt inline preview:** thumbnail in both Capture Queue and Recon Workspace; click to open full-size in a modal, never a new tab (keeps workspace context).
@@ -368,13 +407,13 @@ Hidden from: no one — this is the one open surface in the whole epic
 ### UX Checklist
 - [x] Every entity in the Slice Brief has a corresponding screen or component
 - [x] Every Slice Brief constraint (Section D) has a corresponding UX step or gate
-- [x] All unhappy paths are defined, including the two PENDING open questions
+- [x] All unhappy paths are defined
 - [x] All loading / empty / error / success states defined for every screen
 - [x] All buttons specified with a disabled condition
-- [x] Status pill colors defined for every status enum in the epic
+- [x] Status pill colors defined for every status enum in the epic, including `EXCEPTION_CANCELLED`
 - [x] Permission gates reference the resolved segregation-of-duties rule (Open Question 3)
 - [x] Mobile tap targets are minimum 44px
 - [x] Monetary values specified as `formatZAR()` — this domain is financial, not quantity-only
-- [ ] Offline behavior (Open Question 4) — PENDING, not yet locked
-- [ ] Finalize gating (Open Question 5) — PENDING, not yet locked
-- Awaiting PM approval — and resolution of Open Questions 4 and 5 before Stage 2 (PRD) can fully lock business rules
+- [x] Offline behavior (Open Question 4) — resolved, deferred to a later version
+- [x] Finalize gating (Open Question 5) — resolved, blocks with an explicit Cancel Exception escape hatch
+- Awaiting PM approval. Remaining Slice Brief open questions (Q2 GL override, Q6 multi-card schema, Q7 abandonment window) don't materially change this UX and can resolve during Stage 2 (PRD)
