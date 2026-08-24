@@ -1,6 +1,6 @@
 ## UX Flow — Credit Card Purchase Intent, Capture & Statement Reconciliation
 Produced by: UX-DESIGN-AGENT
-Slice Brief: `docs/Card-Recon/Slice_Brief.md` (4 open, 4 resolved)
+Slice Brief: `docs/Card-Recon/Slice_Brief.md` (3 open, 5 resolved)
 PRD approved: N/A — not yet produced (Stage 2 skipped at PM request)
 Architecture Note approved: N/A — not yet produced (Stage 3 skipped at PM request)
 Date: 2026-08-24
@@ -23,6 +23,10 @@ Date: 2026-08-24
 >   can explicitly "Cancel Exception" with a required reason to lift the
 >   block on that item (→ `EXCEPTION_CANCELLED`), but there is no silent
 >   non-blocking path.
+> - **Q8 — build `LedgerAccount` + admin CRUD as part of this epic.**
+>   Found during a screen audit (no such table existed anywhere in the
+>   codebase). Now **Slice 0**, a hard prerequisite for Slice A0's account
+>   picker. The screen below is no longer blocked.
 
 ---
 
@@ -30,6 +34,7 @@ Date: 2026-08-24
 
 | Screen / Component | Path | Context | Status | What changes | Slice |
 |---|---|---|---|---|---|
+| Ledger Account Admin | `src/components/card-recon/LedgerAccountAdmin.tsx` | Desktop | New | Minimal CRUD for the GL/cost code reference list: list, create (code + name), rename, deactivate. Code immutable once created; deactivate is soft-delete only | 0 |
 | Quick Request Form | `src/components/card-recon/PurchaseIntentQuickForm.tsx` | Mobile | New | Lightweight, optional pre-purchase intent log | A0 |
 | My Intents | `src/components/card-recon/MyPurchaseIntents.tsx` | Mobile | New | Cardholder's own intent history — `OPEN`/`FULFILLED`/`ABANDONED` (parallel to My Requests; closes an accountability gap Slice A0 otherwise leaves) | A0 |
 | Capture Request Form | `src/components/card-recon/CardCaptureForm.tsx` | Mobile | New | Mandatory receipt capture + submit, optional intent link | A |
@@ -38,13 +43,28 @@ Date: 2026-08-24
 | Card Recon Dashboard | `src/components/card-recon/CardReconDashboard.tsx` | Desktop | New | Statement CSV upload (sole trigger) + session history | B |
 | Card Recon Workspace | `src/components/card-recon/CardReconWorkspace.tsx` | Desktop | New | Match/exception workbench, mirrors `ReconciliationWorkspace`; also renders `FINALIZED` sessions read-only — no separate history screen | B |
 | Status Pill (shared) | `src/components/card-recon/StatusPill.tsx` | Both | New | One badge component for every status enum in this epic | A0 / A / B |
-| Ledger Account Admin | `src/components/card-recon/LedgerAccountAdmin.tsx` | Desktop | **Blocked on Open Question 8** | Minimal CRUD for the GL/cost code reference list — **no such table exists anywhere in this codebase today**; this screen is required unless Q8 resolves to a hardcoded MVP exception to INV-001 | A0 (dependency) |
 
 **Deliberately not added:** a dedicated Activity Log / audit-trail screen. At this volume, the inline reason field + status pill on each item already carries the accountability weight the Guiding Principle asks for; a standalone log would be over-building for now.
 
 ---
 
 ### User Flow — Happy Path
+
+**Slice 0 — Ledger Account Admin**
+
+```
+Step 0.1   — Actor: Admin opens Ledger Account Admin, clicks "New Account".
+             System: Shows a form — code (text, required) + display name
+                     (text, required).
+             State: No entity yet.
+
+Step 0.2   — Actor: Enters code "FUEL" and name "Fuel & Vehicle Costs",
+                     taps Save.
+             System: Adds the row to the list, active by default; toast
+                     "Account created".
+             State: LedgerAccount created, active = true. Immediately
+                    available in the Slice A0 and Slice A pickers.
+```
 
 **Slice A0 — Purchase Intent**
 
@@ -157,6 +177,16 @@ Step B.5  — Actor: Reconciler clicks "Finalize Session".
 
 ### Unhappy Paths
 
+If **admin creates a `LedgerAccount` with a duplicate code**:
+- What the actor sees: "This code already exists" inline error on the code field; existing account's name shown for reference.
+- Recovery action: Choose a different code, or edit the existing account instead.
+- System state: No new row created.
+
+If **admin tries to deactivate an account that's the only account** (Slice A0/A would have nothing to pick from):
+- What the actor sees: Non-blocking warning — "This is the only active account. Deactivating it will leave nothing to select." — deactivation still proceeds if confirmed, it's a warning not a hard block, since the admin may know a replacement is coming.
+- Recovery action: Create a replacement account first, or confirm anyway.
+- System state: `LedgerAccount.active → false` if confirmed.
+
 If **receipt image missing at Capture Request submit**:
 - What the actor sees: Submit button stays disabled; inline text "Attach a photo of your receipt to continue."
 - Recovery action: Attach an image.
@@ -212,6 +242,24 @@ If **offline** (Slice A0/A, mobile) — resolved, deferred to a later version (O
 
 **Buttons:**
 ```
+Button: "New Account" (Ledger Account Admin)
+Context: Desktop
+Size: Standard
+Disabled when: never
+onClick: Opens the create-account form
+
+Button: "Save" (Ledger Account Admin create/edit form)
+Context: Desktop
+Size: Standard
+Disabled when: code empty, name empty, or code already exists
+onClick: Creates or updates LedgerAccount
+
+Button: "Deactivate" (Ledger Account Admin row)
+Context: Desktop
+Size: Standard
+Disabled when: never (warns rather than blocks — see Unhappy Paths)
+onClick: LedgerAccount.active → false
+
 Button: "+ Quick Request" (FAB)
 Context: Mobile
 Size: Large (min 44px tap target)
@@ -257,6 +305,16 @@ onClick: CardReconSession → FINALIZED
 
 **Forms and inputs:**
 ```
+Field: Code (Ledger Account Admin — create only)
+Type: text
+Validation: required, unique, immutable after creation (disabled on edit)
+Error message: "This code already exists"
+
+Field: Name (Ledger Account Admin)
+Type: text
+Validation: required, max 100 chars
+Error message: "Enter a display name"
+
 Field: Description (Quick Request + Capture Request)
 Type: text
 Placeholder: "What's this for? e.g. litre of oil for the vehicle"
@@ -265,7 +323,7 @@ Error message: "Add a short description"
 
 Field: Ledger account / project
 Type: select
-Options source: DB reference list (INV-001 — never hardcoded)
+Options source: active LedgerAccount rows (Slice 0 — INV-001, never hardcoded)
 Default: none selected
 Validation: required to submit a Quick Request; on Capture Request, pre-filled
             from a linked intent but always editable
@@ -359,6 +417,10 @@ Default sort: Date ASC
 ### Permission Gates
 
 ```
+Element: Ledger Account Admin (entire screen)
+Visible to: Depot Manager / Finance Controller (admin)
+Hidden from: Cardholder, Capture Clerk
+
 Element: "Post" / "Reject" (Capture Queue)
 Visible to: Capture Clerk, Depot Manager
 Hidden from: Cardholder-only accounts (no clerk permission)
@@ -420,5 +482,5 @@ Hidden from: no one — this is the one open surface in the whole epic
 - [x] Monetary values specified as `formatZAR()` — this domain is financial, not quantity-only
 - [x] Offline behavior (Open Question 4) — resolved, deferred to a later version
 - [x] Finalize gating (Open Question 5) — resolved, blocks with an explicit Cancel Exception escape hatch
-- [ ] Ledger Account reference data (Open Question 8) — found during this screen audit; blocks the Quick Request Form's account picker until resolved
-- Awaiting PM approval. Q2 (GL override), Q6 (multi-card schema), and Q7 (abandonment window) don't materially change this UX and can resolve during Stage 2 (PRD). **Q8 is different — it may block Slice A0 from being buildable at all** until the PM picks an option
+- [x] Ledger Account reference data (Open Question 8) — resolved: Slice 0 (Ledger Account Admin) builds the missing table + admin screen, fully specified above
+- Awaiting PM approval. Remaining Slice Brief open questions — Q2 (GL override), Q6 (multi-card schema), Q7 (abandonment window) — don't materially change this UX and can resolve during Stage 2 (PRD)

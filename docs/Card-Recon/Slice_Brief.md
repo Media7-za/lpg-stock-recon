@@ -5,11 +5,16 @@ Jira ticket: TBD — to be raised in project LSR (no ticket number invented here
 
 ---
 
-This epic covers three dependent slices. They are separated per the
+This epic covers four dependent slices. They are separated per the
 pipeline rule that conflated features must be split: different actors,
-different triggers, different outputs. Slice A0 feeds Slice A; Slice A
-must exist before Slice B has anything to reconcile against.
+different triggers, different outputs. Slice 0 is a hard prerequisite for
+Slice A0 (Open Question 8, resolved — discovered during UX screen audit,
+not part of the original request); Slice A0 feeds Slice A; Slice A must
+exist before Slice B has anything to reconcile against.
 
+- **Slice 0 — Ledger Account Admin (Master Data):** an admin maintains the
+  GL/cost code reference list that Slices A0 and A pick from — this table
+  does not exist anywhere in the codebase today.
 - **Slice A0 — Purchase Intent (Quick Request):** cardholder logs a quick,
   non-blocking "I'm about to buy X" — description + ledger account/project
   — before the card is swiped.
@@ -54,6 +59,63 @@ would recreate the PO/pre-approval step this system deliberately does not
 have. A cardholder can buy something with no `PurchaseIntent` on file at
 all; that just means the eventual `CardCaptureRequest` in Slice A arrives
 unlinked, which is a normal, allowed outcome — not an error state.
+
+---
+
+## Slice 0 — Ledger Account Admin (Master Data)
+
+### A. Slice Frame
+
+**Feature name:** Ledger Account Admin
+**Actor:** Depot Manager / Finance Controller (admin)
+**User outcome:** After using this feature, an admin can create, rename,
+and deactivate the ledger account/project codes that Slice A0's Quick
+Request form and Slice A's Capture form pick from — so that data comes
+from the database, never a hardcoded list, satisfying INV-001.
+**Type:** Admin surface
+**Priority tier:** MVP-critical — Slice A0 cannot function without this
+(Open Question 8, resolved)
+
+### B. Slice Boundary
+
+**In scope:**
+- List view of all `LedgerAccount` rows: code, display name, active/inactive.
+- Create: code + display name, both required. Code is immutable once
+  created — historical `CardCaptureRequest`/`CardLedgerEntry`/
+  `PurchaseIntent` rows reference it by code, and changing it after the
+  fact would silently corrupt those references (INV-005 spirit).
+- Edit: display name only.
+- Deactivate (soft — `active = false`), never hard-delete. An inactive
+  account disappears from Slice A0/A pickers going forward, but every
+  historical record that already references it keeps displaying its name
+  unchanged — deleting it would violate the closed-loop accountability
+  principle by breaking the audit trail on old entries.
+
+**Out of scope:**
+- Budget or spend-limit configuration per account — not this epic.
+- Hierarchical/parent-child account structures — flat list only for MVP.
+- Bulk import — one-at-a-time manual entry, given the expected small
+  number of accounts at this volume.
+
+**Events that enter this slice:**
+- Admin opens the Ledger Account Admin screen — self-initiated, no
+  external trigger.
+
+**Outputs that leave this slice:**
+- `LedgerAccount` rows, consumed by Slice A0's account picker and Slice
+  A's GL-code confirm/override step.
+
+**Reads from:** none — net-new domain.
+**Writes to:** `LedgerAccount` (new).
+
+**Owns state:** YES
+**Transactional:** NO — simple CRUD, no multi-row transaction needed.
+**New session state:** NO — `LedgerAccount` has a simple `active` boolean,
+not a full lifecycle state machine; it doesn't participate in the
+Guiding Principle's terminal-status model the way the other five entities do.
+**Offline-capable:** NOT REQUIRED — desktop admin screen.
+**Position in flow:** UPSTREAM of Slice A0 and Slice A — a hard
+prerequisite, not merely upstream-and-optional like Slice A0 is to A.
 
 ---
 
@@ -102,10 +164,7 @@ Open Question 2 (GL code assignment), but Slice A works without it
 **Outputs that leave this slice:**
 - `PurchaseIntent` rows, consumed by Slice A for optional linking.
 
-**Reads from:** ledger account / project reference list — **this does not
-exist anywhere in the codebase today** (verified: no GL/cost/ledger
-account table or screen in `prisma/schema.prisma` or `src/`). Treated
-here as "existing" was wrong; see Open Question 8.
+**Reads from:** `LedgerAccount` (Slice 0, new — Open Question 8, resolved).
 **Writes to:** `PurchaseIntent` (new).
 
 **Owns state:** YES
@@ -267,32 +326,37 @@ period.
 
 ### C. Dependency Map (all three slices)
 
-**Domain entities:** `PurchaseIntent`, `CardCaptureRequest`,
-`CardLedgerEntry`, `CardStatementLine`, `CardReconMatch`,
-`CardReconSession`, and possibly `LedgerAccount` (new master-data entity —
-see Open Question 8; this epic is the first thing in the codebase to need
-a GL/cost code reference table, none exists today)
+**Domain entities:** `LedgerAccount` (Slice 0, new master-data entity —
+Open Question 8, resolved; this epic is the first thing in the codebase to
+need a GL/cost code reference table, none existed before), `PurchaseIntent`,
+`CardCaptureRequest`, `CardLedgerEntry`, `CardStatementLine`,
+`CardReconMatch`, `CardReconSession`
 **Session states touched:** New — `PurchaseIntent.status`,
 `CardCaptureRequest.status`, `CardReconSession.status`,
-`CardStatementLine.status`, `CardLedgerEntry.reconciliationStatus`. None
-reuse an existing state machine.
-**Invariants touched:** INV-002 (date format), INV-005 (ID integrity — new
-FK contracts must be documented before code exists, incl.
-`CardCaptureRequest.intentId → PurchaseIntent.id`), INV-006 (status
-casing — a convention must be picked), INV-008 (analog: an unreconciled
-line is a disclosed state, never silently corrected), INV-009 (ZAR display)
+`CardStatementLine.status`, `CardLedgerEntry.reconciliationStatus`.
+`LedgerAccount.active` is a simple boolean, not a lifecycle state machine.
+None reuse an existing state machine.
+**Invariants touched:** INV-001 (no hardcoded reference data — this is why
+Slice 0 exists), INV-002 (date format), INV-005 (ID integrity — new FK
+contracts must be documented before code exists, incl.
+`CardCaptureRequest.intentId → PurchaseIntent.id`, `PurchaseIntent.ledgerAccountCode
+→ LedgerAccount.code`), INV-006 (status casing — a convention must be
+picked), INV-008 (analog: an unreconciled line is a disclosed state,
+never silently corrected), INV-009 (ZAR display)
 **Existing Supabase views/queries:** None reused directly — but the
 `invoice-documents` storage upload pattern is reused as-is.
 **New Supabase views/queries needed:** `card_recon_summary` (mirrors
 `reconciliation_summary`), `card_capture_queue` (pending-request view for
 the Capture Clerk), `open_purchase_intents` (unlinked/`OPEN` intents, for
-the linking picker in Slice A)
-**Dexie stores touched:** None decided — depends on Open Question 4.
+the linking picker in Slice A), `active_ledger_accounts` (for both pickers)
+**Dexie stores touched:** None — resolved by Open Question 4 (offline
+deferred to a later version).
 **External libraries:** PapaParse (already used), Supabase Storage
 (already used).
-**UI surfaces:** New — `PurchaseIntentQuickForm`, `CardCaptureForm`,
-`CardCaptureQueue` (Capture Clerk batch view), `CardReconWorkspace`
-(mirrors `ReconciliationWorkspace`).
+**UI surfaces:** New — `LedgerAccountAdmin`, `PurchaseIntentQuickForm`,
+`MyPurchaseIntents`, `CardCaptureForm`, `MyCaptureRequests`,
+`CardCaptureQueue` (Capture Clerk batch view), `CardReconDashboard`,
+`CardReconWorkspace` (mirrors `ReconciliationWorkspace`).
 **Offline implications:** None for this version — deferred (Open Question
 4, resolved) for Slice A0 and Slice A; none applicable to Slice B.
 **Audit/sync implications:** Every batch-post and every match/unmatch
@@ -305,7 +369,7 @@ rest of the system.
 
 | Constraint | Source | What it means for this slice |
 |---|---|---|
-| No hardcoded reference data | INV-001 | Card account(s) and GL/cost codes are fetched from DB, never hardcoded in the capture form. **Currently unmet:** no such table exists yet in this codebase — see Open Question 8 |
+| No hardcoded reference data | INV-001 | Card account(s) and GL/cost codes are fetched from DB, never hardcoded in the capture form. Satisfied by Slice 0 (`LedgerAccount` table + admin screen) — Open Question 8, resolved |
 | `dd MMM yyyy` date display | INV-002 | Statement dates and capture dates use the shared `formatDate()` utility |
 | Every UI action wired | INV-003 | Submit / Run Batch / Match buttons need real handlers, or explicit `disabled` + `TODO: LSR-{ticket}` |
 | Dark theme tokens only | INV-004 | New screens use the existing Tailwind token set — no new component library |
@@ -320,6 +384,7 @@ rest of the system.
 | Capturer ≠ reconciler on the same entry — segregation of duties | PM Decision, Open Question 3 (resolved this session) | The system checks `actorId ≠ CardLedgerEntry.capturedBy` before allowing any `MANUAL` match or exception clear in Slice B. `AUTO_EXACT`/`AUTO_FUZZY` matches are exempt — they're system-generated, not a self-attestation. This is enforced at the entry level, not via a separate fixed "reconciler" role — any user other than the original capturer may act |
 | Unresolved exceptions block `FINALIZED`; only an explicit, reasoned Cancel lifts the block | PM Decision, Open Question 5 (resolved this session) | `CardReconSession → FINALIZED` is rejected (`409`) while any `EXCEPTION_UNRESOLVED` item exists. The only way past it is "Cancel Exception" — a required reason, logged with actor + timestamp, moving the item to `EXCEPTION_CANCELLED`. There is no non-blocking/silent-carryover path |
 | Offline capability deferred, not designed for this version | PM Decision, Open Question 4 (resolved this session) | Slice A0 and Slice A require connectivity to submit. No Dexie store, no offline queue, no sync-status indicator for this epic in this version. Revisit as a separate future slice if field connectivity becomes a real blocker |
+| Build a real `LedgerAccount` table + admin screen — no hardcoded exception, no borrowing from another epic | PM Decision, Open Question 8 (resolved this session) | `LedgerAccount.code` is immutable once created (historical records reference it by code); deactivation is a soft `active = false` flag, never a hard delete — deleting would break the audit trail on every historical entry that references it, violating the Guiding Principle |
 
 ---
 
@@ -334,14 +399,15 @@ rest of the system.
 | 5 | ~~When a bank line has no matching ledger entry after the monthly cycle closes, must it block `FINALIZED`, or can it carry over as a standing exception?~~ | Exception-lane design; `FINALIZED` gate rules for `CardReconSession` | **Resolved: blocks, with an explicit Cancel escape hatch.** `FINALIZED` is rejected while any `EXCEPTION_UNRESOLVED` item exists (like `UNCLASSIFIED_EXCEPTION`) — but unlike that lane, the reconciler can explicitly "Cancel Exception" with a required reason, moving it to `EXCEPTION_CANCELLED`: permanently visible and logged, no longer blocking. No silent non-blocking carryover — every exception ends in either a match or a reasoned, attributed cancellation. | **RESOLVED — PM Decision, 2026-08-24** |
 | 6 | Only one card exists today — should the schema still carry a `card_id` FK from day one, or is a single-card assumption acceptable to hardcode for MVP? | Schema design for `CardLedgerEntry` / `CardReconSession` | (a) Hardcode single card for MVP, add `card_id` later, (b) add `card_id` now even with one row, to avoid a migration later | Awaiting PM |
 | 7 | How long does an unlinked `PurchaseIntent` stay `OPEN` before it's surfaced as `ABANDONED`? | `PurchaseIntent` state machine — the exact `OPEN → ABANDONED` transition trigger | (a) Fixed window (e.g. 14/30 days), (b) never auto-transitions — stays `OPEN` indefinitely until manually marked, (c) tied to the next Slice B statement close | Awaiting PM |
-| 8 | **New — found during UX screen audit.** No GL/cost code or ledger account reference table exists anywhere in this codebase (verified by grep across `prisma/schema.prisma` and `src/`). Slice A0's account picker has nothing to read from, and INV-001 forbids hardcoding it. Does this epic build a new `LedgerAccount` entity + a minimal admin screen, or is there another source? | Slice A0 form design; `LedgerAccountAdmin` screen in/out of scope; whether Slice A0 can build at all without this | (a) Build a minimal `LedgerAccount` table + CRUD admin screen as part of this epic, (b) explicitly accept a hardcoded short list as a stated MVP exception to INV-001, (c) this reference data belongs to a different, already-planned epic — link to it instead of building here | Awaiting PM |
+| 8 | ~~No GL/cost code or ledger account reference table exists anywhere in this codebase — does this epic build one, or is there another source?~~ | Slice A0 form design; `LedgerAccountAdmin` screen in/out of scope; whether Slice A0 can build at all without this | **Resolved: (a)** — build a minimal `LedgerAccount` table + admin CRUD screen as part of this epic (now **Slice 0**, with its own full Slice Frame/Boundary above). Code immutable once created, deactivation is soft-delete only — see Section D. | **RESOLVED — PM Decision, 2026-08-24** |
 
 ---
 
 ### Recommended Vertical Slice
 
-The smallest end-to-end path that proves the whole pipeline: a Cardholder
-optionally logs a Purchase Intent ("litre of oil for the vehicle" + a
+The smallest end-to-end path that proves the whole pipeline: an admin
+creates one `LedgerAccount` in the new admin screen → a Cardholder
+optionally logs a Purchase Intent ("litre of oil for the vehicle" + that
 ledger account) → later submits one Capture Request with a mandatory
 receipt photo, linked back to that intent → a Capture Clerk manually runs
 a batch (no cron yet) that posts it as a `CardLedgerEntry` carrying the
@@ -359,6 +425,6 @@ rules, or fuzzy matching.
 - [x] Scope boundary is explicit (in AND out)
 - [x] All dependencies named
 - [x] All constraints extracted from governance docs
-- [x] Open Questions Register complete — 4 open (Q2, Q6, Q7, Q8), 4 resolved (Q1, Q3, Q4, Q5)
+- [x] Open Questions Register complete — 3 open (Q2, Q6, Q7), 5 resolved (Q1, Q3, Q4, Q5, Q8)
 - [x] Offline implications stated (resolved — deferred to a later version)
 - Awaiting PM approval and resolution of open questions
