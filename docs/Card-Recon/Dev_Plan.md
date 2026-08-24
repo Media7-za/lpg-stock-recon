@@ -104,6 +104,9 @@ model CardLedgerEntry {
                                          // Capture Clerk's later review action
   reconciliationStatus String  @default("UNRECONCILED")
                               // UNRECONCILED | RECONCILED | EXCEPTION_UNRESOLVED | EXCEPTION_CANCELLED
+  cancelReason        String?           // mirrors CardStatementLine (follow-up migration --
+  cancelledBy         String?           // Cancel Exception applies to either side of a
+  cancelledAt         DateTime?         // match, not just the statement-line side)
   postedBy            String            // the Capture Clerk
   postedAt            DateTime @default(now())
 }
@@ -164,18 +167,22 @@ the implementation gap, not reopening a locked decision:**
 - `CardReconMatch.statementLineId → CardStatementLine.id` (never `.ledgerEntryId`'s type)
 - `CardReconMatch.ledgerEntryId → CardLedgerEntry.id` (never a `CardStatementLine.id`)
 
-**Migration classification:** entirely additive. Shipped as three
+**Migration classification:** entirely additive. Shipped as four
 migrations — `add_card_recon_foundation` (the seven tables, M0), a
 follow-up `add_receipt_evidence_metadata` (the `receiptMimeType`/
 `receiptSizeBytes`/`receiptUploadedAt` columns, added once
-FR-CCR-RECEIPT-001 specified what needed recording beyond the path), and
+FR-CCR-RECEIPT-001 specified what needed recording beyond the path),
 `capture_request_description_and_account` (M3 — replaced the untyped
 `merchantNote` with a real `description` column matching the UX
 Blueprint's field spec, and added `ledgerAccountCode`, which the UX
 Blueprint's Capture Request Form needed and the original schema draft
-missed entirely). No backfill needed for any of the three — every table
-was still empty when each migration was written — and no destructive
-risk in any case, `DROP COLUMN merchant_note` included.
+missed entirely), and `ledger_entry_cancel_metadata` (M4 — added
+`cancelReason`/`cancelledBy`/`cancelledAt` to `CardLedgerEntry`, mirroring
+`CardStatementLine`; `cancelException`'s own signature always covered
+both sides of a match, but the schema draft only gave one side the
+columns to support it). No backfill needed for any of the four — every
+table was still empty when each migration was written — and no
+destructive risk in any case, `DROP COLUMN merchant_note` included.
 
 ---
 

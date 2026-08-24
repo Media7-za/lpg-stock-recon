@@ -11,7 +11,8 @@ export type StatusPillKind =
   | 'captureRequest'
   | 'ledgerEntryReconciliation'
   | 'statementLine'
-  | 'reconSession';
+  | 'reconSession'
+  | 'matchMethod';
 
 type PillColor = 'grey' | 'blue' | 'green' | 'amber' | 'red' | 'purple';
 
@@ -31,6 +32,11 @@ const COLOR_MAPS: Record<StatusPillKind, Record<string, PillColor>> = {
     EXCEPTION_CANCELLED: 'purple',
   },
   reconSession: { OPEN: 'blue', DRAFT: 'amber', FINALIZED: 'green' },
+  // Not in the original UX Blueprint color list (found while building
+  // M4 — CardReconMatch.matchMethod needed its own badge, distinct from
+  // captureRequest's SUBMITTED/BATCHED/POSTED/REJECTED, which it was
+  // mistakenly rendered with in an early workspace draft).
+  matchMethod: { AUTO_EXACT: 'green', AUTO_FUZZY: 'blue', MANUAL: 'purple' },
 };
 
 const COLOR_CLASSES: Record<PillColor, string> = {

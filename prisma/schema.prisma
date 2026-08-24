@@ -416,25 +416,28 @@ model CardCaptureRequest {
 }
 
 model CardLedgerEntry {
-  id                   String   @id @default(cuid())
-  captureRequestId     String   @map("capture_request_id") // FK -> CardCaptureRequest.id
-  capturedBy           String   @map("captured_by") // segregation-of-duties check field
+  id                   String    @id @default(cuid())
+  captureRequestId     String    @map("capture_request_id") // FK -> CardCaptureRequest.id
+  capturedBy           String    @map("captured_by") // segregation-of-duties check field
   vendor               String // fixed card identifier — single-card MVP
   // assumption (Slice Brief Open Question 6)
   reference            String // receipt's own reference
-  ledgerAccountCode    String   @map("ledger_account_code") // FK -> LedgerAccount.code
-  date                 DateTime @db.Date
-  amount               Decimal  @db.Decimal(18, 2)
-  receiptUrl           String   @map("receipt_url") // private bucket object path — see CardCaptureRequest
-  receiptMimeType      String   @map("receipt_mime_type")
-  receiptSizeBytes     Int      @map("receipt_size_bytes")
-  receiptUploadedAt    DateTime @map("receipt_uploaded_at") @db.Timestamptz(6) // when the file was
+  ledgerAccountCode    String    @map("ledger_account_code") // FK -> LedgerAccount.code
+  date                 DateTime  @db.Date
+  amount               Decimal   @db.Decimal(18, 2)
+  receiptUrl           String    @map("receipt_url") // private bucket object path — see CardCaptureRequest
+  receiptMimeType      String    @map("receipt_mime_type")
+  receiptSizeBytes     Int       @map("receipt_size_bytes")
+  receiptUploadedAt    DateTime  @map("receipt_uploaded_at") @db.Timestamptz(6) // when the file was
   // originally uploaded at capture time — NOT postedAt, which is the
   // Capture Clerk's later review action
-  reconciliationStatus String   @default("UNRECONCILED") @map("reconciliation_status")
+  reconciliationStatus String    @default("UNRECONCILED") @map("reconciliation_status")
   // UNRECONCILED | RECONCILED | EXCEPTION_UNRESOLVED | EXCEPTION_CANCELLED
-  postedBy             String   @map("posted_by") // the Capture Clerk
-  postedAt             DateTime @default(now()) @map("posted_at") @db.Timestamptz(6)
+  cancelReason         String?   @map("cancel_reason") // mirrors CardStatementLine — Cancel
+  cancelledBy          String?   @map("cancelled_by") // Exception applies to either side of a
+  cancelledAt          DateTime? @map("cancelled_at") @db.Timestamptz(6) // match (Slice B)
+  postedBy             String    @map("posted_by") // the Capture Clerk
+  postedAt             DateTime  @default(now()) @map("posted_at") @db.Timestamptz(6)
 
   @@index([captureRequestId])
   @@index([reconciliationStatus])

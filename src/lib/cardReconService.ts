@@ -1,6 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
 import { supabase } from './supabase';
 import type { ProcessedReceipt } from './receiptProcessing';
+import { parseStatementCsv } from './cardStatementParser';
+import { computeAutoMatches } from './cardReconMatchEngine';
 
 export interface LedgerAccount {
   id: string;
@@ -372,6 +374,9 @@ export interface CardLedgerEntry {
   receiptSizeBytes: number;
   receiptUploadedAt: string;
   reconciliationStatus: string;
+  cancelReason: string | null;
+  cancelledBy: string | null;
+  cancelledAt: string | null;
   postedBy: string;
   postedAt: string;
 }
@@ -390,6 +395,9 @@ interface CardLedgerEntryRow {
   receipt_size_bytes: number;
   receipt_uploaded_at: string;
   reconciliation_status: string;
+  cancel_reason: string | null;
+  cancelled_by: string | null;
+  cancelled_at: string | null;
   posted_by: string;
   posted_at: string;
 }
@@ -409,6 +417,9 @@ function mapCardLedgerEntry(row: CardLedgerEntryRow): CardLedgerEntry {
     receiptSizeBytes: row.receipt_size_bytes,
     receiptUploadedAt: row.receipt_uploaded_at,
     reconciliationStatus: row.reconciliation_status,
+    cancelReason: row.cancel_reason,
+    cancelledBy: row.cancelled_by,
+    cancelledAt: row.cancelled_at,
     postedBy: row.posted_by,
     postedAt: row.posted_at,
   };
@@ -496,4 +507,402 @@ export async function rejectCaptureRequest(requestId: string, reason: string, ac
   if (intentId) {
     await supabase.from('purchase_intents').update({ status: 'OPEN' }).eq('id', intentId);
   }
+}
+
+// Slice B — Card Statement Reconciliation
+// docs/Card-Recon/Dev_Plan.md Section 3. The statement CSV upload is the
+// SOLE trigger for this slice — no separate "Start Reconciliation"
+// action (Slice Brief Section B). importStatement() creates the session
+// and runs the auto-match pass in one call.
+
+export type CardReconSessionStatus = 'OPEN' | 'DRAFT' | 'FINALIZED';
+
+export interface CardReconSession {
+  id: string;
+  status: CardReconSessionStatus;
+  statementFilename: string;
+  importedBy: string;
+  importedAt: string;
+  finalizedBy: string | null;
+  finalizedAt: string | null;
+}
+
+interface CardReconSessionRow {
+  id: string;
+  status: CardReconSessionStatus;
+  statement_filename: string;
+  imported_by: string;
+  imported_at: string;
+  finalized_by: string | null;
+  finalized_at: string | null;
+}
+
+function mapCardReconSession(row: CardReconSessionRow): CardReconSession {
+  return {
+    id: row.id,
+    status: row.status,
+    statementFilename: row.statement_filename,
+    importedBy: row.imported_by,
+    importedAt: row.imported_at,
+    finalizedBy: row.finalized_by,
+    finalizedAt: row.finalized_at,
+  };
+}
+
+export type CardStatementLineStatus = 'UNMATCHED' | 'MATCHED' | 'EXCEPTION_UNRESOLVED' | 'EXCEPTION_CANCELLED';
+
+export interface CardStatementLine {
+  id: string;
+  sessionId: string;
+  date: string;
+  description: string;
+  amount: number;
+  status: CardStatementLineStatus;
+  cancelReason: string | null;
+  cancelledBy: string | null;
+  cancelledAt: string | null;
+}
+
+interface CardStatementLineRow {
+  id: string;
+  session_id: string;
+  date: string;
+  description: string;
+  amount: number | string;
+  status: CardStatementLineStatus;
+  cancel_reason: string | null;
+  cancelled_by: string | null;
+  cancelled_at: string | null;
+}
+
+function mapCardStatementLine(row: CardStatementLineRow): CardStatementLine {
+  return {
+    id: row.id,
+    sessionId: row.session_id,
+    date: row.date,
+    description: row.description,
+    amount: Number(row.amount),
+    status: row.status,
+    cancelReason: row.cancel_reason,
+    cancelledBy: row.cancelled_by,
+    cancelledAt: row.cancelled_at,
+  };
+}
+
+export type CardMatchMethod = 'AUTO_EXACT' | 'AUTO_FUZZY' | 'MANUAL';
+
+export interface CardReconMatch {
+  id: string;
+  sessionId: string;
+  statementLineId: string;
+  ledgerEntryId: string;
+  matchMethod: CardMatchMethod;
+  matchedBy: string | null;
+  matchedAt: string;
+}
+
+interface CardReconMatchRow {
+  id: string;
+  session_id: string;
+  statement_line_id: string;
+  ledger_entry_id: string;
+  match_method: CardMatchMethod;
+  matched_by: string | null;
+  matched_at: string;
+}
+
+function mapCardReconMatch(row: CardReconMatchRow): CardReconMatch {
+  return {
+    id: row.id,
+    sessionId: row.session_id,
+    statementLineId: row.statement_line_id,
+    ledgerEntryId: row.ledger_entry_id,
+    matchMethod: row.match_method,
+    matchedBy: row.matched_by,
+    matchedAt: row.matched_at,
+  };
+}
+
+export async function listCardReconSessions(): Promise<CardReconSession[]> {
+  if (!supabase) throw new Error('Supabase not initialized');
+  const { data, error } = await supabase.from('card_recon_sessions').select('*').order('imported_at', { ascending: false });
+  if (error) throw error;
+  return (data ?? []).map(mapCardReconSession);
+}
+
+export async function getCardReconSession(sessionId: string): Promise<CardReconSession> {
+  if (!supabase) throw new Error('Supabase not initialized');
+  const { data, error } = await supabase.from('card_recon_sessions').select('*').eq('id', sessionId).single();
+  if (error) throw error;
+  return mapCardReconSession(data);
+}
+
+export async function listSessionStatementLines(sessionId: string): Promise<CardStatementLine[]> {
+  if (!supabase) throw new Error('Supabase not initialized');
+  const { data, error } = await supabase
+    .from('card_statement_lines')
+    .select('*')
+    .eq('session_id', sessionId)
+    .order('date', { ascending: true });
+  if (error) throw error;
+  return (data ?? []).map(mapCardStatementLine);
+}
+
+// Not scoped to a session -- CardLedgerEntry is created independently in
+// Slice A and isn't tied to any particular statement period. Every
+// UNRECONCILED entry is shown as a manual-match/cancel candidate in
+// every open workspace; low volume (Slice Brief) makes this fine without
+// pagination.
+export async function listUnreconciledLedgerEntries(): Promise<CardLedgerEntry[]> {
+  if (!supabase) throw new Error('Supabase not initialized');
+  const { data, error } = await supabase
+    .from('card_ledger_entries')
+    .select('*')
+    .eq('reconciliation_status', 'UNRECONCILED')
+    .order('date', { ascending: true });
+  if (error) throw error;
+  return (data ?? []).map(mapCardLedgerEntry);
+}
+
+// Used to display already-matched pairs in the workspace, where the
+// ledger entry side is RECONCILED (not UNRECONCILED) so
+// listUnreconciledLedgerEntries won't return it.
+export async function getCardLedgerEntriesByIds(ids: string[]): Promise<CardLedgerEntry[]> {
+  if (!supabase) throw new Error('Supabase not initialized');
+  if (ids.length === 0) return [];
+  const { data, error } = await supabase.from('card_ledger_entries').select('*').in('id', ids);
+  if (error) throw error;
+  return (data ?? []).map(mapCardLedgerEntry);
+}
+
+export async function listSessionMatches(sessionId: string): Promise<CardReconMatch[]> {
+  if (!supabase) throw new Error('Supabase not initialized');
+  const { data, error } = await supabase.from('card_recon_matches').select('*').eq('session_id', sessionId);
+  if (error) throw error;
+  return (data ?? []).map(mapCardReconMatch);
+}
+
+/**
+ * The statement CSV upload is the sole trigger for Slice B: creates the
+ * session, inserts the parsed statement lines, and immediately runs the
+ * auto-match pass — there is no separate "Start Reconciliation" step
+ * (Slice Brief Section B).
+ */
+export async function importStatement(csvFile: File, importedBy: string): Promise<CardReconSession> {
+  if (!supabase) throw new Error('Supabase not initialized');
+
+  const csvText = await csvFile.text();
+  const parsed = parseStatementCsv(csvText);
+  if (!parsed.success || !parsed.lines) {
+    throw new Error(parsed.error ?? "Couldn't read this file — check it's the unedited bank export");
+  }
+
+  const { data: sessionRow, error: sessionError } = await supabase
+    .from('card_recon_sessions')
+    .insert({ statement_filename: csvFile.name, imported_by: importedBy })
+    .select()
+    .single();
+  if (sessionError) throw sessionError;
+  const session = mapCardReconSession(sessionRow);
+
+  const { error: linesError } = await supabase.from('card_statement_lines').insert(
+    parsed.lines.map((line) => ({
+      session_id: session.id,
+      date: line.date,
+      description: line.description,
+      amount: line.amount,
+    }))
+  );
+  if (linesError) throw linesError;
+
+  await runAutoMatch(session.id);
+
+  return session;
+}
+
+/**
+ * Auto-match pass: AUTO_EXACT then AUTO_FUZZY (cardReconMatchEngine.ts)
+ * against every UNRECONCILED CardLedgerEntry. Statement lines that don't
+ * match move to EXCEPTION_UNRESOLVED — bank lines are inherently
+ * session-scoped and one-shot, so an unmatched line genuinely needs this
+ * session's review.
+ *
+ * Ledger entries that don't match are deliberately left UNRECONCILED,
+ * not flipped to EXCEPTION_UNRESOLVED: an entry posted near the end of
+ * this statement's period may legitimately belong on NEXT month's
+ * statement instead. Auto-flagging it here would incorrectly force a
+ * decision on something that isn't actually overdue yet, and — because
+ * an EXCEPTION_UNRESOLVED entry would then be excluded from future
+ * auto-match candidate pools (which only query UNRECONCILED) — it could
+ * never automatically match a later statement either. It stays a
+ * candidate for manual match or Cancel Exception in any session's
+ * workspace until one of those actually happens.
+ */
+export async function runAutoMatch(sessionId: string): Promise<CardReconMatch[]> {
+  if (!supabase) throw new Error('Supabase not initialized');
+
+  const { data: lineRows, error: linesError } = await supabase
+    .from('card_statement_lines')
+    .select('*')
+    .eq('session_id', sessionId)
+    .eq('status', 'UNMATCHED');
+  if (linesError) throw linesError;
+  const lines = (lineRows ?? []).map(mapCardStatementLine);
+  if (lines.length === 0) return [];
+
+  const entries = await listUnreconciledLedgerEntries();
+  const autoMatches = computeAutoMatches(lines, entries);
+
+  const createdMatches: CardReconMatch[] = [];
+  for (const m of autoMatches) {
+    const { data: matchRow, error: matchError } = await supabase
+      .from('card_recon_matches')
+      .insert({
+        session_id: sessionId,
+        statement_line_id: m.statementLineId,
+        ledger_entry_id: m.ledgerEntryId,
+        match_method: m.matchMethod,
+        matched_by: null,
+      })
+      .select()
+      .single();
+    if (matchError) throw matchError;
+    createdMatches.push(mapCardReconMatch(matchRow));
+
+    await supabase.from('card_statement_lines').update({ status: 'MATCHED' }).eq('id', m.statementLineId);
+    await supabase
+      .from('card_ledger_entries')
+      .update({ reconciliation_status: 'RECONCILED' })
+      .eq('id', m.ledgerEntryId);
+  }
+
+  const matchedLineIds = new Set(autoMatches.map((m) => m.statementLineId));
+  const unmatchedLineIds = lines.filter((l) => !matchedLineIds.has(l.id)).map((l) => l.id);
+  if (unmatchedLineIds.length > 0) {
+    await supabase.from('card_statement_lines').update({ status: 'EXCEPTION_UNRESOLVED' }).in('id', unmatchedLineIds);
+  }
+
+  return createdMatches;
+}
+
+/**
+ * Open Question 3, resolved: capturer != reconciler. A MANUAL match is
+ * blocked if the acting user is the ledger entry's own capturer — a
+ * self-attestation the rest of the system never allows. AUTO_* matches
+ * are exempt (enforced in runAutoMatch, which never receives an actorId
+ * at all).
+ */
+export async function confirmManualMatch(
+  sessionId: string,
+  statementLineId: string,
+  ledgerEntryId: string,
+  actorId: string
+): Promise<CardReconMatch> {
+  if (!supabase) throw new Error('Supabase not initialized');
+
+  const { data: entryRow, error: entryError } = await supabase
+    .from('card_ledger_entries')
+    .select('*')
+    .eq('id', ledgerEntryId)
+    .single();
+  if (entryError) throw entryError;
+  const entry = mapCardLedgerEntry(entryRow);
+
+  if (entry.capturedBy === actorId) {
+    throw new Error('You submitted this receipt — another user needs to reconcile it');
+  }
+
+  const { data: matchRow, error: matchError } = await supabase
+    .from('card_recon_matches')
+    .insert({
+      session_id: sessionId,
+      statement_line_id: statementLineId,
+      ledger_entry_id: ledgerEntryId,
+      match_method: 'MANUAL',
+      matched_by: actorId,
+    })
+    .select()
+    .single();
+  if (matchError) throw matchError;
+
+  await supabase.from('card_statement_lines').update({ status: 'MATCHED' }).eq('id', statementLineId);
+  await supabase.from('card_ledger_entries').update({ reconciliation_status: 'RECONCILED' }).eq('id', ledgerEntryId);
+  // First manual action on a session moves it from OPEN to DRAFT — mirrors
+  // ReconciliationSession (only a human touching the session, not
+  // auto-matches, signals real progress).
+  await supabase.from('card_recon_sessions').update({ status: 'DRAFT' }).eq('id', sessionId).eq('status', 'OPEN');
+
+  return mapCardReconMatch(matchRow);
+}
+
+export type CancelExceptionTargetType = 'statementLine' | 'ledgerEntry';
+
+/**
+ * The only way past a blocking EXCEPTION_UNRESOLVED statement line, or
+ * to explicitly write off a stray ledger entry — a required reason,
+ * logged with actor + timestamp, same pattern as Capture Clerk rejection
+ * in Slice A. Open Question 5, resolved.
+ */
+export async function cancelException(
+  sessionId: string,
+  targetId: string,
+  targetType: CancelExceptionTargetType,
+  reason: string,
+  actorId: string
+): Promise<void> {
+  if (!supabase) throw new Error('Supabase not initialized');
+  if (!reason.trim()) throw new Error('A reason is required to cancel an exception');
+
+  const table = targetType === 'statementLine' ? 'card_statement_lines' : 'card_ledger_entries';
+  const statusColumn = targetType === 'statementLine' ? 'status' : 'reconciliation_status';
+
+  const { error } = await supabase
+    .from(table)
+    .update({
+      [statusColumn]: 'EXCEPTION_CANCELLED',
+      cancel_reason: reason,
+      cancelled_by: actorId,
+      cancelled_at: new Date().toISOString(),
+    })
+    .eq('id', targetId);
+  if (error) throw error;
+
+  await supabase.from('card_recon_sessions').update({ status: 'DRAFT' }).eq('id', sessionId).eq('status', 'OPEN');
+}
+
+/**
+ * FINALIZED is blocked while any CardStatementLine in this session is
+ * still UNMATCHED or EXCEPTION_UNRESOLVED — every bank line must reach
+ * MATCHED or EXCEPTION_CANCELLED first. Deliberately does NOT check
+ * CardLedgerEntry state: an entry can legitimately carry forward
+ * unreconciled to a future session (see runAutoMatch's doc comment) — a
+ * session shouldn't be blocked on line items outside its own statement
+ * period. Open Question 5, resolved.
+ */
+export async function canFinalize(sessionId: string): Promise<boolean> {
+  if (!supabase) throw new Error('Supabase not initialized');
+  const { count, error } = await supabase
+    .from('card_statement_lines')
+    .select('id', { count: 'exact', head: true })
+    .eq('session_id', sessionId)
+    .in('status', ['UNMATCHED', 'EXCEPTION_UNRESOLVED']);
+  if (error) throw error;
+  return (count ?? 0) === 0;
+}
+
+export async function finalizeSession(sessionId: string, actorId: string): Promise<void> {
+  if (!supabase) throw new Error('Supabase not initialized');
+
+  // Never trust a caller's own prior canFinalize() check alone — the UI's
+  // disabled state is a convenience, not the actual gate.
+  const ok = await canFinalize(sessionId);
+  if (!ok) {
+    throw new Error('This period still has unresolved exceptions — match or cancel every item first');
+  }
+
+  const { error } = await supabase
+    .from('card_recon_sessions')
+    .update({ status: 'FINALIZED', finalized_by: actorId, finalized_at: new Date().toISOString() })
+    .eq('id', sessionId);
+  if (error) throw error;
 }

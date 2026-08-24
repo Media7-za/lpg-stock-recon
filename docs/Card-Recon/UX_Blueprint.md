@@ -199,13 +199,17 @@ Step B.4  — Actor: (Optional, per remaining exception) Reconciler clicks
 
 Step B.5  — Actor: Reconciler clicks "Finalize Session".
             System: Disabled — with a visible count and list — while any
-                    item is still `EXCEPTION_UNRESOLVED` (mirrors
-                    `UNCLASSIFIED_EXCEPTION`). `EXCEPTION_CANCELLED` items
-                    do not block. Once every item is `MATCHED`,
-                    `RECONCILED`, or `EXCEPTION_CANCELLED`, the button
-                    enables with a confirmation dialog: "Finalize this
-                    period? N items were cancelled with a reason — this
-                    cannot be undone."
+                    CardStatementLine in this session is still `UNMATCHED`
+                    or `EXCEPTION_UNRESOLVED` (mirrors
+                    `UNCLASSIFIED_EXCEPTION`). Bank-line side only —
+                    a CardLedgerEntry that stays `UNRECONCILED` does not
+                    block this session's Finalize; it carries forward as
+                    a candidate for a future statement (see Slice Brief
+                    Section B, "Refined during M4 build"). Once every
+                    line in this session is `MATCHED` or
+                    `EXCEPTION_CANCELLED`, the button enables with a
+                    confirmation dialog: "Finalize this period? N items
+                    were cancelled with a reason — this cannot be undone."
             State: CardReconSession → FINALIZED.
 ```
 
@@ -520,9 +524,13 @@ Disabled when: acting user === CardLedgerEntry.capturedBy for that specific
 
 Element: "Finalize Session"
 Visible to: Depot Manager / Finance Controller
-Disabled when: any EXCEPTION_UNRESOLVED item remains in the session
-               (Open Question 5, resolved — blocks with an explicit
-               Cancel escape hatch, not a silent carryover)
+Disabled when: any CardStatementLine in this session is UNMATCHED or
+               EXCEPTION_UNRESOLVED (Open Question 5, resolved — blocks
+               with an explicit Cancel escape hatch, not a silent
+               carryover). Bank-line side only, not CardLedgerEntry —
+               refined during M4 build, see Dev Plan's runAutoMatch
+               doc comment for why an unreconciled ledger entry must
+               not block a specific session's Finalize
 
 Element: "Cancel Exception"
 Visible to: Depot Manager / Finance Controller

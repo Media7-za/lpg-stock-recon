@@ -27,6 +27,8 @@ import MyPurchaseIntents from './components/card-recon/MyPurchaseIntents';
 import CardCaptureForm from './components/card-recon/CardCaptureForm';
 import MyCaptureRequests from './components/card-recon/MyCaptureRequests';
 import CardCaptureQueue from './components/card-recon/CardCaptureQueue';
+import CardReconDashboard from './components/card-recon/CardReconDashboard';
+import CardReconWorkspace from './components/card-recon/CardReconWorkspace';
 import { useAuth, UserRole } from './hooks/useAuth';
 import LoginScreen from './components/auth/LoginScreen';
 import { Navigate } from 'react-router-dom';
@@ -161,6 +163,16 @@ function App() {
                   <Route path="/card-recon/capture-queue" element={
                     <ProtectedRoute allowedRoles={['Depot Manager', 'Invoice Clerk']}>
                       <CardCaptureQueue />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/card-recon/reconciliation" element={
+                    <ProtectedRoute allowedRoles={['Depot Manager']}>
+                      <CardReconDashboard />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/card-recon/reconciliation/:sessionId" element={
+                    <ProtectedRoute allowedRoles={['Depot Manager']}>
+                      <CardReconWorkspace />
                     </ProtectedRoute>
                   } />
                 </Routes>

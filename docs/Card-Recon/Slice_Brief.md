@@ -320,14 +320,24 @@ period.
   carries `reconciliationStatus ∈ {UNRECONCILED, RECONCILED,
   EXCEPTION_UNRESOLVED, EXCEPTION_CANCELLED}`. A line/entry with no status
   is not a valid state — see Guiding Principle above.
-- `FINALIZED` is blocked while any `EXCEPTION_UNRESOLVED` item exists on
-  either side (Open Question 5, resolved). The only way past a blocking
-  exception is an explicit **"Cancel Exception"** action — the reconciler
-  states a reason (required, same pattern as Capture Clerk rejection in
-  Slice A), and the item moves to `EXCEPTION_CANCELLED`: permanently
-  visible, logged with actor + reason + timestamp, but no longer blocking.
-  There is no silent non-blocking path — every exception either gets
-  matched or gets a reasoned, attributed cancellation.
+- `FINALIZED` is blocked while any `CardStatementLine` in this session is
+  `UNMATCHED` or `EXCEPTION_UNRESOLVED` (Open Question 5, resolved). The
+  only way past a blocking exception is an explicit **"Cancel Exception"**
+  action — the reconciler states a reason (required, same pattern as
+  Capture Clerk rejection in Slice A), and the item moves to
+  `EXCEPTION_CANCELLED`: permanently visible, logged with actor + reason +
+  timestamp, but no longer blocking. There is no silent non-blocking path
+  for a bank line — every one either gets matched or gets a reasoned,
+  attributed cancellation.
+  **Refined during M4 build:** the gate checks the bank-line side only,
+  not `CardLedgerEntry.reconciliationStatus`. An entry posted near this
+  statement period's end may legitimately belong on *next* month's
+  statement — auto-flagging it as this session's exception would force a
+  decision on something that isn't actually overdue, and would also
+  remove it from future auto-match candidate pools (which only query
+  `UNRECONCILED`), permanently orphaning it. A `CardLedgerEntry` can still
+  be manually matched or explicitly Cancelled in any session's workspace
+  — it just doesn't block a *specific* session's Finalize on its own.
 
 **Out of scope:**
 - Multi-card support — only one card/account exists today; deferred (see
