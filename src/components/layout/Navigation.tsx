@@ -17,7 +17,7 @@ export default function Navigation() {
     { path: '/debtors', label: 'Debtors', icon: Users, roles: ['Depot Manager', 'Invoice Clerk'] },
     { path: '/pricing-desk', label: 'Pricing Desk', icon: Tag, roles: ['Depot Manager', 'Invoice Clerk'] },
     { path: '/card-recon/ledger-accounts', label: 'Ledger Accounts', icon: Wallet, roles: ['Depot Manager'] },
-    { path: '/card-recon/my-intents', label: 'My Requests', icon: ListChecks, roles: ['Yard Counter', 'Depot Manager', 'Invoice Clerk'] },
+    { path: '/card-recon/my-intents', label: 'My Intents', icon: ListChecks, roles: ['Yard Counter', 'Depot Manager', 'Invoice Clerk'] },
   ];
 
   const { userRole, loading } = useAuth();

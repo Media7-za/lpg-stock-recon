@@ -39,7 +39,7 @@ export default function MyPurchaseIntents() {
                     <ClipboardList className="w-5 h-5 text-blue-500" />
                 </div>
                 <div>
-                    <h1 className="text-xl font-semibold text-text-primary">My Requests</h1>
+                    <h1 className="text-xl font-semibold text-text-primary">My Intents</h1>
                     <p className="text-sm text-text-secondary">
                         Purchase intents you've logged with Quick Request.
                     </p>
@@ -67,7 +67,7 @@ export default function MyPurchaseIntents() {
 
                 {intents !== null && !error && intents.length === 0 && (
                     <div className="p-8 text-center text-text-secondary">
-                        No requests yet — tap + Quick Request to log a purchase, or submit a receipt after buying.
+                        No intents logged yet — tap + Quick Request before your next purchase.
                     </div>
                 )}
 
