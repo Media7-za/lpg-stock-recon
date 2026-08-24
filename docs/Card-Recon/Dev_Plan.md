@@ -65,7 +65,14 @@ model CardCaptureRequest {
   submittedAt      DateTime  @default(now())
   amount           Decimal
   purchaseDate     DateTime
-  merchantNote     String?
+  description      String             // required, max 200 chars in the UI (follow-up
+                              // migration -- corrected from the original merchantNote,
+                              // which had no column for what the UX Blueprint actually
+                              // specifies: a required field matching PurchaseIntent's)
+  ledgerAccountCode String?           // FK -> LedgerAccount.code, nullable -- pre-filled
+                              // from a linked intent but always editable (UX Blueprint);
+                              // the Capture Clerk can still override at posting (Open
+                              // Question 2, unresolved)
   receiptUrl       String             // NOT NULL — mandatory (Slice Brief Section D).
                               // Private bucket object PATH, not a public URL — see
                               // Section 2 (Storage) and FR-CCR-RECEIPT-001.
@@ -151,18 +158,24 @@ the implementation gap, not reopening a locked decision:**
 **INV-005 (ID integrity) FK contracts, stated explicitly:**
 - `PurchaseIntent.ledgerAccountCode → LedgerAccount.code` — never `.id`
 - `CardCaptureRequest.intentId → PurchaseIntent.id`
+- `CardCaptureRequest.ledgerAccountCode → LedgerAccount.code` (nullable — see above)
 - `CardLedgerEntry.captureRequestId → CardCaptureRequest.id`
 - `CardLedgerEntry.ledgerAccountCode → LedgerAccount.code`
 - `CardReconMatch.statementLineId → CardStatementLine.id` (never `.ledgerEntryId`'s type)
 - `CardReconMatch.ledgerEntryId → CardLedgerEntry.id` (never a `CardStatementLine.id`)
 
-**Migration classification:** entirely additive. Shipped as two migrations
-— `add_card_recon_foundation` (the seven tables, M0) and a follow-up
-`add_receipt_evidence_metadata` (the `receiptMimeType`/`receiptSizeBytes`/
-`receiptUploadedAt` columns above, added once FR-CCR-RECEIPT-001 specified
-what needed recording beyond the path). No backfill needed for either —
-both tables were still empty when the second migration was written — and
-no destructive risk in either case.
+**Migration classification:** entirely additive. Shipped as three
+migrations — `add_card_recon_foundation` (the seven tables, M0), a
+follow-up `add_receipt_evidence_metadata` (the `receiptMimeType`/
+`receiptSizeBytes`/`receiptUploadedAt` columns, added once
+FR-CCR-RECEIPT-001 specified what needed recording beyond the path), and
+`capture_request_description_and_account` (M3 — replaced the untyped
+`merchantNote` with a real `description` column matching the UX
+Blueprint's field spec, and added `ledgerAccountCode`, which the UX
+Blueprint's Capture Request Form needed and the original schema draft
+missed entirely). No backfill needed for any of the three — every table
+was still empty when each migration was written — and no destructive
+risk in any case, `DROP COLUMN merchant_note` included.
 
 ---
 
@@ -229,10 +242,16 @@ processReceiptFile(file: File): Promise<ProcessedReceipt>
   // limit, returns the file unchanged as the blob.
 
 // Slice A
-submitCaptureRequest(fields, receiptFile, intentId?): CardCaptureRequest
-  // ATOMIC per FR-CCR-RECEIPT-001: calls processReceiptFile() first,
-  // then uploads the resulting blob to card-receipts at a fresh
-  // uuid()-derived path (Section 2) — ONLY THEN inserts the
+submitCaptureRequest(fields, processedReceipt: ProcessedReceipt, submittedBy, intentId?): CardCaptureRequest
+  // Takes an already-processed receipt, not a raw File. Corrected from
+  // the original draft, which had this function call processReceiptFile()
+  // itself -- but the UX Blueprint's Step A.2 already runs processing at
+  // file-select time (with its own progress indicator, before the user
+  // even sees Submit), so the form always has a ProcessedReceipt in hand
+  // by the time this is called. Re-processing here would just redo
+  // identical, deterministic work.
+  // ATOMIC per FR-CCR-RECEIPT-001: uploads the blob to card-receipts at a
+  // fresh uuid()-derived path (Section 2) — ONLY THEN inserts the
   // CardCaptureRequest row with receiptUrl/receiptMimeType/
   // receiptSizeBytes set from the upload result. If upload fails, no row
   // is ever inserted — there is no insert-then-upload path to leave a

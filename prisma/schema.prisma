@@ -384,26 +384,34 @@ model PurchaseIntent {
 }
 
 model CardCaptureRequest {
-  id               String    @id @default(cuid())
-  intentId         String?   @map("intent_id") // FK -> PurchaseIntent.id
-  submittedBy      String    @map("submitted_by")
-  submittedAt      DateTime  @default(now()) @map("submitted_at") @db.Timestamptz(6)
-  amount           Decimal   @db.Decimal(18, 2)
-  purchaseDate     DateTime  @map("purchase_date") @db.Date
-  merchantNote     String?   @map("merchant_note")
-  receiptUrl       String    @map("receipt_url") // NOT NULL — mandatory (Slice Brief Section D).
+  id                String    @id @default(cuid())
+  intentId          String?   @map("intent_id") // FK -> PurchaseIntent.id
+  submittedBy       String    @map("submitted_by")
+  submittedAt       DateTime  @default(now()) @map("submitted_at") @db.Timestamptz(6)
+  amount            Decimal   @db.Decimal(18, 2)
+  purchaseDate      DateTime  @map("purchase_date") @db.Date
+  description       String // required, max 200 chars in the UI — matches
+  // PurchaseIntent.description's field spec (UX Blueprint, shared Field
+  // spec across Quick Request and Capture Request)
+  ledgerAccountCode String?   @map("ledger_account_code") // FK -> LedgerAccount.code,
+  // nullable: pre-filled from a linked PurchaseIntent but always
+  // editable (UX Blueprint), and the Capture Clerk can still pick/
+  // override a different one at posting (Open Question 2, unresolved —
+  // postCaptureRequest takes its own ledgerAccountCode parameter)
+  receiptUrl        String    @map("receipt_url") // NOT NULL — mandatory (Slice Brief Section D).
   // Stores the private bucket's object PATH, not a public URL — the app
   // resolves a short-lived signed URL for display (FR-CCR-RECEIPT-001).
-  receiptMimeType  String    @map("receipt_mime_type") // image/jpeg or application/pdf post-processing
-  receiptSizeBytes Int       @map("receipt_size_bytes") // processed size, not the original upload size
-  status           String    @default("SUBMITTED") // SUBMITTED | BATCHED | POSTED | REJECTED
-  rejectionReason  String?   @map("rejection_reason")
-  reviewedBy       String?   @map("reviewed_by")
-  reviewedAt       DateTime? @map("reviewed_at") @db.Timestamptz(6)
+  receiptMimeType   String    @map("receipt_mime_type") // image/jpeg or application/pdf post-processing
+  receiptSizeBytes  Int       @map("receipt_size_bytes") // processed size, not the original upload size
+  status            String    @default("SUBMITTED") // SUBMITTED | BATCHED | POSTED | REJECTED
+  rejectionReason   String?   @map("rejection_reason")
+  reviewedBy        String?   @map("reviewed_by")
+  reviewedAt        DateTime? @map("reviewed_at") @db.Timestamptz(6)
 
   @@index([intentId])
   @@index([status])
   @@index([submittedBy])
+  @@index([ledgerAccountCode])
   @@map("card_capture_requests")
 }
 

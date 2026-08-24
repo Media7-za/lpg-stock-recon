@@ -24,6 +24,9 @@ import { DocumentListView } from './features/investigation-workspace/views/Docum
 import { PricingDeskHome, QuoteWorkspace, PricingDeskProvider } from './features/pricing-desk';
 import LedgerAccountAdmin from './components/card-recon/LedgerAccountAdmin';
 import MyPurchaseIntents from './components/card-recon/MyPurchaseIntents';
+import CardCaptureForm from './components/card-recon/CardCaptureForm';
+import MyCaptureRequests from './components/card-recon/MyCaptureRequests';
+import CardCaptureQueue from './components/card-recon/CardCaptureQueue';
 import { useAuth, UserRole } from './hooks/useAuth';
 import LoginScreen from './components/auth/LoginScreen';
 import { Navigate } from 'react-router-dom';
@@ -143,6 +146,21 @@ function App() {
                   <Route path="/card-recon/my-intents" element={
                     <ProtectedRoute allowedRoles={['Yard Counter', 'Depot Manager', 'Invoice Clerk']}>
                       <MyPurchaseIntents />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/card-recon/capture" element={
+                    <ProtectedRoute allowedRoles={['Yard Counter', 'Depot Manager', 'Invoice Clerk']}>
+                      <CardCaptureForm />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/card-recon/my-requests" element={
+                    <ProtectedRoute allowedRoles={['Yard Counter', 'Depot Manager', 'Invoice Clerk']}>
+                      <MyCaptureRequests />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/card-recon/capture-queue" element={
+                    <ProtectedRoute allowedRoles={['Depot Manager', 'Invoice Clerk']}>
+                      <CardCaptureQueue />
                     </ProtectedRoute>
                   } />
                 </Routes>

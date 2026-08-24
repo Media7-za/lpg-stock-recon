@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Upload, ClipboardList, TrendingUp, Database, Calculator, Truck, Users, Tag, Wallet, ListChecks } from 'lucide-react';
+import { Home, Upload, ClipboardList, TrendingUp, Database, Calculator, Truck, Users, Tag, Wallet, ListChecks, Camera, Receipt, Inbox } from 'lucide-react';
 import clsx from 'clsx';
 import { useAuth } from '../../hooks/useAuth';
 
@@ -18,6 +18,9 @@ export default function Navigation() {
     { path: '/pricing-desk', label: 'Pricing Desk', icon: Tag, roles: ['Depot Manager', 'Invoice Clerk'] },
     { path: '/card-recon/ledger-accounts', label: 'Ledger Accounts', icon: Wallet, roles: ['Depot Manager'] },
     { path: '/card-recon/my-intents', label: 'My Intents', icon: ListChecks, roles: ['Yard Counter', 'Depot Manager', 'Invoice Clerk'] },
+    { path: '/card-recon/capture', label: 'Submit Receipt', icon: Camera, roles: ['Yard Counter', 'Depot Manager', 'Invoice Clerk'] },
+    { path: '/card-recon/my-requests', label: 'My Requests', icon: Receipt, roles: ['Yard Counter', 'Depot Manager', 'Invoice Clerk'] },
+    { path: '/card-recon/capture-queue', label: 'Capture Queue', icon: Inbox, roles: ['Depot Manager', 'Invoice Clerk'] },
   ];
 
   const { userRole, loading } = useAuth();
