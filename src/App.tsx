@@ -23,6 +23,7 @@ import { SearchView } from './features/investigation-workspace/views/SearchView'
 import { DocumentListView } from './features/investigation-workspace/views/DocumentListView';
 import { PricingDeskHome, QuoteWorkspace, PricingDeskProvider } from './features/pricing-desk';
 import LedgerAccountAdmin from './components/card-recon/LedgerAccountAdmin';
+import MyPurchaseIntents from './components/card-recon/MyPurchaseIntents';
 import { useAuth, UserRole } from './hooks/useAuth';
 import LoginScreen from './components/auth/LoginScreen';
 import { Navigate } from 'react-router-dom';
@@ -137,6 +138,11 @@ function App() {
                   <Route path="/card-recon/ledger-accounts" element={
                     <ProtectedRoute allowedRoles={['Depot Manager']}>
                       <LedgerAccountAdmin />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/card-recon/my-intents" element={
+                    <ProtectedRoute allowedRoles={['Yard Counter', 'Depot Manager', 'Invoice Clerk']}>
+                      <MyPurchaseIntents />
                     </ProtectedRoute>
                   } />
                 </Routes>

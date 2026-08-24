@@ -106,3 +106,84 @@ export async function deactivateLedgerAccount(id: string): Promise<void> {
 
   if (error) throw error;
 }
+
+// Slice A0 — Purchase Intent (Quick Request)
+// docs/Card-Recon/Dev_Plan.md Section 3. Non-blocking by design (Slice
+// Brief Section D) — these functions never validate anything that could
+// prevent or delay a purchase, only the intent log itself.
+
+export type PurchaseIntentStatus = 'OPEN' | 'FULFILLED' | 'ABANDONED';
+
+export interface PurchaseIntent {
+  id: string;
+  description: string;
+  ledgerAccountCode: string;
+  status: PurchaseIntentStatus;
+  requestedBy: string;
+  requestedAt: string;
+}
+
+interface PurchaseIntentRow {
+  id: string;
+  description: string;
+  ledger_account_code: string;
+  status: PurchaseIntentStatus;
+  requested_by: string;
+  requested_at: string;
+}
+
+function mapPurchaseIntent(row: PurchaseIntentRow): PurchaseIntent {
+  return {
+    id: row.id,
+    description: row.description,
+    ledgerAccountCode: row.ledger_account_code,
+    status: row.status,
+    requestedBy: row.requested_by,
+    requestedAt: row.requested_at,
+  };
+}
+
+export async function createPurchaseIntent(
+  description: string,
+  ledgerAccountCode: string,
+  requestedBy: string
+): Promise<PurchaseIntent> {
+  if (!supabase) throw new Error('Supabase not initialized');
+
+  const trimmedDescription = description.trim();
+  if (!trimmedDescription) throw new Error('Description is required');
+  if (!ledgerAccountCode) throw new Error('Ledger account is required');
+
+  const { data, error } = await supabase
+    .from('purchase_intents')
+    .insert({
+      description: trimmedDescription,
+      ledger_account_code: ledgerAccountCode,
+      requested_by: requestedBy,
+    })
+    .select()
+    .single();
+
+  if (error) throw error;
+  return mapPurchaseIntent(data);
+}
+
+export async function listMyPurchaseIntents(requestedBy: string): Promise<PurchaseIntent[]> {
+  if (!supabase) throw new Error('Supabase not initialized');
+
+  const { data, error } = await supabase
+    .from('purchase_intents')
+    .select('*')
+    .eq('requested_by', requestedBy)
+    .order('requested_at', { ascending: false });
+
+  if (error) throw error;
+  return (data ?? []).map(mapPurchaseIntent);
+}
+
+// Open Question 7 (unresolved): no automatic OPEN -> ABANDONED transition
+// is implemented here. An intent stays OPEN indefinitely until either
+// linked by a Capture Request (-> FULFILLED, in Slice A's service
+// functions) or manually marked ABANDONED -- there is no such manual
+// action yet either, since the UX Blueprint doesn't specify one. Revisit
+// once Q7 resolves.
