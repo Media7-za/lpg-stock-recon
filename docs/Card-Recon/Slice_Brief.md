@@ -175,8 +175,9 @@ posting, not an afterthought.
 ### A. Slice Frame
 
 **Feature name:** Card Statement Reconciliation
-**Actor:** Depot Manager / Finance Controller (reconciler — role TBD, see
-Open Question 3)
+**Actor:** Depot Manager / Finance Controller — **any user other than the
+original capturer of a given entry** (Open Question 3, resolved — see
+Section D)
 **User outcome:** After using this feature, the reconciler can import the
 monthly card statement CSV and match each bank line against posted
 `CardLedgerEntry` records, resolving exceptions before finalizing the
@@ -191,7 +192,9 @@ period.
   `CardStatementLine` rows.
 - Auto-match: `AUTO_EXACT` (amount + date exact), `AUTO_FUZZY` (amount
   exact, date within an N-day window) — mirrors `AllocationEvent.matchMethod`.
-- Manual match/unmatch UI for everything auto-match doesn't resolve.
+- Manual match/unmatch UI for everything auto-match doesn't resolve — a
+  `MANUAL` match/clear is blocked if the acting user is the entry's
+  original capturer (Open Question 3, resolved — segregation of duties).
 - `CardReconSession` per statement period: `OPEN → DRAFT → FINALIZED`,
   mirroring `ReconciliationSession`.
 - Exception surfacing: unmatched bank line (a charge nobody captured) vs.
@@ -285,6 +288,7 @@ rest of the system.
 | Mandatory receipt attachment | Decided this session | `CardLedgerEntry` cannot exist without `receiptUrl` — enforced in the UI AND as a DB constraint, not just a UI nicety |
 | Closed-loop accountability — no event without a terminal status | Decided this session (Guiding Principle above) | Every `PurchaseIntent`, `CardCaptureRequest`, `CardStatementLine`, and `CardLedgerEntry` must always resolve to a defined status. A record with a NULL/undefined status field, or a bank line silently dropped from an import, is a bug — not a display gap |
 | Purchase Intent must never block the purchase | Decided this session (Slice A0) | `PurchaseIntent` submission has no validation that can prevent or delay a purchase — no required-field check runs against the cardholder's ability to buy. It is a log, never a gate |
+| Capturer ≠ reconciler on the same entry — segregation of duties | PM Decision, Open Question 3 (resolved this session) | The system checks `actorId ≠ CardLedgerEntry.capturedBy` before allowing any `MANUAL` match or exception clear in Slice B. `AUTO_EXACT`/`AUTO_FUZZY` matches are exempt — they're system-generated, not a self-attestation. This is enforced at the entry level, not via a separate fixed "reconciler" role — any user other than the original capturer may act |
 
 ---
 
@@ -294,7 +298,7 @@ rest of the system.
 |---|---|---|---|---|
 | 1 | What actually triggers a batch run — a fixed schedule (cron) or a manual "Run Batch" button? | `CardCaptureRequest` state machine design; whether a scheduler is needed at all for MVP | (a) Manual button only for MVP, (b) weekly cron, (c) both — manual override on a schedule | Awaiting PM |
 | 2 | Who assigns the GL/cost code — **partially resolved**: Slice A0 has the cardholder pick it at intent time. Still open: can the Capture Clerk override it at batch-posting (e.g. the cardholder guessed wrong), and what happens when a capture arrives with no linked intent at all? | Capture form design; whether the Clerk has override authority | (a) Cardholder's Slice A0 pick is final, (b) Clerk can override at posting, (c) unlinked captures require the Clerk to pick from scratch | Awaiting PM |
-| 3 | Who owns resolving Slice B exceptions — the same person who captures, or a separate reviewer/controller? | Role/permission model; whether a second-approver control is enforced in the state machine | (a) Single role, (b) capturer ≠ reconciler enforced by the system, (c) capturer ≠ reconciler by policy only, not enforced | Awaiting PM (raised earlier, still unresolved) |
+| 3 | ~~Who owns resolving Slice B exceptions — the same person who captures, or a separate reviewer/controller?~~ | Role/permission model; whether a second-approver control is enforced in the state machine | **Resolved: (b)** — capturer ≠ reconciler, enforced by the system at the entry level (`actorId ≠ capturedBy` on any `MANUAL` match/clear), not via a dedicated fixed "reconciler" role. Rationale: the front-end purchase has no real control (informal approval only), so this is the one place a compensating control can live; entry-level blocking gets that value without requiring dedicated staffing at low transaction volume. | **RESOLVED — PM Decision, 2026-08-24** |
 | 4 | Does Capture Request (and now Purchase Intent) submission need to work offline (purchase happens in the field, no signal)? | Dexie store design; sync strategy for Slice A0 and Slice A | (a) Always online, like `ReconciliationSession`, (b) offline-capable like the Yard Counter PWA | Awaiting PM |
 | 5 | When a bank line has no matching ledger entry after the monthly cycle closes, must it block `FINALIZED`, or can it carry over as a standing exception? Either way it stays `EXCEPTION_UNRESOLVED` and visible per the Guiding Principle — this only decides whether it also blocks the session. | Exception-lane design; `FINALIZED` gate rules for `CardReconSession` | (a) Blocks finalize, like `UNCLASSIFIED_EXCEPTION`, (b) non-blocking, like `Suspense-PMT` | Awaiting PM |
 | 6 | Only one card exists today — should the schema still carry a `card_id` FK from day one, or is a single-card assumption acceptable to hardcode for MVP? | Schema design for `CardLedgerEntry` / `CardReconSession` | (a) Hardcode single card for MVP, add `card_id` later, (b) add `card_id` now even with one row, to avoid a migration later | Awaiting PM |
@@ -323,6 +327,6 @@ rules, or fuzzy matching.
 - [x] Scope boundary is explicit (in AND out)
 - [x] All dependencies named
 - [x] All constraints extracted from governance docs
-- [x] Open Questions Register complete — 7 open, unresolved
+- [x] Open Questions Register complete — 6 open, 1 resolved (Q3)
 - [x] Offline implications stated (flagged as open, not assumed)
 - Awaiting PM approval and resolution of open questions
