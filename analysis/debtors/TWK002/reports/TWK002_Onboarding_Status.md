@@ -2,7 +2,7 @@
 
 **Updated:** 2026-08-11  
 **North star:** [`docs/TWK002_Model_B_Position.md`](../docs/TWK002_Model_B_Position.md) — remittance-authoritative Model B; balance and collections based on real debt, not posting artefacts.  
-**Scope:** 2023–2024 analysis complete · ERP catch-up **mostly posted** (Path B) · **`reconState: validation_pending`** until finance sign-off
+**Scope:** 2023–2024 analysis complete · ERP catch-up **mostly posted** (Path B) · **`reconState: in-progress`** until finance sign-off (was informally tracked as `validation_pending`, not a schema-valid value — see `project.json._comment_reconState`)
 
 ---
 

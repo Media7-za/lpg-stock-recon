@@ -19,7 +19,7 @@
 
 | KPI | Value |
 |---|---|
-| **Recon in progress** | 3 |
+| **Recon in progress** | 4 |
 | **Collection-blocked exposure** (recon ≠ complete, actionable) | **R277 277,52** |
 | **Open human tasks** | 13 ([queue](analysis/debtors/shared/HUMAN_TASKS.md)) |
 | **Tier A backlog (not in portfolio)** | 10 |
@@ -32,8 +32,8 @@
 |---|---|
 | **Accounts** | 13 |
 | **Recon Complete** | 4 |
-| **Recon In Progress** | 3 |
-| **Recon Pending** | 6 |
+| **Recon In Progress** | 4 |
+| **Recon Pending** | 5 |
 | **Collection Active** | 2 |
 | **Legal** | 0 |
 | **Total Outstanding** | **R572 973,60** |
@@ -53,7 +53,7 @@ Accounts are automatically sorted by Risk Score using the Collections Intelligen
 | **40** | [MOZ002](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/MOZ002/) | MOZAMBIK | ✅ Complete | 🟢 ACTIVE | R22 898,47 | R3 190,07 | None |
 | **40** | [TAN001](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/TAN001/) | Tanya Lehman | ✅ Complete | ⛔ COLLECTIONS_BLOCKED | R96 284,18 | R66 565,10 | ⚠️ **draft_lod** (🔴 was due 2026-06-16, 70d overdue) |
 | **30** | [WO0001](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/WO0001/) | L3 Cash and Carry | ⏳ Pending | 🟢 ACTIVE | R110 789,36 | R51 628,92 | None |
-| **25** | [TWK002](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/TWK002/) | TWK AGRI PTY LTD | ⏳ Pending | 🟢 ACTIVE | R118 131,54 | R0,00 | None |
+| **25** | [TWK002](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/TWK002/) | TWK AGRI PTY LTD | 🔄 In Progress | 🟢 ACTIVE | R118 131,54 | R0,00 | None |
 | **0** | [BU0009](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/BU0009/) | BU0009 Client Placeholder | ⏳ Pending | 🟢 ACTIVE | R0,00 | R0,00 | None |
 | **0** | [FAM000](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/FAM000/) | FAM000 Client Placeholder | ⏳ Pending | 🟢 ACTIVE | R0,00 | R0,00 | None |
 | **0** | [FAM001](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/FAM001/) | FAM001 Client Placeholder | ⏳ Pending | 🟢 ACTIVE | R0,00 | R0,00 | None |

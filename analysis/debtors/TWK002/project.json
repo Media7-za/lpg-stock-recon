@@ -2,8 +2,8 @@
   "debtorCode": "TWK002",
   "clientName": "TWK AGRI PTY LTD",
   "status": "active",
-  "reconState": "validation_pending",
-  "_comment_reconState": "Set to complete only after finance sign-off on 16-batch checklist + TXT validation. See docs/TWK002_Model_B_Position.md.",
+  "reconState": "in-progress",
+  "_comment_reconState": "Was 'validation_pending' — not a valid DEBTOR_STATE_MACHINE.md value (pending|in-progress|complete), fixed 2026-08-25. Analysis + ERP catch-up are deep but formal sign-off has not happened (see docs/TWK002_Model_B_Position.md 'Collections gate: Not yet'), so this stays in-progress. Set to complete only after finance sign-off on 16-batch checklist + TXT validation.",
   "modelB": {
     "authority": "remittance",
     "phase": "2023-2024_catchup",
