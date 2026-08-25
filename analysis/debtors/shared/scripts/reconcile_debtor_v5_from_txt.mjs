@@ -174,7 +174,7 @@ function isCylRef(ref) {
 
 function parseTxtRows(filePath) {
   const txt = fs.readFileSync(filePath, 'utf8');
-  const headerBalance = Number(txt.match(/CURRENT BALANCE:","([0-9.]+)"/)?.[1]);
+  const headerBalance = Number(txt.match(/CURRENT BALANCE:","(-?[0-9.]+)"/)?.[1]);
   const rows = [];
   for (const line of txt.split('\n')) {
     if (!line.startsWith('"') || line.includes('LINE","PERIOD')) continue;
@@ -411,11 +411,25 @@ async function main() {
   const cfg = loadConfig(debtorCode);
   const { rows, headerBalance } = parseTxtRows(cfg.txtPath);
 
-  const client = new pg.Client(pgClientOptions());
-  await client.connect();
-  const docSplit = await fetchDocLineSplit(client, cfg);
-  const { sections: part2, currentCyl } = await buildPart2(client, cfg);
-  await client.end();
+  let docSplit = new Map();
+  let part2 = [];
+  let currentCyl = { ...cfg.cylOpeningQty };
+  let dbUnavailable = null;
+  if (!process.env.DATABASE_URL) {
+    dbUnavailable = 'DATABASE_URL not set in this environment';
+    console.error(`[${cfg.debtorCode}] DB unavailable, falling back to TXT-only Part 1 (Part 2 custody omitted): ${dbUnavailable}`);
+  } else {
+    try {
+      const client = new pg.Client(pgClientOptions());
+      await client.connect();
+      docSplit = await fetchDocLineSplit(client, cfg);
+      ({ sections: part2, currentCyl } = await buildPart2(client, cfg));
+      await client.end();
+    } catch (e) {
+      dbUnavailable = e.message;
+      console.error(`[${cfg.debtorCode}] DB unavailable, falling back to TXT-only Part 1 (Part 2 custody omitted): ${e.message}`);
+    }
+  }
 
   const { part1a, part1b, financial, finalLpg, finalCyl, finalCombined } = buildPart1Split(
     rows,
@@ -452,7 +466,7 @@ async function main() {
 **LPG Opening B/F (1A):** R${fmt(cfg.lpgOpeningBf)} &nbsp;|&nbsp; **CYL Opening B/F (1B):** R${fmt(cfg.cylOpeningFinancial)}
 **Payment routing:** ${cfg.paymentLane} lane (payments post to Part 1A unless configured otherwise)
 **Last regenerated:** ${new Date().toISOString().slice(0, 10)} from ERP TXT (\`reconcile_debtor_v5_from_txt.mjs\`)
-
+${dbUnavailable ? `\n> **DB unavailable this run** (${dbUnavailable}). Part 2 custody and the Part 1A/1B LPG-vs-CYL doc-line split fall back to TXT-only heuristics — treat all figures below as ASSERTED/ASSUMED, not DB-verified.\n` : ''}
 ---
 
 ## Part 1A: LPG Gas Financial Statement
@@ -486,7 +500,7 @@ ${ingestGateSection}
 ## Part 2: Cylinder (CYL) Ledger (Physical Asset Tracker)
 *Cylinders tracked by physical count. Opening balances per \`config/statement_v5.json\`.${coverage?.gates?.custody === 'BLOCKED' ? ' **Gate: custody BLOCKED — see Ingest Gate above.**' : ''}*
 
-${part2.join('\n\n---\n\n')}
+${dbUnavailable ? `> **DB unavailable — Part 2 omitted.** Custody quantities require a live \`vw_clean_transactions\` connection (${dbUnavailable}). No custody position can be stated for this run.` : part2.join('\n\n---\n\n')}
 
 ---
 
@@ -543,6 +557,7 @@ ${custodyBlockedNote}
     // Application workflow status only (DebtorWorkspaceStatus) — not constitutional
     // reconState, not D17/D18 collections eligibility, not ingestGate.displayStatus.
     workspaceStatus:
+      !dbUnavailable &&
       Math.abs(erpVariance) < 0.02 &&
       Math.abs(subLedgerVariance) < 0.02 &&
       Math.abs(cylVariance) < 1
@@ -588,6 +603,9 @@ ${custodyBlockedNote}
           : []),
         ...(Math.abs(cylVariance) >= 1
           ? [{ type: 'CUSTODY', basis: 'ASSERTED', status: 'open', description: 'Part 1B financial vs Part 2 custody — check DB ingest vs TXT' }]
+          : []),
+        ...(dbUnavailable
+          ? [{ type: 'SOURCE_GAP', basis: 'ASSUMED', status: 'open', description: `DB unavailable this run (${dbUnavailable}) — Part 2 custody and LPG/CYL doc-line split are TXT-only heuristics, not DB-verified` }]
           : []),
       ],
     },

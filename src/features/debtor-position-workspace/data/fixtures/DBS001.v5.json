@@ -1,0 +1,41 @@
+{
+  "debtorCode": "DBS001",
+  "debtorName": "DSB CHICKEN VS FISH",
+  "period": {
+    "from": "2025-03-01",
+    "to": "2026-02-20"
+  },
+  "version": "v5",
+  "workspaceStatus": "pending_review",
+  "lastGeneratedAt": "2026-08-25T14:36:41.773Z",
+  "source": "analysis/debtors/DBS001/raw/DBS001_DERIVED_FROM_MASTER_DUMP.TXT",
+  "financialPosition": {
+    "lpgGasDebt": -5.16,
+    "cylinderFinancialBalance": 0,
+    "totalDebtorBalance": -5.16,
+    "erpStatedBalance": -5.16,
+    "erpVariance": 0,
+    "subLedgerVariance": 0
+  },
+  "custodyPosition": {
+    "totalCustodyExposure": 0,
+    "lines": []
+  },
+  "reconciliationPosition": {
+    "cylinderVariance": 0,
+    "erpVariance": 0,
+    "subLedgerVariance": 0,
+    "exceptions": [
+      {
+        "type": "SOURCE_GAP",
+        "basis": "ASSUMED",
+        "status": "open",
+        "description": "DB unavailable this run (DATABASE_URL not set in this environment) — Part 2 custody and LPG/CYL doc-line split are TXT-only heuristics, not DB-verified"
+      }
+    ]
+  },
+  "artifacts": {
+    "statementMarkdown": "analysis/debtors/DBS001/reports/DBS001_Statement_Account_v5.md",
+    "txtSource": "analysis/debtors/DBS001/raw/DBS001_DERIVED_FROM_MASTER_DUMP.TXT"
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "debtorCode": "DBS010",
+  "debtorName": "DBS CHICKEN EMPTIES",
+  "period": {
+    "from": "2025-03-01",
+    "to": "2025-07-21"
+  },
+  "version": "v5",
+  "workspaceStatus": "pending_review",
+  "lastGeneratedAt": "2026-08-25T14:37:16.769Z",
+  "source": "analysis/debtors/DBS010/raw/DBS010_DERIVED_FROM_MASTER_DUMP.TXT",
+  "financialPosition": {
+    "lpgGasDebt": 0,
+    "cylinderFinancialBalance": 0,
+    "totalDebtorBalance": 0,
+    "erpStatedBalance": 0,
+    "erpVariance": 0,
+    "subLedgerVariance": 0
+  },
+  "custodyPosition": {
+    "totalCustodyExposure": 0,
+    "lines": []
+  },
+  "reconciliationPosition": {
+    "cylinderVariance": 0,
+    "erpVariance": 0,
+    "subLedgerVariance": 0,
+    "exceptions": [
+      {
+        "type": "SOURCE_GAP",
+        "basis": "ASSUMED",
+        "status": "open",
+        "description": "DB unavailable this run (DATABASE_URL not set in this environment) — Part 2 custody and LPG/CYL doc-line split are TXT-only heuristics, not DB-verified"
+      }
+    ]
+  },
+  "artifacts": {
+    "statementMarkdown": "analysis/debtors/DBS010/reports/DBS010_Statement_Account_v5.md",
+    "txtSource": "analysis/debtors/DBS010/raw/DBS010_DERIVED_FROM_MASTER_DUMP.TXT"
+  }
+}
