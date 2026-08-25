@@ -1,32 +1,43 @@
 # Debtors Portfolio Management Dashboard
 
-*Last Updated: 2026-08-09*
+*Last Updated: 2026-08-25*
 
 > **View dashboard:** `npm run debtors:sync` then read this file. Orchestrator skill: `.agents/skills/SKILL_Debtors_Orchestrator.md`
+
+## 🚨 Accountability — Overdue & Stale
+
+*Passive sweep: read-only, computed from `collections.deadlineDate` / `nextActionDate` / open `blockers` in each `project.json`, plus deadlines named inline in OPEN `HUMAN_TASKS.md` rows. Nothing here is sent or acted on automatically — this only surfaces what's already overdue so a human or the orchestrator sees it without hunting.*
+
+| Days Overdue | Account | What | Detail |
+|---:|---|---|---|
+| **70** | TAN001 | draft_lod | "draft_lod" was due 2026-06-16, 70d ago |
+| **70** | TAN001 | H-009 (Collections Agent) | Deadline 2026-06-16 passed, 70d ago — still OPEN |
+| **57** | WES004 | letter-of-demand | Deadline 2026-06-29 passed, 57d ago — status still "collection" |
+| **57** | WES004 | H-008 (Collections Agent) | Deadline 2026-06-29 passed, 57d ago — still OPEN |
 
 ## 🎯 Orchestrator KPIs
 
 | KPI | Value |
 |---|---|
 | **Recon in progress** | 3 |
-| **Collection-blocked exposure** (recon ≠ complete, actionable) | **R205 374,45** |
-| **Open human tasks** | 9 ([queue](analysis/debtors/shared/HUMAN_TASKS.md)) |
-| **Tier A backlog (not in portfolio)** | 9 |
+| **Collection-blocked exposure** (recon ≠ complete, actionable) | **R277 277,52** |
+| **Open human tasks** | 13 ([queue](analysis/debtors/shared/HUMAN_TASKS.md)) |
+| **Tier A backlog (not in portfolio)** | 10 |
 | **Backlog candidates (parsed)** | 68 ([CSV](analysis/debtors/shared/data/portfolio_candidates.csv)) |
-| **Recon complete rate** | 43% (6/14) |
+| **Recon complete rate** | 31% (4/13) |
 
 ## 📊 Portfolio Summary
 
 | Metric | Value |
 |---|---|
-| **Accounts** | 14 |
-| **Recon Complete** | 6 |
+| **Accounts** | 13 |
+| **Recon Complete** | 4 |
 | **Recon In Progress** | 3 |
-| **Recon Pending** | 5 |
+| **Recon Pending** | 6 |
 | **Collection Active** | 2 |
 | **Legal** | 0 |
-| **Total Outstanding** | **R626 635,68** |
-| **180+ Debt** | **R232 804,43** |
+| **Total Outstanding** | **R572 973,60** |
+| **180+ Debt** | **R202 038,79** |
 | **LOD Issued** | 1 |
 | **Awaiting Response** | 0 |
 
@@ -36,20 +47,19 @@ Accounts are automatically sorted by Risk Score using the Collections Intelligen
 
 | Risk | Code | Client Name | Recon State | Workflow Status | Outstanding | Aged 180d+ | Next Action |
 |---|---|---|---|---|---|---|---|
-| **100** | [WES004](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/WES004/) | West Coast Fish & Chips | ✅ Complete | ⛔ COLLECTIONS_BLOCKED | R36 216,20 | R7 443,73 | ⚠️ **letter-of-demand** (by 2026-06-29) |
+| **100** | [WES004](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/WES004/) | West Coast Fish & Chips | ✅ Complete | ⛔ COLLECTIONS_BLOCKED | R36 216,20 | R7 443,73 | ⚠️ **letter-of-demand** (🔴 was due 2026-06-29, 57d overdue) |
 | **55** | [BU0005](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/BU0005/) | CHOBOZA - BULWER | 🔄 In Progress | 🟢 ACTIVE | R3 450,17 | R203,57 | None |
 | **40** | [JIM001](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/JIM001/) | Jim Gas | ✅ Complete | 🟢 ACTIVE | R140 297,23 | R73 007,40 | None |
 | **40** | [MOZ002](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/MOZ002/) | MOZAMBIK | ✅ Complete | 🟢 ACTIVE | R22 898,47 | R3 190,07 | None |
-| **40** | [SA0001](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/SA0001/) | SAKI - VICTORIA RD | ✅ Complete | 🟢 ACTIVE | R10 804,97 | R10 463,39 | None |
-| **40** | [TAN001](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/TAN001/) | Tanya Lehman | ✅ Complete | ⛔ COLLECTIONS_BLOCKED | R92 177,12 | R66 565,10 | ⚠️ **draft_lod** (by 2026-06-16) |
-| **35** | [TWK002](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/TWK002/) | TWK AGRI PTY LTD | ✅ Complete | 🟢 ACTIVE | R118 867,24 | R0,00 | None |
-| **30** | [CAP000](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/CAP000/) | CAPITOL CATERERS SELECT (PTY) | ⏳ Pending | 🟢 ACTIVE | R46 228,47 | R20 302,25 | None |
+| **40** | [TAN001](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/TAN001/) | Tanya Lehman | ✅ Complete | ⛔ COLLECTIONS_BLOCKED | R96 284,18 | R66 565,10 | ⚠️ **draft_lod** (🔴 was due 2026-06-16, 70d overdue) |
 | **30** | [WO0001](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/WO0001/) | L3 Cash and Carry | ⏳ Pending | 🟢 ACTIVE | R110 789,36 | R51 628,92 | None |
+| **25** | [TWK002](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/TWK002/) | TWK AGRI PTY LTD | ⏳ Pending | 🟢 ACTIVE | R118 131,54 | R0,00 | None |
 | **0** | [BU0009](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/BU0009/) | BU0009 Client Placeholder | ⏳ Pending | 🟢 ACTIVE | R0,00 | R0,00 | None |
 | **0** | [FAM000](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/FAM000/) | FAM000 Client Placeholder | ⏳ Pending | 🟢 ACTIVE | R0,00 | R0,00 | None |
 | **0** | [FAM001](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/FAM001/) | FAM001 Client Placeholder | ⏳ Pending | 🟢 ACTIVE | R0,00 | R0,00 | None |
 | **0** | [JEN001](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/JEN001/) | JENS SPOON PTY LTD | 🔄 In Progress | 🟢 ACTIVE | R28 534,89 | R0,00 | None |
 | **0** | [MD0003](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/MD0003/) | BLUFF MEAT SUPPLY(PTY) LTD | 🔄 In Progress | 🟢 ACTIVE | R16 371,56 | R0,00 | None |
+| **0** | [SA0001](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/SA0001/) | SA0001 Client Placeholder | ⏳ Pending | 🟢 ACTIVE | R0,00 | R0,00 | None |
 
 ---
 

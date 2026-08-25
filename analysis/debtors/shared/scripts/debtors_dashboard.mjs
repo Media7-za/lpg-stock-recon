@@ -151,6 +151,96 @@ function countOpenHumanTasks() {
   return (text.match(/\| OPEN \|/g) || []).length;
 }
 
+/**
+ * Passive accountability sweep — surfaces overdue items already present in
+ * project.json / HUMAN_TASKS.md; it never invents a deadline and never acts
+ * (no sends, no state edits). Read-only, computed fresh each dashboard run.
+ */
+function parseOpenHumanTasks() {
+  if (!fs.existsSync(humanTasksPath)) return [];
+  const text = fs.readFileSync(humanTasksPath, 'utf8');
+  const rows = [];
+  for (const line of text.split('\n')) {
+    if (!line.startsWith('| H-')) continue;
+    const cells = line.split('|').slice(1, -1).map((c) => c.trim());
+    const [taskId, debtor, role, description, status] = cells;
+    if (status !== 'OPEN') continue;
+    const deadlineMatch = description.match(/deadline\s+(\d{4}-\d{2}-\d{2})/i);
+    rows.push({ taskId, debtor, role, description, deadline: deadlineMatch ? deadlineMatch[1] : null });
+  }
+  return rows;
+}
+
+// Threshold below which an open D17(c) blocker is not yet flagged stale —
+// avoids noise for blockers raised the same week.
+const STALE_BLOCKER_DAYS = 14;
+
+function computeAccountability(projects) {
+  const items = [];
+
+  for (const p of projects) {
+    const code = p.debtorCode || '';
+    const c = p.collections;
+    if (!c) continue;
+
+    if (c.deadlineDate) {
+      const days = daysSince(c.deadlineDate);
+      if (days > 0 && p.status !== 'resolved') {
+        items.push({
+          code,
+          days,
+          kind: c.actionType || 'Collections deadline',
+          detail: `Deadline ${c.deadlineDate} passed, ${days}d ago — status still "${p.status}"`,
+        });
+      }
+    }
+
+    if (c.nextActionDate) {
+      const days = daysSince(c.nextActionDate);
+      if (days > 0 && p.status !== 'resolved') {
+        items.push({
+          code,
+          days,
+          kind: c.nextAction || 'Next action',
+          detail: `"${c.nextAction || 'Next action'}" was due ${c.nextActionDate}, ${days}d ago`,
+        });
+      }
+    }
+
+    if (Array.isArray(c.blockers)) {
+      for (const b of c.blockers) {
+        if (typeof b === 'string') continue; // unstructured legacy entry — nothing dated to check
+        if (b?.status !== 'open' || !b?.asAt) continue;
+        const days = daysSince(b.asAt);
+        if (days >= STALE_BLOCKER_DAYS) {
+          items.push({
+            code,
+            days,
+            kind: `Blocker: ${b.type || 'OTHER'}`,
+            detail: `Open ${days}d since ${b.asAt}${b.description ? ` — ${b.description}` : ''}`,
+          });
+        }
+      }
+    }
+  }
+
+  for (const t of parseOpenHumanTasks()) {
+    if (!t.deadline) continue;
+    const days = daysSince(t.deadline);
+    if (days > 0) {
+      items.push({
+        code: t.debtor,
+        days,
+        kind: `${t.taskId} (${t.role})`,
+        detail: `Deadline ${t.deadline} passed, ${days}d ago — still OPEN`,
+      });
+    }
+  }
+
+  items.sort((a, b) => b.days - a.days);
+  return items;
+}
+
 function formatReconState(reconState) {
   if (reconState === 'complete') return '✅ Complete';
   if (reconState === 'in-progress') return '🔄 In Progress';
@@ -160,6 +250,16 @@ function formatReconState(reconState) {
 // Function to render console dashboard
 function renderConsole(projects) {
   const blockedRows = [];
+
+  const accountability = computeAccountability(projects);
+  if (accountability.length > 0) {
+    console.log(`\n🚨 ACCOUNTABILITY — ${accountability.length} overdue item(s):`);
+    for (const item of accountability.slice(0, 10)) {
+      console.log(`   ${item.days}d overdue — ${item.code}: ${item.kind} — ${item.detail}`);
+    }
+    if (accountability.length > 10) console.log(`   ...and ${accountability.length - 10} more (see DEBTORS_DASHBOARD.md)`);
+  }
+
   console.log('\n========================================================================================================');
   console.log('                 LPG STOCK RECON — DEBTORS PRIORITY QUEUE & METRICS');
   console.log('========================================================================================================');
@@ -283,6 +383,20 @@ function generateMarkdown(projects, outputPath) {
   md += `*Last Updated: ${new Date().toISOString().split('T')[0]}*\n\n`;
   md += `> **View dashboard:** \`npm run debtors:sync\` then read this file. Orchestrator skill: \`.agents/skills/SKILL_Debtors_Orchestrator.md\`\n\n`;
 
+  const accountability = computeAccountability(projects);
+  md += `## 🚨 Accountability — Overdue & Stale\n\n`;
+  md += `*Passive sweep: read-only, computed from \`collections.deadlineDate\` / \`nextActionDate\` / open \`blockers\` in each \`project.json\`, plus deadlines named inline in OPEN \`HUMAN_TASKS.md\` rows. Nothing here is sent or acted on automatically — this only surfaces what's already overdue so a human or the orchestrator sees it without hunting.*\n\n`;
+  if (accountability.length === 0) {
+    md += `*Nothing overdue.*\n\n`;
+  } else {
+    md += `| Days Overdue | Account | What | Detail |\n`;
+    md += `|---:|---|---|---|\n`;
+    for (const item of accountability) {
+      md += `| **${item.days}** | ${item.code} | ${item.kind} | ${item.detail} |\n`;
+    }
+    md += `\n`;
+  }
+
   md += `## 🎯 Orchestrator KPIs\n\n`;
   md += `| KPI | Value |\n`;
   md += `|---|---|\n`;
@@ -339,11 +453,16 @@ function generateMarkdown(projects, outputPath) {
     if (p.collections?.nextAction) {
       actionStr = `⚠️ **${p.collections.nextAction}**`;
       if (p.collections?.nextActionDate) {
-        actionStr += ` (by ${p.collections.nextActionDate})`;
+        const overdueDays = daysSince(p.collections.nextActionDate);
+        actionStr += overdueDays > 0 ? ` (🔴 was due ${p.collections.nextActionDate}, ${overdueDays}d overdue)` : ` (by ${p.collections.nextActionDate})`;
       }
     } else if (p.collections?.actionRequired) {
       const type = p.collections.actionType || 'Action needed';
-      const deadline = p.collections.deadlineDate ? ` (by ${p.collections.deadlineDate})` : '';
+      let deadline = '';
+      if (p.collections.deadlineDate) {
+        const overdueDays = daysSince(p.collections.deadlineDate);
+        deadline = overdueDays > 0 ? ` (🔴 was due ${p.collections.deadlineDate}, ${overdueDays}d overdue)` : ` (by ${p.collections.deadlineDate})`;
+      }
       actionStr = `⚠️ **${type}**${deadline}`;
     }
 

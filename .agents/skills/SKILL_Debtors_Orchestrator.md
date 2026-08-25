@@ -55,6 +55,8 @@ npm run debtors:parse-backlog
 
 **View dashboard:** run `npm run debtors:sync`, then read `DEBTORS_DASHBOARD.md` and summarise in chat. No separate HTML portfolio for MVP.
 
+**Accountability sweep (read first, every session):** `DEBTORS_DASHBOARD.md` opens with an "🚨 Accountability — Overdue & Stale" table — a passive, read-only sweep of `collections.deadlineDate` / `nextActionDate` / open `blockers` past due, cross-checked against deadlines named inline in OPEN `HUMAN_TASKS.md` rows. It surfaces what's already overdue; it does not send anything or change state. Report every row in this session's summary before triaging the priority queue — a stale deadline is not lower priority than an unworked account, it is a human commitment that already slipped.
+
 ## 3. Orchestration loop
 
 ### ERP freshness gate (mandatory — run first)
@@ -107,7 +109,7 @@ This session:
 0. ERP freshness gate — identify newest debtor ERP extract; ask operator to confirm or upload before any live financial conclusion
 1. npm run debtors:sync
 2. Read DEBTORS_DASHBOARD.md + analysis/debtors/shared/HUMAN_TASKS.md
-3. Summarise: priority queue, reconState per active account, open human tasks, collection-blocked exposure
+3. Summarise: accountability sweep (overdue items — report every row, even if 0), priority queue, reconState per active account, open human tasks, collection-blocked exposure
 4. Pick ONE account or ONE bounded phase (no parallel finance-dependent lanes)
 5. Output:
    - Recommended next action (dispatch worker | queue human | defer)
