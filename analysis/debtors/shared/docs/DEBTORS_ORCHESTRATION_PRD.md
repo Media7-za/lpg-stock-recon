@@ -97,6 +97,14 @@ Decisions from Jul 2026 exploration (TWK002 branch + orchestrator sessions):
 
 **Ratified 2026-07-22 (Turn 11C — operator):** D14 and D15 committed to `DEBTORS_DOCTRINE.md` §4; supersede pending C1 status in Operator View and orchestrator conflict notes.
 
+| # | Decision | Rationale | Rejected alternative |
+| :---: | :--- | :--- | :--- |
+| D16 | **Evidence refresh (TXT/DB) is an implicit root invalidator for the allocation cluster** (`allocation.edges`, `allocation.report`, `settlement.discount`, `payment.pattern`, `balance.bridge`, `event.ledger`) — already stated by `DEBTORS_DOCTRINE.md` §3 ("material evidence change invalidates stale projections until re-run"); no new mechanism needed | Enumerating a separate "TXT changed" trigger edge on each of the six slices individually — six copies of the same rule, easy to let drift out of sync |
+| D17 | **`settlement.discount` and `allocation.edges` are siblings sharing one trigger** ("remittance batch ingested"), not a causal chain — a discount recompute does not invalidate payment→invoice edges; they're two independent decompositions of the same batch (cash/discount split vs. which invoices it cleared) | `settlement.discount → invalidates → allocation.edges` (asserted without a demonstrated dependency in the six-slice cluster table) |
+| D18 | **`payment.pattern` and `allocation.edges` are not parallel per-debtor slices** — they are the outputs of the two recon lanes already defined in §6 / `SKILL_Debtors_Orchestrator.md` §4 (`allocation` vs `position_recon` payment-pattern). An account is on one lane or the other. Lane membership is **derived** from which artifacts already exist for that account (`payment_pattern_overrides.json` vs. allocation edges/report presence) — per `DEBTORS_DOCTRINE.md` §2, "state is derived," not stored as new authoritative input | A new `project.json` field (e.g. `accountClass` / `operatorLayout`) to encode lane choice as fresh authoritative state |
+
+**Ratified 2026-08-26 (operator, this session — allocation-cluster dependency graph review):** D16–D18 apply to any future `allocation.edges` / `allocation.report` / `settlement.discount` / `payment.pattern` / `balance.bridge` / `event.ledger` regeneration tooling. Corrects a proposed six-slice "regenerate when… / invalidates…" table that (a) omitted the evidence root, (b) asserted an unverified settlement→allocation causal edge, and (c) modeled the two payment-matching lanes as always-parallel instead of mutually exclusive.
+
 ---
 
 ## 6. Recon lanes
