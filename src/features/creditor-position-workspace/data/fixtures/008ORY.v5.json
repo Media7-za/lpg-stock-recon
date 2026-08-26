@@ -1,0 +1,70 @@
+{
+  "creditorCode": "008ORY",
+  "creditorName": "ORYX ENERGY",
+  "linkedAccounts": [
+    "008ORY",
+    "007ORY"
+  ],
+  "period": {
+    "from": "2026-07-01",
+    "to": "2026-08-25"
+  },
+  "version": "v5",
+  "workspaceStatus": "clean",
+  "lastGeneratedAt": "2026-08-26T13:36:36.519Z",
+  "source": "analysis/creditors/008ORY/raw/008ORYCURRENT.TXT",
+  "financialPosition": {
+    "lpgPayable": -136470.17,
+    "cylinderDepositNet": -45137.5,
+    "totalCreditorBalance": -181607.67,
+    "erpStatedBalance": -568317.86,
+    "udChequesPay": 386710.19,
+    "lineClosingBalance": -181607.67,
+    "erpVariance": 0,
+    "lineExportVariance": 0,
+    "subLedgerVariance": 0
+  },
+  "custodyPosition": {
+    "totalCustodyExposure": -45137.5,
+    "lines": [
+      {
+        "sku": "14.1",
+        "label": "14kg",
+        "qty": 21,
+        "depositRate": 575,
+        "exposure": 12075
+      },
+      {
+        "sku": "9.1",
+        "label": "9kg",
+        "qty": -35,
+        "depositRate": 517.5,
+        "exposure": -18112.5
+      },
+      {
+        "sku": "D.1",
+        "label": "D.1",
+        "qty": -14,
+        "depositRate": 1150,
+        "exposure": -16100
+      },
+      {
+        "sku": "S.1",
+        "label": "S.1",
+        "qty": -20,
+        "depositRate": 1150,
+        "exposure": -23000
+      }
+    ]
+  },
+  "reconciliationPosition": {
+    "cylinderVariance": 0,
+    "erpVariance": 0,
+    "subLedgerVariance": 0,
+    "exceptions": []
+  },
+  "artifacts": {
+    "statementMarkdown": "analysis/creditors/008ORY/reports/008ORY_Statement_Account_v5.md",
+    "txtSource": "analysis/creditors/008ORY/raw/008ORYCURRENT.TXT"
+  }
+}

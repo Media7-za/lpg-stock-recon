@@ -1,0 +1,25 @@
+{
+  "creditorCode": "008ORY",
+  "creditorName": "ORYX ENERGY",
+  "txtPath": "analysis/creditors/008ORY/raw/008ORYCURRENT.TXT",
+  "periodStart": "2026-07-01",
+  "combinedBf": -60547.41,
+  "bfSourceNote": "CREDENQ line 603 running balance after 29/06/2026 Bank XFer 7408 — immediately before first Jul 2026 row (doc 3633)",
+  "cylOpeningFinancial": 0.0,
+  "paymentLane": "LPG",
+  "linkedAccounts": ["007ORY"],
+  "cylOpeningQty": {
+    "14.1": 0,
+    "19.1": 0,
+    "9.1": 0,
+    "D.1": 0,
+    "S.1": 0
+  },
+  "skuRates": {
+    "14.1": 575,
+    "19.1": 690,
+    "9.1": 517.5,
+    "D.1": 1150,
+    "S.1": 1150
+  }
+}

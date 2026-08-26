@@ -30,7 +30,8 @@
     "debtors:test": "node --test analysis/debtors/shared/scripts/*.test.mjs",
     "creditors:export-txt": "node analysis/creditors/shared/scripts/export_creditor_txt_from_db.mjs",
     "creditors:ingest-check": "node analysis/creditors/shared/scripts/validate_txt_db_coverage.mjs",
-    "creditors:statement-v5": "node analysis/creditors/shared/scripts/reconcile_creditor_v5_from_txt.mjs"
+    "creditors:statement-v5": "node analysis/creditors/shared/scripts/reconcile_creditor_v5_from_txt.mjs",
+    "creditors:lpg-volume": "node analysis/creditors/shared/scripts/oryx_lpg_volume_monthly_report.mjs --creditor 008ORY --from 2025-01 --to 2026-08"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

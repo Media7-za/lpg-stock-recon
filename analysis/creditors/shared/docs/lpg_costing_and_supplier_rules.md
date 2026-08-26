@@ -2,6 +2,8 @@
 
 This document outlines the authoritative business rules and technical specifications deduced from the Supabase ledger database and raw ERP transaction data. These rules govern the calculation of LPG unit costing, supplier transactions, and the classification of generic walk-in debtor accounts.
 
+> **AP statement v5:** For supplier account position reconciliation (GRV / Deb Note / Payment split), see [`CREDITORS_DOCTRINE.md`](CREDITORS_DOCTRINE.md) and [`AP_Recon_Workflow.md`](AP_Recon_Workflow.md). Pilot account: **008ORY** (Oryx Energy).
+
 ---
 
 ## 1. LPG Supplier & SKU Mapping Rules

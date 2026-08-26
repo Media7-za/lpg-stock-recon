@@ -1,0 +1,37 @@
+{
+  "creditorCode": "008ORY",
+  "supplierName": "ORYX ENERGY",
+  "status": "active",
+  "reconState": "in-progress",
+  "financials": {
+    "totalPayable": -437114.03,
+    "lineExportClose": -121237.7,
+    "udChequesPay": 315876.33,
+    "lastGrvDate": "2026-08-14",
+    "lastPaymentDate": "2026-08-14"
+  },
+  "ingestGate": {
+    "status": "fail",
+    "ingestFreshness": "current",
+    "ingestCoverage": "partial",
+    "displayStatus": "CURRENT_PARTIAL",
+    "asAt": "2026-08-20",
+    "reportPath": "analysis/creditors/008ORY/reports/008ORY_INGEST_COVERAGE_2026-08-20.json",
+    "ingestBlockedScopes": ["custody", "sku_analysis", "allocation"],
+    "exceptions": []
+  },
+  "history": [
+    {
+      "date": "2026-08-17",
+      "event": "Creditor micro-project scaffolded — v5 statement pipeline (GRV / Deb Note / Payment)."
+    },
+    {
+      "date": "2026-08-17",
+      "event": "Official CREDENQ.TXT ingested. Statement v5 PASS — line export R-121,237.70, ERP header R-437,114.03 (UD cheques R315,876.33 bridged). Ingest gate PARTIAL — 74/74 period docs MISSING_HEADER."
+    },
+    {
+      "date": "2026-08-20",
+      "event": "v5 regenerated. Financial PASS (1A R-121,237.71 / 1B R0.01 / combined R-121,237.70). TXT GRVNO pairing in effect. Ingest still 74/74 MISSING_HEADER — Part 2 custody blocked; 1A/1B vs DB lines do not tie."
+    }
+  ]
+}
