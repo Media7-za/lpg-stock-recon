@@ -69,6 +69,19 @@
     {
       "date": "2026-08-29",
       "event": "Session lineage catalog recorded (PROVEN index 6 chats; ASSERTED 5 substantive prior + 2 tangential local-only). Authoritative list in docs/handoffs/2026-08-29.md §008ORY session index. No account state changed this session."
+    },
+    {
+      "date": "2026-08-29",
+      "event": "v5 Part 1B vs Part 2 audit — variance R45,195.01 PROVEN (1B R0.01 vs custody R-45,195). Root causes: partial ingest 74/74 MISSING_HEADER; doc 3659 LPG-only routed to 1B via TXT GRVNO pairing; 6783 header vs sparse CYL lines. Report: reports/008ORY_v5_Part1B_Part2_Audit_2026-08-29.md. Custody remains BLOCKED."
     }
-  ]
+  ],
+  "v5Statement": {
+    "part1bClose": 0.01,
+    "part2CustodyExposure": -45195.0,
+    "part1bVsCustodyVariance": 45195.01,
+    "ingestGate": "CURRENT_PARTIAL",
+    "custodyBlocked": true,
+    "auditReport": "analysis/creditors/008ORY/reports/008ORY_v5_Part1B_Part2_Audit_2026-08-29.md",
+    "tag": "PROVEN"
+  }
 }

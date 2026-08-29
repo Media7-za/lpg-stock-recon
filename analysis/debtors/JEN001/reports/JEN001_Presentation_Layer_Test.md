@@ -74,3 +74,14 @@ The two-layer model is proven on JEN001:
 3. **Allocation** feeds presentation via `closedInvoiceOverrides` + `openInvoiceAdjustments`.
 
 **Caveat:** No remittance advices — ALLOWED rests on LIFO pattern + invariant only. Bank deposit confirmation for STAT 129 still on REQUEST list (Turn 1 gap).
+
+---
+
+## Tripwires (session close 2026-08-29)
+
+| Closed ruling | Reopens if |
+| :--- | :--- |
+| STAT 129 → 51691/51823/52044/52305 closed; 51564 partial **R597.11** (PROVEN in SOA) | Overrides removed; fresh DEBENQ changes Jul–Aug rows |
+| Gate ALLOWED (PATTERN_ONLY) | Bank deposit contradicts LIFO targets; `allocationGate.status` changed without re-run |
+| v5 internal / SOA presentation split | v5 composed emailed as customer document |
+| Account-level **R22,088.10** = DEBENQ B/F (PROVEN) | DEBENQ B/F line or STAT 127 payment re-posted |

@@ -1,0 +1,70 @@
+{
+  "debtorCode": "MON001",
+  "clientName": "SHORTEN INTERNATIONAL 66 ON MONZALI",
+  "status": "active",
+  "reconState": "in-progress",
+  "financials": {
+    "totalOutstanding": 2717.79,
+    "totalOutstandingNote": "ERP CURRENT BALANCE header on raw/MON001CURRENT.TXT (PROVEN). v5 ties R0.00 vs this header.",
+    "lastInvoiceDate": "2026-07-20",
+    "lastPaymentDate": "2026-07-15",
+    "agedDebt180Plus": 0
+  },
+  "collections": {
+    "actionRequired": false,
+    "actionType": null,
+    "dateSent": null,
+    "deadlineDate": null,
+    "nextAction": "Rule the 4 open allocation decision cards in reports/MON001_Allocation_Decisions.md (tick one disposition per card), then re-run scripts/allocation_ingest_stripped_pilot.mjs to merge rulings.",
+    "nextActionDate": null,
+    "notes": "Two allocation lanes exist: (a) ref_no DB pilot Apr–Jul 2026 (data/allocation_edges.csv, gate FAIL 75% T1/T2); (b) stripped-gas LIFO pattern pilot on raw/MON0012025.TXT (data/allocation_edges_stripped_pilot.csv, gate BLOCKED). Stripped lane is the pattern route per business_rules.md §15 authority order B — no remittance advices exist for MON001.",
+    "blockers": [
+      {
+        "type": "OTHER",
+        "status": "open",
+        "description": "4 allocation decision cards OPEN (33672-REM, 39293, 35818, 36258-REM) — stripped-gas gate BLOCKED until ruled",
+        "source": "reports/MON001_Allocation_Decisions.md; data/allocation_decisions.json",
+        "asAt": "2026-08-25"
+      },
+      {
+        "type": "OTHER",
+        "status": "open",
+        "description": "INGEST_GAP: payment 45158 (11 Jul 2024) and invoice 52130 (27 Jan 2026) missing headers in Supabase — custody + allocation ingest blocked",
+        "source": "reports/MON001_INGEST_COVERAGE_2026-08-04.json",
+        "asAt": "2026-08-04"
+      }
+    ]
+  },
+  "ingestGate": {
+    "status": "pass",
+    "ingestFreshness": "current",
+    "ingestCoverage": "partial",
+    "displayStatus": "CURRENT_PARTIAL",
+    "asAt": "2026-08-04",
+    "reportPath": "analysis/debtors/MON001/reports/MON001_INGEST_COVERAGE_2026-08-04.json",
+    "ingestBlockedScopes": ["custody", "sku_analysis", "allocation"],
+    "exceptions": []
+  },
+  "history": [
+    {
+      "date": "2026-07-28",
+      "event": "Turn 1 v5 position recon complete — ERP variance R0.00 vs CURRENT header R2,717.79; ingest coverage CURRENT_PARTIAL (2 gaps: 45158, 52130)."
+    },
+    {
+      "date": "2026-07-28",
+      "event": "Turn 2 ref_no allocation pilot (Apr–Jul 2026): 3 payments, 4 edges, 75% Tier 1/2 — gate FAIL. Review: 45216 blank slice R2,615.10 → 50097 (REVIEW_GROSS_VS_NET_CN, CN 14792)."
+    },
+    {
+      "date": "2026-08-04",
+      "event": "Jun 2024 ERP correction: inv 32911 = R5,295.11 (was wrongly R2,615.10 copied from inv 50097); 32912=2,392.00, CN 8743=-2,704.00, CN 9078=-1,745.02. Opening 1 Jan 2024 derived R3,049.63 (plug, not ERP B/F). v5 re-ties R0.00."
+    },
+    {
+      "date": "2026-08-04",
+      "event": "MON0012025.TXT (2025 MARCH enquiry) surfaced: proves R162.86 close after inv 40629 (11 Feb 2025); contradicts synthetic Jun CNs (9078 ERP -1,543.67 LPG vs synthetic -1,745.02 header; 8743 ERP -2,392.00 vs synthetic -2,704.00)."
+    },
+    {
+      "date": "2026-08-25",
+      "event": "Turn 2 stripped-gas LIFO pilot on MON0012025.TXT: 13 edges (11 LIFO + 2 remainders), gate BLOCKED. 4 decision cards emitted: 33672-REM (R1,543.67 unallocated), 39293 (gross vs net 36720), 35818 (LIFO→39150 vs operator bundle 38044+9078), 36258-REM (R1,110.30 unallocated). Decision-queue mechanism built (md tick → JSON merge)."
+    }
+  ]
+}
