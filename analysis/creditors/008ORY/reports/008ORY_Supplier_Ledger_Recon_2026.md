@@ -225,6 +225,28 @@ Matched 62 of 62 of their receipts. Open on their side: 0. Open on ours: 4. Clos
 
 ---
 
+## Epistemic status (session close 2026-08-29)
+
+> Numbers below carry §6 tags. Variances explained in prose are not reconciled until recorded in `data/supplier_ledger_decisions.csv` or reflected in a regenerated run.
+
+| Measure | Value | Tag | Source / kill condition |
+| :--- | ---: | :--- | :--- |
+| Document SO groups compared | 69 | PROVEN | §2 outcome table |
+| Agreed (both lanes) | 43 | PROVEN | §2 outcome table |
+| Open — ours only | 1 (`2026-06 / 157`) | PROVEN | §2 open table |
+| Open — theirs only | 2 (`2026-01 / 005`, `2026-07 / 054`) | PROVEN | §2 open table |
+| Reversed pairs excluded (gross) | 899,682.74 | PROVEN | §2 reversed table; nets to 0.02 |
+| Genuine charge variance residual | 409,676.85 | ASSERTED | `data/supplier_ledger_matches.csv` — abs sum on `SO_AMOUNT_VARIANCE` rows minus pending merge SOs 141/048/291 (R42,172.91). **Kill:** merges applied or block-affinity reclassifies SO 006/020 |
+| SO 006 charge variance (reported) | 64,164.60 | ASSUMED false | Block 41 analysis: SI7355 tagged SO 006 but belongs with SO 020 block; SO 006 true gap ≈ R0.27 vs SI7119. **Kill:** block-affinity implemented and SO 006 still shows variance > R2 |
+| SO 020 true charge query | 4,103.70 | ASSERTED | GRV 6643 R60,061.17 vs their SI7355 R64,164.87; deposit credits agree R37,950. **Kill:** Oryx confirms SI7355 is not our 020 load or our GRV rebooked to match |
+| Rebate entitlement vs passed | 96,208.43 gap | PROVEN | §1 rebate table |
+| Balance headline gap (their − \|ours\|) | 89,170.55 | PROVEN | §0; advisory only |
+| Open Ud XFer payments (ours) | 220,769.89 (4 docs) | PROVEN | §3; treasury/allocation — not supplier query |
+
+**Tripwires armed:** see `docs/handoffs/2026-08-29.md` §7.
+
+---
+
 ## Method notes
 
 - **SO normalisation:** SO sequences restart every month, so the key is **month + sequence**. Their `SON2607ZA105000048` carries its own month (2026-07 / 048); our `SON#128`, `SON 174`, `#0093` carry only the sequence and take the month from the row date. Bank references (`FNB-…`, `STAT …`) and 8-digit delivery dates are rejected.

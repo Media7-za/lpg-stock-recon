@@ -20,6 +20,35 @@
     "ingestBlockedScopes": ["custody", "sku_analysis", "allocation"],
     "exceptions": []
   },
+  "supplierLedgerRecon": {
+    "status": "in-progress",
+    "enabled": true,
+    "theirLedgerAsAt": "2026-08-17",
+    "scopeFrom": "2026-01-01",
+    "scopeTo": "2026-08-31",
+    "reportPath": "analysis/creditors/008ORY/reports/008ORY_Supplier_Ledger_Recon_2026.md",
+    "decisionsPath": "analysis/creditors/008ORY/data/supplier_ledger_decisions.csv",
+    "lastGenerated": "2026-08-26",
+    "documentMatchSummary": {
+      "agreed": 43,
+      "variance": 17,
+      "ratifiedLink": 3,
+      "mergeGroup": 3,
+      "afterCutOff": 3,
+      "openOursOnly": 1,
+      "openTheirsOnly": 2,
+      "totalSoGroups": 69,
+      "basis": "PROVEN — per report §2 outcome table at last run"
+    },
+    "genuineChargeVarianceResidual": {
+      "value": 409676.85,
+      "currency": "ZAR",
+      "tag": "ASSERTED",
+      "basis": "Sum of abs charge_variance on SO_AMOUNT_VARIANCE rows excluding three pending MERGE_GROUP SO refs (141, 048, 291); see analysis/creditors/008ORY/data/supplier_ledger_matches.csv",
+      "killCondition": "Falsified if remaining merges collapse those three rows or if block-affinity reclassification moves SO 006/020 variances"
+    },
+    "nextAction": "Investigate open theirs-only SO 2026-01 / 005 (R196,901.31); then MERGE_GROUP queue (141, 048, 291); then ratify or reject block-affinity proposal for SO 006/020 (handoff P1)"
+  },
   "history": [
     {
       "date": "2026-08-17",
@@ -32,6 +61,10 @@
     {
       "date": "2026-08-20",
       "event": "v5 regenerated. Financial PASS (1A R-121,237.71 / 1B R0.01 / combined R-121,237.70). TXT GRVNO pairing in effect. Ingest still 74/74 MISSING_HEADER — Part 2 custody blocked; 1A/1B vs DB lines do not tie."
+    },
+    {
+      "date": "2026-08-29",
+      "event": "Supplier ledger recon lane built and first-pass ratified (7 decisions in supplier_ledger_decisions.csv). Documents: 43 agree / 17 variance / 1 ours-only open / 2 theirs-only open (69 SO groups). Payments: 62/62 theirs matched; 4 open Ud XFer on ours (treasury). Rebate claim variance R96,208.43 (3 months not passed on their ledger). Genuine document charge residual ASSERTED R409,676.85 after excluding pending merges. Commit 933949a."
     }
   ]
 }
