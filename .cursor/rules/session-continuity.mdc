@@ -1,0 +1,54 @@
+---
+description: Session continuity — read the last handoff before work, harvest durable value after
+alwaysApply: true
+---
+
+# Session Continuity
+
+Context does not survive session close. Files do. Treat the repo as the memory.
+
+## Opening a work session
+
+Before analysis or edits on any debtor/creditor account, read the most recent handoff:
+
+```bash
+ls docs/handoffs/[0-9]*.md 2>/dev/null | sort | tail -1
+```
+
+Dated handoffs only — the other files in `docs/handoffs/` are templates and
+starters, not session state. If the glob returns nothing, no dated handoff exists
+yet; fall back to the account's `project.json` history.
+
+Also read the account's `project.json` (`history[]` is the running log) and its
+`config/*.json` — recorded operator judgement lives there and must not be
+re-litigated or "cleaned up".
+
+Skip this for trivial one-off questions that touch no account state.
+
+## Closing a work session
+
+When the session produced durable value, or the user signals wrap-up ("push",
+"done", "closing"), run the closer:
+
+**Read `docs/roles/session_closer.md` and follow it.** Do not improvise a summary.
+
+Offer it proactively — do not wait to be asked. If the session produced nothing
+durable, say so plainly instead of writing a padded handoff.
+
+## Authority — non-negotiable
+
+`analysis/debtors/shared/DEBTORS_DOCTRINE.md` §7: worker sessions **consume**
+doctrine and **do not author** constitutional changes.
+
+- Portfolio-wide rules → stage as `PROPOSED — NOT RATIFIED`, name the operator's decision.
+- Never infer ratification from the operator's silence.
+- Amendments append; superseded text is **marked, never deleted**.
+- Overrides live in `config/*.json` — never hand-patch generated CSVs (§5 idempotency).
+
+## Claims
+
+Every material number carries a `§6` epistemic tag: `PROVEN`, `ASSERTED`, or
+`ASSUMED`. Cite the artifact path, not "per the analysis". A variance explained in
+prose is not reconciled.
+
+Role prompts: `docs/session_prompts.md`.
