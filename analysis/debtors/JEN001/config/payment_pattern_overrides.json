@@ -1,7 +1,39 @@
 {
   "debtor": "JEN001",
-  "registry_version": 1,
+  "registry_version": 2,
   "lane": "stripped_gas_payment_pattern",
   "approval_policy": "Only human-approved overrides with reason and evidence_source may be applied.",
-  "overrides": []
+  "allocation_method": "lpg_stripped_lifo_chronological",
+  "overrides": [
+    {
+      "id": "JEN-STAT127-44878",
+      "payment_doc": "44878",
+      "payment_date": "2026-06-25",
+      "stat": "STAT 127",
+      "payment_amount": 10000,
+      "approval_status": "approved",
+      "evidence_source": "allocation_ingest_pilot.mjs Turn 2 — LIFO validated",
+      "targets": [
+        { "doc": "51387", "allocated": 3934.93, "type": "LIFO_FULL", "edge": "AL-0051" },
+        { "doc": "51155", "allocated": 5692.5, "type": "LIFO_FULL", "edge": "AL-0052" },
+        { "doc": "50970", "allocated": 372.57, "type": "LIFO_PARTIAL", "edge": "AL-0053", "note": "R2,920.68 remains open on 50970 in full-history model" }
+      ]
+    },
+    {
+      "id": "JEN-STAT129-45717",
+      "payment_doc": "45717",
+      "payment_date": "2026-08-14",
+      "stat": "STAT 129",
+      "payment_amount": 15000,
+      "approval_status": "approved",
+      "evidence_source": "allocation_ingest_pilot.mjs Turn 2 — presentation layer pilot",
+      "targets": [
+        { "doc": "52305", "allocated": 5199.03, "type": "LIFO_FULL", "edge": "AL-0054" },
+        { "doc": "52044", "allocated": 3951.29, "type": "LIFO_FULL", "edge": "AL-0055" },
+        { "doc": "51823", "allocated": 935.81, "type": "LIFO_FULL", "edge": "AL-0056" },
+        { "doc": "51691", "allocated": 4887.1, "type": "LIFO_FULL", "edge": "AL-0057" },
+        { "doc": "51564", "allocated": 26.77, "type": "LIFO_PARTIAL", "edge": "AL-0058", "open_remainder": 597.11 }
+      ]
+    }
+  ]
 }

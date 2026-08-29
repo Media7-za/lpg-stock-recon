@@ -75,8 +75,8 @@ function aggregatePayments(edgeRows) {
     if (row.payment_date && (!existing.paymentDate || row.payment_date > existing.paymentDate)) {
       existing.paymentDate = row.payment_date;
     }
-    if (row.batch_ref) existing.batchRef = row.batch_ref;
-    if (row.stat_no) existing.statNo = row.stat_no;
+    if (row.batch_ref || row.batch_id) existing.batchRef = row.batch_ref || row.batch_id;
+    if (row.stat_no || row.erp_stat) existing.statNo = row.stat_no || row.erp_stat;
     payments[doc] = existing;
   }
 
@@ -145,22 +145,28 @@ export function normalize(debtorDir) {
     paymentDoc: docPadded(row.payment_doc),
     paymentDocKey: docKey(row.payment_doc),
     paymentDate: row.payment_date,
-    batchRef: row.batch_ref,
-    statNo: row.stat_no,
+    batchRef: row.batch_ref || row.batch_id || '',
+    statNo: row.stat_no || row.erp_stat || '',
     paymentAmount: toNumber(row.payment_amount),
     targetDoc: row.target_doc ? docPadded(row.target_doc) : '',
     targetDocKey: row.target_doc ? docKey(row.target_doc) : '',
     targetDate: row.target_date,
     targetLane: row.target_lane || 'LPG',
-    targetAmount: toNumber(row.target_amount),
+    targetAmount: toNumber(row.target_amount ?? row.lpg_target_amount),
     allocatedAmount: toNumber(row.allocated_amount),
-    residualAfterAllocation: toNumber(row.residual_after_allocation),
+    residualAfterAllocation: toNumber(row.residual_after_allocation ?? row.variance),
     allocationType: row.allocation_type,
-    evidenceSource: row.evidence_source,
+    evidenceSource:
+      row.evidence_source ||
+      (String(row.allocation_type || '').startsWith('REMITTANCE') ? 'REMITTANCE_ADVICE' : ''),
     confidence: row.confidence,
     commerciallyConfirmed: toBool(row.commercially_confirmed),
     reviewRequired: toBool(row.review_required),
-    notes: row.notes,
+    notes:
+      row.notes ||
+      [row.allocation_type, row.batch_id && `batch=${row.batch_id}`, row.erp_stat && `stat=${row.erp_stat}`]
+        .filter(Boolean)
+        .join(' '),
   }));
 
   return {

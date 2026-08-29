@@ -1,0 +1,11 @@
+{
+  "debtorCode": "CAP000",
+  "doctrineVersion": "pending-lane-lock",
+  "discountRate": 0.025,
+  "tolerancePct": 0.001,
+  "paymentTermsDays": 30,
+  "termsBasis": "invoice_month_end_plus_30_days",
+  "registryVersion": 0,
+  "approvalPolicy": "Tier-1 remittance advice is authoritative once lane locks to settlement_discount. Empty until Turn 002.",
+  "overrides": []
+}

@@ -18,7 +18,7 @@
 | Example: Doc 35876 | Bank gross R134,731.73 (abs); signed sum R19,247.39 | ERP decomposition, not customer intent |
 | 2026 docs (43494–44561) | Gross = non-Alloc abs; monthly match works | Confirms batch reconciliation model |
 
-**Verdict:** Use `skills/lpg-payment-pattern-analysis/SKILL.md` — **not** Payment-to-Invoice Allocation.
+**Verdict:** Use `analysis/skills/lpg-payment-pattern-analysis/SKILL.md` — **not** Payment-to-Invoice Allocation.
 
 > Turn 1 misclassified MD0003 because ref_no slices on recent STAT batches looked invoice-linked. Operator confirmed: **MD0003 pays batch payments.**
 
@@ -76,8 +76,10 @@ Payment **44231** is **not** unallocated — it settles the March 2026 statement
 | 2026-02 | 43854 | 01.04.2026.pdf | R13,773.92 | R0.00 |
 | 2026-03 | 44231 | 01.05.2026.pdf | R15,017.78 | R0.00 |
 | 2026-04 | 44561 | 01.06.2026.pdf | R13,014.20 | R0.00 |
-| 2026-05 | 44972 | 01.07.2026.pdf + CURRENT.TXT | R17,311.60 | −R4,539.72 |
-| 2026-06 | *(open)* | — | — | R19,552.96 billed, no STAT:129 yet |
+| 2026-05 | 44972 | 01.07.2026.pdf + DEBENQ | R17,311.60 | −R4,539.72 |
+| **2026-06** | **45595** | **01.08.2026.pdf** | **R14,863.43** | **R4,689.53** |
+| **2025-10** | **42440** (share) | DEBENQ ref slices | **R16,016.28** | **R0.00** |
+| **2025-11** | **42440** (share) | DEBENQ ref slices | **R14,560.26** | **R0.00** |
 
 ### Customer A/P ledger (`MD0003_DETAILED_LEDGER.xls`)
 
@@ -104,10 +106,13 @@ Closing balance **R16,371.56** (Jul 2026). Payment **44972** STAT:128 posted 202
 
 ## Next Steps
 
-- [x] Ingest MD0003 CURRENT.TXT
-- [ ] Source remittance for payment **42440** (2025-11-28, R47,511.17)
+- [x] Ingest MD0003 CURRENT.TXT → `raw/Enquiry/DEBENQ_CURRENT.TXT` (through 09 Aug 2026)
+- [x] STAT:129 remittance + override (payment **45595**)
+- [x] Payment **42440** Oct/Nov slices matched via DEBENQ allocation detail
+- [ ] Customer AP snapshot **10.10.2025** ingested to CSV (PDF on file; see `MD0003_Payment_42440_Match.md`)
 
 **Regenerate reports:**
 ```bash
+export DATABASE_URL="${DATABASE_URL//\?pgbouncer=true/}"
 .venv_fam/bin/python3 analysis/debtors/shared/scripts/payment_pattern_analysis.py --debtor MD0003 --years 2022,2025,2026
 ```

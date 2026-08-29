@@ -18,10 +18,8 @@ PIETERMARITZBURG
 
 | | Amount (R) |
 | :--- | ---: |
-| **Opening balance** (1 August 2026) | 138,532.24 |
-| Movement this month (invoices, payments, journals) | -20,400.70 |
-| TWK002 balance | 118,131.54 |
-| **Balance due** | **118,131.54** |
+| Open invoices (detailed below) | 110,046.87 |
+| **Amount due** | **110,046.87** |
 
 ---
 
@@ -32,19 +30,6 @@ Age is calculated from **invoice date** to 31 July 2026.
 | Current | 30 day | 60 day | 90 day | 120+ day | **Subtotal** |
 | ---: | ---: | ---: | ---: | ---: | ---: |
 | 36,466.56 | 12,471.98 | 16,193.40 | 14,310.28 | 30,604.65 | **110,046.87** |
-
----
-
-## Account-level balance
-
-Debt not attributable to the open invoice lines below (opening carry, untagged settlements).
-
-| | Amount (R) |
-| :--- | ---: |
-| Opening balance (pre–Mar 2025 carry and settled-period residual, not itemised below) | 8,084.67 |
-| **Account-level subtotal** | **8,084.67** |
-| Open invoice subtotal (aged table above) | 110,046.87 |
-| **Balance due** | **118,131.54** |
 
 ---
 

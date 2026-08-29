@@ -1,7 +1,7 @@
 # JEN001 — Onboarding Status
 
-**Updated:** 2026-07-16  
-**Lane:** `position_recon` — stripped-gas + CYL Settlement Allocation v4
+**Updated:** 2026-08-25  
+**Lane:** `position_recon` — stripped-gas payment pattern · v5 operator · customer SOA presentation
 
 ---
 
@@ -50,6 +50,7 @@
 | :---: | :--- | :---: |
 | 1 | Scaffold + doctrine | ✅ |
 | 1b | ERP TXT ingest + v4 rebuild | ✅ |
-| 2 | Pilot payment 44878 / STAT 127 | ⏳ **next** |
+| 2 | Pilot STAT 127 + STAT 129 LIFO allocation | ✅ **2026-08-25** |
+| 3 | Bank deposit Tier-1 (STAT 129) | ⏳ REQUEST |
 
-**Collections gate:** `reconState: in-progress` — blocked on TXT-aligned statement.
+**Collections gate:** Presentation `ALLOWED` (PATTERN_ONLY) — `JEN001_Statement_of_Account.md` · 1 open invoice R597.11. Bank remittance still missing.

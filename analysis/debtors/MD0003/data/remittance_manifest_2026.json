@@ -67,7 +67,20 @@
       "remittanceTotal": 17311.60,
       "lineCount": 4,
       "status": "Posted",
-      "notes": "Confirmed in MD0003CURRENT.TXT line 227"
+      "notes": "Confirmed in DEBENQ_CURRENT.TXT"
+    },
+    {
+      "batchId": "RM-2026-08-01",
+      "remittanceDate": "2026-08-01",
+      "file": "raw/Remittance/01.08.2026.pdf",
+      "paymentReference": "000000000090726105",
+      "erpPaymentDoc": "45595",
+      "erpBatchRef": "STAT:129",
+      "erpPaymentDate": "2026-08-03",
+      "remittanceTotal": 14863.43,
+      "lineCount": 4,
+      "status": "Posted",
+      "notes": "Docs 50996, 50998, 51099, 51398. Partial June — see MD0003_Remittance_Payment_45595.md"
     }
   ],
   "otherFiles": [
@@ -77,6 +90,17 @@
       "amount": 8050.0,
       "payee": "Fincon",
       "notes": "Not a GAZ COD remittance — unrelated payment proof"
+    },
+    {
+      "file": "raw/Remittance/10.10.2025.pdf",
+      "type": "customer_ap_ledger",
+      "reportCode": "APVTRN01",
+      "sessionDate": "2025-10-10",
+      "periodFrom": "2025-01-01",
+      "periodTo": "2025-09-30",
+      "vendorCode": "GAZ001",
+      "openBalanceAtSnapshot": 20348.53,
+      "notes": "Not a COD remittance — open-item snapshot before payment 42440. See MD0003_Payment_42440_Match.md"
     },
     {
       "file": "raw/Remittances/MD0003_DETAILED_LEDGER.xls",

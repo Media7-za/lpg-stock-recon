@@ -285,6 +285,39 @@
 
 ---
 
+## Rebate Memo — Volume Rebate Claim Position
+
+> **Memo only — off the running balance.** Rebate entitlement below is computed from delivered volume and is **excluded** from Part 1A / 1B and from the ERP variance and sub-ledger pass gates. Credit notes already received are real ledger entries already inside Part 1A / 1B; this section tracks the claim lifecycle, not a second balance.
+
+**Basis:** `analysis/creditors/008ORY/reports/008ORY_LPG_Volume_Monthly_2025-01_to_2026-08.json` · **Threshold:** 30,000 kg/month · **VAT:** 15%
+**Settlement:** Oryx settles the volume rebate by credit note, so VAT is an input-tax reversal and the incl-VAT figure is the credit note face value.
+
+### Entitlement earned in period
+
+| Month | Net kg | Tier | Rate | Rebate ex VAT (R) | VAT (R) | Rebate incl VAT (R) |
+| :--- | ---: | :--- | :--- | ---: | ---: | ---: |
+| July 2026 | 36,400 | Tier 2 | R1.50/kg | 54,600.00 | 8,190.00 | 62,790.00 |
+| August 2026 | 27,494 | Tier 1 | R1.00/kg | 27,494.00 | 4,124.10 | 31,618.10 |
+| **Total** | **63,894** | — | — | **82,094.00** | **12,314.10** | **94,408.10** |
+
+### Rebate credit notes received
+
+*Identified in the ERP TXT by reference text matching `/rebate/i` on the `SUPPLIER/BANK REF` or `REFERENCE` column.*
+
+| Date | Entry Type | Doc # | Reference | Amount (R) |
+| :--- | :--- | :--- | :--- | ---: |
+| _None identified in period_ | — | — | — | 0.00 |
+
+### Claim position
+
+| Component | Amount (R) |
+| :--- | ---: |
+| Rebate earned (incl VAT) | 94,408.10 |
+| Credit notes received | (0.00) |
+| **Outstanding claim (incl VAT)** | **94,408.10** |
+| Outstanding claim (ex VAT — margin recovery) | 82,094.00 |
+
+---
 <!-- INTERNAL_ONLY_START -->
 <!-- CREDITOR_POSITION_WORKSPACE_START -->
 

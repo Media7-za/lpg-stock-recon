@@ -1,0 +1,62 @@
+{
+  "debtorCode": "GAS004",
+  "debtorName": "GAS 2 GO HILTIN NEW ACCOUNT",
+  "period": {
+    "from": "2026-01-01",
+    "to": "2026-08-03"
+  },
+  "version": "v5",
+  "workspaceStatus": "pending_review",
+  "lastGeneratedAt": "2026-08-17T10:52:42.564Z",
+  "source": "analysis/debtors/GAS004/raw/DEBENQ_CURRENT.TXT",
+  "financialPosition": {
+    "lpgGasDebt": 17244.01,
+    "cylinderFinancialBalance": 2817.5,
+    "totalDebtorBalance": 20061.51,
+    "erpStatedBalance": 30242.46,
+    "erpVariance": -10180.95,
+    "subLedgerVariance": 0
+  },
+  "custodyPosition": {
+    "totalCustodyExposure": 2875,
+    "lines": [
+      {
+        "sku": "14.1",
+        "label": "14kg",
+        "qty": -1,
+        "depositRate": 575,
+        "exposure": -575
+      },
+      {
+        "sku": "19.1",
+        "label": "19kg",
+        "qty": 5,
+        "depositRate": 690,
+        "exposure": 3450
+      }
+    ]
+  },
+  "reconciliationPosition": {
+    "cylinderVariance": -57.5,
+    "erpVariance": -10180.95,
+    "subLedgerVariance": 0,
+    "exceptions": [
+      {
+        "type": "VARIANCE",
+        "basis": "ASSERTED",
+        "status": "open",
+        "description": "Part 1 bridge differs from ERP TXT header"
+      },
+      {
+        "type": "CUSTODY",
+        "basis": "ASSERTED",
+        "status": "open",
+        "description": "Part 1B financial vs Part 2 custody — check DB ingest vs TXT"
+      }
+    ]
+  },
+  "artifacts": {
+    "statementMarkdown": "analysis/debtors/GAS004/reports/GAS004_Statement_Account_v5.md",
+    "txtSource": "analysis/debtors/GAS004/raw/DEBENQ_CURRENT.TXT"
+  }
+}

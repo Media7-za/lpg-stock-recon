@@ -1,0 +1,24 @@
+{
+  "debtorCode": "JEN001",
+  "debtorName": "Spoon Eatery",
+  "txtPath": "analysis/debtors/JEN001/raw/DEBENQ.TXT",
+  "periodStart": "2026-07-01",
+  "combinedBf": 22088.1,
+  "bfSourceNote": "DEBENQ.TXT line 14 — BALANCE B/F (post payment 44878, 25 Jun 2026)",
+  "cylOpeningFinancial": -517.5,
+  "paymentLane": "LPG",
+  "cylOpeningQty": {
+    "14.1": 0,
+    "19.1": 0,
+    "9.1": -1,
+    "D.1": 0,
+    "S.1": 0
+  },
+  "skuRates": {
+    "14.1": 575,
+    "19.1": 690,
+    "9.1": 517.5,
+    "D.1": 1150,
+    "S.1": 1150
+  }
+}

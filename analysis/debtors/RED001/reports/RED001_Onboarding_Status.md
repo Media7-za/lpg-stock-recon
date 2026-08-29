@@ -1,0 +1,149 @@
+# RED001 — Onboarding Status
+
+**Updated:** 2026-07-29  
+**Lane:** `allocation` (invoice-linked, WO0001 family)  
+**reconState:** **not set** — no `project.json`; do not change without operator authority
+
+---
+
+## Account
+
+| Field | Value |
+| :--- | :--- |
+| Debtor code | **RED001** |
+| Trading name | **REDLANDS HOTEL** (`RED001CURRENT.TXT` `ACCOUNT:` header ✓) |
+| Portfolio hint | `portfolio_candidates.csv` — **R8,245.40** aged (13 Jul 2025 snapshot — superseded by TXT) |
+| Sibling accounts | None under `RED*` |
+
+---
+
+## Input inventory
+
+| Input | Path | Status |
+| :--- | :--- | :---: |
+| ERP statement TXT (source) | `raw/RED001.TXT` | ✅ operator supplied |
+| ERP statement TXT (canonical) | `raw/RED001CURRENT.TXT` | ✅ copied from `RED001.TXT` |
+| v5 config | `config/statement_v5.json` | ✅ TXT-aligned (`combinedBf` R0.00) |
+| Ingest coverage | `reports/RED001_INGEST_COVERAGE_2026-07-29.json` | ✅ `CURRENT_PARTIAL` |
+| Allocation doctrine | `docs/RED001_Allocation_Doctrine_v1.md` | ✅ Turn 1 |
+| Allocation edges | `data/allocation_edges.csv` | ✅ Turn 2 pilot |
+| Allocation report | `reports/RED001_Payment_Allocation_v1.md` | ✅ Turn 2 pilot |
+| Stripped LIFO report | `reports/RED001_Payment_Allocation_Stripped_v1.md` | ✅ Turn 2 stripped pilot |
+| Stripped LIFO edges | `data/allocation_edges_stripped_pilot.csv` | ✅ Turn 2 stripped pilot |
+| Overrides registry | `config/payment_pattern_overrides.json` | ✅ empty |
+| v5 statement | `reports/RED001_Statement_Account_v5.md` | ✅ bridge **R0.00** (CN 13687 → Part 1B) |
+| Delivery event ledger | `reports/RED001_Delivery_Event_Ledger_v1.md` | ✅ DN-by-DN ratification (TXT + line split) |
+| Ratification scenario | `config/ratification_scenarios.json` | ✅ `CN13687-6CYL-NOV2025` active |
+| ERP agent note | `docs/RED001_ERP_Agent_Note_CN13687.md` | ✅ Invoice correction (not debit note) |
+| `project.json` | — | ❌ not created |
+
+---
+
+## ERP TXT summary (`RED001CURRENT.TXT`)
+
+| Field | Value |
+| :--- | ---: |
+| CURRENT BALANCE | **R5,559.76** |
+| BALANCE B/F | R0.00 |
+| Period in export | 08 May 2025 → 25 Jul 2026 |
+| Period rows | 109 |
+| As-at (last row) | 2026-07-25 |
+
+---
+
+## Payer-class gate (Turn 1 — PASS)
+
+| Metric | Value |
+| :--- | ---: |
+| Payments with invoice ref (excl Alloc/Recon) | 46 / 56 rows |
+| Ref-linked payment value (non-mirror) | R257,017.12 |
+| **Lane ruling** | **allocation** — not JIM001 |
+
+---
+
+## Ingest gate (`CURRENT_PARTIAL`)
+
+| Gap | Type | Issue |
+| :--- | :--- | :--- |
+| **45328** | Payment | MISSING_HEADER (21 Jul 2026) |
+| **52086** | Invoice | MISSING_LINES (24 Jul 2026) |
+| **15325** | Crd Note | MISSING_LINES (25 Jul 2026) |
+| **15327** | Crd Note | MISSING_LINES (25 Jul 2026) |
+
+Allocation lane ingest gate: **BLOCKED** until tail gaps resolved or ratified.
+
+---
+
+## Turn 2 pilot result
+
+| Field | Value |
+| :--- | :--- |
+| Pilot period | **2026-04-01 → 2026-07-05** |
+| Payment documents | 10 |
+| Allocation edges | 11 |
+| Tier 1/2 confirmed | 10 (**90.91%**) |
+| Tier 5 review | 1 (payment **44288** — blank ref R5,759.98) |
+| **Pilot gate** | **PASS ✅** (≥90%) |
+| ERP TXT closing | **R5,559.76** |
+
+### Turn 2 stripped-gas LIFO pilot
+
+| Field | Value |
+| :--- | :--- |
+| Script | `scripts/allocation_ingest_stripped_pilot.mjs` |
+| Method | LPG-only TXT · EMPTY stripped · chronological LIFO (ref_no not authority) |
+| Pilot window | **2026-04-01 → 2026-07-05** (STAT 125–128) |
+| Pilot payment docs | 9 |
+| LIFO confirmed edges | 9 |
+| Review queue | 1 (**44288** — blank ref; LIFO vs TXT hint **50580**) |
+| Open LPG (LIFO model) | **R17,439.40** (4 docs) |
+| LPG stripped gate | **BLOCKED** (gap vs ERP **R-11,879.64** — CYL carry + CN 13687) |
+| **Pilot gate** | **PASS ✅** |
+
+---
+
+## Turn status
+
+| Turn | Deliverable | Status |
+| :---: | :--- | :---: |
+| 1 | Scaffold + payer-class gate | ✅ |
+| 1 | ERP TXT ingest | ✅ |
+| 1 | Ingest coverage check | ✅ `CURRENT_PARTIAL` |
+| 1 | `Allocation_Doctrine_v1.md` | ✅ |
+| 1 | v5 statement + R0.00 bridge | ✅ Part 1A **R10,389.76** · Part 1B **R-4,830.00** |
+| 2 | Pilot `allocation_edges.csv` | ✅ |
+| 2 | `Payment_Allocation_v1.md` | ✅ |
+| 2 | `Payment_Allocation_Stripped_v1.md` | ✅ |
+| 2 | Pilot gate (≥90% T1/T2) | ✅ **PASS** |
+| 3 | Full allocation graph | ⏳ next |
+| 4 | Overrides | ⏳ |
+| 5 | Statement bridge | ⏳ pending full graph + ingest PASS |
+
+---
+
+## Operator review queue (Tier 5)
+
+| Payment | Date | Amount | Issue | TXT hint |
+| :--- | :--- | ---: | :--- | :--- |
+| **44288** | 2026-05-12 | R5,759.98 | Blank `ref_no` on STAT 126 | Likely **50580** (DN#22374, R5,759.98, 07 May 2026) |
+
+**DN-lag pattern (May–Jun 2025):** Early STAT batches post payment 1 calendar day before invoice date with exact ref+LPG match → `REVIEW_DN_LAG`; operator may ratify via `payment_pattern_overrides.json`.
+
+---
+
+## Open blockers
+
+1. **Ingest gaps** — docs 45328, 52086, 15325, 15327 missing in Supabase.
+2. **`project.json` not created** — operator onboarding pending.
+3. **reconState** — do not set `complete` until operator sign-off.
+
+---
+
+## Next commands
+
+```bash
+PGSSL_REJECT_UNAUTHORIZED=false npm run debtors:ingest-check -- --debtor RED001
+PGSSL_REJECT_UNAUTHORIZED=false node analysis/debtors/RED001/scripts/allocation_ingest_pilot.mjs
+PGSSL_REJECT_UNAUTHORIZED=false node analysis/debtors/RED001/scripts/allocation_ingest_stripped_pilot.mjs
+PGSSL_REJECT_UNAUTHORIZED=false node analysis/debtors/shared/scripts/reconcile_debtor_v5_from_txt.mjs --debtor RED001
+```

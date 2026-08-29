@@ -1,0 +1,108 @@
+{
+  "debtor_code": "SA0001",
+  "turn": 1,
+  "generated_at": "2026-08-05T08:00:00Z",
+  "generated_by": "cursor",
+  "supersedes_turn": null,
+  "source_as_at": "2026-07-31",
+  "source_as_at_basis": "Last period row in raw/SA0001.TXT",
+  "erp_freshness": {
+    "repository_latest_file": "SA0001.TXT",
+    "repository_latest_path": "analysis/debtors/SA0001/raw/SA0001.TXT",
+    "balance": 10804.97,
+    "currency": "ZAR",
+    "period_end": null,
+    "last_transaction_date": "2026-07-31",
+    "repository_commit": null,
+    "evidence_as_at": "2026-07-31",
+    "operator_confirmation": "pending",
+    "confirmation_date": null,
+    "status": "LATEST_IN_REPOSITORY",
+    "balance_classification": "ASSERTED_STALE_PENDING_OPERATOR_CONFIRMATION",
+    "fresh_upload_requested": false,
+    "live_debtor_communications": "blocked",
+    "reconciliation_closure": "blocked",
+    "registry_ratification_dependent_on_current_balance": "blocked"
+  },
+  "erp_anchor": {
+    "amount": 10804.97,
+    "currency": "ZAR",
+    "as_at": "2026-07-31",
+    "source": "raw/SA0001.TXT CURRENT BALANCE header",
+    "status": "LATEST_IN_REPOSITORY",
+    "balance_classification": "ASSERTED_STALE_PENDING_OPERATOR_CONFIRMATION",
+    "canonical_source": "analysis/debtors/SA0001/raw/SA0001.TXT"
+  },
+  "portfolio_anchor": {
+    "amount": 17790.66,
+    "currency": "ZAR",
+    "as_at": "2025-07-13",
+    "source": "130720251H45M.TXT (superseded by debtor statement)",
+    "canonical_source": "analysis/debtors/Global Reports/130720251H45M.TXT"
+  },
+  "lane": "position_recon + statement",
+  "outcome": "PARTIAL",
+  "recon_state": "in-progress",
+  "residual": {
+    "amount": 0.0,
+    "tolerance": 0.05,
+    "unit": "ZAR"
+  },
+  "artifacts": [
+    {
+      "path": "worker_report.md",
+      "canonical_source": "analysis/debtors/evidence_exchange/SA0001/turn-001/worker_report.md",
+      "purpose": "Turn execution report"
+    },
+    {
+      "path": "turn_brief.md",
+      "canonical_source": "analysis/debtors/evidence_exchange/SA0001/turn-001/turn_brief.md",
+      "purpose": "Turn instruction"
+    },
+    {
+      "path": "SA0001_Statement_Account_v5.md",
+      "canonical_source": "analysis/debtors/SA0001/reports/SA0001_Statement_Account_v5.md",
+      "purpose": "v5 statement + bridge"
+    },
+    {
+      "path": "SA0001_INGEST_COVERAGE_2026-08-05.json",
+      "canonical_source": "analysis/debtors/SA0001/reports/SA0001_INGEST_COVERAGE_2026-08-05.json",
+      "purpose": "Ingest gate evidence"
+    }
+  ],
+  "proven_identities": [
+    {
+      "name": "Part 1A + 1B vs ERP CURRENT BALANCE",
+      "result": 0.0,
+      "anchor": 10804.97,
+      "source": "reports/SA0001_Statement_Account_v5.md"
+    }
+  ],
+  "asserted_items": [
+    {
+      "label": "ERP CURRENT BALANCE",
+      "amount": 10804.97,
+      "as_at": "2026-07-31",
+      "source": "raw/SA0001.TXT",
+      "kill_condition": "Operator confirms newer export or uploads superseding TXT"
+    }
+  ],
+  "assumed_hypotheses": [],
+  "invariants": [
+    {
+      "name": "Sub-ledger tie (1A + 1B vs ERP header)",
+      "status": "PASS",
+      "result": 0.0,
+      "required": "<= 0.05"
+    }
+  ],
+  "operator_decisions_required": [
+    {
+      "id": 1,
+      "decision": "Confirm raw/SA0001.TXT is the latest ERP export",
+      "blocking": true,
+      "human_task": null
+    }
+  ],
+  "staleness_warning": "Portfolio/global aged-debt R17,790.66 (2025-07-13) superseded by statement TXT R10,804.97."
+}

@@ -1,0 +1,105 @@
+{
+  "debtor_code": "CAP000",
+  "turn": 1,
+  "generated_at": "2026-08-05T07:43:00Z",
+  "generated_by": "cursor",
+  "supersedes_turn": null,
+  "source_as_at": "2025-07-13",
+  "source_as_at_basis": "Global aged-debt export date (130720251H45M.TXT), filename DDMMYYYYHMM. Corrected 2026-08-05 self-review from an initial 2026-07-13 transcription error. Operator confirmed 'current' 2026-08-05 against the (incorrectly stated) framing of 13 Jul 2025 in the orchestrator's original message — confirmation stands as to 'no fresher file exists in repo', not as to the anchor being non-stale.",
+  "erp_freshness": {
+    "repository_latest_file": "130720251H45M.TXT",
+    "repository_latest_path": "analysis/debtors/Global Reports/130720251H45M.TXT",
+    "balance": 46228.47,
+    "currency": "ZAR",
+    "period_end": null,
+    "last_transaction_date": null,
+    "repository_commit": null,
+    "evidence_as_at": "2025-07-13",
+    "operator_confirmation": "confirmed",
+    "confirmation_date": "2026-08-05",
+    "status": "LATEST_IN_REPOSITORY",
+    "balance_classification": "ASSERTED_STALE",
+    "fresh_upload_requested": false,
+    "debtor_statement_txt": "absent — H-011 OPEN",
+    "live_debtor_communications": "blocked",
+    "reconciliation_closure": "blocked",
+    "registry_ratification_dependent_on_current_balance": "blocked"
+  },
+  "erp_anchor": {
+    "amount": 46228.47,
+    "currency": "ZAR",
+    "as_at": "2025-07-13",
+    "source": "Global Reports/130720251H45M.TXT CAP000 row BALANCE",
+    "status": "LATEST_IN_REPOSITORY",
+    "balance_classification": "ASSERTED_STALE",
+    "canonical_source": "analysis/debtors/Global Reports/130720251H45M.TXT"
+  },
+  "portfolio_anchor": {
+    "amount": 46228.47,
+    "currency": "ZAR",
+    "as_at": "2025-07-13",
+    "source": "portfolio_candidates.csv",
+    "canonical_source": "analysis/debtors/shared/data/portfolio_candidates.csv"
+  },
+  "lane": "position_recon",
+  "outcome": "PARTIAL",
+  "recon_state": "pending",
+  "residual": {
+    "amount": null,
+    "tolerance": 0.05,
+    "unit": "ZAR",
+    "note": "No debtor TXT — bridge not computed"
+  },
+  "artifacts": [
+    {
+      "path": "worker_report.md",
+      "canonical_source": "analysis/debtors/CAP000/reports/CAP000_Turn001_Worker_Report.md",
+      "purpose": "Turn execution report"
+    },
+    {
+      "path": "CAP000_Onboarding_Status.md",
+      "canonical_source": "analysis/debtors/CAP000/reports/CAP000_Onboarding_Status.md",
+      "purpose": "Onboarding inventory and turn map"
+    }
+  ],
+  "proven_identities": [],
+  "asserted_items": [
+    {
+      "label": "Global BALANCE CAP000",
+      "amount": 46228.47,
+      "as_at": "2025-07-13",
+      "source": "130720251H45M.TXT"
+    },
+    {
+      "label": "Terms 30T",
+      "source": "130720251H45M.TXT T/C column"
+    },
+    {
+      "label": "Aged 120+ bucket",
+      "amount": 20302.25,
+      "source": "130720251H45M.TXT"
+    }
+  ],
+  "assumed_hypotheses": [
+    {
+      "label": "settlement_discount lane (Model B 2.5%)",
+      "kill_condition": "Debtor TXT shows no DISCOUNT ALLOWED / remittance pattern — re-route to position_recon"
+    }
+  ],
+  "invariants": [
+    {
+      "name": "TXT closing bridge",
+      "status": "NOT_RUN",
+      "result": null,
+      "required": "<= 0.05 ZAR vs CURRENT BALANCE header"
+    }
+  ],
+  "operator_decisions_required": [
+    {
+      "id": 1,
+      "decision": "Complete H-011 — full CAP000 debtor account TXT + remittances",
+      "blocking": true
+    }
+  ],
+  "staleness_warning": "Partial april_dump.TXT rows (Apr 2026) are not a substitute for debtor account export."
+}

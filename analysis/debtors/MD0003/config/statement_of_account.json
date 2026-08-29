@@ -1,0 +1,17 @@
+{
+  "debtorCode": "MD0003",
+  "customerName": "BLUFF MEAT SUPPLY(PTY) LTD",
+  "referenceLabel": "Reference",
+  "referenceValue": "",
+  "businessHeader": [
+    "BELLA ENERGY SERVICES300 (PTY) LTD T/A GAZ EXPRESS",
+    "50 WINSTON ROAD",
+    "PIETERMARITZBURG",
+    "3201"
+  ],
+  "primaryTxt": "analysis/debtors/MD0003/raw/Enquiry/DEBENQ_CURRENT.TXT",
+  "siteTxts": {},
+  "outputDir": "analysis/debtors/MD0003/reports",
+  "outputBaseName": "MD0003_Statement_of_Account",
+  "pdfStylesheet": "analysis/debtors/shared/templates/statement_pdf.css"
+}

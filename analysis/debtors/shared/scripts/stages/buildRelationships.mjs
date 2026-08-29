@@ -12,10 +12,13 @@ function parseErpRefFromNotes(notes) {
 }
 
 function doctrineFromEdge(edge) {
-  if (edge.allocationType === 'CN_OFFSET') return 'Tier 3';
+  if (edge.allocationType === 'CN_OFFSET' || edge.allocationType === 'REMITTANCE_CN_OFFSET') return 'Tier 3';
   if (edge.allocationType === 'UNALLOCATED') return 'Tier 5';
   if (edge.allocationType === 'ROUNDING_RESIDUAL') return 'Tier 2';
-  if (edge.evidenceSource === 'EXPLICIT_ALLOCATION') return 'Tier 2';
+  if (edge.evidenceSource === 'EXPLICIT_ALLOCATION' || edge.allocationType === 'REMITTANCE_EXPLICIT') {
+    return 'Tier 1';
+  }
+  if (edge.evidenceSource === 'REMITTANCE_ADVICE') return 'Tier 1';
   if (edge.allocationType.startsWith('OPEN_BALANCE')) return 'Tier 1';
   return 'Tier 4';
 }

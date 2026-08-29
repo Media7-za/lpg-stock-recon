@@ -1,0 +1,63 @@
+{
+  "debtorCode": "TWK002",
+  "debtorName": "TWK AGRI PTY LTD",
+  "period": {
+    "from": "2025-03-01",
+    "to": "2026-08-09"
+  },
+  "version": "v5",
+  "workspaceStatus": "pending_review",
+  "lastGeneratedAt": "2026-08-10T11:29:06.646Z",
+  "source": "analysis/debtors/TWK002/raw/DEBENQ_TWK002.TXT",
+  "financialPosition": {
+    "lpgGasDebt": 110311.54,
+    "cylinderFinancialBalance": 7820,
+    "totalDebtorBalance": 118131.54,
+    "erpStatedBalance": 118131.54,
+    "erpVariance": 0,
+    "subLedgerVariance": 0
+  },
+  "custodyPosition": {
+    "totalCustodyExposure": 7877.5,
+    "lines": [
+      {
+        "sku": "14.1",
+        "label": "14kg",
+        "qty": -1,
+        "depositRate": 575,
+        "exposure": -575
+      },
+      {
+        "sku": "19.1",
+        "label": "19kg",
+        "qty": 4,
+        "depositRate": 690,
+        "exposure": 2760
+      },
+      {
+        "sku": "9.1",
+        "label": "9kg",
+        "qty": 11,
+        "depositRate": 517.5,
+        "exposure": 5692.5
+      }
+    ]
+  },
+  "reconciliationPosition": {
+    "cylinderVariance": -57.5,
+    "erpVariance": 0,
+    "subLedgerVariance": 0,
+    "exceptions": [
+      {
+        "type": "CUSTODY",
+        "basis": "ASSERTED",
+        "status": "open",
+        "description": "Part 1B financial vs Part 2 custody — check DB ingest vs TXT"
+      }
+    ]
+  },
+  "artifacts": {
+    "statementMarkdown": "analysis/debtors/TWK002/reports/TWK002_Statement_Account_v5.md",
+    "txtSource": "analysis/debtors/TWK002/raw/DEBENQ_TWK002.TXT"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "debtorCode": "RED001",
+  "activeScenarioId": "CN13687-6CYL-NOV2025",
+  "scenarios": [
+    {
+      "id": "CN13687-6CYL-NOV2025",
+      "status": "proposed",
+      "title": "CN 13687 — six-cylinder posting error (November correction invoice)",
+      "assumption": "6 of 7 cylinders credited on CN 13687 (15 Oct 2025, −R8,452.50) were a posting error. Only 1 cylinder (−R1,207.50) was valid against the open deposit from DN#12678 (inv 44675). The 6-cylinder portion (−R7,245.00) should have been corrected in November 2025 but was never posted in ERP.",
+      "erpAction": {
+        "entry_type": "Invoice",
+        "notEntryType": "Debit Note",
+        "date": "2025-11-30",
+        "ref_no": "DN#20157-CORR",
+        "amount_incl_vat": 7245.0,
+        "ex_vat": 6300.0,
+        "lane": "CYL",
+        "lines": [
+          {
+            "stock_no": "S.1",
+            "category": "CYL",
+            "description": "48KG SV CYLINDER DEPOSIT",
+            "qty": 6,
+            "unit_deposit_ex_vat": 1050.0,
+            "line_total_incl_vat": 7245.0
+          }
+        ],
+        "memo": "Correction invoice — offsets erroneous 6-cylinder credit on CN 13687. Use Invoice (not debit note) so stock quantities and values post correctly.",
+        "relatedDocs": {
+          "erroneous_cn": "13687",
+          "delivery_note": "20157",
+          "valid_cn_portion": "1 cyl / R1,207.50"
+        }
+      },
+      "v5Synthetic": {
+        "doc_no": "RAT13687",
+        "iso": "2025-11-30",
+        "cylQty": { "S.1": 6 }
+      },
+      "expectedEffect": {
+        "part1bDelta": 7245.0,
+        "part1aAnchorRemoved": true,
+        "combinedDeltaVsTxt": 7245.0,
+        "correctedCombinedClose": 12804.76
+      }
+    }
+  ]
+}

@@ -81,6 +81,91 @@ function buildCustodyBlockedNote(coverage) {
   return `\n> **INGEST_GATE:** Custody variance below is **not signed off** — ingest coverage \`${coverage.display_status}\`. DB-backed qty may not reflect all TXT documents.\n`;
 }
 
+function loadRatificationScenario(cfg) {
+  const rel = cfg.ratificationScenariosPath;
+  if (!rel) return null;
+  const scenarioPath = path.isAbsolute(rel) ? rel : path.join(ROOT, rel);
+  if (!fs.existsSync(scenarioPath)) return null;
+  const bundle = JSON.parse(fs.readFileSync(scenarioPath, 'utf8'));
+  if (!bundle.activeScenarioId) return null;
+  const scenario = bundle.scenarios?.find((s) => s.id === bundle.activeScenarioId);
+  if (!scenario) {
+    throw new Error(`Ratification scenario not found: ${bundle.activeScenarioId}`);
+  }
+  return scenario;
+}
+
+function buildRatificationRows(scenario) {
+  const erp = scenario.erpAction;
+  const syn = scenario.v5Synthetic;
+  const docNo = syn.doc_no;
+  const iso = syn.iso || erp.date;
+  const amount = round2(erp.amount_incl_vat ?? erp.amount);
+  const ref = erp.ref_no;
+  const lane = erp.lane || 'CYL';
+  const row = {
+    lineNo: 99999,
+    period: 'RAT',
+    doc_no: docNo.padStart(8, '0'),
+    clean_doc: docNo,
+    entry_type: erp.entry_type || 'Invoice',
+    iso,
+    ref_no: ref,
+    amount,
+    erp_balance: null,
+    is_cyl_only: lane === 'CYL' || isCylRef(ref),
+    is_ratification: true,
+    ratification_id: scenario.id,
+    ratification_title: scenario.title,
+    cyl_qty: syn.cylQty || {},
+  };
+  return [row];
+}
+
+function mergeRatificationRows(rows, ratificationRows) {
+  if (!ratificationRows?.length) return rows;
+  return [...rows, ...ratificationRows].sort(
+    (a, b) =>
+      a.iso.localeCompare(b.iso) ||
+      (a.is_ratification ? 1 : 0) - (b.is_ratification ? 1 : 0) ||
+      (a.entry_type === 'Crd Note' ? 1 : 0) - (b.entry_type === 'Crd Note' ? 1 : 0) ||
+      a.doc_no.localeCompare(b.doc_no),
+  );
+}
+
+function buildRatificationDocSplit(ratificationRows) {
+  const map = new Map();
+  for (const r of ratificationRows || []) {
+    if (!r.is_ratification) continue;
+    const key = `${r.clean_doc}|${r.entry_type}`;
+    const lane = r.is_cyl_only ? 'cyl' : 'lpg';
+    map.set(key, {
+      lpg: lane === 'lpg' ? r.amount : 0,
+      cyl: lane === 'cyl' ? r.amount : 0,
+    });
+  }
+  return map;
+}
+
+function buildRatificationSection(scenario, erpVariance) {
+  if (!scenario) return '';
+  const erp = scenario.erpAction;
+  return `## Ratification Scenario (active)
+
+**ID:** \`${scenario.id}\` · **Status:** ${scenario.status}
+
+${scenario.assumption}
+
+| Synthetic v5 row | ERP action (when posted) |
+| :--- | :--- |
+| Doc **${scenario.v5Synthetic.doc_no}** · ${erp.date} · **+R${fmt(erp.amount_incl_vat ?? erp.amount)}** · Part 1B | **${erp.entry_type}** (not ${erp.notEntryType || 'debit note'}) · ref \`${erp.ref_no}\` · ${erp.lines?.[0]?.qty ?? '?'}× ${erp.lines?.[0]?.stock_no ?? 'CYL'} |
+
+> **ERP TXT variance expected:** Combined reconstruct exceeds TXT header by **R${fmt(scenario.expectedEffect?.combinedDeltaVsTxt ?? erpVariance)}** until correction invoice is posted live. See \`docs/RED001_ERP_Agent_Note_CN13687.md\`.
+
+---
+`;
+}
+
 function loadConfig(debtorCode) {
   const configPath = path.join(ROOT, 'analysis/debtors', debtorCode, 'config/statement_v5.json');
   if (!fs.existsSync(configPath)) {
@@ -98,6 +183,8 @@ function loadConfig(debtorCode) {
   }
   const cylOpeningFinancial = Number(cfg.cylOpeningFinancial ?? 0);
   const combinedBf = Number(cfg.combinedBf);
+  const ratificationScenario = loadRatificationScenario(cfg);
+  const ratificationRows = ratificationScenario ? buildRatificationRows(ratificationScenario) : [];
   return {
     ...cfg,
     txtPath,
@@ -105,6 +192,8 @@ function loadConfig(debtorCode) {
     cylOpeningFinancial,
     lpgOpeningBf: Math.round((combinedBf - cylOpeningFinancial) * 100) / 100,
     paymentLane: cfg.paymentLane || 'LPG',
+    ratificationScenario,
+    ratificationRows,
     reportPath: path.join(
       ROOT,
       `analysis/debtors/${debtorCode}/reports/${debtorCode}_Statement_Account_v5.md`,
@@ -208,8 +297,18 @@ function splitRowAmount(r, docSplit, cfg) {
 
   const key = `${r.clean_doc}|${r.entry_type}`;
   const split = docSplit.get(key);
-  if (split && Math.abs(round2(split.lpg + split.cyl) - r.amount) < 0.02) {
-    return { lpg: round2(split.lpg), cyl: round2(split.cyl) };
+  if (split) {
+    const dbTotal = round2(split.lpg + split.cyl);
+    if (Math.abs(dbTotal - r.amount) < 0.02) {
+      return { lpg: round2(split.lpg), cyl: round2(split.cyl) };
+    }
+    // Single-lane line detail — route by TXT header even when ref lacks -EMPTY (e.g. CN 13687)
+    if (Math.abs(split.lpg) < 0.01 && Math.abs(split.cyl) >= 0.01) {
+      return { lpg: 0, cyl: r.amount };
+    }
+    if (Math.abs(split.cyl) < 0.01 && Math.abs(split.lpg) >= 0.01) {
+      return { lpg: r.amount, cyl: 0 };
+    }
   }
   if (r.is_cyl_only) return { lpg: 0, cyl: r.amount };
   return { lpg: r.amount, cyl: 0 };
@@ -239,8 +338,9 @@ function buildLaneSections(financial, lane, openingBf, amountKey, runningKey) {
       `| **01 ${mk.slice(0, 3)}** | **Opening Balance** | — | | **${fmt(monthOpening)}** |`,
     ];
     for (const r of rows) {
+      const ratNote = r.is_ratification ? ' *(ratification)*' : '';
       lines.push(
-        `| ${r.date_str} | ${r.entry_type} | ${r.clean_doc} | ${fmt(r[amountKey])} | ${fmt(r[runningKey])} |`,
+        `| ${r.date_str} | ${r.entry_type} | ${r.clean_doc}${ratNote} | ${fmt(r[amountKey])} | ${fmt(r[runningKey])} |`,
       );
     }
     sections.push(lines.join('\n'));
@@ -310,11 +410,17 @@ function buildPart1Split(rows, cfg, docSplit) {
 async function fetchDocLineSplit(client, cfg) {
   const res = await client.query(
     `
-    SELECT LTRIM(doc_no,'0') AS doc_no, entry_type, debt_group,
+    WITH deduped AS (
+      SELECT DISTINCT ON (LTRIM(doc_no,'0'), entry_type, debt_group, stock_no, category, line_total)
+        LTRIM(doc_no,'0') AS doc_no, entry_type, debt_group, line_total
+      FROM vw_clean_transactions
+      WHERE account_no = $2 AND tx_date >= $1
+        AND entry_type IN ('Invoice', 'Crd Note')
+      ORDER BY LTRIM(doc_no,'0'), entry_type, debt_group, stock_no, category, line_total, id DESC
+    )
+    SELECT doc_no, entry_type, debt_group,
       ROUND(SUM(line_total)::numeric, 2)::float AS s
-    FROM vw_clean_transactions
-    WHERE account_no = $2 AND tx_date >= $1
-      AND entry_type IN ('Invoice', 'Crd Note')
+    FROM deduped
     GROUP BY doc_no, entry_type, debt_group`,
     [cfg.periodStart, cfg.debtorCode],
   );
@@ -332,9 +438,15 @@ async function fetchDocLineSplit(client, cfg) {
 async function buildPart2(client, cfg) {
   const cylRes = await client.query(
     `
-    SELECT tx_date::text as tx_date, doc_no, entry_type, stock_no, SUM(qty)::int as qty
-    FROM vw_clean_transactions
-    WHERE account_no = $2 AND debt_group = 'CYL' AND tx_date >= $1
+    WITH deduped AS (
+      SELECT DISTINCT ON (LTRIM(doc_no,'0'), entry_type, stock_no, debt_group, line_total, qty)
+        tx_date::text AS tx_date, LTRIM(doc_no,'0') AS doc_no, entry_type, stock_no, qty
+      FROM vw_clean_transactions
+      WHERE account_no = $2 AND debt_group = 'CYL' AND tx_date >= $1
+      ORDER BY LTRIM(doc_no,'0'), entry_type, stock_no, debt_group, line_total, qty, id DESC
+    )
+    SELECT tx_date, doc_no, entry_type, stock_no, SUM(qty)::int AS qty
+    FROM deduped
     GROUP BY tx_date, doc_no, entry_type, stock_no
     ORDER BY tx_date, doc_no`,
     [cfg.periodStart, cfg.debtorCode],
@@ -349,14 +461,27 @@ async function buildPart2(client, cfg) {
   }
 
   const { rows } = parseTxtRows(cfg.txtPath);
-  const periodRows = rows
-    .filter((r) => r.iso >= cfg.periodStart && (r.entry_type === 'Invoice' || r.entry_type === 'Crd Note'))
-    .sort(
-      (a, b) =>
-        a.iso.localeCompare(b.iso) ||
-        (a.entry_type === 'Crd Note' ? 1 : 0) - (b.entry_type === 'Crd Note' ? 1 : 0) ||
-        a.doc_no.localeCompare(b.doc_no),
-    );
+  const ratificationInvCn = (cfg.ratificationRows || []).filter((r) => r.is_ratification);
+  const periodRows = [
+    ...rows.filter(
+      (r) => r.iso >= cfg.periodStart && (r.entry_type === 'Invoice' || r.entry_type === 'Crd Note'),
+    ),
+    ...ratificationInvCn,
+  ].sort(
+    (a, b) =>
+      a.iso.localeCompare(b.iso) ||
+      (a.entry_type === 'Crd Note' ? 1 : 0) - (b.entry_type === 'Crd Note' ? 1 : 0) ||
+      a.doc_no.localeCompare(b.doc_no),
+  );
+
+  for (const r of ratificationInvCn) {
+    const key = `${r.clean_doc}|${r.entry_type}`;
+    if (!cylLookup.has(key)) cylLookup.set(key, {});
+    const bucket = cylLookup.get(key);
+    for (const [sku, qty] of Object.entries(r.cyl_qty || {})) {
+      bucket[sku] = (bucket[sku] || 0) + Number(qty);
+    }
+  }
 
   const byMonth = new Map();
   for (const r of periodRows) {
@@ -392,8 +517,9 @@ async function buildPart2(client, cfg) {
         return '0';
       });
       if (changeStrs.some((x) => x !== '0')) {
+        const ratNote = r.is_ratification ? ' *(ratification)*' : '';
         lines.push(
-          `| ${displayDate(r.iso)} | ${r.entry_type} | ${r.clean_doc} | ${changeStrs.join(' | ')} |`,
+          `| ${displayDate(r.iso)} | ${r.entry_type} | ${r.clean_doc}${ratNote} | ${changeStrs.join(' | ')} |`,
         );
       }
     }
@@ -410,15 +536,19 @@ async function main() {
   const debtorCode = parseArgs();
   const cfg = loadConfig(debtorCode);
   const { rows, headerBalance } = parseTxtRows(cfg.txtPath);
+  const allRows = mergeRatificationRows(rows, cfg.ratificationRows);
 
   const client = new pg.Client(pgClientOptions());
   await client.connect();
   const docSplit = await fetchDocLineSplit(client, cfg);
+  for (const [k, v] of buildRatificationDocSplit(cfg.ratificationRows)) {
+    docSplit.set(k, v);
+  }
   const { sections: part2, currentCyl } = await buildPart2(client, cfg);
   await client.end();
 
   const { part1a, part1b, financial, finalLpg, finalCyl, finalCombined } = buildPart1Split(
-    rows,
+    allRows,
     cfg,
     docSplit,
   );
@@ -445,15 +575,18 @@ async function main() {
   const coverage = loadLatestCoverageReport(cfg.debtorCode);
   const ingestGateSection = buildIngestGateSection(coverage, cfg.debtorCode);
   const custodyBlockedNote = buildCustodyBlockedNote(coverage);
+  const ratificationSection = buildRatificationSection(cfg.ratificationScenario, erpVariance);
 
   const md = `# Statement of Account: ${cfg.debtorName} (${cfg.debtorCode}) - Version 5 (Sub-Ledger Position Statement)
 **Period:** ${periodStartLabel} → ${periodEndLabel} &nbsp;|&nbsp; **Account:** ${cfg.debtorCode}
 **Combined Opening B/F:** R${fmt(cfg.combinedBf)} (ERP verified — source: \`${txtRel}\` ${cfg.bfSourceNote || ''})
 **LPG Opening B/F (1A):** R${fmt(cfg.lpgOpeningBf)} &nbsp;|&nbsp; **CYL Opening B/F (1B):** R${fmt(cfg.cylOpeningFinancial)}
 **Payment routing:** ${cfg.paymentLane} lane (payments post to Part 1A unless configured otherwise)
-**Last regenerated:** ${new Date().toISOString().slice(0, 10)} from ERP TXT (\`reconcile_debtor_v5_from_txt.mjs\`)
+**Last regenerated:** ${new Date().toISOString().slice(0, 10)} from ERP TXT (\`reconcile_debtor_v5_from_txt.mjs\`)${cfg.ratificationScenario ? ' · **Ratification scenario active**' : ''}
 
 ---
+
+${ratificationSection}
 
 ## Part 1A: LPG Gas Financial Statement
 *Gas fill invoices, credit notes, and payments since ${periodStartLabel}. Payments route to this sub-ledger per debtor config (\`paymentLane: ${cfg.paymentLane}\`).*

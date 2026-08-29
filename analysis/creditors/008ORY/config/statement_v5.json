@@ -8,6 +8,11 @@
   "cylOpeningFinancial": 0.0,
   "paymentLane": "LPG",
   "linkedAccounts": ["007ORY"],
+  "rebate": {
+    "enabled": true,
+    "creditRefPattern": "rebate",
+    "settlementNote": "Oryx settles the volume rebate by credit note, so VAT is an input-tax reversal and the incl-VAT figure is the credit note face value."
+  },
   "cylOpeningQty": {
     "14.1": 0,
     "19.1": 0,

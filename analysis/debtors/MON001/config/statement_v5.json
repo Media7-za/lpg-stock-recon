@@ -1,0 +1,24 @@
+{
+  "debtorCode": "MON001",
+  "debtorName": "SHORTEN INTERNATIONAL 66 ON MONZALI",
+  "txtPath": "analysis/debtors/MON001/raw/MON001CURRENT_FROM202401.TXT",
+  "periodStart": "2024-01-01",
+  "combinedBf": 3049.63,
+  "bfSourceNote": "Derived opening 2024-01-01: ERP CURRENT R2,717.79 minus sum(all rows). Jun ERP headers: 32911=5295.11, 32912=2392, 8743=-2704, 9078=-1745.02; bridge R162.86 before pmt 45158. Jan–May from deduped DB headers — ratify vs full ERP 2024 export.",
+  "cylOpeningFinancial": 0.0,
+  "paymentLane": "LPG",
+  "cylOpeningQty": {
+    "14.1": 0,
+    "19.1": 0,
+    "9.1": 0,
+    "D.1": 0,
+    "S.1": 0
+  },
+  "skuRates": {
+    "14.1": 575,
+    "19.1": 690,
+    "9.1": 517.5,
+    "D.1": 1150,
+    "S.1": 1150
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "debtorCode": "TWK002",
+  "pulledAt": "2026-08-29T15:28:07.850Z",
+  "headerCount": 581,
+  "lineCount": 735,
+  "invoiceLineCount": 735,
+  "paymentCount": 30,
+  "maxHeaderTxDate": "2026-08-25",
+  "maxLineTxDate": "2026-08-25",
+  "maxUpdatedAt": null,
+  "outputs": {
+    "invoices": "analysis/debtors/TWK002/data/invoices.csv",
+    "payments": "analysis/debtors/TWK002/data/payments.csv"
+  }
+}

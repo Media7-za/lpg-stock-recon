@@ -1,0 +1,18 @@
+{
+  "creditorCode": "008ORY",
+  "enabled": true,
+  "ledgerPath": "analysis/creditors/008ORY/raw/supplier_ledger/Oryx Recon - July 2026 - Sheet1.csv",
+  "ledgerAsAtNote": "Oryx recon working paper, Jan 2026 → 17 Aug 2026. Advisory only.",
+  "from": "2026-01-01",
+  "to": "2026-08-31",
+  "amountTolerance": 2.0,
+  "dateToleranceDays": 5,
+  "rebateDescPattern": "volume rebate",
+  "docTypeMap": {
+    "SAINV": "GRV",
+    "SACRN": "Deb Note",
+    "ARPAY": "PAYMENT",
+    "APPAY": "PAYMENT",
+    "CAFOO": "CARRY_FORWARD"
+  }
+}

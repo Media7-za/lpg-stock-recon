@@ -95,6 +95,10 @@
     {
       "date": "2026-08-11",
       "event": "Operator scoping decision: customer statement now shows the R8,084.67 account-level subtotal as a single collapsed 'Opening balance' line (collapseAccountLevelAsOpeningBalance in config/statement_of_account.json) instead of the 7 itemised sub-lines. Detail stays ratified in config + backing reports for audit. Collections/ageing focus narrows to the R110,046.87 open invoices for now."
+    },
+    {
+      "date": "2026-08-29",
+      "event": "Customer-facing statement updated: customerDueBasis=open_invoices — Amount due R110,046.87 (open invoices only). Account-level R8,084.67 residual hidden from customer document (internal Model B reconciliation, not billable). ERP header R118,131.54 retained in operator console only."
     }
   ]
 }

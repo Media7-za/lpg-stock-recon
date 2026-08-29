@@ -1,0 +1,24 @@
+{
+  "debtorCode": "XXXXXX",
+  "debtorName": "Trading Name (from ERP ACCOUNT header)",
+  "txtPath": "analysis/debtors/XXXXXX/raw/XXXXXXCURRENT.TXT",
+  "periodStart": "2026-01-01",
+  "combinedBf": 0.0,
+  "bfSourceNote": "ERP TXT — document line before first period row (e.g. line 119)",
+  "cylOpeningFinancial": 0.0,
+  "paymentLane": "LPG",
+  "cylOpeningQty": {
+    "14.1": 0,
+    "19.1": 0,
+    "9.1": 0,
+    "D.1": 0,
+    "S.1": 0
+  },
+  "skuRates": {
+    "14.1": 575,
+    "19.1": 690,
+    "9.1": 517.5,
+    "D.1": 1150,
+    "S.1": 1150
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "debtorCode": "CAP000",
+  "clientName": "CAPITOL CATERERS SELECT (PTY)",
+  "status": "active",
+  "reconState": "pending",
+  "financials": {
+    "totalOutstanding": 46228.47,
+    "lastInvoiceDate": null,
+    "lastPaymentDate": null,
+    "agedDebt180Plus": 20302.25,
+    "globalAgedDebtSource": "analysis/debtors/Global Reports/130720251H45M.TXT",
+    "globalAgedDebtAsAt": "2025-07-13",
+    "globalAgedDebtNote": "Corrected 2026-08-05 self-review from an initial 2026-07-13 transcription error (filename DDMMYYYYHMM = 13/07/2025). Anchor is ~13 months old as of 2026-08 — ASSERTED_STALE, not routine ASSERTED. agedDebt180Plus populated from global 120+ DAYS column until debtor TXT available. lastInvoiceDate nulled — the only prior source (april_dump.TXT, 2026-04-30) was explicitly advisory-only in CAP000_Onboarding_Status.md and should not sit in a schema field unqualified."
+  },
+  "collections": {
+    "actionRequired": false,
+    "actionType": null,
+    "dateSent": null,
+    "deadlineDate": null,
+    "nextAction": null,
+    "nextActionDate": null,
+    "notes": "Turn 001 onboarded. No collection until reconState complete and D17 satisfied. Global balance R46,228.47 operator-confirmed 2026-08-05, but anchor itself is ~13 months stale (2025-07-13) — debtor TXT pending (H-011)."
+  },
+  "history": [
+    {
+      "date": "2026-08-05",
+      "event": "Turn 001 scaffold: Tier A off-portfolio onboarding. Global anchor R46,228.47 (130720251H45M.TXT) operator-confirmed 2026-08-05. Lane triage settlement_discount — ASSUMED until TXT. H-011 OPEN for full CAP000CURRENT.TXT + remittances."
+    },
+    {
+      "date": "2026-08-05",
+      "event": "Self-review correction: globalAgedDebtAsAt was mistranscribed as 2026-07-13 during Turn 001 execution (orchestrator-stage message correctly stated 2025-07-13). Corrected to 2025-07-13 — anchor is ~13 months stale, not ~3 weeks. Re-tagged ASSERTED_STALE. Removed duplicate lastInvoiceDate key and nulled it (prior value sourced an advisory-only snippet without a caveat)."
+    }
+  ]
+}

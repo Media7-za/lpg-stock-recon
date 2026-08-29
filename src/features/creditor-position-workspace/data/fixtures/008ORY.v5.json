@@ -11,7 +11,7 @@
   },
   "version": "v5",
   "workspaceStatus": "clean",
-  "lastGeneratedAt": "2026-08-26T13:36:36.519Z",
+  "lastGeneratedAt": "2026-08-26T14:57:48.491Z",
   "source": "analysis/creditors/008ORY/raw/008ORYCURRENT.TXT",
   "financialPosition": {
     "lpgPayable": -136470.17,
@@ -63,8 +63,42 @@
     "subLedgerVariance": 0,
     "exceptions": []
   },
+  "rebatePosition": {
+    "basis": "analysis/creditors/008ORY/reports/008ORY_LPG_Volume_Monthly_2025-01_to_2026-08.json",
+    "vatRate": 0.15,
+    "targetKg": 30000,
+    "months": [
+      {
+        "month": "2026-07",
+        "label": "July 2026",
+        "netKg": 36400,
+        "tier": "tier_2",
+        "rate": 1.5,
+        "exVat": 54600,
+        "vat": 8190,
+        "inclVat": 62790
+      },
+      {
+        "month": "2026-08",
+        "label": "August 2026",
+        "netKg": 27494,
+        "tier": "tier_1",
+        "rate": 1,
+        "exVat": 27494,
+        "vat": 4124.1,
+        "inclVat": 31618.1
+      }
+    ],
+    "earnedExVat": 82094,
+    "earnedInclVat": 94408.1,
+    "creditsReceived": 0,
+    "creditRows": [],
+    "outstandingInclVat": 94408.1,
+    "outstandingExVat": 82094
+  },
   "artifacts": {
     "statementMarkdown": "analysis/creditors/008ORY/reports/008ORY_Statement_Account_v5.md",
-    "txtSource": "analysis/creditors/008ORY/raw/008ORYCURRENT.TXT"
+    "txtSource": "analysis/creditors/008ORY/raw/008ORYCURRENT.TXT",
+    "rebateBasis": "analysis/creditors/008ORY/reports/008ORY_LPG_Volume_Monthly_2025-01_to_2026-08.json"
   }
 }

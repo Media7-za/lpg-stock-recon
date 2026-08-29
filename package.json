@@ -19,6 +19,7 @@
     "test:e2e:ui": "playwright test --ui",
     "debtors:sync": "node analysis/debtors/shared/scripts/debtors_sync.mjs",
     "debtors:ingest-check": "node analysis/debtors/shared/scripts/validate_txt_db_coverage.mjs",
+    "debtors:pull-db": "node analysis/debtors/shared/scripts/pull_debtor_transactions_from_db.mjs",
     "debtors:parse-backlog": "node analysis/debtors/shared/scripts/parse_global_aged_debt.mjs",
     "debtors:knowledge-compile": "node analysis/debtors/shared/scripts/allocation_knowledge_compile.mjs",
     "debtors:customer-statement": "node analysis/debtors/shared/scripts/generate_statement_of_account.mjs",
@@ -27,11 +28,13 @@
     "debtors:twk002-allocation-ingest": "node analysis/debtors/TWK002/scripts/remittance_allocation_ingest.mjs --write",
     "debtors:twk002-phantom-cn-report": "node analysis/debtors/TWK002/scripts/build_phantom_cn_report.mjs --write",
     "debtors:twk002-bf-bridge": "node analysis/debtors/TWK002/scripts/build_pre_mar2025_bf_bridge.mjs --write",
+    "debtors:twk002-statement-snapshot": "node analysis/debtors/shared/scripts/generate_statement_of_account.mjs --debtor TWK002 --snapshot --pdf",
     "debtors:test": "node --test analysis/debtors/shared/scripts/*.test.mjs",
     "creditors:export-txt": "node analysis/creditors/shared/scripts/export_creditor_txt_from_db.mjs",
     "creditors:ingest-check": "node analysis/creditors/shared/scripts/validate_txt_db_coverage.mjs",
     "creditors:statement-v5": "node analysis/creditors/shared/scripts/reconcile_creditor_v5_from_txt.mjs",
-    "creditors:lpg-volume": "node analysis/creditors/shared/scripts/oryx_lpg_volume_monthly_report.mjs --creditor 008ORY --from 2025-01 --to 2026-08"
+    "creditors:lpg-volume": "node analysis/creditors/shared/scripts/oryx_lpg_volume_monthly_report.mjs --creditor 008ORY --from 2025-01 --to 2026-08",
+    "creditors:supplier-recon": "node analysis/creditors/shared/scripts/supplier_ledger_recon.mjs"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

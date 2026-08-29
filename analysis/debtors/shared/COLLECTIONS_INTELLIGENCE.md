@@ -1,5 +1,7 @@
 # Collections Intelligence (Slice 005A)
 
+> **Scoped-canonical** for dashboard `riskScore` heuristics. Constitutional state derivation: `DEBTORS_DOCTRINE.md` §1 (state is derived; scores not persisted to `project.json`) — ALIGNED.
+
 This document is the authoritative scoring contract for the **Collections Intelligence Engine**. It defines the heuristic weightings used to derive a `riskScore` for each debtor account. 
 
 ## Architectural Principle

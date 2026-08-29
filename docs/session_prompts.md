@@ -187,6 +187,22 @@ No repo access needed — queries run via Supabase SQL Editor.
 Supabase project ref: movixifclapeprdemgwk (eu-west-2)
 ```
 
+### ALLOCATION-WORKER (invoice-linked debtors — WO0001 family)
+```
+Role: ALLOCATION-WORKER
+
+Read .agents/skills/SKILL_Allocation_Worker.md and follow §0 (session starter).
+Replace [DEBTOR_CODE], turn, and pilot dates before starting.
+
+Mandatory skill chain:
+1. .agents/skills/SKILL_Allocation_Worker.md
+2. .agents/skills/SKILL_Payment_To_Invoice_Allocation.md
+3. analysis/debtors/shared/docs/ALLOCATION_DOCTRINE.md
+
+NOT for JIM001 (monthly batch) or TWK002 (settlement discount).
+Account-specific: BU0005 → SKILL_BU0005_Allocation_Worker.md instead.
+```
+
 ### SESSION-CLOSER
 ```
 Role: SESSION-CLOSER
@@ -213,6 +229,7 @@ Save to docs/handoffs/YYYY-MM-DD.md
 | ANOMALY-INVESTIGATOR | `roles/anomaly_investigator.md` | Financial | Investigate data anomalies |
 | FINANCIAL-VALIDATOR | `roles/financial_validator.md` | Financial | Validate reconciliation results |
 | DATA-INTEGRITY-AGENT | `roles/data_integrity_agent.md` | Ops | Audit live database |
+| ALLOCATION-WORKER | `.agents/skills/SKILL_Allocation_Worker.md` | Debtors | Payment→invoice graph for ref_no-linked payers |
 
 ---
 

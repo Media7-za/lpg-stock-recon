@@ -128,7 +128,199 @@ function loadConfig(creditorCode) {
     ),
     skuRates: cfg.skuRates || { '14.1': 575, '19.1': 690, '9.1': 517.5, 'D.1': 1150, 'S.1': 1150 },
     cylOpeningQty: cfg.cylOpeningQty || Object.fromEntries(SKUS.map((s) => [s, 0])),
+    rebate: { enabled: false, creditRefPattern: null, ...(cfg.rebate || {}) },
   };
+}
+
+/** Latest LPG volume report JSON — source of monthly rebate entitlement. */
+function loadRebateVolumeReport(cfg) {
+  if (cfg.rebate.volumeReport) {
+    const p = path.isAbsolute(cfg.rebate.volumeReport)
+      ? cfg.rebate.volumeReport
+      : path.join(ROOT, cfg.rebate.volumeReport);
+    return fs.existsSync(p) ? { path: p, data: JSON.parse(fs.readFileSync(p, 'utf8')) } : null;
+  }
+  const reportDir = path.join(ROOT, 'analysis/creditors', cfg.creditorCode, 'reports');
+  if (!fs.existsSync(reportDir)) return null;
+  const files = fs
+    .readdirSync(reportDir)
+    .filter((f) => new RegExp(`^${cfg.creditorCode}_LPG_Volume_Monthly_.*\\.json$`).test(f))
+    .sort();
+  if (!files.length) return null;
+  const p = path.join(reportDir, files.at(-1));
+  return { path: p, data: JSON.parse(fs.readFileSync(p, 'utf8')) };
+}
+
+/** Rebate credit notes identified by reference text (config `rebate.creditRefPattern`). */
+function findRebateCredits(rows, cfg) {
+  if (!cfg.rebate.creditRefPattern) return [];
+  const re = new RegExp(cfg.rebate.creditRefPattern, 'i');
+  return rows
+    .filter(
+      (r) =>
+        r.iso >= cfg.periodStart && (re.test(r.ref_no || '') || re.test(r.reference || '')),
+    )
+    .sort(sortCreditorRows);
+}
+
+function computeRebatePosition(cfg, volume, credits, periodEndIso) {
+  if (!cfg.rebate.enabled) return null;
+
+  const creditsTotal = round2(credits.reduce((s, r) => s + r.amount, 0));
+  const creditRows = credits.map((r) => ({
+    date: r.iso,
+    entryType: r.entry_type,
+    docNo: r.clean_doc,
+    reference: r.ref_no || r.reference || null,
+    amount: r.amount,
+  }));
+
+  if (!volume) {
+    return {
+      basis: null,
+      vatRate: null,
+      targetKg: null,
+      months: [],
+      earnedExVat: 0,
+      earnedInclVat: 0,
+      creditsReceived: creditsTotal,
+      creditRows,
+      outstandingInclVat: round2(-creditsTotal),
+      outstandingExVat: 0,
+    };
+  }
+
+  const fromKey = cfg.periodStart.slice(0, 7);
+  const toKey = periodEndIso.slice(0, 7);
+  const vatRate = Number(volume.data.vat_rate ?? 0.15);
+
+  let earnedExVat = 0;
+  let earnedInclVat = 0;
+  const months = (volume.data.months || [])
+    .filter((m) => m.month >= fromKey && m.month <= toKey)
+    .map((m) => {
+      const ex = round2(Number(m.rebate_ex_vat ?? 0));
+      const incl = round2(Number(m.rebate_incl_vat ?? ex * (1 + vatRate)));
+      earnedExVat = round2(earnedExVat + ex);
+      earnedInclVat = round2(earnedInclVat + incl);
+      return {
+        month: m.month,
+        label: monthKey(`${m.month}-01`),
+        netKg: Number(m.net_kg ?? 0),
+        tier: m.tier,
+        rate: Number(m.rebate_rate ?? 0),
+        exVat: ex,
+        vat: round2(incl - ex),
+        inclVat: incl,
+      };
+    });
+
+  const outstandingInclVat = round2(earnedInclVat - creditsTotal);
+  return {
+    basis: path.relative(ROOT, volume.path),
+    vatRate,
+    targetKg: Number(volume.data.target_kg ?? 0),
+    months,
+    earnedExVat,
+    earnedInclVat,
+    creditsReceived: creditsTotal,
+    creditRows,
+    outstandingInclVat,
+    outstandingExVat: round2(outstandingInclVat / (1 + vatRate)),
+  };
+}
+
+function buildRebateMemoSection(cfg, position) {
+  if (!position) return '';
+
+  const heading = '## Rebate Memo — Volume Rebate Claim Position';
+  const offBalanceNote =
+    '> **Memo only — off the running balance.** Rebate entitlement below is computed from delivered volume and is **excluded** from Part 1A / 1B and from the ERP variance and sub-ledger pass gates. Credit notes already received are real ledger entries already inside Part 1A / 1B; this section tracks the claim lifecycle, not a second balance.';
+
+  if (!position.basis) {
+    return `${heading}
+
+${offBalanceNote}
+
+*No LPG volume report found. Run \`npm run creditors:lpg-volume\` to generate the rebate basis.*
+
+---
+
+`;
+  }
+
+  const kgFmt = (n) => Number(n).toLocaleString('en-US', { maximumFractionDigits: 0 });
+  const tierLabel = (t) => (t === 'tier_2' ? 'Tier 2' : t === 'tier_1' ? 'Tier 1' : '—');
+
+  const lines = [
+    heading,
+    '',
+    offBalanceNote,
+    '',
+    `**Basis:** \`${position.basis}\` · **Threshold:** ${kgFmt(position.targetKg)} kg/month · **VAT:** ${(position.vatRate * 100).toFixed(0)}%`,
+  ];
+  if (cfg.rebate.settlementNote) lines.push(`**Settlement:** ${cfg.rebate.settlementNote}`);
+
+  lines.push(
+    '',
+    '### Entitlement earned in period',
+    '',
+    '| Month | Net kg | Tier | Rate | Rebate ex VAT (R) | VAT (R) | Rebate incl VAT (R) |',
+    '| :--- | ---: | :--- | :--- | ---: | ---: | ---: |',
+  );
+
+  if (position.months.length === 0) {
+    lines.push('| _No volume months in statement period_ | — | — | — | — | — | — |');
+  } else {
+    for (const m of position.months) {
+      lines.push(
+        `| ${m.label} | ${kgFmt(m.netKg)} | ${tierLabel(m.tier)} | ${m.rate ? `R${m.rate.toFixed(2)}/kg` : '—'} | ${fmt(m.exVat)} | ${fmt(m.vat)} | ${fmt(m.inclVat)} |`,
+      );
+    }
+    lines.push(
+      `| **Total** | **${kgFmt(position.months.reduce((s, m) => s + m.netKg, 0))}** | — | — | **${fmt(position.earnedExVat)}** | **${fmt(round2(position.earnedInclVat - position.earnedExVat))}** | **${fmt(position.earnedInclVat)}** |`,
+    );
+  }
+
+  lines.push(
+    '',
+    '### Rebate credit notes received',
+    '',
+    cfg.rebate.creditRefPattern
+      ? `*Identified in the ERP TXT by reference text matching \`/${cfg.rebate.creditRefPattern}/i\` on the \`SUPPLIER/BANK REF\` or \`REFERENCE\` column.*`
+      : '*No detection pattern configured — credits cannot be identified automatically.*',
+    '',
+    '| Date | Entry Type | Doc # | Reference | Amount (R) |',
+    '| :--- | :--- | :--- | :--- | ---: |',
+  );
+
+  if (position.creditRows.length === 0) {
+    lines.push('| _None identified in period_ | — | — | — | 0.00 |');
+  } else {
+    for (const r of position.creditRows) {
+      lines.push(
+        `| ${displayDate(r.date)} | ${r.entryType} | ${r.docNo} | ${r.reference || '—'} | ${fmt(r.amount)} |`,
+      );
+    }
+    lines.push(`| **Total** | — | — | — | **${fmt(position.creditsReceived)}** |`);
+  }
+
+  lines.push(
+    '',
+    '### Claim position',
+    '',
+    '| Component | Amount (R) |',
+    '| :--- | ---: |',
+    `| Rebate earned (incl VAT) | ${fmt(position.earnedInclVat)} |`,
+    `| Credit notes received | (${fmt(position.creditsReceived)}) |`,
+    `| **Outstanding claim (incl VAT)** | **${fmt(position.outstandingInclVat)}** |`,
+    `| Outstanding claim (ex VAT — margin recovery) | ${fmt(position.outstandingExVat)} |`,
+    '',
+    '---',
+    '',
+  );
+
+  return lines.join('\n');
 }
 
 function parseArgs() {
@@ -207,6 +399,7 @@ function parseTxtRows(filePath) {
       grvno: (p[5] || '').trim(),
       clean_grvno: (p[5] || '').replace(/^0+/, '').trim(),
       ref_no: (p[6] || '').trim(),
+      reference: (p[8] || '').trim(),
       amount: round2(Number(p[9])),
       erp_balance: round2(Number(p[10])),
     });
@@ -540,6 +733,11 @@ async function main() {
   const ingestGateSection = buildIngestGateSection(coverage, cfg.creditorCode);
   const custodyBlockedNote = buildCustodyBlockedNote(coverage);
 
+  const volumeReport = cfg.rebate.enabled ? loadRebateVolumeReport(cfg) : null;
+  const rebateCredits = cfg.rebate.enabled ? findRebateCredits(rows, cfg) : [];
+  const rebatePosition = computeRebatePosition(cfg, volumeReport, rebateCredits, lastIso);
+  const rebateSection = buildRebateMemoSection(cfg, rebatePosition);
+
   const md = `# Statement of Account: ${cfg.creditorName} (${cfg.creditorCode}) - Version 5 (Sub-Ledger Position Statement)
 **Period:** ${periodStartLabel} → ${periodEndLabel} &nbsp;|&nbsp; **Account:** ${cfg.creditorCode}
 **Linked accounts (DB):** ${cfg.linkedAccounts.join(', ')}
@@ -587,7 +785,7 @@ ${part2.length ? part2.join('\n\n---\n\n') : '_No CYL qty movements in period._'
 
 ---
 
-<!-- INTERNAL_ONLY_START -->
+${rebateSection}<!-- INTERNAL_ONLY_START -->
 <!-- CREDITOR_POSITION_WORKSPACE_START -->
 
 ## Creditor Position Summary
@@ -678,9 +876,11 @@ ${custodyBlockedNote}
           : []),
       ],
     },
+    ...(rebatePosition ? { rebatePosition } : {}),
     artifacts: {
       statementMarkdown: `analysis/creditors/${cfg.creditorCode}/reports/${cfg.creditorCode}_Statement_Account_v5.md`,
       txtSource: txtRel,
+      ...(rebatePosition?.basis ? { rebateBasis: rebatePosition.basis } : {}),
     },
   };
   fs.mkdirSync(path.dirname(cfg.fixturePath), { recursive: true });
@@ -697,6 +897,11 @@ ${custodyBlockedNote}
     `[${cfg.creditorCode}] Combined 1A+1B: R${fmt(finalCombined)} (line export variance R${fmt(lineExportVariance)}, ERP header variance R${fmt(erpVariance)})`,
   );
   console.log(`[${cfg.creditorCode}] Sub-ledger tie variance: R${fmt(subLedgerVariance)}`);
+  if (rebatePosition?.basis) {
+    console.log(
+      `[${cfg.creditorCode}] Rebate memo (off-balance): earned R${fmt(rebatePosition.earnedInclVat)} incl VAT, credits received R${fmt(rebatePosition.creditsReceived)}, outstanding R${fmt(rebatePosition.outstandingInclVat)}`,
+    );
+  }
   console.log(`Written ${cfg.reportPath}`);
 }
 

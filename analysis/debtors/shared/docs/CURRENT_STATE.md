@@ -320,6 +320,8 @@ Flags are persistent, operator-driven, never inferred from historical behaviour.
 
 ### Spec as source of truth
 
+> **Parallel authority (CONFLICT surface — not harmonized):** This paragraph governs the **LSR-5 PMT application slice**. Debtors **portfolio recon doctrine** is constitutional in `analysis/debtors/shared/DEBTORS_DOCTRINE.md`. When scopes overlap, cite both; do not silently merge.
+
 `LSR5_Business_Rules_Spec.html` v2.4.1 is the canonical implementation contract. When in doubt, it takes precedence over any reasoning in this document. Changes to business rules must be applied to the spec first, then reflected here.
 
 ### What AI should not rewrite without explicit instruction

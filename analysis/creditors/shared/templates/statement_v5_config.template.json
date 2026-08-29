@@ -8,6 +8,11 @@
   "cylOpeningFinancial": 0.0,
   "paymentLane": "LPG",
   "linkedAccounts": [],
+  "rebate": {
+    "enabled": false,
+    "creditRefPattern": "rebate",
+    "settlementNote": "How the supplier settles the volume rebate (credit note, cash, or price adjustment)."
+  },
   "cylOpeningQty": {
     "14.1": 0,
     "19.1": 0,

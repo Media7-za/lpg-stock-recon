@@ -27,11 +27,16 @@ const SKU_LABEL = {
 const TARGET_KG = 30000;
 const REBATE_STANDARD_EX_VAT = 1.0;
 const REBATE_TIER_EX_VAT = 1.5;
+const VAT_RATE = 0.15;
 
 function monthRebate(netKg) {
   if (netKg <= 0) return 0;
   const rate = netKg > TARGET_KG ? REBATE_TIER_EX_VAT : REBATE_STANDARD_EX_VAT;
   return netKg * rate;
+}
+
+function monthRebateInclVat(netKg) {
+  return monthRebate(netKg) * (1 + VAT_RATE);
 }
 
 function rebateRateLabel(netKg) {
@@ -191,26 +196,29 @@ function buildReport(data, cfg, dnToGrv) {
     ``,
     `## Executive summary`,
     ``,
-    `| Month | GRVs | GRV kg | DN kg | **Net kg** | vs Target | Tier | Rate | **Rebate** |`,
-    `| :--- | ---: | ---: | ---: | ---: | ---: | :--- | :--- | ---: |`,
+    `| Month | GRVs | GRV kg | DN kg | **Net kg** | vs Target | Tier | Rate | **Rebate (ex VAT)** | **Rebate (incl VAT)** |`,
+    `| :--- | ---: | ---: | ---: | ---: | ---: | :--- | :--- | ---: | ---: |`,
   ];
 
   let totalNet = 0;
   let totalRebate = 0;
+  let totalRebateInclVat = 0;
 
   for (const mk of months) {
     const m = monthData.get(mk);
     const rebate = monthRebate(m.netKg);
+    const rebateInclVat = monthRebateInclVat(m.netKg);
     totalNet += m.netKg;
     totalRebate += rebate;
+    totalRebateInclVat += rebateInclVat;
     const tier = m.netKg > TARGET_KG ? 'Tier 2' : m.netKg > 0 ? 'Tier 1' : '—';
     lines.push(
-      `| ${monthLabel(mk)} | ${m.grvCount} | ${fmt(m.grvKg)} | ${fmt(m.dnKg)} | **${fmt(m.netKg)}** | ${m.netKg >= TARGET_KG ? '+' : ''}${fmt(m.netKg - TARGET_KG)} | ${tier} | ${rebateRateLabel(m.netKg)} | ${fmtMoney(rebate)} |`,
+      `| ${monthLabel(mk)} | ${m.grvCount} | ${fmt(m.grvKg)} | ${fmt(m.dnKg)} | **${fmt(m.netKg)}** | ${m.netKg >= TARGET_KG ? '+' : ''}${fmt(m.netKg - TARGET_KG)} | ${tier} | ${rebateRateLabel(m.netKg)} | ${fmtMoney(rebate)} | ${fmtMoney(rebateInclVat)} |`,
     );
   }
 
   lines.push(
-    `| **Total** | — | — | — | **${fmt(totalNet)}** | — | — | **${fmtMoney(totalRebate)}** |`,
+    `| **Total** | — | — | — | **${fmt(totalNet)}** | — | — | — | **${fmtMoney(totalRebate)}** | **${fmtMoney(totalRebateInclVat)}** |`,
     ``,
     `---`,
     ``,
@@ -231,6 +239,7 @@ function buildReport(data, cfg, dnToGrv) {
       `| Variance | ${m.netKg >= TARGET_KG ? '+' : ''}${fmt(m.netKg - TARGET_KG)} |`,
       `| Rebate rate | ${rebateRateLabel(m.netKg)} |`,
       `| **Rebate (ex VAT)** | **${fmtMoney(m.rebate)}** |`,
+      `| **Rebate (incl VAT @ ${(VAT_RATE * 100).toFixed(0)}%)** | **${fmtMoney(m.rebateInclVat)}** |`,
       ``,
     );
 
@@ -274,7 +283,7 @@ function buildReport(data, cfg, dnToGrv) {
     ``,
     `- **Source:** \`vw_clean_transactions\` line items, \`debt_group = LPG\`, \`.4\` SKUs only.`,
     `- **Deb Note pairing:** GRVNO from \`${path.relative(ROOT, cfg.txtPath)}\` links DN → GRV for per-GRV net; month net = Σ|GRV| − Σ|DN|.`,
-    `- **Rebate:** R${REBATE_STANDARD_EX_VAT.toFixed(2)}/kg ex VAT on all net kg; R${REBATE_TIER_EX_VAT.toFixed(2)}/kg when month net > ${fmt(TARGET_KG)} kg.`,
+    `- **Rebate:** R${REBATE_STANDARD_EX_VAT.toFixed(2)}/kg ex VAT on all net kg; R${REBATE_TIER_EX_VAT.toFixed(2)}/kg when month net > ${fmt(TARGET_KG)} kg. Incl VAT = ex VAT × ${(1 + VAT_RATE).toFixed(2)} (${(VAT_RATE * 100).toFixed(0)}% VAT).`,
     `- **007ORY** legacy lines included via \`linkedAccounts\`.`,
     ``,
   );
@@ -310,6 +319,7 @@ async function main() {
       dnKg: 0,
       netKg: 0,
       rebate: 0,
+      rebateInclVat: 0,
       grvDetails: [],
       unlinkedDn: [],
     });
@@ -369,6 +379,7 @@ async function main() {
     const m = monthData.get(mk);
     m.netKg = m.grvKg - m.dnKg;
     m.rebate = monthRebate(m.netKg);
+    m.rebateInclVat = monthRebateInclVat(m.netKg);
     m.grvDetails.sort((a, b) => a.date.localeCompare(b.date) || a.doc.localeCompare(b.doc));
 
     for (const [, doc] of dnDocs) {
@@ -396,6 +407,7 @@ async function main() {
     target_kg: TARGET_KG,
     rebate_standard_ex_vat: REBATE_STANDARD_EX_VAT,
     rebate_tier_ex_vat: REBATE_TIER_EX_VAT,
+    vat_rate: VAT_RATE,
     months: months.map((mk) => {
       const m = monthData.get(mk);
       return {
@@ -408,7 +420,8 @@ async function main() {
         vs_target: m.netKg - TARGET_KG,
         tier: m.netKg > TARGET_KG ? 'tier_2' : m.netKg > 0 ? 'tier_1' : 'none',
         rebate_rate: m.netKg > TARGET_KG ? REBATE_TIER_EX_VAT : REBATE_STANDARD_EX_VAT,
-        rebate: m.rebate,
+        rebate_ex_vat: m.rebate,
+        rebate_incl_vat: m.rebateInclVat,
         grv_details: m.grvDetails,
       };
     }),

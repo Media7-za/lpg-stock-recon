@@ -16,7 +16,17 @@
     "deadlineDate": null,
     "nextAction": null,
     "nextActionDate": null,
-    "notes": "v4 statement rebuilt from JEN00116JULY.TXT. ERP R28,534.89 — Part 1 R0.00 variance. Review: doc 50939 duplicate EMPTY; 51154/51155 DB Part 2 gap."
+    "notes": "Presentation layer test 2026-08-25: customer SOA (open LPG invoices only) generated separately from v5 operator sub-ledger. Gate REVIEW_REQUIRED — STAT 129 R15,000 (doc 45717) not allocated to invoice lines."
+  },
+  "presentation": {
+    "defaultLayout": "customer.soa",
+    "operatorLayout": "v5",
+    "openInvoiceModel": "lpg_stripped",
+    "statementPath": "reports/JEN001_Statement_of_Account.md",
+    "operatorPath": "reports/JEN001_Statement_Account_v5.md",
+    "allocationPath": "reports/JEN001_Payment_Allocation_v1.md",
+    "gateStatus": "ALLOWED",
+    "gateReason": "STAT 129 LIFO allocation ratified — 1 open invoice R597.11 (51564 partial)"
   },
   "history": [
     {

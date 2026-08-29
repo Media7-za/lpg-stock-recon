@@ -1,0 +1,24 @@
+{
+  "debtorCode": "BU0002",
+  "debtorName": "BULWER CASH STORE",
+  "txtPath": "analysis/debtors/BU0002/raw/BU0002CURRENT.TXT",
+  "periodStart": "2026-01-01",
+  "combinedBf": 0.0,
+  "bfSourceNote": "PENDING — set from ERP statement TXT BALANCE B/F line before first 2026 row (do not copy from global aged-debt or JEN001)",
+  "cylOpeningFinancial": 0.0,
+  "paymentLane": "LPG",
+  "cylOpeningQty": {
+    "14.1": 0,
+    "19.1": 0,
+    "9.1": 0,
+    "D.1": 0,
+    "S.1": 0
+  },
+  "skuRates": {
+    "14.1": 575,
+    "19.1": 690,
+    "9.1": 517.5,
+    "D.1": 1150,
+    "S.1": 1150
+  }
+}

@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Debtors Slice Registry v1.0.0</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --panel: #171a22;
+      --border: #2a3140;
+      --text: #e8eaef;
+      --muted: #9aa3b5;
+      --accent: #4c8bf5;
+      --derived: #3ecf8e;
+      --presentation: #f5a623;
+      --governance: #b48cff;
+      --evidence: #6b7280;
+      --danger: #ef6b6b;
+      --lane: #5bc0de;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "SF Pro Text", "Segoe UI", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.45;
+    }
+    header {
+      padding: 20px 24px 12px;
+      border-bottom: 1px solid var(--border);
+      background: var(--panel);
+    }
+    header h1 { margin: 0 0 6px; font-size: 1.35rem; font-weight: 600; }
+    header p { margin: 0; color: var(--muted); font-size: 0.9rem; }
+    .layout {
+      display: grid;
+      grid-template-columns: 280px 1fr 320px;
+      min-height: calc(100vh - 88px);
+    }
+    aside, .detail {
+      border-right: 1px solid var(--border);
+      background: var(--panel);
+      padding: 16px;
+      overflow: auto;
+    }
+    .detail { border-right: none; border-left: 1px solid var(--border); }
+    main { padding: 16px; overflow: auto; }
+    h2 { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 0 0 10px; }
+    label { display: block; font-size: 0.8rem; color: var(--muted); margin-bottom: 4px; }
+    input, select {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 6px;
+      padding: 8px 10px;
+      margin-bottom: 12px;
+      font-size: 0.85rem;
+    }
+    .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+    .stat {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px;
+    }
+    .stat strong { display: block; font-size: 1.2rem; }
+    .stat span { font-size: 0.75rem; color: var(--muted); }
+    .legend { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .pill {
+      font-size: 0.72rem;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+    }
+    .pill.t-derived { border-color: var(--derived); color: var(--derived); }
+    .pill.t-presentation { border-color: var(--presentation); color: var(--presentation); }
+    .pill.t-governance { border-color: var(--governance); color: var(--governance); }
+    .pill.t-evidence { border-color: var(--evidence); color: var(--evidence); }
+    .slice-list { list-style: none; padding: 0; margin: 0; }
+    .slice-list li {
+      padding: 8px 10px;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.82rem;
+      margin-bottom: 4px;
+    }
+    .slice-list li:hover { background: var(--bg); border-color: var(--border); }
+    .slice-list li.active { background: #1e2430; border-color: var(--accent); }
+    .slice-list .sub { color: var(--muted); font-size: 0.72rem; }
+    #graph-wrap {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: auto;
+      min-height: 520px;
+    }
+    svg { display: block; min-width: 100%; }
+    .node rect {
+      fill: var(--bg);
+      stroke-width: 1.5;
+      rx: 6;
+      cursor: pointer;
+    }
+    .node text { fill: var(--text); font-size: 11px; pointer-events: none; }
+    .node.selected rect { stroke-width: 2.5; filter: brightness(1.15); }
+    .edge-dep { stroke: #556075; stroke-width: 1.2; fill: none; marker-end: url(#arrow-dep); }
+    .edge-inv { stroke: var(--danger); stroke-width: 1; fill: none; stroke-dasharray: 4 3; opacity: 0.55; marker-end: url(#arrow-inv); }
+    .edge-highlight { stroke-width: 2.2; opacity: 1; }
+    .detail h3 { margin: 0 0 8px; font-size: 1rem; word-break: break-word; }
+    .detail .role { color: var(--muted); font-size: 0.88rem; margin-bottom: 14px; }
+    .detail section { margin-bottom: 16px; }
+    .detail ul { margin: 0; padding-left: 18px; font-size: 0.82rem; }
+    .detail li { margin-bottom: 4px; }
+    .detail li button {
+      background: none; border: none; color: var(--accent); cursor: pointer;
+      padding: 0; font: inherit; text-align: left;
+    }
+    .detail li button:hover { text-decoration: underline; }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+    .empty { color: var(--muted); font-size: 0.85rem; font-style: italic; }
+    @media (max-width: 1100px) {
+      .layout { grid-template-columns: 1fr; }
+      aside, .detail { border: none; border-bottom: 1px solid var(--border); max-height: 280px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Debtors Slice Registry</h1>
+    <p>v1.0.0 · ratified 2026-08-24 · 37 slices · click a node to trace depends_on / invalidates</p>
+  </header>
+  <div class="layout">
+    <aside>
+      <h2>Filters</h2>
+      <label for="search">Search</label>
+      <input id="search" type="search" placeholder="slice id or role…" />
+      <label for="tier">Tier</label>
+      <select id="tier"><option value="">All tiers</option></select>
+      <label for="scope">Scope</label>
+      <select id="scope"><option value="">All scopes</option></select>
+      <label for="lane">Lane</label>
+      <select id="lane"><option value="">All lanes</option></select>
+      <div class="stats">
+        <div class="stat"><strong id="stat-visible">0</strong><span>visible</span></div>
+        <div class="stat"><strong id="stat-edges">0</strong><span>dependency edges</span></div>
+      </div>
+      <h2>Slices</h2>
+      <ul class="slice-list" id="slice-list"></ul>
+    </aside>
+    <main>
+      <div class="legend">
+        <span class="pill t-derived">derived</span>
+        <span class="pill t-presentation">presentation</span>
+        <span class="pill t-governance">governance</span>
+        <span class="pill t-evidence">evidence</span>
+        <span class="pill">solid → depends_on</span>
+        <span class="pill" style="border-color:var(--danger);color:var(--danger)">dashed → invalidates</span>
+      </div>
+      <div id="graph-wrap"><svg id="graph" xmlns="http://www.w3.org/2000/svg"></svg></div>
+    </main>
+    <div class="detail" id="detail">
+      <p class="empty">Select a slice to inspect dependencies and outputs.</p>
+    </div>
+  </div>
+  <script>
+    const REGISTRY = {"$schema":"debtors/slice-registry/v1","version":"1.0.0","ratified":"2026-08-24","authority":"analysis/debtors/shared/DEBTORS_DOCTRINE.md","description":"Canonical slice registry — scope, dependencies, and invalidation for regenerable debtor artifacts.","scopes":{"universal":"Every debtor account may emit this slice when prerequisites are met.","lane-specific":"Only accounts routed to the named recon lane.","account-specific":"Explicitly configured per debtor; not part of default bootstrap."},"tiers":{"evidence":"Immutable inputs — never regenerated, only replaced.","derived":"Machine-computed JSON/CSV — canonical intermediate truth.","presentation":"Markdown/PDF/HTML rendered from derived slices.","governance":"Register, dashboard, turn bundle — portfolio projection."},"slices":[{"id":"txt.parse","tier":"derived","scope":"universal","role":"Parse ERP TXT into typed rows and header balance.","depends_on":["evidence.erp_txt"],"invalidates":["v4.part1.financial","v4.part2.custody","v5.part1a.lpg","v5.part1b.cyl","v5.bridge","customer.soa"],"optional":false,"outputs":["data/{run}/context.json"]},{"id":"ingest.coverage","tier":"derived","scope":"universal","role":"TXT vs DB ingest gate — freshness and coverage.","depends_on":["evidence.erp_txt","evidence.database"],"invalidates":["v5.part2.custody","v5.ingest.gate"],"optional":false,"outputs":["reports/{CODE}_INGEST_COVERAGE_{date}.json","reports/{CODE}_INGEST_COVERAGE_{date}.md"]},{"id":"v4.header","tier":"presentation","scope":"lane-specific","lane":"position_recon + statement v4","role":"Statement header — period, openings, TXT source.","depends_on":["txt.parse"],"invalidates":[],"optional":false,"outputs":["render/v4/header.md"]},{"id":"v4.part1.financial","tier":"derived","scope":"lane-specific","lane":"position_recon + statement v4","role":"Part 1 combined financial ledger.","depends_on":["txt.parse"],"invalidates":["v4.position.financial","v4.position.reconciliation","fixture.v4"],"optional":false,"outputs":["sections/v4/part1.financial.json","render/v4/part1.financial.md"]},{"id":"v4.part1.financial.month","tier":"derived","scope":"lane-specific","lane":"position_recon + statement v4","role":"Part 1 single-month slice — pattern: v4.part1.financial.{YYYY-MM}.","depends_on":["txt.parse"],"invalidates":["v4.part1.financial"],"optional":true,"outputs":["sections/v4/part1.financial.{YYYY-MM}.json"]},{"id":"v4.part2.custody","tier":"derived","scope":"lane-specific","lane":"position_recon + statement v4","role":"Part 2 physical cylinder qty ledger.","depends_on":["txt.parse","evidence.database","ingest.coverage"],"invalidates":["v4.position.custody","v4.position.reconciliation","fixture.v4"],"optional":false,"outputs":["sections/v4/part2.custody.json","render/v4/part2.custody.md"]},{"id":"v4.part2.custody.month","tier":"derived","scope":"lane-specific","lane":"position_recon + statement v4","role":"Part 2 single-month slice — pattern: v4.part2.custody.{YYYY-MM}.","depends_on":["txt.parse","evidence.database"],"invalidates":["v4.part2.custody"],"optional":true,"outputs":["sections/v4/part2.custody.{YYYY-MM}.json"]},{"id":"v4.position.summary","tier":"derived","scope":"lane-specific","lane":"position_recon + statement v4","role":"Financial + custody + reconciliation position (internal).","depends_on":["v4.part1.financial","v4.part2.custody"],"invalidates":["fixture.v4","statement.v4.composed"],"optional":false,"outputs":["sections/v4/position.summary.json","render/v4/position.summary.md"]},{"id":"statement.v4.composed","tier":"presentation","scope":"lane-specific","lane":"position_recon + statement v4","role":"Full v4 markdown composed from section renders.","depends_on":["v4.header","v4.part1.financial","v4.part2.custody","v4.position.summary"],"invalidates":["fixture.v4"],"optional":false,"outputs":["reports/{CODE}_Statement_Account_v4.md"]},{"id":"fixture.v4","tier":"derived","scope":"lane-specific","lane":"position_recon + statement v4","role":"Workspace fixture for UI — three-position model.","depends_on":["v4.position.summary"],"invalidates":[],"optional":false,"outputs":["src/features/debtor-position-workspace/data/fixtures/{CODE}.v4.json"]},{"id":"v5.part1a.lpg","tier":"derived","scope":"lane-specific","lane":"position_recon + statement v5","role":"Part 1A LPG gas financial sub-ledger.","depends_on":["txt.parse","evidence.database"],"invalidates":["v5.bridge","v5.position.summary","fixture.v5"],"optional":false,"outputs":["sections/v5/part1a.lpg.json","render/v5/part1a.lpg.md"]},{"id":"v5.part1b.cyl","tier":"derived","scope":"lane-specific","lane":"position_recon + statement v5","role":"Part 1B cylinder deposit financial sub-ledger.","depends_on":["txt.parse","evidence.database"],"invalidates":["v5.bridge","v5.position.summary","fixture.v5"],"optional":false,"outputs":["sections/v5/part1b.cyl.json","render/v5/part1b.cyl.md"]},{"id":"v5.bridge","tier":"derived","scope":"lane-specific","lane":"position_recon + statement v5","role":"Reconciliation bridge — 1A + 1B = ERP.","depends_on":["v5.part1a.lpg","v5.part1b.cyl","txt.parse"],"invalidates":["statement.v5.composed","fixture.v5"],"optional":false,"outputs":["sections/v5/bridge.json","render/v5/bridge.md"]},{"id":"v5.part2.custody","tier":"derived","scope":"lane-specific","lane":"position_recon + statement v5","role":"Part 2 physical cylinder ledger.","depends_on":["txt.parse","evidence.database","ingest.coverage"],"invalidates":["v5.position.summary","fixture.v5"],"optional":false,"outputs":["sections/v5/part2.custody.json","render/v5/part2.custody.md"]},{"id":"v5.position.summary","tier":"derived","scope":"lane-specific","lane":"position_recon + statement v5","role":"Debtor position summary — financial, custody, reconciliation.","depends_on":["v5.bridge","v5.part2.custody"],"invalidates":["fixture.v5","statement.v5.composed"],"optional":false,"outputs":["sections/v5/position.summary.json"]},{"id":"v5.ratification","tier":"derived","scope":"account-specific","role":"Active ratification scenario synthetic rows (e.g. RED001).","depends_on":["ratification.scenarios"],"invalidates":["v5.part1b.cyl","v5.bridge","v5.position.summary"],"optional":true,"outputs":["sections/v5/ratification.json"]},{"id":"statement.v5.composed","tier":"presentation","scope":"lane-specific","lane":"position_recon + statement v5","role":"Full v5 markdown composed from section renders.","depends_on":["v5.part1a.lpg","v5.part1b.cyl","v5.bridge","v5.part2.custody","v5.position.summary","ingest.coverage"],"invalidates":["fixture.v5"],"optional":false,"outputs":["reports/{CODE}_Statement_Account_v5.md"]},{"id":"fixture.v5","tier":"derived","scope":"lane-specific","lane":"position_recon + statement v5","role":"Workspace fixture for UI.","depends_on":["v5.position.summary"],"invalidates":[],"optional":false,"outputs":["src/features/debtor-position-workspace/data/fixtures/{CODE}.v5.json"]},{"id":"tag.coverage","tier":"derived","scope":"lane-specific","lane":"customer statement","role":"Invoice-tag coverage gate — open-invoice hypothesis vs ERP.","depends_on":["evidence.debenq_txt","evidence.remittance"],"invalidates":["customer.soa","customer.soa.open_invoices"],"optional":false,"outputs":["reports/{CODE}_TAG_COVERAGE_{date}.json","reports/{CODE}_TAG_COVERAGE_{date}.md"]},{"id":"customer.soa.open_invoices","tier":"derived","scope":"lane-specific","lane":"customer statement","role":"Open invoice table — screening hypothesis only.","depends_on":["evidence.debenq_txt","tag.coverage"],"invalidates":["customer.soa"],"optional":false,"outputs":["sections/customer/open_invoices.json"]},{"id":"balance.bridge","tier":"derived","scope":"account-specific","lane":"customer statement","role":"Account-level balance bridge — gap between open invoices and balance due.","depends_on":["customer.soa.open_invoices","ratified.balance_bridge_lines"],"invalidates":["customer.soa"],"optional":true,"outputs":["reports/{CODE}_Balance_Bridge_{date}.md","config/balance_bridge_lines.json"]},{"id":"customer.soa","tier":"presentation","scope":"lane-specific","lane":"customer statement","role":"Customer statement of account — MD + PDF.","depends_on":["tag.coverage","customer.soa.open_invoices","balance.bridge"],"invalidates":[],"optional":true,"outputs":["reports/{CODE}_Statement_of_Account.md","reports/{CODE}_Statement_of_Account.pdf"]},{"id":"allocation.edges","tier":"derived","scope":"lane-specific","lane":"allocation","role":"Payment-to-invoice edges — canonical allocation graph.","depends_on":["evidence.payments","evidence.invoices","evidence.remittance"],"invalidates":["allocation.report","customer.soa"],"optional":false,"outputs":["data/allocation_edges.csv"]},{"id":"allocation.report","tier":"presentation","scope":"lane-specific","lane":"allocation","role":"Allocation workbook narrative — human audit trail.","depends_on":["allocation.edges"],"invalidates":[],"optional":false,"outputs":["reports/{CODE}_Payment_Allocation_v1.md"]},{"id":"settlement.discount","tier":"derived","scope":"lane-specific","lane":"settlement_discount","role":"Remittance batch settlement discount decomposition.","depends_on":["evidence.remittance","account.settlement_doctrine"],"invalidates":["allocation.edges","allocation.report"],"optional":false,"outputs":["reports/{CODE}_Settlement_*","data/remittance_manifest_*.json"]},{"id":"payment.pattern","tier":"derived","scope":"lane-specific","lane":"position_recon","role":"Historical payment pattern analysis.","depends_on":["evidence.payment_txt"],"invalidates":[],"optional":true,"outputs":["reports/{CODE}_*_Payment_Pattern_Analysis.md"]},{"id":"event.ledger","tier":"derived","scope":"account-specific","lane":"allocation","role":"Delivery event ledger — RED001-style custody/fill events.","depends_on":["evidence.delivery_events"],"invalidates":["allocation.edges"],"optional":true,"outputs":["reports/{CODE}_Delivery_Event_Ledger_v1.md","data/event_ledger.csv"]},{"id":"erp.freshness","tier":"governance","scope":"universal","role":"ERP freshness gate — operator confirms latest export.","depends_on":["evidence.erp_txt"],"invalidates":["txt.parse","v4.part1.financial","v5.bridge","customer.soa","allocation.edges"],"optional":false,"outputs":["evidence_exchange/{CODE}/turn-*/manifest.json#erp_freshness"]},{"id":"d17.collections","tier":"governance","scope":"universal","role":"Collections eligibility gate — collectable + blockers.","depends_on":["portfolio.register"],"invalidates":["portfolio.action_prompts"],"optional":false,"outputs":["portfolio.sync exit code 2"]},{"id":"portfolio.register","tier":"governance","scope":"universal","role":"Account register — project.json contract.","depends_on":[],"invalidates":["portfolio.dashboard","portfolio.action_prompts","d17.collections"],"optional":false,"outputs":["analysis/debtors/{CODE}/project.json"]},{"id":"portfolio.dashboard","tier":"governance","scope":"universal","role":"Portfolio priority queue and KPIs.","depends_on":["portfolio.register"],"invalidates":[],"optional":false,"outputs":["DEBTORS_DASHBOARD.md"]},{"id":"portfolio.action_prompts","tier":"governance","scope":"universal","role":"Human execution queue — collection prompts.","depends_on":["portfolio.register","d17.collections"],"invalidates":[],"optional":false,"outputs":["analysis/debtors/shared/ACTION_PROMPTS.md"]},{"id":"turn.brief","tier":"governance","scope":"universal","role":"Worker turn instruction artifact.","depends_on":["erp.freshness"],"invalidates":[],"optional":true,"outputs":["evidence_exchange/{CODE}/turn-{NNN}/turn_brief.md"]},{"id":"turn.manifest","tier":"governance","scope":"universal","role":"Turn evidence inventory and anchors.","depends_on":["turn.brief"],"invalidates":[],"optional":true,"outputs":["evidence_exchange/{CODE}/turn-{NNN}/manifest.json"]},{"id":"onboarding.status","tier":"presentation","scope":"universal","role":"Account deliverable map and input inventory.","depends_on":[],"invalidates":[],"optional":true,"outputs":["reports/{CODE}_Onboarding_Status.md"]},{"id":"creditor.v5.statement","tier":"presentation","scope":"lane-specific","lane":"creditor position_recon v5","role":"Creditor AP v5 statement — mirror of debtor v5.","depends_on":["creditor.ingest.coverage"],"invalidates":[],"optional":true,"outputs":["analysis/creditors/{CODE}/reports/{CODE}_Statement_Account_v5.md"]},{"id":"creditor.ingest.coverage","tier":"derived","scope":"lane-specific","lane":"creditor position_recon v5","role":"Creditor TXT vs DB ingest gate.","depends_on":["evidence.creditor_txt","evidence.database"],"invalidates":["creditor.v5.statement"],"optional":false,"outputs":["analysis/creditors/{CODE}/reports/{CODE}_INGEST_COVERAGE_*.json"]}],"evidence_ids":["evidence.erp_txt","evidence.debenq_txt","evidence.database","evidence.remittance","evidence.payments","evidence.invoices","evidence.payment_txt","evidence.delivery_events","evidence.creditor_txt","ratification.scenarios","ratified.balance_bridge_lines","account.settlement_doctrine"]};
+
+    const tierColors = {
+      derived: '#3ecf8e',
+      presentation: '#f5a623',
+      governance: '#b48cff',
+      evidence: '#6b7280',
+    };
+
+    const nodes = [];
+    const nodeById = new Map();
+
+    for (const id of REGISTRY.evidence_ids) {
+      const n = { id, tier: 'evidence', scope: 'evidence', role: 'Immutable input', optional: false, depends_on: [], invalidates: [], outputs: [] };
+      nodes.push(n);
+      nodeById.set(id, n);
+    }
+    for (const s of REGISTRY.slices) {
+      nodes.push(s);
+      nodeById.set(s.id, s);
+    }
+
+    let selectedId = null;
+    let filteredIds = new Set(nodes.map(n => n.id));
+
+    const tierEl = document.getElementById('tier');
+    const scopeEl = document.getElementById('scope');
+    const laneEl = document.getElementById('lane');
+    [...new Set(nodes.map(n => n.tier))].sort().forEach(v => {
+      const o = document.createElement('option'); o.value = v; o.textContent = v; tierEl.appendChild(o);
+    });
+    [...new Set(nodes.map(n => n.scope))].sort().forEach(v => {
+      const o = document.createElement('option'); o.value = v; o.textContent = v; scopeEl.appendChild(o);
+    });
+    [...new Set(REGISTRY.slices.map(s => s.lane).filter(Boolean))].sort().forEach(v => {
+      const o = document.createElement('option'); o.value = v; o.textContent = v; laneEl.appendChild(o);
+    });
+
+    function domainOf(id) {
+      if (id.startsWith('evidence.') || id.startsWith('ratification.') || id.startsWith('ratified.') || id.startsWith('account.')) return 'evidence';
+      if (id.startsWith('v4.')) return 'v4';
+      if (id.startsWith('v5.') || id.startsWith('fixture.v5') || id.startsWith('statement.v5')) return 'v5';
+      if (id.startsWith('customer.') || id === 'tag.coverage' || id === 'balance.bridge') return 'customer';
+      if (id.startsWith('allocation.') || id === 'settlement.discount' || id === 'payment.pattern' || id === 'event.ledger') return 'allocation';
+      if (id.startsWith('portfolio.') || id.startsWith('turn.') || id.startsWith('d17.') || id === 'erp.freshness' || id === 'onboarding.status') return 'portfolio';
+      if (id.startsWith('creditor.')) return 'creditor';
+      if (id.startsWith('fixture.v4') || id.startsWith('statement.v4') || id === 'txt.parse' || id === 'ingest.coverage') return 'core';
+      return 'other';
+    }
+
+    function applyFilters() {
+      const q = document.getElementById('search').value.trim().toLowerCase();
+      const tier = tierEl.value;
+      const scope = scopeEl.value;
+      const lane = laneEl.value;
+      filteredIds = new Set();
+      for (const n of nodes) {
+        if (tier && n.tier !== tier) continue;
+        if (scope && n.scope !== scope) continue;
+        if (lane && n.lane !== lane) continue;
+        if (q && !n.id.toLowerCase().includes(q) && !(n.role || '').toLowerCase().includes(q)) continue;
+        filteredIds.add(n.id);
+      }
+      renderList();
+      renderGraph();
+    }
+
+    function renderList() {
+      const ul = document.getElementById('slice-list');
+      ul.innerHTML = '';
+      const items = nodes.filter(n => filteredIds.has(n.id)).sort((a, b) => a.id.localeCompare(b.id));
+      document.getElementById('stat-visible').textContent = items.length;
+      for (const n of items) {
+        const li = document.createElement('li');
+        if (n.id === selectedId) li.className = 'active';
+        li.innerHTML = '<div>' + n.id + '</div><div class="sub">' + (n.tier || '') + (n.lane ? ' · ' + n.lane : '') + '</div>';
+        li.onclick = () => selectNode(n.id);
+        ul.appendChild(li);
+      }
+    }
+
+    function layoutNodes(ids) {
+      const idSet = new Set(ids);
+      const depth = new Map();
+      function getDepth(id, seen = new Set()) {
+        if (depth.has(id)) return depth.get(id);
+        if (seen.has(id)) return 0;
+        seen.add(id);
+        const n = nodeById.get(id);
+        if (!n || !n.depends_on || !n.depends_on.length) { depth.set(id, 0); return 0; }
+        const deps = n.depends_on.filter(d => idSet.has(d));
+        const d = deps.length ? Math.max(...deps.map(getDepth)) + 1 : 0;
+        depth.set(id, d);
+        return d;
+      }
+      ids.forEach(getDepth);
+      const columns = new Map();
+      for (const id of ids) {
+        const d = depth.get(id) || 0;
+        if (!columns.has(d)) columns.set(d, []);
+        columns.get(d).push(id);
+      }
+      const positions = new Map();
+      const colWidth = 220;
+      const rowHeight = 52;
+      const padX = 40;
+      const padY = 36;
+      let maxCol = 0;
+      for (const [col, colIds] of [...columns.entries()].sort((a, b) => a[0] - b[0])) {
+        maxCol = Math.max(maxCol, col);
+        colIds.sort();
+        colIds.forEach((id, i) => {
+          positions.set(id, { x: padX + col * colWidth, y: padY + i * rowHeight, w: 190, h: 38 });
+        });
+      }
+      const maxRows = Math.max(...[...columns.values()].map(c => c.length), 1);
+      return { positions, width: padX * 2 + (maxCol + 1) * colWidth, height: padY * 2 + maxRows * rowHeight };
+    }
+
+    function renderGraph() {
+      const ids = [...filteredIds];
+      const { positions, width, height } = layoutNodes(ids);
+      const svg = document.getElementById('graph');
+      svg.setAttribute('width', width);
+      svg.setAttribute('height', height);
+      svg.innerHTML = '';
+
+      const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+      defs.innerHTML = '<marker id="arrow-dep" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#556075"/></marker>' +
+        '<marker id="arrow-inv" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#ef6b6b"/></marker>';
+      svg.appendChild(defs);
+
+      const highlight = new Set();
+      if (selectedId && filteredIds.has(selectedId)) {
+        highlight.add(selectedId);
+        const n = nodeById.get(selectedId);
+        (n.depends_on || []).forEach(d => filteredIds.has(d) && highlight.add(d));
+        (n.invalidates || []).forEach(d => filteredIds.has(d) && highlight.add(d));
+        nodes.forEach(x => {
+          if ((x.depends_on || []).includes(selectedId) && filteredIds.has(x.id)) highlight.add(x.id);
+          if ((x.invalidates || []).includes(selectedId) && filteredIds.has(x.id)) highlight.add(x.id);
+        });
+      }
+
+      let edgeCount = 0;
+      const edgesG = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+      for (const n of nodes) {
+        if (!filteredIds.has(n.id)) continue;
+        const from = positions.get(n.id);
+        if (!from) continue;
+        for (const dep of n.depends_on || []) {
+          if (!filteredIds.has(dep)) continue;
+          const to = positions.get(dep);
+          if (!to) continue;
+          edgeCount++;
+          const line = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+          const x1 = to.x + to.w / 2, y1 = to.y + to.h;
+          const x2 = from.x + from.w / 2, y2 = from.y;
+          line.setAttribute('d', 'M' + x1 + ',' + y1 + ' C' + x1 + ',' + (y1 + y2) / 2 + ' ' + x2 + ',' + (y1 + y2) / 2 + ' ' + x2 + ',' + y2);
+          line.setAttribute('class', 'edge-dep' + (highlight.has(n.id) && highlight.has(dep) ? ' edge-highlight' : ''));
+          edgesG.appendChild(line);
+        }
+        for (const inv of n.invalidates || []) {
+          if (!filteredIds.has(inv)) continue;
+          const to = positions.get(inv);
+          if (!to) continue;
+          const line = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+          const x1 = from.x + from.w, y1 = from.y + from.h / 2;
+          const x2 = to.x, y2 = to.y + to.h / 2;
+          line.setAttribute('d', 'M' + x1 + ',' + y1 + ' C' + (x1 + 40) + ',' + y1 + ' ' + (x2 - 40) + ',' + y2 + ' ' + x2 + ',' + y2);
+          line.setAttribute('class', 'edge-inv' + (highlight.has(n.id) && highlight.has(inv) ? ' edge-highlight' : ''));
+          edgesG.appendChild(line);
+        }
+      }
+      svg.appendChild(edgesG);
+      document.getElementById('stat-edges').textContent = edgeCount;
+
+      const nodesG = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+      for (const id of ids) {
+        const n = nodeById.get(id);
+        const p = positions.get(id);
+        if (!p) continue;
+        const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        g.setAttribute('class', 'node' + (id === selectedId ? ' selected' : '') + (highlight.size && !highlight.has(id) ? '' : ''));
+        g.style.opacity = highlight.size && !highlight.has(id) ? '0.35' : '1';
+        const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        rect.setAttribute('x', p.x);
+        rect.setAttribute('y', p.y);
+        rect.setAttribute('width', p.w);
+        rect.setAttribute('height', p.h);
+        rect.setAttribute('stroke', tierColors[n.tier] || '#888');
+        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        text.setAttribute('x', p.x + 8);
+        text.setAttribute('y', p.y + 16);
+        const label = n.id.length > 26 ? n.id.slice(0, 24) + '…' : n.id;
+        text.textContent = label;
+        g.appendChild(rect);
+        g.appendChild(text);
+        g.addEventListener('click', () => selectNode(id));
+        nodesG.appendChild(g);
+      }
+      svg.appendChild(nodesG);
+    }
+
+    function selectNode(id) {
+      selectedId = id;
+      renderList();
+      renderGraph();
+      renderDetail(id);
+    }
+
+    function renderDetail(id) {
+      const n = nodeById.get(id);
+      const el = document.getElementById('detail');
+      if (!n) { el.innerHTML = '<p class="empty">Not found.</p>'; return; }
+      const depList = (n.depends_on || []).map(d =>
+        '<li><button type="button" data-jump="' + d + '">' + d + '</button></li>').join('') || '<li class="empty">None</li>';
+      const invList = (n.invalidates || []).map(d =>
+        '<li><button type="button" data-jump="' + d + '">' + d + '</button></li>').join('') || '<li class="empty">None</li>';
+      const outList = (n.outputs || []).map(o => '<li><code>' + o + '</code></li>').join('') || '<li class="empty">—</li>';
+      el.innerHTML =
+        '<h3>' + n.id + '</h3>' +
+        '<div class="tag-row">' +
+          '<span class="pill t-' + n.tier + '">' + n.tier + '</span>' +
+          '<span class="pill">' + n.scope + '</span>' +
+          (n.lane ? '<span class="pill">' + n.lane + '</span>' : '') +
+          (n.optional ? '<span class="pill">optional</span>' : '') +
+          '<span class="pill">' + domainOf(n.id) + '</span>' +
+        '</div>' +
+        '<p class="role">' + (n.role || '') + '</p>' +
+        '<section><h2>Depends on</h2><ul>' + depList + '</ul></section>' +
+        '<section><h2>Invalidates</h2><ul>' + invList + '</ul></section>' +
+        '<section><h2>Outputs</h2><ul>' + outList + '</ul></section>';
+      el.querySelectorAll('[data-jump]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const target = btn.getAttribute('data-jump');
+          if (!filteredIds.has(target)) {
+            document.getElementById('search').value = target.split('.').pop();
+            applyFilters();
+          }
+          selectNode(target);
+        });
+      });
+    }
+
+    ['search', 'tier', 'scope', 'lane'].forEach(id => {
+      document.getElementById(id).addEventListener('input', applyFilters);
+      document.getElementById(id).addEventListener('change', applyFilters);
+    });
+
+    applyFilters();
+    selectNode('allocation.edges');
+  </script>
+</body>
+</html>

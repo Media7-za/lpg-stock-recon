@@ -9,29 +9,29 @@
 
 ## Executive summary
 
-| Month | GRVs | GRV kg | DN kg | **Net kg** | vs Target | Tier | Rate | **Rebate** |
-| :--- | ---: | ---: | ---: | ---: | ---: | :--- | :--- | ---: |
-| January 2025 | 0 | 0 | 0 | **0** | -30,000 | — | — | R0.00 |
-| February 2025 | 1 | 1,832 | 0 | **1,832** | -28,168 | Tier 1 | R1.00/kg | R1,832.00 |
-| March 2025 | 11 | 19,221 | 2,160 | **17,061** | -12,939 | Tier 1 | R1.00/kg | R17,061.00 |
-| April 2025 | 14 | 26,381 | 0 | **26,381** | -3,619 | Tier 1 | R1.00/kg | R26,381.00 |
-| May 2025 | 12 | 23,293 | 0 | **23,293** | -6,707 | Tier 1 | R1.00/kg | R23,293.00 |
-| June 2025 | 13 | 23,684 | 4,336 | **19,348** | -10,652 | Tier 1 | R1.00/kg | R19,348.00 |
-| July 2025 | 13 | 35,344 | 6,987 | **28,357** | -1,643 | Tier 1 | R1.00/kg | R28,357.00 |
-| August 2025 | 19 | 44,860 | 0 | **44,860** | +14,860 | Tier 2 | R1.50/kg | R67,290.00 |
-| September 2025 | 21 | 55,080 | 11,820 | **43,260** | +13,260 | Tier 2 | R1.50/kg | R64,890.00 |
-| October 2025 | 11 | 31,080 | 0 | **31,080** | +1,080 | Tier 2 | R1.50/kg | R46,620.00 |
-| November 2025 | 15 | 28,930 | 4,250 | **24,680** | -5,320 | Tier 1 | R1.00/kg | R24,680.00 |
-| December 2025 | 17 | 46,870 | 10,080 | **36,790** | +6,790 | Tier 2 | R1.50/kg | R55,185.00 |
-| January 2026 | 4 | 11,370 | 0 | **11,370** | -18,630 | Tier 1 | R1.00/kg | R11,370.00 |
-| February 2026 | 2 | 2,210 | 0 | **2,210** | -27,790 | Tier 1 | R1.00/kg | R2,210.00 |
-| March 2026 | 2 | 3,984 | 0 | **3,984** | -26,016 | Tier 1 | R1.00/kg | R3,984.00 |
-| April 2026 | 10 | 28,804 | 7,356 | **21,448** | -8,552 | Tier 1 | R1.00/kg | R21,448.00 |
-| May 2026 | 16 | 39,823 | 7,169 | **32,654** | +2,654 | Tier 2 | R1.50/kg | R48,981.00 |
-| June 2026 | 16 | 32,449 | 96 | **32,353** | +2,353 | Tier 2 | R1.50/kg | R48,529.50 |
-| July 2026 | 17 | 36,850 | 450 | **36,400** | +6,400 | Tier 2 | R1.50/kg | R54,600.00 |
-| August 2026 | 11 | 27,494 | 0 | **27,494** | -2,506 | Tier 1 | R1.00/kg | R27,494.00 |
-| **Total** | — | — | — | **464,855** | — | — | **R593,553.50** |
+| Month | GRVs | GRV kg | DN kg | **Net kg** | vs Target | Tier | Rate | **Rebate (ex VAT)** | **Rebate (incl VAT)** |
+| :--- | ---: | ---: | ---: | ---: | ---: | :--- | :--- | ---: | ---: |
+| January 2025 | 0 | 0 | 0 | **0** | -30,000 | — | — | R0.00 | R0.00 |
+| February 2025 | 1 | 1,832 | 0 | **1,832** | -28,168 | Tier 1 | R1.00/kg | R1,832.00 | R2,106.80 |
+| March 2025 | 11 | 19,221 | 2,160 | **17,061** | -12,939 | Tier 1 | R1.00/kg | R17,061.00 | R19,620.15 |
+| April 2025 | 14 | 26,381 | 0 | **26,381** | -3,619 | Tier 1 | R1.00/kg | R26,381.00 | R30,338.15 |
+| May 2025 | 12 | 23,293 | 0 | **23,293** | -6,707 | Tier 1 | R1.00/kg | R23,293.00 | R26,786.95 |
+| June 2025 | 13 | 23,684 | 4,336 | **19,348** | -10,652 | Tier 1 | R1.00/kg | R19,348.00 | R22,250.20 |
+| July 2025 | 13 | 35,344 | 6,987 | **28,357** | -1,643 | Tier 1 | R1.00/kg | R28,357.00 | R32,610.55 |
+| August 2025 | 19 | 44,860 | 0 | **44,860** | +14,860 | Tier 2 | R1.50/kg | R67,290.00 | R77,383.50 |
+| September 2025 | 21 | 55,080 | 11,820 | **43,260** | +13,260 | Tier 2 | R1.50/kg | R64,890.00 | R74,623.50 |
+| October 2025 | 11 | 31,080 | 0 | **31,080** | +1,080 | Tier 2 | R1.50/kg | R46,620.00 | R53,613.00 |
+| November 2025 | 15 | 28,930 | 4,250 | **24,680** | -5,320 | Tier 1 | R1.00/kg | R24,680.00 | R28,382.00 |
+| December 2025 | 17 | 46,870 | 10,080 | **36,790** | +6,790 | Tier 2 | R1.50/kg | R55,185.00 | R63,462.75 |
+| January 2026 | 4 | 11,370 | 0 | **11,370** | -18,630 | Tier 1 | R1.00/kg | R11,370.00 | R13,075.50 |
+| February 2026 | 2 | 2,210 | 0 | **2,210** | -27,790 | Tier 1 | R1.00/kg | R2,210.00 | R2,541.50 |
+| March 2026 | 2 | 3,984 | 0 | **3,984** | -26,016 | Tier 1 | R1.00/kg | R3,984.00 | R4,581.60 |
+| April 2026 | 10 | 28,804 | 7,356 | **21,448** | -8,552 | Tier 1 | R1.00/kg | R21,448.00 | R24,665.20 |
+| May 2026 | 16 | 39,823 | 7,169 | **32,654** | +2,654 | Tier 2 | R1.50/kg | R48,981.00 | R56,328.15 |
+| June 2026 | 16 | 32,449 | 96 | **32,353** | +2,353 | Tier 2 | R1.50/kg | R48,529.50 | R55,808.92 |
+| July 2026 | 17 | 36,850 | 450 | **36,400** | +6,400 | Tier 2 | R1.50/kg | R54,600.00 | R62,790.00 |
+| August 2026 | 11 | 27,494 | 0 | **27,494** | -2,506 | Tier 1 | R1.00/kg | R27,494.00 | R31,618.10 |
+| **Total** | — | — | — | **464,855** | — | — | — | **R593,553.50** | **R682,586.53** |
 
 ---
 
@@ -48,6 +48,7 @@
 | Variance | -30,000 |
 | Rebate rate | — |
 | **Rebate (ex VAT)** | **R0.00** |
+| **Rebate (incl VAT @ 15%)** | **R0.00** |
 
 *No LPG GRV activity in DB for this month.*
 
@@ -66,6 +67,7 @@
 | Variance | -28,168 |
 | Rebate rate | R1.00/kg |
 | **Rebate (ex VAT)** | **R1,832.00** |
+| **Rebate (incl VAT @ 15%)** | **R2,106.80** |
 
 ### kg per GRV (net of linked Deb Note)
 
@@ -88,6 +90,7 @@
 | Variance | -12,939 |
 | Rebate rate | R1.00/kg |
 | **Rebate (ex VAT)** | **R17,061.00** |
+| **Rebate (incl VAT @ 15%)** | **R19,620.15** |
 
 ### kg per GRV (net of linked Deb Note)
 
@@ -120,6 +123,7 @@
 | Variance | -3,619 |
 | Rebate rate | R1.00/kg |
 | **Rebate (ex VAT)** | **R26,381.00** |
+| **Rebate (incl VAT @ 15%)** | **R30,338.15** |
 
 ### kg per GRV (net of linked Deb Note)
 
@@ -155,6 +159,7 @@
 | Variance | -6,707 |
 | Rebate rate | R1.00/kg |
 | **Rebate (ex VAT)** | **R23,293.00** |
+| **Rebate (incl VAT @ 15%)** | **R26,786.95** |
 
 ### kg per GRV (net of linked Deb Note)
 
@@ -188,6 +193,7 @@
 | Variance | -10,652 |
 | Rebate rate | R1.00/kg |
 | **Rebate (ex VAT)** | **R19,348.00** |
+| **Rebate (incl VAT @ 15%)** | **R22,250.20** |
 
 ### kg per GRV (net of linked Deb Note)
 
@@ -222,6 +228,7 @@
 | Variance | -1,643 |
 | Rebate rate | R1.00/kg |
 | **Rebate (ex VAT)** | **R28,357.00** |
+| **Rebate (incl VAT @ 15%)** | **R32,610.55** |
 
 ### kg per GRV (net of linked Deb Note)
 
@@ -263,6 +270,7 @@
 | Variance | +14,860 |
 | Rebate rate | R1.50/kg |
 | **Rebate (ex VAT)** | **R67,290.00** |
+| **Rebate (incl VAT @ 15%)** | **R77,383.50** |
 
 ### kg per GRV (net of linked Deb Note)
 
@@ -303,6 +311,7 @@
 | Variance | +13,260 |
 | Rebate rate | R1.50/kg |
 | **Rebate (ex VAT)** | **R64,890.00** |
+| **Rebate (incl VAT @ 15%)** | **R74,623.50** |
 
 ### kg per GRV (net of linked Deb Note)
 
@@ -345,6 +354,7 @@
 | Variance | +1,080 |
 | Rebate rate | R1.50/kg |
 | **Rebate (ex VAT)** | **R46,620.00** |
+| **Rebate (incl VAT @ 15%)** | **R53,613.00** |
 
 ### kg per GRV (net of linked Deb Note)
 
@@ -377,6 +387,7 @@
 | Variance | -5,320 |
 | Rebate rate | R1.00/kg |
 | **Rebate (ex VAT)** | **R24,680.00** |
+| **Rebate (incl VAT @ 15%)** | **R28,382.00** |
 
 ### kg per GRV (net of linked Deb Note)
 
@@ -413,6 +424,7 @@
 | Variance | +6,790 |
 | Rebate rate | R1.50/kg |
 | **Rebate (ex VAT)** | **R55,185.00** |
+| **Rebate (incl VAT @ 15%)** | **R63,462.75** |
 
 ### kg per GRV (net of linked Deb Note)
 
@@ -457,6 +469,7 @@
 | Variance | -18,630 |
 | Rebate rate | R1.00/kg |
 | **Rebate (ex VAT)** | **R11,370.00** |
+| **Rebate (incl VAT @ 15%)** | **R13,075.50** |
 
 ### kg per GRV (net of linked Deb Note)
 
@@ -482,6 +495,7 @@
 | Variance | -27,790 |
 | Rebate rate | R1.00/kg |
 | **Rebate (ex VAT)** | **R2,210.00** |
+| **Rebate (incl VAT @ 15%)** | **R2,541.50** |
 
 ### kg per GRV (net of linked Deb Note)
 
@@ -505,6 +519,7 @@
 | Variance | -26,016 |
 | Rebate rate | R1.00/kg |
 | **Rebate (ex VAT)** | **R3,984.00** |
+| **Rebate (incl VAT @ 15%)** | **R4,581.60** |
 
 ### kg per GRV (net of linked Deb Note)
 
@@ -528,6 +543,7 @@
 | Variance | -8,552 |
 | Rebate rate | R1.00/kg |
 | **Rebate (ex VAT)** | **R21,448.00** |
+| **Rebate (incl VAT @ 15%)** | **R24,665.20** |
 
 ### kg per GRV (net of linked Deb Note)
 
@@ -559,6 +575,7 @@
 | Variance | +2,654 |
 | Rebate rate | R1.50/kg |
 | **Rebate (ex VAT)** | **R48,981.00** |
+| **Rebate (incl VAT @ 15%)** | **R56,328.15** |
 
 ### kg per GRV (net of linked Deb Note)
 
@@ -596,6 +613,7 @@
 | Variance | +2,353 |
 | Rebate rate | R1.50/kg |
 | **Rebate (ex VAT)** | **R48,529.50** |
+| **Rebate (incl VAT @ 15%)** | **R55,808.92** |
 
 ### kg per GRV (net of linked Deb Note)
 
@@ -633,6 +651,7 @@
 | Variance | +6,400 |
 | Rebate rate | R1.50/kg |
 | **Rebate (ex VAT)** | **R54,600.00** |
+| **Rebate (incl VAT @ 15%)** | **R62,790.00** |
 
 ### kg per GRV (net of linked Deb Note)
 
@@ -671,6 +690,7 @@
 | Variance | -2,506 |
 | Rebate rate | R1.00/kg |
 | **Rebate (ex VAT)** | **R27,494.00** |
+| **Rebate (incl VAT @ 15%)** | **R31,618.10** |
 
 ### kg per GRV (net of linked Deb Note)
 
@@ -694,5 +714,5 @@
 
 - **Source:** `vw_clean_transactions` line items, `debt_group = LPG`, `.4` SKUs only.
 - **Deb Note pairing:** GRVNO from `analysis/creditors/008ORY/raw/008ORYCURRENT.TXT` links DN → GRV for per-GRV net; month net = Σ|GRV| − Σ|DN|.
-- **Rebate:** R1.00/kg ex VAT on all net kg; R1.50/kg when month net > 30,000 kg.
+- **Rebate:** R1.00/kg ex VAT on all net kg; R1.50/kg when month net > 30,000 kg. Incl VAT = ex VAT × 1.15 (15% VAT).
 - **007ORY** legacy lines included via `linkedAccounts`.

@@ -2,48 +2,41 @@
   "debtorCode": "JEN001",
   "debtorName": "Spoon Eatery",
   "period": {
-    "from": "2026-01-01",
-    "to": "2026-07-14"
+    "from": "2026-07-01",
+    "to": "2026-08-14"
   },
   "version": "v5",
-  "workspaceStatus": "pending_review",
-  "lastGeneratedAt": "2026-07-26T10:03:54.615Z",
-  "source": "analysis/debtors/JEN001/raw/JEN00116JULY.TXT",
+  "workspaceStatus": "clean",
+  "lastGeneratedAt": "2026-08-18T09:22:32.413Z",
+  "source": "analysis/debtors/JEN001/raw/DEBENQ.TXT",
   "financialPosition": {
-    "lpgGasDebt": 29052.39,
+    "lpgGasDebt": 23202.71,
     "cylinderFinancialBalance": -517.5,
-    "totalDebtorBalance": 28534.89,
-    "erpStatedBalance": 28534.89,
+    "totalDebtorBalance": 22685.21,
+    "erpStatedBalance": 22685.21,
     "erpVariance": 0,
     "subLedgerVariance": 0
   },
   "custodyPosition": {
-    "totalCustodyExposure": 1552.5,
+    "totalCustodyExposure": -517.5,
     "lines": [
       {
         "sku": "9.1",
         "label": "9kg",
-        "qty": 3,
+        "qty": -1,
         "depositRate": 517.5,
-        "exposure": 1552.5
+        "exposure": -517.5
       }
     ]
   },
   "reconciliationPosition": {
-    "cylinderVariance": -2070,
+    "cylinderVariance": 0,
     "erpVariance": 0,
     "subLedgerVariance": 0,
-    "exceptions": [
-      {
-        "type": "CUSTODY",
-        "basis": "ASSERTED",
-        "status": "open",
-        "description": "Part 1B financial vs Part 2 custody — check DB ingest vs TXT"
-      }
-    ]
+    "exceptions": []
   },
   "artifacts": {
     "statementMarkdown": "analysis/debtors/JEN001/reports/JEN001_Statement_Account_v5.md",
-    "txtSource": "analysis/debtors/JEN001/raw/JEN00116JULY.TXT"
+    "txtSource": "analysis/debtors/JEN001/raw/DEBENQ.TXT"
   }
 }

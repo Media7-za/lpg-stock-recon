@@ -1,0 +1,25 @@
+{
+  "debtorCode": "RED001",
+  "debtorName": "REDLANDS HOTEL",
+  "txtPath": "analysis/debtors/RED001/raw/RED001CURRENT.TXT",
+  "periodStart": "2025-05-08",
+  "combinedBf": 0.0,
+  "bfSourceNote": "RED001CURRENT.TXT line 14 — BALANCE B/F R0.00 before first period row (payment 38566, 08 May 2025)",
+  "cylOpeningFinancial": 0.0,
+  "paymentLane": "LPG",
+  "ratificationScenariosPath": "analysis/debtors/RED001/config/ratification_scenarios.json",
+  "cylOpeningQty": {
+    "14.1": 0,
+    "19.1": 0,
+    "9.1": 0,
+    "D.1": 0,
+    "S.1": 0
+  },
+  "skuRates": {
+    "14.1": 575,
+    "19.1": 690,
+    "9.1": 517.5,
+    "D.1": 1150,
+    "S.1": 1150
+  }
+}

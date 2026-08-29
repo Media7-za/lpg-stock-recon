@@ -1,0 +1,24 @@
+{
+  "debtorCode": "GAS004",
+  "debtorName": "GAS 2 GO HILTIN NEW ACCOUNT",
+  "txtPath": "analysis/debtors/GAS004/raw/DEBENQ_CURRENT.TXT",
+  "periodStart": "2026-01-01",
+  "combinedBf": 20121.57,
+  "bfSourceNote": "DEBENQ_CURRENT.TXT last running BALANCE before first 2026 row (20 Nov 2025 inv 47822 close R20,121.57)",
+  "cylOpeningFinancial": 0.0,
+  "paymentLane": "LPG",
+  "cylOpeningQty": {
+    "14.1": 0,
+    "19.1": 0,
+    "9.1": 0,
+    "D.1": 0,
+    "S.1": 0
+  },
+  "skuRates": {
+    "14.1": 575,
+    "19.1": 690,
+    "9.1": 517.5,
+    "D.1": 1150,
+    "S.1": 1150
+  }
+}

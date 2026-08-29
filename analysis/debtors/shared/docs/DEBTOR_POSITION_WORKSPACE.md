@@ -1,5 +1,7 @@
 # Debtor Position Workspace Doctrine (Version 1)
 
+> **Scoped-canonical** for three-position workspace layout (financial / custody / reconciliation). Constitutional projection and collectable rules: `DEBTORS_DOCTRINE.md` §2 (ALIGNED).
+
 This specification defines the core principles, structures, and policies of the **Debtor Position Workspace**. In a stock and financial reconciliation context, a debtor clerk does not merely view a static statement; they must manage three independent operational dimensions of an account simultaneously.
 
 ---
