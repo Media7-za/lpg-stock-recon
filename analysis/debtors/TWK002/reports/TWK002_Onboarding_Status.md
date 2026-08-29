@@ -26,6 +26,22 @@
 
 ---
 
+## ERP opening balance fix (Aug 2026) — ratified execution plan
+
+**Authority:** [`docs/TWK002_ERP_Opening_Balance_Fix_Plan.md`](../docs/TWK002_ERP_Opening_Balance_Fix_Plan.md) (ratified 2026-08-29, pushed `main` @ `e09c815`).
+
+| Layer | Amount | Epistemic | ERP action |
+| :--- | ---: | :--- | :--- |
+| B/F export carry | R38,791.27 | **PROVEN** (11 STAT batches) | Accept — not zeroable without full restatement |
+| Account-level residual | R8,084.67 | **PROVEN** (7 bridge lines sum) | Phase 2 tagging (H-022/H-023/H-014) |
+| Path B journals posted | 16 + 3 batches | **PROVEN** (checklists DONE) | No further discount journal wave |
+
+**Human tasks:** H-013 (fresh TXT) → H-022 (STAT 112) → H-023 (STAT 114) → H-014 (STAT 123) → H-024 optional Path A.
+
+**Collections posture unchanged:** customer due remains **R110,046.87** open invoices only — ERP plan does not change billable amount.
+
+---
+
 ## Finance posting sign-off (2026-08-09)
 
 | Item | Status |

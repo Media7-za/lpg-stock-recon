@@ -213,3 +213,31 @@ node analysis/debtors/shared/scripts/generate_statement_of_account.mjs --debtor 
 | Phase 2 checklist | `data/finance_posting_checklist_2025_phase2.csv` |
 | B/F provenance | `reports/TWK002_Pre_Mar2025_BF_Bridge_2026-08-11.md` |
 | Human task queue | `analysis/debtors/shared/HUMAN_TASKS.md` (H-013, H-014, H-022–H-024) |
+
+---
+
+## Epistemic status & tripwires
+
+> Per `DEBTORS_DOCTRINE.md` §6. Material numbers for ERP execution only — collections due remains snapshot-backed.
+
+| Claim | Tag | Source | Kill condition |
+| :--- | :--- | :--- | :--- |
+| ERP header R118,131.54 | **PROVEN** | `raw/DEBENQ_TWK002.TXT` CURRENT BALANCE | H-013 TXT shows different header without re-bridge |
+| Open invoices R110,046.87 (11) | **PROVEN** | `snapshots/2026-08-11_v1/manifest.json` | Tag-check BLOCKED; fresh TXT adds/removes open rows |
+| Bridge residual R8,084.67 | **PROVEN** | `config/statement_of_account.json` `balanceBridgeLines` sum | Bridge rebuild after TXT ≠ sum of 7 lines |
+| B/F R38,791.27 provenance | **PROVEN** | `reports/TWK002_Pre_Mar2025_BF_Bridge_2026-08-11.md` | Historical TXT/recreated ledgers regenerated with different adjustments |
+| Residual is pure settlement-discount artefact | **ASSERTED rejected** | Hypothesis review 2026-08-29 — directionally discount-related but bundle includes untagged cash + phantom nets | Full replay shows gap closes without tagging (unlikely) |
+| Path A required for arithmetic | **ASSUMED false** | Doctrine v2 §4; checklists show Path B DONE, Path A not done | Finance asserts deposit screen must tie before sign-off → triggers H-024 |
+| DB ahead of TXT (Aug 11/25 docs) | **PROVEN** | `data/db_pull_meta.json` max 2026-08-25 vs TXT ~2026-08-09 | H-013 export includes those docs |
+
+### Tripwires (closed rulings)
+
+| Closed ruling | Reopens if |
+| :--- | :--- |
+| B/F R38,791.27 accepted as historical carry | Operator orders full 2023–2024 restatement or cosmetic opening journal without Path A |
+| Phase 2 = tagging not new journals | Finance posts another blank-INVNO discount journal expecting gap to close |
+| R8,084.67 not billable | `customerDueBasis` reverted to `erp_header` without operator re-ratification |
+| STAT 112 authority AL-0109–0116 | Remittance batch amended; `allocation_edges.csv` regenerated with different targets |
+| H-022/H-023 clear override invoices | `closedInvoiceOverrides` for 42468/42470 removed before ERP tags land |
+| Plan ratified 2026-08-29 | Superseding plan written without marking this doc superseded |
+
