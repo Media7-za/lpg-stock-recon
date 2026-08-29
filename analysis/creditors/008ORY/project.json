@@ -73,6 +73,10 @@
     {
       "date": "2026-08-29",
       "event": "v5 Part 1B vs Part 2 audit — variance R45,195.01 PROVEN (1B R0.01 vs custody R-45,195). Root causes: partial ingest 74/74 MISSING_HEADER; doc 3659 LPG-only routed to 1B via TXT GRVNO pairing; 6783 header vs sparse CYL lines. Report: reports/008ORY_v5_Part1B_Part2_Audit_2026-08-29.md. Custody remains BLOCKED."
+    },
+    {
+      "date": "2026-08-29",
+      "event": "Operator ratified P9 (session lineage meta-inquiry close pattern): handoff session-index table + history pointer; dual-source search mandatory. docs/roles/session_closer.md §Meta-inquiry close."
     }
   ],
   "v5Statement": {

@@ -100,6 +100,7 @@ Every item goes to exactly one destination. Use this table.
 | Dead end / negative result | Handoff — **Dead Ends** section | Highest-loss item; never skip |
 | Open question, blocker | Handoff + `collections.blockers[]` if it gates collectability | D18: absent field = not assessed = fails closed |
 | Next action | Handoff — **Resume Here** + `collections.nextAction` if operator-facing | Must be executable without re-reading the session |
+| **Meta-inquiry** ("which chats touched X?") | Handoff session-index table + account `project.json` `history[]` pointer | See **Meta-inquiry close** below — ratified 2026-08-29 |
 
 Routing rules:
 
@@ -238,6 +239,34 @@ Do not report done until every box holds:
 
 Then state plainly: what was locked, what is staged for ratification, and what the
 next session should do first.
+
+---
+
+## Meta-inquiry close (ratified 2026-08-29)
+
+> **Operator ratification:** "P9 Yes" — 2026-08-29. Standard close pattern when the
+> operator asks which sessions/chats touched an account (e.g. "how many sessions
+> discuss 008ORY?"). Level-1 record only — does not amend `DEBTORS_DOCTRINE.md`.
+
+When the session is **meta-inquiry only** (no account analysis run):
+
+1. **Search both sources in parallel** — do not rely on SearchConversations alone:
+   - `SearchConversations` with account code + aliases (e.g. `008ORY`, `ORY008`)
+   - Local grep: `agent-transcripts/*/{uuid}.jsonl` (parent transcripts only — **exclude** `subagents/`)
+2. **Classify each hit:** substantive (account work in first user message or primary
+   artifact path) vs tangential (keyword/SQL mention only).
+3. **Write the authoritative index** to `docs/handoffs/YYYY-MM-DD.md` — table with
+   session ID, title, date, account role, epistemic tag (`PROVEN` / `ASSERTED` /
+   `ASSUMED`), kill condition on counts.
+4. **Append `project.json` `history[]`** — one dated entry pointing to the handoff
+   block (cross-reference; do not duplicate the full table in `project.json`).
+5. **Record search dead ends** in handoff §5 — at minimum: index-only misses local
+   transcripts; subagent inflation; cloud-only sessions not in local cache.
+6. **Resume Here** must point to substantive next action from `project.json`
+   (meta-inquiry does not replace account backlog).
+
+**Tripwire:** Index reopens if new chat materially discusses the account, transcript
+retention changes, or cloud cache purged.
 
 ---
 
