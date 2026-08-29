@@ -1,0 +1,95 @@
+{
+  "debtorCode": "RED001",
+  "clientName": "REDLANDS HOTEL",
+  "status": "active",
+  "reconState": "validation_pending",
+  "_comment_reconState": "Do not set complete until operator sign-off on CN 13687 ratification + ingest PASS + full allocation graph. See reports/RED001_Onboarding_Status.md.",
+  "lane": "allocation",
+  "laneDoc": "docs/RED001_Allocation_Doctrine_v1.md",
+  "txtAuthority": "raw/RED001CURRENT.TXT",
+  "financials": {
+    "erpCombinedClose": 5559.76,
+    "erpCombinedCloseTag": "PROVEN",
+    "erpCombinedCloseSource": "RED001CURRENT.TXT CURRENT BALANCE header; as-at 2026-07-25",
+    "v5CombinedCloseWithRatification": 12804.76,
+    "v5CombinedCloseWithRatificationTag": "ASSERTED",
+    "v5CombinedCloseWithRatificationSource": "reports/RED001_Statement_Account_v5.md with activeScenarioId CN13687-6CYL-NOV2025",
+    "v5Part1aClose": 10389.76,
+    "v5Part1aCloseTag": "PROVEN",
+    "v5Part1bCloseWithRatification": 2415.0,
+    "v5Part1bCloseWithRatificationTag": "ASSERTED",
+    "openLpgInvoiceDoc": "52086",
+    "openLpgInvoiceAmount": 4434.42,
+    "openLpgInvoiceAmountTag": "PROVEN",
+    "part1aCarryNotInvoice": 5955.34,
+    "part1aCarryNotInvoiceTag": "ASSERTED",
+    "part1aCarryNote": "R5,955.34 = R7,245 Part 1A floor minus R1,289.66 CN 14885; not an open invoice doc",
+    "lastInvoiceDate": "2026-07-24",
+    "lastPaymentDate": "2026-07-21"
+  },
+  "collections": {
+    "actionRequired": false,
+    "actionType": null,
+    "dateSent": null,
+    "deadlineDate": null,
+    "nextAction": "Operator ratify CN13687-6CYL-NOV2025 (ERP Invoice +R7,245 per docs/RED001_ERP_Agent_Note_CN13687.md) OR reject scenario and re-run v5. Do not cite stripped LIFO open LPG R17,439.40 for collections — BLOCKED gate.",
+    "nextActionDate": null,
+    "notes": "Allocation Turn 2 pilot PASS (90.91% T1/T2). Ingest CURRENT_PARTIAL. reconState validation_pending.",
+    "blockers": [
+      {
+        "type": "INGEST",
+        "status": "open",
+        "description": "CURRENT_PARTIAL — docs 45328 (MISSING_HEADER), 52086/15325/15327 (MISSING_LINES)",
+        "source": "reports/RED001_INGEST_COVERAGE_2026-07-29.json",
+        "asAt": "2026-08-29"
+      },
+      {
+        "type": "RATIFICATION",
+        "status": "open",
+        "description": "CN13687-6CYL-NOV2025 proposed — 6-cylinder posting error; ERP correction Invoice +R7,245 never posted",
+        "source": "config/ratification_scenarios.json; docs/RED001_ERP_Agent_Note_CN13687.md",
+        "asAt": "2026-08-29"
+      },
+      {
+        "type": "ALLOCATION",
+        "status": "open",
+        "description": "Tier 5 payment 44288 (blank ref R5,759.98) — likely 50580; not in payment_pattern_overrides.json",
+        "source": "reports/RED001_Payment_Allocation_v1.md",
+        "asAt": "2026-08-29"
+      },
+      {
+        "type": "OTHER",
+        "status": "open",
+        "description": "Duplicate LPG invoice 52086 on DN#22974 — operator review before collections",
+        "source": "reports/RED001_Delivery_Event_Ledger_v1.md",
+        "asAt": "2026-08-29"
+      }
+    ]
+  },
+  "history": [
+    {
+      "date": "2026-07-29",
+      "event": "Turn 1: Scaffold RED001 allocation lane. Payer-class gate PASS (46/56 ref-linked). Doctrine v1, v5 config, ingest coverage CURRENT_PARTIAL."
+    },
+    {
+      "date": "2026-07-29",
+      "event": "CN 13687 triage: 7× cylinder return −R8,452.50 on DN#20157; ERP ref_no mispoints to LPG 45540. Operator asserted 6 cyl error (−R7,245); v5 routes to Part 1B; ratification scenario CN13687-6CYL-NOV2025 + ERP agent note (Invoice not Debit Note)."
+    },
+    {
+      "date": "2026-07-29",
+      "event": "Delivery event ledger v1: 29 LPG / 25 CYL invoices; 4 gas-only refills; 1 CYL orphan DN 213454. Open LPG doc: 52086 R4,434.42 only."
+    },
+    {
+      "date": "2026-07-29",
+      "event": "Turn 2 ref-linked pilot 2026-04-01→2026-07-05: 10/11 edges T1/T2 (90.91%) PASS. Tier 5: payment 44288 blank ref."
+    },
+    {
+      "date": "2026-07-29",
+      "event": "Turn 2 stripped-gas LIFO pilot: 9/9 LIFO matches; open LPG model R17,439.40 BLOCKED vs ERP — secondary cross-check only, not collections authority."
+    },
+    {
+      "date": "2026-08-29",
+      "event": "Session close: project.json created; reconState validation_pending. v5 with RAT13687 synthetic — combined R12,804.76 (+R7,245 vs ERP until correction posted). Next: operator ratify CN13687 OR ingest gaps + Turn 3 full graph."
+    }
+  ]
+}

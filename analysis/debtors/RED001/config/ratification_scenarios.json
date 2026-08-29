@@ -5,6 +5,10 @@
     {
       "id": "CN13687-6CYL-NOV2025",
       "status": "proposed",
+      "operatorDecisionRequired": "Ratify CN13687-6CYL-NOV2025 — post ERP Invoice +R7,245.00 (not Debit Note) per docs/RED001_ERP_Agent_Note_CN13687.md; then clear activeScenarioId after fresh TXT",
+      "epistemicTag": "ASSUMED",
+      "assumptionSource": "Operator asserted 2026-07-29: 6 of 7 cylinders on CN 13687 were posting error; Nov 2025 correction never posted",
+      "killCondition": "Reject if ERP shows valid 6-unit deposit OR operator rejects scenario OR ERP posts different amount/lane/entry type",
       "title": "CN 13687 — six-cylinder posting error (November correction invoice)",
       "assumption": "6 of 7 cylinders credited on CN 13687 (15 Oct 2025, −R8,452.50) were a posting error. Only 1 cylinder (−R1,207.50) was valid against the open deposit from DN#12678 (inv 44675). The 6-cylinder portion (−R7,245.00) should have been corrected in November 2025 but was never posted in ERP.",
       "erpAction": {

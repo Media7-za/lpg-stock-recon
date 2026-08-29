@@ -81,4 +81,22 @@ line_dedupe        = DISTINCT ON (doc_no, debt_group, stock_no, category, line_t
 | 2 | Pilot (Apr–Jul 2026 — STAT 125–128) | ✅ PASS (90.91%) |
 | 3 | Full graph | ⏳ |
 | 4 | Overrides | ⏳ |
-| 5 | Statement bridge | ⏳ blocked on TXT |
+| 5 | Statement bridge | ⏳ pending full graph + ingest PASS + CN 13687 ratification |
+
+---
+
+## 5. Tripwires (session close 2026-08-29)
+
+| Ruling | Tripwire |
+| :--- | :--- |
+| Allocation lane (not JIM001) | Re-run payer-class gate if ref-linked share drops **below 50%** on fresh TXT |
+| LPG-only match base | CYL payment slices excluded — if operator needs CYL-in-base, doctrine revision required |
+| CN 13687 → Part 1B (6 cyl error) | **PROPOSED — NOT RATIFIED** — invalidate v5 RAT13687 if scenario rejected |
+| Ref-linked pilot **primary** | Do not cite stripped LIFO open balance (**R17,439.40 ASSERTED**) for collections |
+| Correction entry type | **Invoice** not Debit Note — kill if ERP posts DN (stock qty break) |
+
+### Dead ends
+
+- **Stripped LIFO authoritative balance** — abandoned; BLOCKED vs ERP R−11,879.64 gap.
+- **Missing LPG invoice hypothesis** — ruled out; mis-post + duplicate 52086 + gas-only refills explain distortion.
+- **Part 1A R7,245 as invoice doc** — wrong; carry mirror only; open LPG doc is **52086** (**PROVEN** R4,434.42).
