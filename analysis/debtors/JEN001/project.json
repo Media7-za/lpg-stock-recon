@@ -4,9 +4,10 @@
   "status": "active",
   "reconState": "in-progress",
   "financials": {
-    "totalOutstanding": 28534.89,
-    "lastInvoiceDate": "2026-07-14",
-    "lastPaymentDate": "2026-06-25",
+    "totalOutstanding": 22685.21,
+    "totalOutstandingNote": "PROVEN — raw/DEBENQ.TXT CURRENT BALANCE header as-at 2026-08-25 regeneration. Supersedes JEN00116JULY.TXT R28,534.89 (stale).",
+    "lastInvoiceDate": "2026-08-04",
+    "lastPaymentDate": "2026-08-14",
     "agedDebt180Plus": 0
   },
   "collections": {
@@ -14,9 +15,25 @@
     "actionType": null,
     "dateSent": null,
     "deadlineDate": null,
-    "nextAction": null,
+    "nextAction": "Obtain Tier-1 bank deposit for STAT 129 (doc 45717, R15,000, 14 Aug 2026) before customer send — see docs/JEN001_Settlement_Discount_Doctrine_v1.md §4 gap. Presentation gate ALLOWED is PATTERN_ONLY only.",
     "nextActionDate": null,
-    "notes": "Presentation layer test 2026-08-25: customer SOA (open LPG invoices only) generated separately from v5 operator sub-ledger. Gate REVIEW_REQUIRED — STAT 129 R15,000 (doc 45717) not allocated to invoice lines."
+    "notes": "Two-layer layout locked 2026-08-25: operator v5 (JEN001_Statement_Account_v5.md) vs presentation customer SOA (JEN001_Statement_of_Account.md). Billable open invoice: 51564 partial R597.11 PROVEN after LIFO allocation. Account-level bridge R22,088.10 = DEBENQ B/F PROVEN.",
+    "blockers": [
+      {
+        "type": "OTHER",
+        "status": "open",
+        "description": "No Tier-1 remittance/bank deposit for JEN001 — STAT 129 allocation is PATTERN_LIFO only (ASSERTED), not REMITTANCE_BACKED",
+        "source": "docs/JEN001_Settlement_Discount_Doctrine_v1.md §4; reports/JEN001_Payment_Allocation_v1.md",
+        "asAt": "2026-08-29"
+      },
+      {
+        "type": "STALE_SOURCE",
+        "status": "open",
+        "description": "No immutable snapshot for customer send — live reports/JEN001_Statement_of_Account.md regenerates on config/TXT change",
+        "source": "Presentation pilot 2026-08-25 — TWK002 snapshot doctrine not yet applied to JEN001",
+        "asAt": "2026-08-29"
+      }
+    ]
   },
   "presentation": {
     "defaultLayout": "customer.soa",
@@ -26,7 +43,24 @@
     "operatorPath": "reports/JEN001_Statement_Account_v5.md",
     "allocationPath": "reports/JEN001_Payment_Allocation_v1.md",
     "gateStatus": "ALLOWED",
-    "gateReason": "STAT 129 LIFO allocation ratified — 1 open invoice R597.11 (51564 partial)"
+    "gateBasis": "PATTERN_ONLY",
+    "gateReason": "STAT 129 LIFO allocation ratified in config — 1 open invoice R597.11 (51564 partial). Not REMITTANCE_BACKED.",
+    "allocationGate": {
+      "status": "RATIFIED",
+      "method": "lpg_stripped_lifo_chronological",
+      "ratifiedDate": "2026-08-25",
+      "pilotReport": "reports/JEN001_Payment_Allocation_v1.md"
+    }
+  },
+  "ingestGate": {
+    "status": "pass",
+    "ingestFreshness": "current",
+    "ingestCoverage": "complete",
+    "displayStatus": "CURRENT_COMPLETE",
+    "asAt": "2026-08-18",
+    "reportPath": "reports/JEN001_INGEST_COVERAGE_2026-08-18.json",
+    "ingestBlockedScopes": [],
+    "exceptions": []
   },
   "history": [
     {
@@ -44,6 +78,22 @@
     {
       "date": "2026-07-22",
       "event": "Ingest coverage validator: STALE_PARTIAL — 51154/51155 MISSING_HEADER_AND_LINES; custody gate BLOCKED. Reports: JEN001_INGEST_COVERAGE_2026-07-22.json, JEN001_Ingest_Gate_Projection.md."
+    },
+    {
+      "date": "2026-08-18",
+      "event": "v5 statement regenerated from raw/DEBENQ.TXT — ERP variance R0.00, combined R22,685.21 PROVEN. Ingest CURRENT_COMPLETE."
+    },
+    {
+      "date": "2026-08-25",
+      "event": "Presentation layer pilot: customer SOA (open LPG only) split from v5 operator sub-ledger. openInvoiceModel lpg_stripped — DEBENQ has EXCLUDE ALLOCATION DETAIL."
+    },
+    {
+      "date": "2026-08-25",
+      "event": "Turn 2 allocation pilot: chronological LIFO across STAT batches. STAT 129 clears 51691/51823/52044/52305; 51564 partial R597.11. Ratified in payment_pattern_overrides.json + statement_of_account.json closedInvoiceOverrides."
+    },
+    {
+      "date": "2026-08-29",
+      "event": "Session close: project.json financials synced to DEBENQ.TXT; collections blockers for Tier-1 gap + no snapshot; handoff docs/handoffs/2026-08-29.md."
     }
   ]
 }

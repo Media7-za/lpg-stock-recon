@@ -65,6 +65,10 @@
     {
       "date": "2026-08-29",
       "event": "Supplier ledger recon lane built and first-pass ratified (7 decisions in supplier_ledger_decisions.csv). Documents: 43 agree / 17 variance / 1 ours-only open / 2 theirs-only open (69 SO groups). Payments: 62/62 theirs matched; 4 open Ud XFer on ours (treasury). Rebate claim variance R96,208.43 (3 months not passed on their ledger). Genuine document charge residual ASSERTED R409,676.85 after excluding pending merges. Commit 933949a."
+    },
+    {
+      "date": "2026-08-29",
+      "event": "Session lineage catalog recorded (PROVEN index 6 chats; ASSERTED 5 substantive prior + 2 tangential local-only). Authoritative list in docs/handoffs/2026-08-29.md §008ORY session index. No account state changed this session."
     }
   ]
 }
