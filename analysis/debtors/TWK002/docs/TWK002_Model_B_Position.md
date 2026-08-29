@@ -93,12 +93,12 @@ The statement generator and balance bridge are **downstream of Model B**, not a 
 | Account-level bridge lines | Opening/residual + untagged settlements (−R49,551.05) — ratified in `config/statement_of_account.json` |
 | `debtors:tag-check` REMITTANCE_BACKED | Only account with extracted `remittance_lines_*.csv` — strongest gate check |
 
-**Current statement posture (2026-08-11):**
+**Current statement posture (2026-08-11 → superseded 2026-08-29 for customer send):**
 
+- ~~Balance due **R118,131.54** on customer document~~ — **superseded:** customer document now shows **Amount due R110,046.87** only (`customerDueBasis: open_invoices`).
 - TWK002-only (`siteTxts` empty — TWK003/TWK004 ignored for now)
-- Balance due **R118,131.54** = ERP TWK002 CURRENT BALANCE header
-- Open invoices **R110,046.87** + account-level **R8,084.67** (explicit, not hidden in 120-day)
-- Reports: `TWK002_Statement_of_Account.md`, `TWK002_Balance_Gap_Investigation_2026-08-11.md`, `TWK002_Balance_Bridge_2026-08-11.md`
+- Open invoices **R110,046.87** + account-level **R8,084.67** internal (hidden on customer snapshot)
+- Reports: `TWK002_Statement_of_Account.md` (live draft), `snapshots/2026-08-11_v1/` (sign-off artifact)
 - **Presentation decision (2026-08-11 → 2026-08-29):** the R8,084.67 account-level subtotal is fully itemised into 7 ratified sub-lines *internally* (`config/statement_of_account.json` → `balanceBridgeLines`, backed by bridge reports), but the **customer-facing statement now shows Amount due = open invoices only (R110,046.87)**. The R8,084.67 internal residual is hidden (`customerDueBasis: open_invoices`, `hideAccountLevelSection: true`) — it is Model B posting reconciliation, not billable debt.
 - **Snapshot doctrine (2026-08-29):** live drafts → `reports/TWK002_Statement_of_Account.md` (re-run freely). Finance sign-off / customer send → `--snapshot` → `snapshots/[YYYY-MM-DD]_vN/` (archived TXT + config + manifest sha256). First sign-off artifact: `snapshots/2026-08-11_v1/`. Regenerate: `npm run debtors:twk002-statement-snapshot -- --as-at YYYY-MM-DD`.
 

@@ -28,9 +28,25 @@
     "actionType": null,
     "dateSent": null,
     "deadlineDate": null,
-    "nextAction": null,
+    "nextAction": "Operator confirm customer send from snapshots/2026-08-11_v1/ (manifest sha256) OR regenerate snapshot after fresh TXT (H-013). Do not cite live reports/TWK002_Statement_of_Account.md for disputes.",
     "nextActionDate": null,
-    "notes": "Model B north star: docs/TWK002_Model_B_Position.md. Customer statement: reports/TWK002_Statement_of_Account.md (TWK002-only R118,131.54, ref B226)."
+    "notes": "Model B north star: docs/TWK002_Model_B_Position.md. Live draft: reports/TWK002_Statement_of_Account.md. Sign-off artifact: snapshots/2026-08-11_v1/ (customer due R110,046.87 PROVEN in manifest). reconState validation_pending — collections gate not closed.",
+    "blockers": [
+      {
+        "type": "OTHER",
+        "status": "open",
+        "description": "reconState validation_pending — finance sign-off on 16-batch checklist + Phase 2 STAT 123 (H-014) not complete",
+        "source": "project.json reconState; docs/TWK002_Model_B_Position.md",
+        "asAt": "2026-08-29"
+      },
+      {
+        "type": "HOLD",
+        "status": "open",
+        "description": "Customer send not authorised — snapshot 2026-08-11_v1 created but operatorConfirmation pending",
+        "source": "snapshots/2026-08-11_v1/manifest.json",
+        "asAt": "2026-08-29"
+      }
+    ]
   },
   "history": [
     {
@@ -104,6 +120,14 @@
     {
       "date": "2026-08-29",
       "event": "ERP opening balance fix plan ratified: docs/TWK002_ERP_Opening_Balance_Fix_Plan.md — Phase 1 fresh TXT (H-013), Phase 2 payment tagging STAT 112/114/123 (H-022/H-023/H-014), optional Path A (H-024), Phase 4 sign-off. B/F R38,791.27 accepted as historical carry; collections posture unchanged (bill open invoices only)."
+    },
+    {
+      "date": "2026-08-29",
+      "event": "allocation_edges knowledge bundle compiled: data/knowledge-bundle.json (170 relationships, 185 cases, 20 payments) via build_knowledge_prep.mjs + debtors:knowledge-compile. Edges remain remittance Tier-1 authority; not yet wired to statement generator."
+    },
+    {
+      "date": "2026-08-29",
+      "event": "Statement snapshot doctrine implemented: generate_statement_of_account.mjs --snapshot archives TXT+config, writes snapshots/2026-08-11_v1/ with manifest sha256. Customer due R110,046.87 (PROVEN gate ALLOWED REMITTANCE_BACKED). Ageing as-at 2026-07-31. Live draft remains reports/TWK002_Statement_of_Account.md."
     }
   ]
 }

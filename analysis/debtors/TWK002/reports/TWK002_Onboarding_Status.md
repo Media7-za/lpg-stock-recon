@@ -1,8 +1,28 @@
 # TWK002 — Onboarding Status
 
-**Updated:** 2026-08-11  
+**Updated:** 2026-08-29  
 **North star:** [`docs/TWK002_Model_B_Position.md`](../docs/TWK002_Model_B_Position.md) — remittance-authoritative Model B; balance and collections based on real debt, not posting artefacts.  
 **Scope:** 2023–2024 analysis complete · ERP catch-up **mostly posted** (Path B) · **`reconState: validation_pending`** until finance sign-off
+
+---
+
+## Statement & allocation (Aug 2026) — PROVEN anchors
+
+| Item | Path | Basis | Status |
+| :--- | :--- | :--- | :---: |
+| Bridge decomposition (7 sub-lines → R8,084.67) | `config/statement_of_account.json` · `reports/TWK002_Balance_Bridge_Line_Investigation_2026-08-11.md` | PROVEN | ✅ |
+| Pre–Mar 2025 B/F provenance (R38,791.27) | `reports/TWK002_Pre_Mar2025_BF_Bridge_2026-08-11.md` | PROVEN (11 STAT batches tie) | ✅ |
+| Payment→invoice edges | `data/allocation_edges.csv` (170 edges, 20 batches) | PROVEN (remittance) | ✅ |
+| Knowledge bundle | `data/knowledge-bundle.json` | PROVEN (compiled from edges) | ✅ |
+| Customer statement config | `customerDueBasis: open_invoices`, `hideAccountLevelSection: true` | Operator decision 2026-08-29 | ✅ |
+| **Sign-off snapshot** | `snapshots/2026-08-11_v1/` + `manifest.json` | PROVEN (gate ALLOWED, sha256) | ✅ created — **send not authorised** |
+| Live working draft | `reports/TWK002_Statement_of_Account.md` | ASSERTED (re-runnable) | ✅ |
+
+**Customer amount due (billable):** **R110,046.87** — PROVEN (`snapshots/2026-08-11_v1/manifest.json`, 11 open invoices, tag gate ALLOWED REMITTANCE_BACKED).
+
+**Internal bridge (not billable):** R8,084.67 — PROVEN (bridge lines sum; not on customer snapshot).
+
+**ERP header (operator console):** R118,131.54 — PROVEN (`raw/DEBENQ_TWK002.TXT` CURRENT BALANCE).
 
 ---
 
