@@ -8,6 +8,7 @@
     "authority": "remittance",
     "phase": "2023-2024_catchup",
     "positionDoc": "docs/TWK002_Model_B_Position.md",
+    "erpOpeningBalanceFixPlan": "docs/TWK002_ERP_Opening_Balance_Fix_Plan.md",
     "progress": {
       "analysis": "complete",
       "erpJournals": "mostly_done",
@@ -99,6 +100,10 @@
     {
       "date": "2026-08-29",
       "event": "Customer-facing statement updated: customerDueBasis=open_invoices — Amount due R110,046.87 (open invoices only). Account-level R8,084.67 residual hidden from customer document (internal Model B reconciliation, not billable). ERP header R118,131.54 retained in operator console only."
+    },
+    {
+      "date": "2026-08-29",
+      "event": "ERP opening balance fix plan ratified: docs/TWK002_ERP_Opening_Balance_Fix_Plan.md — Phase 1 fresh TXT (H-013), Phase 2 payment tagging STAT 112/114/123 (H-022/H-023/H-014), optional Path A (H-024), Phase 4 sign-off. B/F R38,791.27 accepted as historical carry; collections posture unchanged (bill open invoices only)."
     }
   ]
 }

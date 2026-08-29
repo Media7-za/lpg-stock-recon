@@ -1,8 +1,10 @@
 # TWK002 — Model B position (north star)
 
 **Debtor:** TWK002 · TWK AGRI PTY LTD · ref B226  
-**Updated:** 2026-08-11  
+**Updated:** 2026-08-29  
 **Authority:** This document is the reconciliation objective for TWK002. All balance, ageing, statement, and collections work should be read against it.
+
+**ERP execution plan (ratified 2026-08-29):** `docs/TWK002_ERP_Opening_Balance_Fix_Plan.md` — phased tagging + optional Path A to align ERP with open invoices; B/F R38,791.27 accepted as historical carry.
 
 ---
 
@@ -108,6 +110,7 @@ The statement generator and balance bridge are **downstream of Model B**, not a 
 
 | Asset | Path |
 | :--- | :--- |
+| **ERP opening balance fix plan** | `docs/TWK002_ERP_Opening_Balance_Fix_Plan.md` |
 | Doctrine v2 | `docs/TWK002_Settlement_Discount_Doctrine_v2.md` |
 | Finance checklist (16 batch) | `data/finance_posting_checklist.csv` |
 | Phase 2 checklist | `data/finance_posting_checklist_2025_phase2.csv` |
