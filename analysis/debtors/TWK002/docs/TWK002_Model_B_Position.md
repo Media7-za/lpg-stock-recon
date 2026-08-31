@@ -4,7 +4,7 @@
 **Updated:** 2026-08-29  
 **Authority:** This document is the reconciliation objective for TWK002. All balance, ageing, statement, and collections work should be read against it.
 
-**ERP execution plan (ratified 2026-08-29):** `docs/TWK002_ERP_Opening_Balance_Fix_Plan.md` — phased tagging + optional Path A to align ERP with open invoices; B/F R38,791.27 accepted as historical carry.
+**ERP execution plan (ratified 2026-08-29; residual lever ratified 2026-08-30 evening):** `docs/TWK002_ERP_Opening_Balance_Fix_Plan.md` — hygiene tagging H-022/H-023/H-026 first; residual lever is **H-027 current-period BS reclass** (DR suspense / CR AR). Not accept-in-header. Not P&L write-off. B/F R38,791.27 accepted as historical carry. Instruction: `docs/TWK002_ERP_Agent_Note_H027_BS_Reclassification.md`.
 
 ---
 

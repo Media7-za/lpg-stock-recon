@@ -1,2 +1,3 @@
 batch_id,advice_date,electronic_paid_date,gross_payable,discount_amount,cash_amount,already_paid,remittance_ref,captured_by,captured_date,notes
 BATCH-2026-STAT-123,2026-02-18,2026-02-28,240325.86,0.00,240325.86,19837.50,B226/KRD4041771,agent_pdf_text,2026-08-10,From 18.02.2026.pdf content stream (InterForm400)
+BATCH-2026-STAT-129,2026-08-14,2026-08-31,110046.87,1223.45,108823.42,0.00,B226/PENDING-KRD,operator_confirmed,2026-08-30,From B226 - REMITTANCE.pdf (image scan); footer discount R1223.45 operator-confirmed; edges AL-0171-0191

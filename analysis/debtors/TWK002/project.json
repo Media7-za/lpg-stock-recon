@@ -17,10 +17,10 @@
     }
   },
   "financials": {
-    "totalOutstanding": 118131.54,
-    "totalOutstandingNote": "TWK002 ERP header only (site roll-up excluded 2026-08-11). Combined was R117,831.54 with TWK003 -300.",
+    "totalOutstanding": 27721.81,
+    "totalOutstandingNote": "From DEBENQTWK002CURRENT.TXT (2026-08-30 drop). Prior Aug-09 export was R118,131.54. STAT 129 payment 00045899 posted 2026-08-26.",
     "lastInvoiceDate": "2026-07-31",
-    "lastPaymentDate": "2026-02-25",
+    "lastPaymentDate": "2026-08-26",
     "agedDebt180Plus": 0
   },
   "collections": {
@@ -30,7 +30,7 @@
     "deadlineDate": null,
     "nextAction": "Operator confirm customer send from snapshots/2026-08-11_v1/ (manifest sha256) OR regenerate snapshot after fresh TXT (H-013). Do not cite live reports/TWK002_Statement_of_Account.md for disputes.",
     "nextActionDate": null,
-    "notes": "Model B north star: docs/TWK002_Model_B_Position.md. Live draft: reports/TWK002_Statement_of_Account.md. Sign-off artifact: snapshots/2026-08-11_v1/ (customer due R110,046.87 PROVEN in manifest). reconState validation_pending — collections gate not closed.",
+    "notes": "Live draft 2026-08-30: reports/TWK002_Statement_of_Account.md Amount due R18,413.69 (inv 52484 + 52803 after STAT 129). Snapshot 2026-08-11_v1 is STALE (R110,046.87). Do not send snapshot. reconState validation_pending.",
     "blockers": [
       {
         "type": "OTHER",
@@ -130,8 +130,24 @@
       "event": "Statement snapshot doctrine implemented: generate_statement_of_account.mjs --snapshot archives TXT+config, writes snapshots/2026-08-11_v1/ with manifest sha256. Customer due R110,046.87 (PROVEN gate ALLOWED REMITTANCE_BACKED). Ageing as-at 2026-07-31. Live draft remains reports/TWK002_Statement_of_Account.md."
     },
     {
-      "date": "2026-08-29",
-      "event": "Session close (ERP opening balance): fix plan pushed origin/main @ e09c815; human tasks H-022–H-024 queued; epistemic appendix + tripwires added to fix plan doc. Resume: H-013 fresh TXT then H-022 STAT 112 tagging. Handoff: docs/handoffs/2026-08-29.md §TWK002 ERP opening balance."
+      "date": "2026-08-30",
+      "event": "STAT 129 remittance ingested (B226 - REMITTANCE.pdf): BATCH-2026-STAT-129 gross R110,046.87 discount R1,223.45 cash R108,823.42 receipt 00045899. 21 allocation edges AL-0171-0191. Inv 51841 composite split resolved (4140+20302.49=24442.49). ERP tasks H-025 (journal) H-026 (tagging). Report TWK002_STAT129_Remittance_2026-08.md."
+    },
+    {
+      "date": "2026-08-30",
+      "event": "Customer statement regenerated from DEBENQTWK002CURRENT.TXT: Amount due R18,413.69 (52484 R7,098.84 + 52803 R11,314.85, CN-netted). Prior R110,046.87 cluster closed via STAT 129 remittance overrides. Snapshot 2026-08-11_v1 stale — do not send. Live draft reports/TWK002_Statement_of_Account.md + .pdf."
+    },
+    {
+      "date": "2026-08-30",
+      "event": "H-025 done: STAT 129 Path B discount journal 00000510 posted −R1,223.45 (8 doc lines + GL 240000). Live ERP header R26,498.36 = export R27,721.81 − journal (PROVEN arithmetic). H-026 cash tagging on 00045899 remains open."
+    },
+    {
+      "date": "2026-08-30",
+      "event": "Account-level residual root cause: R8,084.67 is header − statement open (Path B leftover), not a missing invoice. Phase 2 tagging does not move it (claim superseded). H-027 opened: finance accept vs clearing journal. Report TWK002_Account_Level_Residual_Root_Cause_2026-08-30.md."
+    },
+    {
+      "date": "2026-08-30",
+      "event": "H-027 ratified as current-period BS reclassification (DR AR Historical Reconciliation Suspense / CR AR Control) — not accept-in-header, not P&L write-off. Root cause named as sub-ledger↔GL desync. Sequence: H-022/H-023/H-026 then rebuild then journal. Instruction docs/TWK002_ERP_Agent_Note_H027_BS_Reclassification.md. P12 portfolio playbook staged NOT RATIFIED."
     }
   ]
 }

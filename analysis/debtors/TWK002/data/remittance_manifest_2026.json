@@ -5,7 +5,7 @@
   "doctrine": "docs/TWK002_Settlement_Discount_Doctrine_v2.md",
   "status": "LINKED",
   "ingested_date": "2026-08-10",
-  "notes": "STAT 123: one remittance / one bank payment 00043500. Commercially one TWK AGRI account (multi-site); ERP splits cash across TWK002+TWK003+TWK004 = R240,325.86. Zero discount.",
+  "notes": "STAT 123: one remittance / one bank payment 00043500. STAT 129: Aug 2026 batch — see BATCH-2026-STAT-129 (operator-confirmed footer R1223.45 discount).",
   "batches": [
     {
       "batch_id": "BATCH-2026-STAT-123",
@@ -35,6 +35,37 @@
       "partial_vs_full": "FULL_ON_ADVICE",
       "line_count": 46,
       "notes": "One commercial account (multi-site); ERP debtor split only. Sum of slices = remittance cash. TWK003 R-300 after slice — site-level hygiene optional."
+    },
+    {
+      "batch_id": "BATCH-2026-STAT-129",
+      "source_file": "raw/Remittances/B226 - REMITTANCE.pdf",
+      "source_file_format": "IMAGE_SCAN",
+      "remittance_ref": "B226/PENDING-KRD",
+      "advice_date": "2026-08-14",
+      "electronic_paid_date": "2026-08-31",
+      "gross_payable": 110046.87,
+      "discount_amount": 1223.45,
+      "cash_amount": 108823.42,
+      "already_paid": 0,
+      "erp_payment_doc": "00045899",
+      "erp_payment_date": "2026-08-26",
+      "erp_link_status": "LINKED",
+      "erp_payment_gross": -108823.42,
+      "erp_gross_variance": 0,
+      "erp_cash_variance": 0,
+      "erp_stat": "STAT 129",
+      "match_type": "CASH_ONLY_WITH_DISCOUNT",
+      "partial_vs_full": "FULL_ON_ADVICE",
+      "line_count": 21,
+      "journal_pending": {
+        "amount": -1223.45,
+        "type": "DISCOUNT_ALLOWED",
+        "path": "Path B",
+        "status": "POSTED",
+        "erp_doc": "00000510",
+        "posted_date": "2026-08-30"
+      },
+      "notes": "Operator-confirmed PDF footer 2026-08-30. Clears Aug snapshot open-invoice cluster (R110,046.87 gross). Path B discount journal posted 00000510 (H-025 done). Cash receipt tagging pending (H-026). Report: reports/TWK002_STAT129_Remittance_2026-08.md. Inv 51841 composite split (our_ref 374961) — PROVEN same invoice."
     }
   ]
 }

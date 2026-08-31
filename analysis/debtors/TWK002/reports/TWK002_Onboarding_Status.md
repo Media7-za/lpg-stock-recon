@@ -33,12 +33,14 @@
 | Layer | Amount | Epistemic | ERP action |
 | :--- | ---: | :--- | :--- |
 | B/F export carry | R38,791.27 | **PROVEN** (11 STAT batches) | Accept — not zeroable without full restatement |
-| Account-level residual | R8,084.67 | **PROVEN** (7 bridge lines sum) | Phase 2 tagging (H-022/H-023/H-014) |
+| Account-level residual | R8,084.67 | **PROVEN** (7 bridge lines sum) | **H-027 BS reclass** after H-022/H-023/H-026 — tagging does **not** move the *total* |
 | Path B journals posted | 16 + 3 batches | **PROVEN** (checklists DONE) | No further discount journal wave |
 
-**Human tasks:** H-013 (fresh TXT) → H-022 (STAT 112) → H-023 (STAT 114) → H-014 (STAT 123) → H-024 optional Path A.
+**Human tasks:** H-013 → **H-022 → H-023 → H-026** → rebuild bridge → **H-027** (DR suspense / CR AR) → Phase 4. H-024 Path A still optional.
 
-**Collections posture unchanged:** customer due remains **R110,046.87** open invoices only — ERP plan does not change billable amount.
+**Residual lever ratified 2026-08-30 (evening):** current-period BS reclassification — `docs/TWK002_ERP_Agent_Note_H027_BS_Reclassification.md`. Accept-in-header and P&L write-off superseded.
+
+**Collections posture unchanged:** customer due = open invoices only (live draft R18,413.69 after STAT 129; snapshot `2026-08-11_v1` stale). ERP plan does not change billable amount.
 
 ---
 
@@ -59,8 +61,9 @@
 | Item | Status |
 | :--- | :---: |
 | **Phase 2 tranche 1** | STAT 110/112/114 — **posted** |
-| **Phase 2 tranche 2** | STAT 123 — blocked on `18.02.2026.pdf` footer; gaps 111/113/115–122 documented |
-| Kickoff / extension | `TWK002_Phase2_2025_Kickoff.md` · `TWK002_Phase2_Extension.md` |
+| **Phase 2 tranche 2** | STAT 123 — **posted** (zero discount) |
+| **Phase 2 tranche 3** | **STAT 129** — cash **posted** `00045899`; discount journal **posted** `00000510` (H-025 done); tagging **pending** (H-026) |
+| Kickoff / extension | `TWK002_Phase2_2025_Kickoff.md` · `TWK002_Phase2_Extension.md` · **`TWK002_STAT129_Remittance_2026-08.md`** |
 
 ---
 

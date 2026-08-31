@@ -9,30 +9,164 @@
     "PIETERMARITZBURG",
     "3201"
   ],
-  "primaryTxt": "analysis/debtors/TWK002/raw/DEBENQ_TWK002.TXT",
+  "primaryTxt": "analysis/debtors/TWK002/raw/DEBENQTWK002CURRENT.TXT",
+  "_comment_primaryTxt": "2026-08-30: H-013 export through 26 Aug 2026 (header R27,721.81). EXCLUDE ALLOCATION DETAIL — open list via lpg_stripped DN-net + remittance closedInvoiceOverrides, not ERP INVNO.",
   "_comment_siteTxts": "TWK003/TWK004 temporarily excluded — TWK002-only statement until site roll-up is revisited.",
   "siteTxts": {},
   "outputDir": "analysis/debtors/TWK002/reports",
   "outputBaseName": "TWK002_Statement_of_Account",
   "pdfStylesheet": "analysis/debtors/TWK002/reports/statement_pdf.css",
+  "openInvoiceModel": "lpg_stripped",
+  "_comment_openInvoiceModel": "CURRENT TXT excludes allocation detail. Open list = invoice − matching-DN CN (same method as prior tagged reconstruction). Remittance-paid invoices closed via closedInvoiceOverrides.",
+  "allocationGate": {
+    "status": "RATIFIED",
+    "method": "remittance_explicit",
+    "pilotReport": "reports/TWK002_STAT129_Remittance_2026-08.md",
+    "ratifiedDate": "2026-08-30",
+    "note": "STAT 129 + prior remittance batches (STAT 114/123) close invoices via overrides. H-026 ERP cash tagging still pending — does not change billable open list."
+  },
   "closedInvoiceOverrides": [
     {
       "doc": "42468",
-      "reason": "Paid via STAT 114 / BATCH-2025-05-31 remittance (31.05.2025.pdf), receipt 00039080 (30/05/2025). ERP never tagged a CN/payment row to this invno (untagged payment slice); Path B discount journal 00000509 (-R393.99) already posted for the batch on 2026-08-09. See TWK002_Phase2_2025_Linkage.md."
+      "reason": "Paid via STAT 114 / BATCH-2025-05-31 remittance, receipt 00039080. See TWK002_Stale_Open_Invoices_2026-08-11.md."
     },
     {
       "doc": "42470",
-      "reason": "Paid via STAT 114 / BATCH-2025-05-31 remittance (31.05.2025.pdf), receipt 00039080 (30/05/2025). Same untagged-payment cause as invoice 42468 — see reason there."
+      "reason": "Paid via STAT 114 / BATCH-2025-05-31 remittance, receipt 00039080. Same as 42468."
+    },
+    {
+      "doc": "41747",
+      "reason": "Settled on STAT 114 remainder + STAT 123 remittance (BATCH-2026-STAT-123)."
+    },
+    {
+      "doc": "42050",
+      "reason": "Paid via STAT 114 / BATCH-2025-05-31 remittance, receipt 00039080."
+    },
+    {
+      "doc": "43112",
+      "reason": "Paid via STAT 123 remittance BATCH-2026-STAT-123, receipt 00043500."
+    },
+    {
+      "doc": "43294",
+      "reason": "Paid via STAT 123 remittance BATCH-2026-STAT-123, receipt 00043500."
+    },
+    {
+      "doc": "43909",
+      "reason": "Paid via STAT 123 remittance BATCH-2026-STAT-123, receipt 00043500."
+    },
+    {
+      "doc": "44235",
+      "reason": "Paid via STAT 123 remittance BATCH-2026-STAT-123, receipt 00043500."
+    },
+    {
+      "doc": "44542",
+      "reason": "Paid via STAT 123 remittance BATCH-2026-STAT-123, receipt 00043500."
+    },
+    {
+      "doc": "44731",
+      "reason": "Paid via STAT 123 remittance BATCH-2026-STAT-123, receipt 00043500."
+    },
+    {
+      "doc": "44816",
+      "reason": "Paid via STAT 123 remittance BATCH-2026-STAT-123, receipt 00043500."
+    },
+    {
+      "doc": "44967",
+      "reason": "Paid via STAT 123 remittance BATCH-2026-STAT-123, receipt 00043500."
+    },
+    {
+      "doc": "45148",
+      "reason": "Paid via STAT 123 remittance BATCH-2026-STAT-123, receipt 00043500."
+    },
+    {
+      "doc": "45302",
+      "reason": "Paid via STAT 123 remittance BATCH-2026-STAT-123, receipt 00043500."
+    },
+    {
+      "doc": "45666",
+      "reason": "Paid via STAT 123 remittance BATCH-2026-STAT-123, receipt 00043500."
+    },
+    {
+      "doc": "45986",
+      "reason": "Paid via STAT 123 remittance BATCH-2026-STAT-123, receipt 00043500."
+    },
+    {
+      "doc": "46470",
+      "reason": "Paid via STAT 123 remittance BATCH-2026-STAT-123, receipt 00043500."
+    },
+    {
+      "doc": "46762",
+      "reason": "Paid via STAT 123 remittance BATCH-2026-STAT-123, receipt 00043500."
+    },
+    {
+      "doc": "47196",
+      "reason": "Paid via STAT 123 remittance BATCH-2026-STAT-123, receipt 00043500."
+    },
+    {
+      "doc": "47714",
+      "reason": "Paid via STAT 123 remittance BATCH-2026-STAT-123, receipt 00043500."
+    },
+    {
+      "doc": "48160",
+      "reason": "Paid via STAT 123 remittance BATCH-2026-STAT-123, receipt 00043500."
+    },
+    {
+      "doc": "48687",
+      "reason": "Paid via STAT 123 remittance BATCH-2026-STAT-123, receipt 00043500."
+    },
+    {
+      "doc": "49208",
+      "reason": "Paid via STAT 129 remittance BATCH-2026-STAT-129, receipt 00045899. See TWK002_STAT129_Remittance_2026-08.md."
+    },
+    {
+      "doc": "49606",
+      "reason": "Paid via STAT 129 remittance BATCH-2026-STAT-129, receipt 00045899."
+    },
+    {
+      "doc": "49882",
+      "reason": "Paid via STAT 129 remittance BATCH-2026-STAT-129, receipt 00045899."
+    },
+    {
+      "doc": "50099",
+      "reason": "Paid via STAT 129 remittance BATCH-2026-STAT-129, receipt 00045899."
+    },
+    {
+      "doc": "50439",
+      "reason": "Paid via STAT 129 remittance BATCH-2026-STAT-129, receipt 00045899."
+    },
+    {
+      "doc": "50680",
+      "reason": "Paid via STAT 129 remittance BATCH-2026-STAT-129, receipt 00045899."
+    },
+    {
+      "doc": "50898",
+      "reason": "Paid via STAT 129 remittance BATCH-2026-STAT-129, receipt 00045899."
+    },
+    {
+      "doc": "51226",
+      "reason": "Paid via STAT 129 remittance BATCH-2026-STAT-129, receipt 00045899."
+    },
+    {
+      "doc": "51496",
+      "reason": "Paid via STAT 129 remittance BATCH-2026-STAT-129, receipt 00045899."
+    },
+    {
+      "doc": "51841",
+      "reason": "Paid via STAT 129 remittance BATCH-2026-STAT-129, receipt 00045899 (composite CYL+LPG slices)."
+    },
+    {
+      "doc": "52241",
+      "reason": "Paid via STAT 129 remittance BATCH-2026-STAT-129, receipt 00045899."
     }
   ],
-  "_comment_customerDueBasis": "2026-08-29: R8,084.67 account-level residual is internal Model B reconciliation (posting artefacts) — not billable. Customer-facing statement shows Amount due = open invoices only (R110,046.87). Bridge lines remain in config for audit; hideAccountLevelSection suppresses them on the customer document.",
+  "_comment_customerDueBasis": "2026-08-30: Amount due = open invoices only after STAT 129 settlement (R18,413.69: inv 52484 + 52803, CN-netted). Prior billable cluster R110,046.87 closed on remittance. Account-level residual hidden. Old balanceBridgeLines (R8,084.67 vs header R118,131.54) are STALE — rebuild after H-026 TXT refresh.",
   "customerDueBasis": "open_invoices",
   "hideAccountLevelSection": true,
   "_comment_collapseAccountLevel": "2026-08-11 operator decision: when account-level section is shown (internal), collapse 7 sub-lines into one row. Currently hidden on customer statement (hideAccountLevelSection).",
   "collapseAccountLevelAsOpeningBalance": true,
   "collapsedAccountLevelLabel": "Opening balance (pre–Mar 2025 carry and settled-period residual, not itemised below)",
   "collapsedAccountLevelReference": "See balanceBridgeLines in this config for the 7 ratified sub-lines, and reports/TWK002_Pre_Mar2025_BF_Bridge_2026-08-11.md, reports/TWK002_Phantom_CN_Nets_Breakdown_2026-08-11.md, reports/TWK002_Balance_Bridge_Line_Investigation_2026-08-11.md for full provenance.",
-  "_comment_balanceBridgeLines": "Ratified lines for debt not on the open invoice table. Must sum (with any site adjustments the generator adds) to Balance due minus Σ open invoices. Regenerate from build_balance_bridge.mjs --write after TXT refresh. Kept itemised here for audit/internal use even though the customer statement now collapses these into one 'Opening balance' line (see collapseAccountLevelAsOpeningBalance above).",
+  "_comment_balanceBridgeLines": "STALE as-at 2026-08-30 — computed vs header R118,131.54 / open R110,046.87. The 7-line SUM (R8,084.67) is the residual identity after H-025. Do not remove 42468/42470 overrides until H-023 tags land. After H-022/H-023/H-026 rebuild the bridge; H-027 posts that rebuilt residual as BS reclass (DR suspense / CR AR). Then set collapseAccountLevelAsOpeningBalance false when gap is 0. Root cause: reports/TWK002_Account_Level_Residual_Root_Cause_2026-08-30.md. Instruction: docs/TWK002_ERP_Agent_Note_H027_BS_Reclassification.md",
   "balanceBridgeLines": [
     {
       "id": "bf_carry",

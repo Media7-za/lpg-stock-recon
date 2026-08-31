@@ -10,7 +10,7 @@ PIETERMARITZBURG
 **To:** TWK AGRI PTY LTD  
 **Account:** TWK002  
 **TWK reference:** B226  
-**Statement date:** 11 August 2026  
+**Statement date:** 30 August 2026  
 
 ---
 
@@ -18,8 +18,8 @@ PIETERMARITZBURG
 
 | | Amount (R) |
 | :--- | ---: |
-| Open invoices (detailed below) | 110,046.87 |
-| **Amount due** | **110,046.87** |
+| Open invoices (detailed below) | 18,413.69 |
+| **Amount due** | **18,413.69** |
 
 ---
 
@@ -29,7 +29,7 @@ Age is calculated from **invoice date** to 31 July 2026.
 
 | Current | 30 day | 60 day | 90 day | 120+ day | **Subtotal** |
 | ---: | ---: | ---: | ---: | ---: | ---: |
-| 36,466.56 | 12,471.98 | 16,193.40 | 14,310.28 | 30,604.65 | **110,046.87** |
+| 18,413.69 | 0.00 | 0.00 | 0.00 | 0.00 | **18,413.69** |
 
 ---
 
@@ -37,14 +37,5 @@ Age is calculated from **invoice date** to 31 July 2026.
 
 | Inv | Inv date | DN / ref | **Due (R)** |
 | :--- | :--- | :--- | ---: |
-| 49208 | 12 Feb 2026 | DN#21535 | 13,468.47 |
-| 49606 | 06 Mar 2026 | DN#21950 | 8,277.21 |
-| 49882 | 24 Mar 2026 | DN-21976 | 8,858.97 |
-| 50099 | 06 Apr 2026 | DN-22046 | 9,010.16 |
-| 50439 | 29 Apr 2026 | DN-21880 | 5,300.12 |
-| 50680 | 14 May 2026 | DN#22709 | 7,245.45 |
-| 50898 | 27 May 2026 | DN#22761 | 8,947.95 |
-| 51226 | 15 Jun 2026 | DN#22904 | 12,471.98 |
-| 51496 | 01 Jul 2026 | DN#22534 | 12,471.98 |
-| 51841 | 15 Jul 2026 | DN#22576 | 9,607.49 |
-| 52241 | 31 Jul 2026 | DN#24229 | 14,387.09 |
+| 52484 | 12 Aug 2026 | DN#23954 | 7,098.84 |
+| 52803 | 26 Aug 2026 | DN#24938 | 11,314.85 |
