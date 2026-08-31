@@ -148,6 +148,22 @@
     {
       "date": "2026-08-30",
       "event": "H-027 ratified as current-period BS reclassification (DR AR Historical Reconciliation Suspense / CR AR Control) — not accept-in-header, not P&L write-off. Root cause named as sub-ledger↔GL desync. Sequence: H-022/H-023/H-026 then rebuild then journal. Instruction docs/TWK002_ERP_Agent_Note_H027_BS_Reclassification.md. P12 portfolio playbook staged NOT RATIFIED."
+    },
+    {
+      "date": "2026-08-31",
+      "event": "H-022 DONE: journal 00000511 posted 31/08/2026 — 9 lines netting exactly R0.00, tagging inv 39683/40081/40459/40950 and CN 11648/11743/11821/11953 plus 37770 per AL-0109–0116. Header unchanged R26,498.36 either side (PROVEN raw/DEBENQ.TXT). Confirms allocation is not a residual lever. Payment row 00037770 stays blank on export — acceptable per journal-allocation lane."
+    },
+    {
+      "date": "2026-08-31",
+      "event": "H-027 PUT ON HOLD — ratified root cause FALSIFIED. Operator supplied AR Control GL = R26,498.36, equal to the sub-ledger header on raw/DEBENQ.TXT to the cent, so there is no sub-ledger↔GL desync; the divergence is ERP vs this repo's remittance reconstruction. GL figure is ASSERTED (no extract in raw/ yet — H-029). Identity header−open=R8,084.67 remains PROVEN and unaffected. Challenge memo reports/TWK002_H027_Evidence_Challenge_2026-08-31.md staged PROPOSED — NOT RATIFIED."
+    },
+    {
+      "date": "2026-08-31",
+      "event": "B/F itemisation gap named (H-028): raw/TWK0022024.TXT (YEAR 2025 MARCH, the window producing B/F R38,791.27) was exported with EXCLUDE ALLOCATION DETAIL, so every row has blank INVNO. History coverage is complete and ties exactly (0.00 → 87,226.46 → 38,791.27 → 26,498.36) — no missing year, only the wrong flag. Inside the B/F, R1,600.30 (Jan–Feb 2025 cluster net of CNs less STAT 112 cash) and R1,497.13 (B/F less that cluster) are unexplained; STAT 112 Path B discount was only R228.93. Until resolved, R8,084.67 cannot be shown to exclude collectable pre-Mar-2025 debt."
+    },
+    {
+      "date": "2026-08-31",
+      "event": "Bridge exhibit found STALE: config/balance_bridge_lines_detailed.json (2026-08-11, header R118,131.54 / open R110,046.87) does not describe raw/DEBENQ.TXT. Recomputing the same classification gives override R116,480.10, phantom R11,187.77, untagged −R158,374.47 — still summing to R8,084.67 because the buckets are a complete partition, so the sum is forced by construction and cannot evidence non-collectability. Defect: build_balance_bridge.mjs and investigate_balance_bridge_lines.mjs are hardcoded to stale raw/DEBENQ_TWK002.TXT; with the expanded override list the former reports gap R118,131.54 and --write would overwrite the ratified config. Also flagged: analysis/debtors/TWK002/DEBENQ.TXT at account root is byte-identical to raw/TWK0022023.TXT (wrong-file trap)."
     }
   ]
 }
