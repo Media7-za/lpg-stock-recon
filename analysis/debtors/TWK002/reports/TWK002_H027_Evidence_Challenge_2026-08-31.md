@@ -52,6 +52,37 @@ Hypothesis (a) is **live, not theoretical** — see §3.
 
 ## 3. The B/F does not fully tie — two unexplained crumbs
 
+> **AMENDMENT (same day) — §3 IS WITHDRAWN. The crumbs were my own comparison error.**
+>
+> R1,600.30 and R1,497.13 do not exist. They were produced by comparing ERP **gross** invoice
+> amounts against `allocation_edges.csv` `allocated_amount`, which is **net of settlement
+> discount**. Mixing the two bases manufactures phantom variances.
+>
+> On a consistent gross basis the tie is **exact**:
+>
+> ```
+> BATCH-2025-03-31 gross payable (8 docs)   35,922.77
+> cash receipt 00037770 (STAT 112)         -35,693.84
+> discount journal 00000508                   -228.93
+>                                          ─────────
+>                                               0.00
+> ```
+>
+> The correct CN figures are the ERP row amounts (−15,870.00, −10,350.00, −13,282.50,
+> −15,352.50 = −54,855.00), not the discount-net allocations I used (−53,483.63).
+>
+> **Consequence: hypothesis (a) in §2 is DISPROVEN.** A full invoice-level reconstruction of the
+> pre-Mar-2025 universe finds **zero true orphans** — every charge is either named on a
+> remittance advice or fully reversed by a credit note. No collectable debt hides in the B/F.
+> See `reports/TWK002_BF_Invoice_Level_Reconstruction_2026-08-31.md`.
+>
+> **H-028 is therefore no longer a blocker** — remittance doc-matching substitutes for the
+> missing `INVNO` column, so the re-export is optional corroboration rather than a prerequisite.
+>
+> §1 (GL falsifies the desync root cause), §5.1 (stale exhibit), §5.2 (self-fulfilling identity),
+> §5.4 (asset recognition), §5.5 (no clearing plan) and §6 (script defects) **all stand**.
+> Superseded text retained below unaltered.
+
 `raw/TWK0022024.TXT` (`YEAR: 2025 MARCH`) closes at exactly R38,791.27 and names four real
 Jan–Feb 2025 invoices inside the B/F. Allocation edges **AL-0109–0116** map STAT 112 receipt
 `00037770` onto those invoices and their empty-return CNs. The tie is close but **not exact**:
@@ -168,11 +199,15 @@ an audit finding — plausibly worse than a named residual in AR with a document
 
 ## 7. Proposed sequence — `PROPOSED — NOT RATIFIED`
 
+> **AMENDMENT (same day):** action 2 is **complete by analysis** — see §3 amendment. The
+> re-export is now optional corroboration, and the hold in action 3 rests on action 1 plus the
+> stale-exhibit and asset-recognition points only.
+
 | # | Action | Owner | Purpose |
 | :---: | :--- | :--- | :--- |
 | 1 | Land a **GL extract artifact** in `raw/` showing AR Control for TWK002 | Finance | Promotes the R26,498.36 datum from ASSERTED to PROVEN (§6 requires an artifact path) |
-| 2 | Re-export **`YEAR: 2025 MARCH` with allocation detail** | ERP Agent | Resolves hypothesis (a) vs (c); tests the kill condition — **H-028** |
-| 3 | **HOLD H-027** until 1–2 land | Operator | Avoid quarantining possibly-collectable debt |
+| 2 | ~~Re-export **`YEAR: 2025 MARCH` with allocation detail**~~ — **superseded**, resolved by remittance doc-matching | ERP Agent | ~~Resolves hypothesis (a) vs (c)~~ — **done**: zero true orphans |
+| 3 | **HOLD H-027** until 1 lands | Operator | Substance now supports quarantine; framing and exhibit still need repair |
 | 4 | Proceed with **H-023** and **H-026** | ERP Agent | Harmless hygiene; unaffected by this challenge |
 | 5 | Fix `build_balance_bridge.mjs` — parameterise the TXT path; refuse to `--write` when open sum is 0 | Worker | Remove the config-destroying trap |
 | 6 | Rebuild the seven lines on the post-H-022 export | Worker | Replace the stale exhibit |

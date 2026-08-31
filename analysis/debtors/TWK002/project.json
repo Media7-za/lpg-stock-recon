@@ -163,6 +163,14 @@
     },
     {
       "date": "2026-08-31",
+      "event": "H-028 RESOLVED BY ANALYSIS — no re-export needed. scripts/build_bf_invoice_level_match.mjs reconstructs the pre-Mar-2025 B/F at invoice level using remittance doc-matching in place of the missing INVNO column (advices are Tier-1 and name doc_no). All 122 charges across raw/TWK0022023.TXT + raw/TWK0022024.TXT classified: 112 named on advices, 10 not — and all 10 are fully cancelled by a counterparty CN (7 pair on shared doc reference, 3 on amount). TRUE ORPHANS = 0, so no collectable pre-Mar-2025 debt hides in the B/F. Decomposition PROVEN: B/F R38,791.27 = R35,922.77 STAT 112 timing carry + R2,868.50 settlement shortfall. Carry ties to R0.00 against receipt 00037770 (−R35,693.84) + discount journal 00000508 (−R228.93), so bf_carry and stat112_untagged are one transaction across the export boundary and only R2,868.50 of the B/F survives into the current account. Report reports/TWK002_BF_Invoice_Level_Reconstruction_2026-08-31.md; per-doc data/bf_invoice_level_2025mar.csv."
+    },
+    {
+      "date": "2026-08-31",
+      "event": "Correction to own challenge memo: the R1,600.30 and R1,497.13 'unexplained crumbs' in §3 are WITHDRAWN — they were produced by comparing ERP gross invoice amounts against allocation_edges.csv allocated_amount (net of settlement discount). On a consistent gross basis BATCH-2025-03-31 ties exactly. Correct CN figures are ERP rows −54,855.00, not the discount-net −53,483.63. Hypothesis (a) (collectable debt in B/F) DISPROVEN. Memo §1 (GL falsifies desync), §5.1 (stale exhibit), §5.2 (self-fulfilling identity), §5.4 (asset recognition), §5.5 (no clearing plan) and §6 (script defects) all stand."
+    },
+    {
+      "date": "2026-08-31",
       "event": "Bridge exhibit found STALE: config/balance_bridge_lines_detailed.json (2026-08-11, header R118,131.54 / open R110,046.87) does not describe raw/DEBENQ.TXT. Recomputing the same classification gives override R116,480.10, phantom R11,187.77, untagged −R158,374.47 — still summing to R8,084.67 because the buckets are a complete partition, so the sum is forced by construction and cannot evidence non-collectability. Defect: build_balance_bridge.mjs and investigate_balance_bridge_lines.mjs are hardcoded to stale raw/DEBENQ_TWK002.TXT; with the expanded override list the former reports gap R118,131.54 and --write would overwrite the ratified config. Also flagged: analysis/debtors/TWK002/DEBENQ.TXT at account root is byte-identical to raw/TWK0022023.TXT (wrong-file trap)."
     }
   ]
