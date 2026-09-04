@@ -1,0 +1,17 @@
+dn,date,invoice_doc,cn_doc,invoice_gross,cn_gross,event_net,payment_ref,payment_amount,status,tag
+22630,2026-06-08,51132,15039,132693.19,-67792.50,64900.69,44974+44975 (PC-76-32),103915.60,ASSUMED closed,ASSUMED
+22508,2026-06-18,51268,15086,132862.38,-132862.38,0.00,,0.00,Closed (zero-net),PROVEN
+22936,2026-07-08,51681,15215,134049.19,-80097.50,53951.69,EXT-2744666881,54981.36,Closed,PROVEN/ASSERTED
+23974,2026-08-24,52768,15543,69652.80,-39445.00,30207.80,EXT-2901239645,34721.00,Closed,PROVEN/ASSERTED
+24947,2026-09-02,52924,15592,74433.70,-69000.00,5433.70,45961 (PC-76-35),28163.00,Closed,PROVEN
+Proforma 2026-09-04,2026-09-04,,,16291.80,0.00,16291.80,EXT-2949387151+EXT-2950393933,14106.80,"Open - short-paid R2,185.00, no DN#",ASSERTED/GAP
+
+summary,,,,,,,,,,
+total_event_net_5_erp_deliveries,,,,,,154493.88,,,,
+total_payments_5_erp_deliveries,,,,,,,,221780.96,,
+credit_5_erp_deliveries,,,,,,,,67287.08,,PROVEN
+proforma_event_net,,,,,,16291.80,,,,
+proforma_payments,,,,,,,,14106.80,,
+proforma_shortfall,,,,,,,,-2185.00,,ASSERTED - open
+total_event_net_all_6,,,,,,170785.68,,,,
+net_position_all_6_credit,,,,,,,,65102.08,,

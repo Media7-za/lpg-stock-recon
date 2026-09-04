@@ -1,0 +1,116 @@
+{
+  "debtorCode": "LIN001",
+  "debtorName": "SLINDOKUHLE ENTERPRISES (PTY) LTD",
+  "asAt": "2026-09-04",
+  "model": "invoice + credit_note + delivery_note_proof + payment; event_net = invoice_gross + cn_gross (header basis, LPG + CYL)",
+  "verifiedAgainst": "transaction_headers (Supabase project lpg-stock-recon, account_no LIN001), 2026-09-04",
+  "events": [
+    {
+      "dn": "22630",
+      "date": "2026-06-08",
+      "invoice": { "doc_no": "51132", "gross": 132693.19 },
+      "creditNote": { "doc_no": "15039", "ref_no": "51132", "gross": -67792.50 },
+      "eventNet": 64900.69,
+      "payments": [
+        { "doc_no": "44974", "date": "2026-06-06", "amount": 40590.60, "batch_ref": "PC-76-32", "source": "erp" },
+        { "doc_no": "44975", "date": "2026-06-07", "amount": 63325.00, "batch_ref": "PC-76-32", "source": "erp" }
+      ],
+      "allocatedPaymentTotal": 103915.60,
+      "surplus": 39014.91,
+      "status": "assumed_closed",
+      "epistemicTag": "ASSUMED",
+      "note": "44974 fully applied first; 44975 split (R24,310.09 applied, R39,014.91 unallocated). Split is an operator assumption, not an ERP-posted allocation."
+    },
+    {
+      "dn": "22508",
+      "date": "2026-06-18",
+      "invoice": { "doc_no": "51268", "gross": 132862.38 },
+      "creditNote": { "doc_no": "15086", "ref_no": "51268", "gross": -132862.38 },
+      "eventNet": 0.00,
+      "payments": [],
+      "allocatedPaymentTotal": 0.00,
+      "surplus": 0.00,
+      "status": "closed",
+      "epistemicTag": "PROVEN",
+      "note": "Full CN offset — zero-net event, no payment leg required."
+    },
+    {
+      "dn": "22936",
+      "date": "2026-07-08",
+      "invoice": { "doc_no": "51681", "gross": 134049.19, "order_no": "13991" },
+      "creditNote": { "doc_no": "15215", "ref_no": "51681", "gross": -80097.50 },
+      "eventNet": 53951.69,
+      "payments": [
+        { "doc_no": "EXT-2744666881", "date": "2026-07-03", "amount": 54981.36, "batch_ref": "Lin001 7.3 13991", "source": "bank_receipt" }
+      ],
+      "allocatedPaymentTotal": 54981.36,
+      "surplus": 1029.67,
+      "status": "closed",
+      "epistemicTag": "PROVEN/ASSERTED",
+      "note": "Bank ref matches invoice order_no 13991 (PROVEN). Detail: docs/LIN001_event_DN22936.md"
+    },
+    {
+      "dn": "23974",
+      "date": "2026-08-24",
+      "invoice": { "doc_no": "52768", "gross": 69652.80 },
+      "creditNote": { "doc_no": "15543", "ref_no": "52768", "gross": -39445.00 },
+      "eventNet": 30207.80,
+      "payments": [
+        { "doc_no": "EXT-2901239645", "date": "2026-08-22", "amount": 34721.00, "batch_ref": "HAPPY 8.22", "source": "bank_receipt" }
+      ],
+      "allocatedPaymentTotal": 34721.00,
+      "surplus": 4513.20,
+      "status": "closed",
+      "epistemicTag": "PROVEN/ASSERTED",
+      "note": "Surplus on this event alone; aggregate tie-out is in the balance bridge, not a claimed carry to DN#24947. Detail: docs/LIN001_event_DN23974.md"
+    },
+    {
+      "dn": "24947",
+      "date": "2026-09-02",
+      "invoice": { "doc_no": "52924", "gross": 74433.70 },
+      "creditNote": { "doc_no": "15592", "ref_no": "52924", "gross": -69000.00 },
+      "eventNet": 5433.70,
+      "payments": [
+        { "doc_no": "45961", "date": "2026-09-01", "amount": 28163.00, "batch_ref": "PC-76-35", "source": "erp" }
+      ],
+      "allocatedPaymentTotal": 28163.00,
+      "surplus": 22729.30,
+      "status": "closed",
+      "epistemicTag": "PROVEN",
+      "note": "Payment 45961 alone funds the event net in full. Detail: docs/LIN001_event_DN24947.md"
+    },
+    {
+      "dn": null,
+      "id": "proforma_2026-09-04",
+      "date": "2026-09-04",
+      "invoice": { "doc_no": null, "type": "proforma", "gross": 16291.80, "description": "70x9kg LPG refill" },
+      "creditNote": null,
+      "eventNet": 16291.80,
+      "payments": [
+        { "doc_no": "EXT-2949387151", "date": "2026-09-04", "amount": 13416.80, "batch_ref": "happy 9.4", "source": "bank_receipt" },
+        { "doc_no": "EXT-2950393933", "date": "2026-09-04", "amount": 690.00, "batch_ref": "happy", "source": "bank_receipt" }
+      ],
+      "allocatedPaymentTotal": 14106.80,
+      "surplus": -2185.00,
+      "status": "open",
+      "epistemicTag": "ASSERTED/GAP",
+      "note": "Short-paid R2,185.00. No delivery note issued/supplied yet — GAP. Detail: docs/LIN001_event_2026-09-04_proforma.md"
+    }
+  ],
+  "unallocated": [
+    { "item": "44482 (PC-76-31)", "amount": 75844.50, "tag": "ASSUMED" },
+    { "item": "DN#22630 surplus", "amount": 39014.91, "tag": "ASSUMED" },
+    { "item": "DN#22936 surplus", "amount": 1029.67, "tag": "ASSERTED" },
+    { "item": "Proforma 2026-09-04 shortfall", "amount": -2185.00, "tag": "ASSERTED", "note": "event open" }
+  ],
+  "summary": {
+    "totalEventNet5ErpDeliveries": 154493.88,
+    "totalPayments5ErpDeliveries": 221780.96,
+    "credit5ErpDeliveries": 67287.08,
+    "proformaEventNet": 16291.80,
+    "proformaPayments": 14106.80,
+    "proformaShortfall": -2185.00,
+    "totalEventNetAll6": 170785.68,
+    "netPositionAll6Credit": 65102.08
+  }
+}

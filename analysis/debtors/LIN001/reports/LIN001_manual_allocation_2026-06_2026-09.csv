@@ -1,0 +1,9 @@
+payment_doc,payment_date,payment_amount,batch_ref,event_dn,allocated_amount,surplus_or_shortfall,tag,note
+44482,2026-05-08,75844.50,PC-76-31,,0.00,75844.50,ASSUMED,Predates window; unallocated pool, no event match attempted
+44974,2026-06-06,40590.60,PC-76-32,22630,40590.60,0.00,ASSUMED,Full amount applied to DN#22630 event net first
+44975,2026-06-07,63325.00,PC-76-32,22630,24310.09,39014.91,ASSUMED,Balance of DN#22630 event net (64900.69-40590.60); remainder R39014.91 unallocated
+EXT-2744666881,2026-07-03,54981.36,Lin001 7.3 13991,22936,53951.69,1029.67,ASSERTED,Bank ref "13991" matches invoice 51681 order_no 00013991 (PROVEN)
+EXT-2901239645,2026-08-22,34721.00,HAPPY 8.22,23974,30207.80,4513.20,ASSERTED,Bank receipt dated 2026-08-22 against DN#23974 event net
+45961,2026-09-01,28163.00,PC-76-35,24947,5433.70,22729.30,PROVEN,ERP-posted payment; event net R5433.70 fully funded, surplus carried
+EXT-2949387151,2026-09-04,13416.80,happy 9.4,Proforma 2026-09-04,13416.80,0.00,ASSERTED,Partial payment against open proforma
+EXT-2950393933,2026-09-04,690.00,happy,Proforma 2026-09-04,690.00,0.00,ASSERTED,Partial payment against open proforma; combined with EXT-2949387151 = R14106.80 vs R16291.80 net (short R2185.00)
