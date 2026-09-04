@@ -34,7 +34,7 @@ interface ResolvedCostProfile {
  */
 async function resolveEffectiveCostProfile(vehicleId: string, calculationDate: string): Promise<ResolvedCostProfile | null> {
   const { data: rows } = await supabase
-    .from('vehicle_cost_profiles')
+    .from('delivery_vehicle_cost_profiles')
     .select('*')
     .eq('vehicle_id', vehicleId)
     .in('status', ['PUBLISHED', 'PROVISIONAL'])
@@ -114,7 +114,7 @@ async function selectRecommendedVehicle(
   tollsPerTrip: number,
   calculationDate: string,
 ): Promise<{ chosen: VehicleCandidateResult; alternatives: VehicleCandidateResult[]; reason: string }> {
-  const { data: activeVehicles } = await supabase.from('vehicles').select('*').eq('active_status', 'active');
+  const { data: activeVehicles } = await supabase.from('delivery_vehicles').select('*').eq('active_status', 'active');
 
   const candidateInputs = (
     await Promise.all((activeVehicles ?? []).map((v) => buildCandidate(v, calculationDate)))
@@ -143,7 +143,7 @@ async function selectOverrideVehicle(
   calculationDate: string,
   overrideReason: string | undefined,
 ): Promise<{ chosen: VehicleCandidateResult; alternatives: VehicleCandidateResult[]; reason: string }> {
-  const { data: vehicle } = await supabase.from('vehicles').select('*').eq('id', vehicleId).single();
+  const { data: vehicle } = await supabase.from('delivery_vehicles').select('*').eq('id', vehicleId).single();
   if (!vehicle) {
     throw new Error(`Vehicle ${vehicleId} not found`);
   }
@@ -395,8 +395,8 @@ serve(async (req) => {
         .select(
           `
           *,
-          vehicle_cost_profile:vehicle_cost_profiles(*),
-          vehicle:vehicles(*)
+          vehicle_cost_profile:delivery_vehicle_cost_profiles(*),
+          vehicle:delivery_vehicles(*)
         `,
         )
         .eq('id', calculationId)
