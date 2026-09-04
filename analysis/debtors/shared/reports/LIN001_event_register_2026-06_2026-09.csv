@@ -1,0 +1,31 @@
+event_dn,event_part,doc_ref,doc_date,amount,event_net,source,confidence,notes
+22630,invoice,51132,2026-06-08,132693.19,64900.69,ERP,PROVEN,DN#22630 invoice
+22630,credit_note,15039,2026-06-08,67792.5,64900.69,ERP,PROVEN,DN#22630 CN → 51132
+22630,delivery_note,DN#22630,2026-06-08,,64900.69,ERP,PROVEN,Proof of event
+22630,event_net,,2026-06-08,64900.69,64900.69,COMPUTED,PROVEN,DN#22630 net
+22630,payment,,,,64900.69,,UNVERIFIED,Payment not auto-matched — manual allocation required
+22508,invoice,51268,2026-06-18,132862.38,0,ERP,PROVEN,DN#22508 invoice
+22508,credit_note,15086,2026-06-18,132862.38,0,ERP,PROVEN,DN#22508 CN → 51268
+22508,delivery_note,DN#22508,2026-06-18,,0,ERP,PROVEN,Proof of event
+22508,event_net,,2026-06-18,0,0,COMPUTED,PROVEN,DN#22508 net
+22508,payment,,,,0,,UNVERIFIED,Payment not auto-matched — manual allocation required
+22936,invoice,51681,2026-07-08,134049.19,53951.69,ERP,PROVEN,DN#22936 invoice
+22936,credit_note,15215,2026-07-08,80097.5,53951.69,ERP,PROVEN,DN#22936 CN → 51681
+22936,delivery_note,DN#22936,2026-07-08,,53951.69,ERP,PROVEN,Proof of event
+22936,event_net,,2026-07-08,53951.69,53951.69,COMPUTED,PROVEN,DN#22936 net
+22936,payment,,,,53951.69,,UNVERIFIED,Payment not auto-matched — manual allocation required
+23974,invoice,52768,2026-08-24,69652.8,30207.8,ERP,PROVEN,DN#23974 invoice
+23974,credit_note,15543,2026-08-24,39445,30207.8,ERP,PROVEN,DN#23974 CN → 52768
+23974,delivery_note,DN#23974,2026-08-24,,30207.8,ERP,PROVEN,Proof of event
+23974,event_net,,2026-08-24,30207.8,30207.8,COMPUTED,PROVEN,DN#23974 net
+23974,payment,,,,30207.8,,UNVERIFIED,Payment not auto-matched — manual allocation required
+24947,invoice,52924,2026-09-02,74433.7,5433.7,ERP,PROVEN,DN#24947 invoice
+24947,credit_note,15592,2026-09-02,69000,5433.7,ERP,PROVEN,DN#24947 CN → 52924
+24947,delivery_note,DN#24947,2026-09-02,,5433.7,ERP,PROVEN,Proof of event
+24947,event_net,,2026-09-02,5433.7,5433.7,COMPUTED,PROVEN,DN#24947 net
+24947,payment,,,,5433.7,,UNVERIFIED,Payment not auto-matched — manual allocation required
+
+# payments_in_scope,event_part,doc_ref,doc_date,amount,,batch_ref,,notes
+POOL,payment,44974,2026-06-06,40590.6,,PC-76-32,PROVEN,SPEEDP
+POOL,payment,44975,2026-06-07,63325,,PC-76-32,PROVEN,TRANSF
+POOL,payment,45961,2026-09-01,28163,,PC-76-35,PROVEN,SPEEDP
