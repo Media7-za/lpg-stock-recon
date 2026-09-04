@@ -40,11 +40,19 @@ This is **not** a line item on the same-day proforma (`LIN001_event_2026-09-04_p
 
 ---
 
-## ⚠ Conflicts with customer's own WhatsApp accounting (same day)
+## Two independent, unconfirmed cylinder-return claims (corrected 2026-09-04, live ERP re-check)
 
-A WhatsApp chat with the customer (Jack Lin), timestamped 2026-09-04 11:18–11:20, describes a **different** cylinder return: **"50 empty bottles"** valued at **R25,875.00** (= 50 × R517.50, the **9kg** deposit rate — not 48kg). See full analysis in `LIN001_event_2026-09-04_proforma.md` § "Customer-asserted cylinder credit."
+A WhatsApp chat with the customer (Jack Lin), timestamped 2026-09-04 11:18–11:20, separately describes **"50 empty bottles"** valued at **R25,875.00** (= 50 × R517.50, the **9kg** deposit rate — not 48kg). See full analysis in `LIN001_event_2026-09-04_proforma.md` § "Customer-asserted cylinder credit."
 
-**These two statements cannot both describe the same physical return** (8 ≠ 50 units; 48kg ≠ 9kg cylinder). Operator confirmation needed on which is correct, or whether both are genuine, separate returns.
+An earlier version of this note treated the operator's "8×48kg" report and the customer's "50×9kg" claim as **contradictory versions of one event**. That framing has been retracted after a live Supabase re-check by the operator:
+
+- **ERP shows nothing posted for LIN001 cylinders after 2026-09-02** — neither claim is confirmable either way.
+- **The last CN (15592, 2026-09-02, already fully spent into the closed DN#24947 event) credited 80×9.1 (9kg) @ R517.50 + 4×D.1 + 1×S.1 (48kg, 5 units total)** — see `LIN001_event_DN24947.md`. This account routinely moves both 9kg and 48kg cylinders, so a customer returning different sizes on different days is not inherently contradictory.
+- The customer's 9kg/R517.50 rate match is **not diagnostic** — it's the standard rate, and this exact SKU/rate pair was already moved in CN 15592 two days earlier. The likelier explanation is the customer **conflating the already-settled Sept 2 batch** with a claimed Sept 4 return, not a genuinely new fact.
+
+**Correct framing:** these are **two independent, unconfirmed claims**, not two versions of one event. Resolving which (if either) is real requires a **physical count** (driver/warehouse goods-returned slip) — ERP has nothing to arbitrate with, since it's silent after Sept 2.
+
+**Regardless of which count is confirmed:** per `business_rules.md` Rule 3 (Debt Partitioning) / Rule 4 (Asset Write-Off), any confirmed cylinder return posts as its own **CYL-ledger** CN — it does not net against the (LPG-ledger) proforma cash invoice by default. See `LIN001_event_2026-09-04_proforma.md` for the full ledger-separation argument.
 
 ---
 

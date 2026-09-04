@@ -84,7 +84,7 @@ R16,291.80  proforma invoice (event net — no CN)
 
 ---
 
-## Customer-asserted cylinder credit (WhatsApp, 2026-09-04 11:18–11:20)
+## Customer-asserted cylinder credit (WhatsApp, 2026-09-04 11:18–11:20) — **corrected 2026-09-04, live ERP re-check**
 
 **Source:** WhatsApp chat with Jack Lin (customer contact) — screenshot in `/opt/cursor/artifacts/LIN001_whatsapp_jacklin_2026-09-04_bottle_credit.jpg`
 
@@ -102,24 +102,43 @@ R16,291.80  proforma invoice (event net — no CN)
 | Balance = R2,875 | R28,750 − R25,875 | ✅ Arithmetic correct |
 | Payment due = R13,416.80 | R16,291.80 − R2,875.00 | ✅ Arithmetic correct — matches receipt EXT-2949387151 exactly |
 
-The customer is using our **actual SKU deposit rates**, not arbitrary numbers — the arithmetic is internally consistent and ties to the exact payment received.
+The customer is using our **actual SKU deposit rates**, not arbitrary numbers. But a live Supabase re-check (2026-09-04, operator-run — see below) shows this rate match is **not diagnostic of a new Sept 4 return**; it very plausibly traces to an already-closed Sept 2 document instead.
 
-### Where I disagree / need confirmation — **do not treat as settled without operator sign-off**
+### Corrected picture — live Supabase re-check (2026-09-04)
 
-1. **Direction of the credit is backwards on its face.** If "this time's" 50 returned bottles (R25,875, presumably 9kg) are worth *less* than "last time's" 50 (R28,750, presumably 14kg — a different cylinder size, not a shortfall on the same size), the R2,875 gap should represent an **outstanding cylinder-deposit debt** the customer still owes us (they've under-returned value relative to some baseline) — not a **credit that reduces a same-day, unrelated LPG cash invoice**. The customer has flipped the sign in their own favor. I have no independent basis (no CN doc, no custody ledger visibility this session) to confirm which direction is correct.
-2. **Conflicts with the previously logged fact this same session:** `LIN001_note_2026-09-04_cylinder_return.md` records **"8 × 48kg empties returned"** (operator-reported, ~R9,660 estimated value at R1,207.50/cyl). This WhatsApp describes **50 bottles** at a **9kg-implied rate** (R517.50/cyl). These cannot both describe the same physical return — 8 ≠ 50, and 48kg ≠ 9kg. **Needs clarification: which is the real return, or are these two separate events?**
-3. **"Last time" R28,750 baseline is customer-asserted, unverified.** No prior CN/invoice in our LIN001 records has been checked against this figure — Supabase was unreachable this session (`DATABASE_URL` connection refused), so this could not be cross-checked against `transaction_items`.
+Operator re-queried Supabase directly (this agent's earlier session could not — `DATABASE_URL` was unreachable then). Findings:
 
-### Two possible closure scenarios (not yet resolved)
+- **ERP shows nothing posted for LIN001 cylinders after 2026-09-02.** No new CN/return for either the "8×48kg" or "50×9kg" claim exists in the ledger as of this check.
+- **The last CN is 15592** (2026-09-02, part of the already-closed DN#24947 event): **80 × 9.1 (9kg deposit) @ R517.50** + **4 × D.1 + 1 × S.1 (48kg deposit) = 5 units** (not 8). See corrected breakdown in `LIN001_event_DN24947.md`.
+- **CN 15592 is fully spent** — already netted into DN#24947's closed R5,433.70 event net. There is nothing left over from it to apply here.
+
+**Revised read — retracting the earlier "cannot both be true" framing:**
+
+The earlier version of this note treated the operator's "8×48kg" report and the customer's "50×9kg" WhatsApp claim as **competing versions of one event** (they can't both be true because the counts/sizes differ). That framing was too strong. Two things argue against it:
+
+1. **This account routinely moves both cylinder sizes** — DN#24947 itself (Sept 2, two days prior) shipped 48kg *and* 14kg/19kg gas in the same delivery, and CN 15592 credited 9kg *and* 48kg deposits together. A customer returning empties of different sizes on different days is not inherently contradictory.
+2. **The 9kg/R517.50 rate match is not surprising or diagnostic.** It's simply the standard ERP rate, and we already know this exact SKU/rate pair (80 × 9.1 @ R517.50) was moved on this account just two days earlier, in CN 15592. That's a reason to suspect the customer may be **misremembering or conflating the already-settled Sept 2 batch** with a new Sept 4 return — not a reason to trust the 50-unit figure as a fresh, independent fact.
+
+**Correct framing: these are two independent, unconfirmed claims, not two versions of one event.** Neither is confirmable from ERP as of this check (silent since Sept 2). No amount of ledger analysis will settle which (if either) reflects a real Sept 4 return — **a physical count (driver/warehouse goods-returned slip) is required** for whichever claim(s) are real.
+
+### Can a cylinder-return credit net against this invoice? — **No, by rule, not just by caution**
+
+Per `analysis/debtors/shared/docs/business_rules.md`:
+- **Rule 3 (Debt Partitioning):** the debt must be split into two ledgers — purely **LPG Gas Debt** and purely **Cylinder (CYL) Deposit Debt**.
+- **Rule 4 (Asset Write-Off):** cylinder deposit settlement is handled as its own physical/financial write-off against the CYL ledger, not folded into gas revenue.
+
+This proforma is a **pure 9kg-gas line with zero deposit lines** — an **LPG-ledger** event. A cylinder return, once physically confirmed, is a **CYL-ledger** CN against the standard deposit SKU/rate. **It should post there, reducing custody debt — not be subtracted by the customer from an unrelated cash invoice before paying.** If the resulting CYL credit is later applied toward the open R2,185.00 LPG shortfall, that is a **separate, explicit allocation call** (same category as the still-unapplied R67,287.08 pool) — it does not happen by default.
+
+### Two possible closure scenarios (still not resolved — now correctly framed)
 
 | Scenario | Logic | Result |
 |---|---|---|
-| **A — Reject customer's credit** (as I originally recorded) | Full invoice R16,291.80 stands; both payments (R13,416.80 + R690.00 = R14,106.80) apply | **Short-paid R2,185.00** — matches original analysis |
-| **B — Accept customer's credit** | R16,291.80 − R2,875.00 credit = R13,416.80 net payable; that was paid in full | **Fully settled**, and the second payment (R690.00) becomes a **pure overpayment/surplus**, not a partial fill |
+| **A — Reject customer's credit** (current standing position, doctrinally correct per Rule 3/4 regardless of physical count) | Full invoice R16,291.80 stands; both payments (R13,416.80 + R690.00 = R14,106.80) apply | **Short-paid R2,185.00** |
+| **B — Accept customer's credit** (would require an explicit operator allocation decision, on top of physical confirmation) | R16,291.80 − R2,875.00 = R13,416.80 net payable; that was paid in full | Fully settled; R690.00 second payment becomes a pure overpayment |
 
-Note the two scenarios reconcile with each other exactly: **R2,875.00 (customer's claimed credit) − R690.00 (2nd payment) = R2,185.00** (our original shortfall). Neither scenario is "wrong" arithmetically — the open question is **which one is real**, which depends on resolving the 8×48kg-vs-50-bottles conflict and verifying the R28,750 baseline.
+Note the two scenarios reconcile with each other exactly: **R2,875.00 (customer's claimed credit) − R690.00 (2nd payment) = R2,185.00** (the shortfall). This is a coincidence of arithmetic, not evidence that Scenario B is correct.
 
-**Recommendation:** Hold this event as **open pending operator confirmation** of (a) the true cylinder return (8×48kg or 50×9kg — or both, if genuinely separate), and (b) whether a deposit-return shortfall may properly be netted against an unrelated cash invoice. Do not close the books on Scenario B without that confirmation.
+**Recommendation:** Treat this as **Scenario A** by default (ledger separation is a standing business rule, not a case-by-case judgment call). Hold the event open. Obtain a physical goods-returned slip for whichever cylinder return(s) actually happened; once confirmed, post it as its own CYL-ledger CN; only then consider — as a separate, explicit allocation decision — whether any resulting credit should offset the R2,185.00 LPG shortfall.
 
 ---
 

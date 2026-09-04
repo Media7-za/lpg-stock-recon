@@ -213,27 +213,35 @@ Operator reports **8 × 48kg empty cylinders returned**. Not a line item on the 
 
 > ⚠ **Conflicts with the WhatsApp claim below** — cannot both be the real return (8 vs 50 units, 48kg vs 9kg).
 
-### Customer-asserted cylinder credit — WhatsApp, Jack Lin (2026-09-04 11:18–11:20) — **not accepted**
+### Customer-asserted cylinder credit — WhatsApp, Jack Lin (2026-09-04 11:18–11:20) — **not accepted; corrected 2026-09-04**
 
 **Detail:** `LIN001_event_2026-09-04_proforma.md` § "Customer-asserted cylinder credit" · **Chat:** `/opt/cursor/artifacts/LIN001_whatsapp_jacklin_2026-09-04_bottle_credit.jpg`
 
 Customer claims: 50 empty bottles returned this time worth **R25,875** (= 50 × R517.50, **9kg** rate) vs **R28,750** "last time" (= 50 × R575.00, **14kg** rate) → balance **R2,875**, netted off the invoice → pays **R13,416.80**.
 
-**Rate math is PROVEN** against our own ERP standard deposit rates (517.50 for 9kg, 575.00 for 14kg — both exact) and **ties exactly** to the actual payment received (EXT-2949387151, R13,416.80) and to our own R2,185.00 shortfall figure (R2,875.00 − R690.00 = R2,185.00 exactly).
+**Rate math is PROVEN** against our own ERP standard deposit rates (517.50 for 9kg, 575.00 for 14kg — both exact) and **ties exactly** to the actual payment received (EXT-2949387151, R13,416.80) and to our own R2,185.00 shortfall figure (R2,875.00 − R690.00 = R2,185.00 exactly). But the rate match is **not diagnostic** — see correction below.
 
-**I do not fully agree, for three reasons:**
-1. **Conflicts with the 8×48kg cylinder-return fact above** — these describe different quantities and cylinder sizes; they can't both be the same physical event.
-2. **Direction is unverified** — a shortfall in returned deposit value should normally represent additional custody debt owed *by* the customer, not a discount on an unrelated cash invoice for LPG content. The customer applied it in their own favor.
-3. **"Last time R28,750" baseline is customer-asserted only** — no LIN001 CN/invoice in our records has been checked against it; Supabase was unreachable this session to verify.
+**Correction (operator, live Supabase re-check 2026-09-04):** Supabase was unreachable in the earlier turn (this agent); the operator re-queried it directly. Findings:
+- **ERP shows nothing posted for LIN001 cylinders after 2026-09-02** — neither the 8×48kg (operator) nor 50×9kg (customer) claim is confirmable either way.
+- **CN 15592** (2026-09-02, already fully spent into the closed DN#24947 event) actually credited **80 × 9.1 (9kg) @ R517.50 + 4×D.1 + 1×S.1 (48kg, 5 units, not 8)**. It has nothing left over.
+- **Retracted the "cannot both be true" framing.** This account routinely moves both 9kg and 48kg cylinders (DN#24947 itself did, two days earlier). The 8×48kg and 50×9kg claims are **two independent, unconfirmed claims**, not competing versions of one event.
+- The customer's 9kg/R517.50 match is **not surprising** — it's the standard rate, and that exact SKU/rate pair was already used in the (now fully-spent) Sept 2 CN. The likelier read is the customer **conflating that already-settled batch** with a claimed Sept 4 return.
+- **Neither claim is ERP-confirmable as of this check.** Resolving which (if either) reflects a real Sept 4 return needs a **physical goods-returned slip**, not further ledger analysis.
 
-**Two reconciled scenarios (not yet resolved — operator decision required):**
+**Why it can't net against this invoice regardless — by rule, not just caution:** per `analysis/debtors/shared/docs/business_rules.md` Rule 3 (Debt Partitioning) and Rule 4 (Asset Write-Off), LPG gas debt and CYL deposit debt sit in **separate ledgers**. This proforma is pure LPG (zero deposit lines) — a confirmed cylinder return posts as its own **CYL-ledger** CN and does not offset an unrelated LPG cash invoice by default. Applying a resulting credit here would be a **separate, explicit allocation call**.
+
+**Two scenarios (Scenario A is now the doctrinally-correct default, independent of which physical count is eventually confirmed):**
 
 | Scenario | Result |
 |---|---|
-| A — reject credit (original analysis) | Short-paid **R2,185.00** |
-| B — accept credit | Fully settled; R690.00 second payment becomes pure **overpayment** |
+| **A — reject credit (default per Rule 3/4)** | Short-paid **R2,185.00** |
+| B — accept credit (would require an explicit operator allocation decision on top of physical confirmation) | Fully settled; R690.00 second payment becomes pure **overpayment** |
 
-Recorded as `customerAssertedCredit` on the proforma event in `events.json` — **not applied**. Event remains open pending your confirmation of which cylinder-return fact is correct.
+Recorded as `customerAssertedCredit` on the proforma event in `events.json` — **not applied**. Event remains open pending a physical goods-returned slip and, separately, an explicit operator allocation decision.
+
+### ⚠ Branch collision flagged (2026-09-04)
+
+A separate branch, **`claude/lin001-delivery-events-xb8nt7`**, independently built overlapping LIN001 delivery-event scaffolding (its own `events.json`, event cards, balance bridge, consolidated register) under `analysis/debtors/LIN001/docs/` — a different path from `analysis/debtors/shared/reports/` used on this branch (`cursor/lin001-fresh-allocation-bb32`). Both branches touch LIN001 concurrently. **Do not merge either without reconciling the two** — flagged to the operator for branch/ownership deconfliction.
 
 **Pending** — no ERP CN doc yet, target invoice unconfirmed, DV/SV split unspecified. **Not applied** to any event or pool total; recorded as `pendingCreditNotes` in `analysis/debtors/LIN001/config/events.json` for operator disposition.
 

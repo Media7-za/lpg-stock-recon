@@ -75,6 +75,14 @@
     {
       "date": "2026-09-04",
       "event": "Reviewed customer WhatsApp claim (Jack Lin): 50 empty bottles worth R25,875 (9kg rate) vs R28,750 'last time' (14kg rate) = R2,875 balance netted off the proforma invoice, yielding R13,416.80 paid. Rate math PROVEN against our ERP standard rate card and ties exactly to receipt EXT-2949387151. However: (1) conflicts directly with the 8x48kg cylinder-return fact logged earlier same session — cannot both be the real return; (2) direction of the credit (netting a returns shortfall against an unrelated cash invoice) is unverified; (3) 'last time R28,750' baseline is customer-asserted, not ERP-confirmed (Supabase unreachable this session). Recorded as customerAssertedCredit on the proforma event — NOT accepted/applied. Event left open pending operator confirmation of which cylinder-return fact is correct."
+    },
+    {
+      "date": "2026-09-04",
+      "event": "CORRECTION (operator, live Supabase re-check — DB unreachable to this agent in the prior turn): ERP shows nothing posted for LIN001 cylinders after 2026-09-02. Last CN 15592 (2026-09-02, already fully spent into closed DN#24947 event) actually credited 80x9.1 (9kg) @ R517.50 + 4xD.1 + 1xS.1 (5x48kg, not 8). Retracted the 'cannot both be true' framing on the 8x48kg (operator) vs 50x9kg (customer WhatsApp) claims — this account routinely moves both sizes, so they are two INDEPENDENT, UNCONFIRMED claims, not competing versions of one event. The customer's 9kg/R517.50 match is not diagnostic (standard rate, already used in the now-spent Sept 2 CN) — likely conflation of that settled batch, not a fresh fact. Neither claim is ERP-confirmable; resolution requires a physical goods-returned slip. Per business_rules.md Rule 3 (Debt Partitioning) / Rule 4 (Asset Write-Off): any confirmed cylinder return posts to the CYL ledger and does NOT net against the LPG-only proforma cash invoice by default — applying a resulting credit there would be a separate, explicit allocation call. Proforma event remains open, Scenario A (short-paid R2,185.00) stands as the doctrinally-correct default."
+    },
+    {
+      "date": "2026-09-04",
+      "event": "BRANCH COLLISION FLAGGED: a separate branch (claude/lin001-delivery-events-xb8nt7) independently built overlapping LIN001 delivery-event scaffolding (events.json, event cards, balance bridge, consolidated register) under analysis/debtors/LIN001/docs/ rather than analysis/debtors/shared/reports/ used on this branch (cursor/lin001-fresh-allocation-bb32). Both branches touch the same account concurrently. Flagged for the operator/branch owners to reconcile before merge — do not merge both without deconfliction."
     }
   ]
 }
