@@ -47,7 +47,7 @@ A WhatsApp chat with the customer (Jack Lin), timestamped 2026-09-04 11:18–11:
 An earlier version of this note treated the operator's "8×48kg" report and the customer's "50×9kg" claim as **contradictory versions of one event**. That framing has been retracted after a live Supabase re-check by the operator:
 
 - **ERP shows nothing posted for LIN001 cylinders after 2026-09-02** — neither claim is confirmable either way.
-- **The last CN (15592, 2026-09-02, already fully spent into the closed DN#24947 event) credited 80×9.1 (9kg) @ R517.50 + 4×D.1 + 1×S.1 (48kg, 5 units total)** — see `LIN001_event_DN24947.md`. This account routinely moves both 9kg and 48kg cylinders, so a customer returning different sizes on different days is not inherently contradictory.
+- **The last CN (15592, 2026-09-02, already fully spent into the closed DN#24947 event) is a full five-SKU deposit-only CN** (9.1 ×80, D.1 ×4, S.1 ×1, 14.1 ×21, 19.1 ×12; sum −R69,000.00 matches header exactly) — see `LIN001_event_DN24947.md`. This account routinely moves both 9kg and 48kg cylinders, so a customer returning different sizes on different days is not inherently contradictory.
 - The customer's 9kg/R517.50 rate match is **not diagnostic** — it's the standard rate, and this exact SKU/rate pair was already moved in CN 15592 two days earlier. The likelier explanation is the customer **conflating the already-settled Sept 2 batch** with a claimed Sept 4 return, not a genuinely new fact.
 
 **Correct framing:** these are **two independent, unconfirmed claims**, not two versions of one event. Resolving which (if either) is real requires a **physical count** (driver/warehouse goods-returned slip) — ERP has nothing to arbitrate with, since it's silent after Sept 2.

@@ -83,6 +83,10 @@
     {
       "date": "2026-09-04",
       "event": "BRANCH COLLISION FLAGGED: a separate branch (claude/lin001-delivery-events-xb8nt7) independently built overlapping LIN001 delivery-event scaffolding (events.json, event cards, balance bridge, consolidated register) under analysis/debtors/LIN001/docs/ rather than analysis/debtors/shared/reports/ used on this branch (cursor/lin001-fresh-allocation-bb32). Both branches touch the same account concurrently. Flagged for the operator/branch owners to reconcile before merge — do not merge both without deconfliction."
+    },
+    {
+      "date": "2026-09-04",
+      "event": "CN 15592 line detail closed out (operator complete Supabase pull): full five-SKU deposit-only CN — 9.1 x80 (-41400), D.1 x4 (-4830), S.1 x1 (-1207.50), 14.1 x21 (-13282.50), 19.1 x12 (-8280); SUM(line_total) = -69000.00 matches transaction_headers header exactly. Retires the UNVERIFIED/R21,562.50 residual flag from 6dbdd40 — original 'cylinder deposit credits only' characterization was correct all along. No change to any allocation conclusion."
     }
   ]
 }

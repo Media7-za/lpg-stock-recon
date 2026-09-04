@@ -56,19 +56,24 @@ R28,163.00  payment 45961
 
 Mixed 14kg / 19kg / 48kg DV + SV — LPG fills + cylinder deposits.
 
-**CN 15592 — corrected line detail (PROVEN, live Supabase pull 2026-09-04, superseding the earlier "deposit credits only" assumption):**
+**CN 15592 — full line detail (PROVEN, operator complete Supabase pull 2026-09-04):**
 
-| SKU | Description | Qty | Rate (incl. VAT) |
+Deposit-only credit note — **no LPG lines**. Five SKUs, all cylinder deposits:
+
+| SKU | Description | Qty | Line total |
 |---|---|---:|---:|
-| 9.1 | 9kg cylinder deposit | 80 | R517.50 |
-| D.1 | 48kg DV cylinder deposit | 4 | R1,207.50 |
-| S.1 | 48kg SV cylinder deposit | 1 | R1,207.50 |
+| 9.1 | 9kg cylinder deposit | −80 | −R41,400.00 |
+| D.1 | 48kg DV cylinder deposit | −4 | −R4,830.00 |
+| S.1 | 48kg SV cylinder deposit | −1 | −R1,207.50 |
+| 14.1 | 14kg cylinder deposit | −21 | −R13,282.50 |
+| 19.1 | 19kg cylinder deposit | −12 | −R8,280.00 |
+| **Sum** | | | **−R69,000.00** |
 
-Note: invoice 52924 itself carries **no 9kg line items** (only 14kg/19kg/48kg, per the line mix above) — so this CN's 80×9.1 credit is **not a same-invoice deposit reversal**; it is a much larger, separately-sourced batch of 9kg deposit returns posted against 52924 by document reference. The 4×D.1 + 1×S.1 = **5** 48kg units (not 8, and not matched to either later claim below).
+`SUM(line_total) = −R69,000.00` matches `transaction_headers.amount_excl + tax_amount` exactly. Nothing missing, nothing unitemized.
+
+Note: invoice 52924 itself carries **no 9kg line items** (only 14kg/19kg/48kg, per the line mix above) — so this CN's 80×9.1 credit is **not a same-invoice deposit reversal**; it is a separately-sourced batch of 9kg deposit returns posted against 52924 by document reference. The 4×D.1 + 1×S.1 = **5** 48kg units (not 8, and not matched to either later claim below).
 
 **CN 15592 is fully spent** — already netted into this event's closed **R5,433.70** event net. Nothing from it remains available to apply elsewhere.
-
-**Note — line detail does not fully reconcile to the CN total:** the three lines above sum to **R47,437.50** (41,400 + 4,830 + 1,207.50), against a CN total of **R69,000.00** — a **R21,562.50 residual** not itemized here. The operator's fresh pull reported these lines specifically in response to the cylinder-return question; it is not represented as the complete line-by-line breakdown of CN 15592. The residual likely includes other SKUs (e.g. 14.1/19.1 deposits, or LPG credits) not itemized in this exchange. **UNVERIFIED** pending a full itemized pull if ever needed.
 
 > ⚠ This CN is the likely source of confusion for the 2026-09-04 cylinder-return claims (see `LIN001_event_2026-09-04_proforma.md` and `LIN001_note_2026-09-04_cylinder_return.md`): the customer's WhatsApp math uses the exact same 9kg/R517.50 pairing that this already-closed CN used two days earlier. Neither the operator's "8×48kg" report nor the customer's "50×9kg" claim independently confirms against ERP — ERP shows **nothing posted for LIN001 cylinders after 2026-09-02**.
 

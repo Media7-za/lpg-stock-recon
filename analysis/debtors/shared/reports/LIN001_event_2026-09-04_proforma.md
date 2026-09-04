@@ -109,7 +109,7 @@ The customer is using our **actual SKU deposit rates**, not arbitrary numbers. B
 Operator re-queried Supabase directly (this agent's earlier session could not — `DATABASE_URL` was unreachable then). Findings:
 
 - **ERP shows nothing posted for LIN001 cylinders after 2026-09-02.** No new CN/return for either the "8×48kg" or "50×9kg" claim exists in the ledger as of this check.
-- **The last CN is 15592** (2026-09-02, part of the already-closed DN#24947 event): **80 × 9.1 (9kg deposit) @ R517.50** + **4 × D.1 + 1 × S.1 (48kg deposit) = 5 units** (not 8). See corrected breakdown in `LIN001_event_DN24947.md`.
+- **The last CN is 15592** (2026-09-02, part of the already-closed DN#24947 event): a **full five-SKU deposit-only CN** (9.1 ×80, D.1 ×4, S.1 ×1, 14.1 ×21, 19.1 ×12; sum −R69,000.00 matches header exactly). See full breakdown in `LIN001_event_DN24947.md`.
 - **CN 15592 is fully spent** — already netted into DN#24947's closed R5,433.70 event net. There is nothing left over from it to apply here.
 
 **Revised read — retracting the earlier "cannot both be true" framing:**

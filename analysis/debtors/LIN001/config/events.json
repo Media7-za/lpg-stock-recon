@@ -99,13 +99,18 @@
         "ref_no": "52924",
         "amount": 69000,
         "confidence": "PROVEN",
-        "line_detail_corrected_20260904": {
-          "source": "Live Supabase re-check by operator, 2026-09-04 (superseding earlier 'deposit credits only' assumption)",
+        "line_detail": {
+          "source": "Complete Supabase pull by operator, 2026-09-04 — SUM(line_total) = -69000.00 matches header exactly",
+          "deposit_only": true,
           "lines": [
-            { "sku": "9.1", "description": "9kg cylinder deposit", "qty": 80, "rate": 517.5 },
-            { "sku": "D.1", "description": "48kg DV cylinder deposit", "qty": 4, "rate": 1207.5 },
-            { "sku": "S.1", "description": "48kg SV cylinder deposit", "qty": 1, "rate": 1207.5 }
+            { "sku": "9.1", "description": "9kg cylinder deposit", "qty": -80, "line_total": -41400.0 },
+            { "sku": "D.1", "description": "48kg DV cylinder deposit", "qty": -4, "line_total": -4830.0 },
+            { "sku": "S.1", "description": "48kg SV cylinder deposit", "qty": -1, "line_total": -1207.5 },
+            { "sku": "14.1", "description": "14kg cylinder deposit", "qty": -21, "line_total": -13282.5 },
+            { "sku": "19.1", "description": "19kg cylinder deposit", "qty": -12, "line_total": -8280.0 }
           ],
+          "sum_line_total": -69000.0,
+          "header_tie": true,
           "note": "Invoice 52924 itself carries no 9kg lines — the 80x9.1 credit is a separately-sourced batch posted against 52924 by doc reference, not a same-invoice reversal. Fully spent into this event's closed R5,433.70 net; nothing left over.",
           "confidence": "PROVEN"
         }
@@ -167,7 +172,7 @@
         "confidence": "ASSERTED_BY_CUSTOMER — not operator-ratified, not ERP-verified",
         "claim": "50 empty bottles returned worth R25,875.00 (implies 9kg rate, R517.50/cyl); vs R28,750.00 'last time' (implies 14kg rate, R575.00/cyl); net balance R2,875.00 applied as a credit against this invoice",
         "rate_math_check": "PROVEN — both R517.50 (9kg) and R575.00 (14kg) match our ERP standard deposit rates exactly; 50x517.50=25875, 50x575=28750, 28750-25875=2875, 16291.80-2875=13416.80 (matches EXT-2949387151 exactly)",
-        "erp_recheck_20260904": "Operator re-queried Supabase live (this agent's session could not — DATABASE_URL unreachable then). ERP shows nothing posted for LIN001 cylinders after 2026-09-02. Last CN (15592, 2026-09-02, already fully spent into DN#24947's closed event) credited 80x9.1 @ R517.50 + 4xD.1 + 1xS.1 (5 units, not 8) — see credit_note.line_detail_corrected_20260904 on EVT-24947.",
+        "erp_recheck_20260904": "Operator re-queried Supabase live (this agent's session could not — DATABASE_URL unreachable then). ERP shows nothing posted for LIN001 cylinders after 2026-09-02. Last CN (15592, 2026-09-02, already fully spent into DN#24947's closed event) is a full five-SKU deposit-only CN (9.1, D.1, S.1, 14.1, 19.1; SUM(line_total) = -69000.00 matches header exactly) — see credit_note.line_detail on EVT-24947.",
         "revised_framing": "Retracted the earlier 'cannot both be true' framing. This account routinely moves both 9kg and 48kg cylinders (DN#24947 itself did, two days earlier), so the operator's 8x48kg report and the customer's 50x9kg claim are two INDEPENDENT, UNCONFIRMED claims, not competing versions of one event. The 9kg/R517.50 match is not diagnostic — it's the standard rate, already used in the now-fully-spent CN 15592 two days prior — likely the customer is conflating that settled batch with a new claim rather than reporting a fresh fact.",
         "resolution_path": "Neither claim is ERP-confirmable (silent since Sept 2) — requires a physical count (driver/warehouse goods-returned slip) to settle, not further ledger analysis",
         "ledger_rule": "Per business_rules.md Rule 3 (Debt Partitioning) / Rule 4 (Asset Write-Off): LPG gas debt and CYL deposit debt sit in separate ledgers. This proforma is pure LPG (zero deposit lines). A confirmed cylinder return posts as its own CYL-ledger CN and does NOT net against this cash invoice by default — applying any resulting credit here would be a separate, explicit allocation call.",

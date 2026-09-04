@@ -223,7 +223,7 @@ Customer claims: 50 empty bottles returned this time worth **R25,875** (= 50 × 
 
 **Correction (operator, live Supabase re-check 2026-09-04):** Supabase was unreachable in the earlier turn (this agent); the operator re-queried it directly. Findings:
 - **ERP shows nothing posted for LIN001 cylinders after 2026-09-02** — neither the 8×48kg (operator) nor 50×9kg (customer) claim is confirmable either way.
-- **CN 15592** (2026-09-02, already fully spent into the closed DN#24947 event) actually credited **80 × 9.1 (9kg) @ R517.50 + 4×D.1 + 1×S.1 (48kg, 5 units, not 8)**. It has nothing left over.
+- **CN 15592** (2026-09-02, already fully spent into the closed DN#24947 event) is a **full five-SKU deposit-only CN** (9.1 ×80, D.1 ×4, S.1 ×1, 14.1 ×21, 19.1 ×12; `SUM(line_total) = −R69,000.00` matches header exactly — PROVEN, operator complete pull). It has nothing left over.
 - **Retracted the "cannot both be true" framing.** This account routinely moves both 9kg and 48kg cylinders (DN#24947 itself did, two days earlier). The 8×48kg and 50×9kg claims are **two independent, unconfirmed claims**, not competing versions of one event.
 - The customer's 9kg/R517.50 match is **not surprising** — it's the standard rate, and that exact SKU/rate pair was already used in the (now fully-spent) Sept 2 CN. The likelier read is the customer **conflating that already-settled batch** with a claimed Sept 4 return.
 - **Neither claim is ERP-confirmable as of this check.** Resolving which (if either) reflects a real Sept 4 return needs a **physical goods-returned slip**, not further ledger analysis.
