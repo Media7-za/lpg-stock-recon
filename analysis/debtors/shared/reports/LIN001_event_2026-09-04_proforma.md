@@ -13,12 +13,13 @@
 | **Invoice (reconstructed)** | Proforma LPG + CYL dual-line | 2026-09-04 | **R52,516.80** | LPG ASSERTED / CYL ASSUMED |
 | ↳ LPG slice | Proforma — 70×9kg @ R232.74 | 2026-09-04 | R16,291.80 | ASSERTED (quote image) |
 | ↳ CYL slice | 70×9.1 @ R517.50 | 2026-09-04 | R36,225.00 | ASSUMED (Rule 5 — qty matches fills) |
-| **Credit note** | **Not posted** | — | R0.00 | Empty returns unconfirmed / not in ERP |
+| **Credit note** | **Forthcoming ERP** — 8×48kg @ R1,207.50 | 2026-09-04 | **R9,660.00** | ASSERTED (operator — not yet in ERP) |
 | **Delivery note** | **MISSING** | — | *(no DN# supplied)* | **GAP** |
 | **Payment** | Two receipts | 2026-09-04 | R14,106.80 | ASSERTED |
 
-**Event net (no CN yet):** **R52,516.80**  
-If a 1:1 empty return of 70×9.1 later posts: CN R36,225.00 → event net **R16,291.80** (= the proforma quote).
+**Event net (invoice − forthcoming CN):** **R42,856.80**
+
+The 8×48kg CN does **not** offset the 70×9.1 on the invoice (different SKU). Those 9kg deposits remain on this event until a 9.1 CN posts. Mixed-size same-document pattern matches CN 15592 on DN#24947.
 
 ---
 
@@ -52,27 +53,21 @@ Both: New Champion Supermarket → Bella Energy Services300 (GSRH1V).
 
 ## Closure attempt
 
-**Against reconstructed invoice (no CN):**
-
 ```
-R52,516.80  reconstructed invoice (LPG + CYL)
+R52,516.80  reconstructed invoice (LPG R16,291.80 + 9.1 R36,225.00)
+− R 9,660.00  forthcoming CN (8 × 48kg @ R1,207.50)
+────────────
+= R42,856.80  event net
+
+R42,856.80  event net
 − R14,106.80  payments
 ────────────
-= R38,410.00  shortage
+= R28,750.00  shortage (no prior-event surplus applied)
 ```
 
-**Against LPG slice only** (what the customer paid toward — the quote):
+With Event 3 running surplus R28,272.17 applied: shortage **R477.83**.
 
-```
-R16,291.80  LPG / proforma quote
-− R14,106.80  payments
-────────────
-= R2,185.00  LPG-slice cash shortfall
-```
-
-The R36,225.00 CYL slice is expected to be offset by an empty-return **CN on this event**, once physically confirmed and posted — not by the customer subtracting a bottle figure from the LPG quote before paying.
-
-**Event NOT closed.**
+**70×9.1 deposits (R36,225.00) are not credited by this CN.** Event still open pending ERP posting of invoice + CN, DN#, and any 9kg empty-return CN.
 
 ---
 

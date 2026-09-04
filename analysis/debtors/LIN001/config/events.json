@@ -8,7 +8,7 @@
   },
   "summary": {
     "eventCount": 6,
-    "totalEventNet": 207010.68,
+    "totalEventNet": 197350.68,
     "closedCount": 4,
     "assumedClosedCount": 1,
     "zeroNetCount": 1,
@@ -165,8 +165,18 @@
         ],
         "note": "Proforma exposes LPG slice only (quote). Operator: add cylinder slice to the invoice. Reconstructed invoice = LPG R16,291.80 + CYL R36,225.00 = R52,516.80."
       },
-      "credit_note": null,
-      "event_net": 52516.80,
+      "credit_note": {
+        "doc_no": "FORTHCOMING",
+        "ref_no": "PROFORMA-LIN001-20260904",
+        "amount": 9660.00,
+        "confidence": "ASSERTED — operator: ERP will soon post this CN",
+        "source": "Operator instruction 2026-09-04 — not yet in Supabase",
+        "lines": [
+          { "sku": ["D.1", "S.1"], "description": "48kg cylinder deposit return", "qty": -8, "unit_price": 1207.5, "line_total": -9660.00, "sku_split": "unspecified" }
+        ],
+        "note": "8 x 48kg CYL @ R1,207.50 incl. VAT. Does not offset the invoice's 70x9.1 slice — different SKU. Same mixed-size pattern as CN 15592 (9kg/14kg/19kg/48kg returns against a 14/19/48kg invoice)."
+      },
+      "event_net": 42856.80,
       "payment": {
         "status": "short_paid",
         "confidence": "ASSERTED",
@@ -177,8 +187,9 @@
         ],
         "source": "External bank — not in Supabase"
       },
-      "shortfall": 38410.00,
+      "shortfall": 28750.00,
       "lpg_slice_cash_shortfall": 2185.00,
+      "nine_kg_deposits_unoffset": 36225.00,
       "closure": "open_pending_credit_confirmation",
       "resolutionOptions": [
         "Apply prior surplus credit (R67,287.08 pool) — ASSUMED, not operator-directed",
@@ -221,9 +232,9 @@
       "rate_used": 1207.5,
       "rate_confidence": "ASSUMED — cross-account ERP standard (JIM001, TWK002, WO0001, MD0003), not LIN001-specific",
       "estimated_value": 9660.0,
-      "target_invoice": "unconfirmed — best-guess candidate DN#24947 (invoice 52924, 20x48kg out), not verified",
-      "status": "pending — not yet posted as ERP CN, not applied to any event",
-      "erp_recheck_20260904": "Live Supabase re-check (operator): ERP shows nothing posted for LIN001 cylinders after 2026-09-02 — this claim remains unconfirmed either way, not contradicted. Treated as independent from the customer's separate 50x9kg WhatsApp claim (see EVT-2026-09-04-PROFORMA.customerAssertedCredit) — both require a physical goods-returned slip to resolve.",
+      "target_invoice": "EVT-2026-09-04-PROFORMA — operator: ERP will soon post this as the Event 4 CN",
+      "status": "ASSERTED forthcoming ERP CN on Event 4 — 8 x R1,207.50 = R9,660.00; DV/SV split still unspecified",
+      "erp_recheck_20260904": "As of 2026-09-04 ERP still silent after 2026-09-02. Operator now assumes this CN will post against Event 4 (not DN#24947). DV/SV split still unspecified.",
       "detail": "analysis/debtors/shared/reports/LIN001_note_2026-09-04_cylinder_return.md"
     }
   ],

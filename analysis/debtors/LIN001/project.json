@@ -95,6 +95,10 @@
     {
       "date": "2026-09-04",
       "event": "Event 4 invoice reconstructed: operator confirmed the proforma exposes LPG slice only (quote). Added CYL slice 70x9.1 @ R517.50 = R36,225.00 (ASSUMED qty matches 70 LPG fills per Rule 5 dual-line; rate ERP standard). Reconstructed invoice R52,516.80 (LPG R16,291.80 + CYL R36,225.00). CN still unposted. Empty returns now belong as this event's CN against 9.1 (same pattern as other LIN001 DN# events) — not as a deduction from the LPG quote. LPG-slice cash shortfall remains R2,185.00 (payments R14,106.80 vs LPG R16,291.80); full reconstructed invoice vs payments is shortage R38,410.00 until a CN posts."
+    },
+    {
+      "date": "2026-09-04",
+      "event": "Event 4 CN assumed forthcoming in ERP: 8x48kg CYL @ R1,207.50 incl. VAT = R9,660.00. Event net = R52,516.80 - R9,660.00 = R42,856.80. This CN does not offset the invoice's 70x9.1 slice (different SKU). Payments R14,106.80 leave shortage R28,750.00 with no prior-event surplus applied; R477.83 shortage if Event 3 running surplus R28,272.17 is applied. DV/SV split unspecified; not yet in Supabase."
     }
   ]
 }
