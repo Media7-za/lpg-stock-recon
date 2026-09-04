@@ -47,6 +47,23 @@ This is the largest single-event surplus in the register and is fully PROVEN fro
 
 ---
 
+## CN 15592 — full line detail (PROVEN, verified 2026-09-04)
+
+Invoice 52924 mixes LPG gas-fill lines (D.4/S.4 48kg, 1401 14kg, 1901 19kg) with CYL deposit lines (S.1/D.1 48kg, 14.1, 19.1) on **one document** — this account's normal, established pattern (see `LIN001_event_2026-09-04_proforma.md` § "Customer-asserted cylinder credit" for why this matters). CN 15592 is a **five-SKU, deposit-only** reversal, confirmed by direct query (`vw_clean_transactions`, `SUM(line_total)` ties exactly to the CN header total, no residual):
+
+| SKU | Description | Qty | Line total |
+|---|---|---:|---:|
+| 9.1 | 9kg deposit | -80 | -R41,400.00 |
+| D.1 | 48kg DV deposit | -4 | -R4,830.00 |
+| S.1 | 48kg SV deposit | -1 | -R1,207.50 |
+| 14.1 | 14kg deposit | -21 | -R13,282.50 |
+| 19.1 | 19kg deposit | -12 | -R8,280.00 |
+| **Sum** | | | **-R69,000.00** |
+
+Note: invoice 52924 itself carries no 9kg lines — the 80×9.1 credit is a larger, separately-sourced batch of 9kg deposit returns posted against 52924 by document reference, not a same-invoice reversal. This CN is fully spent into this event's closed R5,433.70 net; nothing is left over from it to apply elsewhere (in particular, not to the 2026-09-04 proforma's cylinder-credit question).
+
+---
+
 ## Evidence
 
 | Item | Status |
