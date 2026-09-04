@@ -5,6 +5,8 @@
 **Lane (portfolio triage):** `position_recon` · Tier C  
 **Source of truth for this note:** Supabase `transaction_headers` + operator manual allocation session
 
+**Consolidated register:** [`LIN001_events_consolidated_2026-06_2026-09.md`](LIN001_events_consolidated_2026-06_2026-09.md) · [`LIN001_events_consolidated_2026-06_2026-09.csv`](LIN001_events_consolidated_2026-06_2026-09.csv)
+
 ---
 
 ## 1. Scaffold status
@@ -201,6 +203,7 @@ R28,163.00  payment 45961
 
 | Artifact | Path |
 |---|---|
+| **Consolidated events (Jun–Sep)** | `LIN001_events_consolidated_2026-06_2026-09.md` / `.csv` |
 | Allocation CSV (Mar–Feb) | `analysis/debtors/shared/reports/LIN001_fresh_allocation_2025-03_2026-02.csv` |
 | Event register (Jun–Sep) | `analysis/debtors/shared/reports/LIN001_event_register_2026-06_2026-09.csv` |
 | Manual event closure (Jun–Sep) | `analysis/debtors/shared/reports/LIN001_manual_allocation_2026-06_2026-09.csv` |

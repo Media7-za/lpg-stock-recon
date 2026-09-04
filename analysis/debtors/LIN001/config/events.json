@@ -1,28 +1,55 @@
 {
   "debtorCode": "LIN001",
+  "consolidatedAsAt": "2026-09-04",
+  "scope": "2026-06-01 to 2026-09-30",
   "eventModel": {
     "parts": ["invoice", "credit_note", "delivery_note", "payment"],
     "proof": "delivery_note"
   },
+  "summary": {
+    "eventCount": 5,
+    "totalEventNet": 154493.88,
+    "closedCount": 4,
+    "assumedClosedCount": 1,
+    "zeroNetCount": 1
+  },
   "events": [
+    {
+      "id": "EVT-22630",
+      "deliveryNote": "DN#22630",
+      "date": "2026-06-08",
+      "invoice": { "doc_no": "51132", "amount": 132693.19, "confidence": "PROVEN" },
+      "credit_note": { "doc_no": "15039", "ref_no": "51132", "amount": 67792.5, "confidence": "PROVEN" },
+      "event_net": 64900.69,
+      "payment": {
+        "status": "assumed_closed",
+        "confidence": "ASSUMED",
+        "docs": [
+          { "doc_no": "44974", "amount": 40590.6, "date": "2026-06-06", "batch_ref": "PC-76-32" },
+          { "doc_no": "44975", "amount": 24310.09, "date": "2026-06-07", "batch_ref": "PC-76-32", "note": "partial — completes net" }
+        ],
+        "total_batch": 103915.6,
+        "allocated_to_net": 64900.69
+      },
+      "surplus": 39014.91,
+      "closure": "assumed_closed"
+    },
+    {
+      "id": "EVT-22508",
+      "deliveryNote": "DN#22508",
+      "date": "2026-06-18",
+      "invoice": { "doc_no": "51268", "amount": 132862.38, "confidence": "PROVEN" },
+      "credit_note": { "doc_no": "15086", "ref_no": "51268", "amount": 132862.38, "confidence": "PROVEN" },
+      "event_net": 0,
+      "payment": { "status": "not_required", "confidence": "PROVEN", "reason": "zero_net_full_cn_offset" },
+      "closure": "closed"
+    },
     {
       "id": "EVT-22936",
       "deliveryNote": "DN#22936",
       "date": "2026-07-08",
-      "invoice": {
-        "doc_no": "51681",
-        "amount": 134049.19,
-        "order_no": "13991",
-        "confidence": "PROVEN",
-        "source": "Supabase transaction_headers"
-      },
-      "credit_note": {
-        "doc_no": "15215",
-        "ref_no": "51681",
-        "amount": 80097.5,
-        "confidence": "PROVEN",
-        "source": "Supabase transaction_headers"
-      },
+      "invoice": { "doc_no": "51681", "amount": 134049.19, "order_no": "13991", "confidence": "PROVEN" },
+      "credit_note": { "doc_no": "15215", "ref_no": "51681", "amount": 80097.5, "confidence": "PROVEN" },
       "event_net": 53951.69,
       "payment": {
         "status": "closed",
@@ -32,43 +59,18 @@
         "date": "2026-07-03",
         "reference": "Lin001 7.3 13991",
         "transaction_id": "2744666881",
-        "method": "OPERATOR_BANK_RECEIPT",
-        "source": "External bank — not in Supabase",
-        "link_evidence": "Receipt ref 13991 matches invoice order_no 13991 (PROVEN)"
+        "method": "OPERATOR_BANK_RECEIPT"
       },
       "surplus": 1029.67,
       "closure": "closed",
-      "line_mix": [
-        { "sku": "14KG LPG - PACKED", "qty": 13 },
-        { "sku": "14KG CYLINDER DEPOSIT", "qty": 13 },
-        { "sku": "19KG LPG - PACKED", "qty": 14 },
-        { "sku": "19KG CYLINDER DEPOSIT", "qty": 14 },
-        { "sku": "9KG LPG PACKED 01", "qty": 84 },
-        { "sku": "9KG CYLINDER DEPOSIT", "qty": 84 },
-        { "sku": "48KG SINGLE VALVE PACKED", "qty": 15 },
-        { "sku": "48KG SV CYLINDER DEPOSIT", "qty": 15 }
-      ],
-      "added": "2026-09-04",
-      "payment_confirmed": "2026-09-04",
-      "added_by": "operator"
+      "detail": "analysis/debtors/shared/reports/LIN001_event_DN22936.md"
     },
     {
       "id": "EVT-23974",
       "deliveryNote": "DN#23974",
       "date": "2026-08-24",
-      "invoice": {
-        "doc_no": "52768",
-        "amount": 69652.8,
-        "confidence": "PROVEN",
-        "source": "Supabase transaction_headers"
-      },
-      "credit_note": {
-        "doc_no": "15543",
-        "ref_no": "52768",
-        "amount": 39445,
-        "confidence": "PROVEN",
-        "source": "Supabase transaction_headers"
-      },
+      "invoice": { "doc_no": "52768", "amount": 69652.8, "confidence": "PROVEN" },
+      "credit_note": { "doc_no": "15543", "ref_no": "52768", "amount": 39445, "confidence": "PROVEN" },
       "event_net": 30207.8,
       "payment": {
         "status": "closed",
@@ -78,42 +80,20 @@
         "date": "2026-08-22",
         "reference": "HAPPY 8.22",
         "transaction_id": "2901239645",
-        "method": "OPERATOR_BANK_RECEIPT",
-        "source": "External bank — not in Supabase"
+        "method": "OPERATOR_BANK_RECEIPT"
       },
       "surplus": 4513.2,
-      "carry_to": "DN#24947",
+      "carry_applied_on_DN24947": 22729.3,
+      "carry_reconciliation_gap": 18216.1,
       "closure": "closed",
-      "line_mix": [
-        { "sku": "14.4", "description": "14KG LPG - PACKED", "qty": 10 },
-        { "sku": "14.1", "description": "14KG CYLINDER DEPOSIT", "qty": 10 },
-        { "sku": "1901", "description": "19KG LPG PACKED", "qty": 10 },
-        { "sku": "19.1", "description": "19KG CYLINDER DEPOSIT", "qty": 10 },
-        { "sku": "S.4", "description": "48KG SV LPG- PACKED", "qty": 17 },
-        { "sku": "S01", "description": "48KG SINGLE VALVE PACKED", "qty": 3 },
-        { "sku": "S.1", "description": "48KG SV CYLINDER DEPOSIT", "qty": 20 }
-      ],
-      "added": "2026-09-04",
-      "payment_confirmed": "2026-09-04",
-      "added_by": "operator"
+      "detail": "analysis/debtors/shared/reports/LIN001_event_DN23974.md"
     },
     {
       "id": "EVT-24947",
       "deliveryNote": "DN#24947",
       "date": "2026-09-02",
-      "invoice": {
-        "doc_no": "52924",
-        "amount": 74433.7,
-        "confidence": "PROVEN",
-        "source": "Supabase transaction_headers"
-      },
-      "credit_note": {
-        "doc_no": "15592",
-        "ref_no": "52924",
-        "amount": 69000,
-        "confidence": "PROVEN",
-        "source": "Supabase transaction_headers"
-      },
+      "invoice": { "doc_no": "52924", "amount": 74433.7, "confidence": "PROVEN" },
+      "credit_note": { "doc_no": "15592", "ref_no": "52924", "amount": 69000, "confidence": "PROVEN" },
       "event_net": 5433.7,
       "payment": {
         "status": "closed",
@@ -122,32 +102,24 @@
         "doc_no": "45961",
         "date": "2026-09-01",
         "batch_ref": "PC-76-35",
-        "description": "SPEEDP",
         "method": "ERP_PAYMENT",
-        "source": "Supabase transaction_headers",
         "allocation": [
           { "type": "event_net", "amount": 5433.7 },
           { "type": "credit_carry_from_DN23974", "amount": 22729.3 }
         ]
       },
       "closure": "closed",
-      "carry_reconciliation_gap": {
-        "amount": 18216.1,
-        "note": "DN#23974 bank receipt supports R4,513.20 carry only; R18,216.10 not reconciled"
-      },
-      "line_mix": [
-        { "sku": "1401", "description": "14KG LPG PACKED", "qty": 20 },
-        { "sku": "14.1", "description": "14KG CYLINDER DEPOSIT", "qty": 20 },
-        { "sku": "1901", "description": "19KG LPG PACKED", "qty": 5 },
-        { "sku": "19.1", "description": "19KG CYLINDER DEPOSIT", "qty": 5 },
-        { "sku": "D.4", "description": "48KG DV LPG - PACKED", "qty": 10 },
-        { "sku": "D.1", "description": "48KG DV CYLINDER DEPOSIT", "qty": 10 },
-        { "sku": "S.4", "description": "48KG SV LPG- PACKED", "qty": 10 },
-        { "sku": "S.1", "description": "48KG SV CYLINDER DEPOSIT", "qty": 10 }
-      ],
-      "added": "2026-09-04",
-      "payment_confirmed": "2026-09-04",
-      "added_by": "operator"
+      "detail": "analysis/debtors/shared/reports/LIN001_event_DN24947.md"
     }
-  ]
+  ],
+  "unallocatedPools": [
+    { "id": "POOL-44482", "doc_no": "44482", "date": "2026-05-08", "amount": 75844.5, "batch_ref": "PC-76-31", "confidence": "ASSUMED" },
+    { "id": "POOL-22630-SURPLUS", "amount": 39014.91, "source": "DN#22630 PC-76-32 batch", "confidence": "ASSUMED" },
+    { "id": "POOL-22936-SURPLUS", "amount": 1029.67, "source": "EXT-2744666881", "confidence": "ASSERTED" },
+    { "id": "GAP-CARRY-23974-24947", "amount": 18216.1, "confidence": "UNRECONCILED", "note": "Operator carry R22729.30 vs DN#23974 bank surplus R4513.20" }
+  ],
+  "consolidatedReports": {
+    "markdown": "analysis/debtors/shared/reports/LIN001_events_consolidated_2026-06_2026-09.md",
+    "csv": "analysis/debtors/shared/reports/LIN001_events_consolidated_2026-06_2026-09.csv"
+  }
 }

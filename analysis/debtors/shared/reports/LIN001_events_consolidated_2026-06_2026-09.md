@@ -1,0 +1,153 @@
+# LIN001 — Consolidated delivery events (Jun–Sep 2026)
+
+**Account:** LIN001 — SLINDOKUHLE ENTERPRISES (PTY) LTD  
+**As at:** 2026-09-04  
+**Scope:** Manual event-by-event closure · DN# proof model
+
+---
+
+## Event model
+
+Each event = **invoice** + **credit note** + **delivery note (DN# proof)** + **payment**.
+
+**Event net** = invoice − credit note (header basis, LPG + CYL).
+
+---
+
+## Summary
+
+| DN# | Date | Invoice | CN | Event net | Payment | Status |
+|---:|---|---:|---:|---:|---|---|
+| **22630** | 2026-06-08 | 51132 | 15039 | **R64,900.69** | 44974 + 44975 (PC-76-32) | ASSUMED closed |
+| **22508** | 2026-06-18 | 51268 | 15086 | **R0.00** | — | **Closed** (zero-net) |
+| **22936** | 2026-07-08 | 51681 | 15215 | **R53,951.69** | EXT-2744666881 | **Closed** |
+| **23974** | 2026-08-24 | 52768 | 15543 | **R30,207.80** | EXT-2901239645 | **Closed** |
+| **24947** | 2026-09-02 | 52924 | 15592 | **R5,433.70** | 45961 (PC-76-35) | **Closed** |
+
+**Total event net (5 deliveries):** **R154,493.88**
+
+---
+
+## Event detail
+
+### DN#22630 — ASSUMED closed
+
+| Part | Ref | Amount |
+|---|---|---:|
+| Invoice | 51132 | R132,693.19 |
+| Credit note | 15039 → 51132 | R-67,792.50 |
+| Delivery note | **DN#22630** | *(proof)* |
+| Payment | 44974 + 44975 | R103,915.60 |
+
+**Allocation (ASSUMED):** R40,590.60 + R24,310.09 = **R64,900.69** event net · surplus **R39,014.91** unallocated.
+
+---
+
+### DN#22508 — closed (zero-net)
+
+| Part | Ref | Amount |
+|---|---|---:|
+| Invoice | 51268 | R132,862.38 |
+| Credit note | 15086 → 51268 | R-132,862.38 |
+| Delivery note | **DN#22508** | *(proof)* |
+| Payment | — | R0.00 |
+
+Full CN offset — **no payment leg required.**
+
+---
+
+### DN#22936 — closed
+
+| Part | Ref | Amount |
+|---|---|---:|
+| Invoice | 51681 | R134,049.19 |
+| Credit note | 15215 → 51681 | R-80,097.50 |
+| Delivery note | **DN#22936** | *(proof)* |
+| Payment | **EXT-2744666881** | R54,981.36 |
+
+Bank receipt **Lin001 7.3 13991** (2026-07-03). Ref matches invoice **order_no 13991** (PROVEN). Surplus **R1,029.67**.
+
+Detail: `LIN001_event_DN22936.md`
+
+---
+
+### DN#23974 — closed
+
+| Part | Ref | Amount |
+|---|---|---:|
+| Invoice | 52768 | R69,652.80 |
+| Credit note | 15543 → 52768 | R-39,445.00 |
+| Delivery note | **DN#23974** | *(proof)* |
+| Payment | **EXT-2901239645** | R34,721.00 |
+
+Bank receipt **HAPPY 8.22** (2026-08-22). Surplus **R4,513.20** (bank math); operator applies **R22,729.30** carry on DN#24947 — **R18,216.10 gap**.
+
+Detail: `LIN001_event_DN23974.md`
+
+---
+
+### DN#24947 — closed
+
+| Part | Ref | Amount |
+|---|---|---:|
+| Invoice | 52924 | R74,433.70 |
+| Credit note | 15592 → 52924 | R-69,000.00 |
+| Delivery note | **DN#24947** | *(proof)* |
+| Payment | **45961** | R28,163.00 |
+
+```
+R28,163.00  payment 45961 (2026-09-01, PC-76-35)
+− R5,433.70  event net
+───────────
+= R22,729.30  credit from DN#23974 (operator)
+```
+
+Detail: `LIN001_event_DN24947.md`
+
+---
+
+## Payment register
+
+| Doc | Date | Amount | Batch / ref | Assigned to |
+|---|---|---:|---|---|
+| 44482 | 2026-05-08 | R75,844.50 | PC-76-31 | **Unallocated** |
+| 44974 | 2026-06-06 | R40,590.60 | PC-76-32 | DN#22630 *(ASSUMED)* |
+| 44975 | 2026-06-07 | R63,325.00 | PC-76-32 | DN#22630 *(ASSUMED)* |
+| EXT-2744666881 | 2026-07-03 | R54,981.36 | Lin001 7.3 13991 | DN#22936 |
+| EXT-2901239645 | 2026-08-22 | R34,721.00 | HAPPY 8.22 | DN#23974 |
+| 45961 | 2026-09-01 | R28,163.00 | PC-76-35 | DN#24947 |
+
+---
+
+## Unallocated / open items
+
+| Item | Amount | Tag |
+|---|---:|---|
+| 44482 (PC-76-31) | R75,844.50 | ASSUMED |
+| DN#22630 surplus | R39,014.91 | ASSUMED |
+| DN#22936 surplus | R1,029.67 | ASSERTED |
+| Carry gap DN#23974→24947 | R18,216.10 | UNRECONCILED |
+
+---
+
+## Epistemic summary
+
+| Tag | Meaning in this register |
+|---|---|
+| **PROVEN** | Supabase headers / CN ref_no / zero-net math |
+| **ASSERTED** | Operator-confirmed bank receipts or 45961 allocation |
+| **ASSUMED** | PC-76-32 batch split for DN#22630; unallocated pools |
+| **UNRECONCILED** | R18,216.10 carry gap across DN#23974 and DN#24947 |
+
+---
+
+## Artifacts
+
+| Artifact | Path |
+|---|---|
+| **This register (CSV)** | `LIN001_events_consolidated_2026-06_2026-09.csv` |
+| **This register (MD)** | `LIN001_events_consolidated_2026-06_2026-09.md` |
+| Events config | `analysis/debtors/LIN001/config/events.json` |
+| Manual allocation detail | `LIN001_manual_allocation_2026-06_2026-09.csv` |
+| Event cards | `LIN001_event_DN22936.md`, `LIN001_event_DN23974.md`, `LIN001_event_DN24947.md` |
+| Bank receipts | `LIN001_payment_receipt_DN22936_2026-07-03.jpg`, `LIN001_payment_receipt_34721_2026-08-22.jpg` |
