@@ -52,7 +52,7 @@ An earlier version of this note treated the operator's "8×48kg" report and the 
 
 **Correct framing:** these are **two independent, unconfirmed claims**, not two versions of one event. Resolving which (if either) is real requires a **physical count** (driver/warehouse goods-returned slip) — ERP has nothing to arbitrate with, since it's silent after Sept 2.
 
-**Regardless of which count is confirmed:** per `business_rules.md` Rule 3 (Debt Partitioning) / Rule 4 (Asset Write-Off), any confirmed cylinder return posts as its own **CYL-ledger** CN — it does not net against the (LPG-ledger) proforma cash invoice by default. See `LIN001_event_2026-09-04_proforma.md` for the full ledger-separation argument.
+**Regardless of which count is confirmed:** any confirmed cylinder return should post as its own CN before being applied anywhere. **Correction (2026-09-04):** this was previously cited as following directly from `business_rules.md` Rule 3 (Debt Partitioning) / Rule 4 (Asset Write-Off) — that overstated the rules, which govern payment pooling and quarantined-payment write-offs, not CN-to-invoice netting. The real reason: LIN001's own DN# events already net LPG and CYL together on one document routinely (invoice 52924 + CN 15592, see `LIN001_event_DN24947.md`), so there's no general prohibition on mixing them here — the objection is specifically that this claim has no source CN or confirmed physical count, not that LPG and CYL may never net. See `LIN001_event_2026-09-04_proforma.md` for the corrected argument.
 
 ---
 

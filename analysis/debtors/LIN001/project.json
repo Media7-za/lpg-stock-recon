@@ -87,6 +87,10 @@
     {
       "date": "2026-09-04",
       "event": "CN 15592 line detail closed out (operator complete Supabase pull): full five-SKU deposit-only CN — 9.1 x80 (-41400), D.1 x4 (-4830), S.1 x1 (-1207.50), 14.1 x21 (-13282.50), 19.1 x12 (-8280); SUM(line_total) = -69000.00 matches transaction_headers header exactly. Retires the UNVERIFIED/R21,562.50 residual flag from 6dbdd40 — original 'cylinder deposit credits only' characterization was correct all along. No change to any allocation conclusion."
+    },
+    {
+      "date": "2026-09-04",
+      "event": "CORRECTION (operator-directed, both branches): the prior entry's citation of business_rules.md Rule 3 (Debt Partitioning) / Rule 4 (Asset Write-Off) as a direct rule against netting the WhatsApp cylinder credit against the proforma was an overclaim. Those rules govern ERP payment pooling and quarantined-payment physical write-offs in retrospective statement building — they do not address CN-to-invoice netting. Retracted; corrected on cursor/lin001-fresh-allocation-bb32 (this branch) and claude/lin001-delivery-events-xb8nt7. Real basis for holding the proforma credit unapplied: LIN001's own DN# events (invoice 52924 + CN 15592, EVT-24947) already combine LPG and CYL lines on one document and net them routinely — this account needs no separate 'netting customer' lane, since events.json's existing event_net=invoice+CN formula already handles same-document mixing. The proforma differs only because the WhatsApp claim has no source CN and no confirmed physical count of its own — that, not a ledger-separation rule, is why Scenario A (short-paid R2,185.00) stands as the default pending a posted CN."
     }
   ]
 }

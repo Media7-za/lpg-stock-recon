@@ -121,24 +121,26 @@ The earlier version of this note treated the operator's "8×48kg" report and the
 
 **Correct framing: these are two independent, unconfirmed claims, not two versions of one event.** Neither is confirmable from ERP as of this check (silent since Sept 2). No amount of ledger analysis will settle which (if either) reflects a real Sept 4 return — **a physical count (driver/warehouse goods-returned slip) is required** for whichever claim(s) are real.
 
-### Can a cylinder-return credit net against this invoice? — **No, by rule, not just by caution**
+### Can a cylinder-return credit net against this invoice? — **corrected 2026-09-04: not a blanket rule, but still no**
 
-Per `analysis/debtors/shared/docs/business_rules.md`:
-- **Rule 3 (Debt Partitioning):** the debt must be split into two ledgers — purely **LPG Gas Debt** and purely **Cylinder (CYL) Deposit Debt**.
-- **Rule 4 (Asset Write-Off):** cylinder deposit settlement is handled as its own physical/financial write-off against the CYL ledger, not folded into gas revenue.
+**Correction to the earlier "No, by rule" framing:** on review, `business_rules.md` Rule 3 (Debt Partitioning) and Rule 4 (Asset Write-Off) were cited too strongly. Read verbatim, they govern how **payments** are pooled and how a **quarantined cylinder payment** writes off physical custody, in the retrospective statement-building process — they do not say anything directly about whether a cylinder-return credit note may net against a cash invoice. Citing them as an existing prohibition on this specific maneuver was an overclaim. Retracted on both branches (`cursor/lin001-fresh-allocation-bb32` and `claude/lin001-delivery-events-xb8nt7`).
 
-This proforma is a **pure 9kg-gas line with zero deposit lines** — an **LPG-ledger** event. A cylinder return, once physically confirmed, is a **CYL-ledger** CN against the standard deposit SKU/rate. **It should post there, reducing custody debt — not be subtracted by the customer from an unrelated cash invoice before paying.** If the resulting CYL credit is later applied toward the open R2,185.00 LPG shortfall, that is a **separate, explicit allocation call** (same category as the still-unapplied R67,287.08 pool) — it does not happen by default.
+**The real basis, on inspection of LIN001's own documents:** this account's regular DN# events already combine LPG and CYL lines on **one invoice**, netted against **one CN**, as routine practice — e.g. invoice 52924 (DN#24947) carries LPG gas-fill lines (D.4/S.4/1401/1901) *and* CYL deposit lines (14.1/S.1/19.1/D.1) together, with CN 15592 reversing the deposit side of that same event (full 5-SKU breakdown: `LIN001_event_DN24947.md`). That same-document netting is LIN001's **normal, established pattern** — it does not need a special "netting customer" lane, and Rule 3/4's ledger-separation language was never really in tension with it (that rule is about the analytical statement view, not about how source documents are built).
+
+What's actually different about the WhatsApp claim: this proforma is a **pure 9kg-gas document with zero CYL lines of its own**, and the claimed credit is sourced from **outside the document** — an unconfirmed physical return, asserted informally (WhatsApp), with no corresponding CN. That's cross-event, out-of-document netting, categorically different from LIN001's routine same-invoice combination — and *that* distinction, not a general LPG/CYL segregation rule, is why the credit shouldn't be applied here without a posted CN.
 
 ### Two possible closure scenarios (still not resolved — now correctly framed)
 
 | Scenario | Logic | Result |
 |---|---|---|
-| **A — Reject customer's credit** (current standing position, doctrinally correct per Rule 3/4 regardless of physical count) | Full invoice R16,291.80 stands; both payments (R13,416.80 + R690.00 = R14,106.80) apply | **Short-paid R2,185.00** |
-| **B — Accept customer's credit** (would require an explicit operator allocation decision, on top of physical confirmation) | R16,291.80 − R2,875.00 = R13,416.80 net payable; that was paid in full | Fully settled; R690.00 second payment becomes a pure overpayment |
+| **A — Reject customer's credit** (current standing position — because the claim is out-of-document/unconfirmed, not because LPG and CYL may never mix on this account) | Full invoice R16,291.80 stands; both payments (R13,416.80 + R690.00 = R14,106.80) apply | **Short-paid R2,185.00** |
+| **B — Accept customer's credit** (would require a posted CN from a confirmed physical count, plus an explicit operator allocation decision) | R16,291.80 − R2,875.00 = R13,416.80 net payable; that was paid in full | Fully settled; R690.00 second payment becomes a pure overpayment |
 
 Note the two scenarios reconcile with each other exactly: **R2,875.00 (customer's claimed credit) − R690.00 (2nd payment) = R2,185.00** (the shortfall). This is a coincidence of arithmetic, not evidence that Scenario B is correct.
 
-**Recommendation:** Treat this as **Scenario A** by default (ledger separation is a standing business rule, not a case-by-case judgment call). Hold the event open. Obtain a physical goods-returned slip for whichever cylinder return(s) actually happened; once confirmed, post it as its own CYL-ledger CN; only then consider — as a separate, explicit allocation decision — whether any resulting credit should offset the R2,185.00 LPG shortfall.
+**Recommendation:** Treat this as **Scenario A** by default — not because LPG and CYL debt may never net (this account's own invoices net them routinely, within one document), but because this specific credit has no source document (no CN, no confirmed physical count) to net *from*. Hold the event open. Obtain a physical goods-returned slip for whichever cylinder return(s) actually happened; once confirmed, post it as its own CN; only then consider — as an explicit allocation decision — whether the resulting credit should offset the R2,185.00 shortfall, consistent with how LIN001's other events already combine LPG and CYL on their own documents.
+
+**On a separate netting lane for LIN001 generally:** not needed. The existing `event_net = invoice + CN` model in `events.json` already nets LPG and CYL together wherever the source documents do — that's this customer's default behavior already, not an exception requiring a flag. A lane would only be warranted for a policy question that's customer-independent: whether *any* self-asserted, out-of-document credit claim may ever be accepted against an invoice. That answer stays "no, not without a posted CN," for every account, not just LIN001.
 
 ---
 

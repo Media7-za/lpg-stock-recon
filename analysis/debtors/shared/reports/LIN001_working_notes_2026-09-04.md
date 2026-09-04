@@ -228,16 +228,18 @@ Customer claims: 50 empty bottles returned this time worth **R25,875** (= 50 × 
 - The customer's 9kg/R517.50 match is **not surprising** — it's the standard rate, and that exact SKU/rate pair was already used in the (now fully-spent) Sept 2 CN. The likelier read is the customer **conflating that already-settled batch** with a claimed Sept 4 return.
 - **Neither claim is ERP-confirmable as of this check.** Resolving which (if either) reflects a real Sept 4 return needs a **physical goods-returned slip**, not further ledger analysis.
 
-**Why it can't net against this invoice regardless — by rule, not just caution:** per `analysis/debtors/shared/docs/business_rules.md` Rule 3 (Debt Partitioning) and Rule 4 (Asset Write-Off), LPG gas debt and CYL deposit debt sit in **separate ledgers**. This proforma is pure LPG (zero deposit lines) — a confirmed cylinder return posts as its own **CYL-ledger** CN and does not offset an unrelated LPG cash invoice by default. Applying a resulting credit here would be a **separate, explicit allocation call**.
+**Correction (2026-09-04) — the "by rule, not just caution" framing above overstated it.** Rule 3 (Debt Partitioning) and Rule 4 (Asset Write-Off) govern payment pooling and quarantined-payment write-offs in retrospective statement building — they don't directly say a CN can't net against a cash invoice. LIN001's own DN# events already combine LPG and CYL lines on one invoice, netted against one CN, as routine practice (invoice 52924 + CN 15592, full detail in `LIN001_event_DN24947.md`) — so there's no blanket rule against mixing them for this account. The actual reason to reject the WhatsApp claim: it has **no source CN and no confirmed physical count** — it's an out-of-document claim, not this proforma's own combined LPG+CYL structure (which the proforma doesn't have anyway — it carries no CYL lines at all). Retracted on both branches; see `LIN001_event_2026-09-04_proforma.md` for the corrected argument.
 
-**Two scenarios (Scenario A is now the doctrinally-correct default, independent of which physical count is eventually confirmed):**
+**Two scenarios (Scenario A stands as the default — because the claim is unconfirmed and out-of-document, not because of a ledger-separation rule):**
 
 | Scenario | Result |
 |---|---|
-| **A — reject credit (default per Rule 3/4)** | Short-paid **R2,185.00** |
-| B — accept credit (would require an explicit operator allocation decision on top of physical confirmation) | Fully settled; R690.00 second payment becomes pure **overpayment** |
+| **A — reject credit (default: no source CN, no confirmed physical count)** | Short-paid **R2,185.00** |
+| B — accept credit (would require a posted CN from a confirmed physical count, plus an explicit operator allocation decision) | Fully settled; R690.00 second payment becomes pure **overpayment** |
 
 Recorded as `customerAssertedCredit` on the proforma event in `events.json` — **not applied**. Event remains open pending a physical goods-returned slip and, separately, an explicit operator allocation decision.
+
+**On a separate netting "lane" for LIN001 (operator question, 2026-09-04):** not needed. Some accounts legitimately net cylinder-return surplus toward the invoice because their invoices carry both the LPG slice and the CYL slice together — LIN001 is already one of those accounts, structurally: its DN# events (22630, 22936, 23974, 24947) all combine LPG and CYL lines on one invoice, netted against one CN, and `events.json`'s `event_net = invoice + CN` formula already handles that correctly with no special flag. What's different about the proforma isn't LIN001's customer type — it's that this specific document is pure LPG with no CYL lines, and the claimed credit doesn't come from this document's own CN at all, it comes from an unconfirmed WhatsApp claim. A lane is only warranted for a customer-independent policy question — whether an out-of-document, self-asserted credit claim may ever be accepted without a posted CN — and that answer should stay "no" regardless of which customer asks.
 
 ### ⚠ Branch collision flagged (2026-09-04)
 
