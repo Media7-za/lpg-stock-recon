@@ -40,6 +40,14 @@ This is **not** a line item on the same-day proforma (`LIN001_event_2026-09-04_p
 
 ---
 
+## ⚠ Conflicts with customer's own WhatsApp accounting (same day)
+
+A WhatsApp chat with the customer (Jack Lin), timestamped 2026-09-04 11:18–11:20, describes a **different** cylinder return: **"50 empty bottles"** valued at **R25,875.00** (= 50 × R517.50, the **9kg** deposit rate — not 48kg). See full analysis in `LIN001_event_2026-09-04_proforma.md` § "Customer-asserted cylinder credit."
+
+**These two statements cannot both describe the same physical return** (8 ≠ 50 units; 48kg ≠ 9kg cylinder). Operator confirmation needed on which is correct, or whether both are genuine, separate returns.
+
+---
+
 ## Not yet actioned
 
 This is recorded as an **operator statement pending reconciliation** — no CSV/config totals have been changed to reflect this R9,660.00 as a confirmed credit, since:

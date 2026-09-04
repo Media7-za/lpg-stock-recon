@@ -71,6 +71,10 @@
     {
       "date": "2026-09-04",
       "event": "Operator reported 8x48kg empty cylinders returned. Not a line on the same-day proforma (9kg-only, no CN). Estimated credit R9,660.00 (8 x R1,207.50 ERP standard 48kg deposit rate, DV=SV) recorded as pending in events.json (pendingCreditNotes) — target invoice, DV/SV split, and application unconfirmed. Not applied to any event/pool total pending operator direction."
+    },
+    {
+      "date": "2026-09-04",
+      "event": "Reviewed customer WhatsApp claim (Jack Lin): 50 empty bottles worth R25,875 (9kg rate) vs R28,750 'last time' (14kg rate) = R2,875 balance netted off the proforma invoice, yielding R13,416.80 paid. Rate math PROVEN against our ERP standard rate card and ties exactly to receipt EXT-2949387151. However: (1) conflicts directly with the 8x48kg cylinder-return fact logged earlier same session — cannot both be the real return; (2) direction of the credit (netting a returns shortfall against an unrelated cash invoice) is unverified; (3) 'last time R28,750' baseline is customer-asserted, not ERP-confirmed (Supabase unreachable this session). Recorded as customerAssertedCredit on the proforma event — NOT accepted/applied. Event left open pending operator confirmation of which cylinder-return fact is correct."
     }
   ]
 }

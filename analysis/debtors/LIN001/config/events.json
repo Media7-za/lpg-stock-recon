@@ -140,12 +140,23 @@
         "source": "External bank — not in Supabase"
       },
       "shortfall": 2185.00,
-      "closure": "open_short_paid",
+      "closure": "open_pending_credit_confirmation",
       "resolutionOptions": [
         "Apply prior surplus credit (R67,287.08 pool) — ASSUMED, not operator-directed",
         "Await DN# and ERP posting — event may still be pending",
-        "Additional payment of R2,185.00 may follow"
+        "Additional payment of R2,185.00 may follow",
+        "Accept customer's R2,875.00 cylinder-credit claim (see customerAssertedCredit) — would fully settle invoice, leaving R690.00 as overpayment instead of a fill of the shortfall"
       ],
+      "customerAssertedCredit": {
+        "source": "WhatsApp chat, Jack Lin, 2026-09-04 11:18-11:20",
+        "confidence": "ASSERTED_BY_CUSTOMER — not operator-ratified, not ERP-verified",
+        "claim": "50 empty bottles returned worth R25,875.00 (implies 9kg rate, R517.50/cyl); vs R28,750.00 'last time' (implies 14kg rate, R575.00/cyl); net balance R2,875.00 applied as a credit against this invoice",
+        "rate_math_check": "PROVEN — both R517.50 (9kg) and R575.00 (14kg) match our ERP standard deposit rates exactly; 50x517.50=25875, 50x575=28750, 28750-25875=2875, 16291.80-2875=13416.80 (matches EXT-2949387151 exactly)",
+        "conflict": "Directly conflicts with PENDING-CYL-RETURN-20260904 (8x48kg empties, ~R9660) logged earlier same session — cannot both describe the same physical return (8 vs 50 units, 48kg vs 9kg)",
+        "logic_concern": "A shortfall in returned deposit value would normally represent a debt the customer still owes (more custody exposure), not a credit that reduces an unrelated same-day cash invoice — direction is unverified",
+        "not_yet_applied": true,
+        "detail": "analysis/debtors/shared/reports/LIN001_event_2026-09-04_proforma.md"
+      },
       "detail": "analysis/debtors/shared/reports/LIN001_event_2026-09-04_proforma.md",
       "added": "2026-09-04",
       "added_by": "operator"

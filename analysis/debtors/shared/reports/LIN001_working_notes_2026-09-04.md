@@ -211,6 +211,30 @@ Operator reports **8 × 48kg empty cylinders returned**. Not a line item on the 
 8 × R1,207.50 (ERP standard 48kg deposit rate, DV=SV) = R9,660.00  estimated credit
 ```
 
+> ⚠ **Conflicts with the WhatsApp claim below** — cannot both be the real return (8 vs 50 units, 48kg vs 9kg).
+
+### Customer-asserted cylinder credit — WhatsApp, Jack Lin (2026-09-04 11:18–11:20) — **not accepted**
+
+**Detail:** `LIN001_event_2026-09-04_proforma.md` § "Customer-asserted cylinder credit" · **Chat:** `/opt/cursor/artifacts/LIN001_whatsapp_jacklin_2026-09-04_bottle_credit.jpg`
+
+Customer claims: 50 empty bottles returned this time worth **R25,875** (= 50 × R517.50, **9kg** rate) vs **R28,750** "last time" (= 50 × R575.00, **14kg** rate) → balance **R2,875**, netted off the invoice → pays **R13,416.80**.
+
+**Rate math is PROVEN** against our own ERP standard deposit rates (517.50 for 9kg, 575.00 for 14kg — both exact) and **ties exactly** to the actual payment received (EXT-2949387151, R13,416.80) and to our own R2,185.00 shortfall figure (R2,875.00 − R690.00 = R2,185.00 exactly).
+
+**I do not fully agree, for three reasons:**
+1. **Conflicts with the 8×48kg cylinder-return fact above** — these describe different quantities and cylinder sizes; they can't both be the same physical event.
+2. **Direction is unverified** — a shortfall in returned deposit value should normally represent additional custody debt owed *by* the customer, not a discount on an unrelated cash invoice for LPG content. The customer applied it in their own favor.
+3. **"Last time R28,750" baseline is customer-asserted only** — no LIN001 CN/invoice in our records has been checked against it; Supabase was unreachable this session to verify.
+
+**Two reconciled scenarios (not yet resolved — operator decision required):**
+
+| Scenario | Result |
+|---|---|
+| A — reject credit (original analysis) | Short-paid **R2,185.00** |
+| B — accept credit | Fully settled; R690.00 second payment becomes pure **overpayment** |
+
+Recorded as `customerAssertedCredit` on the proforma event in `events.json` — **not applied**. Event remains open pending your confirmation of which cylinder-return fact is correct.
+
 **Pending** — no ERP CN doc yet, target invoice unconfirmed, DV/SV split unspecified. **Not applied** to any event or pool total; recorded as `pendingCreditNotes` in `analysis/debtors/LIN001/config/events.json` for operator disposition.
 
 ---
@@ -247,7 +271,7 @@ This **R67,287.08 credit from the 5 ERP events is PROVEN** by direct arithmetic 
 
 1. Confirm **44974/44975** allocation to DN#22630 — batch PC-76-32 timing fits, amounts ASSUMED.
 2. **Proforma 2026-09-04:** raise/name the DN# and post to ERP; resolve R2,185.00 shortfall (apply surplus credit, or await 3rd payment).
-3. **8×48kg cylinder return (2026-09-04):** confirm target invoice/DN#, DV/SV split, and whether the ~R9,660.00 estimated credit should post as a new CN or apply against an existing invoice's outstanding deposits.
+3. **Which cylinder return is real (2026-09-04)?** 8×48kg (~R9,660, operator-reported) vs 50 bottles at 9kg rate (R25,875, customer WhatsApp claim, net R2,875 balance) — these conflict and cannot both be the same event. Confirm the actual physical return, target invoice/DN#, and whether any resulting credit may be netted against the proforma's cash invoice or must be tracked separately as custody debt.
 4. Where does the **R65,102.08** aggregate net credit apply going forward — next delivery, refund, or held as float?
 5. Target for **R75,844.50** on 44482 — separate from the event bridge; still fully unallocated.
 6. Canonical allocation lane rerun for Mar–Feb open items?
