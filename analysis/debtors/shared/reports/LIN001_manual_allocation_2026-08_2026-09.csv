@@ -1,7 +1,15 @@
-edge_type,dn_ref,source_doc,source_date,source_amount,target_doc,target_date,target_amount,match_method,confidence,residual,notes
-credit_note_to_invoice,23974,15543,2026-08-24,39445,52768,2026-08-24,69652.80,CN_REFNO,PROVEN,0,Delivery DN#23974 — cylinder deposit credits
-payment_to_delivery,23974,EXT-2901239645,2026-08-22,34721,52768,2026-08-24,30207.80,OPERATOR_BANK_RECEIPT,ASSERTED,4513.20,Delivery DN#23974 — external bank ref HAPPY 8.22; not in Supabase
-delivery_credit_carry,23974→24947,CREDIT-4513.20,2026-08-22,4513.20,52924,2026-09-02,4513.20,CARRY_FROM_PRIOR_DELIVERY,ASSERTED,0,Surplus after DN#23974 net settle; applied to DN#24947
-credit_note_to_invoice,24947,15592,2026-09-02,69000,52924,2026-09-02,74433.70,CN_REFNO,PROVEN,0,Delivery DN#24947 — cylinder deposit credits
-payment_to_delivery,24947,45961,2026-09-01,28163,52924,2026-09-02,5433.70,OPERATOR,ASSERTED,0,Delivery DN#24947 — current delivery net after CN 15592
-payment_unallocated,24947,45961,2026-09-01,18216.10,,,0,OPERATOR,ASSUMED,18216.10,Residual on 45961 after DN#24947 net + carry; target delivery TBD
+event_dn,event_part,doc_ref,doc_date,amount,match_method,confidence,residual,notes
+23974,invoice,52768,2026-08-24,69652.80,ERP,PROVEN,0,Event DN#23974 — invoice (LPG + CYL)
+23974,credit_note,15543,2026-08-24,39445,CN_REFNO,PROVEN,0,Event DN#23974 — CN → 52768 (empty returns)
+23974,delivery_note,DN#23974,,,OPERATOR,ASSERTED,0,Event DN#23974 — proof of event
+23974,payment,EXT-2901239645,2026-08-22,34721,OPERATOR_BANK_RECEIPT,ASSERTED,4513.20,Event DN#23974 — external bank ref HAPPY 8.22; not in Supabase
+23974,event_net,,,30207.80,COMPUTED,PROVEN,0,52768 − 15543
+23974→24947,credit_carry,CREDIT-4513.20,2026-08-22,4513.20,CARRY_FROM_PRIOR_EVENT,ASSERTED,0,Surplus after DN#23974 closure; applied to DN#24947
+24947,invoice,52924,2026-09-02,74433.70,ERP,PROVEN,0,Event DN#24947 — invoice (LPG + CYL)
+24947,credit_note,15592,2026-09-02,69000,CN_REFNO,PROVEN,0,Event DN#24947 — CN → 52924 (empty returns)
+24947,delivery_note,DN#24947,,,OPERATOR,ASSERTED,0,Event DN#24947 — proof of event
+24947,payment,45961,2026-09-01,28163,ERP,PROVEN,18216.10,Event DN#24947 — SPEEDP PC-76-35
+24947,event_net,,,5433.70,COMPUTED,PROVEN,0,52924 − 15592
+24947,payment_allocation,45961→DN#24947,2026-09-01,5433.70,OPERATOR,ASSERTED,0,Current event net settled from 45961
+24947,payment_allocation,CREDIT-4513.20→DN#24947,2026-08-22,4513.20,CARRY_FROM_PRIOR_EVENT,ASSERTED,0,Credit from event DN#23974
+24947,payment_unallocated,45961,2026-09-01,18216.10,,ASSUMED,18216.10,Residual on 45961; target event TBD
