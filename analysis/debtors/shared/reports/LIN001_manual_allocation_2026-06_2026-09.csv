@@ -16,6 +16,7 @@ event_dn,event_part,doc_ref,doc_date,amount,match_method,confidence,residual,not
 22936,event_net,,,53951.69,COMPUTED,PROVEN,0,Invoice − CN
 22936,payment_allocation,CREDIT-39014.91,2026-06-07,39014.91,CARRY_FROM_22630,ASSUMED,0,Credit from DN#22630 surplus
 22936,payment,44482,2026-05-08,14936.78,OPERATOR_BATCH,ASSUMED,0,PC-76-31 partial — completes DN#22936 net
+22936,event_status,DN#22936,,53951.69,OPERATOR_ADDED,ASSUMED,0,Event added 2026-09-04 — payment proof pending
 23974,invoice,52768,2026-08-24,69652.80,ERP,PROVEN,0,Event DN#23974 — invoice
 23974,credit_note,15543,2026-08-24,39445.00,CN_REFNO,PROVEN,0,Event DN#23974 — CN → 52768
 23974,delivery_note,DN#23974,,,OPERATOR,ASSERTED,0,Proof of event

@@ -9,8 +9,8 @@
 
 ## 1. Scaffold status
 
-- **No** micro-project scaffold at `analysis/debtors/LIN001/`
 - **No** dedicated ERP account TXT export in repo
+- **Scaffold opened** `analysis/debtors/LIN001/` (2026-09-04) — events config + `project.json`
 - Supabase holds ~732 header rows all-time; scoped automated pass used **2025-03-01 → 2026-02-28**
 
 ---
@@ -60,7 +60,7 @@ Reconciliation proceeds **event-by-event**. An event is not closed until all fou
 |---|---:|---:|---:|---:|---|
 | **22630** | 2026-06-08 | 51132 | 15039 | **R64,900.69** | ASSUMED — PC-76-32 batch |
 | **22508** | 2026-06-18 | 51268 | 15086 | **R0.00** | Closed — zero-net (CN full offset) |
-| **22936** | 2026-07-08 | 51681 | 15215 | **R53,951.69** | ASSUMED — PC-76-31 + carry |
+| **22936** | 2026-07-08 | 51681 | 15215 | **R53,951.69** | **Added** — payment ASSUMED ([detail](LIN001_event_DN22936.md)) |
 | **23974** | 2026-08-24 | 52768 | 15543 | **R30,207.80** | ASSERTED — bank receipt + PC-76-31 slice |
 | **24947** | 2026-09-02 | 52924 | 15592 | **R5,433.70** | ASSERTED — 45961 + carry from 23974 |
 
@@ -78,6 +78,29 @@ Reconciliation proceeds **event-by-event**. An event is not closed until all fou
 
 ## 5. Manual event closure — Jun–Sep 2026
 
+### Event DN#22936 — added 2026-09-04 (payment ASSUMED)
+
+**Detail:** `LIN001_event_DN22936.md` · **Config:** `analysis/debtors/LIN001/config/events.json`
+
+| Part | Doc / ref | Date | Amount |
+|---|---|---:|---:|
+| Invoice | **51681** | 2026-07-08 | R134,049.19 |
+| Credit note | **15215** → 51681 | 2026-07-08 | R-80,097.50 |
+| Delivery note | **DN#22936** | — | *(proof)* |
+| Payment | 44482 partial + carry | — | R53,951.69 *(ASSUMED)* |
+| **Event net** | | | **R53,951.69** |
+
+```
+Credit from DN#22630     R39,014.91
+44482 partial (PC-76-31) R14,936.78
+─────────────────────────────────
+                         R53,951.69  → proposed closed
+```
+
+**Line mix (PROVEN):** 84×9kg, 14×19kg, 15×48kg, 13×14kg — LPG + cylinder deposits each.
+
+**Payment proof pending** — operator to confirm or replace proposed 44482/carry split.
+
 ### Event DN#22630 — ASSUMED payment (PC-76-32)
 
 ```
@@ -94,6 +117,8 @@ Reconciliation proceeds **event-by-event**. An event is not closed until all fou
 Invoice and CN both **R132,862.38** — net **R0.00**. No payment leg required. **Closed.**
 
 ### Event DN#22936 — ASSUMED payment (carry + PC-76-31 slice)
+
+*(Superseded by dedicated section above — see `LIN001_event_DN22936.md`.)*
 
 ```
 Credit from DN#22630     R39,014.91
@@ -174,6 +199,8 @@ R75,844.50  total
 | Manual event closure (Jun–Sep) | `analysis/debtors/shared/reports/LIN001_manual_allocation_2026-06_2026-09.csv` |
 | Event register script | `analysis/debtors/shared/scripts/lin001_event_register.mjs` |
 | Fresh allocation script | `analysis/debtors/shared/scripts/lin001_fresh_allocation.mjs` |
+| **Event DN#22936 card** | `analysis/debtors/shared/reports/LIN001_event_DN22936.md` |
+| **LIN001 events config** | `analysis/debtors/LIN001/config/events.json` |
 | Bank receipt (DN#23974) | `LIN001_payment_receipt_34721_2026-08-22.jpg` |
 
 **Epistemic tags:** PROVEN (Supabase event structure), ASSERTED (operator-confirmed closures), ASSUMED (payment splits / carry chain).

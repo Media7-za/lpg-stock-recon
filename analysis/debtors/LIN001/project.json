@@ -1,0 +1,48 @@
+{
+  "debtorCode": "LIN001",
+  "clientName": "SLINDOKUHLE ENTERPRISES (PTY) LTD",
+  "status": "active",
+  "reconState": "in-progress",
+  "financials": {
+    "totalOutstanding": null,
+    "totalOutstandingNote": "Not anchored — no dedicated ERP TXT export; Supabase headers only.",
+    "lastInvoiceDate": "2026-09-02",
+    "lastPaymentDate": "2026-09-01",
+    "agedDebt180Plus": null,
+    "collectable": {
+      "amount": null,
+      "erpBalance": null,
+      "ratifiedHoldsTotal": null,
+      "asAt": "2026-09-04",
+      "source": "Supabase transaction_headers",
+      "basis": "ASSUMED",
+      "operatorConfirmation": "pending"
+    }
+  },
+  "collections": {
+    "actionRequired": false,
+    "actionType": null,
+    "dateSent": null,
+    "deadlineDate": null,
+    "nextAction": "Continue event-by-event closure — DN#22936 payment proof pending.",
+    "nextActionDate": null,
+    "notes": "Manual allocation lane. Event model: invoice + CN + DN# (proof) + payment.",
+    "blockers": []
+  },
+  "ingestGate": {
+    "status": "unverified",
+    "ingestFreshness": "unverified",
+    "ingestCoverage": "partial",
+    "displayStatus": "Supabase-only — no LIN001 TXT ingest",
+    "asAt": "2026-09-04",
+    "reportPath": "analysis/debtors/shared/reports/LIN001_working_notes_2026-09-04.md",
+    "ingestBlockedScopes": ["financial_bridge_from_txt"],
+    "exceptions": []
+  },
+  "history": [
+    {
+      "date": "2026-09-04",
+      "event": "Scaffold opened. Event DN#22936 added (invoice 51681, CN 15215, net R53,951.69). Payment ASSUMED — carry R39,014.91 from DN#22630 + 44482 slice R14,936.78."
+    }
+  ]
+}

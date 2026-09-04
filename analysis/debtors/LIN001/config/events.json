@@ -1,0 +1,64 @@
+{
+  "debtorCode": "LIN001",
+  "eventModel": {
+    "parts": ["invoice", "credit_note", "delivery_note", "payment"],
+    "proof": "delivery_note"
+  },
+  "events": [
+    {
+      "id": "EVT-22936",
+      "deliveryNote": "DN#22936",
+      "date": "2026-07-08",
+      "invoice": {
+        "doc_no": "51681",
+        "amount": 134049.19,
+        "order_no": "13991",
+        "confidence": "PROVEN",
+        "source": "Supabase transaction_headers"
+      },
+      "credit_note": {
+        "doc_no": "15215",
+        "ref_no": "51681",
+        "amount": 80097.5,
+        "confidence": "PROVEN",
+        "source": "Supabase transaction_headers"
+      },
+      "event_net": 53951.69,
+      "payment": {
+        "status": "proposed",
+        "confidence": "ASSUMED",
+        "total": 53951.69,
+        "slices": [
+          {
+            "doc_no": "CREDIT-39014.91",
+            "amount": 39014.91,
+            "date": "2026-06-07",
+            "method": "CARRY_FROM_DN22630",
+            "notes": "Surplus from PC-76-32 batch after DN#22630 net"
+          },
+          {
+            "doc_no": "44482",
+            "amount": 14936.78,
+            "date": "2026-05-08",
+            "batch_ref": "PC-76-31",
+            "method": "OPERATOR_BATCH",
+            "notes": "Partial SPEEDP — completes event net"
+          }
+        ]
+      },
+      "closure": "proposed",
+      "line_mix": [
+        { "sku": "14KG LPG - PACKED", "qty": 13 },
+        { "sku": "14KG CYLINDER DEPOSIT", "qty": 13 },
+        { "sku": "19KG LPG - PACKED", "qty": 14 },
+        { "sku": "19KG CYLINDER DEPOSIT", "qty": 14 },
+        { "sku": "9KG LPG PACKED 01", "qty": 84 },
+        { "sku": "9KG CYLINDER DEPOSIT", "qty": 84 },
+        { "sku": "48KG SINGLE VALVE PACKED", "qty": 15 },
+        { "sku": "48KG SV CYLINDER DEPOSIT", "qty": 15 }
+      ],
+      "added": "2026-09-04",
+      "added_by": "operator"
+    }
+  ]
+}
