@@ -60,7 +60,7 @@ Reconciliation proceeds **event-by-event**. An event is not closed until all fou
 |---|---:|---:|---:|---:|---|
 | **22630** | 2026-06-08 | 51132 | 15039 | **R64,900.69** | ASSUMED — PC-76-32 batch |
 | **22508** | 2026-06-18 | 51268 | 15086 | **R0.00** | Closed — zero-net (CN full offset) |
-| **22936** | 2026-07-08 | 51681 | 15215 | **R53,951.69** | **Added** — payment ASSUMED ([detail](LIN001_event_DN22936.md)) |
+| **22936** | 2026-07-08 | 51681 | 15215 | **R53,951.69** | **Closed** — EXT-2744666881 ([detail](LIN001_event_DN22936.md)) |
 | **23974** | 2026-08-24 | 52768 | 15543 | **R30,207.80** | ASSERTED — bank receipt + PC-76-31 slice |
 | **24947** | 2026-09-02 | 52924 | 15592 | **R5,433.70** | ASSERTED — 45961 + carry from 23974 |
 
@@ -71,14 +71,15 @@ Reconciliation proceeds **event-by-event**. An event is not closed until all fou
 | **44482** | 2026-05-08 | R75,844.50 | PC-76-31 | SPEEDP |
 | **44974** | 2026-06-06 | R40,590.60 | PC-76-32 | SPEEDP |
 | **44975** | 2026-06-07 | R63,325.00 | PC-76-32 | TRANSF |
-| **EXT-2901239645** | 2026-08-22 | R34,721.00 | HAPPY 8.22 | External bank — not in Supabase |
+| **EXT-2744666881** | 2026-07-03 | R54,981.36 | Lin001 7.3 13991 | External bank — DN#22936 |
+| **EXT-2901239645** | 2026-08-22 | R34,721.00 | HAPPY 8.22 | External bank — DN#23974 |
 | **45961** | 2026-09-01 | R28,163.00 | PC-76-35 | SPEEDP |
 
 ---
 
 ## 5. Manual event closure — Jun–Sep 2026
 
-### Event DN#22936 — added 2026-09-04 (payment ASSUMED)
+### Event DN#22936 — closed (operator bank receipt)
 
 **Detail:** `LIN001_event_DN22936.md` · **Config:** `analysis/debtors/LIN001/config/events.json`
 
@@ -87,19 +88,23 @@ Reconciliation proceeds **event-by-event**. An event is not closed until all fou
 | Invoice | **51681** | 2026-07-08 | R134,049.19 |
 | Credit note | **15215** → 51681 | 2026-07-08 | R-80,097.50 |
 | Delivery note | **DN#22936** | — | *(proof)* |
-| Payment | 44482 partial + carry | — | R53,951.69 *(ASSUMED)* |
+| Payment | **EXT-2744666881** | 2026-07-03 | R54,981.36 |
 | **Event net** | | | **R53,951.69** |
 
+**Receipt ref `Lin001 7.3 13991`** matches invoice **order_no 13991** (PROVEN link).
+
 ```
-Credit from DN#22630     R39,014.91
-44482 partial (PC-76-31) R14,936.78
-─────────────────────────────────
-                         R53,951.69  → proposed closed
+R54,981.36  external payment EXT-2744666881
+− R53,951.69  event net (51681 − 15215)
+───────────
+= R1,029.67  surplus → credit carry (target TBD)
 ```
 
-**Line mix (PROVEN):** 84×9kg, 14×19kg, 15×48kg, 13×14kg — LPG + cylinder deposits each.
+**Event DN#22936 → closed.**
 
-**Payment proof pending** — operator to confirm or replace proposed 44482/carry split.
+**Receipt:** `/opt/cursor/artifacts/LIN001_payment_receipt_DN22936_2026-07-03.jpg`
+
+Prior ASSUMED split (44482 + carry from DN#22630) **withdrawn**.
 
 ### Event DN#22630 — ASSUMED payment (PC-76-32)
 
@@ -109,23 +114,12 @@ Credit from DN#22630     R39,014.91
 ──────────────────
        R64,900.69  event net
 
-44974 + 44975 total R103,915.60 − R64,900.69 = R39,014.91 credit carry → DN#22936
+44974 + 44975 total R103,915.60 − R64,900.69 = R39,014.91 credit surplus (unallocated — DN#22936 paid separately)
 ```
 
 ### Event DN#22508 — PROVEN zero-net
 
 Invoice and CN both **R132,862.38** — net **R0.00**. No payment leg required. **Closed.**
-
-### Event DN#22936 — ASSUMED payment (carry + PC-76-31 slice)
-
-*(Superseded by dedicated section above — see `LIN001_event_DN22936.md`.)*
-
-```
-Credit from DN#22630     R39,014.91
-44482 partial (PC-76-31) R14,936.78
-─────────────────────────────────
-                         R53,951.69  event net → closed
-```
 
 ### Event DN#23974 — ASSERTED payment (operator bank receipt + PC-76-31 slice)
 

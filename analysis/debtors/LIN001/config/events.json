@@ -25,28 +25,19 @@
       },
       "event_net": 53951.69,
       "payment": {
-        "status": "proposed",
-        "confidence": "ASSUMED",
-        "total": 53951.69,
-        "slices": [
-          {
-            "doc_no": "CREDIT-39014.91",
-            "amount": 39014.91,
-            "date": "2026-06-07",
-            "method": "CARRY_FROM_DN22630",
-            "notes": "Surplus from PC-76-32 batch after DN#22630 net"
-          },
-          {
-            "doc_no": "44482",
-            "amount": 14936.78,
-            "date": "2026-05-08",
-            "batch_ref": "PC-76-31",
-            "method": "OPERATOR_BATCH",
-            "notes": "Partial SPEEDP — completes event net"
-          }
-        ]
+        "status": "closed",
+        "confidence": "ASSERTED",
+        "total": 54981.36,
+        "doc_no": "EXT-2744666881",
+        "date": "2026-07-03",
+        "reference": "Lin001 7.3 13991",
+        "transaction_id": "2744666881",
+        "method": "OPERATOR_BANK_RECEIPT",
+        "source": "External bank — not in Supabase",
+        "link_evidence": "Receipt ref 13991 matches invoice order_no 13991 (PROVEN)"
       },
-      "closure": "proposed",
+      "surplus": 1029.67,
+      "closure": "closed",
       "line_mix": [
         { "sku": "14KG LPG - PACKED", "qty": 13 },
         { "sku": "14KG CYLINDER DEPOSIT", "qty": 13 },
@@ -58,6 +49,7 @@
         { "sku": "48KG SV CYLINDER DEPOSIT", "qty": 15 }
       ],
       "added": "2026-09-04",
+      "payment_confirmed": "2026-09-04",
       "added_by": "operator"
     }
   ]
