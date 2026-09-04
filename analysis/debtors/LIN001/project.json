@@ -50,7 +50,7 @@
     },
     {
       "date": "2026-09-04",
-      "event": "Event DN#23974 closed — external payment EXT-2901239645 R34,721.00 (2026-08-22, ref HAPPY 8.22). Surplus R4,513.20 carry to DN#24947."
+      "event": "Event DN#24947 closed — payment 45961 R28,163.00 (PC-76-35). Operator split: R5,433.70 event net + R22,729.30 credit from DN#23974. Carry gap R18,216.10 vs DN#23974 bank receipt not reconciled."
     }
   ]
 }

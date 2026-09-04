@@ -96,6 +96,58 @@
       "added": "2026-09-04",
       "payment_confirmed": "2026-09-04",
       "added_by": "operator"
+    },
+    {
+      "id": "EVT-24947",
+      "deliveryNote": "DN#24947",
+      "date": "2026-09-02",
+      "invoice": {
+        "doc_no": "52924",
+        "amount": 74433.7,
+        "confidence": "PROVEN",
+        "source": "Supabase transaction_headers"
+      },
+      "credit_note": {
+        "doc_no": "15592",
+        "ref_no": "52924",
+        "amount": 69000,
+        "confidence": "PROVEN",
+        "source": "Supabase transaction_headers"
+      },
+      "event_net": 5433.7,
+      "payment": {
+        "status": "closed",
+        "confidence": "ASSERTED",
+        "total": 28163,
+        "doc_no": "45961",
+        "date": "2026-09-01",
+        "batch_ref": "PC-76-35",
+        "description": "SPEEDP",
+        "method": "ERP_PAYMENT",
+        "source": "Supabase transaction_headers",
+        "allocation": [
+          { "type": "event_net", "amount": 5433.7 },
+          { "type": "credit_carry_from_DN23974", "amount": 22729.3 }
+        ]
+      },
+      "closure": "closed",
+      "carry_reconciliation_gap": {
+        "amount": 18216.1,
+        "note": "DN#23974 bank receipt supports R4,513.20 carry only; R18,216.10 not reconciled"
+      },
+      "line_mix": [
+        { "sku": "1401", "description": "14KG LPG PACKED", "qty": 20 },
+        { "sku": "14.1", "description": "14KG CYLINDER DEPOSIT", "qty": 20 },
+        { "sku": "1901", "description": "19KG LPG PACKED", "qty": 5 },
+        { "sku": "19.1", "description": "19KG CYLINDER DEPOSIT", "qty": 5 },
+        { "sku": "D.4", "description": "48KG DV LPG - PACKED", "qty": 10 },
+        { "sku": "D.1", "description": "48KG DV CYLINDER DEPOSIT", "qty": 10 },
+        { "sku": "S.4", "description": "48KG SV LPG- PACKED", "qty": 10 },
+        { "sku": "S.1", "description": "48KG SV CYLINDER DEPOSIT", "qty": 10 }
+      ],
+      "added": "2026-09-04",
+      "payment_confirmed": "2026-09-04",
+      "added_by": "operator"
     }
   ]
 }
