@@ -34,3 +34,11 @@ event_dn,event_part,doc_ref,doc_date,amount,match_method,confidence,residual,not
 24947,event_status,DN#24947,,5433.70,OPERATOR,ASSERTED,0,Event closed 2026-09-04 — 45961 fully allocated
 POOL,payment_unallocated,44482,2026-05-08,75844.50,,ASSUMED,75844.50,44482 fully unallocated — no slices applied
 POOL,credit_unallocated,22630→POOL,,39014.91,,ASSUMED,39014.91,PC-76-32 surplus — target event TBD
+POOL,credit_unallocated,22936→POOL,,1029.67,,ASSERTED,1029.67,Surplus after DN#22936 net settle
+PROFORMA-0904,invoice,PROFORMA-LIN001-20260904,2026-09-04,16291.80,IMAGE,ASSERTED,0,Proforma — 70x9kg LPG refill; not yet in Supabase; no DN# supplied
+PROFORMA-0904,credit_note,,,0.00,N/A,PROVEN,0,No cylinder-deposit lines — no CN expected
+PROFORMA-0904,delivery_note,MISSING,,,GAP,GAP,0,Proof of event not supplied — proforma stage only
+PROFORMA-0904,event_net,,,16291.80,COMPUTED,ASSERTED,0,Invoice only — no CN
+PROFORMA-0904,payment,EXT-2949387151,2026-09-04,13416.80,OPERATOR_BANK_RECEIPT,ASSERTED,0,External bank ref "happy 9.4"; not in Supabase
+PROFORMA-0904,payment,EXT-2950393933,2026-09-04,690.00,OPERATOR_BANK_RECEIPT,ASSERTED,0,External bank ref "happy"; not in Supabase
+PROFORMA-0904,event_status,PROFORMA-0904,,-2185.00,OPERATOR,ASSERTED,2185.00,Event OPEN — short-paid R2,185.00; no DN#; awaiting resolution

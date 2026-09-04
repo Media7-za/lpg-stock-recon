@@ -2,16 +2,20 @@ event_id,delivery_note,event_date,invoice_doc,invoice_amount,cn_doc,cn_amount,ev
 EVT-22630,DN#22630,2026-06-08,51132,132693.19,15039,67792.50,64900.69,"44974+44975",2026-06-06,103915.60,PC-76-32,ASSUMED closed,ASSUMED,39014.91,44974 R40590.60 + 44975 R24310.09 toward net; surplus unallocated
 EVT-22508,DN#22508,2026-06-18,51268,132862.38,15086,132862.38,0.00,,,,,closed,PROVEN,0,Zero-net — CN full offset; no payment leg
 EVT-22936,DN#22936,2026-07-08,51681,134049.19,15215,80097.50,53951.69,EXT-2744666881,2026-07-03,54981.36,Lin001 7.3 13991,closed,ASSERTED,1029.67,Bank receipt; ref 13991 = order_no PROVEN
-EVT-23974,DN#23974,2026-08-24,52768,69652.80,15543,39445.00,30207.80,EXT-2901239645,2026-08-22,34721.00,HAPPY 8.22,closed,ASSERTED,4513.20,Bank receipt; R22729.30 carry applied on 45961 — R18216.10 gap
-EVT-24947,DN#24947,2026-09-02,52924,74433.70,15592,69000.00,5433.70,45961,2026-09-01,28163.00,PC-76-35 SPEEDP,closed,ASSERTED,0,R5433.70 net + R22729.30 credit from DN#23974
+EVT-23974,DN#23974,2026-08-24,52768,69652.80,15543,39445.00,30207.80,EXT-2901239645,2026-08-22,34721.00,HAPPY 8.22,closed,ASSERTED,4513.20,Bank receipt — see balance bridge for aggregate tie-out
+EVT-24947,DN#24947,2026-09-02,52924,74433.70,15592,69000.00,5433.70,45961,2026-09-01,28163.00,PC-76-35 SPEEDP,closed,ASSERTED,22729.30,R5433.70 net + R22729.30 surplus; funded by 45961 alone per balance bridge
+EVT-PROFORMA-0904,,2026-09-04,PROFORMA-LIN001-20260904,16291.80,,0,16291.80,"EXT-2949387151+EXT-2950393933",2026-09-04,14106.80,"happy / happy 9.4",open_short_paid,ASSERTED,-2185.00,No DN# supplied; not in Supabase; 70x9kg LPG refill; short-paid R2185.00
 
 # totals
-# event_net_sum,154493.88
-# confirmed_payment_sum_external,89702.36
-# confirmed_payment_sum_erp_assumed,132078.60
+# event_net_sum_5_erp,154493.88
+# event_net_sum_all_6,170785.68
+# total_payments_5_erp,221780.96
+# total_payments_all_6,235887.76
+# surplus_5_erp,67287.08
+# net_position_all_6,65102.08
 
 # unallocated_pools
 POOL,44482,2026-05-08,75844.50,PC-76-31,ASSUMED,Payment — no event assignment
 POOL,22630_surplus,,39014.91,,ASSUMED,From PC-76-32 after DN#22630 net
 POOL,22936_surplus,,1029.67,,ASSERTED,From EXT-2744666881 after DN#22936 net
-POOL,carry_gap_DN23974_to_24947,,18216.10,,UNRECONCILED,Operator carry R22729.30 vs bank surplus R4513.20
+POOL,proforma_0904_shortfall,,-2185.00,,ASSERTED,Open proforma short-paid; no DN# yet

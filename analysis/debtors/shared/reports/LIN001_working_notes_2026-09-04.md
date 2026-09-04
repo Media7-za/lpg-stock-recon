@@ -65,6 +65,7 @@ Reconciliation proceeds **event-by-event**. An event is not closed until all fou
 | **22936** | 2026-07-08 | 51681 | 15215 | **R53,951.69** | **Closed** — EXT-2744666881 ([detail](LIN001_event_DN22936.md)) |
 | **23974** | 2026-08-24 | 52768 | 15543 | **R30,207.80** | **Closed** — EXT-2901239645 ([detail](LIN001_event_DN23974.md)) |
 | **24947** | 2026-09-02 | 52924 | 15592 | **R5,433.70** | **Closed** — 45961 ([detail](LIN001_event_DN24947.md)) |
+| **Proforma 09-04** | 2026-09-04 | — | — | **R16,291.80** | **Open — short-paid R2,185.00**, no DN# ([detail](LIN001_event_2026-09-04_proforma.md)) |
 
 **Payment pool (Mar–Sep 2026, PROVEN in Supabase unless noted):**
 
@@ -177,6 +178,29 @@ R28,163.00  payment 45961
 
 > **Carry gap resolved by balance bridge:** see `LIN001_balance_bridge_2026-06_2026-09.md`. Payment 45961 alone fully funds DN#24947's event net **and** its R22,729.30 surplus — no external source required. The DN#23974→24947 carry narrative is a valid attribution choice, not a required one; the aggregate credit position ties either way.
 
+### Event 2026-09-04 (Proforma) — open, short-paid, no DN#
+
+**Detail:** `LIN001_event_2026-09-04_proforma.md`
+
+| Part | Ref | Amount |
+|---|---|---:|
+| Invoice | Proforma (LIN001) | R16,291.80 |
+| Credit note | N/A — pure LPG refill, no CYL lines | R0.00 |
+| Delivery note | **MISSING** | *(gap)* |
+| Payment | EXT-2949387151 + EXT-2950393933 | R14,106.80 |
+| **Event net** | | | **R16,291.80** |
+
+```
+R16,291.80  proforma invoice (70×9kg LPG refill)
+− R14,106.80  payments (R13,416.80 + R690.00)
+────────────
+= R2,185.00  short-paid
+```
+
+**Not closed.** No DN# supplied; not yet in Supabase (proforma stage). R2,185.00 shortfall could draw on the R67,287.08 surplus pool from the five ERP events, but this is **not operator-directed**.
+
+**Receipts:** `/opt/cursor/artifacts/LIN001_payment_receipt_13416.80_2026-09-04.jpg`, `/opt/cursor/artifacts/LIN001_payment_receipt_690_2026-09-04.jpg`, `/opt/cursor/artifacts/LIN001_proforma_invoice_2026-09-04.jpg`
+
 ---
 
 ## 6. Balance bridge (PROVEN aggregate tie-out)
@@ -184,13 +208,13 @@ R28,163.00  payment 45961
 **Full detail:** `LIN001_balance_bridge_2026-06_2026-09.md` · **Data:** `analysis/debtors/LIN001/config/balance_bridge_lines.json`
 
 ```
-Total event net (5 deliveries)     R154,493.88
-Total payments (all sources)       R221,780.96
+Total event net (5 ERP deliveries + proforma)   R170,785.68
+Total payments (all sources)                    R235,887.76
 ─────────────────────────────────────────────
-Net credit position                R67,287.08  (customer overpaid vs event net)
+Net credit position                              R65,102.08  (customer overpaid, net of R2,185 proforma shortfall)
 ```
 
-This **R67,287.08 is PROVEN** by direct arithmetic — it ties whether or not any specific event-to-event carry story (e.g. DN#23974→24947) is used. The carry narratives remain useful for **explaining** the surplus, but are not required for the totals to reconcile.
+This **R67,287.08 credit from the 5 ERP events is PROVEN** by direct arithmetic — it ties whether or not any specific event-to-event carry story (e.g. DN#23974→24947) is used. Layering in the open proforma event (short-paid R2,185.00, no DN#) nets the position to **R65,102.08**.
 
 ---
 
@@ -201,16 +225,19 @@ This **R67,287.08 is PROVEN** by direct arithmetic — it ties whether or not an
 | **44482** (PC-76-31) | R75,844.50 | ASSUMED — fully unallocated |
 | **DN#22630** surplus (PC-76-32) | R39,014.91 | ASSUMED |
 | **DN#22936** surplus (EXT-2744666881) | R1,029.67 | ASSERTED |
-| **Total surplus (bridge-tied)** | **R67,287.08** | **PROVEN** |
+| **Total surplus (bridge-tied, 5 ERP events)** | **R67,287.08** | **PROVEN** |
+| **Proforma 2026-09-04 shortfall** | **(R2,185.00)** | **ASSERTED — event open** |
+| **Net position after proforma** | **R65,102.08** | **PROVEN** |
 
 ---
 
 ## 8. Open questions
 
 1. Confirm **44974/44975** allocation to DN#22630 — batch PC-76-32 timing fits, amounts ASSUMED.
-2. Where does the **R67,287.08** aggregate credit apply going forward — next delivery, refund, or held as float?
-3. Target for **R75,844.50** on 44482 — separate from the 5-event bridge; still fully unallocated.
-4. Canonical allocation lane rerun for Mar–Feb open items?
+2. **Proforma 2026-09-04:** raise/name the DN# and post to ERP; resolve R2,185.00 shortfall (apply surplus credit, or await 3rd payment).
+3. Where does the **R65,102.08** aggregate net credit apply going forward — next delivery, refund, or held as float?
+4. Target for **R75,844.50** on 44482 — separate from the event bridge; still fully unallocated.
+5. Canonical allocation lane rerun for Mar–Feb open items?
 
 ---
 
@@ -218,7 +245,7 @@ This **R67,287.08 is PROVEN** by direct arithmetic — it ties whether or not an
 
 | Artifact | Path |
 |---|---|
-| **Balance bridge (5 events)** | `LIN001_balance_bridge_2026-06_2026-09.md` |
+| **Balance bridge (6 events)** | `LIN001_balance_bridge_2026-06_2026-09.md` |
 | **Consolidated events (Jun–Sep)** | `LIN001_events_consolidated_2026-06_2026-09.md` / `.csv` |
 | Allocation CSV (Mar–Feb) | `analysis/debtors/shared/reports/LIN001_fresh_allocation_2025-03_2026-02.csv` |
 | Event register (Jun–Sep) | `analysis/debtors/shared/reports/LIN001_event_register_2026-06_2026-09.csv` |
@@ -228,8 +255,13 @@ This **R67,287.08 is PROVEN** by direct arithmetic — it ties whether or not an
 | **Event DN#22936 card** | `analysis/debtors/shared/reports/LIN001_event_DN22936.md` |
 | **Event DN#23974 card** | `analysis/debtors/shared/reports/LIN001_event_DN23974.md` |
 | **Event DN#24947 card** | `analysis/debtors/shared/reports/LIN001_event_DN24947.md` |
+| **Event proforma 2026-09-04 card** | `analysis/debtors/shared/reports/LIN001_event_2026-09-04_proforma.md` |
 | **LIN001 events config** | `analysis/debtors/LIN001/config/events.json` |
+| **LIN001 balance bridge config** | `analysis/debtors/LIN001/config/balance_bridge_lines.json` |
 | Bank receipt (DN#22936) | `LIN001_payment_receipt_DN22936_2026-07-03.jpg` |
 | Bank receipt (DN#23974) | `LIN001_payment_receipt_34721_2026-08-22.jpg` |
+| Proforma invoice (2026-09-04) | `LIN001_proforma_invoice_2026-09-04.jpg` |
+| Payment receipt R13,416.80 (2026-09-04) | `LIN001_payment_receipt_13416.80_2026-09-04.jpg` |
+| Payment receipt R690.00 (2026-09-04) | `LIN001_payment_receipt_690_2026-09-04.jpg` |
 
 **Epistemic tags:** PROVEN (Supabase event structure), ASSERTED (operator-confirmed closures), ASSUMED (payment splits / carry chain).

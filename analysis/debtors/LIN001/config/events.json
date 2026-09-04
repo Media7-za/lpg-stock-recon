@@ -7,11 +7,12 @@
     "proof": "delivery_note"
   },
   "summary": {
-    "eventCount": 5,
-    "totalEventNet": 154493.88,
+    "eventCount": 6,
+    "totalEventNet": 170785.68,
     "closedCount": 4,
     "assumedClosedCount": 1,
-    "zeroNetCount": 1
+    "zeroNetCount": 1,
+    "openShortPaidCount": 1
   },
   "events": [
     {
@@ -110,6 +111,44 @@
       },
       "closure": "closed",
       "detail": "analysis/debtors/shared/reports/LIN001_event_DN24947.md"
+    },
+    {
+      "id": "EVT-2026-09-04-PROFORMA",
+      "deliveryNote": null,
+      "deliveryNoteStatus": "MISSING — proof of event not supplied; proforma only",
+      "date": "2026-09-04",
+      "invoice": {
+        "doc_no": "PROFORMA-LIN001-20260904",
+        "amount": 16291.80,
+        "confidence": "ASSERTED",
+        "source": "Proforma invoice image — not in Supabase",
+        "line_mix": [
+          { "description": "9KG LPG Refill", "qty": 70, "unit_price": 232.74 }
+        ],
+        "note": "No cylinder-deposit lines — pure refill order, no CN structurally expected"
+      },
+      "credit_note": null,
+      "event_net": 16291.80,
+      "payment": {
+        "status": "short_paid",
+        "confidence": "ASSERTED",
+        "total": 14106.80,
+        "docs": [
+          { "doc_no": "EXT-2949387151", "amount": 13416.80, "date": "2026-09-04T11:17:00", "reference": "happy 9.4" },
+          { "doc_no": "EXT-2950393933", "amount": 690.00, "date": "2026-09-04T15:09:00", "reference": "happy" }
+        ],
+        "source": "External bank — not in Supabase"
+      },
+      "shortfall": 2185.00,
+      "closure": "open_short_paid",
+      "resolutionOptions": [
+        "Apply prior surplus credit (R67,287.08 pool) — ASSUMED, not operator-directed",
+        "Await DN# and ERP posting — event may still be pending",
+        "Additional payment of R2,185.00 may follow"
+      ],
+      "detail": "analysis/debtors/shared/reports/LIN001_event_2026-09-04_proforma.md",
+      "added": "2026-09-04",
+      "added_by": "operator"
     }
   ],
   "unallocatedPools": [

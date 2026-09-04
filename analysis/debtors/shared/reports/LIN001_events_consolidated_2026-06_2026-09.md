@@ -23,8 +23,10 @@ Each event = **invoice** + **credit note** + **delivery note (DN# proof)** + **p
 | **22936** | 2026-07-08 | 51681 | 15215 | **R53,951.69** | EXT-2744666881 | **Closed** |
 | **23974** | 2026-08-24 | 52768 | 15543 | **R30,207.80** | EXT-2901239645 | **Closed** |
 | **24947** | 2026-09-02 | 52924 | 15592 | **R5,433.70** | 45961 (PC-76-35) | **Closed** |
+| **Proforma 09-04** | 2026-09-04 | — | — | **R16,291.80** | EXT-2949387151 + EXT-2950393933 | **Open — short-paid R2,185.00, no DN#** |
 
-**Total event net (5 deliveries):** **R154,493.88**
+**Total event net (5 ERP deliveries):** **R154,493.88**  
+**Total event net (all 6, incl. proforma):** **R170,785.68**
 
 ---
 
@@ -80,7 +82,7 @@ Detail: `LIN001_event_DN22936.md`
 | Delivery note | **DN#23974** | *(proof)* |
 | Payment | **EXT-2901239645** | R34,721.00 |
 
-Bank receipt **HAPPY 8.22** (2026-08-22). Surplus **R4,513.20** (bank math); operator applies **R22,729.30** carry on DN#24947 — **R18,216.10 gap**.
+Bank receipt **HAPPY 8.22** (2026-08-22). Surplus **R4,513.20** on this event alone; see balance bridge for aggregate tie-out across all events.
 
 Detail: `LIN001_event_DN23974.md`
 
@@ -99,10 +101,30 @@ Detail: `LIN001_event_DN23974.md`
 R28,163.00  payment 45961 (2026-09-01, PC-76-35)
 − R5,433.70  event net
 ───────────
-= R22,729.30  credit from DN#23974 (operator)
+= R22,729.30  surplus — payment 45961 alone funds this in full
 ```
 
 Detail: `LIN001_event_DN24947.md`
+
+---
+
+### Proforma 2026-09-04 — open, short-paid, no DN#
+
+| Part | Ref | Amount |
+|---|---|---:|
+| Invoice | Proforma (LIN001) | R16,291.80 |
+| Credit note | N/A — pure LPG refill | R0.00 |
+| Delivery note | **MISSING** | *(gap)* |
+| Payment | EXT-2949387151 + EXT-2950393933 | R14,106.80 |
+
+```
+R16,291.80  proforma (70×9kg LPG refill)
+− R14,106.80  payments received
+────────────
+= R2,185.00  short-paid — event open
+```
+
+Detail: `LIN001_event_2026-09-04_proforma.md`
 
 ---
 
@@ -116,6 +138,8 @@ Detail: `LIN001_event_DN24947.md`
 | EXT-2744666881 | 2026-07-03 | R54,981.36 | Lin001 7.3 13991 | DN#22936 |
 | EXT-2901239645 | 2026-08-22 | R34,721.00 | HAPPY 8.22 | DN#23974 |
 | 45961 | 2026-09-01 | R28,163.00 | PC-76-35 | DN#24947 |
+| EXT-2949387151 | 2026-09-04 | R13,416.80 | happy 9.4 | Proforma 09-04 |
+| EXT-2950393933 | 2026-09-04 | R690.00 | happy | Proforma 09-04 |
 
 ---
 
@@ -126,7 +150,20 @@ Detail: `LIN001_event_DN24947.md`
 | 44482 (PC-76-31) | R75,844.50 | ASSUMED |
 | DN#22630 surplus | R39,014.91 | ASSUMED |
 | DN#22936 surplus | R1,029.67 | ASSERTED |
-| Carry gap DN#23974→24947 | R18,216.10 | UNRECONCILED |
+| Proforma 09-04 shortfall | (R2,185.00) | ASSERTED — event open |
+
+---
+
+## Balance bridge tie-out (see `LIN001_balance_bridge_2026-06_2026-09.md`)
+
+```
+5 ERP events:  total event net R154,493.88 vs total payments R221,780.96 = R67,287.08 credit (PROVEN)
++ Proforma:    event net R16,291.80 vs payments R14,106.80 = R2,185.00 shortfall (ASSERTED, open)
+────────────────────────────────────────────────────────────────
+Net position across all 6 events: R65,102.08 credit
+```
+
+The R67,287.08 credit is PROVEN regardless of which event-to-event carry story is told (e.g. DN#23974→24947) — direct arithmetic ties without needing that narrative.
 
 ---
 
@@ -134,10 +171,10 @@ Detail: `LIN001_event_DN24947.md`
 
 | Tag | Meaning in this register |
 |---|---|
-| **PROVEN** | Supabase headers / CN ref_no / zero-net math |
-| **ASSERTED** | Operator-confirmed bank receipts or 45961 allocation |
+| **PROVEN** | Supabase headers / CN ref_no / zero-net math / aggregate bridge tie-out |
+| **ASSERTED** | Operator-confirmed bank receipts, 45961 allocation, proforma amounts |
 | **ASSUMED** | PC-76-32 batch split for DN#22630; unallocated pools |
-| **UNRECONCILED** | R18,216.10 carry gap across DN#23974 and DN#24947 |
+| **GAP** | Proforma delivery note (DN#) not yet supplied |
 
 ---
 
@@ -147,7 +184,9 @@ Detail: `LIN001_event_DN24947.md`
 |---|---|
 | **This register (CSV)** | `LIN001_events_consolidated_2026-06_2026-09.csv` |
 | **This register (MD)** | `LIN001_events_consolidated_2026-06_2026-09.md` |
+| Balance bridge | `LIN001_balance_bridge_2026-06_2026-09.md` |
 | Events config | `analysis/debtors/LIN001/config/events.json` |
 | Manual allocation detail | `LIN001_manual_allocation_2026-06_2026-09.csv` |
-| Event cards | `LIN001_event_DN22936.md`, `LIN001_event_DN23974.md`, `LIN001_event_DN24947.md` |
-| Bank receipts | `LIN001_payment_receipt_DN22936_2026-07-03.jpg`, `LIN001_payment_receipt_34721_2026-08-22.jpg` |
+| Event cards | `LIN001_event_DN22936.md`, `LIN001_event_DN23974.md`, `LIN001_event_DN24947.md`, `LIN001_event_2026-09-04_proforma.md` |
+| Bank receipts | `LIN001_payment_receipt_DN22936_2026-07-03.jpg`, `LIN001_payment_receipt_34721_2026-08-22.jpg`, `LIN001_payment_receipt_13416.80_2026-09-04.jpg`, `LIN001_payment_receipt_690_2026-09-04.jpg` |
+| Proforma invoice | `LIN001_proforma_invoice_2026-09-04.jpg` |

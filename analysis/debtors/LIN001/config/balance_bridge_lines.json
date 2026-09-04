@@ -1,16 +1,16 @@
 {
   "debtorCode": "LIN001",
   "generated": "2026-09-04",
-  "scope": "2026-06-08 to 2026-09-02 — 5 delivery events (DN# proof model)",
+  "scope": "2026-06-08 to 2026-09-04 — 6 events (5 ERP delivery events + 1 open proforma, DN# proof model)",
   "windowBasis": "movement_only",
-  "windowBasisNote": "No B/F opening balance sourced for this window — bridge shows net movement across the 5 events only, not the full account balance.",
+  "windowBasisNote": "No B/F opening balance sourced for this window — bridge shows net movement across events only, not the full account balance.",
   "openingMovement": 0,
-  "totalInvoices": 543691.26,
+  "totalInvoices": 559983.06,
   "totalCreditNotes": -389197.38,
-  "totalEventNet": 154493.88,
-  "totalPaymentsAllSources": 221780.96,
-  "closingMovement": -67287.08,
-  "closingMovementLabel": "Net credit position (customer overpaid vs event net across these 5 deliveries)",
+  "totalEventNet": 170785.68,
+  "totalPaymentsAllSources": 235887.76,
+  "closingMovement": -65102.08,
+  "closingMovementLabel": "Net credit position, offset by R2,185.00 short-pay on open proforma event",
   "bridgeLines": [
     {
       "id": "DN22630",
@@ -66,9 +66,20 @@
       "surplus": 22729.30,
       "confidence": "ASSERTED",
       "note": "Operator narrative allocates this surplus as carry from DN#23974 (R22,729.30), but 45961 alone fully funds it independent of that story"
+    },
+    {
+      "id": "PROFORMA-2026-09-04",
+      "label": "Proforma 2026-09-04 — 70×9kg LPG refill, no DN#, no CN (pure refill)",
+      "eventNet": 16291.80,
+      "payment": -14106.80,
+      "paymentDocs": ["EXT-2949387151", "EXT-2950393933"],
+      "runningBalance": -65102.08,
+      "surplus": -2185.00,
+      "confidence": "ASSERTED (amounts) / GAP (no DN# proof)",
+      "note": "Short-paid by R2,185.00; event open pending DN# or additional payment/credit application"
     }
   ],
-  "bridgeSum": -67287.08,
+  "bridgeSum": -65102.08,
   "ties": true,
-  "reconciliationNote": "Sum of per-event surpluses (39014.91 + 0 + 1029.67 + 4513.20 + 22729.30) = 67,287.08 = total payments (221,780.96) minus total event net (154,493.88). Ties exactly regardless of which specific carry narrative (23974→24947) is used — the aggregate credit position is PROVEN by direct arithmetic; only the event-to-event assignment of that credit is ASSERTED/ASSUMED."
+  "reconciliationNote": "Sum of per-event surpluses (39014.91 + 0 + 1029.67 + 4513.20 + 22729.30 − 2185.00) = 65,102.08 = total payments (235,887.76) minus total event net (170,785.68). Ties exactly regardless of which specific carry narrative (23974→24947) is used — the aggregate credit position is PROVEN by direct arithmetic; only the event-to-event assignment of that credit is ASSERTED/ASSUMED. The final proforma event is open/short-paid and lacks DN# proof."
 }
