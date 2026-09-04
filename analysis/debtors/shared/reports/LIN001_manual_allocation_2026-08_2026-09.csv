@@ -1,7 +1,7 @@
-edge_type,source_doc,source_date,source_amount,target_doc,target_date,target_amount,match_method,confidence,residual,notes
-credit_note_to_invoice,15543,2026-08-24,39445,52768,2026-08-24,69652.80,CN_REFNO,PROVEN,0,DN#23974 cylinder deposit credits
-payment_to_invoice,EXT-2901239645,2026-08-22,34721,52768,2026-08-24,30207.80,OPERATOR_BANK_RECEIPT,ASSERTED,4513.20,External bank payment ref HAPPY 8.22; not in Supabase
-credit_note_to_invoice,15592,2026-09-02,69000,52924,2026-09-02,74433.70,CN_REFNO,PROVEN,0,DN#24947 cylinder deposit credits
-payment_to_invoice,45961,2026-09-01,28163,52924,2026-09-02,5433.70,OPERATOR,ASSERTED,0,Current event net after CN 15592
-overpayment_credit_to_invoice,CREDIT-4513.20,2026-08-22,4513.20,52924,2026-09-02,4513.20,CARRY_FROM_PRIOR,ASSERTED,0,Surplus from EXT-2901239645 after DN#23974 net settle
-payment_to_invoice,45961,2026-09-01,28163,52924,2026-09-02,18216.10,OPERATOR_UNALLOCATED,ASSUMED,18216.10,Residual cash on 45961 after net+credit; target TBD
+edge_type,dn_ref,source_doc,source_date,source_amount,target_doc,target_date,target_amount,match_method,confidence,residual,notes
+credit_note_to_invoice,23974,15543,2026-08-24,39445,52768,2026-08-24,69652.80,CN_REFNO,PROVEN,0,Delivery DN#23974 — cylinder deposit credits
+payment_to_delivery,23974,EXT-2901239645,2026-08-22,34721,52768,2026-08-24,30207.80,OPERATOR_BANK_RECEIPT,ASSERTED,4513.20,Delivery DN#23974 — external bank ref HAPPY 8.22; not in Supabase
+delivery_credit_carry,23974→24947,CREDIT-4513.20,2026-08-22,4513.20,52924,2026-09-02,4513.20,CARRY_FROM_PRIOR_DELIVERY,ASSERTED,0,Surplus after DN#23974 net settle; applied to DN#24947
+credit_note_to_invoice,24947,15592,2026-09-02,69000,52924,2026-09-02,74433.70,CN_REFNO,PROVEN,0,Delivery DN#24947 — cylinder deposit credits
+payment_to_delivery,24947,45961,2026-09-01,28163,52924,2026-09-02,5433.70,OPERATOR,ASSERTED,0,Delivery DN#24947 — current delivery net after CN 15592
+payment_unallocated,24947,45961,2026-09-01,18216.10,,,0,OPERATOR,ASSUMED,18216.10,Residual on 45961 after DN#24947 net + carry; target delivery TBD

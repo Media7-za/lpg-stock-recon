@@ -39,30 +39,37 @@
 
 ---
 
-## 3. Last ledger event (outside automated pass scope)
+## 3. Delivery events (outside automated pass scope)
 
-### DN#24947 — 2026-09-02
+**Convention (operator):** An **event** is a **delivery**, keyed by **DN# ref**.
+Each delivery bundles invoice + same-day cylinder credits + the cash that settles it.
+Invoice doc numbers are ledger anchors; **DN# is the reconciliation unit**.
 
-| Doc | Type | Amount |
-|---|---|---:|
-| **52924** | Invoice | R74,433.70 |
-| **15592** | Crd Note → 52924 | R-69,000.00 |
-| **Net after CN** | | **R5,433.70** |
-
-**Line mix (52924):** LPG fills + cylinder deposits  
-**CN 15592:** cylinder deposit credits only (empty returns)
-
-### Prior event — DN#23974 — 2026-08-24
+### Delivery DN#23974 — 2026-08-24
 
 | Doc | Type | Amount |
 |---|---|---:|
 | **52768** | Invoice | R69,652.80 |
 | **15543** | Crd Note → 52768 | R-39,445.00 |
-| **Net after CN** | | **R30,207.80** |
+| **Delivery net after CN** | | **R30,207.80** |
+
+**Line mix (52768):** LPG fills + cylinder deposits  
+**CN 15543:** cylinder deposit credits only (empty returns)
+
+### Delivery DN#24947 — 2026-09-02
+
+| Doc | Type | Amount |
+|---|---|---:|
+| **52924** | Invoice | R74,433.70 |
+| **15592** | Crd Note → 52924 | R-69,000.00 |
+| **Delivery net after CN** | | **R5,433.70** |
+
+**Line mix (52924):** LPG fills + cylinder deposits  
+**CN 15592:** cylinder deposit credits only (empty returns)
 
 ---
 
-## 4. External bank payment — DN#23974 (operator confirmed)
+## 4. External bank payment — delivery DN#23974 (operator confirmed)
 
 **Not in Supabase.** Recorded from mobile banking receipt (New Champion Supermarket → Bella Energy Services300).
 
@@ -74,69 +81,69 @@
 | **Transaction ID** | 2901239645 |
 | **Synthetic doc id** | `EXT-2901239645` |
 
-### Allocation to DN#23974 / INV 52768
+### Allocation to delivery DN#23974
 
 ```
 R34,721.00  external payment EXT-2901239645
-− R30,207.80  net after CN 15543
+− R30,207.80  delivery net after CN 15543
 ───────────
-= R4,513.20  overpayment credit → carry forward
+= R4,513.20  delivery credit → carry to next delivery
 ```
 
-| # | Edge | Amount | Confidence |
-|---|---|---:|---|
-| 1 | CN 15543 → INV 52768 | R39,445.00 | PROVEN (ERP ref_no) |
-| 2 | EXT-2901239645 → INV 52768 | R30,207.80 | ASSERTED (operator + bank receipt) |
-| 3 | Credit surplus → carry | R4,513.20 | ASSERTED |
+| # | Edge | DN# | Amount | Confidence |
+|---|---|---|---:|---|
+| 1 | CN 15543 → INV 52768 | 23974 | R39,445.00 | PROVEN (ERP ref_no) |
+| 2 | EXT-2901239645 → delivery | 23974 | R30,207.80 | ASSERTED (operator + bank receipt) |
+| 3 | Delivery credit carry | 23974→24947 | R4,513.20 | ASSERTED |
 
-**DN#23974 / Invoice 52768 → closed** on net basis.
+**Delivery DN#23974 → closed** on net basis.
 
 **Receipt artifact:** `/opt/cursor/artifacts/LIN001_payment_receipt_34721_2026-08-22.jpg`
 
-> **Math revision:** Prior session asserted **R22,729.30** carry from DN#23974 into DN#24947.
+> **Math revision:** Prior session asserted **R22,729.30** delivery credit from DN#23974 into DN#24947.
 > With this single external payment as the sole DN#23974 cash source, surplus is **R4,513.20** only.
-> The R18,216.10 gap (22,729.30 − 4,513.20) implies **additional unrecorded cash** toward DN#23974,
+> The R18,216.10 gap (22,729.30 − 4,513.20) implies **additional unrecorded cash** toward delivery DN#23974,
 > or a different allocation basis — **not reconciled** here.
 
 ---
 
-## 5. Manual allocation — DN#24947 (operator confirmed; revised carry)
+## 5. Manual allocation — delivery DN#24947 (operator confirmed; revised carry)
 
 **Payment 45961** · 2026-09-01 · **R28,163.00** · SPEEDP · **PC-76-35**  
-Related to DN#24947. Applies current net plus **overpayment credit from DN#23974** (revised).
+Settles delivery DN#24947 using current delivery net plus **delivery credit from DN#23974** (revised).
 
 ```
 R28,163.00  payment 45961
-− R5,433.70  current event net (after CN 15592)
-− R4,513.20  carry credit from EXT-2901239645 (revised)
+− R5,433.70  delivery DN#24947 net (after CN 15592)
+− R4,513.20  delivery credit from DN#23974 (revised)
 ───────────
 = R18,216.10  unallocated residual on 45961
 ```
 
 ### Manual edges (revised)
 
-| # | Edge | Amount | Confidence |
-|---|---|---:|---|
-| 1 | CN 15592 → INV 52924 | R69,000.00 | PROVEN (ERP ref_no) |
-| 2 | PMT 45961 → INV 52924 (current cash) | R5,433.70 | ASSERTED (operator) |
-| 3 | Credit R4,513.20 → INV 52924 | R4,513.20 | ASSERTED (carry from EXT-2901239645) |
-| 4 | PMT 45961 residual | R18,216.10 | ASSUMED (target TBD) |
+| # | Edge | DN# | Amount | Confidence |
+|---|---|---|---:|---|
+| 1 | CN 15592 → INV 52924 | 24947 | R69,000.00 | PROVEN (ERP ref_no) |
+| 2 | PMT 45961 → delivery | 24947 | R5,433.70 | ASSERTED (operator) |
+| 3 | Delivery credit carry | 23974→24947 | R4,513.20 | ASSERTED |
+| 4 | PMT 45961 residual | 24947 | R18,216.10 | ASSUMED (target delivery TBD) |
 
-**DN#24947 / Invoice 52924 → closed** on net basis (R5,433.70 + R4,513.20 credit = R9,946.90 applied).
+**Delivery DN#24947 → closed** on net basis (R5,433.70 cash + R4,513.20 credit = R9,946.90 applied).
 
 ### Ledger gap
 
 **PROVEN:** No ERP payment rows in Supabase between **2026-06-07** and **2026-09-01** for LIN001.  
-**ASSERTED:** External bank payment **EXT-2901239645** (R34,721, 2026-08-22) closes DN#23974 net.  
-**ASSUMED:** **R18,216.10** on payment 45961 still needs a target invoice or batch.
+**ASSERTED:** External bank payment **EXT-2901239645** (R34,721, 2026-08-22) closes delivery DN#23974 net.  
+**ASSUMED:** **R18,216.10** on payment 45961 still needs a target delivery or batch.
 
 ---
 
 ## 6. Open questions
 
-1. Does **R18,216.10** on payment 45961 apply to another open invoice, or is there a second external payment toward DN#23974 that would restore the earlier **R22,729.30** carry story?
+1. Does **R18,216.10** on payment 45961 apply to another delivery (DN#), or is there a second external payment toward DN#23974 that would restore the earlier **R22,729.30** delivery-credit story?
 2. Should LIN001 get a full micro-project scaffold + canonical allocation lane rerun?
-3. Re-run with LPG-only matching + tag-check gate vs continue manual event-by-event?
+3. Re-run with LPG-only matching + tag-check gate vs continue manual delivery-by-delivery?
 
 ---
 
