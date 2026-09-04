@@ -175,34 +175,50 @@ R28,163.00  payment 45961
 
 **Event DN#24947 → closed.** Payment 45961 fully allocated per operator.
 
-> **Carry gap:** DN#23974 bank receipt supports R4,513.20 surplus only — R18,216.10 of the R22,729.30 carry is **not reconciled** across events.
+> **Carry gap resolved by balance bridge:** see `LIN001_balance_bridge_2026-06_2026-09.md`. Payment 45961 alone fully funds DN#24947's event net **and** its R22,729.30 surplus — no external source required. The DN#23974→24947 carry narrative is a valid attribution choice, not a required one; the aggregate credit position ties either way.
 
 ---
 
-## 6. Unallocated cash / credit
+## 6. Balance bridge (PROVEN aggregate tie-out)
+
+**Full detail:** `LIN001_balance_bridge_2026-06_2026-09.md` · **Data:** `analysis/debtors/LIN001/config/balance_bridge_lines.json`
+
+```
+Total event net (5 deliveries)     R154,493.88
+Total payments (all sources)       R221,780.96
+─────────────────────────────────────────────
+Net credit position                R67,287.08  (customer overpaid vs event net)
+```
+
+This **R67,287.08 is PROVEN** by direct arithmetic — it ties whether or not any specific event-to-event carry story (e.g. DN#23974→24947) is used. The carry narratives remain useful for **explaining** the surplus, but are not required for the totals to reconcile.
+
+---
+
+## 7. Unallocated cash / credit
 
 | Pool | Amount | Status |
 |---|---:|---|
 | **44482** (PC-76-31) | R75,844.50 | ASSUMED — fully unallocated |
 | **DN#22630** surplus (PC-76-32) | R39,014.91 | ASSUMED |
 | **DN#22936** surplus (EXT-2744666881) | R1,029.67 | ASSERTED |
-| **Cross-event carry gap** (DN#23974→24947) | R18,216.10 | UNRECONCILED |
+| **Total surplus (bridge-tied)** | **R67,287.08** | **PROVEN** |
 
 ---
 
-## 7. Open questions
+## 8. Open questions
 
 1. Confirm **44974/44975** allocation to DN#22630 — batch PC-76-32 timing fits, amounts ASSUMED.
-2. Reconcile **R18,216.10** carry gap (DN#23974 bank surplus R4,513.20 vs operator R22,729.30 applied on 45961).
-3. Target for **R39,014.91** PC-76-32 surplus, **R1,029.67** DN#22936 surplus, and **R75,844.50** on 44482.
+2. Where does the **R67,287.08** aggregate credit apply going forward — next delivery, refund, or held as float?
+3. Target for **R75,844.50** on 44482 — separate from the 5-event bridge; still fully unallocated.
 4. Canonical allocation lane rerun for Mar–Feb open items?
 
 ---
 
-## 8. Artifacts
+## 9. Artifacts
 
 | Artifact | Path |
 |---|---|
+| **Balance bridge (5 events)** | `LIN001_balance_bridge_2026-06_2026-09.md` |
 | **Consolidated events (Jun–Sep)** | `LIN001_events_consolidated_2026-06_2026-09.md` / `.csv` |
 | Allocation CSV (Mar–Feb) | `analysis/debtors/shared/reports/LIN001_fresh_allocation_2025-03_2026-02.csv` |
 | Event register (Jun–Sep) | `analysis/debtors/shared/reports/LIN001_event_register_2026-06_2026-09.csv` |

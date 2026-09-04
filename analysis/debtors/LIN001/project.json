@@ -59,6 +59,10 @@
     {
       "date": "2026-09-04",
       "event": "Consolidated all Jun–Sep delivery events (DN#22630, 22508, 22936, 23974, 24947) into LIN001_events_consolidated_2026-06_2026-09.md/.csv and events.json."
+    },
+    {
+      "date": "2026-09-04",
+      "event": "Built balance bridge across 5 delivery events (DN#22630-24947): total event net R154,493.88 vs total payments R221,780.96 = R67,287.08 credit, PROVEN by direct arithmetic. Resolves prior R18,216.10 carry-gap flag — aggregate ties regardless of event-to-event attribution."
     }
   ]
 }

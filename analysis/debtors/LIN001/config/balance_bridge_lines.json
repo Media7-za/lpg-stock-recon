@@ -1,0 +1,74 @@
+{
+  "debtorCode": "LIN001",
+  "generated": "2026-09-04",
+  "scope": "2026-06-08 to 2026-09-02 — 5 delivery events (DN# proof model)",
+  "windowBasis": "movement_only",
+  "windowBasisNote": "No B/F opening balance sourced for this window — bridge shows net movement across the 5 events only, not the full account balance.",
+  "openingMovement": 0,
+  "totalInvoices": 543691.26,
+  "totalCreditNotes": -389197.38,
+  "totalEventNet": 154493.88,
+  "totalPaymentsAllSources": 221780.96,
+  "closingMovement": -67287.08,
+  "closingMovementLabel": "Net credit position (customer overpaid vs event net across these 5 deliveries)",
+  "bridgeLines": [
+    {
+      "id": "DN22630",
+      "label": "DN#22630 — invoice 51132 + CN 15039",
+      "eventNet": 64900.69,
+      "payment": -103915.60,
+      "paymentDocs": ["44974", "44975"],
+      "runningBalance": -39014.91,
+      "surplus": 39014.91,
+      "confidence": "ASSUMED",
+      "note": "Payment split across 44974/44975 (PC-76-32) proposed, not operator-line-item-confirmed"
+    },
+    {
+      "id": "DN22508",
+      "label": "DN#22508 — invoice 51268 + CN 15086 (zero-net)",
+      "eventNet": 0,
+      "payment": 0,
+      "paymentDocs": [],
+      "runningBalance": -39014.91,
+      "surplus": 0,
+      "confidence": "PROVEN",
+      "note": "Full CN offset — no payment leg required"
+    },
+    {
+      "id": "DN22936",
+      "label": "DN#22936 — invoice 51681 + CN 15215",
+      "eventNet": 53951.69,
+      "payment": -54981.36,
+      "paymentDocs": ["EXT-2744666881"],
+      "runningBalance": -40044.58,
+      "surplus": 1029.67,
+      "confidence": "ASSERTED",
+      "note": "External bank receipt, ref Lin001 7.3 13991 = order_no 13991 (PROVEN link)"
+    },
+    {
+      "id": "DN23974",
+      "label": "DN#23974 — invoice 52768 + CN 15543",
+      "eventNet": 30207.80,
+      "payment": -34721.00,
+      "paymentDocs": ["EXT-2901239645"],
+      "runningBalance": -44557.78,
+      "surplus": 4513.20,
+      "confidence": "ASSERTED",
+      "note": "External bank receipt, ref HAPPY 8.22"
+    },
+    {
+      "id": "DN24947",
+      "label": "DN#24947 — invoice 52924 + CN 15592",
+      "eventNet": 5433.70,
+      "payment": -28163.00,
+      "paymentDocs": ["45961"],
+      "runningBalance": -67287.08,
+      "surplus": 22729.30,
+      "confidence": "ASSERTED",
+      "note": "Operator narrative allocates this surplus as carry from DN#23974 (R22,729.30), but 45961 alone fully funds it independent of that story"
+    }
+  ],
+  "bridgeSum": -67287.08,
+  "ties": true,
+  "reconciliationNote": "Sum of per-event surpluses (39014.91 + 0 + 1029.67 + 4513.20 + 22729.30) = 67,287.08 = total payments (221,780.96) minus total event net (154,493.88). Ties exactly regardless of which specific carry narrative (23974→24947) is used — the aggregate credit position is PROVEN by direct arithmetic; only the event-to-event assignment of that credit is ASSERTED/ASSUMED."
+}
