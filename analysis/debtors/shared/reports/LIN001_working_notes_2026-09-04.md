@@ -62,51 +62,92 @@
 
 ---
 
-## 4. Manual allocation — DN#24947 (operator confirmed)
+## 4. External bank payment — DN#23974 (operator confirmed)
+
+**Not in Supabase.** Recorded from mobile banking receipt (New Champion Supermarket → Bella Energy Services300).
+
+| Field | Value |
+|---|---|
+| **Amount** | **R34,721.00** |
+| **Date** | 2026-08-22 20:56 |
+| **Reference** | HAPPY 8.22 |
+| **Transaction ID** | 2901239645 |
+| **Synthetic doc id** | `EXT-2901239645` |
+
+### Allocation to DN#23974 / INV 52768
+
+```
+R34,721.00  external payment EXT-2901239645
+− R30,207.80  net after CN 15543
+───────────
+= R4,513.20  overpayment credit → carry forward
+```
+
+| # | Edge | Amount | Confidence |
+|---|---|---:|---|
+| 1 | CN 15543 → INV 52768 | R39,445.00 | PROVEN (ERP ref_no) |
+| 2 | EXT-2901239645 → INV 52768 | R30,207.80 | ASSERTED (operator + bank receipt) |
+| 3 | Credit surplus → carry | R4,513.20 | ASSERTED |
+
+**DN#23974 / Invoice 52768 → closed** on net basis.
+
+**Receipt artifact:** `/opt/cursor/artifacts/LIN001_payment_receipt_34721_2026-08-22.jpg`
+
+> **Math revision:** Prior session asserted **R22,729.30** carry from DN#23974 into DN#24947.
+> With this single external payment as the sole DN#23974 cash source, surplus is **R4,513.20** only.
+> The R18,216.10 gap (22,729.30 − 4,513.20) implies **additional unrecorded cash** toward DN#23974,
+> or a different allocation basis — **not reconciled** here.
+
+---
+
+## 5. Manual allocation — DN#24947 (operator confirmed; revised carry)
 
 **Payment 45961** · 2026-09-01 · **R28,163.00** · SPEEDP · **PC-76-35**  
-Related to DN#24947. Short-paid because of **overpayment credit from prior event**.
+Related to DN#24947. Applies current net plus **overpayment credit from DN#23974** (revised).
 
 ```
 R28,163.00  payment 45961
 − R5,433.70  current event net (after CN 15592)
+− R4,513.20  carry credit from EXT-2901239645 (revised)
 ───────────
-= R22,729.30  overpayment credit applied from prior event
+= R18,216.10  unallocated residual on 45961
 ```
 
-### Proposed manual edges
+### Manual edges (revised)
 
 | # | Edge | Amount | Confidence |
 |---|---|---:|---|
-| 1 | CN 15592 → INV 52924 | R69,000.00 | CONFIRMED (ERP ref_no) |
-| 2 | PMT 45961 → INV 52924 (current cash) | R5,433.70 | CONFIRMED (operator) |
-| 3 | Overpayment credit → INV 52924 | R22,729.30 | ASSERTED (carry from DN#23974) |
+| 1 | CN 15592 → INV 52924 | R69,000.00 | PROVEN (ERP ref_no) |
+| 2 | PMT 45961 → INV 52924 (current cash) | R5,433.70 | ASSERTED (operator) |
+| 3 | Credit R4,513.20 → INV 52924 | R4,513.20 | ASSERTED (carry from EXT-2901239645) |
+| 4 | PMT 45961 residual | R18,216.10 | ASSUMED (target TBD) |
 
-**DN#24947 / Invoice 52924 → closed** (pending overpayment source doc named).
-
-Implied prior settlement: R30,207.80 + R22,729.30 = **R52,937.10** applied to DN#23974.
+**DN#24947 / Invoice 52924 → closed** on net basis (R5,433.70 + R4,513.20 credit = R9,946.90 applied).
 
 ### Ledger gap
 
-**PROVEN:** No payment rows in Supabase between **2026-06-07** and **2026-09-01** for LIN001.  
-The **R22,729.30** overpayment source payment doc is **not yet named** in ledger.
+**PROVEN:** No ERP payment rows in Supabase between **2026-06-07** and **2026-09-01** for LIN001.  
+**ASSERTED:** External bank payment **EXT-2901239645** (R34,721, 2026-08-22) closes DN#23974 net.  
+**ASSUMED:** **R18,216.10** on payment 45961 still needs a target invoice or batch.
 
 ---
 
-## 5. Open questions
+## 6. Open questions
 
-1. Which payment/batch created the **R22,729.30** overpayment on DN#23974?
+1. Does **R18,216.10** on payment 45961 apply to another open invoice, or is there a second external payment toward DN#23974 that would restore the earlier **R22,729.30** carry story?
 2. Should LIN001 get a full micro-project scaffold + canonical allocation lane rerun?
 3. Re-run with LPG-only matching + tag-check gate vs continue manual event-by-event?
 
 ---
 
-## 6. Artifacts
+## 7. Artifacts
 
 | Artifact | Path |
 |---|---|
-| Allocation CSV | `analysis/debtors/shared/reports/LIN001_fresh_allocation_2025-03_2026-02.csv` |
+| Allocation CSV (Mar–Feb) | `analysis/debtors/shared/reports/LIN001_fresh_allocation_2025-03_2026-02.csv` |
+| Manual allocation CSV (Aug–Sep) | `analysis/debtors/shared/reports/LIN001_manual_allocation_2026-08_2026-09.csv` |
 | Generator script | `analysis/debtors/shared/scripts/lin001_fresh_allocation.mjs` |
+| Bank receipt | `LIN001_payment_receipt_34721_2026-08-22.jpg` |
 | PR | #11 (branch `cursor/lin001-fresh-allocation-bb32`) |
 
 **Epistemic tags used:** PROVEN (DB/CSV counts), ASSERTED (operator carry-forward), ASSUMED (best-effort matcher).

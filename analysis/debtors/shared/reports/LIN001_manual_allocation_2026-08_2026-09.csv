@@ -1,0 +1,7 @@
+edge_type,source_doc,source_date,source_amount,target_doc,target_date,target_amount,match_method,confidence,residual,notes
+credit_note_to_invoice,15543,2026-08-24,39445,52768,2026-08-24,69652.80,CN_REFNO,PROVEN,0,DN#23974 cylinder deposit credits
+payment_to_invoice,EXT-2901239645,2026-08-22,34721,52768,2026-08-24,30207.80,OPERATOR_BANK_RECEIPT,ASSERTED,4513.20,External bank payment ref HAPPY 8.22; not in Supabase
+credit_note_to_invoice,15592,2026-09-02,69000,52924,2026-09-02,74433.70,CN_REFNO,PROVEN,0,DN#24947 cylinder deposit credits
+payment_to_invoice,45961,2026-09-01,28163,52924,2026-09-02,5433.70,OPERATOR,ASSERTED,0,Current event net after CN 15592
+overpayment_credit_to_invoice,CREDIT-4513.20,2026-08-22,4513.20,52924,2026-09-02,4513.20,CARRY_FROM_PRIOR,ASSERTED,0,Surplus from EXT-2901239645 after DN#23974 net settle
+payment_to_invoice,45961,2026-09-01,28163,52924,2026-09-02,18216.10,OPERATOR_UNALLOCATED,ASSUMED,18216.10,Residual cash on 45961 after net+credit; target TBD
