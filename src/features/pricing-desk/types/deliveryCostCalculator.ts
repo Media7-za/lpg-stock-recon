@@ -4,27 +4,45 @@ export type CostProfileStatus = 'provisional' | 'published' | 'superseded' | 'ar
 
 export interface CalculateDeliveryCostInput {
   customer_id?: string;
-  order?: {
+  order: {
     total_lpg_kg: number;
   };
   route: {
     round_trip_km: number;
     estimated_trip_hours: number;
-    tolls?: number;
+    /** Toll cost for a single round trip. Multiplied by required_trips for the total. */
+    tolls_per_trip?: number;
   };
   vehicle: {
     mode: VehicleSelectionMode;
+    /** Required if mode='override'. */
     vehicle_id?: string;
     override_reason?: string;
+    /**
+     * Required if mode='override' AND the selected vehicle has no confirmed
+     * maximum_payload_kg/recommended_payload_kg. The calculator will never
+     * invent a payload figure — it errors instead unless this is supplied.
+     */
+    override_payload_kg?: number;
   };
   calculation_date?: string;
+}
+
+export interface VehicleAlternative {
+  vehicle_id: string;
+  registration: string;
+  total_execution_cost: number;
+  required_trips: number;
 }
 
 export interface VehicleSnapshot {
   vehicle_id: string;
   selection: VehicleSelectionMode;
+  registration: string;
   maximum_payload_kg: number;
-  registration?: string;
+  payload_governed: boolean;
+  reason: string;
+  alternatives_considered: VehicleAlternative[];
 }
 
 export interface LoadSnapshot {
@@ -40,8 +58,9 @@ export interface RouteSnapshot {
 export interface CostsSnapshot {
   running_cost: number;
   labour_cost: number;
-  tolls: number;
+  toll_cost: number;
   total_execution_cost: number;
+  labour_rates_governed: boolean;
 }
 
 export interface AllocationSnapshot {
@@ -82,16 +101,20 @@ export interface DeliveryCostCalculationRecord {
   total_lpg_kg: number;
   vehicle_id: string;
   vehicle_selection_mode: VehicleSelectionMode;
+  vehicle_selection_reason?: string;
   vehicle_override_reason?: string;
+  alternatives_considered?: VehicleAlternative[];
   payload_limit_kg: number;
+  payload_governed: boolean;
   required_trips: number;
   round_trip_km: number;
   trip_hours: number;
-  tolls: number;
+  tolls_per_trip: number;
   vehicle_cost_profile_id: string;
   running_cost_per_km_snapshot: number;
-  driver_hourly_rate_snapshot?: number;
-  assistant_hourly_rate_snapshot?: number;
+  driver_hourly_rate_snapshot: number;
+  assistant_hourly_rate_snapshot: number;
+  labour_rates_governed: boolean;
   running_cost: number;
   labour_cost: number;
   toll_cost: number;

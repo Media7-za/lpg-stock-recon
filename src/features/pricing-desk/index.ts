@@ -9,6 +9,7 @@ export type {
   CalculateDeliveryCostInput,
   CalculateDeliveryCostOutput,
   DeliveryCostCalculationRecord,
+  VehicleAlternative,
   VehicleSelectionMode,
   CalculationStatus,
   CostProfileStatus,

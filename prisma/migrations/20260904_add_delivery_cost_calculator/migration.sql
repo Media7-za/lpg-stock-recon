@@ -11,18 +11,18 @@ CREATE TYPE "CostProfileStatus" AS ENUM ('PROVISIONAL', 'PUBLISHED', 'SUPERSEDED
 CREATE TABLE "vehicles" (
     "id" TEXT NOT NULL,
     "registration" TEXT NOT NULL,
-    "vehicleType" TEXT NOT NULL,
-    "activeStatus" TEXT NOT NULL DEFAULT 'active',
-    "minEconomicPayloadKg" DECIMAL(10,2),
-    "recommendedPayloadKg" DECIMAL(10,2),
-    "maximumPayloadKg" DECIMAL(10,2),
-    "driverCount" INTEGER,
-    "assistantCount" INTEGER,
-    "governedStatus" TEXT,
-    "effectiveFrom" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "effectiveTo" TIMESTAMP(3),
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "vehicle_type" TEXT NOT NULL,
+    "active_status" TEXT NOT NULL DEFAULT 'active',
+    "min_economic_payload_kg" DECIMAL(10,2),
+    "recommended_payload_kg" DECIMAL(10,2),
+    "maximum_payload_kg" DECIMAL(10,2),
+    "driver_count" INTEGER,
+    "assistant_count" INTEGER,
+    "governed_status" TEXT,
+    "effective_from" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "effective_to" TIMESTAMP(3),
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "vehicles_pkey" PRIMARY KEY ("id")
 );
@@ -58,8 +58,8 @@ CREATE TABLE "vehicle_cost_profiles" (
     "depreciation_cost_per_km" DECIMAL(10,4),
     "total_running_cost_per_km" DECIMAL(10,4),
     "published_at" TIMESTAMP(3),
-    "effective_from" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "effective_to" TIMESTAMP(3),
+    "effective_from" DATE NOT NULL DEFAULT CURRENT_DATE,
+    "effective_to" DATE,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
@@ -78,16 +78,20 @@ CREATE TABLE "delivery_cost_calculations" (
     "total_lpg_kg" DECIMAL(10,2) NOT NULL,
     "vehicle_id" TEXT NOT NULL,
     "vehicle_selection_mode" "VehicleSelectionMode" NOT NULL DEFAULT 'RECOMMEND',
+    "vehicle_selection_reason" TEXT,
     "vehicle_override_reason" TEXT,
+    "alternatives_considered" JSONB,
     "payload_limit_kg" DECIMAL(10,2) NOT NULL,
+    "payload_governed" BOOLEAN NOT NULL DEFAULT true,
     "required_trips" INTEGER NOT NULL,
     "round_trip_km" DECIMAL(10,2) NOT NULL,
     "trip_hours" DECIMAL(10,2) NOT NULL,
-    "tolls" DECIMAL(10,2) NOT NULL DEFAULT 0,
+    "tolls_per_trip" DECIMAL(10,2) NOT NULL DEFAULT 0,
     "vehicle_cost_profile_id" TEXT NOT NULL,
     "running_cost_per_km_snapshot" DECIMAL(10,4) NOT NULL,
-    "driver_hourly_rate_snapshot" DECIMAL(10,2),
-    "assistant_hourly_rate_snapshot" DECIMAL(10,2),
+    "driver_hourly_rate_snapshot" DECIMAL(10,2) NOT NULL,
+    "assistant_hourly_rate_snapshot" DECIMAL(10,2) NOT NULL,
+    "labour_rates_governed" BOOLEAN NOT NULL DEFAULT true,
     "running_cost" DECIMAL(12,2) NOT NULL,
     "labour_cost" DECIMAL(12,2) NOT NULL,
     "toll_cost" DECIMAL(12,2) NOT NULL DEFAULT 0,
@@ -107,6 +111,9 @@ CREATE TABLE "delivery_cost_calculations" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "vehicles_registration_key" ON "vehicles"("registration");
+
+-- CreateIndex
+CREATE INDEX "vehicles_registration_idx" ON "vehicles"("registration");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "vehicle_cost_profiles_profile_code_key" ON "vehicle_cost_profiles"("profile_code");
@@ -143,3 +150,32 @@ ALTER TABLE "delivery_cost_calculations" ADD CONSTRAINT "delivery_cost_calculati
 
 -- AddForeignKey
 ALTER TABLE "delivery_cost_calculations" ADD CONSTRAINT "delivery_cost_calculations_vehicle_cost_profile_id_fkey" FOREIGN KEY ("vehicle_cost_profile_id") REFERENCES "vehicle_cost_profiles"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- ============================================================================
+-- Governed seed data
+--
+-- These are the only two vehicles the Pricing Desk has historically priced
+-- deliveries with. Their cost profiles are seeded as PROVISIONAL, sourced
+-- from the pre-004A shadow rate the Pricing Desk app already used
+-- (CS70HKZN = R3.66/km, CS70HMZN = R5.67/km). Labour hourly rates are left
+-- NULL: they have never been formally governed, so the calculator falls
+-- back to an explicitly-flagged assumption at calculation time rather than
+-- this seed inventing a number. CS70HMZN's payload is left NULL for the
+-- same reason — it has never been confirmed — so the recommendation engine
+-- will not silently select it until that figure is governed and an
+-- operator supplies it via vehicle.override_payload_kg or a data update.
+-- ============================================================================
+
+INSERT INTO "vehicles"
+  ("id", "registration", "vehicle_type", "active_status", "recommended_payload_kg", "maximum_payload_kg", "driver_count", "assistant_count", "governed_status", "effective_from", "created_at", "updated_at")
+VALUES
+  ('veh_cs70hkzn', 'CS70HKZN', 'rigid_body_small', 'active', 500, NULL, 1, 1, 'governed', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  ('veh_cs70hmzn', 'CS70HMZN', 'rigid_body_large', 'active', NULL, NULL, 1, 1, 'governed', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+ON CONFLICT ("registration") DO NOTHING;
+
+INSERT INTO "vehicle_cost_profiles"
+  ("id", "vehicle_id", "profile_code", "status", "source", "total_running_cost_per_km", "driver_hourly_rate", "assistant_hourly_rate", "effective_from", "created_at", "updated_at")
+VALUES
+  ('vcp_cs70hkzn_prov_2026_09', 'veh_cs70hkzn', 'VCP-2026-09-CS70HKZN-PROV', 'PROVISIONAL', 'legacy_pricing_desk_rate', 3.66, NULL, NULL, CURRENT_DATE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  ('vcp_cs70hmzn_prov_2026_09', 'veh_cs70hmzn', 'VCP-2026-09-CS70HMZN-PROV', 'PROVISIONAL', 'legacy_pricing_desk_rate', 5.67, NULL, NULL, CURRENT_DATE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+ON CONFLICT ("profile_code") DO NOTHING;
