@@ -99,6 +99,10 @@
     {
       "date": "2026-09-04",
       "event": "Event 4 CN assumed forthcoming in ERP: 8x48kg CYL @ R1,207.50 incl. VAT = R9,660.00. Event net = R52,516.80 - R9,660.00 = R42,856.80. This CN does not offset the invoice's 70x9.1 slice (different SKU). Payments R14,106.80 leave shortage R28,750.00 with no prior-event surplus applied; R477.83 shortage if Event 3 running surplus R28,272.17 is applied. DV/SV split unspecified; not yet in Supabase."
+    },
+    {
+      "date": "2026-09-04",
+      "event": "Wrote LIN001_proof_shortage_477.83.md — Route 1 event-by-event roll-forward and Route 2 aggregate (Σ invoices R330,652.49 − Σ CNs R198,202.50 − Σ payments R131,972.16) both equal Shortage R477.83 exactly."
     }
   ]
 }
