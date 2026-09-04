@@ -161,26 +161,22 @@ Credit carry from DN#23974  R22,729.30
 
 ---
 
-## 6. Payment remainder
+## 6. Unallocated cash / credit
 
-**44482** (PC-76-31) after slices to DN#22936 and DN#23974:
-
-```
-R75,844.50  total
-− R14,936.78  → DN#22936
-− R18,216.10  → DN#23974
-─────────────
-= R42,691.62  unallocated (ASSUMED — may bridge Feb open items or next event)
-```
+| Pool | Amount | Status |
+|---|---:|---|
+| **44482** remainder (after ASSUMED DN#23974 slice) | R57,628.40 | ASSUMED |
+| **DN#22630** surplus (PC-76-32) | R39,014.91 | ASSUMED |
+| **DN#22936** surplus (EXT-2744666881) | R1,029.67 | ASSERTED |
 
 ---
 
 ## 7. Open questions
 
-1. Confirm **44482 split** (R14,936.78 + R18,216.10) — proposed to reconcile operator carry math; not operator-confirmed.
-2. Confirm **44974/44975 split** across DN#22630 — batch PC-76-32 timing fits, amounts ASSUMED.
-3. Does **R42,691.62** on 44482 close Feb-2026 open events (DN#21237 / DN#21541) or prepay a future delivery?
-4. Scaffold LIN001 micro-project + canonical allocation lane rerun?
+1. Confirm **44974/44975** allocation to DN#22630 — batch PC-76-32 timing fits, amounts ASSUMED.
+2. Confirm or replace **44482 slice R18,216.10** toward DN#23974 (needed for R22,729.30 carry story).
+3. Target for **R39,014.91** PC-76-32 surplus and **R1,029.67** DN#22936 surplus.
+4. Canonical allocation lane rerun for Mar–Feb open items?
 
 ---
 
@@ -195,6 +191,7 @@ R75,844.50  total
 | Fresh allocation script | `analysis/debtors/shared/scripts/lin001_fresh_allocation.mjs` |
 | **Event DN#22936 card** | `analysis/debtors/shared/reports/LIN001_event_DN22936.md` |
 | **LIN001 events config** | `analysis/debtors/LIN001/config/events.json` |
+| Bank receipt (DN#22936) | `LIN001_payment_receipt_DN22936_2026-07-03.jpg` |
 | Bank receipt (DN#23974) | `LIN001_payment_receipt_34721_2026-08-22.jpg` |
 
 **Epistemic tags:** PROVEN (Supabase event structure), ASSERTED (operator-confirmed closures), ASSUMED (payment splits / carry chain).
