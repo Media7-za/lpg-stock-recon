@@ -157,6 +157,23 @@
     { "id": "POOL-22936-SURPLUS", "amount": 1029.67, "source": "EXT-2744666881", "confidence": "ASSERTED" },
     { "id": "GAP-CARRY-23974-24947", "amount": 18216.1, "confidence": "UNRECONCILED", "note": "Operator carry R22729.30 vs DN#23974 bank surplus R4513.20" }
   ],
+  "pendingCreditNotes": [
+    {
+      "id": "PENDING-CYL-RETURN-20260904",
+      "type": "cylinder_deposit_return",
+      "date": "2026-09-04",
+      "description": "8 x 48kg empties returned (operator statement)",
+      "qty": 8,
+      "sku": ["D.1", "S.1"],
+      "sku_split": "unspecified",
+      "rate_used": 1207.5,
+      "rate_confidence": "ASSUMED — cross-account ERP standard (JIM001, TWK002, WO0001, MD0003), not LIN001-specific",
+      "estimated_value": 9660.0,
+      "target_invoice": "unconfirmed — best-guess candidate DN#24947 (invoice 52924, 20x48kg out), not verified",
+      "status": "pending — not yet posted as ERP CN, not applied to any event",
+      "detail": "analysis/debtors/shared/reports/LIN001_note_2026-09-04_cylinder_return.md"
+    }
+  ],
   "consolidatedReports": {
     "markdown": "analysis/debtors/shared/reports/LIN001_events_consolidated_2026-06_2026-09.md",
     "csv": "analysis/debtors/shared/reports/LIN001_events_consolidated_2026-06_2026-09.csv"

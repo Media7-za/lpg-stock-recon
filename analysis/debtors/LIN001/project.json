@@ -67,6 +67,10 @@
     {
       "date": "2026-09-04",
       "event": "Last event added: proforma invoice 2026-09-04 (70x9kg LPG refill, R16,291.80, no DN# supplied) plus two bank receipts EXT-2949387151 R13,416.80 and EXT-2950393933 R690.00 = R14,106.80. Event short-paid by R2,185.00; open — no DN# proof, not yet in Supabase. Balance bridge updated to 6 events: net position R65,102.08."
+    },
+    {
+      "date": "2026-09-04",
+      "event": "Operator reported 8x48kg empty cylinders returned. Not a line on the same-day proforma (9kg-only, no CN). Estimated credit R9,660.00 (8 x R1,207.50 ERP standard 48kg deposit rate, DV=SV) recorded as pending in events.json (pendingCreditNotes) — target invoice, DV/SV split, and application unconfirmed. Not applied to any event/pool total pending operator direction."
     }
   ]
 }

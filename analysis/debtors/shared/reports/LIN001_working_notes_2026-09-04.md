@@ -201,6 +201,18 @@ R16,291.80  proforma invoice (70×9kg LPG refill)
 
 **Receipts:** `/opt/cursor/artifacts/LIN001_payment_receipt_13416.80_2026-09-04.jpg`, `/opt/cursor/artifacts/LIN001_payment_receipt_690_2026-09-04.jpg`, `/opt/cursor/artifacts/LIN001_proforma_invoice_2026-09-04.jpg`
 
+### Cylinder return — 8 × 48kg empties (2026-09-04) — pending
+
+**Detail:** `LIN001_note_2026-09-04_cylinder_return.md`
+
+Operator reports **8 × 48kg empty cylinders returned**. Not a line item on the same-day proforma (which is pure 9kg refill, no 48kg, no CN lines) — this is a separate custody/deposit matter, most plausibly tied to the earlier DN#24947 delivery (20×48kg out), but **unconfirmed**.
+
+```
+8 × R1,207.50 (ERP standard 48kg deposit rate, DV=SV) = R9,660.00  estimated credit
+```
+
+**Pending** — no ERP CN doc yet, target invoice unconfirmed, DV/SV split unspecified. **Not applied** to any event or pool total; recorded as `pendingCreditNotes` in `analysis/debtors/LIN001/config/events.json` for operator disposition.
+
 ---
 
 ## 6. Balance bridge (PROVEN aggregate tie-out)
@@ -235,9 +247,10 @@ This **R67,287.08 credit from the 5 ERP events is PROVEN** by direct arithmetic 
 
 1. Confirm **44974/44975** allocation to DN#22630 — batch PC-76-32 timing fits, amounts ASSUMED.
 2. **Proforma 2026-09-04:** raise/name the DN# and post to ERP; resolve R2,185.00 shortfall (apply surplus credit, or await 3rd payment).
-3. Where does the **R65,102.08** aggregate net credit apply going forward — next delivery, refund, or held as float?
-4. Target for **R75,844.50** on 44482 — separate from the event bridge; still fully unallocated.
-5. Canonical allocation lane rerun for Mar–Feb open items?
+3. **8×48kg cylinder return (2026-09-04):** confirm target invoice/DN#, DV/SV split, and whether the ~R9,660.00 estimated credit should post as a new CN or apply against an existing invoice's outstanding deposits.
+4. Where does the **R65,102.08** aggregate net credit apply going forward — next delivery, refund, or held as float?
+5. Target for **R75,844.50** on 44482 — separate from the event bridge; still fully unallocated.
+6. Canonical allocation lane rerun for Mar–Feb open items?
 
 ---
 
@@ -256,6 +269,7 @@ This **R67,287.08 credit from the 5 ERP events is PROVEN** by direct arithmetic 
 | **Event DN#23974 card** | `analysis/debtors/shared/reports/LIN001_event_DN23974.md` |
 | **Event DN#24947 card** | `analysis/debtors/shared/reports/LIN001_event_DN24947.md` |
 | **Event proforma 2026-09-04 card** | `analysis/debtors/shared/reports/LIN001_event_2026-09-04_proforma.md` |
+| **Cylinder return note (8×48kg, 2026-09-04)** | `analysis/debtors/shared/reports/LIN001_note_2026-09-04_cylinder_return.md` |
 | **LIN001 events config** | `analysis/debtors/LIN001/config/events.json` |
 | **LIN001 balance bridge config** | `analysis/debtors/LIN001/config/balance_bridge_lines.json` |
 | Bank receipt (DN#22936) | `LIN001_payment_receipt_DN22936_2026-07-03.jpg` |
