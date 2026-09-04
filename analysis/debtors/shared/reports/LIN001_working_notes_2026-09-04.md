@@ -61,8 +61,8 @@ Reconciliation proceeds **event-by-event**. An event is not closed until all fou
 | **22630** | 2026-06-08 | 51132 | 15039 | **R64,900.69** | ASSUMED — PC-76-32 batch |
 | **22508** | 2026-06-18 | 51268 | 15086 | **R0.00** | Closed — zero-net (CN full offset) |
 | **22936** | 2026-07-08 | 51681 | 15215 | **R53,951.69** | **Closed** — EXT-2744666881 ([detail](LIN001_event_DN22936.md)) |
-| **23974** | 2026-08-24 | 52768 | 15543 | **R30,207.80** | ASSERTED — bank receipt + PC-76-31 slice |
-| **24947** | 2026-09-02 | 52924 | 15592 | **R5,433.70** | ASSERTED — 45961 + carry from 23974 |
+| **23974** | 2026-08-24 | 52768 | 15543 | **R30,207.80** | **Closed** — EXT-2901239645 ([detail](LIN001_event_DN23974.md)) |
+| **24947** | 2026-09-02 | 52924 | 15592 | **R5,433.70** | Partial — 45961 + R4,513.20 carry; **R18,216.10 open** |
 
 **Payment pool (Mar–Sep 2026, PROVEN in Supabase unless noted):**
 
@@ -121,29 +121,32 @@ Prior ASSUMED split (44482 + carry from DN#22630) **withdrawn**.
 
 Invoice and CN both **R132,862.38** — net **R0.00**. No payment leg required. **Closed.**
 
-### Event DN#23974 — ASSERTED payment (operator bank receipt + PC-76-31 slice)
+### Event DN#23974 — closed (operator bank receipt)
 
-| Part | Ref | Amount |
-|---|---|---:|
-| Invoice | 52768 | R69,652.80 |
-| Credit note | 15543 | R-39,445.00 |
-| Delivery note | **DN#23974** | *(proof)* |
-| Payment | EXT-2901239645 | R34,721.00 |
-| Payment | 44482 partial | R18,216.10 *(ASSUMED)* |
+**Detail:** `LIN001_event_DN23974.md` · **Config:** `analysis/debtors/LIN001/config/events.json`
+
+| Part | Doc / ref | Date | Amount |
+|---|---|---:|---:|
+| Invoice | **52768** | 2026-08-24 | R69,652.80 |
+| Credit note | **15543** → 52768 | 2026-08-24 | R-39,445.00 |
+| Delivery note | **DN#23974** | — | *(proof)* |
+| Payment | **EXT-2901239645** | 2026-08-22 | R34,721.00 |
+| **Event net** | | | **R30,207.80** |
 
 ```
-EXT-2901239645  R34,721.00
-44482 partial   R18,216.10
-──────────────────────────
-                R52,937.10  total cash
-− event net     R30,207.80
-──────────────────────────
-= credit carry  R22,729.30  → DN#24947
+R34,721.00  external payment EXT-2901239645
+− R30,207.80  event net (52768 − 15543)
+───────────
+= R4,513.20  surplus → credit carry to DN#24947
 ```
+
+**Line mix (PROVEN):** 10×14kg, 10×19kg, 20×48kg SV + 3×48kg SV single — LPG + deposits.
+
+**Event DN#23974 → closed.**
 
 **Receipt:** `/opt/cursor/artifacts/LIN001_payment_receipt_34721_2026-08-22.jpg`
 
-### Event DN#24947 — ASSERTED payment (operator)
+### Event DN#24947 — partial (45961 + revised carry)
 
 | Part | Ref | Amount |
 |---|---|---:|
@@ -153,11 +156,15 @@ EXT-2901239645  R34,721.00
 | Payment | 45961 | R28,163.00 |
 
 ```
-45961 current net          R5,433.70
-Credit carry from DN#23974  R22,729.30
+45961 current net           R5,433.70
+Credit carry from DN#23974   R4,513.20  (revised — from bank receipt surplus)
 ────────────────────────────────────
-                           R28,163.00  → fully allocated, event closed
+                             R9,946.90  applied to event net
+
+45961 residual              R18,216.10  (ASSUMED — target TBD)
 ```
+
+Event net **R5,433.70** is covered; **R18,216.10** on payment 45961 remains unallocated unless a second payment toward DN#23974 is named (would restore R22,729.30 carry story).
 
 ---
 
@@ -165,16 +172,17 @@ Credit carry from DN#23974  R22,729.30
 
 | Pool | Amount | Status |
 |---|---:|---|
-| **44482** remainder (after ASSUMED DN#23974 slice) | R57,628.40 | ASSUMED |
+| **44482** (PC-76-31) | R75,844.50 | ASSUMED — fully unallocated |
 | **DN#22630** surplus (PC-76-32) | R39,014.91 | ASSUMED |
 | **DN#22936** surplus (EXT-2744666881) | R1,029.67 | ASSERTED |
+| **45961** residual | R18,216.10 | ASSUMED |
 
 ---
 
 ## 7. Open questions
 
 1. Confirm **44974/44975** allocation to DN#22630 — batch PC-76-32 timing fits, amounts ASSUMED.
-2. Confirm or replace **44482 slice R18,216.10** toward DN#23974 (needed for R22,729.30 carry story).
+2. **DN#24947:** where does **R18,216.10** on 45961 land, or is there a second payment toward DN#23974?
 3. Target for **R39,014.91** PC-76-32 surplus and **R1,029.67** DN#22936 surplus.
 4. Canonical allocation lane rerun for Mar–Feb open items?
 
@@ -190,6 +198,7 @@ Credit carry from DN#23974  R22,729.30
 | Event register script | `analysis/debtors/shared/scripts/lin001_event_register.mjs` |
 | Fresh allocation script | `analysis/debtors/shared/scripts/lin001_fresh_allocation.mjs` |
 | **Event DN#22936 card** | `analysis/debtors/shared/reports/LIN001_event_DN22936.md` |
+| **Event DN#23974 card** | `analysis/debtors/shared/reports/LIN001_event_DN23974.md` |
 | **LIN001 events config** | `analysis/debtors/LIN001/config/events.json` |
 | Bank receipt (DN#22936) | `LIN001_payment_receipt_DN22936_2026-07-03.jpg` |
 | Bank receipt (DN#23974) | `LIN001_payment_receipt_34721_2026-08-22.jpg` |

@@ -21,14 +21,15 @@ event_dn,event_part,doc_ref,doc_date,amount,match_method,confidence,residual,not
 23974,credit_note,15543,2026-08-24,39445.00,CN_REFNO,PROVEN,0,Event DN#23974 — CN → 52768
 23974,delivery_note,DN#23974,,,OPERATOR,ASSERTED,0,Proof of event
 23974,event_net,,,30207.80,COMPUTED,PROVEN,0,Invoice − CN
-23974,payment,EXT-2901239645,2026-08-22,34721.00,OPERATOR_BANK_RECEIPT,ASSERTED,0,External bank ref HAPPY 8.22
-23974,payment,44482,2026-05-08,18216.10,OPERATOR_BATCH,ASSUMED,0,PC-76-31 partial — with EXT closes event at R52937.10
-23974,credit_carry,23974→24947,,22729.30,CARRY,ASSERTED,0,Surplus after DN#23974 (enables operator carry story)
+23974,payment,EXT-2901239645,2026-08-22,34721.00,OPERATOR_BANK_RECEIPT,ASSERTED,4513.20,External bank ref HAPPY 8.22; not in Supabase
+23974,credit_carry,23974→24947,,4513.20,CARRY,ASSERTED,4513.20,Surplus after DN#23974 net settle
+23974,event_status,DN#23974,,30207.80,OPERATOR,ASSERTED,0,Event closed 2026-09-04 — bank receipt confirmed
 24947,invoice,52924,2026-09-02,74433.70,ERP,PROVEN,0,Event DN#24947 — invoice
 24947,credit_note,15592,2026-09-02,69000.00,CN_REFNO,PROVEN,0,Event DN#24947 — CN → 52924
 24947,delivery_note,DN#24947,,,OPERATOR,ASSERTED,0,Proof of event
 24947,event_net,,,5433.70,COMPUTED,PROVEN,0,Invoice − CN
 24947,payment,45961,2026-09-01,5433.70,OPERATOR,ASSERTED,0,Current event net — PC-76-35
-24947,payment_allocation,CREDIT-22729.30,2026-08-22,22729.30,CARRY_FROM_23974,ASSERTED,0,Credit from event DN#23974
-POOL,payment_unallocated,44482,2026-05-08,57628.40,,ASSUMED,57628.40,44482 after ASSUMED R18216.10 slice to DN#23974 — DN#22936 paid externally
+24947,payment_allocation,CREDIT-4513.20,2026-08-22,4513.20,CARRY_FROM_23974,ASSERTED,0,Credit from event DN#23974 (revised)
+24947,payment_unallocated,45961,2026-09-01,18216.10,,ASSUMED,18216.10,45961 residual after net+credit — target TBD
+POOL,payment_unallocated,44482,2026-05-08,75844.50,,ASSUMED,75844.50,44482 fully unallocated — no slices applied
 POOL,credit_unallocated,22630→POOL,,39014.91,,ASSUMED,39014.91,PC-76-32 surplus — target event TBD

@@ -42,7 +42,15 @@
   "history": [
     {
       "date": "2026-09-04",
-      "event": "Scaffold opened. Event DN#22936 added (invoice 51681, CN 15215, net R53,951.69). Payment ASSUMED — carry R39,014.91 from DN#22630 + 44482 slice R14,936.78."
+      "event": "Scaffold opened. Event DN#22936 added (invoice 51681, CN 15215, net R53,951.69)."
+    },
+    {
+      "date": "2026-09-04",
+      "event": "Event DN#22936 closed — external payment EXT-2744666881 R54,981.36 (2026-07-03, ref Lin001 7.3 13991). Surplus R1,029.67."
+    },
+    {
+      "date": "2026-09-04",
+      "event": "Event DN#23974 closed — external payment EXT-2901239645 R34,721.00 (2026-08-22, ref HAPPY 8.22). Surplus R4,513.20 carry to DN#24947."
     }
   ]
 }

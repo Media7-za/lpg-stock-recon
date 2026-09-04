@@ -51,6 +51,51 @@
       "added": "2026-09-04",
       "payment_confirmed": "2026-09-04",
       "added_by": "operator"
+    },
+    {
+      "id": "EVT-23974",
+      "deliveryNote": "DN#23974",
+      "date": "2026-08-24",
+      "invoice": {
+        "doc_no": "52768",
+        "amount": 69652.8,
+        "confidence": "PROVEN",
+        "source": "Supabase transaction_headers"
+      },
+      "credit_note": {
+        "doc_no": "15543",
+        "ref_no": "52768",
+        "amount": 39445,
+        "confidence": "PROVEN",
+        "source": "Supabase transaction_headers"
+      },
+      "event_net": 30207.8,
+      "payment": {
+        "status": "closed",
+        "confidence": "ASSERTED",
+        "total": 34721,
+        "doc_no": "EXT-2901239645",
+        "date": "2026-08-22",
+        "reference": "HAPPY 8.22",
+        "transaction_id": "2901239645",
+        "method": "OPERATOR_BANK_RECEIPT",
+        "source": "External bank — not in Supabase"
+      },
+      "surplus": 4513.2,
+      "carry_to": "DN#24947",
+      "closure": "closed",
+      "line_mix": [
+        { "sku": "14.4", "description": "14KG LPG - PACKED", "qty": 10 },
+        { "sku": "14.1", "description": "14KG CYLINDER DEPOSIT", "qty": 10 },
+        { "sku": "1901", "description": "19KG LPG PACKED", "qty": 10 },
+        { "sku": "19.1", "description": "19KG CYLINDER DEPOSIT", "qty": 10 },
+        { "sku": "S.4", "description": "48KG SV LPG- PACKED", "qty": 17 },
+        { "sku": "S01", "description": "48KG SINGLE VALVE PACKED", "qty": 3 },
+        { "sku": "S.1", "description": "48KG SV CYLINDER DEPOSIT", "qty": 20 }
+      ],
+      "added": "2026-09-04",
+      "payment_confirmed": "2026-09-04",
+      "added_by": "operator"
     }
   ]
 }
