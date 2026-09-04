@@ -1,8 +1,8 @@
 # LIN001 — Event 2026-09-04 (Proforma, no DN# yet)
 
 **Account:** LIN001 — SLINDOKUHLE ENTERPRISES (PTY) LTD  
-**Proof of event:** **MISSING** — no delivery note (DN#) provided; only a **proforma invoice**  
-**Status:** **Open — short-paid** (pending DN# and/or credit application)
+**Proof of event:** **MISSING** — no delivery note (DN#) provided; only a **proforma invoice** (LPG quote slice)  
+**Status:** **Open** — reconstructed invoice includes CYL slice; CN not posted
 
 ---
 
@@ -10,31 +10,31 @@
 
 | Part | Doc / ref | Date | Amount | Confidence |
 |---|---|---:|---:|---|
-| **Invoice** | Proforma (LIN001) | 2026-09-04 | R16,291.80 | ASSERTED (image only — not in Supabase) |
-| **Credit note** | **N/A** | — | R0.00 | N/A — no cylinder-deposit lines on this order |
+| **Invoice (reconstructed)** | Proforma LPG + CYL dual-line | 2026-09-04 | **R52,516.80** | LPG ASSERTED / CYL ASSUMED |
+| ↳ LPG slice | Proforma — 70×9kg @ R232.74 | 2026-09-04 | R16,291.80 | ASSERTED (quote image) |
+| ↳ CYL slice | 70×9.1 @ R517.50 | 2026-09-04 | R36,225.00 | ASSUMED (Rule 5 — qty matches fills) |
+| **Credit note** | **Not posted** | — | R0.00 | Empty returns unconfirmed / not in ERP |
 | **Delivery note** | **MISSING** | — | *(no DN# supplied)* | **GAP** |
-| **Payment** | Two receipts (below) | 2026-09-04 | R14,106.80 | ASSERTED |
+| **Payment** | Two receipts | 2026-09-04 | R14,106.80 | ASSERTED |
 
-**Event net (no CN):** **R16,291.80**
+**Event net (no CN yet):** **R52,516.80**  
+If a 1:1 empty return of 70×9.1 later posts: CN R36,225.00 → event net **R16,291.80** (= the proforma quote).
 
 ---
 
-## Invoice detail (proforma — not yet in ERP)
+## Invoice detail
 
-| Field | Value |
-|---|---|
-| Customer | LIN001 |
-| Reference | LIN001 |
-| Supply | LPG Refills — Delivered |
-| Line | 9kg LPG Refill × 70 @ R232.74 |
-| Total LPG | 630kg |
-| Price basis | R25.86/kg incl. VAT |
-| Delivery | Included |
-| **Total payable** | **R16,291.80 incl. VAT** |
+The proforma **exposes the LPG slice only**, for quote purposes. Operator instruction 2026-09-04: add the cylinder slice to the invoice (same dual-line pattern as DN#22630–24947).
 
-**No cylinder deposit lines** — pure refill order, so no credit note is structurally expected (unlike the DN#22630–24947 events, which all had CYL deposit + CN pairs).
+| Slice | SKU / line | Qty | Rate | Amount | Tag |
+|---|---|---:|---:|---:|---|
+| **LPG** | 9kg LPG Refill | 70 | R232.74 | **R16,291.80** | ASSERTED — proforma |
+| **CYL** | 9.1 cylinder deposit | 70 | R517.50 | **R36,225.00** | ASSUMED — dual-line, ERP standard rate |
+| **Invoice total** | | | | **R52,516.80** | reconstructed |
 
-**Not yet posted to Supabase** — this is a **proforma**, ahead of the ERP invoice/DN# being raised.
+Total LPG weight 630kg · Price basis R25.86/kg incl. VAT · Delivery included.
+
+**Not yet posted to Supabase.** CYL qty of 70 is inferred from the 70 fills — correct if this is a standard packed delivery; wrong if some cylinders are customer-owned refills with no deposit charge.
 
 ---
 
@@ -48,29 +48,31 @@
 
 Both: New Champion Supermarket → Bella Energy Services300 (GSRH1V).
 
-**Receipts:**
-- `/opt/cursor/artifacts/LIN001_payment_receipt_13416.80_2026-09-04.jpg`
-- `/opt/cursor/artifacts/LIN001_payment_receipt_690_2026-09-04.jpg`
-- Proforma: `/opt/cursor/artifacts/LIN001_proforma_invoice_2026-09-04.jpg`
-
 ---
 
 ## Closure attempt
 
+**Against reconstructed invoice (no CN):**
+
 ```
-R16,291.80  proforma invoice (event net — no CN)
-− R14,106.80  payments received (R13,416.80 + R690.00)
+R52,516.80  reconstructed invoice (LPG + CYL)
+− R14,106.80  payments
 ────────────
-= R2,185.00  short-paid
+= R38,410.00  shortage
 ```
 
-**Event NOT closed** — short by **R2,185.00**.
+**Against LPG slice only** (what the customer paid toward — the quote):
 
-### Possible resolutions (not operator-confirmed)
+```
+R16,291.80  LPG / proforma quote
+− R14,106.80  payments
+────────────
+= R2,185.00  LPG-slice cash shortfall
+```
 
-1. **Apply prior surplus credit** — R67,287.08 aggregate credit exists across DN#22630–24947 (see `LIN001_balance_bridge_2026-06_2026-09.md`); R2,185.00 could be drawn from that pool. **ASSUMED — not directed by operator.**
-2. **Await DN#** — this is a proforma; the physical delivery note may not yet exist. Event may remain **pending** until DN# is raised and reconciled against ERP.
-3. **Additional payment expected** — R2,185.00 may follow as a third receipt.
+The R36,225.00 CYL slice is expected to be offset by an empty-return **CN on this event**, once physically confirmed and posted — not by the customer subtracting a bottle figure from the LPG quote before paying.
+
+**Event NOT closed.**
 
 ---
 
@@ -80,7 +82,9 @@ R16,291.80  proforma invoice (event net — no CN)
 |---|---|
 | **No delivery note (DN#)** | Required proof of event per model — not supplied |
 | **Not in Supabase** | Proforma stage — no ERP `transaction_headers` row yet |
-| **Short-paid R2,185.00** | Two payments total R14,106.80 vs invoice R16,291.80 (before considering customer's cylinder-credit claim below) |
+| **Short-paid (reconstructed invoice)** | Payments R14,106.80 vs invoice R52,516.80 = **shortage R38,410.00** until a CYL CN posts |
+| **LPG-slice cash shortfall** | Payments vs LPG quote R16,291.80 = **R2,185.00** |
+| **CYL qty unconfirmed** | 70×9.1 is ASSUMED from fill qty — operator to confirm |
 
 ---
 
@@ -121,26 +125,21 @@ The earlier version of this note treated the operator's "8×48kg" report and the
 
 **Correct framing: these are two independent, unconfirmed claims, not two versions of one event.** Neither is confirmable from ERP as of this check (silent since Sept 2). No amount of ledger analysis will settle which (if either) reflects a real Sept 4 return — **a physical count (driver/warehouse goods-returned slip) is required** for whichever claim(s) are real.
 
-### Can a cylinder-return credit net against this invoice? — **corrected 2026-09-04: not a blanket rule, but still no**
+### Can a cylinder-return credit net against the LPG quote?
 
-**Correction to the earlier "No, by rule" framing:** on review, `business_rules.md` Rule 3 (Debt Partitioning) and Rule 4 (Asset Write-Off) were cited too strongly. Read verbatim, they govern how **payments** are pooled and how a **quarantined cylinder payment** writes off physical custody, in the retrospective statement-building process — they do not say anything directly about whether a cylinder-return credit note may net against a cash invoice. Citing them as an existing prohibition on this specific maneuver was an overclaim. Retracted on both branches (`cursor/lin001-fresh-allocation-bb32` and `claude/lin001-delivery-events-xb8nt7`).
+**Rule 3/4 overclaim retracted (a67f059):** those rules do not prohibit LPG+CYL on one invoice. LIN001 already does that routinely (invoice 52924 + CN 15592). No separate netting lane is needed.
 
-**The real basis, on inspection of LIN001's own documents:** this account's regular DN# events already combine LPG and CYL lines on **one invoice**, netted against **one CN**, as routine practice — e.g. invoice 52924 (DN#24947) carries LPG gas-fill lines (D.4/S.4/1401/1901) *and* CYL deposit lines (14.1/S.1/19.1/D.1) together, with CN 15592 reversing the deposit side of that same event (full 5-SKU breakdown: `LIN001_event_DN24947.md`). That same-document netting is LIN001's **normal, established pattern** — it does not need a special "netting customer" lane, and Rule 3/4's ledger-separation language was never really in tension with it (that rule is about the analytical statement view, not about how source documents are built).
+**Operator 2026-09-04:** the proforma was LPG-quote only. Reconstructed invoice now **has** a CYL slice (70×9.1 @ R517.50 = R36,225.00). Confirmed empty returns belong as **this event's credit note**, offsetting that deposit slice — same as Events 1–3.
 
-What's actually different about the WhatsApp claim: this proforma is a **pure 9kg-gas document with zero CYL lines of its own**, and the claimed credit is sourced from **outside the document** — an unconfirmed physical return, asserted informally (WhatsApp), with no corresponding CN. That's cross-event, out-of-document netting, categorically different from LIN001's routine same-invoice combination — and *that* distinction, not a general LPG/CYL segregation rule, is why the credit shouldn't be applied here without a posted CN.
+What still does **not** work: the customer subtracting R2,875 from the **LPG quote** before paying. That figure is not 70 units, and there is no posted CN.
 
-### Two possible closure scenarios (still not resolved — now correctly framed)
+- LPG slice R16,291.80 is the gas charge — payments apply here
+- CYL slice R36,225.00 is deposit exposure — emptied cylinders post as CN against 9.1
+- Customer's 50-bottle / R2,875 figure is neither 70 units nor a posted CN
 
-| Scenario | Logic | Result |
-|---|---|---|
-| **A — Reject customer's credit** (current standing position — because the claim is out-of-document/unconfirmed, not because LPG and CYL may never mix on this account) | Full invoice R16,291.80 stands; both payments (R13,416.80 + R690.00 = R14,106.80) apply | **Short-paid R2,185.00** |
-| **B — Accept customer's credit** (would require a posted CN from a confirmed physical count, plus an explicit operator allocation decision) | R16,291.80 − R2,875.00 = R13,416.80 net payable; that was paid in full | Fully settled; R690.00 second payment becomes a pure overpayment |
+**If a 70×9.1 CN later posts:** invoice R52,516.80 − CN R36,225.00 = **Balance R16,291.80** (the quote). Payments R14,106.80 leave **Shortage R2,185.00** on the LPG slice.
 
-Note the two scenarios reconcile with each other exactly: **R2,875.00 (customer's claimed credit) − R690.00 (2nd payment) = R2,185.00** (the shortfall). This is a coincidence of arithmetic, not evidence that Scenario B is correct.
-
-**Recommendation:** Treat this as **Scenario A** by default — not because LPG and CYL debt may never net (this account's own invoices net them routinely, within one document), but because this specific credit has no source document (no CN, no confirmed physical count) to net *from*. Hold the event open. Obtain a physical goods-returned slip for whichever cylinder return(s) actually happened; once confirmed, post it as its own CN; only then consider — as an explicit allocation decision — whether the resulting credit should offset the R2,185.00 shortfall, consistent with how LIN001's other events already combine LPG and CYL on their own documents.
-
-**On a separate netting lane for LIN001 generally:** not needed. The existing `event_net = invoice + CN` model in `events.json` already nets LPG and CYL together wherever the source documents do — that's this customer's default behavior already, not an exception requiring a flag. A lane would only be warranted for a policy question that's customer-independent: whether *any* self-asserted, out-of-document credit claim may ever be accepted against an invoice. That answer stays "no, not without a posted CN," for every account, not just LIN001.
+WhatsApp claim stays unapplied because it has **no source CN and no confirmed physical count** — not because LPG and CYL may never mix on this account.
 
 ---
 

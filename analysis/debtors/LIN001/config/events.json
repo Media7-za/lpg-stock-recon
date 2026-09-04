@@ -8,7 +8,7 @@
   },
   "summary": {
     "eventCount": 6,
-    "totalEventNet": 170785.68,
+    "totalEventNet": 207010.68,
     "closedCount": 4,
     "assumedClosedCount": 1,
     "zeroNetCount": 1,
@@ -139,16 +139,34 @@
       "date": "2026-09-04",
       "invoice": {
         "doc_no": "PROFORMA-LIN001-20260904",
-        "amount": 16291.80,
-        "confidence": "ASSERTED",
-        "source": "Proforma invoice image — not in Supabase",
+        "amount": 52516.80,
+        "confidence": "ASSUMED reconstructed — proforma is LPG quote only",
+        "source": "Proforma invoice image (LPG slice) + Rule 5 dual-line cylinder slice (operator 2026-09-04)",
+        "slices": {
+          "lpg": {
+            "description": "9KG LPG Refill",
+            "qty": 70,
+            "unit_price": 232.74,
+            "amount": 16291.80,
+            "confidence": "ASSERTED — proforma image"
+          },
+          "cyl": {
+            "sku": "9.1",
+            "description": "9kg cylinder deposit",
+            "qty": 70,
+            "unit_price": 517.5,
+            "amount": 36225.00,
+            "confidence": "ASSUMED — qty matches LPG fills (Rule 5 dual-line); rate is ERP standard 9.1"
+          }
+        },
         "line_mix": [
-          { "description": "9KG LPG Refill", "qty": 70, "unit_price": 232.74 }
+          { "description": "9KG LPG Refill", "qty": 70, "unit_price": 232.74, "amount": 16291.80, "debt_group": "LPG" },
+          { "sku": "9.1", "description": "9kg cylinder deposit", "qty": 70, "unit_price": 517.5, "amount": 36225.00, "debt_group": "CYL" }
         ],
-        "note": "No cylinder-deposit lines — pure refill order, no CN structurally expected"
+        "note": "Proforma exposes LPG slice only (quote). Operator: add cylinder slice to the invoice. Reconstructed invoice = LPG R16,291.80 + CYL R36,225.00 = R52,516.80."
       },
       "credit_note": null,
-      "event_net": 16291.80,
+      "event_net": 52516.80,
       "payment": {
         "status": "short_paid",
         "confidence": "ASSERTED",
@@ -159,7 +177,8 @@
         ],
         "source": "External bank — not in Supabase"
       },
-      "shortfall": 2185.00,
+      "shortfall": 38410.00,
+      "lpg_slice_cash_shortfall": 2185.00,
       "closure": "open_pending_credit_confirmation",
       "resolutionOptions": [
         "Apply prior surplus credit (R67,287.08 pool) — ASSUMED, not operator-directed",
@@ -175,7 +194,7 @@
         "erp_recheck_20260904": "Operator re-queried Supabase live (this agent's session could not — DATABASE_URL unreachable then). ERP shows nothing posted for LIN001 cylinders after 2026-09-02. Last CN (15592, 2026-09-02, already fully spent into DN#24947's closed event) is a full five-SKU deposit-only CN (9.1, D.1, S.1, 14.1, 19.1; SUM(line_total) = -69000.00 matches header exactly) — see credit_note.line_detail on EVT-24947.",
         "revised_framing": "Retracted the earlier 'cannot both be true' framing. This account routinely moves both 9kg and 48kg cylinders (DN#24947 itself did, two days earlier), so the operator's 8x48kg report and the customer's 50x9kg claim are two INDEPENDENT, UNCONFIRMED claims, not competing versions of one event. The 9kg/R517.50 match is not diagnostic — it's the standard rate, already used in the now-fully-spent CN 15592 two days prior — likely the customer is conflating that settled batch with a new claim rather than reporting a fresh fact.",
         "resolution_path": "Neither claim is ERP-confirmable (silent since Sept 2) — requires a physical count (driver/warehouse goods-returned slip) to settle, not further ledger analysis",
-        "ledger_rule_CORRECTED_20260904": "Earlier text cited business_rules.md Rule 3 (Debt Partitioning) / Rule 4 (Asset Write-Off) as a direct prohibition on netting this credit against the invoice. Overclaim, retracted: those rules govern payment pooling and quarantined-payment write-offs in statement building, not CN-to-invoice netting. Real basis: LIN001's own DN# events (e.g. invoice 52924 + CN 15592, EVT-24947) already combine LPG+CYL on one document and net them routinely, so there is no blanket rule against mixing them for this account — no separate netting lane is needed here, the existing event_net=invoice+CN formula already covers it. This proforma differs only because the WhatsApp claim has no source CN of its own and no confirmed physical count — that (not ledger separation) is why it stays unapplied pending a posted CN.",
+        "ledger_rule_CORRECTED_20260904": "Rule 3/4 overclaim retracted (a67f059): those rules do not prohibit LPG+CYL netting on this account — LIN001 already combines them on one invoice/CN (e.g. EVT-24947). Reconstructed Event 4 invoice now has both slices (LPG R16,291.80 + CYL 70x9.1 R36,225.00). Confirmed empties post as this event's CN against 9.1, same as other DN# events. WhatsApp R2,875 stays unapplied because it has no posted CN and is not 70 units — not because LPG and CYL may never mix.",
         "not_yet_applied": true,
         "detail": "analysis/debtors/shared/reports/LIN001_event_2026-09-04_proforma.md"
       },

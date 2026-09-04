@@ -91,6 +91,10 @@
     {
       "date": "2026-09-04",
       "event": "CORRECTION (operator-directed, both branches): the prior entry's citation of business_rules.md Rule 3 (Debt Partitioning) / Rule 4 (Asset Write-Off) as a direct rule against netting the WhatsApp cylinder credit against the proforma was an overclaim. Those rules govern ERP payment pooling and quarantined-payment physical write-offs in retrospective statement building — they do not address CN-to-invoice netting. Retracted; corrected on cursor/lin001-fresh-allocation-bb32 (this branch) and claude/lin001-delivery-events-xb8nt7. Real basis for holding the proforma credit unapplied: LIN001's own DN# events (invoice 52924 + CN 15592, EVT-24947) already combine LPG and CYL lines on one document and net them routinely — this account needs no separate 'netting customer' lane, since events.json's existing event_net=invoice+CN formula already handles same-document mixing. The proforma differs only because the WhatsApp claim has no source CN and no confirmed physical count of its own — that, not a ledger-separation rule, is why Scenario A (short-paid R2,185.00) stands as the default pending a posted CN."
+    },
+    {
+      "date": "2026-09-04",
+      "event": "Event 4 invoice reconstructed: operator confirmed the proforma exposes LPG slice only (quote). Added CYL slice 70x9.1 @ R517.50 = R36,225.00 (ASSUMED qty matches 70 LPG fills per Rule 5 dual-line; rate ERP standard). Reconstructed invoice R52,516.80 (LPG R16,291.80 + CYL R36,225.00). CN still unposted. Empty returns now belong as this event's CN against 9.1 (same pattern as other LIN001 DN# events) — not as a deduction from the LPG quote. LPG-slice cash shortfall remains R2,185.00 (payments R14,106.80 vs LPG R16,291.80); full reconstructed invoice vs payments is shortage R38,410.00 until a CN posts."
     }
   ]
 }
