@@ -93,16 +93,25 @@ The **deposit** rates (19kg R600, 48kg R1,050 ex-VAT) never change between event
 
 **None of these six values equals R4,204.27.** Switching to DN#21237's rates (per the "previous event" hypothesis) does not change the deposit-only figure at all, and moves the gas-only/combined figures further from the target, not closer. The "previous event" question doesn't resolve the gap either way — it changes which invoice's gas rate would apply if a refund were computed cleanly, but no clean computation ties to the actual residual under either event.
 
-### A second, unresolved discrepancy
+### The notebook rate — resolved (2026-09-05)
 
-The customer's handwritten reconciliation notebook prices 19kg gas at **R442.13** — checked against every LIN001 19kg gas rate recorded in `transaction_items` across the full 2023–2026 history; the closest matches are R440.87 (DN#20337, 2025-08-25) and R446.83 (three events, Sep–Oct 2025). **R442.13 does not exactly match any invoiced rate found.** This suggests either a rate this analysis hasn't located, a customer-side calculation error, or a price the customer was quoted verbally that was never actually posted at that value.
+The customer's handwritten reconciliation notebook prices 19kg gas at **R442.13**. This does not match any LIN001-invoiced rate (checked across the full 2023–2026 history), but it is exactly explained by a flat customer-side rate: **R442.13 = 19kg × R23.27/kg incl VAT**, to the cent. The customer appears to price gas on their own flat per-kg basis (R23.27/kg incl VAT, applied uniformly regardless of cylinder size) rather than LIN001's rate table (R20.391/kg post-correction, R21.264/kg pre-correction). This is a real, internally-consistent customer rate, not a data error or mis-transcription — the earlier "does not match any invoiced rate" framing is retracted.
+
+**Testing this rate against the R4,204.27 residual:** at R23.27/kg, the 2×19kg + 2×48kg claim (134kg) values at:
+
+| Component | Amount |
+|---|---:|
+| Gas only, 134kg × R23.27/kg | R3,118.18 |
+| Deposit only (rate-invariant regardless of gas rate used) | R3,795.00 |
+| Gas + deposit | R6,913.18 |
+
+**None of these tie to R4,204.27** — gas-only is R1,086.09 short; gas+deposit overshoots by R2,708.91. So while the customer's rate basis is now confirmed and understood, it does not on its own explain the residual under a plain gas-only or gas+deposit reading of the leaking-cylinder claim.
 
 ### Conclusion on the residual
 
-R4,204.27 stays **open and unexplained**. The leaking-cylinder claim is a real, evidenced customer request, but:
+R4,204.27 stays **open**, narrower than before. The leaking-cylinder claim is a real, evidenced customer request, priced on a real, now-understood customer rate basis (R23.27/kg incl VAT) — but:
 1. It was never posted as a CN in ERP under either candidate source event,
-2. No tested rate/component combination — under either event's pricing — ties to the residual amount, and
-3. The notebook's own rate for the relevant item doesn't match any recorded invoice rate.
+2. No tested rate/component combination — LIN001's own rates, the prior event's rates, or the customer's own R23.27/kg rate, gas-only or combined with deposit — ties to the residual amount exactly.
 
 This needs the customer's actual documentation (their notebook page in full, ideally photographed alongside the WhatsApp thread) or a direct conversation, not further internal recomputation — the analysis has exhausted the combinations the available data supports.
 
@@ -117,7 +126,7 @@ Payment 44974 confirms the customer intended this event as a target and made a r
 1. Post the DN#21541-consistent correction on invoice 49115 (see `LIN001_ERP_correction_request_49115.md`).
 2. Ask the customer directly for the exact amount and basis of the leaking-cylinder refund they expected — the R4,204.27 residual cannot be reverse-engineered from ERP data alone.
 3. Clarify with the customer which delivery the 2×19kg + 2×48kg leaking units were originally received on (DN#21237 is the strongest candidate by timing, but this remains unconfirmed).
-4. Reconcile the notebook's R442.13 19kg rate against actual invoiced history — it may point to a rate quoted but never posted, worth checking with sales/ops.
+4. ~~Reconcile the notebook's R442.13 19kg rate against actual invoiced history~~ — RESOLVED: it's the customer's own R23.27/kg incl-VAT rate, not an ERP rate. Worth confirming with the customer whether they expect LIN001 to honor R23.27/kg on this refund, since it doesn't match LIN001's own R20.391/kg corrected rate.
 5. Enter payment 44974 into `config/payment_pattern_overrides.json` (override_type `VERIFIED_EXPLICIT_REF`) once an operator formally signs off, per `SKILL_Payment_To_Invoice_Allocation.md` §7.
 
 ## Confidence
@@ -127,8 +136,8 @@ Payment 44974 confirms the customer intended this event as a target and made a r
 | Document chain and net (R44,794.87) | PROVEN (ERP) |
 | Quantities unchanged, prices cut -4.10% | PROVEN (exact line data) |
 | Payment 44974 → this event | **Confirmed** (WhatsApp remittance advice, explicit reference "21541") |
-| R4,204.27 residual and its cause | GAP — leaking-cylinder claim investigated, does not tie exactly under any tested rate/component combination; source event (DN#21237 vs this event) unresolved |
-| Notebook 19kg rate (R442.13) | GAP — does not match any recorded invoice rate 2023–2026 |
+| R4,204.27 residual and its cause | GAP — leaking-cylinder claim investigated, does not tie exactly under any tested rate/component combination (LIN001's rates, either candidate event, or the customer's own R23.27/kg rate); source event (DN#21237 vs this event) unresolved |
+| Notebook 19kg rate (R442.13) | **RESOLVED** (2026-09-05) — exactly 19kg × R23.27/kg incl VAT, the customer's own flat per-kg rate |
 
 ---
 
