@@ -3,7 +3,7 @@
 **Account:** LIN001 — SLINDOKUHLE ENTERPRISES (PTY) LTD
 **Delivery note:** DN-21627
 **Date:** 2026-01-10
-**Status:** Payment forced-matched; gap NOT explained by pricing — open question for operator
+**Status:** Payment **confirmed** via remittance advice (2026-09-05); gap NOT explained by pricing — open question for operator
 
 ---
 
@@ -20,9 +20,11 @@
 
 ---
 
-## Forced match and gap
+## Payment confirmed, gap open
 
-Payment 43247 was forced-matched to this event as the smallest-difference candidate among the three open 2026 events (see `../data/allocation_edges.csv`).
+**Corrected 2026-09-05:** payment 43247 was previously a forced/ASSERTED match (smallest-difference candidate among the three open 2026 events). A customer payment-app receipt (New Champion Supermarket → Bella Energy Services300, 2026-02-06 08:08, Transaction ID 2287807790, R49,588.00) explicitly references **"No: 21627 Lin001"** — exact date and amount match. The target is now **Confirmed** via genuine remittance advice, not inference. This means the R3,318.77 gap is a real, confirmed shortfall on this specific event, not a case of the payment belonging elsewhere.
+
+A companion receipt from the same customer, same 2-minute window (08:06, R34,877.50, ref "No: 21739"), separately confirms payment 43246 → DN#21739 (see `allocation_edges.csv` AL-0007) — both payments were made together in one sitting.
 
 ```
 R52,906.77  event net
@@ -58,20 +60,23 @@ Invoice 48725's LPG category mix looks distorted compared to its neighbors:
 - An order-entry error (wrong SKU quantities keyed)
 - A genuine, deliberate customer request for that particular mix
 
+**Checked 2026-09-05: CN 14250 is not a reversal of invoice 48725, and this isn't a posting error.** CN 14250 is deposit-only (no gas lines) at qty 15×14K/15×19K/146×9KG — the "empties returned" credit, at the actual *received* quantities, same pattern as DN#21541's Rt/Bt structure. It doesn't need to match 48725's *dispatched* quantities (7×14K/7×19K/182×9KG), and both documents tie to the cent (invoice R148,299.27, CN -R95,392.50, net R52,906.77). The net effect: the customer handed back *more* 14K/19K empties (15 each) than were freshly dispatched (7 each) while taking on a large net increase in 9KG cylinders (182 dispatched vs 146 returned) — consistent with a real substitution on this delivery, not a data-entry mistake.
+
 ## Recommended action
 
-This needs operator/customer input, not an ERP price correction — there's nothing to correct in the pricing, and the quantity mix as recorded may simply be accurate. Suggest confirming with the customer or the driver/delivery record whether the 9KG-heavy mix on this specific delivery was intentional or a substitution, before treating the R3,318.77 gap as a dispute at all — it may be an unrelated short payment.
+The payment target is now settled — the remaining question is purely the cause of the R3,318.77 shortfall. This needs operator/customer input, not an ERP price correction — there's nothing to correct in the pricing, and the quantity mix as recorded may simply be accurate. Suggest confirming with the customer or the driver/delivery record whether the 9KG-heavy mix on this specific delivery was intentional or a substitution — that's the leading candidate, though still unconfirmed.
 
 ## Confidence
 
 | Item | Confidence |
 |---|---|
 | Invoice/CN header figures | PROVEN (ERP) |
+| CN 14250 is the empties-return deposit credit (not a reversal of 48725) | PROVEN (exact line-item reconciliation, both documents tie to the cent) |
 | Pricing ruled out as the cause | PROVEN (exact price-per-kg comparison, R0.00 impact) |
 | Quantity-mix anomaly | PROVEN (exact qty comparison across 3 invoices) |
 | Cause of the anomaly | GAP — needs operator/customer confirmation |
-| Payment 43247 belongs to this event (vs. a different one) | ASSERTED (forced match — smallest residual among candidates, not a ref/remittance-confirmed link) |
-| R3,318.77 gap cause | GAP — unexplained |
+| Payment 43247 belongs to this event | **Confirmed** (2026-09-05, payment-app receipt explicitly referencing "21627 Lin001", exact date+amount match) |
+| R3,318.77 gap cause | GAP — confirmed real (not a wrong-target issue), cause still unexplained |
 
 ---
 
