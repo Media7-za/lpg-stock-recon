@@ -529,18 +529,40 @@ Document these when working WO0001; generalize for similar debtors.
 
 ---
 
-## 12. Future Automation (reserved)
+## 12. Automation — what exists today (corrected 2026-09-05)
 
-Shared script target (not yet implemented):
+**Correction:** this section previously said `payment_doc_allocation_2025.mjs`
+was "not yet implemented." That was stale — it's a deprecated shim
+(`@deprecated Use payment_doc_allocation.mjs --from 2025-01-01 --to
+2025-12-31`) pointing at an already-real, DB-connected script. Two scripts
+exist now, for two different payer shapes — **pick by account behavior, they
+are not interchangeable:**
 
 ```bash
-node analysis/debtors/shared/scripts/payment_doc_allocation_2025.mjs   # payment-doc combine
-node analysis/debtors/shared/scripts/payment_to_invoice_allocation.mjs \  # future general runner
-  --debtor WO0001 --tolerance 0.05 --from 2026-01-01
+# WO0001 archetype: ref_no-linked CNs, LPG-only match target via
+# vw_clean_transactions, no DN#-grouping, no reversal-chain netting.
+node analysis/debtors/shared/scripts/payment_doc_allocation.mjs \
+  --debtor WO0001 --from 2025-01-01 --to 2025-12-31
+
+# LIN001 archetype: no usable payment ref_no, settles on the HEADER-COMBINED
+# net (LPG + CYL together, not LPG-only - confirmed by precise re-rate
+# verification), events span multi-doc reversal-and-reissue chains grouped
+# by a DN# parsed from the description field.
+node analysis/debtors/shared/scripts/dn_event_payment_allocation.mjs \
+  --debtor LIN001
 ```
 
-Until that script exists, agents implement the tier algorithm directly (Node or
-Python against Supabase / local CSVs) and write workspace artifacts manually.
+Before running either against a new account, check which shape it actually
+fits (ref_no on payments? LPG-only or header-combined settlement? do events
+span multiple invoice/CN documents under one DN#?) rather than assuming.
+Both output **candidates only** (Probable/Exception at best per Sec 3) —
+review before promoting into `allocation_edges.csv`.
+
+`payment_to_invoice_allocation.mjs` (a general runner covering both shapes)
+is still genuinely not implemented — that part of the original note holds.
+Until it exists, pick the matching script above, or for a genuinely novel
+payer shape, implement the tier algorithm directly (Node or Python against
+Supabase / local CSVs) and write workspace artifacts manually.
 
 ---
 

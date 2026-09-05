@@ -1,0 +1,1839 @@
+{
+  "debtorCode": "LIN001",
+  "generatedAt": "2026-09-05T00:00:00Z",
+  "note": "Generated via the Python prototype of dn_event_payment_allocation.mjs (no live DATABASE_URL in this session - MCP-pulled, deduped transaction_headers used instead: excludes source_file=DTRX2603.TXT plus an extra exact-duplicate pass). This is a different algorithm from the existing payment_doc_allocation.mjs (WO0001 archetype: LPG-only via vw_clean_transactions, ref_no-linked CNs, no DN# grouping) - LIN001 settles on the header-combined net and has multi-doc reversal-chain events, which that script does not handle. Candidate matches only - Probable/Exception confidence at best per SKILL_Payment_To_Invoice_Allocation.md (no ref_no evidence on payments for this account). Zero-net events excluded from matching. Manually re-verified against every hand-derived match earlier in this session - all reproduced exactly (DN#20106, DN#21432, DN#21732, DN#21739, DN#20897, DN#20898, DN#21711, DN#21098, DN#20756, DN#21147, DN#21541 net corrected after fixing reference-based reversal-row resolution).",
+  "matched": [
+    {
+      "dn": "6284",
+      "date": "2023-10-14",
+      "net": 11884.46,
+      "legCount": 1,
+      "candidates": [
+        {
+          "paymentDoc": "25124",
+          "paymentDate": "2023-10-14",
+          "batch": "T0000081",
+          "kind": "doc_net",
+          "amount": -11884.0,
+          "diff": 0.46,
+          "tier": "TIGHT",
+          "lagDays": 0
+        },
+        {
+          "paymentDoc": "25124",
+          "paymentDate": "2023-10-14",
+          "batch": "T0000081",
+          "kind": "row",
+          "amount": -11884.0,
+          "diff": 0.46,
+          "tier": "TIGHT",
+          "lagDays": 0
+        }
+      ]
+    },
+    {
+      "dn": "6901",
+      "date": "2023-11-04",
+      "net": 12425.08,
+      "legCount": 1,
+      "candidates": [
+        {
+          "paymentDoc": "25802",
+          "paymentDate": "2023-11-06",
+          "batch": "T0000082",
+          "kind": "doc_net",
+          "amount": -12425.0,
+          "diff": 0.08,
+          "tier": "TIGHT",
+          "lagDays": 2
+        },
+        {
+          "paymentDoc": "25802",
+          "paymentDate": "2023-11-06",
+          "batch": "T0000082",
+          "kind": "row",
+          "amount": -12425.0,
+          "diff": 0.08,
+          "tier": "TIGHT",
+          "lagDays": 2
+        }
+      ]
+    },
+    {
+      "dn": "6854",
+      "date": "2023-11-11",
+      "net": 12283.91,
+      "legCount": 1,
+      "candidates": [
+        {
+          "paymentDoc": "26049",
+          "paymentDate": "2023-11-11",
+          "batch": "T0000083",
+          "kind": "row",
+          "amount": -12283.91,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 0
+        },
+        {
+          "paymentDoc": "26568",
+          "paymentDate": "2023-11-30",
+          "batch": "T0000084",
+          "kind": "row",
+          "amount": -12283.91,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 19
+        },
+        {
+          "paymentDoc": "26049",
+          "paymentDate": "2023-11-11",
+          "batch": "T0000083",
+          "kind": "doc_net",
+          "amount": -12284.0,
+          "diff": 0.09,
+          "tier": "TIGHT",
+          "lagDays": 0
+        },
+        {
+          "paymentDoc": "26568",
+          "paymentDate": "2023-11-30",
+          "batch": "T0000084",
+          "kind": "doc_net",
+          "amount": -12284.0,
+          "diff": 0.09,
+          "tier": "TIGHT",
+          "lagDays": 19
+        }
+      ]
+    },
+    {
+      "dn": "6895",
+      "date": "2023-11-29",
+      "net": 12283.91,
+      "legCount": 1,
+      "candidates": [
+        {
+          "paymentDoc": "26568",
+          "paymentDate": "2023-11-30",
+          "batch": "T0000084",
+          "kind": "row",
+          "amount": -12283.91,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 1
+        },
+        {
+          "paymentDoc": "26049",
+          "paymentDate": "2023-11-11",
+          "batch": "T0000083",
+          "kind": "row",
+          "amount": -12283.91,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": -18
+        },
+        {
+          "paymentDoc": "26568",
+          "paymentDate": "2023-11-30",
+          "batch": "T0000084",
+          "kind": "doc_net",
+          "amount": -12284.0,
+          "diff": 0.09,
+          "tier": "TIGHT",
+          "lagDays": 1
+        },
+        {
+          "paymentDoc": "26049",
+          "paymentDate": "2023-11-11",
+          "batch": "T0000083",
+          "kind": "doc_net",
+          "amount": -12284.0,
+          "diff": 0.09,
+          "tier": "TIGHT",
+          "lagDays": -18
+        }
+      ]
+    },
+    {
+      "dn": "7525",
+      "date": "2023-12-19",
+      "net": 13211.78,
+      "legCount": 1,
+      "candidates": [
+        {
+          "paymentDoc": "27113",
+          "paymentDate": "2023-12-20",
+          "batch": "T9000007",
+          "kind": "row",
+          "amount": -13211.78,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 1
+        },
+        {
+          "paymentDoc": "27113",
+          "paymentDate": "2023-12-20",
+          "batch": "T9000007",
+          "kind": "doc_net",
+          "amount": -13212.0,
+          "diff": 0.22,
+          "tier": "TIGHT",
+          "lagDays": 1
+        }
+      ]
+    },
+    {
+      "dn": "7152",
+      "date": "2023-12-23",
+      "net": 23341.19,
+      "legCount": 1,
+      "candidates": [
+        {
+          "paymentDoc": "27332",
+          "paymentDate": "2023-12-27",
+          "batch": "T9000010",
+          "kind": "row",
+          "amount": -23341.19,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 4
+        }
+      ]
+    },
+    {
+      "dn": "7554",
+      "date": "2023-12-28",
+      "net": 12771.5,
+      "legCount": 1,
+      "candidates": [
+        {
+          "paymentDoc": "27375",
+          "paymentDate": "2023-12-28",
+          "batch": "T9000011",
+          "kind": "doc_net",
+          "amount": -12771.5,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 0
+        },
+        {
+          "paymentDoc": "27375",
+          "paymentDate": "2023-12-28",
+          "batch": "T9000011",
+          "kind": "row",
+          "amount": -12771.5,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 0
+        },
+        {
+          "paymentDoc": "27446",
+          "paymentDate": "2023-12-30",
+          "batch": "T9000012",
+          "kind": "doc_net",
+          "amount": -12771.5,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 2
+        },
+        {
+          "paymentDoc": "27446",
+          "paymentDate": "2023-12-30",
+          "batch": "T9000012",
+          "kind": "row",
+          "amount": -12771.5,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 2
+        },
+        {
+          "paymentDoc": "27490",
+          "paymentDate": "2024-01-02",
+          "batch": "T9000013",
+          "kind": "doc_net",
+          "amount": -12771.5,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 5
+        },
+        {
+          "paymentDoc": "27490",
+          "paymentDate": "2024-01-02",
+          "batch": "T9000013",
+          "kind": "row",
+          "amount": -12771.5,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 5
+        }
+      ]
+    },
+    {
+      "dn": "7169",
+      "date": "2023-12-30",
+      "net": 12771.5,
+      "legCount": 1,
+      "candidates": [
+        {
+          "paymentDoc": "27446",
+          "paymentDate": "2023-12-30",
+          "batch": "T9000012",
+          "kind": "doc_net",
+          "amount": -12771.5,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 0
+        },
+        {
+          "paymentDoc": "27446",
+          "paymentDate": "2023-12-30",
+          "batch": "T9000012",
+          "kind": "row",
+          "amount": -12771.5,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 0
+        },
+        {
+          "paymentDoc": "27375",
+          "paymentDate": "2023-12-28",
+          "batch": "T9000011",
+          "kind": "doc_net",
+          "amount": -12771.5,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": -2
+        },
+        {
+          "paymentDoc": "27375",
+          "paymentDate": "2023-12-28",
+          "batch": "T9000011",
+          "kind": "row",
+          "amount": -12771.5,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": -2
+        },
+        {
+          "paymentDoc": "27490",
+          "paymentDate": "2024-01-02",
+          "batch": "T9000013",
+          "kind": "doc_net",
+          "amount": -12771.5,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 3
+        },
+        {
+          "paymentDoc": "27490",
+          "paymentDate": "2024-01-02",
+          "batch": "T9000013",
+          "kind": "row",
+          "amount": -12771.5,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 3
+        }
+      ]
+    },
+    {
+      "dn": "7170",
+      "date": "2024-01-02",
+      "net": 12771.5,
+      "legCount": 1,
+      "candidates": [
+        {
+          "paymentDoc": "27490",
+          "paymentDate": "2024-01-02",
+          "batch": "T9000013",
+          "kind": "doc_net",
+          "amount": -12771.5,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 0
+        },
+        {
+          "paymentDoc": "27490",
+          "paymentDate": "2024-01-02",
+          "batch": "T9000013",
+          "kind": "row",
+          "amount": -12771.5,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 0
+        },
+        {
+          "paymentDoc": "27446",
+          "paymentDate": "2023-12-30",
+          "batch": "T9000012",
+          "kind": "doc_net",
+          "amount": -12771.5,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": -3
+        },
+        {
+          "paymentDoc": "27446",
+          "paymentDate": "2023-12-30",
+          "batch": "T9000012",
+          "kind": "row",
+          "amount": -12771.5,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": -3
+        },
+        {
+          "paymentDoc": "27375",
+          "paymentDate": "2023-12-28",
+          "batch": "T9000011",
+          "kind": "doc_net",
+          "amount": -12771.5,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": -5
+        },
+        {
+          "paymentDoc": "27375",
+          "paymentDate": "2023-12-28",
+          "batch": "T9000011",
+          "kind": "row",
+          "amount": -12771.5,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": -5
+        }
+      ]
+    },
+    {
+      "dn": "7175",
+      "date": "2024-01-04",
+      "net": 13369.38,
+      "legCount": 1,
+      "candidates": [
+        {
+          "paymentDoc": "27564",
+          "paymentDate": "2024-01-04",
+          "batch": "T9000015",
+          "kind": "doc_net",
+          "amount": -13369.38,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 0
+        },
+        {
+          "paymentDoc": "27564",
+          "paymentDate": "2024-01-04",
+          "batch": "T9000015",
+          "kind": "row",
+          "amount": -13369.38,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 0
+        }
+      ]
+    },
+    {
+      "dn": "7580",
+      "date": "2024-01-05",
+      "net": 13353.92,
+      "legCount": 1,
+      "candidates": [
+        {
+          "paymentDoc": "27608",
+          "paymentDate": "2024-01-05",
+          "batch": "T9000016",
+          "kind": "row",
+          "amount": -13353.92,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 0
+        },
+        {
+          "paymentDoc": "27608",
+          "paymentDate": "2024-01-05",
+          "batch": "T9000016",
+          "kind": "doc_net",
+          "amount": -13354.0,
+          "diff": 0.08,
+          "tier": "TIGHT",
+          "lagDays": 0
+        }
+      ]
+    },
+    {
+      "dn": "7185",
+      "date": "2024-01-08",
+      "net": 41674.74,
+      "legCount": 1,
+      "candidates": [
+        {
+          "paymentDoc": "27646",
+          "paymentDate": "2024-01-08",
+          "batch": "T9000016",
+          "kind": "doc_net",
+          "amount": -41674.74,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 0
+        },
+        {
+          "paymentDoc": "27646",
+          "paymentDate": "2024-01-08",
+          "batch": "T9000016",
+          "kind": "row",
+          "amount": -41674.74,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 0
+        }
+      ]
+    },
+    {
+      "dn": "7198",
+      "date": "2024-01-17",
+      "net": 51505.74,
+      "legCount": 1,
+      "candidates": [
+        {
+          "paymentDoc": "27951",
+          "paymentDate": "2024-01-17",
+          "batch": "STAT 98",
+          "kind": "row",
+          "amount": -51505.74,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 0
+        },
+        {
+          "paymentDoc": "27951",
+          "paymentDate": "2024-01-17",
+          "batch": "STAT 98",
+          "kind": "doc_net",
+          "amount": -51506.0,
+          "diff": 0.26,
+          "tier": "TIGHT",
+          "lagDays": 0
+        }
+      ]
+    },
+    {
+      "dn": "7773",
+      "date": "2024-02-01",
+      "net": 64674.05,
+      "legCount": 2,
+      "candidates": [
+        {
+          "paymentDoc": "28733",
+          "paymentDate": "2024-02-09",
+          "batch": "STAT 99",
+          "kind": "doc_net",
+          "amount": -64674.0,
+          "diff": 0.05,
+          "tier": "TIGHT",
+          "lagDays": 8
+        }
+      ]
+    },
+    {
+      "dn": "3772",
+      "date": "2024-03-12",
+      "net": 43933.11,
+      "legCount": 1,
+      "candidates": [
+        {
+          "paymentDoc": "29658",
+          "paymentDate": "2024-03-25",
+          "batch": "PC-76-07",
+          "kind": "doc_net",
+          "amount": -43933.11,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 13
+        },
+        {
+          "paymentDoc": "29658",
+          "paymentDate": "2024-03-25",
+          "batch": "PC-76-07",
+          "kind": "row",
+          "amount": -43933.0,
+          "diff": 0.11,
+          "tier": "TIGHT",
+          "lagDays": 13
+        }
+      ]
+    },
+    {
+      "dn": "8854",
+      "date": "2024-03-27",
+      "net": 47266.15,
+      "legCount": 1,
+      "candidates": [
+        {
+          "paymentDoc": "30091",
+          "paymentDate": "2024-04-08",
+          "batch": "STAT 101",
+          "kind": "row",
+          "amount": -47266.15,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 12
+        }
+      ]
+    },
+    {
+      "dn": "8910",
+      "date": "2024-05-11",
+      "net": 53903.32,
+      "legCount": 1,
+      "candidates": [
+        {
+          "paymentDoc": "30865",
+          "paymentDate": "2024-05-27",
+          "batch": "PC-76-09",
+          "kind": "row",
+          "amount": -53903.32,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 16
+        }
+      ]
+    },
+    {
+      "dn": "9060",
+      "date": "2024-06-10",
+      "net": 19918.69,
+      "legCount": 1,
+      "candidates": [
+        {
+          "paymentDoc": "32064",
+          "paymentDate": "2024-06-24",
+          "batch": "PC-76-10",
+          "kind": "row",
+          "amount": -19918.69,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 14
+        }
+      ]
+    },
+    {
+      "dn": "9994",
+      "date": "2024-06-26",
+      "net": 75801.82,
+      "legCount": 2,
+      "candidates": [
+        {
+          "paymentDoc": "32169",
+          "paymentDate": "2024-07-02",
+          "batch": "PC-76-11",
+          "kind": "doc_net",
+          "amount": -75802.0,
+          "diff": 0.18,
+          "tier": "TIGHT",
+          "lagDays": 6
+        }
+      ]
+    },
+    {
+      "dn": "9594",
+      "date": "2024-07-19",
+      "net": 53664.23,
+      "legCount": 2,
+      "candidates": [
+        {
+          "paymentDoc": "32531",
+          "paymentDate": "2024-08-03",
+          "batch": "STAT 105",
+          "kind": "doc_net",
+          "amount": -53664.23,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 15
+        }
+      ]
+    },
+    {
+      "dn": "9437",
+      "date": "2024-08-20",
+      "net": 44787.03,
+      "legCount": 1,
+      "candidates": [
+        {
+          "paymentDoc": "33071",
+          "paymentDate": "2024-09-02",
+          "batch": "STAT 106",
+          "kind": "row",
+          "amount": -44787.03,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 13
+        }
+      ]
+    },
+    {
+      "dn": "9439",
+      "date": "2024-09-02",
+      "net": 8625.0,
+      "legCount": 1,
+      "candidates": [
+        {
+          "paymentDoc": "33071",
+          "paymentDate": "2024-09-02",
+          "batch": "STAT 106",
+          "kind": "row",
+          "amount": -8624.97,
+          "diff": 0.03,
+          "tier": "TIGHT",
+          "lagDays": 0
+        },
+        {
+          "paymentDoc": "33071",
+          "paymentDate": "2024-09-02",
+          "batch": "STAT 106",
+          "kind": "row",
+          "amount": 8624.97,
+          "diff": 0.03,
+          "tier": "TIGHT",
+          "lagDays": 0
+        }
+      ]
+    },
+    {
+      "dn": "11463",
+      "date": "2024-09-11",
+      "net": 54369.29,
+      "legCount": 1,
+      "candidates": [
+        {
+          "paymentDoc": "33693",
+          "paymentDate": "2024-09-28",
+          "batch": "STAT 106",
+          "kind": "row",
+          "amount": -54369.29,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 17
+        }
+      ]
+    },
+    {
+      "dn": "10099",
+      "date": "2024-10-05",
+      "net": 52820.01,
+      "legCount": 1,
+      "candidates": [
+        {
+          "paymentDoc": "34357",
+          "paymentDate": "2024-10-24",
+          "batch": "STAT 107",
+          "kind": "row",
+          "amount": -52820.0,
+          "diff": 0.01,
+          "tier": "EXACT",
+          "lagDays": 19
+        },
+        {
+          "paymentDoc": "34357",
+          "paymentDate": "2024-10-24",
+          "batch": "STAT 107",
+          "kind": "row",
+          "amount": 52820.0,
+          "diff": 0.01,
+          "tier": "EXACT",
+          "lagDays": 19
+        }
+      ]
+    },
+    {
+      "dn": "11205",
+      "date": "2024-11-11",
+      "net": 50509.15,
+      "legCount": 1,
+      "candidates": [
+        {
+          "paymentDoc": "35161",
+          "paymentDate": "2024-12-05",
+          "batch": "STAT 109",
+          "kind": "row",
+          "amount": -50509.15,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 24
+        }
+      ]
+    },
+    {
+      "dn": "10503",
+      "date": "2025-03-03",
+      "net": 37944.94,
+      "legCount": 2,
+      "candidates": [
+        {
+          "paymentDoc": "38594",
+          "paymentDate": "2025-03-06",
+          "batch": "PC-76-18",
+          "kind": "doc_net",
+          "amount": -37944.0,
+          "diff": 0.94,
+          "tier": "TIGHT",
+          "lagDays": 3
+        },
+        {
+          "paymentDoc": "38594",
+          "paymentDate": "2025-03-06",
+          "batch": "PC-76-18",
+          "kind": "row",
+          "amount": -37944.0,
+          "diff": 0.94,
+          "tier": "TIGHT",
+          "lagDays": 3
+        },
+        {
+          "paymentDoc": "38594",
+          "paymentDate": "2025-03-06",
+          "batch": "PC-76-18",
+          "kind": "row",
+          "amount": 37944.0,
+          "diff": 0.94,
+          "tier": "TIGHT",
+          "lagDays": 3
+        }
+      ]
+    },
+    {
+      "dn": "10537",
+      "date": "2025-03-29",
+      "net": 30621.68,
+      "legCount": 2,
+      "candidates": [
+        {
+          "paymentDoc": "37768",
+          "paymentDate": "2025-03-29",
+          "batch": "STAT 112",
+          "kind": "row",
+          "amount": -30621.68,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 0
+        }
+      ]
+    },
+    {
+      "dn": "12995",
+      "date": "2025-04-04",
+      "net": 49189.76,
+      "legCount": 2,
+      "candidates": [
+        {
+          "paymentDoc": "38592",
+          "paymentDate": "2025-04-22",
+          "batch": "PC-76-19",
+          "kind": "doc_net",
+          "amount": -49189.0,
+          "diff": 0.76,
+          "tier": "TIGHT",
+          "lagDays": 18
+        },
+        {
+          "paymentDoc": "38592",
+          "paymentDate": "2025-04-22",
+          "batch": "PC-76-19",
+          "kind": "row",
+          "amount": -49189.0,
+          "diff": 0.76,
+          "tier": "TIGHT",
+          "lagDays": 18
+        },
+        {
+          "paymentDoc": "38592",
+          "paymentDate": "2025-04-22",
+          "batch": "PC-76-19",
+          "kind": "row",
+          "amount": 49189.0,
+          "diff": 0.76,
+          "tier": "TIGHT",
+          "lagDays": 18
+        }
+      ]
+    },
+    {
+      "dn": "13013",
+      "date": "2025-04-12",
+      "net": 36575.6,
+      "legCount": 2,
+      "candidates": [
+        {
+          "paymentDoc": "38591",
+          "paymentDate": "2025-04-22",
+          "batch": "PC-76-19",
+          "kind": "row",
+          "amount": -36575.6,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 10
+        }
+      ]
+    },
+    {
+      "dn": "13094",
+      "date": "2025-04-24",
+      "net": 41110.88,
+      "legCount": 2,
+      "candidates": [
+        {
+          "paymentDoc": "38344",
+          "paymentDate": "2025-05-02",
+          "batch": "PC-76-19",
+          "kind": "row",
+          "amount": -41110.88,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 8
+        }
+      ]
+    },
+    {
+      "dn": "13041",
+      "date": "2025-04-30",
+      "net": 49685.6,
+      "legCount": 2,
+      "candidates": [
+        {
+          "paymentDoc": "38571",
+          "paymentDate": "2025-05-13",
+          "batch": "PC-76-19",
+          "kind": "doc_net",
+          "amount": -49685.6,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 13
+        },
+        {
+          "paymentDoc": "38571",
+          "paymentDate": "2025-05-13",
+          "batch": "PC-76-19",
+          "kind": "row",
+          "amount": -49685.0,
+          "diff": 0.6,
+          "tier": "TIGHT",
+          "lagDays": 13
+        }
+      ]
+    },
+    {
+      "dn": "13043",
+      "date": "2025-05-05",
+      "net": 57362.3,
+      "legCount": 2,
+      "candidates": [
+        {
+          "paymentDoc": "38570",
+          "paymentDate": "2025-05-13",
+          "batch": "PC-76-19",
+          "kind": "doc_net",
+          "amount": -57362.0,
+          "diff": 0.3,
+          "tier": "TIGHT",
+          "lagDays": 8
+        },
+        {
+          "paymentDoc": "38570",
+          "paymentDate": "2025-05-13",
+          "batch": "PC-76-19",
+          "kind": "row",
+          "amount": -57362.0,
+          "diff": 0.3,
+          "tier": "TIGHT",
+          "lagDays": 8
+        },
+        {
+          "paymentDoc": "38570",
+          "paymentDate": "2025-05-13",
+          "batch": "PC-76-19",
+          "kind": "row",
+          "amount": 57362.0,
+          "diff": 0.3,
+          "tier": "TIGHT",
+          "lagDays": 8
+        }
+      ]
+    },
+    {
+      "dn": "12515",
+      "date": "2025-06-12",
+      "net": 43086.57,
+      "legCount": 2,
+      "candidates": [
+        {
+          "paymentDoc": "39863",
+          "paymentDate": "2025-06-27",
+          "batch": "PC-76-20",
+          "kind": "row",
+          "amount": -43086.57,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 15
+        },
+        {
+          "paymentDoc": "39863",
+          "paymentDate": "2025-06-27",
+          "batch": "PC-76-20",
+          "kind": "doc_net",
+          "amount": -43087.0,
+          "diff": 0.43,
+          "tier": "TIGHT",
+          "lagDays": 15
+        }
+      ]
+    },
+    {
+      "dn": "12526",
+      "date": "2025-06-17",
+      "net": 28903.66,
+      "legCount": 2,
+      "candidates": [
+        {
+          "paymentDoc": "42500",
+          "paymentDate": "2025-12-05",
+          "batch": "PC-76-26",
+          "kind": "row",
+          "amount": -28904.07,
+          "diff": 0.41,
+          "tier": "TIGHT",
+          "lagDays": 171
+        },
+        {
+          "paymentDoc": "39864",
+          "paymentDate": "2025-06-27",
+          "batch": "PC-76-20",
+          "kind": "doc_net",
+          "amount": -28903.0,
+          "diff": 0.66,
+          "tier": "TIGHT",
+          "lagDays": 10
+        },
+        {
+          "paymentDoc": "39864",
+          "paymentDate": "2025-06-27",
+          "batch": "PC-76-20",
+          "kind": "row",
+          "amount": -28903.0,
+          "diff": 0.66,
+          "tier": "TIGHT",
+          "lagDays": 10
+        },
+        {
+          "paymentDoc": "39864",
+          "paymentDate": "2025-06-27",
+          "batch": "PC-76-20",
+          "kind": "row",
+          "amount": 28903.0,
+          "diff": 0.66,
+          "tier": "TIGHT",
+          "lagDays": 10
+        }
+      ]
+    },
+    {
+      "dn": "12426",
+      "date": "2025-06-26",
+      "net": 65466.97,
+      "legCount": 2,
+      "candidates": [
+        {
+          "paymentDoc": "39770",
+          "paymentDate": "2025-07-03",
+          "batch": "STAT 116",
+          "kind": "row",
+          "amount": -65466.97,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 7
+        },
+        {
+          "paymentDoc": "39770",
+          "paymentDate": "2025-07-03",
+          "batch": "STAT 116",
+          "kind": "doc_net",
+          "amount": -65467.0,
+          "diff": 0.03,
+          "tier": "TIGHT",
+          "lagDays": 7
+        }
+      ]
+    },
+    {
+      "dn": "12544",
+      "date": "2025-06-30",
+      "net": 87076.49,
+      "legCount": 2,
+      "candidates": [
+        {
+          "paymentDoc": "39769",
+          "paymentDate": "2025-07-03",
+          "batch": "STAT 116",
+          "kind": "doc_net",
+          "amount": -87076.49,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 3
+        },
+        {
+          "paymentDoc": "39769",
+          "paymentDate": "2025-07-03",
+          "batch": "STAT 116",
+          "kind": "row",
+          "amount": -87076.0,
+          "diff": 0.49,
+          "tier": "TIGHT",
+          "lagDays": 3
+        }
+      ]
+    },
+    {
+      "dn": "12661",
+      "date": "2025-07-05",
+      "net": 33909.2,
+      "legCount": 2,
+      "candidates": [
+        {
+          "paymentDoc": "40364",
+          "paymentDate": "2025-07-31",
+          "batch": "PC-76-21",
+          "kind": "doc_net",
+          "amount": -33909.0,
+          "diff": 0.2,
+          "tier": "TIGHT",
+          "lagDays": 26
+        },
+        {
+          "paymentDoc": "40364",
+          "paymentDate": "2025-07-31",
+          "batch": "PC-76-21",
+          "kind": "row",
+          "amount": -33909.0,
+          "diff": 0.2,
+          "tier": "TIGHT",
+          "lagDays": 26
+        },
+        {
+          "paymentDoc": "40364",
+          "paymentDate": "2025-07-31",
+          "batch": "PC-76-21",
+          "kind": "row",
+          "amount": 33909.0,
+          "diff": 0.2,
+          "tier": "TIGHT",
+          "lagDays": 26
+        }
+      ]
+    },
+    {
+      "dn": "12196",
+      "date": "2025-07-12",
+      "net": 52471.19,
+      "legCount": 2,
+      "candidates": [
+        {
+          "paymentDoc": "40365",
+          "paymentDate": "2025-08-02",
+          "batch": "PC-76-22",
+          "kind": "row",
+          "amount": -52471.19,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 21
+        }
+      ]
+    },
+    {
+      "dn": "20106",
+      "date": "2025-07-26",
+      "net": 47214.58,
+      "legCount": 6,
+      "candidates": [
+        {
+          "paymentDoc": "40616",
+          "paymentDate": "2025-08-12",
+          "batch": "PC-76-22",
+          "kind": "doc_net",
+          "amount": -47214.58,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 17
+        },
+        {
+          "paymentDoc": "40616",
+          "paymentDate": "2025-08-12",
+          "batch": "PC-76-22",
+          "kind": "row",
+          "amount": -47214.58,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 17
+        },
+        {
+          "paymentDoc": "40616",
+          "paymentDate": "2025-08-12",
+          "batch": "PC-76-22",
+          "kind": "row",
+          "amount": 47214.58,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 17
+        }
+      ]
+    },
+    {
+      "dn": "12243",
+      "date": "2025-08-04",
+      "net": 69699.48,
+      "legCount": 2,
+      "candidates": [
+        {
+          "paymentDoc": "40615",
+          "paymentDate": "2025-08-12",
+          "batch": "PC-76-22",
+          "kind": "doc_net",
+          "amount": -69699.48,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 8
+        },
+        {
+          "paymentDoc": "40615",
+          "paymentDate": "2025-08-12",
+          "batch": "PC-76-22",
+          "kind": "row",
+          "amount": -69699.48,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 8
+        }
+      ]
+    },
+    {
+      "dn": "20412",
+      "date": "2025-08-13",
+      "net": 42757.88,
+      "legCount": 3,
+      "candidates": [
+        {
+          "paymentDoc": "41022",
+          "paymentDate": "2025-09-03",
+          "batch": "STAT 118",
+          "kind": "doc_net",
+          "amount": -42757.0,
+          "diff": 0.88,
+          "tier": "TIGHT",
+          "lagDays": 21
+        },
+        {
+          "paymentDoc": "41022",
+          "paymentDate": "2025-09-03",
+          "batch": "STAT 118",
+          "kind": "row",
+          "amount": -42757.0,
+          "diff": 0.88,
+          "tier": "TIGHT",
+          "lagDays": 21
+        },
+        {
+          "paymentDoc": "41022",
+          "paymentDate": "2025-09-03",
+          "batch": "STAT 118",
+          "kind": "row",
+          "amount": 42757.0,
+          "diff": 0.88,
+          "tier": "TIGHT",
+          "lagDays": 21
+        }
+      ]
+    },
+    {
+      "dn": "20359",
+      "date": "2025-09-03",
+      "net": -2497.52,
+      "legCount": 2,
+      "candidates": [
+        {
+          "paymentDoc": "41023",
+          "paymentDate": "2025-09-03",
+          "batch": "STAT 118",
+          "kind": "row",
+          "amount": 2497.52,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 0
+        }
+      ]
+    },
+    {
+      "dn": "20288",
+      "date": "2025-10-03",
+      "net": -12615.96,
+      "legCount": 2,
+      "candidates": [
+        {
+          "paymentDoc": "41616",
+          "paymentDate": "2025-10-07",
+          "batch": "PC-76-24",
+          "kind": "row",
+          "amount": 12615.96,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 4
+        }
+      ]
+    },
+    {
+      "dn": "21098",
+      "date": "2025-10-06",
+      "net": 117892.18,
+      "legCount": 2,
+      "candidates": [
+        {
+          "paymentDoc": "42499",
+          "paymentDate": "2025-12-05",
+          "batch": "PC-76-26",
+          "kind": "row",
+          "amount": -117892.18,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 60
+        }
+      ]
+    },
+    {
+      "dn": "20756",
+      "date": "2025-10-28",
+      "net": 49362.31,
+      "legCount": 4,
+      "candidates": [
+        {
+          "paymentDoc": "42499",
+          "paymentDate": "2025-12-05",
+          "batch": "PC-76-26",
+          "kind": "row",
+          "amount": -49362.31,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 38
+        },
+        {
+          "paymentDoc": "42499",
+          "paymentDate": "2025-12-05",
+          "batch": "PC-76-26",
+          "kind": "doc_net",
+          "amount": -49362.5,
+          "diff": 0.19,
+          "tier": "TIGHT",
+          "lagDays": 38
+        }
+      ]
+    },
+    {
+      "dn": "21147",
+      "date": "2025-11-06",
+      "net": 30554.71,
+      "legCount": 2,
+      "candidates": [
+        {
+          "paymentDoc": "42499",
+          "paymentDate": "2025-12-05",
+          "batch": "PC-76-26",
+          "kind": "row",
+          "amount": -30554.71,
+          "diff": 0.0,
+          "tier": "EXACT",
+          "lagDays": 29
+        }
+      ]
+    },
+    {
+      "dn": "20897",
+      "date": "2025-12-05",
+      "net": 27890.88,
+      "legCount": 4,
+      "candidates": [
+        {
+          "paymentDoc": "42708",
+          "paymentDate": "2025-12-17",
+          "batch": "PC-76-26",
+          "kind": "doc_net",
+          "amount": -27890.5,
+          "diff": 0.38,
+          "tier": "TIGHT",
+          "lagDays": 12
+        },
+        {
+          "paymentDoc": "42708",
+          "paymentDate": "2025-12-17",
+          "batch": "PC-76-26",
+          "kind": "row",
+          "amount": -27890.5,
+          "diff": 0.38,
+          "tier": "TIGHT",
+          "lagDays": 12
+        }
+      ]
+    },
+    {
+      "dn": "20898",
+      "date": "2025-12-06",
+      "net": 50237.46,
+      "legCount": 4,
+      "candidates": [
+        {
+          "paymentDoc": "42716",
+          "paymentDate": "2025-12-21",
+          "batch": "PC-76-26",
+          "kind": "doc_net",
+          "amount": -50237.0,
+          "diff": 0.46,
+          "tier": "TIGHT",
+          "lagDays": 15
+        },
+        {
+          "paymentDoc": "42716",
+          "paymentDate": "2025-12-21",
+          "batch": "PC-76-26",
+          "kind": "row",
+          "amount": -50237.0,
+          "diff": 0.46,
+          "tier": "TIGHT",
+          "lagDays": 15
+        }
+      ]
+    },
+    {
+      "dn": "21711",
+      "date": "2025-12-16",
+      "net": 38860.85,
+      "legCount": 2,
+      "candidates": [
+        {
+          "paymentDoc": "42717",
+          "paymentDate": "2025-12-21",
+          "batch": "PC-76-26",
+          "kind": "doc_net",
+          "amount": -38860.0,
+          "diff": 0.85,
+          "tier": "TIGHT",
+          "lagDays": 5
+        },
+        {
+          "paymentDoc": "42717",
+          "paymentDate": "2025-12-21",
+          "batch": "PC-76-26",
+          "kind": "row",
+          "amount": -38860.0,
+          "diff": 0.85,
+          "tier": "TIGHT",
+          "lagDays": 5
+        },
+        {
+          "paymentDoc": "42717",
+          "paymentDate": "2025-12-21",
+          "batch": "PC-76-26",
+          "kind": "row",
+          "amount": 38860.0,
+          "diff": 0.85,
+          "tier": "TIGHT",
+          "lagDays": 5
+        }
+      ]
+    },
+    {
+      "dn": "21432",
+      "date": "2025-12-20",
+      "net": 53192.93,
+      "legCount": 2,
+      "candidates": [
+        {
+          "paymentDoc": "42975",
+          "paymentDate": "2026-01-10",
+          "batch": "PC-76-27",
+          "kind": "doc_net",
+          "amount": -53192.5,
+          "diff": 0.43,
+          "tier": "TIGHT",
+          "lagDays": 21
+        },
+        {
+          "paymentDoc": "42975",
+          "paymentDate": "2026-01-10",
+          "batch": "PC-76-27",
+          "kind": "row",
+          "amount": -53192.5,
+          "diff": 0.43,
+          "tier": "TIGHT",
+          "lagDays": 21
+        },
+        {
+          "paymentDoc": "42975",
+          "paymentDate": "2026-01-10",
+          "batch": "PC-76-27",
+          "kind": "row",
+          "amount": 53192.5,
+          "diff": 0.43,
+          "tier": "TIGHT",
+          "lagDays": 21
+        }
+      ]
+    },
+    {
+      "dn": "21732",
+      "date": "2025-12-23",
+      "net": 42516.88,
+      "legCount": 2,
+      "candidates": [
+        {
+          "paymentDoc": "42976",
+          "paymentDate": "2026-01-10",
+          "batch": "PC-76-27",
+          "kind": "doc_net",
+          "amount": -42516.5,
+          "diff": 0.38,
+          "tier": "TIGHT",
+          "lagDays": 18
+        },
+        {
+          "paymentDoc": "42976",
+          "paymentDate": "2026-01-10",
+          "batch": "PC-76-27",
+          "kind": "row",
+          "amount": -42516.5,
+          "diff": 0.38,
+          "tier": "TIGHT",
+          "lagDays": 18
+        },
+        {
+          "paymentDoc": "42976",
+          "paymentDate": "2026-01-10",
+          "batch": "PC-76-27",
+          "kind": "row",
+          "amount": 42516.5,
+          "diff": 0.38,
+          "tier": "TIGHT",
+          "lagDays": 18
+        }
+      ]
+    },
+    {
+      "dn": "21739",
+      "date": "2025-12-26",
+      "net": 34877.91,
+      "legCount": 2,
+      "candidates": [
+        {
+          "paymentDoc": "43246",
+          "paymentDate": "2026-02-06",
+          "batch": "PC-76-28",
+          "kind": "doc_net",
+          "amount": -34877.5,
+          "diff": 0.41,
+          "tier": "TIGHT",
+          "lagDays": 42
+        },
+        {
+          "paymentDoc": "43246",
+          "paymentDate": "2026-02-06",
+          "batch": "PC-76-28",
+          "kind": "row",
+          "amount": -34877.5,
+          "diff": 0.41,
+          "tier": "TIGHT",
+          "lagDays": 42
+        }
+      ]
+    }
+  ],
+  "unmatched": [
+    {
+      "dn": "7087",
+      "date": "2023-12-07",
+      "net": 37268.1,
+      "legCount": 3
+    },
+    {
+      "dn": "7124",
+      "date": "2023-12-09",
+      "net": 74086.34,
+      "legCount": 3
+    },
+    {
+      "dn": "3746",
+      "date": "2024-02-14",
+      "net": 46558.9,
+      "legCount": 1
+    },
+    {
+      "dn": "3763",
+      "date": "2024-03-01",
+      "net": 40757.84,
+      "legCount": 1
+    },
+    {
+      "dn": "8869",
+      "date": "2024-04-08",
+      "net": 52871.54,
+      "legCount": 1
+    },
+    {
+      "dn": "8899",
+      "date": "2024-04-26",
+      "net": 53535.5,
+      "legCount": 2
+    },
+    {
+      "dn": "8714",
+      "date": "2024-05-08",
+      "net": 1075.29,
+      "legCount": 2
+    },
+    {
+      "dn": "8935",
+      "date": "2024-06-01",
+      "net": 49940.8,
+      "legCount": 2
+    },
+    {
+      "dn": "9952",
+      "date": "2024-06-13",
+      "net": 42294.93,
+      "legCount": 1
+    },
+    {
+      "dn": "9671",
+      "date": "2024-07-08",
+      "net": 51370.41,
+      "legCount": 3
+    },
+    {
+      "dn": "9705",
+      "date": "2024-08-02",
+      "net": 20140.22,
+      "legCount": 2
+    },
+    {
+      "dn": "10854",
+      "date": "2024-08-08",
+      "net": 49885.1,
+      "legCount": 2
+    },
+    {
+      "dn": "11551",
+      "date": "2024-09-03",
+      "net": 42178.24,
+      "legCount": 3
+    },
+    {
+      "dn": "10159",
+      "date": "2024-10-01",
+      "net": 47046.77,
+      "legCount": 2
+    },
+    {
+      "dn": "10266",
+      "date": "2024-10-26",
+      "net": 47460.61,
+      "legCount": 2
+    },
+    {
+      "dn": "121069",
+      "date": "2024-11-02",
+      "net": 45545.25,
+      "legCount": 2
+    },
+    {
+      "dn": "10766",
+      "date": "2024-11-27",
+      "net": 45590.18,
+      "legCount": 2
+    },
+    {
+      "dn": "10725",
+      "date": "2024-11-30",
+      "net": 44645.36,
+      "legCount": 2
+    },
+    {
+      "dn": "11119",
+      "date": "2024-12-06",
+      "net": 39722.25,
+      "legCount": 2
+    },
+    {
+      "dn": "10747",
+      "date": "2024-12-09",
+      "net": -13521.78,
+      "legCount": 5
+    },
+    {
+      "dn": "11861",
+      "date": "2024-12-17",
+      "net": 26138.08,
+      "legCount": 2
+    },
+    {
+      "dn": "10848",
+      "date": "2024-12-20",
+      "net": 35892.79,
+      "legCount": 2
+    },
+    {
+      "dn": "11874",
+      "date": "2024-12-23",
+      "net": 40434.59,
+      "legCount": 2
+    },
+    {
+      "dn": "9285",
+      "date": "2024-12-25",
+      "net": 11825.82,
+      "legCount": 2
+    },
+    {
+      "dn": "11881",
+      "date": "2024-12-28",
+      "net": -29125.9,
+      "legCount": 8
+    },
+    {
+      "dn": "11884",
+      "date": "2024-12-30",
+      "net": 87805.33,
+      "legCount": 2
+    },
+    {
+      "dn": "11805",
+      "date": "2025-01-08",
+      "net": 18539.99,
+      "legCount": 2
+    },
+    {
+      "dn": "12018",
+      "date": "2025-01-15",
+      "net": 806.25,
+      "legCount": 2
+    },
+    {
+      "dn": "9339",
+      "date": "2025-01-22",
+      "net": 46212.35,
+      "legCount": 2
+    },
+    {
+      "dn": "12046",
+      "date": "2025-02-03",
+      "net": 33450.4,
+      "legCount": 2
+    },
+    {
+      "dn": "11671",
+      "date": "2025-02-06",
+      "net": -19205.17,
+      "legCount": 4
+    },
+    {
+      "dn": "10518",
+      "date": "2025-03-09",
+      "net": 158711.11,
+      "legCount": 3
+    },
+    {
+      "dn": "13139",
+      "date": "2025-05-13",
+      "net": -15421.43,
+      "legCount": 3
+    },
+    {
+      "dn": "13140",
+      "date": "2025-05-14",
+      "net": -1253.57,
+      "legCount": 1
+    },
+    {
+      "dn": "13249",
+      "date": "2025-05-21",
+      "net": 57067.0,
+      "legCount": 2
+    },
+    {
+      "dn": "12278",
+      "date": "2025-05-31",
+      "net": 175048.8,
+      "legCount": 2
+    },
+    {
+      "dn": "20337",
+      "date": "2025-08-25",
+      "net": 45992.5,
+      "legCount": 6
+    },
+    {
+      "dn": "20469",
+      "date": "2025-09-06",
+      "net": 59319.68,
+      "legCount": 2
+    },
+    {
+      "dn": "20252",
+      "date": "2025-09-17",
+      "net": 53383.06,
+      "legCount": 2
+    },
+    {
+      "dn": "21627",
+      "date": "2026-01-10",
+      "net": 52906.77,
+      "legCount": 2
+    },
+    {
+      "dn": "21237",
+      "date": "2026-02-06",
+      "net": 78304.31,
+      "legCount": 2
+    },
+    {
+      "dn": "21541",
+      "date": "2026-02-13",
+      "net": 44794.87,
+      "legCount": 7
+    },
+    {
+      "dn": "22630",
+      "date": "2026-06-08",
+      "net": 64900.69,
+      "legCount": 2
+    },
+    {
+      "dn": "22936",
+      "date": "2026-07-08",
+      "net": 53951.69,
+      "legCount": 2
+    },
+    {
+      "dn": "23974",
+      "date": "2026-08-24",
+      "net": 30207.8,
+      "legCount": 2
+    },
+    {
+      "dn": "24947",
+      "date": "2026-09-02",
+      "net": 5433.7,
+      "legCount": 2
+    }
+  ],
+  "zeroNet": [
+    {
+      "dn": "22508",
+      "date": "2026-06-18",
+      "net": 0.0,
+      "legCount": 2
+    }
+  ]
+}

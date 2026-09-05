@@ -5,6 +5,12 @@
 **Doctrine:** `.agents/skills/SKILL_Payment_To_Invoice_Allocation.md`
 **Status:** Exploratory — forked from the main event register (`LIN001_events_consolidated_2026-06_2026-09.md` / `docs/LIN001_event_DN*.md`). Nothing here overwrites that register; it adds the payment-matching dimension with formal confidence tags, since most of what follows is `Probable`, not `Confirmed`.
 
+**Full-history scripted pass (2026-09-05):** `../data/dn_event_payment_allocation_candidates.json` extends this beyond the Nov 2025 – Sep 2026 window covered by `allocation_edges.csv` — 99 DN#-labeled events across the account's full 2023–2026 history (52 matched + 46 unmatched + 1 zero-net), run through the new `analysis/debtors/shared/scripts/dn_event_payment_allocation.mjs`.
+
+**Note on script naming:** `analysis/debtors/shared/scripts/payment_doc_allocation.mjs` already existed as a real, working implementation (not a placeholder — `payment_doc_allocation_2025.mjs`, the file `SKILL_Payment_To_Invoice_Allocation.md` Sec 12 references, is a deprecated shim that calls it with WO0001 defaults). That script is built for the WO0001 archetype: LPG-only match targets via `vw_clean_transactions`, ref_no-linked CNs, no DN#-grouping, no reversal-chain netting. LIN001 doesn't fit that shape — this session proved LIN001 settles on the **header-combined** net (LPG + CYL together), not LPG-only, and its events span multi-document reversal-and-reissue chains that script doesn't net. `dn_event_payment_allocation.mjs` is a separate algorithm for accounts like LIN001, not a replacement — both scripts should stay, matched to the account's actual behavior rather than assumed to be interchangeable.
+
+52 events got a candidate match (mostly `EXACT`, sub-cent), 46 remain unmatched, 1 is zero-net. Every hand-derived match found earlier in this session reproduced exactly under the script; ~30 additional exact/tight matches surfaced from 2023–2024 data nobody had manually checked before. These are candidates only — same confidence ceiling as everything else in this ledger (`Probable`/`Exception`, no `ref_no` evidence) — not yet promoted into `allocation_edges.csv`.
+
 ---
 
 ## 0. Payer-class note (gap in existing skill mapping)
