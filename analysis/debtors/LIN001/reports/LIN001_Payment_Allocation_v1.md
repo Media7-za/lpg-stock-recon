@@ -5,7 +5,9 @@
 **Doctrine:** `.agents/skills/SKILL_Payment_To_Invoice_Allocation.md`
 **Status:** Exploratory — forked from the main event register (`LIN001_events_consolidated_2026-06_2026-09.md` / `docs/LIN001_event_DN*.md`). Nothing here overwrites that register; it adds the payment-matching dimension with formal confidence tags, since most of what follows is `Probable`, not `Confirmed`.
 
-**Correction (2026-09-05):** 44974 was previously ASSUMED to split with 44975 against DN#22630. A customer-forwarded WhatsApp payment confirmation for 44974 explicitly references "21541" — reassigned to DN#21541. This is the one edge in this ledger with genuine remittance advice (`commercially_confirmed=true`, AL-0010) rather than plain proximity inference. See §4/§5 below and `docs/LIN001_event_DN21541.md` for the full writeup, including the still-open R4,204.27 residual and the leaking-cylinder refund claim investigated against it.
+**Correction (2026-09-05):** 44974 was previously ASSUMED to split with 44975 against DN#22630. A customer-forwarded WhatsApp payment confirmation for 44974 explicitly references "21541" — reassigned to DN#21541. This is the one edge in this ledger with genuine remittance advice (`commercially_confirmed=true`, AL-0010) rather than plain proximity inference. See §4/§5 below and `docs/LIN001_event_DN21541.md` for the full writeup, including the still-open R4,204.27 residual.
+
+**Second correction, same day:** a customer WhatsApp claim of 2×19kg + 2×48kg leaking cylinders was earlier reported as having no corresponding ERP credit ("entirely off-ledger"). That was wrong — a search-filter miss. **CN 14435 (-R3,082.00, 134kg gas-only) is exactly that credit** and was already inside DN#21541's R44,794.87 event net from the start. The R4,204.27 residual is unrelated to that claim; its actual cause is still unidentified.
 
 **Full-history scripted pass (2026-09-05):** `../data/dn_event_payment_allocation_candidates.json` extends this beyond the Nov 2025 – Sep 2026 window covered by `allocation_edges.csv` — 99 DN#-labeled events across the account's full 2023–2026 history (52 matched + 46 unmatched + 1 zero-net), run through the new `analysis/debtors/shared/scripts/dn_event_payment_allocation.mjs`.
 
@@ -105,7 +107,7 @@ Applied inline as part of each event's header-level net (invoice + CN), not as a
 |---|---|---:|---|---:|
 | DN#21541 | 2026-02-13→16 | R44,794.87 | 44974 (R40,590.60, Confirmed via remittance — see §2) | **R4,204.27 open** |
 
-R4,204.27 is investigated in `docs/LIN001_event_DN21541.md`: a customer WhatsApp claim of 2×19kg + 2×48kg leaking cylinders returned "together" doesn't tie exactly to it under any rate/component combination tested (gas-only, deposit-only, combined; against either DN#21541's own rates or the prior DN#21237's rates), and no CN was ever posted for it — it stays an open, unexplained gap, not a closed one.
+R4,204.27 is investigated in `docs/LIN001_event_DN21541.md`. A customer WhatsApp claim of 2×19kg + 2×48kg leaking cylinders returned "together" was initially thought unresolved in ERP, but is in fact already credited via CN 14435 (-R3,082.00, 134kg gas-only) — already inside the R44,794.87 event net. The R4,204.27 residual is therefore unrelated to that claim and stays an open, unexplained gap with an unidentified cause.
 
 ---
 
