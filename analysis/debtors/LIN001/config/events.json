@@ -12,14 +12,13 @@
       "creditNote": { "doc_no": "15039", "ref_no": "51132", "gross": -67792.50 },
       "eventNet": 64900.69,
       "payments": [
-        { "doc_no": "44974", "date": "2026-06-06", "amount": 40590.60, "batch_ref": "PC-76-32", "source": "erp" },
         { "doc_no": "44975", "date": "2026-06-07", "amount": 63325.00, "batch_ref": "PC-76-32", "source": "erp" }
       ],
-      "allocatedPaymentTotal": 103915.60,
-      "surplus": 39014.91,
-      "status": "assumed_closed",
-      "epistemicTag": "ASSUMED",
-      "note": "44974 fully applied first; 44975 split (R24,310.09 applied, R39,014.91 unallocated). Split is an operator assumption, not an ERP-posted allocation."
+      "allocatedPaymentTotal": 63325.00,
+      "surplus": -1575.69,
+      "status": "open_short_paid",
+      "epistemicTag": "CORRECTED_2026-09-05",
+      "note": "CORRECTED 2026-09-05: previously status=assumed_closed with 44974+44975 both applied (R39,014.91 surplus). WhatsApp remittance evidence shows 44974 (R40,590.60, 2026-06-06) explicitly references DN#21541, not DN#22630 - reassigned there (see LIN001_event_DN21541.md). 44975 alone leaves this event R1,575.69 short. Split-covering assumption retired per operator note that customers don't typically part-pay one invoice across two payment docs."
     },
     {
       "dn": "22508",
@@ -99,18 +98,20 @@
   ],
   "unallocated": [
     { "item": "44482 (PC-76-31)", "amount": 75844.50, "tag": "ASSUMED" },
-    { "item": "DN#22630 surplus", "amount": 39014.91, "tag": "ASSUMED" },
+    { "item": "44974 (PC-76-32)", "amount": 40590.60, "tag": "REASSIGNED_2026-09-05", "note": "Reassigned to DN#21541 (2026-02-13, outside this window) per WhatsApp remittance evidence - no longer in this account's Jun-Sep unallocated pool. See docs/LIN001_event_DN21541.md" },
+    { "item": "DN#22630 shortfall", "amount": -1575.69, "tag": "CORRECTED_2026-09-05", "note": "event open, not a surplus" },
     { "item": "DN#22936 surplus", "amount": 1029.67, "tag": "ASSERTED" },
     { "item": "Proforma 2026-09-04 shortfall", "amount": -2185.00, "tag": "ASSERTED", "note": "event open" }
   ],
   "summary": {
     "totalEventNet5ErpDeliveries": 154493.88,
-    "totalPayments5ErpDeliveries": 221780.96,
-    "credit5ErpDeliveries": 67287.08,
+    "totalPayments5ErpDeliveries": 181190.36,
+    "credit5ErpDeliveries": 26696.48,
     "proformaEventNet": 16291.80,
     "proformaPayments": 14106.80,
     "proformaShortfall": -2185.00,
     "totalEventNetAll6": 170785.68,
-    "netPositionAll6Credit": 65102.08
+    "netPositionAll6Credit": 24511.48,
+    "correctionNote": "2026-09-05: previous totals (totalPayments5ErpDeliveries=221780.96, credit5ErpDeliveries=67287.08, netPositionAll6Credit=65102.08) included payment 44974 against DN#22630. WhatsApp remittance evidence reassigns 44974 to DN#21541 (outside this window) - see docs/LIN001_event_DN21541.md."
   }
 }

@@ -5,6 +5,8 @@
 **Doctrine:** `.agents/skills/SKILL_Payment_To_Invoice_Allocation.md`
 **Status:** Exploratory — forked from the main event register (`LIN001_events_consolidated_2026-06_2026-09.md` / `docs/LIN001_event_DN*.md`). Nothing here overwrites that register; it adds the payment-matching dimension with formal confidence tags, since most of what follows is `Probable`, not `Confirmed`.
 
+**Correction (2026-09-05):** 44974 was previously ASSUMED to split with 44975 against DN#22630. A customer-forwarded WhatsApp payment confirmation for 44974 explicitly references "21541" — reassigned to DN#21541. This is the one edge in this ledger with genuine remittance advice (`commercially_confirmed=true`, AL-0010) rather than plain proximity inference. See §4/§5 below and `docs/LIN001_event_DN21541.md` for the full writeup, including the still-open R4,204.27 residual and the leaking-cylinder refund claim investigated against it.
+
 **Full-history scripted pass (2026-09-05):** `../data/dn_event_payment_allocation_candidates.json` extends this beyond the Nov 2025 – Sep 2026 window covered by `allocation_edges.csv` — 99 DN#-labeled events across the account's full 2023–2026 history (52 matched + 46 unmatched + 1 zero-net), run through the new `analysis/debtors/shared/scripts/dn_event_payment_allocation.mjs`.
 
 **Note on script naming:** `analysis/debtors/shared/scripts/payment_doc_allocation.mjs` already existed as a real, working implementation (not a placeholder — `payment_doc_allocation_2025.mjs`, the file `SKILL_Payment_To_Invoice_Allocation.md` Sec 12 references, is a deprecated shim that calls it with WO0001 defaults). That script is built for the WO0001 archetype: LPG-only match targets via `vw_clean_transactions`, ref_no-linked CNs, no DN#-grouping, no reversal-chain netting. LIN001 doesn't fit that shape — this session proved LIN001 settles on the **header-combined** net (LPG + CYL together), not LPG-only, and its events span multi-document reversal-and-reissue chains that script doesn't net. `dn_event_payment_allocation.mjs` is a separate algorithm for accounts like LIN001, not a replacement — both scripts should stay, matched to the account's actual behavior rather than assumed to be interchangeable.
@@ -33,8 +35,9 @@ LIN001 runs closest to **§4.8 "Open Event Balance (primary — ref optional)"**
 | Events considered (Nov 2025 → Sep 2026) | 15 | R608,631.45 |
 | Edges matched (`PROXIMITY_INFERENCE`) | 12 | R432,622.59 allocated |
 | Payments fully unallocated (`UNALLOCATED`, no candidate) | 2 (43247, 44482) | R125,432.50 |
-| Events with no matched payment | 3 (DN-21627, DN#21237, DN#21541) | R176,005.95 |
-| Tier 1/2 (ref-based, `Confirmed`) matches | **0** | — |
+| Events with no matched payment | 2 (DN-21627, DN#21237) | R131,211.08 |
+| Events partially matched (residual open) | 1 (DN#21541, R4,204.27 open) | R44,794.87 |
+| Tier 1/2 (remittance-confirmed) matches | **1** (44974 → DN#21541, added 2026-09-05) | R40,590.60 |
 | Edges exceeding Tier 4's 3–14 day window but kept as `Probable` on amount strength | 4 (AL-0001, 0005, 0006, 0007) | — |
 
 No edge in this ledger reaches `Confirmed` — LIN001 has no `ref_no` tagging and no remittance advice on file, so `commercially_confirmed = false` throughout. Every edge carries `review_required: true`.
@@ -43,7 +46,15 @@ No edge in this ledger reaches `Confirmed` — LIN001 has no `ref_no` tagging an
 
 ## 2. Confirmed Allocations (Tier 1 & 2)
 
-None. LIN001 has no populated `ref_no`, so ref-based Tier 1/2 matching is structurally unavailable for this account.
+One, added 2026-09-05 — not via ERP `ref_no` (structurally unavailable for this account, see below), but via customer-supplied remittance advice, which the doctrine (`SKILL_Payment_To_Invoice_Allocation.md` §7) treats as equivalent evidence for `commercially_confirmed = true`:
+
+| Payment Doc | Date | Amount | Target Event | Event Date | Evidence | Confidence |
+|---|---|---:|---|---|---|---|
+| 44974 | 2026-06-06 | -R40,590.60 | DN#21541 | 2026-02-13 | WhatsApp payment confirmation, explicit reference "21541" | **Confirmed** (`commercially_confirmed: true`) |
+
+This is a **partial** payment against DN#21541's R44,794.87 net — target identification is confirmed by the reference, but R4,204.27 remains an open residual on that event (see `docs/LIN001_event_DN21541.md`). Not yet entered into `config/payment_pattern_overrides.json` — that requires human `approved_by`/`approved_date` sign-off per §7; `review_required` stays `true` in `allocation_edges.csv` (AL-0010) until that happens and until the residual is explained.
+
+Every other edge below remains ref-less and `Probable` at best.
 
 ---
 
@@ -64,8 +75,7 @@ Applied inline as part of each event's header-level net (invoice + CN), not as a
 | 42975 (slice) | 2026-01-10 | -R53,192.50 | DN#21432 | 2025-12-20 | 21d | R0.43 | Exceeds window |
 | 42976 | 2026-01-10 | -R42,516.50 | DN#21732 | 2025-12-23 | 18d | R0.38 | Exceeds window |
 | 43246 | 2026-02-06 | -R34,877.50 | DN#21739 | 2025-12-26 | 42d | R0.41 | Well beyond window — recommend override registry entry, not silent acceptance |
-| 44974 | 2026-06-06 | -R40,590.60 | DN#22630 | 2026-06-08 | -2d (**prepayment**) | — | §4.6 default is UNALLOCATED; ASSUMED split with 44975 |
-| 44975 | 2026-06-07 | -R63,325.00 | DN#22630 | 2026-06-08 | -1d (**prepayment**) | — | Remainder after 44974; R39,014.91 surplus |
+| 44975 | 2026-06-07 | -R63,325.00 | DN#22630 | 2026-06-08 | -1d (**prepayment**) | — | CORRECTED 2026-09-05: 44974 no longer splits here (see §2, reassigned to DN#21541 via remittance evidence) — 44975 alone leaves DN#22630 R1,575.69 SHORT, not surplus |
 | EXT-2744666881 | 2026-07-03 | -R54,981.36 | DN#22936 | 2026-07-08 | -5d (**prepayment**) | — | Bank ref matches invoice `order_no` 13991 exactly (PROVEN) — stronger than plain proximity |
 | EXT-2901239645 | 2026-08-22 | -R34,721.00 | DN#23974 | 2026-08-24 | -2d (**prepayment**) | — | Amount+date proximity only |
 | 45961 | 2026-09-01 | -R28,163.00 | DN#24947 | 2026-09-02 | -1d (**prepayment**) | — | ERP-posted (PROVEN as a doc); allocation itself still Probable |
@@ -87,8 +97,15 @@ Applied inline as part of each event's header-level net (invoice + CN), not as a
 |---|---|---:|
 | DN-21627 | 2026-01-10 | R52,906.77 |
 | DN#21237 | 2026-02-06 | R78,304.31 |
-| DN#21541 | 2026-02-13→16 | R44,794.87 |
-| **Total open** | | **R176,005.95** |
+| **Total fully unmatched** | | **R131,211.08** |
+
+**Partially matched event (2026-09-05 — was fully unmatched):**
+
+| DN# | Date | Event net | Payment | Residual |
+|---|---|---:|---|---:|
+| DN#21541 | 2026-02-13→16 | R44,794.87 | 44974 (R40,590.60, Confirmed via remittance — see §2) | **R4,204.27 open** |
+
+R4,204.27 is investigated in `docs/LIN001_event_DN21541.md`: a customer WhatsApp claim of 2×19kg + 2×48kg leaking cylinders returned "together" doesn't tie exactly to it under any rate/component combination tested (gas-only, deposit-only, combined; against either DN#21541's own rates or the prior DN#21237's rates), and no CN was ever posted for it — it stays an open, unexplained gap, not a closed one.
 
 ---
 
@@ -97,16 +114,18 @@ Applied inline as part of each event's header-level net (invoice + CN), not as a
 ```
 Total event net (15 events, Nov 2025 - Sep 2026)     R608,631.45
 Total allocated (12 matched edges)                   R432,622.59
-Total open events (3 unmatched)                      R176,005.95
+Confirmed remittance match (44974 -> DN#21541)         R40,590.60
+Total open events (2 fully unmatched)                R131,211.08
+Open residual on DN#21541 (partially matched)          R4,204.27
                                                        -----------
 Events accounted for                                 R608,628.54  (vs R608,631.45 — R2.91 rounding across matched edges)
 
 Payments fully unallocated (43247 + 44482)            R125,432.50
 ```
 
-**Bridge variance: NOT R0.00.** Two threads remain open: (a) 43247 and 44482 have no confirmed target, (b) DN-21627/21237/21541 have no confirmed payment. The R2.91 aggregate rounding across the 7 sub-14/42-day proximity matches is immaterial and expected (VAT-cent rounding per event, not a data error).
+**Bridge variance: NOT R0.00.** Three threads remain open: (a) 43247 and 44482 have no confirmed target, (b) DN-21627/21237 have no matched payment at all, (c) DN#21541 has a confirmed partial payment (44974, via remittance) but a R4,204.27 residual that no tested explanation (pricing, either event's rates, deposit/gas component split) closes exactly. The R2.91 aggregate rounding across the 7 sub-14/42-day proximity matches is immaterial and expected (VAT-cent rounding per event, not a data error).
 
-**Working hypothesis, not a conclusion:** 43247 (R49,588.00) and 44482 (R75,844.50) sum to R125,432.50 — not a clean match to the R176,005.95 open-events total, so they don't jointly close the backlog either. This needs either a third open payment we haven't located, a partial-payment scenario, or the remittance/paper evidence the operator mentioned.
+**Working hypothesis, not a conclusion:** 43247 (R49,588.00) and 44482 (R75,844.50) sum to R125,432.50 — not a clean match to the R131,211.08 DN-21627/21237 total (nor to that total plus DN#21541's R4,204.27 residual), so they don't jointly close the remaining backlog either. This needs either a third open payment we haven't located, a partial-payment scenario, or further remittance/paper evidence.
 
 ---
 

@@ -3,7 +3,15 @@
 **Account:** LIN001 — SLINDOKUHLE ENTERPRISES (PTY) LTD
 **Delivery note:** DN#21541
 **Date:** 2026-02-13→16 (7-document reversal-and-reissue chain)
-**Status:** Open — no payment received. Likely resolved-on-paper, unpaid-in-cash.
+**Status:** Open — partially paid, **R4,204.27 residual unexplained**. *(Corrected 2026-09-05 — previously shown as "no payment received.")*
+
+---
+
+## Correction log (2026-09-05)
+
+This card previously read "no payment ever received for this event" and inferred the event was "resolved on paper, unpaid in cash." That conclusion is **retracted**. A customer-forwarded WhatsApp payment confirmation, dated 2026-06-06, explicitly references **"21541"** — the payment is **44974** (R40,590.60 posted in ERP; the screenshot itself reads R40,590.26, a R0.34 variance most likely from the capture/OCR, same payment on date+reference match). This payment was previously force-matched to DN#22630 as an ASSUMED split with 44975; that split is retired (see `LIN001_event_DN22630`-equivalent detail in the main Jun–Sep register and `allocation_edges.csv` AL-0010/AL-0011) because customers don't typically part-pay one invoice across two payment docs, and the remittance evidence directly contradicts it.
+
+This is the one edge in the whole LIN001 payment ledger with genuine remittance advice (`commercially_confirmed: true`) rather than plain amount/date proximity.
 
 ---
 
@@ -22,7 +30,14 @@
 
 Net effect: the original invoice+CN pair was fully reversed (14431 wipes 49252, 49263 wipes 14430), then cleanly reissued as 49265 − 14432 − 14435. The reversal legs net to zero — the event net equals the clean reissue alone.
 
-**No payment ever received for this event.**
+## Payment status
+
+```
+R44,794.87  event net
+− R40,590.60  payment 44974 (2026-06-06, confirmed via WhatsApp remittance, ref "21541")
+────────────
+= R4,204.27  residual — open, unexplained
+```
 
 ---
 
@@ -44,17 +59,66 @@ Both the Feb 6 baseline (invoice 49115, event DN#21237) and the original Feb 13 
 
 Invoice 49115 (Feb 6) was never given the same correction 49252→49265 received, despite being billed at the identical stale rate. Re-rating 49115 at 49265's corrected prices explains 85.2% of DN#21237's payment shortfall — see `LIN001_event_DN21237.md` and `LIN001_ERP_correction_request_49115.md`.
 
+---
+
+## The R4,204.27 residual — leaking-cylinder claim investigated, not closed
+
+A second WhatsApp thread (driver conversation, "Jack Lin") includes the message: *"Hey boss, I returned 2 19kg gas cylinders and 2 48kg gas cylinders because they were leaking. Please refund all of these together."* This is a candidate explanation for the residual, but it does not close cleanly:
+
+### No ERP record exists for this claim, under either event
+
+Checked `transaction_items` for LIN001, 2026-02-06 → 2026-03-31 (all 19kg/48kg line activity): every line in that window carries `reference` = `DN#21237`, `DN#21541`, or `REV DN#21541` / `REV CRD NOTE#14430` — i.e. it's fully accounted for by the two events' own reversal-and-reissue chains, already reflected in the event nets above and in `LIN001_event_DN21237.md`. **No separate credit note or return document exists for a 2×19kg + 2×48kg leaking-cylinder claim.** Whatever happened with these cylinders physically, it was never posted to the ledger — this is an off-book claim, evidenced only by the WhatsApp message.
+
+### Which delivery did the leaking cylinders come from?
+
+Raised directly by the operator: the cylinders reported leaking on the Feb 14 visit may have been dispatched on an **earlier** delivery, not this one — the customer could simply have been carrying them in stock and handed them back to the driver on this visit. Checked the immediately preceding LIN001 deliveries:
+
+| Event | Date | 19kg dispatched | 48kg dispatched | 19kg gas rate (ex-VAT) | 48kg gas rate (ex-VAT) |
+|---|---|---:|---:|---:|---:|
+| DN-21627 | 2026-01-10 | 7 | 0 | R396.52 | — |
+| **DN#21237** | **2026-02-06** | **28** | **10 (5 SV + 5 DV)** | **R404.01** | **R1,020.65** |
+| DN#21541 (this event, final reissue 49265) | 2026-02-13→16 | 14 | 10 (6 SV + 4 DV) | R387.43 | R978.78 |
+
+DN#21237 (Feb 6, **8 days before** the Feb 14 visit) is the only prior event that dispatched both 19kg and 48kg cylinders in this window, and is the most plausible physical source if the leaking units were already in the customer's hands rather than part of this delivery's own load.
+
+### Rate/component combinations tested — none tie exactly to R4,204.27
+
+The **deposit** rates (19kg R600, 48kg R1,050 ex-VAT) never change between events, so a deposit-only estimate is rate-invariant regardless of which event supplied the cylinders. Only the **gas** rate depends on the source event. Four combinations tested, incl. VAT:
+
+| Scenario | Using DN#21541's own rates (49265) | Using DN#21237's rates (49115) |
+|---|---:|---:|
+| Gas only (2×19kg + 2×48kg gas) | R3,142.28 | R3,276.72 |
+| Deposit only (2×19kg + 2×48kg deposit) | R3,795.00 | R3,795.00 *(rate-invariant)* |
+| Combined (gas + deposit) | R6,937.28 | R7,071.72 |
+
+**None of these six values equals R4,204.27.** Switching to DN#21237's rates (per the "previous event" hypothesis) does not change the deposit-only figure at all, and moves the gas-only/combined figures further from the target, not closer. The "previous event" question doesn't resolve the gap either way — it changes which invoice's gas rate would apply if a refund were computed cleanly, but no clean computation ties to the actual residual under either event.
+
+### A second, unresolved discrepancy
+
+The customer's handwritten reconciliation notebook prices 19kg gas at **R442.13** — checked against every LIN001 19kg gas rate recorded in `transaction_items` across the full 2023–2026 history; the closest matches are R440.87 (DN#20337, 2025-08-25) and R446.83 (three events, Sep–Oct 2025). **R442.13 does not exactly match any invoiced rate found.** This suggests either a rate this analysis hasn't located, a customer-side calculation error, or a price the customer was quoted verbally that was never actually posted at that value.
+
+### Conclusion on the residual
+
+R4,204.27 stays **open and unexplained**. The leaking-cylinder claim is a real, evidenced customer request, but:
+1. It was never posted as a CN in ERP under either candidate source event,
+2. No tested rate/component combination — under either event's pricing — ties to the residual amount, and
+3. The notebook's own rate for the relevant item doesn't match any recorded invoice rate.
+
+This needs the customer's actual documentation (their notebook page in full, ideally photographed alongside the WhatsApp thread) or a direct conversation, not further internal recomputation — the analysis has exhausted the combinations the available data supports.
+
 ## Read on payment status
 
-Leans **resolved on the ERP side, not settled in cash**. The correction moved price in the customer's favor with no further correction cycle after it, and normal pricing resumed by DN#22630 (June 8, ~R24.67/kg) — this isn't an ongoing rate fight. The most likely explanation for zero payment: the customer may be withholding payment until they see the same correction applied to 49115 (and possibly other invoices from the same window), rather than continuing to dispute 49265 itself.
+Payment 44974 confirms the customer intended this event as a target and made a real, if partial, payment against it. The R4,204.27 gap is most plausibly the leaking-cylinder claim (self-reported by the customer, unresolved amount) rather than an ongoing pricing dispute — the pricing correction (49252→49265) already landed cleanly with no further correction cycle, and normal pricing resumed by DN#22630 (June 8).
 
-**Also notable:** no further LIN001 activity in ERP for nearly 4 months after this event (next event is DN#22630, June 8) — consistent with deliveries being paused during the dispute.
+**Also notable:** no further LIN001 activity in ERP for nearly 4 months after this event (next event is DN#22630, June 8) — consistent with the leaking-cylinder issue (or something else) delaying full settlement, with the June payment resuming things at the same time it partially covers this event.
 
 ## Recommended action
 
 1. Post the DN#21541-consistent correction on invoice 49115 (see `LIN001_ERP_correction_request_49115.md`).
-2. Once posted, follow up with the customer on this event's R44,794.87 — if the only blocker was seeing 49115 corrected, payment may follow once that's visibly resolved.
-3. Confirm with the customer whether any other invoices in this window (before the correction) also need the retroactive rate applied — this analysis only checked 49115.
+2. Ask the customer directly for the exact amount and basis of the leaking-cylinder refund they expected — the R4,204.27 residual cannot be reverse-engineered from ERP data alone.
+3. Clarify with the customer which delivery the 2×19kg + 2×48kg leaking units were originally received on (DN#21237 is the strongest candidate by timing, but this remains unconfirmed).
+4. Reconcile the notebook's R442.13 19kg rate against actual invoiced history — it may point to a rate quoted but never posted, worth checking with sales/ops.
+5. Enter payment 44974 into `config/payment_pattern_overrides.json` (override_type `VERIFIED_EXPLICIT_REF`) once an operator formally signs off, per `SKILL_Payment_To_Invoice_Allocation.md` §7.
 
 ## Confidence
 
@@ -62,8 +126,9 @@ Leans **resolved on the ERP side, not settled in cash**. The correction moved pr
 |---|---|
 | Document chain and net (R44,794.87) | PROVEN (ERP) |
 | Quantities unchanged, prices cut -4.10% | PROVEN (exact line data) |
-| "Resolved on paper" read | ASSERTED — inferred from no further correction cycle and resumed normal pricing later |
-| Reason for zero payment | GAP — plausible hypothesis, not confirmed with the customer |
+| Payment 44974 → this event | **Confirmed** (WhatsApp remittance advice, explicit reference "21541") |
+| R4,204.27 residual and its cause | GAP — leaking-cylinder claim investigated, does not tie exactly under any tested rate/component combination; source event (DN#21237 vs this event) unresolved |
+| Notebook 19kg rate (R442.13) | GAP — does not match any recorded invoice rate 2023–2026 |
 
 ---
 
@@ -72,5 +137,7 @@ Leans **resolved on the ERP side, not settled in cash**. The correction moved pr
 | Artifact | Path |
 |---|---|
 | This card | `LIN001_event_DN21541.md` |
-| DN#21237 card (connected event) | `LIN001_event_DN21237.md` |
+| DN#21237 card (connected event, candidate source of leaking cylinders) | `LIN001_event_DN21237.md` |
 | ERP correction request | `LIN001_ERP_correction_request_49115.md` |
+| Allocation edge (44974) | `../data/allocation_edges.csv` (AL-0010) |
+| Payment allocation ledger | `../reports/LIN001_Payment_Allocation_v1.md` |
