@@ -11,7 +11,7 @@
 
 **Third correction, same day:** CN 14435 itself under-credited by R60.25 (posted at a rounded R20.00/kg ex-VAT rate instead of invoice 49265's own R20.391/kg).
 
-**Fourth correction, same day:** the deposit/empties for these same 4 cylinders were assumed already covered by CN 14432 (its 21×19kg/14×48kg recorded-return counts matched the delivery-note "leaking" annotations). **Retracted** on operator confirmation that the 4 units were returned but never added to the delivery note's recorded totals — CN 14432 does not cover them, and a fresh **R3,795.00 empties credit** is owed and unposted (see `docs/LIN001_ERP_correction_request_21541_cylinders.md`).
+**Fourth correction, same day:** the deposit/empties for these same 4 cylinders were assumed already covered by CN 14432 (its 21×19kg/14×48kg recorded-return counts matched the delivery-note "leaking" annotations). **Retracted** on operator confirmation that the 4 units were returned but never added to the delivery note's recorded totals — CN 14432 does not cover them, and a fresh **R3,795.00 empties credit** is owed and unposted. Two separate ERP requests now cover DN#21541: `docs/LIN001_ERP_correction_request_21541_empties_credit.md` (credit note, -R3,795.00) and `docs/LIN001_ERP_correction_request_21541_price_adjustment.md` (discount journal, -R60.25).
 
 Fully corrected, DN#21541's total owed is **R40,939.62** (not R44,794.87 as posted), leaving a residual of **R349.02** (not R4,204.27) — and that residual is itself explained: it's a systematic rate mismatch in the customer's own reconciliation (his flat R23.27/kg vs. the actual R23.4497/kg incl VAT charged), reproducing his exact payment to within cents. See `docs/LIN001_event_DN21541.md` for the full walkthrough.
 

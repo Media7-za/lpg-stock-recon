@@ -51,7 +51,7 @@ R144,476.87  Invoice 49265 (final reissue)
 = R349.02  residual — small, and explained below (not a mystery)
 ```
 
-See `LIN001_ERP_correction_request_21541_cylinders.md` for the credit note to post (-R3,855.25 combined: -R3,795.00 empties + -R60.25 gas top-up).
+Two separate ERP actions are needed, split by transaction type: `LIN001_ERP_correction_request_21541_price_adjustment.md` (discount journal, -R60.25, gas rate top-up on CN 14435) and `LIN001_ERP_correction_request_21541_empties_credit.md` (credit note, -R3,795.00, empties never posted).
 
 ---
 
@@ -104,7 +104,7 @@ Payment 44974 is a good-faith, carefully-computed partial payment. The shortfall
 ## Recommended action
 
 1. Post the correction on invoice 49115 (see `LIN001_ERP_correction_request_49115.md`) — separate, unrelated matter.
-2. Post the combined -R3,855.25 credit for DN#21541 (see `LIN001_ERP_correction_request_21541_cylinders.md`): -R3,795.00 empties (never posted) + -R60.25 gas top-up (CN 14435 under-rated).
+2. Post two separate ERP actions for DN#21541, split by transaction type: a **credit note** for -R3,795.00 (empties, never posted — see `LIN001_ERP_correction_request_21541_empties_credit.md`) and a **discount journal** for -R60.25 (gas rate top-up on CN 14435 — see `LIN001_ERP_correction_request_21541_price_adjustment.md`).
 3. Treat the remaining R349.02 as closed/immaterial — it's explained by a rate difference in the customer's own reconciliation, not a data or posting error.
 4. Enter payment 44974 into `config/payment_pattern_overrides.json` (override_type `VERIFIED_EXPLICIT_REF`) once an operator formally signs off, per `SKILL_Payment_To_Invoice_Allocation.md` §7.
 
@@ -128,6 +128,7 @@ Payment 44974 is a good-faith, carefully-computed partial payment. The shortfall
 | This card | `LIN001_event_DN21541.md` |
 | DN#21237 card (connected event) | `LIN001_event_DN21237.md` |
 | ERP correction request (49115 rate) | `LIN001_ERP_correction_request_49115.md` |
-| ERP correction request (this event's cylinder credit) | `LIN001_ERP_correction_request_21541_cylinders.md` |
+| ERP correction request (empties credit note) | `LIN001_ERP_correction_request_21541_empties_credit.md` |
+| ERP correction request (price adjustment / discount journal) | `LIN001_ERP_correction_request_21541_price_adjustment.md` |
 | Allocation edge (44974) | `../data/allocation_edges.csv` (AL-0010) |
 | Payment allocation ledger | `../reports/LIN001_Payment_Allocation_v1.md` |
