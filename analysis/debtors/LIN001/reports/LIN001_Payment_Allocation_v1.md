@@ -9,7 +9,11 @@
 
 **Second correction, same day:** a customer WhatsApp claim of 2×19kg + 2×48kg leaking cylinders was earlier reported as having no corresponding ERP credit ("entirely off-ledger"). That was wrong — a search-filter miss. **CN 14435 (-R3,082.00, 134kg gas-only) is exactly that credit** and was already inside DN#21541's event net from the start.
 
-**Third correction, same day:** CN 14435 itself under-credited by R60.25 (posted at a rounded R20.00/kg ex-VAT rate instead of invoice 49265's own R20.391/kg). Corrected, DN#21541's actual net is **R44,734.62** (not R44,794.87 as posted) and the residual is **R4,144.02** (not R4,204.27). This is unrelated to the leaking-cylinder claim; its actual cause is still unidentified.
+**Third correction, same day:** CN 14435 itself under-credited by R60.25 (posted at a rounded R20.00/kg ex-VAT rate instead of invoice 49265's own R20.391/kg).
+
+**Fourth correction, same day:** the deposit/empties for these same 4 cylinders were assumed already covered by CN 14432 (its 21×19kg/14×48kg recorded-return counts matched the delivery-note "leaking" annotations). **Retracted** on operator confirmation that the 4 units were returned but never added to the delivery note's recorded totals — CN 14432 does not cover them, and a fresh **R3,795.00 empties credit** is owed and unposted (see `docs/LIN001_ERP_correction_request_21541_cylinders.md`).
+
+Fully corrected, DN#21541's total owed is **R40,939.62** (not R44,794.87 as posted), leaving a residual of **R349.02** (not R4,204.27) — and that residual is itself explained: it's a systematic rate mismatch in the customer's own reconciliation (his flat R23.27/kg vs. the actual R23.4497/kg incl VAT charged), reproducing his exact payment to within cents. See `docs/LIN001_event_DN21541.md` for the full walkthrough.
 
 **Full-history scripted pass (2026-09-05):** `../data/dn_event_payment_allocation_candidates.json` extends this beyond the Nov 2025 – Sep 2026 window covered by `allocation_edges.csv` — 99 DN#-labeled events across the account's full 2023–2026 history (52 matched + 46 unmatched + 1 zero-net), run through the new `analysis/debtors/shared/scripts/dn_event_payment_allocation.mjs`.
 
@@ -40,7 +44,7 @@ LIN001 runs closest to **§4.8 "Open Event Balance (primary — ref optional)"**
 | Edges matched (`PROXIMITY_INFERENCE`) | 12 | R432,622.59 allocated |
 | Payments fully unallocated (`UNALLOCATED`, no candidate) | 2 (43247, 44482) | R125,432.50 |
 | Events with no matched payment | 2 (DN-21627, DN#21237) | R131,211.08 |
-| Events partially matched (residual open) | 1 (DN#21541, R4,144.02 open, corrected) | R44,734.62 (corrected; R44,794.87 as posted in ERP) |
+| Events partially matched (residual explained, pending 2 credit postings) | 1 (DN#21541, R349.02 residual) | R40,939.62 (fully corrected; R44,794.87 as posted in ERP) |
 | Tier 1/2 (remittance-confirmed) matches | **1** (44974 → DN#21541, added 2026-09-05) | R40,590.60 |
 | Edges exceeding Tier 4's 3–14 day window but kept as `Probable` on amount strength | 4 (AL-0001, 0005, 0006, 0007) | — |
 
@@ -56,7 +60,7 @@ One, added 2026-09-05 — not via ERP `ref_no` (structurally unavailable for thi
 |---|---|---:|---|---|---|---|
 | 44974 | 2026-06-06 | -R40,590.60 | DN#21541 | 2026-02-13 | WhatsApp payment confirmation, explicit reference "21541" | **Confirmed** (`commercially_confirmed: true`) |
 
-This is a **partial** payment against DN#21541's R44,734.62 corrected net (R44,794.87 as posted in ERP, before a R60.25 under-credit fix to CN 14435 — see `docs/LIN001_event_DN21541.md`) — target identification is confirmed by the reference, but R4,144.02 remains an open residual on that event. Not yet entered into `config/payment_pattern_overrides.json` — that requires human `approved_by`/`approved_date` sign-off per §7; `review_required` stays `true` in `allocation_edges.csv` (AL-0010) until that happens and until the residual is explained.
+This is a **partial** payment against DN#21541's R40,939.62 fully-corrected total owed (R44,794.87 as posted in ERP, before a R60.25 CN 14435 top-up and a R3,795.00 empties credit that are both still unposted — see `docs/LIN001_event_DN21541.md`) — target identification is confirmed by the reference, and R349.02 remains as a residual, which is itself explained (a rate mismatch in the customer's own reconciliation, not an open question). Not yet entered into `config/payment_pattern_overrides.json` — that requires human `approved_by`/`approved_date` sign-off per §7; `review_required` stays `true` in `allocation_edges.csv` (AL-0010) until that happens and until the two outstanding credits are actually posted.
 
 Every other edge below remains ref-less and `Probable` at best.
 
@@ -107,31 +111,31 @@ Applied inline as part of each event's header-level net (invoice + CN), not as a
 
 | DN# | Date | Event net | Payment | Residual |
 |---|---|---:|---|---:|
-| DN#21541 | 2026-02-13→16 | R44,734.62 (corrected; R44,794.87 as posted) | 44974 (R40,590.60, Confirmed via remittance — see §2) | **R4,144.02 open** (corrected; R4,204.27 as posted) |
+| DN#21541 | 2026-02-13→16 | R40,939.62 (fully corrected; R44,794.87 as posted) | 44974 (R40,590.60, Confirmed via remittance — see §2) | **R349.02 residual, explained** (was R4,204.27 as posted) |
 
-R4,144.02 (corrected) is investigated in `docs/LIN001_event_DN21541.md`. A customer WhatsApp claim of 2×19kg + 2×48kg leaking cylinders returned "together" was initially thought unresolved in ERP, but is in fact already credited via CN 14435 — though itself under-credited by R60.25 (posted R3,082.00, should be R3,142.25 at invoice 49265's own rate). Correcting that puts DN#21541's actual net at R44,734.62 (not R44,794.87 as posted) and the residual at R4,144.02 (not R4,204.27). Either way, the residual is unrelated to the leaking-cylinder claim and stays an open, unexplained gap with an unidentified cause.
+The full breakdown is in `docs/LIN001_event_DN21541.md`. A customer WhatsApp claim of 2×19kg + 2×48kg leaking cylinders returned "together" needed two credits: CN 14435 (gas, posted but under-rated by R60.25) and a fresh empties credit (R3,795.00, never posted — the delivery note's recorded return counts didn't include these 4 units, contrary to an earlier assumption that they did). With both posted, DN#21541's total owed is R40,939.62, leaving R349.02 — which is itself explained by a rate mismatch in the customer's own reconciliation (his flat R23.27/kg vs. the invoice's actual R23.4497/kg), not an open question.
 
 ---
 
 ## 6. Reconciliation Bridge (partial — not yet closed)
 
 ```
-Total event net (15 events, Nov 2025 - Sep 2026)     R608,571.20  (corrected; R608,631.45 as posted, -R60.25 CN 14435 fix)
+Total event net (15 events, Nov 2025 - Sep 2026)     R604,776.20  (fully corrected; R608,631.45 as posted, -R60.25 gas top-up -R3,795.00 empties credit)
 Total allocated (12 matched edges)                   R432,622.59
 Confirmed remittance match (44974 -> DN#21541)         R40,590.60
 Total open events (2 fully unmatched)                R131,211.08
-Open residual on DN#21541 (partially matched)          R4,144.02  (corrected; R4,204.27 as posted)
+Residual on DN#21541 (partially matched, explained)     R349.02  (fully corrected; R4,204.27 as posted)
                                                        -----------
-Events accounted for                                 R608,568.29  (vs R608,571.20 — R2.91 rounding across matched edges, unchanged)
+Events accounted for                                 R604,773.29  (vs R604,776.20 — R2.91 rounding across matched edges, unchanged)
 
 Payments fully unallocated (43247 + 44482)            R125,432.50
 ```
 
-**Note:** the R60.25 CN 14435 correction has only been applied to DN#21541 here — it has not been propagated through the wider Nov 2025–Sep 2026 portfolio total shown elsewhere (e.g. the R608,631.45 figure in §1's executive summary still uses the as-posted basis), since no other event in this window has had the same line-level re-check. Treat the two totals as using slightly different bases until a full re-check is done.
+**Note:** the R60.25 + R3,795.00 DN#21541 corrections have only been applied here — they have not been propagated through the wider Nov 2025–Sep 2026 portfolio total shown elsewhere (e.g. the R608,631.45 figure in §1's executive summary still uses the as-posted basis), since no other event in this window has had the same line-level re-check. Treat the two totals as using slightly different bases until a full re-check is done.
 
-**Bridge variance: NOT R0.00.** Three threads remain open: (a) 43247 and 44482 have no confirmed target, (b) DN-21627/21237 have no matched payment at all, (c) DN#21541 has a confirmed partial payment (44974, via remittance) but a R4,144.02 residual (corrected) that no tested explanation (pricing, either event's rates, deposit/gas component split) closes exactly. The R2.91 aggregate rounding across the 7 sub-14/42-day proximity matches is immaterial and expected (VAT-cent rounding per event, not a data error).
+**Bridge variance: NOT R0.00.** Two threads remain genuinely open: (a) 43247 and 44482 have no confirmed target, (b) DN-21627/21237 have no matched payment at all. DN#21541's former "open, unexplained" status is resolved — its R349.02 residual is explained (customer's own rate-mismatch, not a data gap), pending only the two credit notes (R60.25 + R3,795.00) actually being posted in ERP. The R2.91 aggregate rounding across the 7 sub-14/42-day proximity matches is immaterial and expected (VAT-cent rounding per event, not a data error).
 
-**Working hypothesis, not a conclusion:** 43247 (R49,588.00) and 44482 (R75,844.50) sum to R125,432.50 — not a clean match to the R131,211.08 DN-21627/21237 total (nor to that total plus DN#21541's R4,144.02 residual), so they don't jointly close the remaining backlog either. This needs either a third open payment we haven't located, a partial-payment scenario, or further remittance/paper evidence.
+**Working hypothesis, not a conclusion:** 43247 (R49,588.00) and 44482 (R75,844.50) sum to R125,432.50 — not a clean match to the R131,211.08 DN-21627/21237 total, so they don't jointly close that backlog either. This needs either a third open payment we haven't located, a partial-payment scenario, or further remittance/paper evidence. (DN#21541's residual is no longer part of this open question — it's explained, see §5.)
 
 ---
 
