@@ -56,6 +56,16 @@ This is directly reusable portfolio-wide (~300 accounts) and should feed DK-593.
 
 **Second defect, same area:** deduping by `(doc_no, entry_type)` and keeping one row silently destroys multi-slice payment documents — LIN001 payment docs legitimately carry several rows (e.g. 42975 = -53,192.50 reversed +53,192.50, reissued as -1,510.76 + -51,681.74). A naive dedup collapsed 270 real payment rows to 99 and understated payments by ~R2.3M. Correct approach: pick one `source_file` per document, then take **all** its rows.
 
+## Prior art — this has partially surfaced before
+
+Found while scanning the repo for prior occurrences (2026-09-06):
+
+- **`CHANGELOG.md`** — TAN001's `erpStatedBalance` query hit exactly Defect 2 above (dedup collapsing distinct rows); fixed by adding `amount_excl`+`tax_amount` to the `DISTINCT ON` clause. The same changelog entry also notes **JIM001 needed payment-split consolidation across `DRTX2025.TXT` and `DTRX2603.TXT`** — the exact two files found conflicting here. Neither fix was generalized into a shared script or `DK-593` at the time.
+- **`analysis/debtors/shared/docs/business_rules.md` Rule 1** (Tax Sign Correction) is a *different*, item-level CN bug (`line_tax` sign, not `amount_excl` scale) — don't conflate with Defect 1 above, even though both concern CN VAT handling.
+- **Same doc, Rule 6** (ERP Header Cross-Check): a May 2026 portfolio baseline attributes 13,559 CN docs / R11,681,869 of header-vs-line delta *entirely* to Rule 1's tax bug. That may be conflating two distinct mechanisms — worth re-running Rule 6's query with this doc's detection rule to check.
+
+Posted to `DK-593` 2026-09-06.
+
 ## Recommendation
 
 1. **Do not** walk back the 39 unmatched events against this data.
