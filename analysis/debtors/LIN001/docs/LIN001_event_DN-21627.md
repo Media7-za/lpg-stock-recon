@@ -3,7 +3,7 @@
 **Account:** LIN001 — SLINDOKUHLE ENTERPRISES (PTY) LTD
 **Delivery note:** DN-21627
 **Date:** 2026-01-10
-**Status:** **CLOSED** — payment 43247 reconciles exactly to R0.00 once the correct rate and 9KG quantity are applied. *(2026-09-05)*
+**Status:** Payment confirmed; rate correction due (-R1,869.77); **R1,449.00 remains owed by the customer** (his own 9KG counting error) *(2026-09-06)*
 
 ---
 
@@ -20,66 +20,59 @@
 
 ---
 
-## Resolution: the customer's own notebook closes the gap exactly
+## Correction log (2026-09-06) — a prior "full closure" is partially retracted
 
-His handwritten reconciliation for this delivery (dated 2026.01.10, "No: 21627") reproduces his payment to the cent:
+Earlier the same day, the customer's own notebook (using a 9KG quantity of 180) was taken as reproducing his payment exactly, and the event was marked fully closed to R0.00 by crediting both a rate difference AND a 2-unit 9KG quantity difference.
 
-```
-GAS:  180×207 (9KG) + 7×322 (14K) + 7×437 (19K)   = R42,573.00
-Bt:   180×517.50 + 7×632.50 + 7×690               = R102,407.50
-Rt:   146×517.50 + 15×632.50 + 15×690             = R95,392.50   (ties exactly to CN 14250)
-──────────────────────────────────────────────────
-GAS + Bt − Rt = R49,588.00   ← exactly his payment
-```
-
-**Two discrepancies, both real, together explaining the whole R3,318.77 gap:**
-
-1. **Rate**: his notebook uses a flat R23.00/kg incl VAT (= R20.00/kg ex-VAT) across all categories — 9×23=207, 14×23=322, 19×23=437 — versus the R20.87/kg ex-VAT actually posted on invoice 48725.
-2. **9KG quantity**: his notebook uses **180 units** for 9KG (both GAS and Bt), not the **182 units** ERP invoiced. His Rt figures (146/15/15) match CN 14250 exactly — no dispute there, only on what was dispatched.
-
-| | Rate (ex-VAT) | 9KG qty | 14K/19K qty |
-|---|---:|---:|---:|
-| Invoice 48725 (as posted) | R20.87/kg | 182 | 7 / 7 (agreed) |
-| Customer's basis | R20.00/kg | 180 | 7 / 7 (agreed) |
-
-**Full correction, decomposed exactly:**
-
-| Category | Cause | Amount |
-|---|---|---:|
-| 9KG (gas + deposit, rate + 2-unit qty combined) | Rate + quantity | R3,087.82 |
-| 14K gas | Rate only | R97.97 |
-| 19K gas | Rate only | R132.98 |
-| **Total** | | **R3,318.77** |
-
-**This equals the entire original gap, to the cent.** Nothing remains unexplained.
-
-```
-R148,299.27  Invoice 48725, as posted
-− R3,318.77   full correction (rate + 9KG quantity)
-────────────
-= R144,980.50  corrected invoice total
-− R95,392.50   CN 14250 (unaffected — already matches actual returns)
-────────────
-= R49,588.00  corrected event net
-− R49,588.00  payment 43247
-────────────
-= R0.00  residual
-```
+**The 9KG quantity portion is retracted.** The signed delivery note for DN#21627 shows **182×9KG dispatched**, matching invoice 48725 exactly — client-signed, unambiguous. The customer's notebook figure of 180 was his own undercount, not a legitimate billing dispute. **Only the rate correction stands.**
 
 ---
 
-## Prior investigation threads (for context — all superseded or folded into the above)
+## What's legitimate: the rate correction
 
-- **Quantity-mix anomaly** (9KG spiking to 182 vs 112 prior/98 following, 14K/19K dropped, zero SV/DV): confirmed via WhatsApp history to be a genuine customer order, not a substitution or error. Still true — the *shape* of the order was intentional; only the *count* of 9KG units (180 vs 182) turned out to be in question.
-- **CN 14250**: confirmed to be the empties-return deposit credit (not a reversal of 48725) — both documents tie to the cent independent of this correction, and CN 14250 needs no change.
-- **Payment target**: confirmed via payment-app receipt explicitly referencing "21627 Lin001" (2026-02-06 08:08, R49,588.00 exact match) — was previously a forced/ASSERTED match.
-- An earlier pass corrected only the rate (R1,869.77, 56.3% of the gap) before the notebook surfaced the 9KG quantity discrepancy — that partial correction is superseded by the full one above.
+The customer confirmed his expected January rate was **R20.00/kg ex-VAT**, versus the R20.87/kg actually posted on invoice 48725. This is the same shape of issue as DK-590 (an unapplied rate correction), and applies at the **correct, delivery-note-confirmed quantities** (182×9KG, 7×14K, 7×19K):
+
+| Category | Qty (confirmed correct) | Gas @ R20.00/kg ex-VAT | Deposit (unchanged) | Line total |
+|---|---:|---:|---:|---:|
+| 14K | 7 | R2,254.00 | R4,427.50 | R6,681.50 |
+| 19K | 7 | R3,059.00 | R4,830.00 | R7,889.00 |
+| 9KG | 182 | R37,674.00 | R94,185.00 | R131,859.00 |
+| **Corrected invoice total** | | | | **R146,429.50** |
+
+```
+R148,299.27  Invoice 48725, as posted (R20.87/kg ex-VAT)
+− R146,429.50  Invoice 48725, corrected (R20.00/kg ex-VAT, qty unchanged)
+────────────
+= R1,869.77  overcharge — legitimate credit
+
+R52,906.77  event net, as posted
+− R1,869.77  rate correction
+────────────
+= R51,037.00  event net, corrected
+− R49,588.00  payment 43247
+────────────
+= R1,449.00  residual
+```
+
+## What's not legitimate: the R1,449.00 residual is the customer's own counting error, not a credit
+
+His notebook used 180×9KG instead of the actual, delivery-note-confirmed 182. The value of that 2-unit shortfall at his own rate (2×207 gas + 2×517.50 deposit = R1,449.00) **exactly** matches the residual left after the rate correction. This isn't a coincidence — it's the mechanical explanation for his underpayment: he miscounted his own delivery by 2 units of 9KG and paid accordingly short.
+
+**This means R1,449.00 is still owed by the customer** — it is explained, but not creditable. The delivery note (signed by the client's receiver) is the evidence LIN001 needs if the customer disputes this.
+
+---
+
+## Other threads (unaffected by today's retraction)
+
+- **Quantity-mix shape** (9KG-heavy order vs neighboring invoices): still confirmed genuine via WhatsApp — the customer did intentionally order a 9KG-heavy mix. Only his own later recollection of the *exact count* (180 vs 182) was wrong.
+- **CN 14250**: confirmed to be the empties-return deposit credit (deposit-only, at received quantities 146/15/15) — unaffected, still ties to the cent, no change.
+- **Payment target**: confirmed via payment-app receipt explicitly referencing "21627 Lin001" (2026-02-06 08:08, R49,588.00 exact match).
 
 ## Recommended action
 
-1. Post a credit note of **-R3,318.77** against invoice 48725: re-rate all gas lines to R20.00/kg ex-VAT, and reduce 9KG quantity from 182 to 180 (both gas and deposit lines). See `LIN001_ERP_correction_request_48725.md` (needs updating from the partial R1,869.77 figure).
-2. **No further customer follow-up needed on this event** — the gap is fully explained and closes to R0.00.
-3. Check whether invoice 48504 (2025-12-26, DN#21739, also billed at R20.87/kg) has a similar quantity or rate discrepancy — not yet investigated.
+1. Post a credit note of **-R1,869.77** against invoice 48725 (rate correction only — see `LIN001_ERP_correction_request_48725.md`).
+2. **Do not credit the 9KG quantity** — the signed delivery note confirms 182 were dispatched, matching the invoice.
+3. Follow up with the customer for the **R1,449.00 still owed** — show him the signed delivery note (182×9KG) against his own notebook (180×9KG) to explain the shortfall. This is a collections conversation, not a further correction.
 
 ## Confidence
 
@@ -88,8 +81,9 @@ R148,299.27  Invoice 48725, as posted
 | Invoice/CN header figures | PROVEN (ERP) |
 | CN 14250 is the empties-return deposit credit | PROVEN (exact line-item reconciliation) |
 | Payment 43247 belongs to this event | **Confirmed** (payment-app receipt, exact reference + amount match) |
-| Cause of the 9KG-heavy order | **RESOLVED** — confirmed genuine customer order via WhatsApp |
-| R3,318.77 gap, full cause | **RESOLVED** (2026-09-05) — customer's own notebook reproduces his payment to the cent; rate (R20.00/kg vs R20.87/kg) + 9KG quantity (180 vs 182) together explain 100% |
+| 9KG quantity dispatched = 182 (not 180) | **PROVEN** — signed delivery note, matches invoice 48725 exactly |
+| Rate correction (R20.00/kg vs R20.87/kg posted) | **PROVEN** (customer-confirmed expected rate) — R1,869.77 legitimate credit |
+| R1,449.00 residual | **EXPLAINED, not creditable** — customer's own 2-unit 9KG undercount, still owed |
 
 ---
 
@@ -98,5 +92,5 @@ R148,299.27  Invoice 48725, as posted
 | Artifact | Path |
 |---|---|
 | This card | `LIN001_event_DN-21627.md` |
-| ERP correction request (pricing + quantity) | `LIN001_ERP_correction_request_48725.md` |
+| ERP correction request (rate only) | `LIN001_ERP_correction_request_48725.md` |
 | Allocation edge | `../data/allocation_edges.csv` |
