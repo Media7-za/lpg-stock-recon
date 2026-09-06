@@ -44,7 +44,7 @@ LIN001 runs closest to **§4.8 "Open Event Balance (primary — ref optional)"**
 | Edges matched (`PROXIMITY_INFERENCE`, Probable) | 10 | R397,745.09 allocated |
 | Tier 1/2 (remittance-confirmed) matches | **3** (44974 → DN#21541, 43246 → DN#21739, 43247 → DN-21627, added 2026-09-05) | R125,056.10 |
 | Payments fully unallocated (`UNALLOCATED`, no candidate) | 1 (44482 — forced-matched to DN#21237 at Probable, not truly unallocated; see AL-0009) | R75,844.50 |
-| Events with a confirmed payment target but an open, unexplained gap | 1 (DN-21627, R1,449.00 gap, corrected) | R51,037.00 (corrected; R52,906.77 as posted) |
+| Events fully closed via customer notebook (2026-09-05) | 1 (DN-21627, R0.00 residual) | R49,588.00 (corrected; R52,906.77 as posted) |
 | Events with a Probable (not Confirmed) payment target and an open gap | 1 (DN#21237, R362.85 residual after DK-590's pricing correction) | R78,304.31 |
 | Events partially matched, residual explained (pending 2 credit postings) | 1 (DN#21541, R349.02 residual) | R40,939.62 (fully corrected; R44,794.87 as posted in ERP) |
 
@@ -64,7 +64,7 @@ Three, added 2026-09-05 — not via ERP `ref_no` (structurally unavailable for t
 
 - **44974 → DN#21541**: a **partial** payment against DN#21541's R40,939.62 fully-corrected total owed (R44,794.87 as posted in ERP, before a R60.25 CN 14435 top-up and a R3,795.00 empties credit that are both still unposted — see `docs/LIN001_event_DN21541.md`). R349.02 remains as a residual, which is itself explained (a rate mismatch in the customer's own reconciliation).
 - **43246 → DN#21739**: previously `Probable` on a 42-day-lag proximity match, flagged as needing override-registry ratification. The remittance receipt removes that need — the lag no longer matters once the target is directly evidenced. R0.41 diff is exact-cent-level, immaterial.
-- **43247 → DN-21627**: previously a forced/ASSERTED match (smallest-diff candidate among 3 open events). Now confirmed on **target**. Two candidate causes for the gap were checked: the quantity-mix anomaly (9KG spiking to 182 vs 112/98 on neighboring invoices) is **resolved** — confirmed genuine customer order via WhatsApp history, not a substitution or error. Pricing was **reopened**: the customer's expected January rate was R20.00/kg ex-VAT, not the R20.87/kg posted (the earlier "R0.00 impact" verdict only compared against neighboring invoices billed at the same stale rate). Re-rating brings the event net from R52,906.77 to R51,037.00, explaining R1,869.77 (56.3%) of the original R3,318.77 gap — R1,449.00 remains genuinely unexplained. See `docs/LIN001_event_DN-21627.md` and `docs/LIN001_ERP_correction_request_48725.md`.
+- **43247 → DN-21627**: previously a forced/ASSERTED match (smallest-diff candidate among 3 open events), now confirmed on **target**. **Fully closed 2026-09-05**: the customer's own reconciliation notebook reproduces his payment (R49,588.00) exactly, revealing two stacked discrepancies vs the posted invoice — his rate (R20.00/kg ex-VAT vs the posted R20.87/kg) and his 9KG quantity basis (180 units vs the 182 invoiced). Together these explain the entire R3,318.77 gap, to the cent — R0.00 residual. The quantity-mix *shape* (9KG-heavy order) was already confirmed genuine via WhatsApp; only the exact 9KG *count* was in question. See `docs/LIN001_event_DN-21627.md` and `docs/LIN001_ERP_correction_request_48725.md`.
 
 None of these three are yet entered into `config/payment_pattern_overrides.json` — that requires human `approved_by`/`approved_date` sign-off per §7; `review_required` stays `true` in `allocation_edges.csv` until that happens.
 
@@ -105,13 +105,12 @@ Applied inline as part of each event's header-level net (invoice + CN), not as a
 
 **43247 removed from this table 2026-09-05** — confirmed via remittance advice to DN-21627 (see §2), no longer unallocated in any sense.
 
-**Events with a matched payment but a real, open gap** (not "no payment edge" — both have one, confirmed or forced):
+**DN-21627 removed from "open gap" status 2026-09-05** — fully closed, see §2. Only one event remains with a genuine open gap:
 
 | DN# | Date | Event net | Payment | Gap |
 |---|---|---:|---|---:|
-| DN-21627 | 2026-01-10 | R51,037.00 (corrected; R52,906.77 as posted) | 43247, **Confirmed** via remittance (see §2) | R1,449.00 — genuine, confirmed real (was R3,318.77; R1,869.77 explained by a reopened pricing correction) |
 | DN#21237 | 2026-02-06 | R78,304.31 | 44482, Probable (forced match) | R362.85 — after DK-590's pricing correction (85.2% explained) |
-| **Total open** | | **R131,211.08** | | **R3,681.62** |
+| **Total open** | | **R78,304.31** | | **R362.85** |
 
 **Partially matched event (2026-09-05 — was fully unmatched):**
 
@@ -129,18 +128,18 @@ The full breakdown is in `docs/LIN001_event_DN21541.md`. A customer WhatsApp cla
 Total event net (15 events, Nov 2025 - Sep 2026)     R608,631.45  (as-posted basis - see note below on DN-21627/DN#21541's separate corrections)
 Total allocated via Probable/proximity edges (10)    R397,745.09
 Total allocated via Confirmed remittance edges (3)   R125,056.10  (44974+43246+43247)
-Residual on DN-21627 (payment Confirmed, gap open)     R1,449.00  (fully corrected; R3,318.77 as posted)
+Residual on DN-21627 (fully CLOSED 2026-09-05)             R0.00  (was R3,318.77 as posted)
 Residual on DN#21237 (payment Probable, gap open)        R362.85
 Residual on DN#21541 (payment Confirmed, gap explained)  R349.02  (fully corrected; R4,204.27 as posted)
                                                        -----------
-Events accounted for                                 R524,962.06
+Events accounted for                                 R523,513.06
 ```
 
-**This bridge is not fully reconciled to R608,631.45** — the figures above cover the events this session has actually re-verified line-by-line (10 Probable edges, 3 Confirmed edges, and the 3 open residuals). The remaining difference (R608,631.45 − R524,962.06 = R83,669.39) corresponds to events/edges not re-checked in this pass (e.g. AL-0014's DN#24947 prepayment, and DN-21627/DN#21541's own pricing corrections which are not yet propagated into the R608,631.45 total). Treat this as a partial bridge, not a closed one.
+**This bridge is not fully reconciled to R608,631.45** — the figures above cover the events this session has actually re-verified line-by-line (10 Probable edges, 3 Confirmed edges, and the 3 residuals). The remaining difference (R608,631.45 − R523,513.06 = R85,118.39) corresponds to events/edges not re-checked in this pass (e.g. AL-0014's DN#24947 prepayment, and DN#21541's own pricing corrections which are not yet propagated into the R608,631.45 total). Treat this as a partial bridge, not a closed one.
 
-**Corrected 2026-09-05 — three payments moved from Probable/forced to Confirmed:** 44974 (→DN#21541), 43246 (→DN#21739), and 43247 (→DN-21627) are now Confirmed via genuine remittance advice (payment-app receipts / WhatsApp), not proximity inference. Critically, **43247 was previously listed as "unallocated, no candidate event within any tolerance" — that was wrong.** It has a confirmed target (DN-21627).
+**Corrected 2026-09-05 — three payments moved from Probable/forced to Confirmed:** 44974 (→DN#21541), 43246 (→DN#21739), and 43247 (→DN-21627) are now Confirmed via genuine remittance advice (payment-app receipts / WhatsApp), not proximity inference. Critically, **43247 was previously listed as "unallocated, no candidate event within any tolerance" — that was wrong.** It has a confirmed target (DN-21627), and DN-21627 is now **fully closed** — the customer's own reconciliation notebook reproduced his payment exactly, revealing a stacked rate + 9KG-quantity discrepancy that together explain the entire R3,318.77 gap.
 
-**Two threads remain genuinely open:** (a) DN-21627's R1,449.00 gap (was R3,318.77) — confirmed real; both candidate causes were checked (the 9KG quantity mix, resolved as a genuine customer order via WhatsApp; pricing, reopened and found to explain R1,869.77/56.3% via a customer-confirmed R20.00/kg expected rate vs the R20.87/kg posted) but a residual remains, unexplained; (b) DN#21237's R362.85 gap — payment target still only Probable (forced match, not remittance-confirmed), residual after DK-590's pricing correction. Both need direct customer/operator input, not further ERP recomputation. DN#21541's former "open, unexplained" status is fully resolved (§2) — its R349.02 residual is explained by the customer's own rate-mismatch, pending only two credit notes (DK-591, DK-596) being posted.
+**One thread remains genuinely open:** DN#21237's R362.85 gap — payment target still only Probable (forced match, not remittance-confirmed), residual after DK-590's pricing correction. Needs direct customer/operator input, not further ERP recomputation. DN-21627 and DN#21541 are both resolved (§2, §5) — DN-21627 fully to R0.00, DN#21541's R349.02 residual explained (not zeroed, but understood and not chased further).
 
 **44482 (R75,844.50)** remains the only payment still at Probable/forced-match confidence (→DN#21237) rather than Confirmed — no remittance evidence has surfaced for it yet, unlike 43246/43247/44974.
 
