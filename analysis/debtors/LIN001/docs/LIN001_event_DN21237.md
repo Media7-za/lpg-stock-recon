@@ -3,7 +3,7 @@
 **Account:** LIN001 — SLINDOKUHLE ENTERPRISES (PTY) LTD
 **Delivery note:** DN#21237
 **Date:** 2026-02-06
-**Status:** Payment **confirmed** via remittance advice (2026-09-06); pricing dispute mostly explained, R362.85 residual open
+**Status:** **CLOSED** — payment confirmed; rate correction at the operator-confirmed agreed rate (R20.24/kg ex-VAT) closes the gap to R0.16 *(2026-09-06)*
 
 ---
 
@@ -31,41 +31,36 @@ R78,304.31  event net
 = R2,459.81  gap
 ```
 
-## Investigation: pricing dispute (mostly confirmed)
+## Investigation: pricing dispute — closed 2026-09-06
 
-A background investigation compared this invoice's LPG price-per-kg against the immediately prior (48725, Jan 10) and following (49265, Feb 16) invoices. Findings, cross-verified with exact line-level `retail_price`/`line_tax` data (see `LIN001_ERP_correction_request_49115.md` for the full verification):
+A background investigation compared this invoice's LPG price-per-kg against the immediately prior (48725, Jan 10) and following (49265, Feb 16) invoices, and found invoice 49115 was billed at the stale **R21.264/kg** rate. The first correction attempt re-rated it to invoice 49265's own posted rate (R20.391/kg), explaining 85.2% of the gap (R2,096.66 of R2,459.81) and leaving R362.85 open.
 
-- Invoice 49115 was billed at **R21.264/kg** across every LPG category.
-- Invoice 49265 (Feb 16, event DN#21541) shows a **corrected rate of R20.391/kg** — a uniform -4.10% cut applied days later on an unrelated delivery, at unchanged quantities (see `LIN001_event_DN21541.md`).
-- 49115 never received the same correction.
-
-**Precise re-rate calculation** (49115's actual quantities at 49265's corrected prices):
+**Superseded 2026-09-06: the operator confirmed the actual agreed February rate was R20.24/kg ex-VAT** — different from (lower than) 49265's own posted rate, which apparently wasn't exactly the agreed rate either. Re-rating at R20.24/kg:
 
 ```
 R78,304.31  original event net
-− R2,096.66  LPG re-rate to corrected price (49115 → 49265 rate)
+− R2,459.97  LPG re-rate to the confirmed agreed rate (R20.24/kg ex-VAT)
 ────────────
-= R76,207.65  corrected event net
-− R75,844.50  actual payment (44482)
+= R75,844.34  corrected event net
+− R75,844.50  actual payment (44482, Confirmed via remittance)
 ────────────
-= R362.85  residual — still unexplained
+= R0.16  residual — immaterial
 ```
 
-**Result: 85.2% of the gap (R2,096.66 of R2,459.81) is explained by pricing.** R362.85 remains genuinely open — small enough that it isn't obviously a second issue, but too large (>350x our established rounding ceiling of ~R1) to write off as noise.
+**Result: the confirmed agreed rate closes the gap to R0.16** — effectively fully explained, and strong independent confirmation that R20.24/kg is the correct rate (an arbitrary wrong rate would not have landed this close by chance).
 
 ## Recommended action
 
-Post the correction detailed in `LIN001_ERP_correction_request_49115.md` (a -R2,096.66 CN against invoice 49115). This does not fully close the event — R362.85 would remain — but it resolves the large majority of the gap on a documented, verifiable basis rather than leaving the whole R2,459.81 unexplained.
+Post the correction detailed in `LIN001_ERP_correction_request_49115.md` — a **-R2,459.97** CN against invoice 49115 (supersedes the earlier -R2,096.66 figure). No further follow-up needed on this event; R0.16 is not worth chasing.
 
 ## Confidence
 
 | Item | Confidence |
 |---|---|
 | Invoice/CN header figures | PROVEN (ERP) |
-| Price-per-kg discrepancy (49115 vs 49265) | PROVEN (exact `retail_price` values) |
-| R2,096.66 correction amount | PROVEN (computed from actual line data) |
 | Payment 44482 belongs to this event | **Confirmed** (2026-09-06, payment-app receipt explicitly referencing "21237", exact date+amount match) |
-| R362.85 residual cause | GAP — unexplained |
+| Correction amount (R2,459.97, at the confirmed agreed R20.24/kg rate) | **PROVEN** (exact line-level re-rate; closes the gap to R0.16) |
+| R0.16 remainder | Immaterial — normal VAT-rounding tolerance |
 
 ---
 

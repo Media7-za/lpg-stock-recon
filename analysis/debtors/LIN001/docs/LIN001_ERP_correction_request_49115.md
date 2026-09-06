@@ -9,20 +9,20 @@
 
 ## What to change
 
-Invoice 49115 was billed at the pre-correction LPG rate. Invoice 49265 (2026-02-16, same account, event DN#21541) shows the corrected rate applied days later for an unrelated delivery. Recommend applying the same per-unit correction to 49115, retroactively.
+**Updated 2026-09-06 — supersedes the earlier R2,096.66 version of this request.** Invoice 49115 was billed at the pre-correction LPG rate (R21.264/kg ex-VAT). The earlier version of this request used invoice 49265's own posted rate (R20.391/kg) as the correction target, since that was the only concrete reference point available at the time. **The operator has since confirmed the actual agreed February rate was R20.24/kg ex-VAT** — a different (lower) figure. Re-rating at the confirmed agreed rate, not 49265's posted rate, is the correct basis.
 
-| Category | Stock | Qty | Old price (49115) | Corrected price (from 49265) | Delta/unit (ex-VAT) | Line delta (incl. VAT) |
+| Category | Stock | Qty | Old price (49115, ex-VAT) | Corrected price (at R20.24/kg) | Delta/unit (ex-VAT) | Line delta (incl. VAT) |
 |---|---|---:|---:|---:|---:|---:|
-| 14K | 1401 | 14 | R297.69 | R285.48 | -R12.21 | -R196.57 |
-| 19K | 1901 | 28 | R404.01 | R387.43 | -R16.58 | -R533.88 |
-| 9KG | 901 | 98 | R191.37 | R183.52 | -R7.85 | -R884.70 |
-| DV | D01 | 5 | R1,020.65 | R978.78 | -R41.87 | -R240.76 |
-| SV | S01 | 5 | R1,020.65 | R978.78 | -R41.87 | -R240.75 |
-| **Total** | | | | | | **-R2,096.66** |
+| 14K | 1401 | 14 | R297.69 | R283.36 | -R14.33 | -R230.70 |
+| 19K | 1901 | 28 | R404.01 | R384.56 | -R19.45 | -R626.30 |
+| 9KG | 901 | 98 | R191.37 | R182.16 | -R9.21 | -R1,037.97 |
+| DV | D01 | 5 | R1,020.65 | R971.52 | -R49.13 | -R282.51 |
+| SV | S01 | 5 | R1,020.65 | R971.52 | -R49.13 | -R282.49 |
+| **Total** | | | | | | **-R2,459.97** |
 
-*(Line delta computed from each invoice's actual `retail_price` and `line_tax` values — not a flat 15% multiply, which would introduce ~1c/line rounding drift. Cross-checked against a flat-15% recompute: agrees to within R0.01 per line, R0.01 in aggregate.)*
+*(Line delta computed from each category's exact `retail_price`, re-rated at R20.24/kg ex-VAT and re-taxed at 15% per line — not a flat percentage cut.)*
 
-**Recommended posting:** One credit note against invoice 49115, dated on approval, for **-R2,096.66**, LPG lane only (no CYL/deposit lines — those are unaffected and confirmed unchanged between 49115 and 49265).
+**Recommended posting:** one credit note against invoice 49115, dated on approval, for **-R2,459.97**, LPG lane only (no CYL/deposit lines — those are unaffected).
 
 ---
 
@@ -31,28 +31,28 @@ Invoice 49115 was billed at the pre-correction LPG rate. Invoice 49265 (2026-02-
 Computed directly from `transaction_items` (`retail_price`, `line_tax`), deduped to `source_file='CURRENT2307.TXT'`:
 
 - Invoice 49115 actual LPG total (incl. VAT): **R51,106.81**
-- Invoice 49115 LPG total at corrected rate (incl. VAT): **R49,010.15**
-- Difference: **R2,096.66**
+- Invoice 49115 LPG total at the confirmed agreed rate (R20.24/kg ex-VAT, incl. VAT): **R48,646.84**
+- Difference: **R2,459.97**
 
-## Effect on the open event
+## Effect on the open event — closes almost exactly
 
 ```
 R78,304.31  DN#21237 event net (as posted)
-− R2,096.66  proposed correction
+− R2,459.97  proposed correction (at the confirmed agreed rate)
 ────────────
-= R76,207.65  corrected event net
-− R75,844.50  payment received (44482, 2026-05-08)
+= R75,844.34  corrected event net
+− R75,844.50  payment received (44482, 2026-05-08, Confirmed via remittance)
 ────────────
-= R362.85  residual — would remain open even after this correction
+= R0.16  residual — immaterial, within normal VAT-rounding tolerance
 ```
 
-Posting this CN does **not** fully close DN#21237 — R362.85 stays unaccounted for. See `LIN001_event_DN21237.md` for the full narrative and `LIN001_Pricing_Investigation_2026-02.md`-equivalent reasoning (folded into the event cards per operator direction — no combined report file).
+**This correction closes the event to within R0.16** — effectively fully explained. This is a materially better result than the earlier R2,096.66 version (which left R362.85 open): using the actual agreed rate, rather than invoice 49265's own posted rate (itself apparently not exactly the agreed rate either — see `LIN001_event_DN21541.md`), accounts for nearly the entire original R2,459.81 gap.
 
 ---
 
-## Why this correction, not a different one
+## Why this correction, not the earlier one
 
-Invoice 49115 and the original invoice 49252 (both dated before 2026-02-13) were billed at the same higher rate. 49252 was reversed and reissued as 49265 at the lower rate within days — a deliberate, uniform (-4.10%) rate-table correction, not category-specific haggling (see `LIN001_event_DN21541.md`). 49115 was never given the same correction. This request proposes closing that gap.
+The earlier version assumed invoice 49265's posted rate (R20.391/kg) was the "correct" reference, since it was the only concrete rate this account had moved to. That assumption is now understood to be slightly off — 49265 itself wasn't billed at the true agreed rate. The operator-confirmed R20.24/kg is the right basis, and it happens to close this event almost exactly, which is strong independent confirmation that R20.24/kg is correct.
 
 ---
 
@@ -62,5 +62,5 @@ Invoice 49115 and the original invoice 49252 (both dated before 2026-02-13) were
 |---|---|
 | This request | `LIN001_ERP_correction_request_49115.md` |
 | DN#21237 event card | `LIN001_event_DN21237.md` |
-| DN#21541 event card (source of the corrected rate) | `LIN001_event_DN21541.md` |
-| Allocation edge | `../data/allocation_edges.csv` (AL for payment 44482) |
+| DN#21541 event card (related rate history) | `LIN001_event_DN21541.md` |
+| Allocation edge | `../data/allocation_edges.csv` (AL-0009) |
