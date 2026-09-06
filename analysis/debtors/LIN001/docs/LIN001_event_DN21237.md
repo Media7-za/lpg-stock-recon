@@ -3,7 +3,7 @@
 **Account:** LIN001 — SLINDOKUHLE ENTERPRISES (PTY) LTD
 **Delivery note:** DN#21237
 **Date:** 2026-02-06
-**Status:** Payment forced-matched; likely pricing dispute, mostly explained
+**Status:** Payment **confirmed** via remittance advice (2026-09-06); pricing dispute mostly explained, R362.85 residual open
 
 ---
 
@@ -20,9 +20,9 @@
 
 ---
 
-## Forced match and gap
+## Payment confirmed, gap open
 
-Payment 44482 was forced-matched to this event as the smallest-difference candidate among the three open 2026 events (see `../data/allocation_edges.csv`).
+**Corrected 2026-09-06:** payment 44482 was previously a forced/ASSERTED match (smallest-difference candidate among the three open 2026 events). A customer payment-app receipt (New Champion Supermarket → Bella Energy Services300, 2026-05-08 08:46, Transaction ID 2574462828, R75,844.50) explicitly references **"No: 21237"** — exact date and amount match. The target is now **Confirmed** via genuine remittance advice, not inference. This also explains the unusual 91-day lag: not proximity-guessing an unrelated event, but a genuinely late payment against the correct one.
 
 ```
 R78,304.31  event net
@@ -64,7 +64,7 @@ Post the correction detailed in `LIN001_ERP_correction_request_49115.md` (a -R2,
 | Invoice/CN header figures | PROVEN (ERP) |
 | Price-per-kg discrepancy (49115 vs 49265) | PROVEN (exact `retail_price` values) |
 | R2,096.66 correction amount | PROVEN (computed from actual line data) |
-| Payment 44482 belongs to this event (vs. a different one) | ASSERTED (forced match — smallest residual among candidates, not a ref/remittance-confirmed link) |
+| Payment 44482 belongs to this event | **Confirmed** (2026-09-06, payment-app receipt explicitly referencing "21237", exact date+amount match) |
 | R362.85 residual cause | GAP — unexplained |
 
 ---
