@@ -64,6 +64,21 @@ This is a deliberate deviation from `SKILL_Payment_To_Invoice_Allocation.md`'s �
 
 CN↔invoice linkage is via `ref_no` (CN's `ref_no` = invoice `doc_no`) and the literal `DN#` tag inside the `description` field of both docs — use both to group a delivery's legs, especially across reversal-and-reissue chains (some events span 4-6 ERP documents).
 
+### Standard doctrine: rolling/cumulative account balance (adopted 2026-09-06)
+
+LIN001 is a **COD account**, judged as a rolling running balance across chronological events — the same way the ERP's own Debtor Account Enquiry screen works (one running `BALANCE` column down the whole account) — **not** by isolating each event's payment against only its own invoice+CN.
+
+**How to compute it:** walk events in date order. For each: `balance = event net (invoice gross + CN gross)`; `surplus_out = payment(s) received + surplus_in − balance`. That `surplus_out` carries forward as the next event's `surplus_in`. A negative result is a shortage carried forward, not a debt to chase in isolation.
+
+**What this changes vs. what it doesn't:**
+- It changes the **final judgment call** — whether a given event's gap is a live commercial concern. A shortfall funded by surplus from adjacent deliveries is not urgent; a persistent, growing cumulative shortage across the window is.
+- It does **not** change how individual facts get verified. Confirming which payment targets which delivery, whether a CN is correctly linked and reflects a real physical return, or what a signed delivery note shows for disputed quantities — that evidence work is exactly as rigorous as before, and still comes first. The rolling view only applies once those facts are settled.
+- It does **not** erase an individual, customer-acknowledged liability. DN-21627's R1,449.00 (the customer's own confirmed 2-unit 9kg undercount) still stands as a discrete debt regardless of the account's rolling position — the rolling view speaks to collections urgency, not to forgiving a specific admitted error.
+
+**Authoritative source:** the ERP's own running balance (Debtor Account Enquiry screen) is ground truth. This repo's rolling-balance bridge is a derived cross-check and can lag it (see the Supabase sync-lag note in §0) — when they disagree, trust the live ERP screen and re-sync the repo.
+
+**Current status:** verified and adopted for the Jun–Sep 2026 window — `analysis/debtors/LIN001/reports/LIN001_balance_bridge_2026-06_2026-09.md` is the authoritative rolling-balance table there (final cumulative position: R477.83 short, immaterial). **Not yet extended** back through the fuller Nov 2025–Sep 2026 history covered by `LIN001_Payment_Allocation_v1.md` (DN-21627, DN#21237, DN#21541, and the Probable-tier events before that) — chaining those in requires care around correction-posting dates (e.g. DN#22630's discount posted 2026-09-06 against a 2026-06-08 delivery) and is a follow-up, not assumed done.
+
 ### Evidence hierarchy (the load-bearing rule of this account)
 
 1. **Signed/physical ERP-side evidence** (delivery notes, invoices as posted) — canonical for **quantities actually dispatched**.

@@ -2,101 +2,57 @@
 
 **Account:** LIN001 — SLINDOKUHLE ENTERPRISES (PTY) LTD
 **Period:** 2026-06-08 → 2026-09-04
-**Purpose:** Tie total event net (invoice − CN, header basis) against total payments received across the six consolidated events, independent of any event-to-event carry narrative.
-
-> **Correction (2026-09-05):** Payment 44974 (R40,590.60, 2026-06-06) was previously counted here against DN#22630. A customer-forwarded WhatsApp payment confirmation explicitly references "21541" — that payment actually targets DN#21541 (2026-02-13), an earlier event outside this Jun–Sep window. It is removed from Part 1 below; DN#22630 now shows only payment 44975.
->
-> **Further update (2026-09-06):** DN#22630's R1,575.69 gap (below) is now fully explained and closed — the customer's own proforma quote for this delivery exactly matches payment 44975 (R63,325.00). ERP posted the delivery at its standard header rate + deposit dispatch/return model rather than the proforma's flat refill rate, producing the gap. A -R1,575.69 credit note is proposed on invoice 51132 to reconcile ERP to the quote; the figures below are still the **as-posted** ERP basis (the credit has not yet been posted). See `docs/LIN001_event_DN22630.md` and `docs/LIN001_ERP_correction_request_51132.md`.
+**Doctrine (adopted 2026-09-06):** rolling/cumulative account balance — each event's surplus or shortage carries forward chronologically into the next, the same way the ERP's own Debtor Account Enquiry running-balance column works. This **replaces** the per-event-isolated framing this bridge used earlier in the session as the account's standard way of judging whether a gap is a live concern. See `.agents/skills/SKILL_LIN001_Debtor_Reconciliation.md` §2 for the full doctrine statement, including what does and doesn't change under it (individual-transaction evidence work is unchanged; only the final "is this worth chasing" judgment moves to the cumulative basis).
 
 ---
 
 ## Method
 
-For each event, `event_net = invoice_gross + cn_gross` (CN is stored as a negative gross in ERP, so this is a plain sum). Payments are matched at event level per the consolidated register. The bridge sums both sides across the five ERP-posted deliveries first (all fully PROVEN against `transaction_headers`), then folds in the open proforma separately so the open item cannot mask the closed position.
+Walk events in date order. For each: `balance = event net (invoice gross + CN gross, header basis)`; `surplus_out = payment(s) received + surplus_in − balance`. That `surplus_out` becomes the next event's `surplus_in`. All six events below use **final, corrected** figures (i.e. reflecting postings made after the original delivery — see the per-event notes for what changed and when).
 
 ---
 
-## Part 1 — Five ERP deliveries (PROVEN)
+## Rolling balance — all six events, chronological
 
-| DN# | Event net | Payment | Payment amount |
-|---|---:|---|---:|
-| 22630 | R64,900.69 | 44975 | R63,325.00 |
-| 22508 | R0.00 | — | R0.00 |
-| 22936 | R53,951.69 | EXT-2744666881 | R54,981.36 |
-| 23974 | R30,207.80 | EXT-2901239645 | R34,721.00 |
-| 24947 | R5,433.70 | 45961 | R28,163.00 |
-| **Total** | **R154,493.88** | | **R181,190.36** |
+| Event | Date | Balance (event net) | Surplus in | Payment(s) | Surplus out |
+|---|---|---:|---:|---:|---:|
+| DN#22630 | 2026-06-08 | R63,325.00 *(corrected — see note 1)* | R0.00 | R63,325.00 (44975) | **R0.00** |
+| DN#22508 | 2026-06-18 | R0.00 (zero-net) | R0.00 | R0.00 | **R0.00** |
+| DN#22936 | 2026-07-08 | R53,951.69 | R0.00 | R54,981.36 (EXT-2744666881) | **R1,029.67** |
+| DN#23974 | 2026-08-24 | R30,207.80 | R1,029.67 | R34,721.00 (EXT-2901239645) | **R5,542.87** |
+| DN#24947 | 2026-09-02 | R5,433.70 | R5,542.87 | R28,163.00 (45961) | **R28,272.17** |
+| DN#24817 | 2026-09-04 | R42,856.80 *(see note 2)* | R28,272.17 | R14,106.80 (EXT-2949387151 + EXT-2950393933) | **-R477.83** |
 
-```
-R181,190.36  total payments received (5 ERP events, corrected 2026-09-05)
-− R154,493.88  total event net (5 ERP events)
-────────────────────
-= R26,696.48  credit — CORRECTED (was R67,287.08; 44974 R40,590.60 removed, reassigned to DN#21541)
-```
+**Final cumulative position across the window: R477.83 short — immaterial.** Not worth chasing on this basis; see the per-event cards for the individual facts behind each line.
 
-This figure is independent of which surplus is assigned to which later event — it is a direct sum of both sides across the five ERP deliveries. DN#22630 shows R1,575.69 short on an **as-posted** basis, but that gap is fully explained and closed (2026-09-06) — see the correction note above; a pending credit note will bring it to R0.00 once posted. Until then, the R26,696.48 aggregate credit shown here is carried entirely by DN#22936/23974/24947's surpluses net of DN#22630's as-posted shortfall.
+**Note 1 — DN#22630:** shown at its final corrected value (R63,325.00), reflecting the -R1,575.69 discount posted 2026-09-06 against invoice 51132 (originally posted at R64,900.69; the customer's own proforma quote for this delivery exactly matched payment 44975, and the gap was a header-rate-vs-quote mismatch, not a shortfall). See `docs/LIN001_event_DN22630.md`.
 
----
+**Note 2 — DN#24817:** invoice 52949 (R52,516.80) less CN 15601 (-R9,660.00, an unrelated 8×48kg cylinder return, confirmed correct by the operator) = R42,856.80. The 9kg deposit charge within that invoice (R36,225.00) is confirmed legitimate — the signed delivery note shows no 9kg cylinders were returned on this delivery, so it is not a posting error. See `docs/LIN001_event_DN24817.md`.
 
-## Part 2 — DN#24817 (CLOSED 2026-09-06 — posted as invoice 52949)
-
-The Proforma 2026-09-04 posted to ERP as invoice 52949/DN#24817, carrying an unbudgeted 9kg cylinder deposit line (R36,225.00) not in the original proforma quote. CN 15601 (-R9,660.00) does not correct that — it credits an unrelated 8×48kg cylinder return, confirmed correct by the operator. The signed delivery note confirms no 9kg cylinders were returned, so the deposit charge is legitimate.
-
-| Item | Amount |
-|---|---:|
-| Invoice 52949 | R52,516.80 |
-| CN 15601 (unrelated 48kg return) | -R9,660.00 |
-| Event net | R42,856.80 |
-| Payments (EXT-2949387151 + EXT-2950393933) | R14,106.80 |
-| Isolated-event gap | **R28,750.00** (legitimate, not creditable) |
-
-```
-R42,856.80  event net
-− R14,106.80  payments received
-────────────
-= R28,750.00  gap — legitimate, confirmed via delivery note, not an ERP correction
-```
-
-See `docs/LIN001_event_DN24817.md` for the full reconciliation.
+**Note on 44974/44482:** payment 44974 (R40,590.60) and 44482 (R75,844.50) are excluded from this table — both target events outside the Jun–Sep window (DN#21541 and DN#21237 respectively, both Feb 2026) and are tracked in `LIN001_Payment_Allocation_v1.md` instead. Extending the rolling model back through that earlier window (Nov 2025–Sep 2026 in full) is a follow-up, not done here — see the skill doctrine note on this.
 
 ---
 
-## Combined position
+## Superseded: isolated-event framing (kept for the record, not the standard view)
+
+Before adopting the rolling doctrine, this bridge computed each event's gap independently and summed the results — treating a per-event shortfall as a standalone concern regardless of surplus elsewhere on the account. That produced:
 
 ```
-Part 1 credit (CORRECTED):        +R26,696.48
-Part 2 gap (isolated, legitimate): -R28,750.00
+Total event net (6 events, as-corrected)   R195,774.99
+Total payments received                    R195,297.16
 ──────────────────────────────────────────
-Net position across all 6 (isolated basis): R2,053.52 shortfall
+Isolated-basis position: R477.83 shortfall
 ```
 
-**Rolling-account alternative:** carrying each event's surplus forward chronologically into the next (rather than isolating each event against its own payment) puts the cumulative position after DN#24817 at only **R477.83 short** — immaterial. See `docs/LIN001_event_DN24817.md` for the event-by-event table. This is a materially different number from the R2,053.52 isolated-basis figure above because it lets DN#22936/23974/24947's surpluses fund most of DN#24817's shortfall. **Neither basis is yet this account's formally adopted doctrine** — both are shown pending that decision (see `LIN001_Payment_Allocation_v1.md`).
-
----
-
-## Notes on surplus components (informational — not required for the bridge to tie)
-
-The R26,696.48 aggregate credit can be decomposed into per-event surpluses/shortfalls, but none of these decompositions change the total:
-
-| Surplus/(shortfall) source | Amount | Tag |
-|---|---:|---|
-| 44482 (PC-76-31) — predates this window, confirmed against DN#21237 (outside this window) | R75,844.50 | **Confirmed** (see `LIN001_Payment_Allocation_v1.md` §2) |
-| DN#22630 — payment 63,325.00 vs event net 64,900.69 (as posted) | (R1,575.69) | **RESOLVED 2026-09-06 — exact match to customer's proforma; -R1,575.69 discount posted** |
-| DN#22936 — payment 54,981.36 vs event net 53,951.69 | R1,029.67 | ASSERTED |
-| DN#23974 — payment 34,721.00 vs event net 30,207.80 | R4,513.20 | ASSERTED |
-| DN#24947 — payment 28,163.00 vs event net 5,433.70 | R22,729.30 | PROVEN |
-
-DN#22630's row nets to R23,667.18 across the other four events' surpluses minus its own shortfall (1,029.67+4,513.20+22,729.30−1,575.69), leaving 44482's R75,844.50 as a separate unallocated pool — 44482 does not appear in the R26,696.48 total (it predates this window and is tracked separately, see the main register's payment register). A narrative exists where the DN#23974 surplus is read as pre-funding DN#24947 (both are ASSERTED/PROVEN payments made ahead of an event closing) — but the R26,696.48 aggregate credit holds true whether or not that specific carry story is accepted, because it is computed as a straight sum across all five events, not by chaining individual surpluses forward.
+This happens to converge on the same R477.83 figure as the rolling table above (a straight sum and a chronological carry-forward reach the same total when nothing prevents later surplus from covering earlier shortage) — but the rolling table is the one to read event-by-event, since it shows *when* the account was actually short (only briefly, at DN#24817, and then only by an amount already covered by prior surplus) rather than treating DN#24817's R28,750.00 gap as a standalone R28,750.00 problem the way the old framing did. That per-event distinction is exactly why the doctrine changed.
 
 ---
 
 ## Verification
 
-Recomputed independently from the figures in `LIN001_events_consolidated_2026-06_2026-09.md` / `.csv`, which are themselves cross-checked against `transaction_headers` (Supabase project `oqhpxnaadahohwkslive`) as at 2026-09-06. Arithmetic ties exactly.
+Recomputed independently from the figures in `LIN001_events_consolidated_2026-06_2026-09.md` / `.csv` and the individual event cards (`docs/LIN001_event_DN*.md`), themselves cross-checked against `transaction_headers` (Supabase project `oqhpxnaadahohwkslive`) as at 2026-09-06. Arithmetic ties exactly: the six `surplus_out` values chain correctly, and the isolated-basis total (R477.83) matches the rolling table's final cumulative figure.
 
-**2026-09-05 re-verification:** removing 44974 (R40,590.60) and recomputing gives R26,696.48 (Part 1) — ties exactly against the per-event decomposition above (1,029.67+4,513.20+22,729.30−1,575.69 = 26,696.48).
-
-**2026-09-06 re-verification:** DN#24817 posted as invoice 52949/DN#24817 with a confirmed-legitimate R28,750.00 isolated gap (Part 2, replacing the R2,185.00 proforma-stage figure). Combined isolated-basis position: R26,696.48 − R28,750.00 = R2,053.52 shortfall. Rolling-account basis (see `docs/LIN001_event_DN24817.md`): R477.83 shortfall.
+**History:** this bridge went through several corrections before reaching this state — 44974 was reassigned away from DN#22630 to DN#21541 (2026-09-05, WhatsApp remittance evidence); DN#22630's gap was resolved via the customer's proforma quote and the discount posted (2026-09-06); DN#24817 (originally an untied, short-paid proforma) posted to ERP with an unbudgeted deposit charge that a signed delivery note then confirmed as legitimate (2026-09-06). Each event's own card documents its history in full; this bridge reflects only the final state.
 
 ---
 

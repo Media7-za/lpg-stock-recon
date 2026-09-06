@@ -3,7 +3,7 @@
 **Account:** LIN001 — SLINDOKUHLE ENTERPRISES (PTY) LTD
 **Delivery note:** DN#24817
 **Date:** 2026-09-04
-**Status:** **CLOSED — deposit charge confirmed legitimate** (signed delivery note); R28,750.00 isolated-event gap, but immaterial (R477.83) once the account's rolling surplus from prior events is carried forward *(2026-09-06)*
+**Status:** **CLOSED** — deposit charge confirmed legitimate (signed delivery note); R477.83 residual under the account's now-adopted rolling doctrine, immaterial *(2026-09-06)*
 
 ---
 
@@ -75,7 +75,7 @@ LIN001 is a COD account. Read as a running balance rather than event-isolated, t
 
 On this basis the account is **R477.83 short cumulatively — immaterial**, not R28,750.00. This is a legitimate way to read a COD account's actual collections exposure, but it does not retroactively make the 9kg deposit charge itself correct or incorrect — that's a separate, now-settled fact (the delivery note). The rolling view just says the cash the customer already paid on other deliveries covers nearly all of this one's shortfall.
 
-**This is not yet the account's standard doctrine** — every other event in this register is written up on the isolated-event basis. Whether to formally adopt rolling/cumulative accounting as LIN001's model, rather than a supplementary note, is still an open decision (see `LIN001_Payment_Allocation_v1.md`).
+**Adopted 2026-09-06 as this account's standard doctrine** — rolling/cumulative account balance now governs whether any LIN001 event's gap is a live commercial concern, replacing the isolated-event framing used earlier in this register. See `.agents/skills/SKILL_LIN001_Debtor_Reconciliation.md` §2 for the full doctrine and `LIN001_balance_bridge_2026-06_2026-09.md` for the authoritative Jun–Sep rolling table. Not yet extended back through the fuller Nov 2025–Sep 2026 history in `LIN001_Payment_Allocation_v1.md`.
 
 ---
 

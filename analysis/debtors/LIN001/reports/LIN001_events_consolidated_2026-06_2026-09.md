@@ -25,15 +25,15 @@ Each event = **invoice** + **credit note** + **delivery note (DN# proof)** + **p
 
 | DN# | Date | Invoice | CN | Event net | Payment | Status |
 |---:|---|---:|---:|---:|---|---|
-| **22630** | 2026-06-08 | 51132 | 15039 | **R64,900.69** | 44975 (PC-76-32) | **Open — short-paid R1,575.69** *(corrected 2026-09-05)* |
+| **22630** | 2026-06-08 | 51132 | 15039 | **R63,325.00** *(corrected; R64,900.69 as posted)* | 44975 (PC-76-32) | **CLOSED — -R1,575.69 discount posted 2026-09-06** |
 | **22508** | 2026-06-18 | 51268 | 15086 | **R0.00** | — | **Closed** (zero-net) |
 | **22936** | 2026-07-08 | 51681 | 15215 | **R53,951.69** | EXT-2744666881 | **Closed** |
 | **23974** | 2026-08-24 | 52768 | 15543 | **R30,207.80** | EXT-2901239645 | **Closed** |
 | **24947** | 2026-09-02 | 52924 | 15592 | **R5,433.70** | 45961 (PC-76-35) | **Closed** |
 | **24817** | 2026-09-04 | 52949 | 15601 | **R42,856.80** | EXT-2949387151 + EXT-2950393933 | **CLOSED — deposit charge confirmed legitimate; R28,750.00 isolated gap, R477.83 on a rolling-account basis** |
 
-**Total event net (5 ERP deliveries, DN#22630-24947):** **R154,493.88**
-**Total event net (all 6, incl. DN#24817):** **R197,350.68**
+**Total event net (5 ERP deliveries, DN#22630-24947, corrected basis):** **R152,918.19** (R154,493.88 on an as-posted basis, before DN#22630's discount)
+**Total event net (all 6, incl. DN#24817, corrected basis):** **R195,774.99**
 
 ---
 
@@ -176,14 +176,16 @@ Docs 44482, 44974, 44975 and 45961 are posted ERP `Payment` entries (`transactio
 
 ## Balance bridge tie-out (see [`LIN001_balance_bridge_2026-06_2026-09.md`](LIN001_balance_bridge_2026-06_2026-09.md))
 
+**Doctrine (adopted 2026-09-06): rolling/cumulative account balance** — each event's surplus or shortage carries forward chronologically into the next, matching how the ERP's own running-balance account statement works. See `.agents/skills/SKILL_LIN001_Debtor_Reconciliation.md` §2 for the full doctrine.
+
 ```
-5 ERP events:  total event net R154,493.88 vs total payments R181,190.36 = R26,696.48 credit (CORRECTED 2026-09-05)
-+ DN#24817:    event net R42,856.80 vs payments R14,106.80 = R28,750.00 isolated shortfall (legitimate, confirmed via delivery note 2026-09-06)
+DN#22630 → DN#22508 → DN#22936 → DN#23974 → DN#24947 → DN#24817
+(chronological, each event's surplus/shortage carried into the next)
 ────────────────────────────────────────────────────────────────
-Net position across all 6 events (isolated basis): R2,053.52 shortfall
+Final cumulative position across all 6 events: R477.83 short — immaterial
 ```
 
-On a rolling/cumulative basis instead (surplus from each event carried forward into the next, chronologically) — see `docs/LIN001_event_DN24817.md` for the full table — the account's position after DN#24817 is only **R477.83 short**, not R2,053.52. This is a materially different number because DN#22936/23974/24947's surpluses fund most of DN#24817's shortfall on a rolling-balance reading. Both bases are shown because LIN001's docs have not yet formally adopted one as the account's standard doctrine — see `LIN001_Payment_Allocation_v1.md`.
+Full event-by-event table in `LIN001_balance_bridge_2026-06_2026-09.md`. This replaces the earlier isolated-event framing (each event's gap treated as a standalone figure) as this account's standard way of judging whether a residual is a live concern — individual-transaction evidence work (payment targets, CN linkage, delivery-note fact-finding) is unaffected by this change.
 
 **Corrected 2026-09-05:** previously R67,287.08 / R65,102.08 net, computed with payment 44974 (R40,590.60) counted against DN#22630. WhatsApp remittance evidence shows 44974 actually targets DN#21541 (a separate, earlier event outside this Jun–Sep window) — removing it from this window's payment total drops the aggregate credit by exactly R40,590.60. See `LIN001_balance_bridge_2026-06_2026-09.md` and `docs/LIN001_event_DN21541.md` for the full correction.
 
