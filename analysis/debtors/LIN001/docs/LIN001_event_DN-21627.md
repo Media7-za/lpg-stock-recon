@@ -3,7 +3,7 @@
 **Account:** LIN001 — SLINDOKUHLE ENTERPRISES (PTY) LTD
 **Delivery note:** DN-21627
 **Date:** 2026-01-10
-**Status:** Payment **confirmed** via remittance advice (2026-09-05); gap NOT explained by pricing — open question for operator
+**Status:** Payment **confirmed** via remittance advice; quantity mix **resolved**; pricing correction reopened — **R1,449.00 residual** (was R3,318.77) *(all corrected 2026-09-05)*
 
 ---
 
@@ -27,21 +27,41 @@
 A companion receipt from the same customer, same 2-minute window (08:06, R34,877.50, ref "No: 21739"), separately confirms payment 43246 → DN#21739 (see `allocation_edges.csv` AL-0007) — both payments were made together in one sitting.
 
 ```
-R52,906.77  event net
+R52,906.77  event net (as posted)
 − R49,588.00  payment 43247
 ────────────
-= R3,318.77  gap
+= R3,318.77  gap, as posted
+
+R52,906.77  event net (as posted)
+− R1,869.77  pricing correction (R20.00/kg vs R20.87/kg posted — see below)
+────────────
+= R51,037.00  event net, corrected
+− R49,588.00  payment 43247
+────────────
+= R1,449.00  residual, corrected
 ```
 
-## Investigation: pricing dispute — ruled out
+## Investigation: pricing — reopened 2026-09-05
 
-Unlike DN#21237/DN#21541 (see those event cards), this event's price-per-kg was checked against the prior invoice (48504, Dec 26, 2025) and the following invoice (49115, Feb 6, 2026):
+Originally checked only against neighboring invoices (48504 prior, 49115 following), both of which also billed at R20.87/kg — so no *change* was visible, and the verdict was "R0.00 pricing impact." **That check missed the right reference point.** The customer confirmed his expected January rate was **R20.00/kg ex-VAT**, not R20.87/kg — meaning both this invoice and its immediate predecessor may have been billed at a stale rate, the same shape of issue as DK-590/DN#21237 (an unapplied correction), just discovered via customer confirmation rather than a neighboring invoice's rate change.
 
-- Price-per-kg was **flat at R20.87/kg** on both the prior invoice and this one (48725) — no price change on this delivery itself.
-- The price step to R21.264/kg only appears on the *following* invoice (49115), aligned with the Feb 4 first-Wednesday reset.
-- Estimated pricing impact on this event: **R0.00**.
+**Corrected at R20.00/kg ex-VAT (gas lines only — deposits are fixed, unaffected by the per-kg rate):**
 
-**Verdict: pricing does not explain the R3,318.77 gap.**
+| Category | Qty | Gas @ R20.00/kg ex-VAT | Deposit (unchanged) | Line total |
+|---|---:|---:|---:|---:|
+| 14K | 7 | R2,254.00 | R4,427.50 | R6,681.50 |
+| 19K | 7 | R3,059.00 | R4,830.00 | R7,889.00 |
+| 9KG | 182 | R37,674.00 | R94,185.00 | R131,859.00 |
+| **Corrected invoice total** | | | | **R146,429.50** |
+
+```
+R148,299.27  Invoice 48725, as posted (R20.87/kg ex-VAT)
+− R146,429.50  Invoice 48725, corrected (R20.00/kg ex-VAT)
+────────────
+= R1,869.77  overcharge — proposed credit
+```
+
+**Verdict: pricing explains 56.3% of the R3,318.77 gap** (R1,869.77 of it), not the full amount.
 
 ## What the investigation found instead: a quantity-mix anomaly
 
@@ -62,7 +82,9 @@ Invoice 48725's LPG category mix looks distorted compared to its neighbors:
 
 ## Recommended action
 
-The payment target is confirmed and the quantity mix is confirmed intentional — both threads that could have explained the R3,318.77 gap are closed. **What remains is a plain, unexplained underpayment**, not a data or documentation question. Recommend following up with the customer directly on the R3,318.77 shortfall itself, since nothing in the ERP data (pricing, quantities, or document structure) accounts for it.
+1. Post a credit note of **-R1,869.77** against invoice 48725, re-rating the gas lines to R20.00/kg ex-VAT (same treatment as DK-590's invoice 49115 correction).
+2. This does **not** fully close the event — **R1,449.00 remains open** even after posting. Follow up with the customer directly on that residual; nothing further in the ERP data explains it (pricing and quantity mix are both now resolved).
+3. Check whether the prior invoice (48504, also R20.87/kg) needs the same R20.00/kg correction — it may carry the same stale rate. Not yet investigated.
 
 ## Confidence
 
@@ -70,11 +92,11 @@ The payment target is confirmed and the quantity mix is confirmed intentional �
 |---|---|
 | Invoice/CN header figures | PROVEN (ERP) |
 | CN 14250 is the empties-return deposit credit (not a reversal of 48725) | PROVEN (exact line-item reconciliation, both documents tie to the cent) |
-| Pricing ruled out as the cause | PROVEN (exact price-per-kg comparison, R0.00 impact) |
+| Pricing correction (R20.00/kg expected vs R20.87/kg posted) | **PROVEN** (2026-09-05, customer-confirmed expected rate; exact re-rate arithmetic) — explains 56.3% of the gap |
 | Quantity-mix anomaly | PROVEN (exact qty comparison across 3 invoices) |
 | Cause of the quantity mix | **RESOLVED** (2026-09-05) — confirmed genuine customer order via WhatsApp history, not a substitution or order-entry error |
 | Payment 43247 belongs to this event | **Confirmed** (2026-09-05, payment-app receipt explicitly referencing "21627 Lin001", exact date+amount match) |
-| R3,318.77 gap cause | GAP — confirmed real, both candidate explanations (pricing, quantity mix) ruled out; a plain unexplained shortfall |
+| R1,449.00 residual (corrected; R3,318.77 as posted) | GAP — pricing and quantity mix both now accounted for; still unexplained |
 
 ---
 
@@ -83,4 +105,5 @@ The payment target is confirmed and the quantity mix is confirmed intentional �
 | Artifact | Path |
 |---|---|
 | This card | `LIN001_event_DN-21627.md` |
+| ERP correction request (pricing) | `LIN001_ERP_correction_request_48725.md` |
 | Allocation edge | `../data/allocation_edges.csv` |
