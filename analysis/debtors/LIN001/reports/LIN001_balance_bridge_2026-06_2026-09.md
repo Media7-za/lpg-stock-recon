@@ -4,7 +4,9 @@
 **Period:** 2026-06-08 → 2026-09-04
 **Purpose:** Tie total event net (invoice − CN, header basis) against total payments received across the six consolidated events, independent of any event-to-event carry narrative.
 
-> **Correction (2026-09-05):** Payment 44974 (R40,590.60, 2026-06-06) was previously counted here against DN#22630. A customer-forwarded WhatsApp payment confirmation explicitly references "21541" — that payment actually targets DN#21541 (2026-02-13), an earlier event outside this Jun–Sep window. It is removed from Part 1 below; DN#22630 now shows only payment 44975 and is short-paid, not closed. See `docs/LIN001_event_DN21541.md` for that event's corrected status.
+> **Correction (2026-09-05):** Payment 44974 (R40,590.60, 2026-06-06) was previously counted here against DN#22630. A customer-forwarded WhatsApp payment confirmation explicitly references "21541" — that payment actually targets DN#21541 (2026-02-13), an earlier event outside this Jun–Sep window. It is removed from Part 1 below; DN#22630 now shows only payment 44975.
+>
+> **Further update (2026-09-06):** DN#22630's R1,575.69 gap (below) is now fully explained and closed — the customer's own proforma quote for this delivery exactly matches payment 44975 (R63,325.00). ERP posted the delivery at its standard header rate + deposit dispatch/return model rather than the proforma's flat refill rate, producing the gap. A -R1,575.69 credit note is proposed on invoice 51132 to reconcile ERP to the quote; the figures below are still the **as-posted** ERP basis (the credit has not yet been posted). See `docs/LIN001_event_DN22630.md` and `docs/LIN001_ERP_correction_request_51132.md`.
 
 ---
 
@@ -32,7 +34,7 @@ R181,190.36  total payments received (5 ERP events, corrected 2026-09-05)
 = R26,696.48  credit — CORRECTED (was R67,287.08; 44974 R40,590.60 removed, reassigned to DN#21541)
 ```
 
-This figure is independent of which surplus is assigned to which later event — it is a direct sum of both sides across the five ERP deliveries. DN#22630 is now open (short-paid R1,575.69), not closed — the R26,696.48 aggregate credit is carried entirely by DN#22936/23974/24947's surpluses net of that shortfall.
+This figure is independent of which surplus is assigned to which later event — it is a direct sum of both sides across the five ERP deliveries. DN#22630 shows R1,575.69 short on an **as-posted** basis, but that gap is fully explained and closed (2026-09-06) — see the correction note above; a pending credit note will bring it to R0.00 once posted. Until then, the R26,696.48 aggregate credit shown here is carried entirely by DN#22936/23974/24947's surpluses net of DN#22630's as-posted shortfall.
 
 ---
 
@@ -70,8 +72,8 @@ The R26,696.48 aggregate credit can be decomposed into per-event surpluses/short
 
 | Surplus/(shortfall) source | Amount | Tag |
 |---|---:|---|
-| 44482 (PC-76-31) — predates this window, never assigned to an event | R75,844.50 | ASSUMED |
-| DN#22630 — payment 63,325.00 vs event net 64,900.69 | (R1,575.69) | **CORRECTED 2026-09-05 — shortfall, not surplus** |
+| 44482 (PC-76-31) — predates this window, confirmed against DN#21237 (outside this window) | R75,844.50 | **Confirmed** (see `LIN001_Payment_Allocation_v1.md` §2) |
+| DN#22630 — payment 63,325.00 vs event net 64,900.69 (as posted) | (R1,575.69) | **RESOLVED 2026-09-06 — exact match to customer's proforma; pending -R1,575.69 credit note** |
 | DN#22936 — payment 54,981.36 vs event net 53,951.69 | R1,029.67 | ASSERTED |
 | DN#23974 — payment 34,721.00 vs event net 30,207.80 | R4,513.20 | ASSERTED |
 | DN#24947 — payment 28,163.00 vs event net 5,433.70 | R22,729.30 | PROVEN |
