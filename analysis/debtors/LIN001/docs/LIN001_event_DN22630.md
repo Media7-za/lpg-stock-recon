@@ -3,7 +3,7 @@
 **Account:** LIN001 — SLINDOKUHLE ENTERPRISES (PTY) LTD
 **Delivery note:** DN#22630
 **Date:** 2026-06-08
-**Status:** **CLOSED** — payment fully honors the customer's quote; R1,575.69 gap is a quote-vs-invoice rate/structure mismatch, not a shortfall *(2026-09-06)*
+**Status:** **CLOSED — correction POSTED** — payment fully honors the customer's quote; -R1,575.69 discount posted against invoice 51132 by the operator (2026-09-06), closing the R0.00 residual for real, not just on paper.
 
 ---
 
@@ -73,7 +73,7 @@ Both components verified to the cent against exact ERP line data (`retail_price`
 
 ## Recommended action
 
-1. Post two entries against invoice 51132, not one blanket credit note: a **discount journal of -R1,618.19** (LPG rate adjustment) and a **deposit-side adjustment of +R42.50**, net -R1,575.69 — reconciling it to the quoted proforma total. See `LIN001_ERP_correction_request_51132.md`.
+1. ~~Post two entries against invoice 51132...~~ **DONE 2026-09-06** — operator posted a single -R1,575.69 discount against invoice 51132, the correct net amount (R1,618.19 and R42.50 were components of that same figure, not additive — no further posting needed). See `LIN001_ERP_correction_request_51132.md`.
 2. No customer follow-up needed — the payment already matches what they were quoted, exactly.
 3. Worth flagging separately: why does this account have two live pricing models (header rate + deposit dispatch/return, vs. flat refill + cylinder-charge proformas)? If proformas are quoted at a different rate than what ERP later invoices, this could recur on other deliveries.
 

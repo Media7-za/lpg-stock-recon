@@ -3,7 +3,7 @@
 **Account:** LIN001 — SLINDOKUHLE ENTERPRISES (PTY) LTD
 **Target document:** Invoice 51132 (2026-06-08, event DN#22630)
 **Action:** Post a discount journal (rate correction) plus a small deposit-side adjustment, reconciling the invoice to the customer's quoted proforma
-**Status:** PROPOSED — not yet posted. Requires operator sign-off before ERP action.
+**Status:** **POSTED** (2026-09-06, confirmed by operator Sharmin Akter) — a single discount of -R1,575.69 was passed against invoice 51132. This is the correct **net** amount: the -R1,618.19/+R42.50 split proposed below was a recommended breakdown by transaction type, not two additive amounts — do not post R1,618.19 separately, it would double-correct.
 
 ---
 
