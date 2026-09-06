@@ -5,7 +5,9 @@
 **Scope:** Manual event-by-event closure · DN# proof model
 **Verification:** All ERP-sourced figures cross-checked against `transaction_headers` (Supabase project `lpg-stock-recon`) 2026-09-04 — see [Verification](#verification-against-erp) below.
 
-> **Correction (2026-09-05):** DN#22630 was previously shown "ASSUMED closed" on a forced split of payments 44974+44975. WhatsApp remittance evidence for 44974 explicitly references DN#21541, not DN#22630. The split-covering assumption is retired; DN#22630 is now **open, short-paid R1,575.69** on 44975 alone. This drops the register's aggregate credit by R40,590.60 (see the balance-bridge section below). Full detail: `docs/LIN001_event_DN21541.md`.
+> **Correction (2026-09-05):** DN#22630 was previously shown "ASSUMED closed" on a forced split of payments 44974+44975. WhatsApp remittance evidence for 44974 explicitly references DN#21541, not DN#22630. The split-covering assumption is retired; 44975 alone leaves a R1,575.69 gap. This drops the register's aggregate credit by R40,590.60 (see the balance-bridge section below).
+>
+> **Further update (2026-09-06):** the R1,575.69 gap is now **fully explained and closed** — it exactly matches the difference between ERP's posted invoice (header rate) and the customer's own proforma quote (flat refill rate), which payment 44975 fully honors. See `docs/LIN001_event_DN22630.md` and `docs/LIN001_ERP_correction_request_51132.md`.
 
 ---
 
@@ -35,7 +37,7 @@ Each event = **invoice** + **credit note** + **delivery note (DN# proof)** + **p
 
 ## Event detail
 
-### DN#22630 — Open, short-paid *(corrected 2026-09-05)*
+### DN#22630 — CLOSED *(corrected 2026-09-06)*
 
 | Part | Ref | Amount |
 |---|---|---:|
@@ -144,7 +146,7 @@ Detail: [`docs/LIN001_event_2026-09-04_proforma.md`](../docs/LIN001_event_2026-0
 |---|---|---:|---|---|
 | 44482 | 2026-05-08 | R75,844.50 | PC-76-31 | **Unallocated** |
 | 44974 | 2026-06-06 | R40,590.60 | PC-76-32 | **Reassigned to DN#21541** *(2026-02-13, outside this window — corrected 2026-09-05, see WhatsApp remittance evidence)* — excluded from this register's totals below |
-| 44975 | 2026-06-07 | R63,325.00 | PC-76-32 | DN#22630 *(short-paid R1,575.69 — corrected 2026-09-05)* |
+| 44975 | 2026-06-07 | R63,325.00 | PC-76-32 | DN#22630 *(CLOSED — exact match to customer's proforma quote, corrected 2026-09-06)* |
 | EXT-2744666881 | 2026-07-03 | R54,981.36 | Lin001 7.3 13991 | DN#22936 |
 | EXT-2901239645 | 2026-08-22 | R34,721.00 | HAPPY 8.22 | DN#23974 |
 | 45961 | 2026-09-01 | R28,163.00 | PC-76-35 | DN#24947 |
@@ -160,7 +162,7 @@ Docs 44482, 44974, 44975 and 45961 are posted ERP `Payment` entries (`transactio
 | Item | Amount | Tag |
 |---|---:|---|
 | 44482 (PC-76-31) | R75,844.50 | ASSUMED |
-| DN#22630 shortfall | (R1,575.69) | **CORRECTED 2026-09-05 — event open, not a surplus** |
+~~DN#22630 shortfall~~ | ~~(R1,575.69)~~ | **RESOLVED 2026-09-06 — closed, see event card** |
 | DN#22936 surplus | R1,029.67 | ASSERTED |
 | Proforma 09-04 shortfall | (R2,185.00) | ASSERTED — event open |
 
