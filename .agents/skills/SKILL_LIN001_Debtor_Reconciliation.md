@@ -88,6 +88,14 @@ LIN001 is a **COD account**, judged as a rolling running balance across chronolo
 3. **Customer proforma quotes** — canonical for **what rate/structure the customer was quoted**, and can fully explain a payment that exactly matches the quote even when it disagrees with ERP's posted model (see DN#22630).
 4. **Customer notebooks / self-reported reconciliations** — **never canonical over (1) or (2) when they conflict.** They're useful for understanding *how a customer computed a figure* (which can itself explain a residual, e.g. DN-21627's 2-unit undercount), but a customer's own tally does not override a signed delivery note. Push a conflict back to the customer for confirmation rather than resolving it in their favor unilaterally. This was learned the hard way this session (see DN-21627's correction log) — do not repeat that mistake.
 
+### Matching tier: check Tier 1 before Tier 4 (learned the hard way, 2026-09-06)
+
+Per `SKILL_Payment_To_Invoice_Allocation.md` §4.8/§5, **Tier 1 (Open Balance at Payment Date) is the primary matching method for this account** — LIN001 has no `ref_no`, so §4.8 applies directly. Tier 1's match condition (`ABS(slice − net_open) ≤ R0.05` or trunc ±R1) has **no day-lag requirement whatsoever**. Tier 4 (Amount-Proximity Fallback, 3–14 day window) is an explicit *fallback*, used only when a payment can't be matched by reference at all.
+
+Five edges sat at Probable for most of this session purely because their invoice-to-payment lag (12–29 days) exceeded Tier 4's window — but that's the wrong tier to judge them against. Re-checked properly: at every one of those payment dates, other LIN001 events were also open simultaneously (this account settles in irregular batches, not FIFO), but the amounts were always thousands of rand apart — amount alone uniquely determined the target, satisfying Tier 1 regardless of lag. All five were reclassified to Confirmed on this basis alone, no new evidence needed (see `LIN001_Payment_Allocation_v1.md` §2A for the full recheck, including the competing-candidate analysis for each).
+
+**Going forward:** when a payment/event pair looks Probable only because of "lag exceeds window," check Tier 1 first — specifically, whether any *other* open event at that payment date could plausibly match the same amount. If not, it's Confirmed via `OPEN_BALANCE_MATCH`, not stuck at Probable. Keep this distinct from customer-evidence-based Confirmed (remittance advice, delivery notes) when reporting confidence — Tier 1 is ERP-logic-confirmed (unambiguous by amount), not `commercially_confirmed`.
+
 ### Rate model
 
 Every invoice uses **one flat ex-VAT rate per kg**, applied uniformly across all cylinder sizes (9KG/14K/19K/48KG) for that delivery. Verify via `retail_price ÷ cylinder_kg` on the gas lines. Incl-VAT rate = ex-VAT × 1.15.

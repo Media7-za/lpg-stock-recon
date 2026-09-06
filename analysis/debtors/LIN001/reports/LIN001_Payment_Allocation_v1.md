@@ -41,8 +41,9 @@ LIN001 runs closest to **§4.8 "Open Event Balance (primary — ref optional)"**
 | Metric | Count | Amount |
 |---|---:|---:|
 | Events considered (Nov 2025 → Sep 2026) | 15 | R608,631.45 |
-| Edges matched (`PROXIMITY_INFERENCE`, Probable) | 8 | R279,651.90 allocated |
-| Tier 1/2 (remittance-confirmed) matches | **8** (44974 → DN#21541, 43246 → DN#21739, 43247 → DN-21627, 44482 → DN#21237, 44975 → DN#22630, EXT-2949387151 + EXT-2950393933 → DN#24817, 42975(slice) → DN#21432) | R331,524.90 |
+| Edges matched (`PROXIMITY_INFERENCE`, Probable — genuine prepayment cases only) | 3 | R89,593.19 allocated |
+| Confirmed via Tier 1 (Open Balance at Payment Date — logic, not new evidence) | **5** (42499(slice) → DN#21147, 42708 → DN20897, 42716 → DN#20898, 42717 → DN#21711, 42976 → DN#21732) | R190,058.71 |
+| Confirmed via remittance advice / proforma / delivery note (Tier 1/2, customer-side evidence) | **7** (44974 → DN#21541, 43246 → DN#21739, 43247 → DN-21627, 44482 → DN#21237, 44975 → DN#22630, EXT-2949387151+EXT-2950393933 → DN#24817, 42975(slice) → DN#21432) | R331,524.90 |
 | Payments fully unallocated (`UNALLOCATED`, no candidate) | 0 | — |
 | Events with a confirmed payment target, rate corrected, residual owed by customer | 1 (DN-21627, R1,449.00 owed) | R51,037.00 (rate-corrected; R52,906.77 as posted) |
 | Events with a confirmed payment target, rate corrected, closed to immaterial residual | 1 (DN#21237, R0.16 residual after DK-590's pricing correction) | R75,844.34 |
@@ -50,7 +51,7 @@ LIN001 runs closest to **§4.8 "Open Event Balance (primary — ref optional)"**
 | Events partially matched, residual explained (pending 2 credit postings) | 1 (DN#21541, R349.02 residual) | R40,939.62 (fully corrected; R44,794.87 as posted in ERP) |
 | Events with a confirmed payment target and deposit charge, isolated residual legitimate; account-wide rolling position after this event: R10,463.59 short as-posted / R2,278.60 once pending corrections post | 1 (DN#24817, R28,750.00 isolated) | R42,856.80 |
 
-Eight edges now reach `Confirmed` via customer-supplied remittance advice (payment-app receipts, a WhatsApp confirmation, a proforma quote, and a signed delivery note), each naming or exactly reproducing its target document — see §2. Every other edge remains `Probable` at best; LIN001 still has no `ref_no` tagging.
+Twelve edges now reach `Confirmed` — seven via customer-supplied remittance advice (payment-app receipts, a WhatsApp confirmation, a proforma quote, a signed delivery note) and five via re-applying this account's own **Tier 1 (Open Balance at Payment Date)** doctrine, which was mistakenly being evaluated under Tier 4's day-lag rule instead — see §2 and §2A. Only the three genuine prepayment cases (§4) remain Probable; LIN001 still has no `ref_no` tagging.
 
 ---
 
@@ -76,9 +77,29 @@ Five, added 2026-09-05/06 — not via ERP `ref_no` (structurally unavailable for
 - **EXT-2949387151 + EXT-2950393933 → DN#24817**: started as an untied proforma (70×9kg LPG refill, no deposit line), posted to ERP 2026-09-04 as invoice 52949/DN#24817 with an unbudgeted 9kg deposit charge (R36,225.00) added. CN 15601 (-R9,660.00) credits an unrelated 8×48kg return, confirmed correct by the operator. The signed delivery note confirms no 9kg cylinders were returned — the deposit charge is legitimate, not a posting error. See `docs/LIN001_event_DN24817.md` and `LIN001_rolling_balance_2025-11_2026-09.md` for the account-wide cumulative position this event feeds into (R10,463.59 short as-posted / R2,278.60 once pending corrections post).
 - **42975(slice) → DN#21432**: previously `Probable` on a 21-day-lag proximity match, exceeding the Tier 4 window. A customer-forwarded payment-app receipt (2026-01-10 11:44, R53,192.50, same New Champion Supermarket → Bella Energy Services300 pattern seen elsewhere on this account) explicitly references "No: 21432 Lin001" — exact date+amount match to this ERP payment slice. R0.43 diff is exact-cent-level, immaterial. In the course of re-verifying this event, CN 14136 was found to carry two conflicting gross amounts across overlapping `source_file` batches (-R82,512.50 vs -R93,275.00) — the header-level form of DK-593, previously only confirmed at the `transaction_items` level. The existing target_amount (R53,192.93) already used the correct value; independently re-derived and confirmed, no change needed.
 
-None of these eight are yet entered into `config/payment_pattern_overrides.json` — that requires human `approved_by`/`approved_date` sign-off per §7; `review_required` stays `true` in `allocation_edges.csv` until that happens.
+None of these seven are yet entered into `config/payment_pattern_overrides.json` — that requires human `approved_by`/`approved_date` sign-off per §7; `review_required` stays `true` in `allocation_edges.csv` until that happens.
 
-Every other edge below remains ref-less and `Probable` at best.
+---
+
+## 2A. Confirmed via Tier 1 — Open Balance at Payment Date (2026-09-06)
+
+Five edges reclassified this session, **not from new evidence, but from correctly re-applying this account's own doctrine.** `SKILL_Payment_To_Invoice_Allocation.md` §4.8/§5 establishes Tier 1 (Open Balance at Payment Date) as the **primary** matching method for accounts like LIN001 with no `ref_no` — and Tier 1 has **no day-lag requirement at all**. It only requires the payment amount to uniquely match one event's open balance at the payment date (within R0.05, or trunc ±R1). Tier 4 (Amount-Proximity Fallback, 3–14 day window) is an explicit *fallback*, used only when a payment can't be matched by reference — it should never have been the first tier checked here.
+
+These five were previously capped at Probable purely because their lag exceeded Tier 4's window — a category error, since Tier 4's window was never the applicable rule in the first place.
+
+| Payment Doc | Date | Amount | Target Event | Event Date | Lag | Diff | Competing candidates open at payment date |
+|---|---|---:|---|---|---:|---:|---|
+| 42499 (slice) | 2025-12-05 | -R30,554.71 | DN#21147 | 2025-11-06 | 29d | R0.00 | DN20897 (R27,890.88) — amounts distinct, no ambiguity |
+| 42708 | 2025-12-17 | -R27,890.50 | DN20897 | 2025-12-05 | 12d | R0.38 | DN#20898 (R50,237.46) — amounts distinct, no ambiguity |
+| 42716 | 2025-12-21 | -R50,237.00 | DN#20898 | 2025-12-06 | 15d | R0.46 | DN#21711 (R38,860.85, paid same day) — amounts distinct |
+| 42717 | 2025-12-21 | -R38,860.00 | DN#21711 | 2025-12-16 | 5d | R0.85 | DN#20898 (R50,237.46, paid same day) — amounts distinct |
+| 42976 | 2026-01-10 | -R42,516.50 | DN#21732 | 2025-12-23 | 18d | R0.38 | DN#21432 (R53,192.93) and DN-21627 (~R52,906.77), both paid/dated same day — amounts distinct |
+
+Every event checked had at least one other event open simultaneously (this account settles in irregular batches, not FIFO), but in every case the payment amount is thousands of rand away from any competitor — amount alone uniquely determines the target, satisfying Tier 1's match condition regardless of lag length.
+
+**Important distinction:** this is `Confidence: Confirmed` per the Tier 1 doctrine definition, but **not** `commercially_confirmed` — there's no customer-side evidence (remittance advice, delivery note) behind these five the way there is for the seven in §2. It's an ERP-logic-confirmed match (unambiguous by amount), not a customer-evidence-confirmed one. Keep that distinction visible; don't conflate the two Confirmed buckets when reporting confidence upward.
+
+As a side effect of re-deriving these event nets, several credit notes (CN 13818, 14085/14014, 14086/14022, 14091, 14151) were confirmed to carry two conflicting gross amounts across overlapping `source_file` batches — the same DK-593 header-level duplication pattern found elsewhere. In every case, the version already used in `allocation_edges.csv` reproduces the payment to within a rand or less, independently confirming the correct version had already been selected.
 
 ---
 
@@ -88,20 +109,17 @@ Applied inline as part of each event's header-level net (invoice + CN), not as a
 
 ---
 
-## 4. Probable / Review Required (Tier 4-equivalent)
+## 4. Probable / Review Required (genuine prepayment cases only)
 
-| Payment Doc | Date | Amount | Candidate Event | Event Date | Lag | Diff | Notes |
-|---|---|---:|---|---|---:|---:|---|
-| 42499 (slice) | 2025-12-05 | -R30,554.71 | DN#21147 | 2025-11-06 | 29d | R0.00 | Exact-cent, embedded line in multi-slice doc |
-| 42708 | 2025-12-17 | -R27,890.50 | DN20897 | 2025-12-05 | 12d | R0.38 | Within Tier 4 window |
-| 42716 | 2025-12-21 | -R50,237.00 | DN#20898 | 2025-12-06 | 15d | R0.46 | At edge of Tier 4 window |
-| 42717 | 2025-12-21 | -R38,860.00 | DN#21711 | 2025-12-16 | 5d | R0.85 | Within Tier 4 window |
-| 42976 | 2026-01-10 | -R42,516.50 | DN#21732 | 2025-12-23 | 18d | R0.38 | Exceeds window |
-| EXT-2744666881 | 2026-07-03 | -R54,981.36 | DN#22936 | 2026-07-08 | -5d (**prepayment**) | — | Bank ref matches invoice `order_no` 13991 exactly (PROVEN) — stronger than plain proximity |
-| EXT-2901239645 | 2026-08-22 | -R34,721.00 | DN#23974 | 2026-08-24 | -2d (**prepayment**) | — | Amount+date proximity only |
-| 45961 | 2026-09-01 | -R28,163.00 | DN#24947 | 2026-09-02 | -1d (**prepayment**) | — | ERP-posted (PROVEN as a doc); allocation itself still Probable |
+Every non-prepayment edge in this ledger has now been resolved to Confirmed, either via customer-side evidence (§2) or by correctly applying Tier 1 open-balance logic (§2A). What remains here are the three cases where Tier 1 genuinely cannot apply — the payment predates the invoice, so there is no open balance yet to match against at the payment date.
 
-**44975 (→DN#22630) and 42975(slice) (→DN#21432) removed from this table 2026-09-06** — both promoted to `Confirmed` via genuine remittance evidence (a proforma quote and a payment-app receipt respectively); see §2.
+| Payment Doc | Date | Amount | Candidate Event | Event Date | Lag | Notes |
+|---|---|---:|---|---|---:|---|
+| EXT-2744666881 | 2026-07-03 | -R54,981.36 | DN#22936 | 2026-07-08 | -5d (**prepayment**) | Bank ref matches invoice `order_no` 13991 exactly (PROVEN) — stronger than plain proximity |
+| EXT-2901239645 | 2026-08-22 | -R34,721.00 | DN#23974 | 2026-08-24 | -2d (**prepayment**) | Amount+date proximity only |
+| 45961 | 2026-09-01 | -R28,163.00 | DN#24947 | 2026-09-02 | -1d (**prepayment**) | ERP-posted (PROVEN as a doc); allocation itself still Probable |
+
+**44975 (→DN#22630), 42975(slice) (→DN#21432), and five further edges (→DN#21147/DN20897/DN#20898/DN#21711/DN#21732) removed from this table 2026-09-06** — promoted to `Confirmed`: the first two via genuine remittance evidence (§2), the latter five via correctly-applied Tier 1 open-balance logic (§2A), not new evidence.
 
 **Prepayment note:** per §4.6, `payment_date < invoice_date` defaults to `UNALLOCATED` + `review_required: true` — it does not auto-confirm even with a tight amount match. Three remaining 2026 events (22936, 23974, 24947) are prepayment cases by this rule. They're kept in this ledger as `Probable`/`UNALLOCATED`-flagged rather than silently treated as settled, even though the main event register calls them "Closed" — that register's "Closed" reflects the invoice+CN math balancing against a payment amount, not a doctrine-cleared allocation. The two states aren't contradictory, just answering different questions (event math vs. allocation confidence).
 
@@ -148,8 +166,9 @@ Unlike DN-21627's residual (owed by the customer due to his own error) or DN#215
 
 ```
 Total event net (15 events, Nov 2025 - Sep 2026)     R608,631.45  (as-posted basis - see note below on DN-21627/DN#21541's separate corrections)
-Total allocated via Probable/proximity edges (8)     R279,651.90
+Total allocated via Probable/proximity edges (3, genuine prepayments only)   R89,593.19
 Total allocated via Confirmed remittance edges (6)   R317,418.10  (44974+43246+43247+44482+44975+42975(slice))
+Total allocated via Confirmed Tier-1 open-balance edges (5, logic not new evidence)  R190,058.71  (42499(slice)+42708+42716+42717+42976)
 Residual on DN-21627 (rate corrected, gap owed by customer)  R1,449.00  (was R3,318.77 as posted)
 Residual on DN#21237 (Confirmed, rate corrected)         R0.16  (was R362.85 pre-rate-correction)
 Residual on DN#21541 (payment Confirmed, gap explained)  R349.02  (fully corrected; R4,204.27 as posted)
@@ -158,9 +177,11 @@ Residual on DN#22630 (Confirmed, closed exactly)         R0.00  (was R1,575.69 p
 Events accounted for                                 R598,868.18
 ```
 
-**This bridge is not fully reconciled to R608,631.45** — the figures above cover the events this session has actually re-verified line-by-line (8 Probable edges, 6 Confirmed edges, and the 4 residuals). The remaining difference (R608,631.45 − R598,868.18 = R9,763.27) corresponds to events/edges not re-checked in this pass. Treat this as a partial bridge, not a closed one — though materially tighter than the earlier R83,669.39 gap now that DN#21237 and DN#22630 are Confirmed and their corrections are folded in.
+**This bridge is not fully reconciled to R608,631.45** — the figures above cover the events this session has actually re-verified line-by-line (3 genuine-prepayment Probable edges, 11 Confirmed edges across both Confirmed buckets, and the 4 residuals). The remaining difference (R608,631.45 − R598,868.18 = R9,763.27) corresponds to events/edges not re-checked in this pass. Treat this as a partial bridge, not a closed one — though materially tighter than the earlier R83,669.39 gap now that DN#21237 and DN#22630 are Confirmed and their corrections are folded in.
 
-**42975(slice) → DN#21432 confirmed 2026-09-06** — moved from Probable to Confirmed via a payment-app receipt exactly matching date and amount. No change to the bridge total (R598,868.18) since this only moves which bucket the same R53,192.50 sits in; its R0.43 rounding diff was never separately tracked as a residual, same as the account's other Tier-4 proximity matches.
+**42975(slice) → DN#21432 confirmed 2026-09-06** via remittance advice — moved from Probable to the customer-evidence Confirmed bucket. No change to the bridge total (R598,868.18), only which bucket the same R53,192.50 sits in.
+
+**Five further edges reclassified 2026-09-06** (42499(slice)→DN#21147, 42708→DN20897, 42716→DN#20898, 42717→DN#21711, 42976→DN#21732) — moved from Probable to the Tier-1 open-balance Confirmed bucket, per §2A. This was a correction to which doctrine tier was being applied (Tier 1 has no day-lag requirement; Tier 4's window was never the right test here), not new evidence. No change to the bridge total, only which bucket R190,058.71 sits in. Only the three genuine prepayment cases remain Probable.
 
 **Corrected 2026-09-05, then partially retracted 2026-09-06:** three payments moved from Probable/forced to Confirmed: 44974 (→DN#21541), 43246 (→DN#21739), and 43247 (→DN-21627) are now Confirmed via genuine remittance advice, not proximity inference. 43247's target (DN-21627) was previously (wrongly) listed as "unallocated, no candidate event within any tolerance." **A same-day "fully closed to R0.00" note for DN-21627 is retracted** — it accepted the customer's own notebook figure of 180×9KG as correct; the signed delivery note confirms 182×9KG were actually dispatched, matching the invoice. Only the rate correction (R1,869.77) stands; R1,449.00 remains, explained but owed by the customer.
 
@@ -172,7 +193,7 @@ Events accounted for                                 R598,868.18
 
 **Doctrine note (2026-09-06):** rolling/cumulative account balance is LIN001's standard doctrine (see `.agents/skills/SKILL_LIN001_Debtor_Reconciliation.md` §2), now extended through the **full Nov 2025–Sep 2026 window** — see `LIN001_rolling_balance_2025-11_2026-09.md`, the authoritative table (16 events, chronological, built from this ledger's individually-verified `allocation_edges.csv` rows rather than a raw `transaction_headers` query — the latter was attempted and discarded due to unresolved source-file duplication, the header-level form of DK-593). The R608,631.45/R598,868.18 figures above remain on the older isolated-event basis and are superseded by the rolling file for judging the account's actual exposure — they're kept here for the per-edge confidence detail (Confirmed vs. Probable), which the rolling doctrine doesn't change. Bottom line from the rolling file: **R10,463.59 short as-posted in ERP today, R2,278.60 once DK-590/591/592/596 post.**
 
-All seven payments in §2 are now Confirmed — no payment in this ledger remains at Probable/forced-match confidence for its target.
+All twelve non-prepayment payments in this ledger (§2 + §2A) are now Confirmed — no payment in this ledger remains at Probable/forced-match confidence for its target. Only the three genuine prepayment cases (§4) stay Probable, and that's correct: Tier 1 cannot apply when there's no invoice yet to hold an open balance.
 
 ---
 
