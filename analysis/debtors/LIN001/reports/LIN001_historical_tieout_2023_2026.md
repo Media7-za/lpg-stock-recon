@@ -59,8 +59,8 @@ This is directly reusable portfolio-wide (~300 accounts) and should feed DK-593.
 ## Recommendation
 
 1. **Do not** walk back the 39 unmatched events against this data.
-2. **Re-export 2024** from ERP and reload it, applying the VAT rule above. Then re-run this tie-out — if 2024 closes to within trading noise like the other three years, the whole pool closes with it.
-3. Treat the two defects above as concrete, actionable scope for **DK-593**.
+2. **Re-export 2024** from ERP and reload it, applying the VAT rule above. Then re-run this tie-out — if 2024 closes to within trading noise like the other three years, the whole pool closes with it. **Raised as DK-598** (operator action, 2026-09-06).
+3. Treat the two defects above as concrete, actionable scope for **DK-593** — posted there 2026-09-06, and cross-linked from DK-598 so the fix rules get applied on reload.
 4. The account's live exposure remains what the rolling balance says (`LIN001_rolling_balance_2025-11_2026-09.md`): R10,463.59 as-posted, R2,278.60 once DK-590/591/592/596 post. Nothing here changes that.
 
 ---
