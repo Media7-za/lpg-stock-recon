@@ -38,31 +38,39 @@ This figure is independent of which surplus is assigned to which later event —
 
 ---
 
-## Part 2 — Proforma 2026-09-04 (open, ASSERTED)
+## Part 2 — DN#24817 (CLOSED 2026-09-06 — posted as invoice 52949)
+
+The Proforma 2026-09-04 posted to ERP as invoice 52949/DN#24817, carrying an unbudgeted 9kg cylinder deposit line (R36,225.00) not in the original proforma quote. CN 15601 (-R9,660.00) does not correct that — it credits an unrelated 8×48kg cylinder return, confirmed correct by the operator. The signed delivery note confirms no 9kg cylinders were returned, so the deposit charge is legitimate.
 
 | Item | Amount |
 |---|---:|
-| Proforma event net | R16,291.80 |
+| Invoice 52949 | R52,516.80 |
+| CN 15601 (unrelated 48kg return) | -R9,660.00 |
+| Event net | R42,856.80 |
 | Payments (EXT-2949387151 + EXT-2950393933) | R14,106.80 |
-| Shortfall | **R2,185.00** |
+| Isolated-event gap | **R28,750.00** (legitimate, not creditable) |
 
 ```
-R16,291.80  proforma event net
+R42,856.80  event net
 − R14,106.80  payments received
 ────────────
-= R2,185.00  short-paid — event open
+= R28,750.00  gap — legitimate, confirmed via delivery note, not an ERP correction
 ```
+
+See `docs/LIN001_event_DN24817.md` for the full reconciliation.
 
 ---
 
 ## Combined position
 
 ```
-Part 1 credit (CORRECTED):    +R26,696.48
-Part 2 shortfall (ASSERTED):   -R2,185.00
+Part 1 credit (CORRECTED):        +R26,696.48
+Part 2 gap (isolated, legitimate): -R28,750.00
 ──────────────────────────────────────────
-Net position across all 6:    R24,511.48 credit
+Net position across all 6 (isolated basis): R2,053.52 shortfall
 ```
+
+**Rolling-account alternative:** carrying each event's surplus forward chronologically into the next (rather than isolating each event against its own payment) puts the cumulative position after DN#24817 at only **R477.83 short** — immaterial. See `docs/LIN001_event_DN24817.md` for the event-by-event table. This is a materially different number from the R2,053.52 isolated-basis figure above because it lets DN#22936/23974/24947's surpluses fund most of DN#24817's shortfall. **Neither basis is yet this account's formally adopted doctrine** — both are shown pending that decision (see `LIN001_Payment_Allocation_v1.md`).
 
 ---
 
@@ -73,7 +81,7 @@ The R26,696.48 aggregate credit can be decomposed into per-event surpluses/short
 | Surplus/(shortfall) source | Amount | Tag |
 |---|---:|---|
 | 44482 (PC-76-31) — predates this window, confirmed against DN#21237 (outside this window) | R75,844.50 | **Confirmed** (see `LIN001_Payment_Allocation_v1.md` §2) |
-| DN#22630 — payment 63,325.00 vs event net 64,900.69 (as posted) | (R1,575.69) | **RESOLVED 2026-09-06 — exact match to customer's proforma; pending -R1,575.69 credit note** |
+| DN#22630 — payment 63,325.00 vs event net 64,900.69 (as posted) | (R1,575.69) | **RESOLVED 2026-09-06 — exact match to customer's proforma; -R1,575.69 discount posted** |
 | DN#22936 — payment 54,981.36 vs event net 53,951.69 | R1,029.67 | ASSERTED |
 | DN#23974 — payment 34,721.00 vs event net 30,207.80 | R4,513.20 | ASSERTED |
 | DN#24947 — payment 28,163.00 vs event net 5,433.70 | R22,729.30 | PROVEN |
@@ -84,9 +92,11 @@ DN#22630's row nets to R23,667.18 across the other four events' surpluses minus 
 
 ## Verification
 
-Recomputed independently from the figures in `LIN001_events_consolidated_2026-06_2026-09.md` / `.csv`, which are themselves cross-checked against `transaction_headers` (Supabase project `lpg-stock-recon`) as at 2026-09-04. Arithmetic ties exactly.
+Recomputed independently from the figures in `LIN001_events_consolidated_2026-06_2026-09.md` / `.csv`, which are themselves cross-checked against `transaction_headers` (Supabase project `oqhpxnaadahohwkslive`) as at 2026-09-06. Arithmetic ties exactly.
 
-**2026-09-05 re-verification:** removing 44974 (R40,590.60) and recomputing gives R26,696.48 (Part 1) and R24,511.48 (combined) — both tie exactly against the per-event decomposition above (1,029.67+4,513.20+22,729.30−1,575.69 = 26,696.48).
+**2026-09-05 re-verification:** removing 44974 (R40,590.60) and recomputing gives R26,696.48 (Part 1) — ties exactly against the per-event decomposition above (1,029.67+4,513.20+22,729.30−1,575.69 = 26,696.48).
+
+**2026-09-06 re-verification:** DN#24817 posted as invoice 52949/DN#24817 with a confirmed-legitimate R28,750.00 isolated gap (Part 2, replacing the R2,185.00 proforma-stage figure). Combined isolated-basis position: R26,696.48 − R28,750.00 = R2,053.52 shortfall. Rolling-account basis (see `docs/LIN001_event_DN24817.md`): R477.83 shortfall.
 
 ---
 

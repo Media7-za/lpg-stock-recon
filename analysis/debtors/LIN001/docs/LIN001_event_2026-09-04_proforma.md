@@ -1,8 +1,10 @@
 # LIN001 — Event Card: Proforma 2026-09-04
 
+> **SUPERSEDED 2026-09-06.** This proforma posted to ERP as **invoice 52949 / DN#24817**. See `LIN001_event_DN24817.md` for the resolved event — the deposit-vs-refill question below is answered there (signed delivery note confirms no 9kg cylinders were returned; the deposit charge is legitimate, not a posting error). This file is kept for the proforma-stage history only.
+
 **Account:** LIN001 — SLINDOKUHLE ENTERPRISES (PTY) LTD
 **Reference:** Proforma invoice, LIN001, dated 2026-09-04
-**Status:** **Open — short-paid, no delivery note**
+**Status:** **Superseded — see `LIN001_event_DN24817.md`**
 
 ---
 

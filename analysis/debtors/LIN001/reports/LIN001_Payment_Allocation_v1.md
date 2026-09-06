@@ -42,14 +42,15 @@ LIN001 runs closest to **§4.8 "Open Event Balance (primary — ref optional)"**
 |---|---:|---:|
 | Events considered (Nov 2025 → Sep 2026) | 15 | R608,631.45 |
 | Edges matched (`PROXIMITY_INFERENCE`, Probable) | 9 | R332,844.40 allocated |
-| Tier 1/2 (remittance-confirmed) matches | **5** (44974 → DN#21541, 43246 → DN#21739, 43247 → DN-21627, 44482 → DN#21237, 44975 → DN#22630) | R264,225.60 |
+| Tier 1/2 (remittance-confirmed) matches | **7** (44974 → DN#21541, 43246 → DN#21739, 43247 → DN-21627, 44482 → DN#21237, 44975 → DN#22630, EXT-2949387151 + EXT-2950393933 → DN#24817) | R278,332.40 |
 | Payments fully unallocated (`UNALLOCATED`, no candidate) | 0 | — |
 | Events with a confirmed payment target, rate corrected, residual owed by customer | 1 (DN-21627, R1,449.00 owed) | R51,037.00 (rate-corrected; R52,906.77 as posted) |
 | Events with a confirmed payment target, rate corrected, closed to immaterial residual | 1 (DN#21237, R0.16 residual after DK-590's pricing correction) | R75,844.34 |
 | Events closed exactly — payment matches the customer's proforma quote | 1 (DN#22630, R0.00 residual) | R63,325.00 |
 | Events partially matched, residual explained (pending 2 credit postings) | 1 (DN#21541, R349.02 residual) | R40,939.62 (fully corrected; R44,794.87 as posted in ERP) |
+| Events with a confirmed payment target and deposit charge, isolated residual legitimate but immaterial on a rolling-account basis | 1 (DN#24817, R28,750.00 isolated / R477.83 rolling) | R42,856.80 |
 
-Five edges now reach `Confirmed` via customer-supplied remittance advice (payment-app receipts, a WhatsApp confirmation, and — for DN#22630 — the customer's own proforma quote), each naming or exactly reproducing its target document — see §2. Every other edge remains `Probable` at best; LIN001 still has no `ref_no` tagging.
+Seven edges now reach `Confirmed` via customer-supplied remittance advice (payment-app receipts, a WhatsApp confirmation, a proforma quote, and a signed delivery note), each naming or exactly reproducing its target document — see §2. Every other edge remains `Probable` at best; LIN001 still has no `ref_no` tagging.
 
 ---
 
@@ -64,12 +65,14 @@ Five, added 2026-09-05/06 — not via ERP `ref_no` (structurally unavailable for
 | 43247 | 2026-02-06 08:08 | -R49,588.00 | DN-21627 | 2026-01-10 | Payment-app receipt, same customer, 2 minutes later, explicit reference "No: 21627 Lin001" | **Confirmed** |
 | 44482 | 2026-05-08 08:46 | -R75,844.50 | DN#21237 | 2026-02-06 | Payment-app receipt, explicit reference "No: 21237" | **Confirmed** |
 | 44975 | 2026-06-07 | -R63,325.00 | DN#22630 | 2026-06-08 | Customer's own proforma quote, exact-cent total match | **Confirmed** |
+| EXT-2949387151 + EXT-2950393933 | 2026-09-04 | -R14,106.80 | DN#24817 | 2026-09-04 | Signed delivery note (confirms deposit charge legitimate, no 9kg return) | **Confirmed** |
 
 - **44974 → DN#21541**: a **partial** payment against DN#21541's R40,939.62 fully-corrected total owed (R44,794.87 as posted in ERP, before a R60.25 CN 14435 top-up and a R3,795.00 empties credit that are both still unposted — see `docs/LIN001_event_DN21541.md`). R349.02 remains as a residual, which is itself explained (a rate mismatch in the customer's own reconciliation).
 - **43246 → DN#21739**: previously `Probable` on a 42-day-lag proximity match, flagged as needing override-registry ratification. The remittance receipt removes that need — the lag no longer matters once the target is directly evidenced. R0.41 diff is exact-cent-level, immaterial.
 - **43247 → DN-21627**: previously a forced/ASSERTED match (smallest-diff candidate among 3 open events), now confirmed on **target**. Rate corrected (R20.00/kg ex-VAT vs the posted R20.87/kg, R1,869.77 legitimate credit). A same-day, since-retracted note also credited a 9KG quantity difference (180 vs 182) based on the customer's notebook — **retracted**: the signed delivery note confirms 182×9KG were actually dispatched, matching the invoice exactly. The remaining R1,449.00 is explained (it exactly matches the value of the customer's own 2-unit 9KG undercount) but is **not creditable — still owed by the customer**. See `docs/LIN001_event_DN-21627.md` and `docs/LIN001_ERP_correction_request_48725.md`.
 - **44482 → DN#21237**: previously a forced/ASSERTED match (smallest-diff candidate), now confirmed on **target** via remittance receipt. Rate corrected to the operator-confirmed agreed February rate (R20.24/kg ex-VAT vs the posted R21.264/kg), a -R2,459.97 credit closing the event to a R0.16 residual — immaterial. See `docs/LIN001_event_DN21237.md` and `docs/LIN001_ERP_correction_request_49115.md`.
-- **44975 → DN#22630**: previously assumed to split with 44974 (retracted — 44974 belongs to DN#21541, see above), then Probable-alone at a R1,575.69 shortfall. The customer's own proforma quote for this delivery (flat R27.50/kg refill rate + one-off Empty DV Cylinder charge) totals R63,325.00 exactly — matching this payment to the cent, with refill quantities matching invoice 51132's gas lines exactly. The R1,575.69 gap is a quote-vs-invoice pricing/structure mismatch (ERP posted at header rate + deposit dispatch/return, not the proforma's flat model), not a shortfall. -R1,575.69 credit note proposed on invoice 51132. See `docs/LIN001_event_DN22630.md` and `docs/LIN001_ERP_correction_request_51132.md`.
+- **44975 → DN#22630**: previously assumed to split with 44974 (retracted — 44974 belongs to DN#21541, see above), then Probable-alone at a R1,575.69 shortfall. The customer's own proforma quote for this delivery (flat R27.50/kg refill rate + one-off Empty DV Cylinder charge) totals R63,325.00 exactly — matching this payment to the cent, with refill quantities matching invoice 51132's gas lines exactly. The R1,575.69 gap is a quote-vs-invoice pricing/structure mismatch (ERP posted at header rate + deposit dispatch/return, not the proforma's flat model), not a shortfall. -R1,575.69 discount posted against invoice 51132. See `docs/LIN001_event_DN22630.md` and `docs/LIN001_ERP_correction_request_51132.md`.
+- **EXT-2949387151 + EXT-2950393933 → DN#24817**: started as an untied proforma (70×9kg LPG refill, no deposit line), posted to ERP 2026-09-04 as invoice 52949/DN#24817 with an unbudgeted 9kg deposit charge (R36,225.00) added. CN 15601 (-R9,660.00) credits an unrelated 8×48kg return, confirmed correct by the operator. The signed delivery note confirms no 9kg cylinders were returned — the deposit charge is legitimate, not a posting error. R28,750.00 remains owed in isolation, though a rolling-account view (surplus from DN#22936/23974/24947 carried forward) puts the cumulative position at only R477.83 short. See `docs/LIN001_event_DN24817.md`.
 
 None of these five are yet entered into `config/payment_pattern_overrides.json` — that requires human `approved_by`/`approved_date` sign-off per §7; `review_required` stays `true` in `allocation_edges.csv` until that happens.
 
@@ -130,6 +133,14 @@ Empty — no payment in this ledger is without a candidate target as of 2026-09-
 
 The full breakdown is in `docs/LIN001_event_DN21541.md`. A customer WhatsApp claim of 2×19kg + 2×48kg leaking cylinders returned "together" needed two credits: CN 14435 (gas, posted but under-rated by R60.25) and a fresh empties credit (R3,795.00, never posted — the delivery note's recorded return counts didn't include these 4 units, contrary to an earlier assumption that they did). With both posted, DN#21541's total owed is R40,939.62, leaving R349.02 — which is itself explained by a rate mismatch in the customer's own reconciliation (his flat R23.27/kg vs. the invoice's actual R23.4497/kg), not an open question.
 
+**Event with a Confirmed payment target and a legitimate isolated residual (2026-09-06 — added, outside this ledger's original Nov 2025–Sep 2026 event set):**
+
+| DN# | Date | Event net | Payment | Residual |
+|---|---|---:|---|---:|
+| DN#24817 | 2026-09-04 | R42,856.80 (invoice 52949 − CN 15601) | EXT-2949387151 + EXT-2950393933, **Confirmed** via signed delivery note (see §2) | **R28,750.00 isolated, legitimate** (unreturned 9kg deposit) — R477.83 on a rolling-account basis, see `docs/LIN001_event_DN24817.md` |
+
+Unlike DN-21627's residual (owed by the customer due to his own error) or DN#21541's (a rate mismatch in the customer's reconciliation), this residual is a straightforward unreturned-deposit charge — confirmed legitimate by the signed delivery note, not a dispute or a posting error. Whether to chase it depends on which basis (isolated vs. rolling-account) this account formally adopts — see §6.
+
 ---
 
 ## 6. Reconciliation Bridge (partial — not yet closed)
@@ -152,9 +163,11 @@ Events accounted for                                 R598,868.18
 
 **Two further payments confirmed 2026-09-06:** 44482 (→DN#21237) via remittance advice, then closed to R0.16 once re-rated at the operator-confirmed R20.24/kg agreed rate; and 44975 (→DN#22630) via the customer's own proforma quote, closing exactly to R0.00. Neither remains open.
 
-**One thread remains genuinely open:** DN-21627's R1,449.00, owed by the customer (his own counting error, confirmed by the customer, not an ERP correction) — a collections item, not a reconciliation question. DN#21541's R349.02 residual is similarly explained (customer's own rate-mismatch) and not chased further; its two credit-note postings (CN top-up, empties credit) are still pending in ERP.
+**Addendum, outside the original 15-event scope — DN#24817 (2026-09-06):** started as an untied proforma, posted to ERP as invoice 52949 with an unbudgeted 9kg deposit charge. Payment target confirmed via signed delivery note (which also confirms the deposit charge itself is legitimate — no 9kg cylinders were returned). Event net R42,856.80, payments R14,106.80, isolated residual **R28,750.00** — not folded into the R598,868.18 total above (this event predates the original scope's cutoff computation). On a rolling-account basis (§5), the residual is only R477.83.
 
-All five payments in §2 are now Confirmed — no payment in this ledger remains at Probable/forced-match confidence for its target.
+**One thread remains genuinely open as a collections matter:** DN-21627's R1,449.00, owed by the customer (his own counting error, confirmed by the customer, not an ERP correction). DN#21541's R349.02 residual is similarly explained (customer's own rate-mismatch) and not chased further; its two credit-note postings (CN top-up, empties credit) are still pending in ERP. DN#24817's R28,750.00 (isolated) / R477.83 (rolling) is a legitimate unreturned-deposit charge, not a dispute — whether it's worth chasing depends on which basis (§5/§6 addendum) this account adopts.
+
+All seven payments in §2 are now Confirmed — no payment in this ledger remains at Probable/forced-match confidence for its target.
 
 ---
 
