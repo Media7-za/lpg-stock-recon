@@ -2,7 +2,9 @@
 
 **Account:** LIN001 — SLINDOKUHLE ENTERPRISES (PTY) LTD
 **Period:** 2026-06-08 → 2026-09-04
-**Doctrine (adopted 2026-09-06):** rolling/cumulative account balance — each event's surplus or shortage carries forward chronologically into the next, the same way the ERP's own Debtor Account Enquiry running-balance column works. This **replaces** the per-event-isolated framing this bridge used earlier in the session as the account's standard way of judging whether a gap is a live concern. See `.agents/skills/SKILL_LIN001_Debtor_Reconciliation.md` §2 for the full doctrine statement, including what does and doesn't change under it (individual-transaction evidence work is unchanged; only the final "is this worth chasing" judgment moves to the cumulative basis).
+**Doctrine (adopted 2026-09-06):** rolling/cumulative account balance — each event's surplus or shortage carries forward chronologically into the next, the same way the ERP's own Debtor Account Enquiry running-balance column works. See `.agents/skills/SKILL_LIN001_Debtor_Reconciliation.md` §2 for the full doctrine statement.
+
+> **Superseded in scope 2026-09-06:** this file only covers Jun–Sep 2026 and its final figure (R477.83 short) **understates** the account's real exposure — it implicitly starts from a zero balance at DN#22630, ignoring the real shortfall already carried in from the unposted Jan/Feb 2026 corrections (DN-21627, DN#21237, DN#21541). `LIN001_rolling_balance_2025-11_2026-09.md` is now the authoritative table (R10,463.59 short as-posted / R2,278.60 once pending corrections post). This file is kept for its Jun–Sep per-event detail, not as the account's bottom line.
 
 ---
 

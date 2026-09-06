@@ -3,7 +3,7 @@
 **Account:** LIN001 — SLINDOKUHLE ENTERPRISES (PTY) LTD
 **Delivery note:** DN#24817
 **Date:** 2026-09-04
-**Status:** **CLOSED** — deposit charge confirmed legitimate (signed delivery note); R477.83 residual under the account's now-adopted rolling doctrine, immaterial *(2026-09-06)*
+**Status:** **CLOSED** — deposit charge confirmed legitimate (signed delivery note); feeds into an account-wide rolling position of R10,463.59 short as-posted / R2,278.60 once pending corrections post — see `LIN001_rolling_balance_2025-11_2026-09.md` *(2026-09-06)*
 
 ---
 
@@ -73,15 +73,15 @@ LIN001 is a COD account. Read as a running balance rather than event-isolated, t
 | DN#24947 (2026-09-02) | R5,433.70 | R5,542.87 | R28,163.00 | R28,272.17 |
 | **DN#24817 (2026-09-04)** | **R42,856.80** | **R28,272.17** | **R14,106.80** | **-R477.83** |
 
-On this basis the account is **R477.83 short cumulatively — immaterial**, not R28,750.00. This is a legitimate way to read a COD account's actual collections exposure, but it does not retroactively make the 9kg deposit charge itself correct or incorrect — that's a separate, now-settled fact (the delivery note). The rolling view just says the cash the customer already paid on other deliveries covers nearly all of this one's shortfall.
+On this Jun–Sep-only basis the account would appear to be R477.83 short cumulatively — but that **understates the real position**, because it assumes the account entered DN#22630 at zero. It didn't: the Jan/Feb 2026 events (DN-21627, DN#21237, DN#21541) were already carrying a shortfall at that point, mostly from corrections that are agreed but not yet posted in ERP. See `LIN001_rolling_balance_2025-11_2026-09.md` for the corrected, full-window figure. This does not retroactively make the 9kg deposit charge itself correct or incorrect — that's a separate, settled fact (the delivery note).
 
-**Adopted 2026-09-06 as this account's standard doctrine** — rolling/cumulative account balance now governs whether any LIN001 event's gap is a live commercial concern, replacing the isolated-event framing used earlier in this register. See `.agents/skills/SKILL_LIN001_Debtor_Reconciliation.md` §2 for the full doctrine and `LIN001_balance_bridge_2026-06_2026-09.md` for the authoritative Jun–Sep rolling table. Not yet extended back through the fuller Nov 2025–Sep 2026 history in `LIN001_Payment_Allocation_v1.md`.
+**Adopted 2026-09-06 as this account's standard doctrine**, and since extended through the full Nov 2025–Sep 2026 history — see `LIN001_rolling_balance_2025-11_2026-09.md`. That fuller table shows the account-wide position after this event is actually **R10,463.59 short as-posted in ERP today** (not R477.83 — that figure only held for the Jun–Sep window in isolation, and understated the real carried-forward shortfall from the still-unposted Jan/Feb 2026 corrections), improving to **R2,278.60 short** once DK-590/591/592/596 post. See `.agents/skills/SKILL_LIN001_Debtor_Reconciliation.md` §2 for the full doctrine.
 
 ---
 
 ## Recommended action
 
-No ERP correction needed — the deposit charge is correct as posted, and CN 15601 is correct and unrelated. R477.83 is immaterial and not worth chasing on a rolling-balance basis. No customer follow-up required.
+No ERP correction needed — the deposit charge is correct as posted, and CN 15601 is correct and unrelated. No customer follow-up required for this event specifically. The account's real rolling exposure (R10,463.59 as-posted / R2,278.60 corrected) is driven by DK-590/591/592/596, not by this event — see `LIN001_rolling_balance_2025-11_2026-09.md`.
 
 ## Confidence
 
@@ -90,7 +90,7 @@ No ERP correction needed — the deposit charge is correct as posted, and CN 156
 | Invoice/CN header and line figures | PROVEN (ERP) |
 | CN 15601 correctly linked and reflects a real 8×48kg return | **Confirmed** (operator, 2026-09-06) |
 | No 9kg cylinders returned on this delivery — deposit charge legitimate | **Confirmed** (signed delivery note, 2026-09-06) |
-| R28,750.00 isolated gap / R477.83 cumulative rolling position | PROVEN arithmetic (both bases) |
+| R28,750.00 isolated gap / R10,463.59 (as-posted) or R2,278.60 (corrected) full-window rolling position | PROVEN arithmetic (all bases) |
 
 ---
 

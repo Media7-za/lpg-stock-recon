@@ -77,7 +77,9 @@ LIN001 is a **COD account**, judged as a rolling running balance across chronolo
 
 **Authoritative source:** the ERP's own running balance (Debtor Account Enquiry screen) is ground truth. This repo's rolling-balance bridge is a derived cross-check and can lag it (see the Supabase sync-lag note in §0) — when they disagree, trust the live ERP screen and re-sync the repo.
 
-**Current status:** verified and adopted for the Jun–Sep 2026 window — `analysis/debtors/LIN001/reports/LIN001_balance_bridge_2026-06_2026-09.md` is the authoritative rolling-balance table there (final cumulative position: R477.83 short, immaterial). **Not yet extended** back through the fuller Nov 2025–Sep 2026 history covered by `LIN001_Payment_Allocation_v1.md` (DN-21627, DN#21237, DN#21541, and the Probable-tier events before that) — chaining those in requires care around correction-posting dates (e.g. DN#22630's discount posted 2026-09-06 against a 2026-06-08 delivery) and is a follow-up, not assumed done.
+**Current status:** extended through the full Nov 2025–Sep 2026 window — `analysis/debtors/LIN001/reports/LIN001_rolling_balance_2025-11_2026-09.md` is the authoritative rolling-balance table (16 events, chronological). Two positions matter here, not one: **R10,463.59 short as-posted in ERP today** (2026-09-06) vs. **R2,278.60 short once DK-590/591/592/596 all post** — the gap between them is exactly the sum of those four unposted corrections. Always cite the as-posted figure when asked "what does the account actually owe right now," not the post-correction one. The narrower `LIN001_balance_bridge_2026-06_2026-09.md` (Jun–Sep only, R477.83) understated the account's real carried-forward exposure because it implicitly started from zero rather than the shortfall already carried in from the unposted Jan/Feb 2026 corrections — kept for its per-event detail, but the full-window file is authoritative for the account's overall position.
+
+**Scope limit:** this full-window table is built from the 16 individually-verified events in `allocation_edges.csv`, not a raw `transaction_headers` query — a raw rebuild was attempted and discarded (see the full-window file for why: 10 overlapping `source_file` batches produce wildly wrong totals, the header-level manifestation of DK-593). Anything before 2025-11-06, or outside this verified event set (e.g. the 46 unmatched historical events from the full-history scripted pass), is still out of scope.
 
 ### Evidence hierarchy (the load-bearing rule of this account)
 
@@ -125,42 +127,26 @@ Every invoice uses **one flat ex-VAT rate per kg**, applied uniformly across all
 
 ## 4. Current state (as of 2026-09-06 — verify against the docs before trusting this table blindly)
 
+Every 2026 event is closed or explained. What's actually outstanding is the **posting** of four already-agreed corrections — see the rolling-balance note in §2 for why that matters (R10,463.59 vs R2,278.60 short, account-wide).
+
 | Event | Status | Ticket |
 | :--- | :--- | :--- |
 | DN-21627 (Jan) | Closed — R1,449.00 owed by customer (confirmed his own error), collections-only | DK-592, `AWAITNG PAYMENT` |
-| DN#21237 (Feb) | Closed to R0.16 — credit ready to post | DK-590, ready to post |
-| DN#21541 (Feb) | Explained, R349.02 residual — **two credits still not posted in ERP** | DK-591 (price adj), DK-596 (empties credit), both ready to post |
+| DN#21237 (Feb) | Closed to R0.16 — credit **not yet posted** | DK-590, ready to post |
+| DN#21541 (Feb) | Explained, R349.02 residual — **two credits not yet posted** | DK-591 (price adj), DK-596 (empties credit) |
 | DN#22508 (Jun) | Closed, zero-net | — |
-| DN#22630 (Jun) | Closed exactly — credit ready to post | DK-595, ready to post |
+| DN#22630 (Jun) | Closed — **-R1,575.69 discount posted** 2026-09-06, confirmed by the operator | DK-595, Done |
 | DN#22936 (Jul) | Closed | — |
 | DN#23974 (Aug) | Closed | — |
 | DN#24947 (Sep) | Closed | — |
-| **DN#24817 / invoice 52949** (Sep) | **OPEN — R38,410.00, cause unresolved** | not yet ticketed |
-
-### DN#24817 — the live open item
-
-Originated as "Proforma 2026-09-04" (70×9kg LPG refill quote, R16,291.80, R2,185.00 short-paid, no DN#). Has since posted to ERP as **invoice 52949** (2026-09-04, `source_file DTRX0409.TXT`):
-
-| Line | Amount |
-| :--- | ---: |
-| 9KG LPG refill (70×9kg, gas only) | R16,291.80 — matches the original proforma exactly |
-| 9KG cylinder deposit (70×R450 ex-VAT) | R36,225.00 — **not in the original proforma** |
-| **Invoice total** | **R52,516.80** |
-
-Payments to date: R13,416.80 + R690.00 = R14,106.80. **Gap: R38,410.00.** No CN posted, no further payment since 2026-09-04 (checked against `transaction_headers` directly).
-
-**What's needed to resolve it:** the signed delivery note for DN#24817, specifically whether it records 70 empty 9kg cylinders actually returned on this delivery.
-- If yes → the deposit charge is a posting error → propose a -R36,225.00 credit, and the real remaining question shrinks back to the original R2,185.00 gas-rate gap.
-- If no → the deposit is legitimate and R38,410.00 is a real collections shortfall, not an ERP mistake.
-
-Do not guess at this — it is a binary evidence question, not something derivable from ERP data alone. A request to locate the scanned delivery note was sent to another session (`user-90`) this session but that session was unreachable; the operator may retry or supply the DN directly.
+| DN#24817 (Sep) | Closed — 9kg deposit charge confirmed legitimate via signed delivery note; R477.83 residual on the (superseded, Jun-Sep-only) rolling view, immaterial | DK-597, Done |
 
 ### Lower-priority open threads
 
 - Payment 42975(slice) → DN#21432: a customer payment-app receipt naming "21432" exists but was never confirmed against this specific payment slice (see `LIN001_Payment_Allocation_v1.md` §4).
 - 46 unmatched historical events (2023–2024) from the full-history scripted pass (`data/dn_event_payment_allocation_candidates.json`) — candidates only, not promoted.
 - DK-594: reconcile overlapping branches (`claude/lin001-delivery-events-xb8nt7` vs `cursor/lin001-fresh-allocation-bb32`) before any merge to main.
-- DK-593: the source-file duplication bug is portfolio-wide (~300 accounts), not LIN001-specific — out of this skill's scope beyond the dedupe workaround in §0.
+- DK-593: the source-file duplication bug is portfolio-wide (~300 accounts), not LIN001-specific — confirmed this session to also affect `transaction_headers` (not just `transaction_items`), see the rolling-balance file's "why not a raw SQL rebuild" note. Out of this skill's scope beyond the dedupe workaround in §0.
 
 ---
 
@@ -195,7 +181,8 @@ analysis/debtors/LIN001/
 └── reports/
     ├── LIN001_events_consolidated_2026-06_2026-09.md   # Jun-Sep register, correction log at top
     ├── LIN001_Payment_Allocation_v1.md                 # payment↔event ledger, confidence-tagged
-    └── LIN001_balance_bridge_2026-06_2026-09.md        # Jun-Sep aggregate tie-out
+    ├── LIN001_rolling_balance_2025-11_2026-09.md       # AUTHORITATIVE rolling-balance table, full verified window
+    └── LIN001_balance_bridge_2026-06_2026-09.md        # Jun-Sep only, superseded in scope by the file above
 ```
 
 ---
