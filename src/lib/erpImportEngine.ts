@@ -73,11 +73,26 @@ export class ERPImportEngine {
             const expectedTax = Math.round(header.amount_excl * 0.15 * 100) / 100;
             const actualTax = Math.abs(header.tax_amount);
             if (Math.abs(expectedTax - actualTax) > 0.05) {
+                // DK-593: a known ERP export defect on Credit Note rows from older
+                // batches (DRTX2024.TXT, DRTX2025.TXT, DTRX2603.TXT) populates
+                // amount_excl with the VAT-INCLUSIVE (gross) figure instead of the
+                // ex-VAT figure, while tax_amount stays correct. That silently
+                // double-counts VAT wherever amount_excl + tax_amount is summed.
+                // Detect that specific shape via the gross-side double-check: if
+                // treating amount_excl as gross reproduces tax_amount, the column
+                // is holding gross, not ex-VAT.
+                const grossImpliedTax = Math.round((header.amount_excl / 1.15) * 0.15 * 100) / 100;
+                const isGrossInExclDefect =
+                    header.entry_type === 'Crd Note' &&
+                    Math.abs(grossImpliedTax - actualTax) <= 0.02;
+
                 findings.push({
                     id: header.doc_no,
                     rule: 'VAT_CONSISTENCY',
-                    severity: 'WARNING',
-                    message: `Expected VAT R${expectedTax}, found R${actualTax}`,
+                    severity: isGrossInExclDefect ? 'CRITICAL' : 'WARNING',
+                    message: isGrossInExclDefect
+                        ? `Credit Note amount_excl (R${header.amount_excl}) appears VAT-inclusive (gross), not ex-VAT: tax R${actualTax} matches the gross-side calculation instead of the ex-VAT one (DK-593). Row rejected.`
+                        : `Expected VAT R${expectedTax}, found R${actualTax}`,
                     value: actualTax
                 });
             }
