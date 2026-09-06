@@ -73,7 +73,7 @@ Both components verified to the cent against exact ERP line data (`retail_price`
 
 ## Recommended action
 
-1. Post a credit note of **-R1,575.69** against invoice 51132, reconciling it to the quoted proforma total — see `LIN001_ERP_correction_request_51132.md`.
+1. Post two entries against invoice 51132, not one blanket credit note: a **discount journal of -R1,618.19** (LPG rate adjustment) and a **deposit-side adjustment of +R42.50**, net -R1,575.69 — reconciling it to the quoted proforma total. See `LIN001_ERP_correction_request_51132.md`.
 2. No customer follow-up needed — the payment already matches what they were quoted, exactly.
 3. Worth flagging separately: why does this account have two live pricing models (header rate + deposit dispatch/return, vs. flat refill + cylinder-charge proformas)? If proformas are quoted at a different rate than what ERP later invoices, this could recur on other deliveries.
 

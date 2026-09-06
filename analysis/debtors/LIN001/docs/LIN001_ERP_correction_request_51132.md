@@ -2,7 +2,7 @@
 
 **Account:** LIN001 — SLINDOKUHLE ENTERPRISES (PTY) LTD
 **Target document:** Invoice 51132 (2026-06-08, event DN#22630)
-**Action:** Post a credit note reconciling the invoice to the customer's quoted proforma
+**Action:** Post a discount journal (rate correction) plus a small deposit-side adjustment, reconciling the invoice to the customer's quoted proforma
 **Status:** PROPOSED — not yet posted. Requires operator sign-off before ERP action.
 
 ---
@@ -20,7 +20,12 @@ The customer's proforma quote for this delivery ("LPG + Empty DV", R27.50/kg inc
 | **Deposit-side total** | **R12,132.50** | **R12,175.00** | **+R42.50** |
 | **Total** | **R64,900.69** | **R63,325.00** | **-R1,575.69** |
 
-**Recommended posting:** one credit note against invoice 51132 for **-R1,575.69**, bringing the event to exactly R63,325.00 — matching the quote and the payment received.
+**Recommended posting — two entries, not one blanket credit note** (consistent with how DN#21541's price-vs-empties correction was split, DK-591/DK-596):
+
+1. **Discount journal, -R1,618.19** — LPG rate adjustment on invoice 51132 (DN#22630): billed at R28.37/kg incl VAT vs the customer's quoted proforma rate R27.50/kg. This is the price-adjustment component, same transaction type as DK-591.
+2. **Deposit-side adjustment, +R42.50** — reconciles ERP's dispatch/return deposit netting (R12,132.50 kept) to the proforma's flat Empty DV Cylinder charge (R12,175.00).
+
+Net effect of both: **-R1,575.69**, bringing the event to exactly R63,325.00 — matching the quote and the payment received. The two entries are correctly typed rather than posted as a single mislabeled credit note.
 
 ---
 
@@ -46,7 +51,8 @@ The refill quantities on the proforma (80×9kg, 20×14kg, 20×19kg, 10×48kg) ex
 
 ```
 R64,900.69  DN#22630 event net (as posted)
-− R1,575.69  proposed correction (reconciling to the quoted proforma)
+− R1,618.19  discount journal (LPG rate adjustment)
++ R42.50  deposit-side adjustment
 ────────────
 = R63,325.00  corrected event net
 − R63,325.00  payment received (44975, 2026-06-07)
