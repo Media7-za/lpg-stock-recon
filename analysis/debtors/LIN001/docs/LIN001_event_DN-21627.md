@@ -3,7 +3,7 @@
 **Account:** LIN001 — SLINDOKUHLE ENTERPRISES (PTY) LTD
 **Delivery note:** DN-21627
 **Date:** 2026-01-10
-**Status:** Payment confirmed; rate correction due (-R1,869.77); **R1,449.00 remains owed by the customer** (his own 9KG counting error) *(2026-09-06)*
+**Status:** **CLOSED** — rate correction due (-R1,869.77); **R1,449.00 owed by customer, who has confirmed it was his own error** *(2026-09-06)*
 
 ---
 
@@ -60,6 +60,8 @@ His notebook used 180×9KG instead of the actual, delivery-note-confirmed 182. T
 
 **This means R1,449.00 is still owed by the customer** — it is explained, but not creditable. The delivery note (signed by the client's receiver) is the evidence LIN001 needs if the customer disputes this.
 
+**Customer confirmed 2026-09-06: agreed it was his own error.** No dispute remains — this is now a straightforward collections item.
+
 ---
 
 ## Other threads (unaffected by today's retraction)
@@ -72,7 +74,7 @@ His notebook used 180×9KG instead of the actual, delivery-note-confirmed 182. T
 
 1. Post a credit note of **-R1,869.77** against invoice 48725 (rate correction only — see `LIN001_ERP_correction_request_48725.md`).
 2. **Do not credit the 9KG quantity** — the signed delivery note confirms 182 were dispatched, matching the invoice.
-3. Follow up with the customer for the **R1,449.00 still owed** — show him the signed delivery note (182×9KG) against his own notebook (180×9KG) to explain the shortfall. This is a collections conversation, not a further correction.
+3. ~~Follow up with the customer for the R1,449.00 still owed~~ — **DONE**: customer confirmed 2026-09-06 it was his own error. Collect the R1,449.00 outstanding; no further correction needed.
 
 ## Confidence
 
@@ -83,7 +85,7 @@ His notebook used 180×9KG instead of the actual, delivery-note-confirmed 182. T
 | Payment 43247 belongs to this event | **Confirmed** (payment-app receipt, exact reference + amount match) |
 | 9KG quantity dispatched = 182 (not 180) | **PROVEN** — signed delivery note, matches invoice 48725 exactly |
 | Rate correction (R20.00/kg vs R20.87/kg posted) | **PROVEN** (customer-confirmed expected rate) — R1,869.77 legitimate credit |
-| R1,449.00 residual | **EXPLAINED, not creditable** — customer's own 2-unit 9KG undercount, still owed |
+| R1,449.00 residual | **Confirmed** — customer's own 2-unit 9KG undercount, acknowledged by customer 2026-09-06, still owed |
 
 ---
 
