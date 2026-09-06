@@ -54,17 +54,15 @@ Invoice 48725's LPG category mix looks distorted compared to its neighbors:
 | 19K | 21 | **7** | 28 |
 | SV/DV | 5 (DV) | **0 — none ordered** | 5+5 |
 
-9KG spiked well above both neighbors while 14K/19K dropped and SV/DV disappeared entirely. This is a substitution pattern, not a pricing issue. Possible explanations (none confirmed):
+9KG spiked well above both neighbors while 14K/19K dropped and SV/DV disappeared entirely. This is a substitution pattern, not a pricing issue.
 
-- A stock shortage on 14K/19K/SV/DV forced substitution with 9KG on this delivery
-- An order-entry error (wrong SKU quantities keyed)
-- A genuine, deliberate customer request for that particular mix
+**RESOLVED 2026-09-05: confirmed customer order, via WhatsApp history.** The customer requested this specific 9KG-heavy mix directly — not a stock shortage and not an order-entry error. The quantities on invoice 48725 are correct and intentional.
 
 **Checked 2026-09-05: CN 14250 is not a reversal of invoice 48725, and this isn't a posting error.** CN 14250 is deposit-only (no gas lines) at qty 15×14K/15×19K/146×9KG — the "empties returned" credit, at the actual *received* quantities, same pattern as DN#21541's Rt/Bt structure. It doesn't need to match 48725's *dispatched* quantities (7×14K/7×19K/182×9KG), and both documents tie to the cent (invoice R148,299.27, CN -R95,392.50, net R52,906.77). The net effect: the customer handed back *more* 14K/19K empties (15 each) than were freshly dispatched (7 each) while taking on a large net increase in 9KG cylinders (182 dispatched vs 146 returned) — consistent with a real substitution on this delivery, not a data-entry mistake.
 
 ## Recommended action
 
-The payment target is now settled — the remaining question is purely the cause of the R3,318.77 shortfall. This needs operator/customer input, not an ERP price correction — there's nothing to correct in the pricing, and the quantity mix as recorded may simply be accurate. Suggest confirming with the customer or the driver/delivery record whether the 9KG-heavy mix on this specific delivery was intentional or a substitution — that's the leading candidate, though still unconfirmed.
+The payment target is confirmed and the quantity mix is confirmed intentional — both threads that could have explained the R3,318.77 gap are closed. **What remains is a plain, unexplained underpayment**, not a data or documentation question. Recommend following up with the customer directly on the R3,318.77 shortfall itself, since nothing in the ERP data (pricing, quantities, or document structure) accounts for it.
 
 ## Confidence
 
@@ -74,9 +72,9 @@ The payment target is now settled — the remaining question is purely the cause
 | CN 14250 is the empties-return deposit credit (not a reversal of 48725) | PROVEN (exact line-item reconciliation, both documents tie to the cent) |
 | Pricing ruled out as the cause | PROVEN (exact price-per-kg comparison, R0.00 impact) |
 | Quantity-mix anomaly | PROVEN (exact qty comparison across 3 invoices) |
-| Cause of the anomaly | GAP — needs operator/customer confirmation |
+| Cause of the quantity mix | **RESOLVED** (2026-09-05) — confirmed genuine customer order via WhatsApp history, not a substitution or order-entry error |
 | Payment 43247 belongs to this event | **Confirmed** (2026-09-05, payment-app receipt explicitly referencing "21627 Lin001", exact date+amount match) |
-| R3,318.77 gap cause | GAP — confirmed real (not a wrong-target issue), cause still unexplained |
+| R3,318.77 gap cause | GAP — confirmed real, both candidate explanations (pricing, quantity mix) ruled out; a plain unexplained shortfall |
 
 ---
 
