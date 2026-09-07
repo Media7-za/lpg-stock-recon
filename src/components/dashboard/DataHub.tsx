@@ -43,20 +43,28 @@ export default function DataHub() {
         const abortController = new AbortController();
         setController(abortController);
 
+        // Bridge SyncService's per-sync error list (e.g. rows rejected by the
+        // Financial Control Layer's CRITICAL integrity findings, DK-593) into the
+        // existing error panel below, alongside progress.
+        const handleProgress = (p: SyncProgress) => {
+            setProgress(p);
+            if (p.errors.length > 0) setErrors(p.errors);
+        };
+
         try {
             const content = await file.text();
             const engine = new ERPImportEngine();
-            
+
             if (type === 'headers') {
                 const headers = await engine.parseHeaders(content, file.name);
 
                 setState('syncing');
-                await SyncService.syncHeaders(headers, setProgress, abortController.signal);
+                await SyncService.syncHeaders(headers, handleProgress, abortController.signal);
             } else {
                 const items = await engine.parseItems(content, file.name);
 
                 setState('syncing');
-                await SyncService.syncItems(items, setProgress, abortController.signal);
+                await SyncService.syncItems(items, handleProgress, abortController.signal);
             }
             
             if (abortController.signal.aborted) {
