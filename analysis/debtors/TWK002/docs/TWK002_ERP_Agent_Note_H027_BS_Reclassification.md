@@ -1,11 +1,14 @@
 # ERP Agent Note — TWK002 H-027 current-period BS reclassification
 
+> **DO NOT POST — SUPERSEDED 2026-09-03.**  
+> Operator ruling: the R8,084.67 residual is **not an asset**. H-022 / H-023 / H-026 do **not** change the residual *total*. DR AR Historical Reconciliation Suspense / CR AR Control would invent a balance-sheet asset that does not exist. H-027 is **REJECTED**. Leave the amount in AR Control; bill open invoices only.
+
 **Account:** TWK002 — TWK AGRI PTY LTD · ref B226  
-**Task:** **H-027**  
-**Class:** Current-period **balance-sheet reclassification** — not DISCOUNT ALLOWED, not bad-debt write-off, not Path A restatement  
+**Task:** **H-027** — **REJECTED** (was: current-period BS reclassification)  
+**Class:** ~~Current-period **balance-sheet reclassification**~~ — superseded. Not DISCOUNT ALLOWED, not bad-debt write-off, not Path A restatement, **and not a quarantine journal**.  
 **Workspace:** `analysis/debtors/TWK002/`
 
-**Do not post until** H-022, H-023, and H-026 are done **and** the post-tag bridge is rebuilt. Post the **rebuilt residual**, not a remembered number.
+~~**Do not post until** H-022, H-023, and H-026 are done **and** the post-tag bridge is rebuilt.~~ **Do not post at all.**
 
 ---
 

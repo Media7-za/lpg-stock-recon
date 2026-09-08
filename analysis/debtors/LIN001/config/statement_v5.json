@@ -1,0 +1,24 @@
+{
+  "debtorCode": "LIN001",
+  "debtorName": "SLINDOKUHLE ENTERPRISES (PTY) LTD",
+  "txtPath": "analysis/debtors/LIN001/raw/DEBENQ (1).TXT",
+  "periodStart": "2026-01-01",
+  "combinedBf": 132098.48,
+  "bfSourceNote": "DEBENQ (1).TXT line 172 — running BALANCE after inv 48504 (26 Dec 2025), immediately before first 2026 row CN 14250 (10 Jan 2026)",
+  "cylOpeningFinancial": 0.0,
+  "paymentLane": "LPG",
+  "cylOpeningQty": {
+    "14.1": 0,
+    "19.1": 0,
+    "9.1": 0,
+    "D.1": 0,
+    "S.1": 0
+  },
+  "skuRates": {
+    "14.1": 632.5,
+    "19.1": 690,
+    "9.1": 517.5,
+    "D.1": 1207.5,
+    "S.1": 1207.5
+  }
+}

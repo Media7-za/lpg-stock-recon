@@ -15,11 +15,17 @@ Auto-versions (`_v1`, `_v2`, …) when the date folder already exists.
 
 ## Snapshots on file
 
-| Snapshot id | Statement as-at | Customer due (PROVEN) | Gate | Manifest |
+| Snapshot id | Statement as-at | Customer due | Gate | Status |
 | :--- | :--- | ---: | :--- | :--- |
-| `2026-08-11_v1` | 2026-08-11 | R110,046.87 | ALLOWED · REMITTANCE_BACKED | `2026-08-11_v1/manifest.json` |
+| `2026-08-11_v1` | 2026-08-11 | R110,046.87 | ALLOWED · REMITTANCE_BACKED | **STALE** — STAT 129 closed this cluster; do not send |
 
-Internal (not on customer document): ERP header R118,131.54 · account-level bridge R8,084.67 — see manifest `amounts`.
+Manifest: `2026-08-11_v1/manifest.json` (sha256 frozen). Internal bridge at capture: R8,084.67 on header R118,131.54.
+
+**Next sign-off snapshot:** regenerate after H-027 when header = open invoices:
+
+```bash
+npm run debtors:twk002-statement-snapshot -- --as-at YYYY-MM-DD
+```
 
 ## Tripwires — reopen snapshot validity if
 

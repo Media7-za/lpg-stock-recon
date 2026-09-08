@@ -1,0 +1,70 @@
+{
+  "debtorCode": "LIN001",
+  "debtorName": "SLINDOKUHLE ENTERPRISES (PTY) LTD",
+  "period": {
+    "from": "2026-01-01",
+    "to": "2026-09-02"
+  },
+  "version": "v5",
+  "workspaceStatus": "clean",
+  "lastGeneratedAt": "2026-09-02T10:58:49.856Z",
+  "source": "analysis/debtors/LIN001/raw/DEBENQ (1).TXT",
+  "financialPosition": {
+    "lpgGasDebt": 38088.44,
+    "cylinderFinancialBalance": 43872.5,
+    "totalDebtorBalance": 81960.94,
+    "erpStatedBalance": 81960.94,
+    "erpVariance": 0,
+    "subLedgerVariance": 0
+  },
+  "custodyPosition": {
+    "totalCustodyExposure": 43872.5,
+    "lines": [
+      {
+        "sku": "14.1",
+        "label": "14kg",
+        "qty": 5,
+        "depositRate": 632.5,
+        "exposure": 3162.5
+      },
+      {
+        "sku": "19.1",
+        "label": "19kg",
+        "qty": -16,
+        "depositRate": 690,
+        "exposure": -11040
+      },
+      {
+        "sku": "9.1",
+        "label": "9kg",
+        "qty": 58,
+        "depositRate": 517.5,
+        "exposure": 30015
+      },
+      {
+        "sku": "D.1",
+        "label": "D.1",
+        "qty": 14,
+        "depositRate": 1207.5,
+        "exposure": 16905
+      },
+      {
+        "sku": "S.1",
+        "label": "S.1",
+        "qty": 4,
+        "depositRate": 1207.5,
+        "exposure": 4830
+      }
+    ]
+  },
+  "reconciliationPosition": {
+    "cylinderVariance": 0,
+    "erpVariance": 0,
+    "subLedgerVariance": 0,
+    "exceptions": []
+  },
+  "artifacts": {
+    "statementMarkdown": "analysis/debtors/LIN001/reports/LIN001_Statement_Account_v5.md",
+    "txtSource": "analysis/debtors/LIN001/raw/DEBENQ (1).TXT"
+  }
+}

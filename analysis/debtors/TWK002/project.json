@@ -28,7 +28,7 @@
     "actionType": null,
     "dateSent": null,
     "deadlineDate": null,
-    "nextAction": "Operator confirm customer send from snapshots/2026-08-11_v1/ (manifest sha256) OR regenerate snapshot after fresh TXT (H-013). Do not cite live reports/TWK002_Statement_of_Account.md for disputes.",
+    "nextAction": "ERP hygiene optional: H-022 / H-023 / H-026. Do not post H-027 — residual is not an asset. Collections = open invoices only (R18,413.69). See docs/handoffs/TWK002_SESSION_HANDOVER.md.",
     "nextActionDate": null,
     "notes": "Live draft 2026-08-30: reports/TWK002_Statement_of_Account.md Amount due R18,413.69 (inv 52484 + 52803 after STAT 129). Snapshot 2026-08-11_v1 is STALE (R110,046.87). Do not send snapshot. reconState validation_pending.",
     "blockers": [
@@ -146,8 +146,16 @@
       "event": "Account-level residual root cause: R8,084.67 is header − statement open (Path B leftover), not a missing invoice. Phase 2 tagging does not move it (claim superseded). H-027 opened: finance accept vs clearing journal. Report TWK002_Account_Level_Residual_Root_Cause_2026-08-30.md."
     },
     {
-      "date": "2026-08-30",
-      "event": "H-027 ratified as current-period BS reclassification (DR AR Historical Reconciliation Suspense / CR AR Control) — not accept-in-header, not P&L write-off. Root cause named as sub-ledger↔GL desync. Sequence: H-022/H-023/H-026 then rebuild then journal. Instruction docs/TWK002_ERP_Agent_Note_H027_BS_Reclassification.md. P12 portfolio playbook staged NOT RATIFIED."
+      "date": "2026-09-02",
+      "event": "Full-history TXT stitched: raw/TWK002_FULL_HISTORY.TXT (301 rows, 2023-04-28 → 2026-08-31, closing R26,498.36 PROVEN). Sources TWK0022023 + TWK0022024 + DEBENQ.TXT; B/F checkpoints at 2024-02-26 and 2025-02-24 validated. Manifest raw/TWK002_FULL_HISTORY.manifest.json. primaryTxt → DEBENQ.TXT. H-013 interim satisfied; native ERP full-history pull still preferred."
+    },
+    {
+      "date": "2026-09-02",
+      "event": "Forked full-history statement: reports/fork/TWK002_Statement_of_Account_FullHistory.md + .pdf from TWK002_FULL_HISTORY.TXT (config statement_of_account_full_history.json). Gate BLOCKED (expected — Σ open R443,573.83 vs header R26,498.36); --force analytical only. Live draft unchanged."
+    },
+    {
+      "date": "2026-09-03",
+      "event": "H-027 REJECTED: residual R8,084.67 is not an asset (header − statement open; invoice nets + untagged credits already in AR). H-022/H-023/H-026 do not change the total and do not create a quarantinable asset. Leave in AR Control; bill open invoices only. ERP agent note marked DO NOT POST."
     }
   ]
 }
