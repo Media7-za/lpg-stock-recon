@@ -476,6 +476,24 @@ tables (same caution the earlier pilot migrations went through) — see results 
   from an initial 7 — 3 were reclassified as supplier/individual/generic once the structural rules
   were applied, catching errors in the original manual scan), 3 excluded as suppliers, 1 already
   handled by the individual-name path, 1 manually excluded as stale (Siyathuthuka Farms).
+  **Update 2026-09-08**: `Al Riaz` — correctly routed to `REVIEW_FLAGGED` above, not merged — turned
+  out to actually need merging after all, just not automatically. It sat live as 3 separate
+  `commercial_customers`/queue rows (`ALR001`/`ALR002`/`ALR003`), each individually too thin
+  (1–3 order dates) to trip any of the automated merge heuristics. An operator working the review
+  desk confirmed two of the three as businesses one at a time, then noticed `AL RIAZ` appearing twice
+  in the session log and asked why. Checked the account-level order history: sequential ERP codes,
+  short non-overlapping activity windows in June 2026, identical name — the same "real
+  overlapping/sequential history under identical name" signature used to justify the original 4
+  clean merges, just not visible until enough of the pool had been individually reviewed. Merged live
+  into one `commercial_customer` (all 3 account codes, one queue row); `avg_cycle_days` stays at the
+  16-day fallback since the combined order history is still under 3 gap observations. Also found and
+  fixed a second, unrelated problem while investigating: the live `SOLICITATION_RULEBOOK`'s own
+  `near_duplicate_name_resolution` note had drifted stale — it still claimed Al Riaz was one of "7
+  groups merged," directly contradicting this section (which was correct). Two rulebook notes
+  disagreeing with each other is itself a lesson repeated from the original 2026-07-29 backfill
+  (REVIEW_FLAGGED execution gap, name-based-join bug): a note describing what should have happened is
+  not proof it happened — verify live, then correct the stale text rather than leaving the
+  contradiction for the next session.
 
 **Leads desk — churn as a separate pipeline, not a different script** *(superseded 2026-07-29 by
 operator request; see below for what this replaced)*: an account with `days_since_last_order > 90`
