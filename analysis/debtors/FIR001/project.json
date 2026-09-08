@@ -19,15 +19,15 @@
     "actionType": null,
     "dateSent": null,
     "deadlineDate": null,
-    "nextAction": "Operator: authorise customer send from snapshots/2026-09-05_v1 (Amount due R8,721.02, gate REVIEW_REQUIRED PATTERN_ONLY), or hold until remittance / allocationGate RATIFIED. Sources custody re-export (15488/45779/45995) does not change Amount due.",
+    "nextAction": "Operator: authorise customer send from snapshots/2026-09-05_v2 (JEN001-style presentation, Amount due R8,721.02, gate REVIEW_REQUIRED PATTERN_ONLY), or hold until remittance / allocationGate RATIFIED. Do not send v5 composed or snapshot v1 (itemised CYL on customer face).",
     "nextActionDate": null,
-    "notes": "Customer SoA as-at 2026-09-05 generated. Amount due R8,721.02 PROVEN TXT header. Open inv 52962 R7,606.09 + B/F R597.43 + CYL residual R517.50. Gate REVIEW_REQUIRED PATTERN_ONLY — not sent. Custody still BLOCKED (CURRENT_PARTIAL).",
+    "notes": "Two-layer layout (JEN001 pattern): operator v5 vs presentation customer SOA. Amount due R8,721.02 PROVEN. Open inv 52962 R7,606.09; collapsed opening R1,114.93. Gate REVIEW_REQUIRED PATTERN_ONLY — not sent. Custody still BLOCKED (CURRENT_PARTIAL).",
     "blockers": [
       {
         "type": "OTHER",
         "status": "open",
-        "description": "Customer SoA gate REVIEW_REQUIRED / PATTERN_ONLY — no remittance advices; FIFO STAT closes are pattern, not remittance-ratified. Do not send until operator reviews or allocationGate is RATIFIED.",
-        "source": "snapshots/2026-09-05_v1/manifest.json",
+        "description": "Customer SoA gate REVIEW_REQUIRED / PATTERN_ONLY — no remittance advices; FIFO STAT closes are pattern, not remittance-ratified. Send record is snapshots/2026-09-05_v2 (JEN001 collapsed presentation). Do not send v1 or v5 composed.",
+        "source": "snapshots/2026-09-05_v2/manifest.json",
         "asAt": "2026-09-08"
       },
       {
@@ -49,6 +49,22 @@
     "ingestBlockedScopes": ["custody", "sku_analysis", "allocation"],
     "exceptions": []
   },
+  "presentation": {
+    "defaultLayout": "customer.soa",
+    "operatorLayout": "v5",
+    "openInvoiceModel": "lpg_stripped",
+    "statementPath": "reports/FIR001_Statement_of_Account.md",
+    "operatorPath": "reports/FIR001_Statement_Account_v5.md",
+    "allocationPath": "reports/FIR001_STAT_Payment_FIFO_2026-09-05.md",
+    "gateStatus": "REVIEW_REQUIRED",
+    "gateBasis": "PATTERN_ONLY",
+    "gateReason": "v5 Part 1A remaining open inv 52962 R7,606.09; collapsed opening R1,114.93 (B/F + Part 1B). STAT FIFO closes not remittance-ratified. Same two-layer split as JEN001.",
+    "allocationGate": {
+      "status": "PATTERN_ONLY",
+      "method": "lpg_stripped_fifo_stat",
+      "pilotReport": "reports/FIR001_STAT_Payment_FIFO_2026-09-05.md"
+    }
+  },
   "history": [
     {
       "date": "2026-09-07",
@@ -60,7 +76,11 @@
     },
     {
       "date": "2026-09-08",
-      "event": "Customer SoA of outstanding generated as-at 2026-09-05. Amount due R8,721.02 PROVEN (TXT CURRENT BALANCE). Snapshot 2026-09-05_v1. Gate REVIEW_REQUIRED PATTERN_ONLY (lpg_stripped + FIFO STAT closes; no remittance). Not sent."
+      "event": "Customer SoA of outstanding generated as-at 2026-09-05. Amount due R8,721.02 PROVEN (TXT CURRENT BALANCE). Snapshot 2026-09-05_v1. Gate REVIEW_REQUIRED PATTERN_ONLY (lpg_stripped + FIFO STAT closes; no remittance). Not sent. **Superseded presentation:** v1 itemised CYL residual on customer face — replaced by JEN001 collapsed layout in snapshot v2."
+    },
+    {
+      "date": "2026-09-08",
+      "event": "JEN001 two-layer applied: v5 operator vs customer SOA presentation. Collapsed opening R1,114.93; open inv 52962 R7,606.09; balance due R8,721.02. Snapshot 2026-09-05_v2. reports/FIR001_Presentation_Layer.md."
     }
   ]
 }

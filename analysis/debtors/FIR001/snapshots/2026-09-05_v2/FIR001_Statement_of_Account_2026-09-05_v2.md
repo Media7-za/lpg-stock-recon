@@ -52,3 +52,22 @@ Debt not attributable to the open invoice lines below (opening carry, untagged s
 | Inv | Inv date | DN / ref | **Due (R)** |
 | :--- | :--- | :--- | ---: |
 | 52962 | 05 Sept 2026 | DN#24820 | 7,606.09 |
+
+---
+
+## Record provenance
+
+| Field | Value |
+| :--- | :--- |
+| **Generated** | 2026/09/08, 22:48:03 SAST |
+| **Statement as-at** | 05 September 2026 |
+| **Ageing as-at** | 31 August 2026 (last day of prior month) |
+| **Data source** | `analysis/debtors/FIR001/snapshots/2026-09-05_v2/FIR001CURRENT.TXT.TXT` · modified 2026-09-08 · sha256 `a6461eb6f27fa422…` |
+| **Config** | `analysis/debtors/FIR001/snapshots/2026-09-05_v2/statement_of_account.json` · sha256 `2d299cea61c5647c…` |
+| **Repository commit** | 261bed47f10ed39a904a33fa6a0868b740af733f |
+| **Invoice tag gate** | REVIEW_REQUIRED · PATTERN_ONLY |
+| **Customer due basis** | erp_header |
+| **Account-level on document** | shown |
+| **Snapshot id** | `2026-09-05_v2` |
+
+*Rule:* Model B settlement doctrine applied. Account-level residual collapsed per config when shown.
