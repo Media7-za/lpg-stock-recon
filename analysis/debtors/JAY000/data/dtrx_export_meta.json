@@ -1,0 +1,13 @@
+{
+  "debtorCode": "JAY000",
+  "pulledAt": "2026-09-08T20:41:34.467Z",
+  "headerCount": 9,
+  "itemCount": 10,
+  "maxHeaderTxDate": "2026-09-03",
+  "maxItemTxDate": "2026-09-03",
+  "outputs": {
+    "headers": "analysis/debtors/JAY000/data/dtrx_headers.csv",
+    "items": "analysis/debtors/JAY000/data/dtrx_items.csv"
+  },
+  "note": "Evidence export from transaction_headers / transaction_items. Not a DEBENQ CURRENT BALANCE."
+}
