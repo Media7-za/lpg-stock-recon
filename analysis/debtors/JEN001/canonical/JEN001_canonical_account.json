@@ -1,0 +1,439 @@
+{
+  "schemaVersion": "1.0",
+  "customer": {
+    "code": "JEN001",
+    "name": "JENS SPOON PTY LTD",
+    "referenceLabel": "Trading as",
+    "referenceValue": "Spoon Eatery"
+  },
+  "business": {
+    "header": [
+      "BELLA ENERGY SERVICES300 (PTY) LTD T/A GAZ EXPRESS",
+      "50 WINSTON ROAD",
+      "PIETERMARITZBURG",
+      "3201"
+    ]
+  },
+  "account": {
+    "code": "JEN001",
+    "asAt": "2026-08-25",
+    "ageingAsAt": "2026-07-31"
+  },
+  "financialPosition": {
+    "openingBalance": -1601.5,
+    "movementThisMonth": 24286.71,
+    "currentBalance": 22685.21,
+    "erpStatedBalance": 22685.21,
+    "accountLevelBalance": 22088.1,
+    "agedOpenInvoices": {
+      "current": 597.11,
+      "d30": 0,
+      "d60": 0,
+      "d90": 0,
+      "d120": 0
+    },
+    "windowOpeningBalance": 22088.1
+  },
+  "events": [
+    {
+      "id": "JEN001:51564:Invoice:2026-07-03",
+      "date": "2026-07-03",
+      "type": "invoice",
+      "reference": "51564",
+      "dnRef": "DN#22673",
+      "lane": "LPG",
+      "description": "LPG Gas Invoice",
+      "amount": 623.88,
+      "balanceAfter": 22711.98,
+      "sourceSystem": "ERP-DEBENQ",
+      "sourceReference": "analysis/debtors/JEN001/raw/DEBENQ.TXT",
+      "visibility": "both"
+    },
+    {
+      "id": "JEN001:51565:Invoice:2026-07-03",
+      "date": "2026-07-03",
+      "type": "invoice",
+      "reference": "51565",
+      "dnRef": "DN#22673=EMPTY",
+      "lane": "CYL",
+      "description": "Cylinder Deposit Invoice",
+      "amount": 1035,
+      "balanceAfter": 23746.98,
+      "sourceSystem": "ERP-DEBENQ",
+      "sourceReference": "analysis/debtors/JEN001/raw/DEBENQ.TXT",
+      "visibility": "both"
+    },
+    {
+      "id": "JEN001:15193:Crd Note:2026-07-03",
+      "date": "2026-07-03",
+      "type": "credit_note",
+      "reference": "15193",
+      "dnRef": "DN#22673=EMPTY",
+      "lane": "CYL",
+      "description": "Cylinder Deposit Credit Note",
+      "amount": -1035,
+      "balanceAfter": 22711.98,
+      "sourceSystem": "ERP-DEBENQ",
+      "sourceReference": "analysis/debtors/JEN001/raw/DEBENQ.TXT",
+      "visibility": "both"
+    },
+    {
+      "id": "JEN001:51669:Invoice:2026-07-07",
+      "date": "2026-07-07",
+      "type": "invoice",
+      "reference": "51669",
+      "dnRef": "DN#22679",
+      "lane": "LPG",
+      "description": "LPG Gas Invoice",
+      "amount": 4887.1,
+      "balanceAfter": 27599.08,
+      "sourceSystem": "ERP-DEBENQ",
+      "sourceReference": "analysis/debtors/JEN001/raw/DEBENQ.TXT",
+      "visibility": "both"
+    },
+    {
+      "id": "JEN001:51670:Invoice:2026-07-07",
+      "date": "2026-07-07",
+      "type": "invoice",
+      "reference": "51670",
+      "dnRef": "DN#22679=EMPTY",
+      "lane": "CYL",
+      "description": "Cylinder Deposit Invoice",
+      "amount": 5692.5,
+      "balanceAfter": 33291.58,
+      "sourceSystem": "ERP-DEBENQ",
+      "sourceReference": "analysis/debtors/JEN001/raw/DEBENQ.TXT",
+      "visibility": "both"
+    },
+    {
+      "id": "JEN001:15204:Crd Note:2026-07-07",
+      "date": "2026-07-07",
+      "type": "credit_note",
+      "reference": "15204",
+      "dnRef": "DN#22679=EMPTY",
+      "lane": "CYL",
+      "description": "Cylinder Deposit Credit Note",
+      "amount": -5692.5,
+      "balanceAfter": 27599.08,
+      "sourceSystem": "ERP-DEBENQ",
+      "sourceReference": "analysis/debtors/JEN001/raw/DEBENQ.TXT",
+      "visibility": "both"
+    },
+    {
+      "id": "JEN001:15205:Crd Note:2026-07-07",
+      "date": "2026-07-07",
+      "type": "credit_note",
+      "reference": "15205",
+      "dnRef": "DN#22679",
+      "lane": "LPG",
+      "description": "LPG Gas Credit Note",
+      "amount": -4887.1,
+      "balanceAfter": 22711.98,
+      "sourceSystem": "ERP-DEBENQ",
+      "sourceReference": "analysis/debtors/JEN001/raw/DEBENQ.TXT",
+      "visibility": "both"
+    },
+    {
+      "id": "JEN001:51691:Invoice:2026-07-08",
+      "date": "2026-07-08",
+      "type": "invoice",
+      "reference": "51691",
+      "dnRef": "DN#22679",
+      "lane": "LPG",
+      "description": "LPG Gas Invoice",
+      "amount": 4887.1,
+      "balanceAfter": 27599.08,
+      "sourceSystem": "ERP-DEBENQ",
+      "sourceReference": "analysis/debtors/JEN001/raw/DEBENQ.TXT",
+      "visibility": "both"
+    },
+    {
+      "id": "JEN001:51692:Invoice:2026-07-08",
+      "date": "2026-07-08",
+      "type": "invoice",
+      "reference": "51692",
+      "dnRef": "DN#22679=EMPTY",
+      "lane": "CYL",
+      "description": "Cylinder Deposit Invoice",
+      "amount": 5692.5,
+      "balanceAfter": 33291.58,
+      "sourceSystem": "ERP-DEBENQ",
+      "sourceReference": "analysis/debtors/JEN001/raw/DEBENQ.TXT",
+      "visibility": "both"
+    },
+    {
+      "id": "JEN001:15220:Crd Note:2026-07-08",
+      "date": "2026-07-08",
+      "type": "credit_note",
+      "reference": "15220",
+      "dnRef": "DN#22679=EMPTY",
+      "lane": "CYL",
+      "description": "Cylinder Deposit Credit Note",
+      "amount": -5692.5,
+      "balanceAfter": 27599.08,
+      "sourceSystem": "ERP-DEBENQ",
+      "sourceReference": "analysis/debtors/JEN001/raw/DEBENQ.TXT",
+      "visibility": "both"
+    },
+    {
+      "id": "JEN001:51823:Invoice:2026-07-14",
+      "date": "2026-07-14",
+      "type": "invoice",
+      "reference": "51823",
+      "dnRef": "DN#22816",
+      "lane": "LPG",
+      "description": "LPG Gas Invoice",
+      "amount": 935.81,
+      "balanceAfter": 28534.89,
+      "sourceSystem": "ERP-DEBENQ",
+      "sourceReference": "analysis/debtors/JEN001/raw/DEBENQ.TXT",
+      "visibility": "both"
+    },
+    {
+      "id": "JEN001:51824:Invoice:2026-07-14",
+      "date": "2026-07-14",
+      "type": "invoice",
+      "reference": "51824",
+      "dnRef": "DN#22816=EMPTY",
+      "lane": "CYL",
+      "description": "Cylinder Deposit Invoice",
+      "amount": 1552.5,
+      "balanceAfter": 30087.39,
+      "sourceSystem": "ERP-DEBENQ",
+      "sourceReference": "analysis/debtors/JEN001/raw/DEBENQ.TXT",
+      "visibility": "both"
+    },
+    {
+      "id": "JEN001:15258:Crd Note:2026-07-14",
+      "date": "2026-07-14",
+      "type": "credit_note",
+      "reference": "15258",
+      "dnRef": "DN#22816=EMPTY",
+      "lane": "CYL",
+      "description": "Cylinder Deposit Credit Note",
+      "amount": -1552.5,
+      "balanceAfter": 28534.89,
+      "sourceSystem": "ERP-DEBENQ",
+      "sourceReference": "analysis/debtors/JEN001/raw/DEBENQ.TXT",
+      "visibility": "both"
+    },
+    {
+      "id": "JEN001:52044:Invoice:2026-07-23",
+      "date": "2026-07-23",
+      "type": "invoice",
+      "reference": "52044",
+      "dnRef": "DN#22976",
+      "lane": "LPG",
+      "description": "LPG Gas Invoice",
+      "amount": 3951.29,
+      "balanceAfter": 32486.18,
+      "sourceSystem": "ERP-DEBENQ",
+      "sourceReference": "analysis/debtors/JEN001/raw/DEBENQ.TXT",
+      "visibility": "both"
+    },
+    {
+      "id": "JEN001:52050:Invoice:2026-07-24",
+      "date": "2026-07-24",
+      "type": "invoice",
+      "reference": "52050",
+      "dnRef": "DN#22976-EMPTY",
+      "lane": "CYL",
+      "description": "Cylinder Deposit Invoice",
+      "amount": 690,
+      "balanceAfter": 33176.18,
+      "sourceSystem": "ERP-DEBENQ",
+      "sourceReference": "analysis/debtors/JEN001/raw/DEBENQ.TXT",
+      "visibility": "both"
+    },
+    {
+      "id": "JEN001:52051:Invoice:2026-07-24",
+      "date": "2026-07-24",
+      "type": "invoice",
+      "reference": "52051",
+      "dnRef": "DN#52044-EMPTY",
+      "lane": "CYL",
+      "description": "Cylinder Deposit Invoice",
+      "amount": 4140,
+      "balanceAfter": 37316.18,
+      "sourceSystem": "ERP-DEBENQ",
+      "sourceReference": "analysis/debtors/JEN001/raw/DEBENQ.TXT",
+      "visibility": "both"
+    },
+    {
+      "id": "JEN001:15317:Crd Note:2026-07-24",
+      "date": "2026-07-24",
+      "type": "credit_note",
+      "reference": "15317",
+      "dnRef": "DN#22976-EMPTY",
+      "lane": "CYL",
+      "description": "Cylinder Deposit Credit Note",
+      "amount": -690,
+      "balanceAfter": 36626.18,
+      "sourceSystem": "ERP-DEBENQ",
+      "sourceReference": "analysis/debtors/JEN001/raw/DEBENQ.TXT",
+      "visibility": "both"
+    },
+    {
+      "id": "JEN001:15329:Crd Note:2026-07-25",
+      "date": "2026-07-25",
+      "type": "credit_note",
+      "reference": "15329",
+      "dnRef": "DN#52044-EMPTY",
+      "lane": "CYL",
+      "description": "Cylinder Deposit Credit Note",
+      "amount": -4140,
+      "balanceAfter": 32486.18,
+      "sourceSystem": "ERP-DEBENQ",
+      "sourceReference": "analysis/debtors/JEN001/raw/DEBENQ.TXT",
+      "visibility": "both"
+    },
+    {
+      "id": "JEN001:52305:Invoice:2026-08-04",
+      "date": "2026-08-04",
+      "type": "invoice",
+      "reference": "52305",
+      "dnRef": "DN#23940",
+      "lane": "LPG",
+      "description": "LPG Gas Invoice",
+      "amount": 5199.03,
+      "balanceAfter": 37685.21,
+      "sourceSystem": "ERP-DEBENQ",
+      "sourceReference": "analysis/debtors/JEN001/raw/DEBENQ.TXT",
+      "visibility": "both"
+    },
+    {
+      "id": "JEN001:52306:Invoice:2026-08-04",
+      "date": "2026-08-04",
+      "type": "invoice",
+      "reference": "52306",
+      "dnRef": "DN#23940-EMPTY",
+      "lane": "CYL",
+      "description": "Cylinder Deposit Invoice",
+      "amount": 6210,
+      "balanceAfter": 43895.21,
+      "sourceSystem": "ERP-DEBENQ",
+      "sourceReference": "analysis/debtors/JEN001/raw/DEBENQ.TXT",
+      "visibility": "both"
+    },
+    {
+      "id": "JEN001:15392:Crd Note:2026-08-05",
+      "date": "2026-08-05",
+      "type": "credit_note",
+      "reference": "15392",
+      "dnRef": "DN#23940-EMPTY",
+      "lane": "CYL",
+      "description": "Cylinder Deposit Credit Note",
+      "amount": -6210,
+      "balanceAfter": 37685.21,
+      "sourceSystem": "ERP-DEBENQ",
+      "sourceReference": "analysis/debtors/JEN001/raw/DEBENQ.TXT",
+      "visibility": "both"
+    },
+    {
+      "id": "JEN001:45717:Payment:2026-08-14",
+      "date": "2026-08-14",
+      "type": "payment",
+      "reference": "45717",
+      "dnRef": "TRANSF | STAT 129",
+      "lane": null,
+      "description": "Payment",
+      "amount": -15000,
+      "balanceAfter": 22685.21,
+      "sourceSystem": "ERP-DEBENQ",
+      "sourceReference": "analysis/debtors/JEN001/raw/DEBENQ.TXT",
+      "visibility": "both"
+    }
+  ],
+  "openInvoices": {
+    "gate": "ALLOWED",
+    "gateMeaning": "No contradiction found: the list ties within the ERP balance and no open invoice is marooned behind a payment gap. This is absence of evidence against the list, not proof it is right — ERP payment tagging is not authoritative (business_rules.md §3). Read it together with evidence.basis: REMITTANCE_BACKED means the customer’s own records were checked too; PATTERN_ONLY means they were not, because none exist, and the claim rests on the payment pattern and business rules instead.",
+    "evidenceBasis": "PATTERN_ONLY",
+    "customerSafe": true,
+    "subtotal": 597.11,
+    "items": [
+      {
+        "doc": "51564",
+        "date": "2026-07-03",
+        "reference": "DN#22673",
+        "due": 597.11
+      }
+    ]
+  },
+  "custodyPosition": {
+    "totalCustodyExposure": -517.5,
+    "lines": [
+      {
+        "sku": "9.1",
+        "label": "9kg",
+        "qty": -1,
+        "depositRate": 517.5,
+        "exposure": -517.5
+      }
+    ]
+  },
+  "reconciliation": {
+    "visibility": "internal",
+    "source": "src/features/debtor-position-workspace/data/fixtures/JEN001.v5.json",
+    "workspaceStatus": "clean",
+    "lpgGasDebt": 23202.71,
+    "cylinderFinancialBalance": -517.5,
+    "erpVariance": 0,
+    "subLedgerVariance": 0,
+    "cylinderVariance": 0,
+    "exceptions": []
+  },
+  "dataQuality": {
+    "visibility": "internal",
+    "excludesAllocationDetail": true,
+    "invoiceTagCoverage": {
+      "gate": "ALLOWED",
+      "meaning": "No contradiction found: the list ties within the ERP balance and no open invoice is marooned behind a payment gap. This is absence of evidence against the list, not proof it is right — ERP payment tagging is not authoritative (business_rules.md §3). Read it together with evidence.basis: REMITTANCE_BACKED means the customer’s own records were checked too; PATTERN_ONLY means they were not, because none exist, and the claim rests on the payment pattern and business rules instead.",
+      "evidenceBasis": "PATTERN_ONLY",
+      "counts": {
+        "clear": 1,
+        "stale_open": 0,
+        "likely_paid": 0,
+        "unassessable": 0
+      },
+      "invariant": {
+        "name": "Σ(open LPG invoices) ≤ ERP CURRENT BALANCE",
+        "status": "PASS",
+        "overstated_by": 0
+      },
+      "untaggedCreditTotal": -44899.6
+    }
+  },
+  "documents": [
+    {
+      "type": "internal_v5_statement",
+      "label": "v5 Sub-Ledger Statement",
+      "path": "analysis/debtors/JEN001/reports/JEN001_Statement_Account_v5.md",
+      "visibility": "internal"
+    },
+    {
+      "type": "source_txt",
+      "label": "ERP DEBENQ export",
+      "path": "analysis/debtors/JEN001/raw/DEBENQ.TXT",
+      "visibility": "internal"
+    },
+    {
+      "type": "customer_statement",
+      "label": "Statement of Account",
+      "path": "analysis/debtors/JEN001/reports/JEN001_Statement_of_Account.md",
+      "visibility": "customer"
+    },
+    {
+      "type": "customer_statement_pdf",
+      "label": "Statement of Account (PDF)",
+      "path": "analysis/debtors/JEN001/reports/JEN001_Statement_of_Account.pdf",
+      "visibility": "customer"
+    }
+  ],
+  "sourceMetadata": {
+    "sourceSystem": "ERP-DEBENQ-TXT",
+    "primaryTxt": "analysis/debtors/JEN001/raw/DEBENQ.TXT",
+    "configPath": "analysis/debtors/JEN001/config/statement_of_account.json",
+    "generatedAt": "2026-09-10T12:30:08.703Z",
+    "generator": "canonical_account_model.mjs"
+  }
+}
