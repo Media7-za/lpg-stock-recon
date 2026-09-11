@@ -4,6 +4,7 @@ import { ClassifyPayload, Desk, Intent } from '../types/solicitation';
 import { PressureGauge } from './PressureGauge';
 import { IntentPanel } from './IntentPanel';
 import { useRouteManifest } from '../../../hooks/useRouteManifest';
+import { useAuth } from '../../../hooks/useAuth';
 
 type ColorKey = 'sage' | 'steel' | 'muted' | 'clay' | 'amber' | 'blue';
 
@@ -74,6 +75,7 @@ function daysBetween(dateStr: string | null): number {
 export function SolicitationConsole() {
   const { desk, setDesk, targets, currentTarget, loading, error, log, logOutcome } = useSolicitationStore();
   const [activeIntent, setActiveIntent] = useState<Intent | null>(null);
+  const { logout } = useAuth();
 
   // Lets /solicitation be "Add to Home Screen"-installed as its own named,
   // iconed app, distinct from the main reconciliation system's manifest.
@@ -101,8 +103,16 @@ export function SolicitationConsole() {
       <div className="max-w-[640px] mx-auto">
         <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
           <span className="font-semibold text-[15px] tracking-wide">SOLICITATION DESK</span>
-          <div className="font-mono text-xs text-text-secondary border border-border rounded-full px-3 py-1.5 bg-surface">
-            {currentTarget ? `${targets.length} in queue` : loading ? 'Loading…' : 'Queue clear'}
+          <div className="flex items-center gap-2">
+            <div className="font-mono text-xs text-text-secondary border border-border rounded-full px-3 py-1.5 bg-surface">
+              {currentTarget ? `${targets.length} in queue` : loading ? 'Loading…' : 'Queue clear'}
+            </div>
+            <button
+              onClick={logout}
+              className="text-xs text-text-secondary hover:text-text-primary border border-border rounded-full px-3 py-1.5 bg-surface cursor-pointer"
+            >
+              Sign Out
+            </button>
           </div>
         </div>
 
