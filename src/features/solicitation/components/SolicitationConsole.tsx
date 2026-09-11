@@ -3,6 +3,7 @@ import { useSolicitationStore } from '../state/SolicitationProvider';
 import { ClassifyPayload, Desk, Intent } from '../types/solicitation';
 import { PressureGauge } from './PressureGauge';
 import { IntentPanel } from './IntentPanel';
+import { useRouteManifest } from '../../../hooks/useRouteManifest';
 
 type ColorKey = 'sage' | 'steel' | 'muted' | 'clay' | 'amber' | 'blue';
 
@@ -73,6 +74,14 @@ function daysBetween(dateStr: string | null): number {
 export function SolicitationConsole() {
   const { desk, setDesk, targets, currentTarget, loading, error, log, logOutcome } = useSolicitationStore();
   const [activeIntent, setActiveIntent] = useState<Intent | null>(null);
+
+  // Lets /solicitation be "Add to Home Screen"-installed as its own named,
+  // iconed app, distinct from the main reconciliation system's manifest.
+  useRouteManifest({
+    manifestHref: '/solicitation-manifest.webmanifest',
+    appTitle: 'Solicitation Desk',
+    appleTouchIconHref: '/icons/solicitation-apple-touch.png',
+  });
 
   const overdue = currentTarget ? daysBetween(currentTarget.predictedDueDate) : 0;
 

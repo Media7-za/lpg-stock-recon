@@ -632,3 +632,45 @@ and a desk console styled identically to the Solicitation console (amount due re
 pressure-gauge overdue indicator as the salient number, same badge/intent-panel/session-log
 conventions) so operators get a consistent interaction model across both desks despite the backends
 being fully independent.
+
+## 12. Solicitation as an Installable PWA
+
+Requested 2026-09-11: "wrap just this into a pwa" — an operator working the call desk from a phone
+wants a dedicated home-screen icon for *just* Solicitation, not the whole reconciliation system.
+Scoped with the operator directly rather than assumed: **Solicitation only** (not Payment
+Collections), and an **MVP now / fully separate standalone build later** split — this section covers
+the MVP; the standalone build (its own deploy, meant eventually for an external agent who should
+never see the rest of the reconciliation system) is deliberately not started yet.
+
+**Why route-scoped, not a second app.** The whole reconciliation system already runs on
+`vite-plugin-pwa` with one manifest (`name: "LPG Stock Reconciliation System"`, `start_url: /`,
+`scope: /`) — installing it puts the Dashboard on an operator's home screen, not the call desk. A
+real second PWA (separate Vite entry, build, deploy) is the eventual V1, but for the MVP the entire
+app is one bundle behind one Vercel deployment, and a route can be made independently installable
+without any of that: the Web App Manifest spec doesn't require the `<link rel="manifest">` a page
+serves to be static. `src/hooks/useRouteManifest.ts` swaps it (plus `document.title` and the iOS
+`apple-touch-icon`/`apple-mobile-web-app-*` tags, which don't exist at all in the base `index.html` so
+are created on mount and fully removed on unmount, not just overwritten) while
+`SolicitationConsole` is mounted, restoring the app-wide defaults the moment an operator navigates
+away. Chrome/Android's install prompt and iOS's "Add to Home Screen" both read whatever
+manifest/tags are present in the DOM *at the moment of install*, not what shipped in `index.html` at
+load time — this is standard, spec-supported behavior, not a hack specific to this app.
+
+**What ships:** `public/solicitation-manifest.webmanifest` (`name: "Solicitation Desk"`,
+`start_url: /solicitation`, `scope: /solicitation`, dark theme matching the console's own palette)
+and three generated icons under `public/icons/` (a simple steel-blue "S" monogram on the app's
+`#0f0f0f` background — placeholder branding, easy to swap by replacing the PNG files, no code change
+needed). `scope: /solicitation` matters beyond cosmetics: it's what tells the OS which URLs belong to
+the installed app (so it opens straight to the call desk, not the Dashboard) versus which should still
+hand off to a normal browser tab.
+
+**Verified**: built and served the production bundle (`vite-plugin-pwa` only activates in the built
+output, not `npm run dev`) and confirmed via a headless browser that the manifest link, title, and
+Apple tags swap correctly on entering `/solicitation` and fully revert — link/meta elements removed,
+not left stale — on navigating back to `/`.
+
+**Deliberately not done in this pass**: no distinct branding beyond the placeholder monogram, no
+offline-specific caching strategy beyond what the app-wide service worker already precaches, and no
+standalone build. If the standalone build is picked up later, this route-scoped manifest is what
+defines what "just Solicitation" should contain — the same `scope`/icons/name, just as its own
+deployment instead of a swapped `<link>` tag.
