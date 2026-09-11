@@ -688,3 +688,45 @@ already established, not a new pattern. Since that also removes the shared `Head
 control, `SolicitationConsole` grew its own, next to the existing queue-count pill. Verified via a
 headless browser at a phone-sized viewport: no `<nav>` element and no main-app header text render on
 `/solicitation` anymore — just the desk, immediately, top of screen.
+
+## 13. `predicted_due_date` Drift — the Phase 2 Gap, Materialized
+
+Asked directly 2026-09-11: "Is this app up to date with the latest transaction items data or last
+invoice dates?" The honest answer split into two layers that are easy to conflate:
+
+- **`commercial_customer_last_order` (the view) is always live** — computed fresh from
+  `transaction_items` on every query, no caching, no drift possible by construction (§5).
+- **`solicitation_queue.predicted_due_date` is not.** Nothing recomputes it just because a customer
+  places a new real order through the normal ERP/POS flow — it only advances when an operator
+  explicitly logs `ORDERED` (or an equivalent intent) *in this app*. This was always true and always
+  documented (§5's `last_order_date_deprecated` note says as much for `commercial_status`), but
+  nobody had quantified it against live data until asked directly. This is exactly the gap **Phase 2**
+  (§8, "scheduled daily push that pre-computes the day's queue instead of computing it on demand")
+  was scoped to close — it was never built, and the backfill's original due dates (set 2026-07-29/30)
+  had six weeks to drift against real, ongoing order activity with no operator-run correction.
+
+**Scanned and fixed live**: of 66 `PENDING` rows, **44 (two-thirds)** had a real `last_lpg_order_date`
+*more recent than the queue row's own `updated_at`* — proof the customer reordered after the row was
+last computed/touched, so whatever due date it carried was stale regardless of what it said. Some
+were showing as a month overdue (e.g. L3 Cash and Carry: due date read Aug 14, real last order was
+Sep 9) while the customer had already reordered on their own days or weeks earlier — meaning an
+operator working today's queue as-is would have called a customer who didn't need a call, using up
+call-time that should have gone to someone who actually did.
+
+**The fix, and why this exact criterion is safe to run as a blanket UPDATE** (a real concern, given
+discovery #4 in `known_data_quirks` — a prior blanket `predicted_due_date` recompute clobbered two
+legitimate manual `NO_ANSWER` retry dates): `last_lpg_order_date > updated_at::date` only fires when a
+*real order* postdates the *last time anything touched this row* — an operator's own recent
+`SNOOZE`/`NO_ANSWER`/etc. action always advances `updated_at` to that moment, so a row an operator
+touched today is only vulnerable to this correction if the customer placed a same-day order after
+that touch, which did not occur in this run (checked). Applied: `predicted_due_date` recomputed as
+`last_lpg_order_date + avg_cycle_days` for all 44, `updated_at` advanced, nothing else touched
+(`notes`/`last_contacted_at` are for logged operator conversations, not a system-side correction).
+Re-scanned after: zero rows remain with this drift. "PENDING due today" dropped from 34 to 31 —
+customers who'd already reordered stopped incorrectly appearing on today's call list.
+
+**Not fixed, deliberately, in this pass**: this is a one-time catch-up, not a standing fix. Phase 2
+(the actual scheduled recompute) is still not built — this exact drift will recur, gradually, as more
+real orders land without a matching operator action, until that phase exists. The `avg_cycle_days`
+hybrid-recompute (§9, 95 customers flagged, never applied) is a related but separate open item —
+this fix used whatever `avg_cycle_days` was already stored, correct or not, and did not touch it.
