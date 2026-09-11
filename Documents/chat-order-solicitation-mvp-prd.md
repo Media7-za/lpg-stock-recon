@@ -284,7 +284,7 @@ table is fully ours, unlike that one.
 |---|---|
 | **MVP (this PRD)** | One new table (`solicitation_queue`) plus new columns on `commercial_customers`, intent-mapping logic, Claude Code session as the only interface, manual "show today's targets" trigger. |
 | **Phase 1b — customer coverage backfill** *(done — see §8a)* | Onboarded 226 confirmed businesses (230 real ERP accounts) into `commercial_customers`/`commercial_customer_accounts`. 165 routed to the new leads desk (`win_back`/`LEAD`), 61 to the normal reorder desk (`PENDING`). 308 individual-looking accounts sit in `REVIEW_FLAGGED`, resolved by the operator inline as they come up (§6). Full detail in §8a. |
-| **Phase 2** | Scheduled daily push (cron/Routine) that pre-computes the day's queue instead of computing it on demand. |
+| **Phase 2** *(done — see §13)* | Scheduled daily push (cron/Routine) that pre-computes the day's queue instead of computing it on demand. Built 2026-09-11 as `recompute_solicitation_due_dates()` via `pg_cron`, daily at 02:00 UTC — closes the `predicted_due_date` drift gap found and manually caught up the same day (44 of 66 `PENDING` rows). |
 | **Phase 3** | Slack/Telegram **or plain claude.ai chat** front-end for the same loop, if operators need to work from a phone instead of a terminal. A claude.ai chat with the Supabase connector enabled (Settings → Connectors) hits the same `execute_sql`/`apply_migration` tools this session uses — no CLI, no repo access needed, since the loop is 100% SQL against Supabase. Requires a paid claude.ai plan (custom connectors are gated to Pro/Max/Team/Enterprise). |
 | **Phase 3a — context bootstrapping** *(done)* | A fresh chat session with only DB access has none of this document's context, and the Supabase project has 40+ tables — nothing stops it from anchoring on the wrong customer table the way this session initially assumed `accounts` before discovering it was empty. Solved with a `SOLICITATION_RULEBOOK` row in `app_config` (jsonb, mirroring the existing `RECON_SCORING_WEIGHTS` pattern in the debtors domain) that acts as a **table scope map**, not just a rules list: an `in_scope_tables` map (`commercial_customers`, `commercial_customer_accounts`, `solicitation_queue`, `transaction_items`, `item_classifications` — one line each on what it's for), an `explicitly_not_this_workflow` map (`accounts` — 0 rows, decoy; `customers` — unrelated WhatsApp-dispatch feature; `reconciliation_*`/`bank_*`/`allocation_*`/`match_*` — debtors domain), the intent table, the push-query shape, and the last-order LPG filter rule including the doc_no/tx_date trap discovered live in this session (a single order date can be split across separate content vs. deposit documents — tie-breaking on `doc_no` silently picks the wrong one). A claude.ai **Project** whose custom instructions say "read `app_config.SOLICITATION_RULEBOOK` before running any query" completes the bootstrap — every new chat in that Project inherits it, the rulebook stays correct even from a different client since it lives with the data, and updating it is an UPDATE statement, not a re-onboarding exercise. |
 | **Phase 3b — Real application, built inside `lpg-stock-recon`** *(done — see below)* | Replaced the Claude-Code-session-as-the-only-interface model with a real UI + backend, built as a feature slice of this repo rather than a separate app, using conventions already established by `pricing-desk` and the existing Edge Functions. Decided 2026-08-11: "Let's use lpg-stock-recon" (not a new repo), and reuse existing roles (`Depot Manager`, `Invoice Clerk`) rather than add a new one — both explicit user calls, avoiding a second database/deploy target and any change to user-management. Built: `supabase/functions/solicitation` (Deno Edge Function, service-role client, reads `SOLICITATION_RULEBOOK` from `app_config` at request time rather than hardcoding business logic, exposes `/targets` `/leads` `/review` `/classify`) and `src/features/solicitation` (React feature slice — desk switcher, single-target console with a pressure-gauge overdue indicator, per-intent reply form, session log — ported from a working prototype and rewired from mock data to the new Edge Function), routed at `/solicitation`. The chat-driven SQL workflow described in the rest of this document still works unchanged — this is a second interface onto the same tables and the same rulebook, not a replacement. |
@@ -725,8 +725,29 @@ that touch, which did not occur in this run (checked). Applied: `predicted_due_d
 Re-scanned after: zero rows remain with this drift. "PENDING due today" dropped from 34 to 31 —
 customers who'd already reordered stopped incorrectly appearing on today's call list.
 
-**Not fixed, deliberately, in this pass**: this is a one-time catch-up, not a standing fix. Phase 2
-(the actual scheduled recompute) is still not built — this exact drift will recur, gradually, as more
-real orders land without a matching operator action, until that phase exists. The `avg_cycle_days`
-hybrid-recompute (§9, 95 customers flagged, never applied) is a related but separate open item —
-this fix used whatever `avg_cycle_days` was already stored, correct or not, and did not touch it.
+**Update 2026-09-11 — Phase 2 built.** The one-time catch-up above is now a standing job, closing the
+gap this section originally left open. `recompute_solicitation_due_dates()` (plpgsql function, live in
+`oqhpxnaadahohwkslive`) is the exact same query as the manual fix — same safe criterion
+(`last_lpg_order_date > updated_at::date`, `status = 'PENDING'` only), same fields touched
+(`predicted_due_date`, `updated_at`; never `notes`/`last_contacted_at`, which stay reserved for logged
+operator conversations). Scheduled via `pg_cron` (`cron.schedule('solicitation-due-date-recompute',
+'0 2 * * *', ...)`) — daily at 02:00 UTC, off-peak, before the morning's first "show today's targets."
+Tested immediately after creation: ran manually, returned 0 rows affected — correct, since the
+same-day manual fix had already caught everything up; the logic itself was already proven against
+live data by that fix (44/66 rows, verified before/after), not by this test.
+
+This deliberately matches **Phase 2** in §8's original phasing table verbatim ("Scheduled daily push
+that pre-computes the day's queue instead of computing it on demand") rather than folding the
+correction into the Edge Function's on-demand path (the way `ON_HOLD` auto-lift already works,
+per-request inside `fetchDesk`) — the phasing table already named this a cron job, not a read-time
+recompute, and there's no reason to relitigate that now that it's actually being built.
+
+No local migration file exists for this (or any) schema change in this repo — consistent with how
+every other table/view/bucket in this PRD was created, applied directly to the live project and
+recorded here, not checked into `supabase/migrations/`.
+
+**Still not done**: the `avg_cycle_days` hybrid-recompute (§9, 95 customers flagged, never applied) is
+a related but separate open item — this job uses whatever `avg_cycle_days` is already stored, correct
+or not, and does not touch it. `LEAD`/`REVIEW_FLAGGED` desks have no equivalent drift-correction job;
+this was scoped to `PENDING` only, matching the actual diagnosed problem and Phase 2's original
+"the day's queue" framing.
