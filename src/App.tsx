@@ -22,6 +22,8 @@ import { ExceptionsView } from './features/investigation-workspace/views/Excepti
 import { SearchView } from './features/investigation-workspace/views/SearchView';
 import { DocumentListView } from './features/investigation-workspace/views/DocumentListView';
 import { PricingDeskHome, QuoteWorkspace, PricingDeskProvider } from './features/pricing-desk';
+import { SolicitationConsole, SolicitationProvider } from './features/solicitation';
+import { PaymentDesk, PaymentCollectionsProvider } from './features/payment-collections';
 import { useAuth, UserRole } from './hooks/useAuth';
 import LoginScreen from './components/auth/LoginScreen';
 import { Navigate } from 'react-router-dom';
@@ -131,6 +133,20 @@ function App() {
                   <Route path="/pricing-desk/quote/:customerCode?" element={
                     <ProtectedRoute allowedRoles={['Depot Manager', 'Invoice Clerk']}>
                       <QuoteWorkspace />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/solicitation" element={
+                    <ProtectedRoute allowedRoles={['Depot Manager', 'Invoice Clerk']}>
+                      <SolicitationProvider>
+                        <SolicitationConsole />
+                      </SolicitationProvider>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/payment-collections" element={
+                    <ProtectedRoute allowedRoles={['Depot Manager', 'Invoice Clerk']}>
+                      <PaymentCollectionsProvider>
+                        <PaymentDesk />
+                      </PaymentCollectionsProvider>
                     </ProtectedRoute>
                   } />
                 </Routes>
