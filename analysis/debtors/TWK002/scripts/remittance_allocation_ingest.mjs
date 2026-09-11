@@ -63,6 +63,8 @@ function loadRemittanceLines() {
     const p = path.join(DATA, `remittance_lines_${year}.csv`);
     if (!fs.existsSync(p)) continue;
     for (const row of parseCsv(fs.readFileSync(p, 'utf8'))) {
+      const code = row.debtor_code?.trim();
+      if (code && code !== DEBTOR) continue;
       const bid = row.batch_id;
       if (!byBatch.has(bid)) byBatch.set(bid, []);
       byBatch.get(bid).push(row);
