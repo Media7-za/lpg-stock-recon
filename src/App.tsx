@@ -56,6 +56,13 @@ function App() {
               <CountSession />
             </ProtectedRoute>
           } />
+          <Route path="/solicitation" element={
+            <ProtectedRoute allowedRoles={['Depot Manager', 'Invoice Clerk']}>
+              <SolicitationProvider>
+                <SolicitationConsole />
+              </SolicitationProvider>
+            </ProtectedRoute>
+          } />
           <Route path="/debtors/:debtorCode/investigate" element={
             <ProtectedRoute allowedRoles={['Depot Manager', 'Invoice Clerk']}>
               <InvestigationShell />
@@ -133,13 +140,6 @@ function App() {
                   <Route path="/pricing-desk/quote/:customerCode?" element={
                     <ProtectedRoute allowedRoles={['Depot Manager', 'Invoice Clerk']}>
                       <QuoteWorkspace />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/solicitation" element={
-                    <ProtectedRoute allowedRoles={['Depot Manager', 'Invoice Clerk']}>
-                      <SolicitationProvider>
-                        <SolicitationConsole />
-                      </SolicitationProvider>
                     </ProtectedRoute>
                   } />
                   <Route path="/payment-collections" element={

@@ -674,3 +674,17 @@ offline-specific caching strategy beyond what the app-wide service worker alread
 standalone build. If the standalone build is picked up later, this route-scoped manifest is what
 defines what "just Solicitation" should contain — the same `scope`/icons/name, just as its own
 deployment instead of a swapped `<link>` tag.
+
+**Fix 2026-09-11**: the manifest swap alone wasn't enough — an operator testing it on a phone
+correctly pointed out "not much difference," and the screenshot showed why: `/solicitation` was still
+rendered inside the main app's shared `<Layout>` (full "LPG Stock Reconciliation System" header +
+the entire Dashboard/Upload CSV/Trends/… navigation bar), the same chrome every other page in the
+system gets. A Web App Manifest only controls OS-level install/launch behavior (icon, name, whether
+there's a browser address bar) — it has no effect on what the page itself renders, so the call desk
+was still visually buried inside the bigger reconciliation tool, wasting most of a phone screen on
+navigation the operator never needs. Fixed by moving `/solicitation`'s route in `src/App.tsx` outside
+`<Layout>` entirely — the same precedent `/count` (`CountSession`, also a focused mobile flow)
+already established, not a new pattern. Since that also removes the shared `Header`'s Sign Out
+control, `SolicitationConsole` grew its own, next to the existing queue-count pill. Verified via a
+headless browser at a phone-sized viewport: no `<nav>` element and no main-app header text render on
+`/solicitation` anymore — just the desk, immediately, top of screen.
