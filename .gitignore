@@ -35,3 +35,6 @@ prisma/*.db-journal
 # Temporary analysis & scratch scripts
 scratch/
 supabase/.temp/
+
+# Claude Code agent worktree scratch space (isolated subagent checkouts)
+.claude/worktrees/
