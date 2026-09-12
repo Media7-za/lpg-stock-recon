@@ -5,6 +5,26 @@
  * Method: LPG-only invoice amounts from ERP TXT (EMPTY pairs stripped).
  * Allocation: LIFO (newest open gas invoice first) applied chronologically
  * across all STAT payments — validated on STAT 127 before reporting STAT 129.
+ *
+ * PDP-33 fix (2026-09-12): the ERP TXT's `-EMPTY`/`=EMPTY`/`EMPTIES` suffix on
+ * the DN reference (business_rules.md §11) is how this script used to be the
+ * ONLY signal for "this Invoice is a CYL deposit, strip it from the LPG pool".
+ * That suffix is written by a human at capture time and is occasionally
+ * missing (see docs 45092, 50754, 51155 below) — when it is, a pure-CYL
+ * deposit invoice leaks into `buildLpgInvoicePool()` as if it were a real gas
+ * invoice, and LIFO can then allocate a real payment against it (AL-0052:
+ * 44878 → 51155, a CYL-only doc, while its LPG sibling 51154 sat uncovered).
+ * §5/§3 doctrine is unambiguous that `debt_group` — not a DN string quirk —
+ * is authoritative for LPG vs CYL classification. `db_debt_group_map.csv`
+ * (columns doc_no,entry_type,tx_date,lpg_total,cyl_total,other_total) is a
+ * flat snapshot of `vw_clean_transactions.debt_group` for JEN001 pulled from
+ * Supabase (project oqhpxnaadahohwkslive) on 2026-09-12 — see
+ * `analysis/debtors/shared/scripts/pull_debtor_transactions_from_db.mjs` for
+ * the live equivalent. Any Invoice doc found in the map with lpg_total <= 0 is
+ * excluded from the LPG pool BEFORE the DN-base/date proximity matching below
+ * runs at all — the debt_group filter gates the pool, it does not merely
+ * post-filter its output. The DN-suffix heuristic (`isCylRef`) stays in place
+ * underneath as a secondary net for any doc not yet present in the snapshot.
  */
 import fs from 'fs';
 import path from 'path';
@@ -28,9 +48,45 @@ const TXT_PATHS = [
   path.join(ROOT, 'analysis/debtors/JEN001/raw/DEBENQ.TXT'),
 ];
 const PILOT_PAYMENTS = ['44878', '45717'];
+const DEBT_GROUP_MAP_PATH = path.join(ROOT, 'analysis/debtors/JEN001/data/db_debt_group_map.csv');
 const TOL = 0.05;
 
 const fmtR = (n) => `R${fmtAmount(n)}`;
+
+/**
+ * PDP-33: authoritative doc_no -> debt_group split, sourced from
+ * vw_clean_transactions (Supabase project oqhpxnaadahohwkslive). Covers BOTH
+ * Invoice and Crd Note docs — the same DN-suffix gap that let CYL invoice
+ * 51155 leak into the invoice pool also lets its paired reversal (Crd Note
+ * 15066, DN "DN#22474", no EMPTY marker either) leak into the gas-CN netting
+ * pass and wipe out its true LPG sibling 51154's due amount by DN-base
+ * coincidence — the two docs share an identical DN string with nothing to
+ * tell them apart once the EMPTY suffix is missing on both. Returns
+ * Map<cleanDoc, { lpg, cyl, other }>. Missing file/rows are tolerated — the
+ * DN-suffix heuristic in buildLpgInvoicePool() is the fallback for anything
+ * not in the snapshot, never the other way round.
+ */
+function loadDebtGroupMap(absPath) {
+  const map = new Map();
+  if (!fs.existsSync(absPath)) return map;
+  const lines = fs.readFileSync(absPath, 'utf8').split('\n').filter((l) => l.trim());
+  for (const line of lines.slice(1)) {
+    const [doc, , , lpg, cyl, other] = parseCsvLine(line);
+    const clean = normDoc(doc);
+    if (!clean) continue;
+    map.set(clean, { lpg: Number(lpg) || 0, cyl: Number(cyl) || 0, other: Number(other) || 0 });
+  }
+  return map;
+}
+
+/** PDP-33: true if a row (Invoice or Crd Note) is CYL/non-LPG per the DB debt_group
+ * snapshot, falling back to the DN-suffix heuristic only when the doc is absent
+ * from the snapshot. */
+function isCylByDbOrRef(row, debtGroupMap) {
+  const dbEntry = debtGroupMap.get(row.cleanDoc);
+  if (dbEntry) return dbEntry.lpg <= 0.01;
+  return isCylRef(row.dn);
+}
 
 function parseTxtRows(absPath) {
   const txt = fs.readFileSync(absPath, 'utf8');
@@ -81,10 +137,17 @@ function mergeRows(paths) {
   return { headerBalance, rows };
 }
 
-function buildLpgInvoicePool(rows) {
+function buildLpgInvoicePool(rows, debtGroupMap) {
   const invoices = [];
   for (const r of rows) {
-    if (r.entry !== 'Invoice' || isCylRef(r.dn)) continue;
+    if (r.entry !== 'Invoice') continue;
+    // PDP-33: debt_group is authoritative and is applied BEFORE the DN-suffix
+    // heuristic — a doc the DB says has zero LPG content (a CYL deposit
+    // invoice) never enters the pool, regardless of what its DN string looks
+    // like. Only once a doc is absent from the DB snapshot does the
+    // `-EMPTY`/`=EMPTY`/`EMPTIES` DN heuristic (business_rules.md §11) get a
+    // say, as a fallback net rather than the primary filter.
+    if (isCylByDbOrRef(r, debtGroupMap)) continue;
     invoices.push({
       doc: r.cleanDoc,
       docno: r.docno,
@@ -95,8 +158,13 @@ function buildLpgInvoicePool(rows) {
       due: r.amount,
     });
   }
+  // PDP-33: the same debt_group-first check applies to Crd Note rows — a CYL
+  // deposit reversal missing its DN EMPTY marker (e.g. CN 15066, DN#22474,
+  // paired with CYL invoice 51155) must not be free to net by DN-base
+  // coincidence against an unrelated LPG invoice that happens to share the
+  // same bare DN reference (here, sibling LPG invoice 51154).
   const gasCns = rows
-    .filter((r) => r.entry === 'Crd Note' && !isCylRef(r.dn))
+    .filter((r) => r.entry === 'Crd Note' && !isCylByDbOrRef(r, debtGroupMap))
     .sort((a, b) => a.iso.localeCompare(b.iso) || a.docno.localeCompare(b.docno));
 
   for (const cn of gasCns) {
@@ -195,7 +263,8 @@ function runChronologicalAllocation(rows, pool) {
 
 function main() {
   const { headerBalance, rows } = mergeRows(TXT_PATHS);
-  const pool = buildLpgInvoicePool(rows);
+  const debtGroupMap = loadDebtGroupMap(DEBT_GROUP_MAP_PATH);
+  const pool = buildLpgInvoicePool(rows, debtGroupMap);
   const allEdges = runChronologicalAllocation(rows, pool);
 
   const stat127Edges = allEdges.filter((e) => e.payment_doc === '44878' && e.target_doc);
