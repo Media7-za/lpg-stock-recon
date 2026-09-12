@@ -1,5 +1,14 @@
 # TWK002 — account-level residual root cause (2026-08-30)
 
+> **AMENDMENT 2026-08-31 — root cause below is FALSIFIED. Ruling reopened.**
+> Operator supplied AR Control **GL** = **R26,498.36**, equal to the debtor sub-ledger header on
+> `raw/DEBENQ.TXT` to the cent. GL and sub-ledger **agree**, so the "sub-ledger ↔ GL
+> desynchronization" root cause named in §Headline cannot stand. The divergence is between **ERP**
+> and **this repo's remittance-authoritative reconstruction**.
+> The **identity** (`header − Σ statement open = R8,084.67`) remains **PROVEN** and is unaffected.
+> **H-027 is on hold.** See `reports/TWK002_H027_Evidence_Challenge_2026-08-31.md`.
+> Superseded text is retained below unaltered per the amendments-append rule.
+
 **Question:** What *is* the R8,084.67, and what posting action can change it?
 
 **Authority (decomposition):** `reports/TWK002_Balance_Bridge_Line_Investigation_2026-08-11.md` — 7 lines sum to the gap (PROVEN).  
