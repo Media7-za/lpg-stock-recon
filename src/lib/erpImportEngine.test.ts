@@ -120,6 +120,102 @@ describe('ERPImportEngine.parseHeaders — amount_excl arithmetic', () => {
     });
 });
 
+describe('ERPImportEngine.parseItems — PDP-31 fingerprint stability', () => {
+    // 37-column STDatabase item row builder. Only the columns parseItems()
+    // actually reads are populated; the rest are left as ''.
+    function makeItemRow(overrides: Record<number, string> = {}): string[] {
+        const row: string[] = new Array(23).fill('');
+        row[0] = 'Invoice';       // entry_type
+        row[1] = '4';             // period
+        row[2] = 'TWK002';        // account_no
+        row[3] = '00034285';      // doc_no
+        row[4] = '9.1';           // stock_no
+        row[5] = '9KG CYLINDER DEPOSIT'; // description
+        row[6] = 'CYL';           // category
+        row[7] = 'CYL';           // product_group
+        row[8] = '';              // brand
+        row[9] = '';              // order_no
+        row[10] = '04/07/2024';   // tx_date
+        row[11] = '35';           // qty
+        row[12] = '520';          // retail_price
+        row[13] = '299.973';      // cost_price
+        row[14] = 'D/N 9760';     // reference
+        row[15] = '001';          // rep_code
+        row[16] = 'HANNAH';       // user_code
+        row[17] = '01';           // location
+        row[21] = '1';            // tax_code
+        row[22] = '78';           // line_tax
+        for (const [idx, val] of Object.entries(overrides)) {
+            row[Number(idx)] = val;
+        }
+        return row;
+    }
+
+    it('produces the SAME fingerprint whether a description/reference has plain spaces or an internal NBSP (or other Unicode whitespace) in the middle of the text', async () => {
+        const engine = new ERPImportEngine();
+
+        // Plain ASCII spaces throughout.
+        const plainRow = makeItemRow({
+            5: '9KG CYLINDER DEPOSIT',
+            14: 'D/N 9760',
+        });
+
+        // Same visible text, but the internal space is a non-breaking space
+        // (U+00A0) in description, and reference has a run of an NBSP plus a
+        // regular space collapsing to one space. `.trim()` alone never touches
+        // these because they are not at the edges of the field.
+        const nbspRow = makeItemRow({
+            5: '9KG CYLINDER DEPOSIT',
+            14: 'D/N  9760',
+        });
+
+        const csvA = plainRow.map(v => `"${v}"`).join(',') + '\n';
+        const csvB = nbspRow.map(v => `"${v}"`).join(',') + '\n';
+
+        const [itemA] = await engine.parseItems(csvA, '2025.TXT');
+        const [itemB] = await engine.parseItems(csvB, 'STTRANS2024.TXT');
+
+        // The stored description text must still read identically once cleaned...
+        expect(itemA.description).toBe('9KG CYLINDER DEPOSIT');
+        expect(itemB.description).toBe('9KG CYLINDER DEPOSIT');
+        // ...and, critically, the two must now hash to the SAME fingerprint even
+        // though they came from two differently-named "re-exports" and one had
+        // hidden internal Unicode whitespace the other didn't (PDP-31).
+        expect(itemB.fingerprint).toBe(itemA.fingerprint);
+    });
+
+    it('produces the SAME fingerprint for the same logical row re-imported under a different source file name (source_file is never part of the hash)', async () => {
+        const engine = new ERPImportEngine();
+        const row = makeItemRow();
+        const csv = row.map(v => `"${v}"`).join(',') + '\n';
+
+        const [fromApril] = await engine.parseItems(csv, '2025.TXT');
+        const [fromSeptember] = await engine.parseItems(csv, 'STTRANS2024.TXT');
+
+        expect(fromSeptember.fingerprint).toBe(fromApril.fingerprint);
+    });
+
+    it('pins the current fingerprint algorithm against the real PDP-31 duplicate pair, so a future change to the field list/order/cleaning is caught explicitly instead of silently drifting', async () => {
+        const engine = new ERPImportEngine();
+
+        // Reproduces transaction_items id 232906 (TWK002, doc 00034285, stock
+        // 9.1, source_file STTRANS2024.TXT) exactly as stored in Supabase.
+        const row = makeItemRow();
+        const csv = row.map(v => `"${v}"`).join(',') + '\n';
+        const [item] = await engine.parseItems(csv, 'STTRANS2024.TXT');
+
+        // This is the fingerprint actually stored for id 232906 in the live
+        // database, and matches recomputing today's algorithm by hand over the
+        // same 9 cleaned fields. If this test ever fails after a deliberate
+        // change to computeFingerprint()/parseItems(), that change invalidates
+        // every fingerprint already stored for historical rows — treat it as a
+        // signal that a coordinated backfill is required, not just a code diff.
+        expect(item.fingerprint).toBe(
+            'b12e40eeb61fbf77e4958d1b769ae97fae2bf90b3240409fd0b061a06e9036b9'
+        );
+    });
+});
+
 describe('ERPImportEngine Date Parsing', () => {
     it('should parse standard date strings exactly in local components to prevent timezone shifts', () => {
         const engine = new ERPImportEngine();

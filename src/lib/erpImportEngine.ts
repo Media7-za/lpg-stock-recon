@@ -127,7 +127,16 @@ export class ERPImportEngine {
 
     private clean(v: string | undefined): string {
         if (!v) return "";
-        return v.trim().replace(/"/g, '');
+        // Collapse ANY run of whitespace — not just the outer edges — to a single
+        // ASCII space before trimming. JS's `\s` class already matches Unicode
+        // space variants (NBSP U+00A0, figure space, etc), so this normalizes an
+        // internal NBSP-vs-regular-space difference in the same way `.trim()`
+        // already normalized *leading/trailing* whitespace differences. Without
+        // this, two cleaned values could still diverge only in the middle of the
+        // string (e.g. a description or reference field), which survives into
+        // both the stored row and the fingerprint hash input undetected — see
+        // PDP-31 / computeFingerprint() below.
+        return v.replace(/\s+/g, ' ').trim().replace(/"/g, '');
     }
 
     private parseDate(s: string): string | null {
@@ -146,6 +155,39 @@ export class ERPImportEngine {
 
     /**
      * Compute SHA-256 fingerprint in the browser
+     *
+     * PDP-31 stability contract: `SyncService` (see syncService.ts) upserts on
+     * `onConflict: 'fingerprint'` and that is the ONLY mechanism that recognises
+     * an incoming row as "already imported" rather than a new transaction. That
+     * only holds if the same logical row hashes to the same value on every
+     * future import, regardless of which file name it is re-exported under.
+     *
+     * PDP-31 root cause (confirmed, not the whitespace/NBSP hypothesis this
+     * function's `clean()` helper now also guards against): this invariant was
+     * broken once already, at the code level rather than the data level. Two
+     * confirmed duplicate pairs (TWK002 doc 00034285/9.1, JEN001 doc
+     * 00030227/19.1 — both from a single batch export re-ingested under the
+     * names `2025.TXT` then, months later, `STTRANS2024.TXT`) have byte-for-byte
+     * identical stored `entry_type, account_no, doc_no, stock_no, description,
+     * reference, tx_date, qty, retail_price` in every case checked (verified via
+     * Postgres `length()`/`octet_length()` equality — ruling out hidden internal
+     * whitespace, a unicode variant, or float-rounding residue in the stored
+     * data), yet carry two different `fingerprint` values. Recomputing today's
+     * exact algorithm over each pair's own stored fields reproduces the *newer*
+     * row's fingerprint precisely, every time, but never the older row's. The
+     * older rows were inserted the day *before* this fingerprinting scheme
+     * (this exact field list / `clean()` / column mapping) was introduced in
+     * the codebase — i.e. they were hashed by a different implementation of
+     * this function. When the same historical export was re-run months later
+     * under the current build, it produced a fresh fingerprint for identical
+     * data, and the upsert had no way left to recognise the row as a duplicate.
+     *
+     * Takeaway for future changes to this function: changing the field list,
+     * field order, column-index mapping, or cleaning rules changes every future
+     * fingerprint for data already stored under the old rules. That silently
+     * reproduces this exact bug the next time any of that historical data is
+     * re-imported. Treat such a change as requiring a coordinated backfill of
+     * existing `fingerprint` values, not just a code change.
      */
     private async computeFingerprint(parts: any[]): Promise<string> {
         const raw = parts.join('|');
