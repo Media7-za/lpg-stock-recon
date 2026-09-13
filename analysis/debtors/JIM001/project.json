@@ -61,7 +61,11 @@
     },
     {
       "date": "2026-09-13",
-      "event": "Generalized the monthly-batch exact-sum test (SKILL_Monthly_Batch_ERP_Bridge_Reconciliation) across all 9 years. Found the 2018/2019/2021 Payment_Pattern_Analysis reports are stale (predate a later split-payment allocation pass) and overstate anomalies by ~R101,500 combined -- need regeneration. Found a standing credit (~R7,571.68, constant Apr-Oct 2021) and 3 misattribution candidates (doc 6104, 40746, 44555), one of which (44555 -> 2025-12 not 2026-03) is pending ratification. Added settlement_unit/evidence_tier/evidence_status fields to the 36 existing 2022-2024 overrides (additive; all capped at Tier 3/ASSERTED -- no remittance advice exists for JIM001). See reports/JIM001_Exact_Sum_Bridge_Review_2026-09-13.md."
+      "event": "Generalized the monthly-batch exact-sum test (SKILL_Monthly_Batch_ERP_Bridge_Reconciliation) across all 9 years. Found the 2018/2019/2021 Payment_Pattern_Analysis reports are stale (predate a later split-payment allocation pass) and overstate anomalies by ~R101,500 combined -- need regeneration. Found a standing credit (~R7,571.68, constant Apr-Oct 2021). Added settlement_unit/evidence_tier/evidence_status fields to the 36 existing 2022-2024 overrides (additive; all capped at Tier 3/ASSERTED -- no remittance advice exists for JIM001). See reports/JIM001_Exact_Sum_Bridge_Review_2026-09-13.md."
+    },
+    {
+      "date": "2026-09-13",
+      "event": "Follow-up correction to the same-day exact-sum review: docs 40746 and 44555 were initially flagged as misattribution candidates on aggregate-total exact-sum coincidences alone. A check against allocation_edges.csv's invoice-level rows (missed on the first pass) retracts both -- 40746 settles 4 named June-2025 invoices (R38.67 shortfall) and 44555 settles 3 named March-2026 invoices (R271.44 shortfall), both with normal, well-precedented posting lags. It is the 2025 Payment_Pattern_Analysis report's July reassignment of doc 40746 that is wrong, not monthly_lpg_insights.csv; doc 44555's March-2026 assignment in the CSV is confirmed correct as-is. Report and registry table updated in place."
     }
   ]
 }
