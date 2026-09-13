@@ -67,6 +67,35 @@ describe('ERPImportEngine.validateIntegrity — VAT_CONSISTENCY (DK-593)', () =>
         expect(vatFinding).toBeUndefined();
     });
 
+    it('flags CRITICAL for a real-world negative-amount Credit Note (PDP-34 sign-bug regression)', () => {
+        const engine = new ERPImportEngine();
+
+        // Real numbers from TWK002 doc 00007848 (transaction_headers id 132323,
+        // source_file DRTX2025.TXT — one of the exact three DK-593-named batches).
+        // Every Credit Note in production carries a negative amount_excl/tax_amount
+        // (it's a return), unlike the synthetic positive fixture in the first test
+        // above. Before this fix, grossImpliedTax was computed from the signed
+        // (negative) amount_excl and compared directly against actualTax (forced
+        // positive via Math.abs()) — opposite signs meant the equality-within-
+        // tolerance check could never pass, so isGrossInExclDefect was always
+        // false for every real Credit Note and this exact defect silently landed
+        // as a WARNING (row accepted) instead of CRITICAL (row rejected) in every
+        // production import. This is what let 21 TWK002 docs (PDP-34) through with
+        // an unrejected gross-in-excl header row, plus a further 30 where the bad
+        // row sits alongside a later separately-imported correct one.
+        const header = makeHeader({
+            entry_type: 'Crd Note',
+            amount_excl: -23920.00, // BUG: gross, not ex-VAT (true ex-VAT is -20,800.00)
+            tax_amount: -3120.00,   // correct
+        });
+
+        const findings = engine.validateIntegrity(header);
+        const vatFinding = findings.find(f => f.rule === 'VAT_CONSISTENCY');
+
+        expect(vatFinding).toBeDefined();
+        expect(vatFinding?.severity).toBe('CRITICAL');
+    });
+
     it('does not escalate to CRITICAL for non-Credit-Note entry types even if amount_excl looks gross', () => {
         const engine = new ERPImportEngine();
 

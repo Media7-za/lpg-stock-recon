@@ -81,10 +81,22 @@ export class ERPImportEngine {
                 // Detect that specific shape via the gross-side double-check: if
                 // treating amount_excl as gross reproduces tax_amount, the column
                 // is holding gross, not ex-VAT.
+                //
+                // PDP-34 fix: Credit Note amount_excl is negative in real data, so
+                // grossImpliedTax (derived from the signed amount_excl) comes out
+                // negative while actualTax is forced positive via Math.abs() above.
+                // Comparing them directly (without abs() on grossImpliedTax) could
+                // never match for any negative-amount Credit Note — which is the
+                // normal case — so this detector silently never fired as CRITICAL
+                // in production: 21 TWK002 docs (single bad row) and 30 more (an
+                // unrejected bad row sitting alongside a later, separately
+                // re-imported, correct row) all carry this exact defect, sourced
+                // from the named batches above, undetected until now. Comparing
+                // magnitudes on both sides is the fix.
                 const grossImpliedTax = Math.round((header.amount_excl / 1.15) * 0.15 * 100) / 100;
                 const isGrossInExclDefect =
                     header.entry_type === 'Crd Note' &&
-                    Math.abs(grossImpliedTax - actualTax) <= 0.02;
+                    Math.abs(Math.abs(grossImpliedTax) - actualTax) <= 0.02;
 
                 findings.push({
                     id: header.doc_no,
