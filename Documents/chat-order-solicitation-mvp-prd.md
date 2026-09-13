@@ -751,3 +751,37 @@ a related but separate open item — this job uses whatever `avg_cycle_days` is 
 or not, and does not touch it. `LEAD`/`REVIEW_FLAGGED` desks have no equivalent drift-correction job;
 this was scoped to `PENDING` only, matching the actual diagnosed problem and Phase 2's original
 "the day's queue" framing.
+
+## 14. Design Note: Call/WhatsApp/Email Directly From the Console (not started)
+
+Requested 2026-09-11: "As the order solicitation operator I would like to call or WhatsApp
+directly from app screen." Deliberately kept as a short note here rather than a full PRD — this
+is one slice of the existing console, not a new system, the same treatment §11 (Payment
+Collections) got before it grew its own document.
+
+**Why this can't just be a `tel:`/`wa.me` link on the existing fields.** The operator flagged three
+real nuances up front, none of which the current data model supports:
+
+- **WhatsApp numbers are additional to, not the same as, business phone numbers** — a customer can
+  have both, and they can differ.
+- **Some customers have more than one contact** — an admin contact and a separate person who
+  actually places orders. `commercial_customers.primary_contact`/`contact_phone` is a single pair,
+  can't represent this.
+- **Some customers prefer email** over phone/WhatsApp entirely.
+
+So the actual scope here is a data-model decision before any UI work: does this become a proper
+multi-contact table (`commercial_customer_contacts`: customer_id, name, role, phone, whatsapp,
+email, preferred_channel — one-to-many) or a lighter set of additional columns directly on
+`commercial_customers` (e.g. `whatsapp_number`, a second contact pair) if in practice most
+customers only ever need one extra field, not a full multi-contact model? The former is more
+correct for the stated "some customers have two contacts" case; the latter is less migration and
+less UI for a smaller fraction of customers who actually need it. Not decided — needs a quick
+count of how many real customers already have distinguishable admin-vs-order-placing contacts
+before picking a shape, rather than guessing.
+
+Once the data model is settled, the UI addition itself is small: tap-to-call (`tel:`), WhatsApp
+deep link (`wa.me/<number>`), and `mailto:` next to whichever contact fields exist on
+`SolicitationConsole`'s target card — no new desk, no new intent, just richer contact affordances
+on the existing one-target-at-a-time view.
+
+**Status: scoping only, nothing built.**
