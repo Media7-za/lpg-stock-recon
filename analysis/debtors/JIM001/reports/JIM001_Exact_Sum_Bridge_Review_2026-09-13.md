@@ -45,13 +45,10 @@ incorporated and should be re-supplied if it still exists elsewhere.
    of June's R14,618.11 billing) sits in the same window marked 100%
    `UNALLOCATED_PORTION`, with no invoice target at all.
 
-**Net position: doc 40746 (June vs. July) and doc 44555 (March-2026 vs.
-December-2025) are genuinely unresolved.** Neither the exact-sum aggregate
-match nor the ERP-ledger invoice split is authoritative here; this needs
-either a real remittance advice or resolution of docs 38846/39812's
-orphaned status, not another inference from this same data. §5 below
-reflects this open state; §2, §3, §8, and §9 are updated to stop asserting
-either direction as settled.
+**Net position at that point: doc 40746 (June vs. July) and doc 44555
+(March-2026 vs. December-2025) were genuinely unresolved.** Neither the
+exact-sum aggregate match nor the ERP-ledger invoice split was
+authoritative on its own.
 
 3. A third, targeted check (also requested) ruled out one candidate
    explanation: the disputed totals are not contaminated by cylinder
@@ -63,6 +60,19 @@ either direction as settled.
    above first suggested — the more promising thread is that it and doc
    38846 have no month assignment at all, not that either is individually
    suspicious. §5 reflects both corrections.
+4. **Doc 40746 is now resolved: July, not June.** The user supplied an
+   independent source — `JIM001_LPG_Reconciliation_v4` (a Google Sheet;
+   internal analyst workbook, not a remittance advice, so still Tier 3) —
+   whose own separately-computed "Exact Monthly LPG Invoice-Payment
+   Matches" table flags doc 40746 as an exact `R0.00` match to **July**,
+   independently of both this review's aggregate exact-sum test and the
+   published 2025 report (which already said July). That's two
+   independent computations converging on July against one unconfirmed
+   mechanical invoice split that said June — enough to move this from
+   `UNRESOLVED` to `ASSERTED`. Applied directly to
+   `monthly_lpg_insights.csv`. **Doc 44555 is not addressed by this
+   source** (its payments table stops before that payment's date) and
+   remains genuinely unresolved. §5, §8, §9 updated.
 
 ---
 
@@ -119,16 +129,17 @@ re-run of whatever produced the other six is the fix), but flags them so
 no downstream collections or balance-confidence figure keeps citing the
 stale totals.
 
-A fourth discrepancy looked like the reverse case but turned out to be
-genuinely unresolved: the **2025** report reassigns doc 40746 from 2025-06
-to 2025-07 because the gross amount (`14,579.44`) happens to equal July's
-aggregate billing to the cent. `allocation_edges.csv` does carry
-invoice-level rows for it (AL-0337–AL-0340, four invoices all dated June
-2025), but those rows are unconfirmed (`ERP_LEDGER`/`Probable`) and,
-on inspection, look like a mechanical FIFO fill of an already-assumed
-month rather than independent evidence — see §5. **Neither the CSV's June
-assignment nor the 2025 report's July reassignment can be called settled
-on the evidence available in this repo.** See §5.
+A fourth discrepancy looked like the reverse case, went through an
+unresolved phase, and is now settled: the **2025** report reassigns doc
+40746 from 2025-06 to 2025-07 because the gross amount (`14,579.44`)
+happens to equal July's aggregate billing to the cent. `allocation_edges.csv`
+does carry invoice-level rows for it (AL-0337–AL-0340, four invoices all
+dated June 2025), but those rows are unconfirmed (`ERP_LEDGER`/`Probable`)
+and, on inspection, look like a mechanical FIFO fill of an already-assumed
+month rather than independent evidence. An external source
+(`JIM001_LPG_Reconciliation_v4`) independently confirms July with its own
+exact `R0.00` match. **The 2025 report's July assignment is correct; the
+CSV's June assignment (now fixed) was the error.** See §5.
 
 ---
 
@@ -143,7 +154,7 @@ on the evidence available in this repo.** See §5.
 | 2022 | R17,682.42 | Holds — **human-ratified calibration year.** |
 | 2023 | −R17,739.02 | Holds — human-ratified (Pattern 3 mirror carry, Rule 13 surpluses, verified underpayments). |
 | 2024 | R0.51 | Holds — human-ratified pooled Apr–Nov settlement window; near-perfect net. |
-| 2025 | ≈R61,351.13 (R89,246.79 less R27,895.66 now resolved — Jan+Feb settled by docs 38846/39812, §5/§6) | Holds. Jan and Feb move from UNPAID to SETTLED. One open item remains: doc 40746 settles either June (CSV) or July (2025 report) — genuinely unresolved, see §5; total exposure is identical under either reading. Real, growing exposure remains in Apr/May/Dec and whichever of Jun/Jul isn't settled. Unreviewed overall. |
+| 2025 | ≈R61,351.13 (R89,246.79 less R27,895.66 — Jan+Feb settled by docs 38846/39812, §5/§6) | Holds. Jan and Feb move UNPAID → SETTLED; June moves SETTLED → UNPAID and July moves UNPAID → SETTLED (doc 40746 externally confirmed as July, §5). Total exposure unaffected by the June/July move. Real, growing exposure remains in Apr/May/June/Dec. Unreviewed overall. |
 | 2026 (through May) | R72,399.45 | All five months genuinely unpaid — no candidate payment in the window matches any of them. One open item: doc 44555 (Jun-2026) settles either March-2026 (CSV/ledger) or December-2025 (aggregate match) — genuinely unresolved, see §5. Unreviewed. |
 
 **Verdict on the generalization:** the exact-sum-per-calendar-month test
@@ -153,10 +164,11 @@ month that doesn't is either (a) a genuine partial payment/mirror carry
 already independently corroborated by candidate-invoice evidence (2019,
 2021-tail, 2022, 2023, 2024), (b) a genuinely unpaid month with no
 candidate payment anywhere in a ±3 month window (2019-01/03, 2020-02/03,
-2025's open months, all of 2026), or (c) one of two genuinely unresolved
-payments where an aggregate exact-sum match and an unconfirmed ERP-ledger
-invoice split disagree (§5, docs 40746 and 44555). It does **not**
-hold as a simple
+2025's open months, all of 2026), or (c) doc 44555, still genuinely
+unresolved, where an aggregate exact-sum match and an unconfirmed
+ERP-ledger invoice split disagree (§5) — doc 40746 was in this category
+too but is now resolved via external evidence. It does **not** hold as a
+simple
 one-payment-one-month sequential pairing — that assumption is exactly what
 produced the two stale reports in §2, and is the same anti-pattern
 `SKILL.md` was written to catch for MD0003.
@@ -197,7 +209,7 @@ balance without that check.
 
 ---
 
-## 5. Two genuinely unresolved payments (dedup confirmed, month disputed)
+## 5. Two disputed payments — one resolved (July), one still open
 
 The original pass of this review found three payments whose *gross amount*
 exact-matches a different month's *aggregate* billing total than the one
@@ -205,7 +217,9 @@ they're paired with in `monthly_lpg_insights.csv`. A first follow-up
 checked `allocation_edges.csv`'s invoice-level rows and retracted two of
 them as false positives. **A second follow-up checked how those
 invoice-level rows were generated, and that retraction was itself
-premature.** Both readings for docs 40746 and 44555 remain open.
+premature.** At that point both readings for docs 40746 and 44555 remained
+open; a fourth check (user-supplied external evidence) has since resolved
+40746 — see the table and discussion below.
 
 **Doc 6104 is resolved** — no allocation rows exist for it in
 `allocation_edges.csv` at all, and it exact-matches 2019-08's billing only
@@ -230,8 +244,35 @@ invoices."** — exactly this evidence tier.
 
 | Payment | Aggregate exact-sum says | ERP-ledger invoice split says (unconfirmed) | Status |
 | :--- | :--- | :--- | :--- |
-| **40746** (2025-08-22, R14,579.44) | 2025-07 (matches July's billing to the cent) | AL-0337–AL-0340: 4 invoices (43628, 43910, 44097, 44241), all dated June 2025, R38.67 short on the last | **Unresolved** — neither reading confirmed |
+| **40746** (2025-08-22, R14,579.44) | 2025-07 (matches July's billing to the cent) | AL-0337–AL-0340: 4 invoices (43628, 43910, 44097, 44241), all dated June 2025, R38.67 short on the last | **Resolved — July** (see below) |
 | **44555** (2026-06-05, R11,666.12) | 2025-12 (matches Dec's billing to the cent) | AL-0359–AL-0361: 3 invoices (49540, 49727, 49842), all dated March 2026, R271.44 short on the last | **Unresolved** — neither reading confirmed |
+
+**Doc 40746 resolved (July) via an independent external source.** The
+user supplied `JIM001_LPG_Reconciliation_v4` (a Google Sheet; internal
+analyst workbook, last modified 2026-06-12, owned by an internal analyst
+account — not a customer remittance advice, so still Tier 3, not Tier 1).
+Its own "Exact Monthly LPG Invoice-Payment Matches" table, built
+separately from `allocation_edges.csv`, flags doc 40746 as an exact
+`R0.00`-variance match to **July**:
+
+> `2025 | July | R14,579.44 | 00040746 | 2025-08-22 | R14,579.44 | ... | R0.00 | July`
+
+This is a second, independently-computed method (distinct from this
+review's own aggregate exact-sum test, and from the published 2025
+report) landing on July — three converging readings against one
+unconfirmed mechanical invoice split that said June. That tips this from
+"neither side proven" to "confirmed, on the weight of evidence, though
+still not remittance-grade Tier 1." Applied to `monthly_lpg_insights.csv`:
+June moves to `UNPAID` (R14,618.11), July to `FULLY_SETTLED`. Total 2025
+exposure is unchanged — this only moves which specific month is unpaid.
+
+The same source's payments table stops before doc 44555's date
+(2026-06-05) and does not address it — **44555 remains unresolved.**
+Worth noting: it independently labels doc 38846 → "January" and doc
+39812 → "jan/Feb", matching this review's own contiguous-run finding
+(§6) exactly, before this review ever saw that file — good convergent
+validation of that resolution too, for what it's worth given it's the
+same non-Tier-1 source class.
 
 A related thread sits in the same window: payment **39812** (2025-06-12,
 R20,557.69 — alone more than enough to cover all of June 2025's
@@ -255,8 +296,8 @@ allocation rows for it, each to a **distinct** target invoice — no
 duplicate target, no double-counted amount. The 4 allocated amounts
 (4,382.95 + 3,115.05 + 4,272.07 + 2,809.37) sum to **R14,579.44**, matching
 the payment gross exactly. **No dedup issue found — the real gross amount
-is R14,579.44 either way; what's unresolved is which month it settles, not
-its size.**
+is R14,579.44, confirmed independently of which month it settles** (now
+resolved as July — see below).
 
 **Lag-precedent check (requested, but doesn't settle this):** lag (payment
 date minus invoice date) across all 361 dated allocation rows, 2018–2026,
@@ -447,7 +488,7 @@ human), the same fields would apply once ratified:
 | 2021-10/11 | mirror_carry_pair | 3 | ASSERTED |
 | 2025-01 (docs 38846 partial + 39812 partial) | calendar_month, invoice-split | 3 | ASSERTED — cent-exact invoice-level match (§5/§6) |
 | 2025-02 (doc 39812 partial) | calendar_month, invoice-split | 3 | ASSERTED — cent-exact invoice-level match (§5/§6) |
-| 2025-06 or 2025-07 (doc 40746) | calendar_month, unresolved | 3 | **ASSERTED — UNRESOLVED** (§5); do not apply either month |
+| 2025-07 (doc 40746) | calendar_month | 3 | ASSERTED — confirmed by 2 independent sources (§5), applied |
 | 2025 (4 other settled months) | calendar_month | 3 | ASSERTED |
 | 2026-03 or 2025-12 (doc 44555) | calendar_month, unresolved | 3 | **ASSERTED — UNRESOLVED** (§5); do not apply either month |
 | Standing credit, 2021-04–10 | n/a (not a settlement) | 3 | ASSERTED, flagged for ERP-side verification |
@@ -464,13 +505,17 @@ human), the same fields would apply once ratified:
    `UNPAID` to `FULLY_SETTLED`, assigning docs 38846 and 39812
    per the invoice-level split in §5/§6 (cent-exact, no dedup issue).
    This is confirmed, not a candidate — apply it.
-3. Do **not** change `monthly_lpg_insights.csv` or the 2025 report on
-   doc 40746's month, and do not apply doc 44555's aggregate-match
-   reassignment either — both remain genuinely unresolved (§5).
+3. **Update `monthly_lpg_insights.csv` (done):** doc 40746 moved from
+   2025-06 to 2025-07, confirmed by `JIM001_LPG_Reconciliation_v4` and
+   the published 2025 report (§5) — two independent sources against one
+   unconfirmed mechanical split. June is now `UNPAID`, July
+   `FULLY_SETTLED`. Do not apply doc 44555's aggregate-match
+   reassignment — it remains genuinely unresolved (§5), unaddressed by
+   the same external source.
 4. If a real remittance advice or ERP export can be pulled for the
-   Jun–Aug 2025 or Dec 2025–Mar 2026 windows, use it to settle both
-   open items in §5 — this is exactly the kind of case Tier 1 evidence
-   is needed for; internal data alone won't arbitrate it further.
+   Dec 2025–Mar 2026 window, use it to settle doc 44555 (§5) — this is
+   exactly the kind of case Tier 1 evidence is needed for; internal data
+   alone won't arbitrate it further.
 5. Do **not** re-run the contiguous-run search against the R54,902.41
    pre-STAT-era orphans (§6) expecting another 38846/39812-style
    resolution — it was tried and ruled out for principled reasons
