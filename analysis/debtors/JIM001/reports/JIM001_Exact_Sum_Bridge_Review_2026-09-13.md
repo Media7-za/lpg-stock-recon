@@ -314,9 +314,10 @@ billing from `monthly_lpg_insights.csv` exactly (17,574.84 + 10,320.82 =
 window net to ~R0 every cycle (the standard EMPTY-pair pattern), so there
 was no CYL residual to fold in; this resolved on plain invoice-level
 partial-month splits. **January and February 2025 should move from
-UNPAID to SETTLED** (§3, §9); the R54,902.41 orphaned-cash figure below
-drops by R27,895.66 to **R27,006.44**, now confined to the pre-2021
-pre-STAT era.
+UNPAID to SETTLED** (§3, §9). Note these two payments were never part of
+the pre-2021 R54,902.41 orphaned-cash figure below (§6) — that group and
+this one were always separate; resolving this one does not change that
+total.
 
 This does not by itself settle the June-vs-July question for doc 40746
 (§5 above remains unresolved) — it's a different pair of payments in an
@@ -340,16 +341,43 @@ allocation (the same route `allocation_edges.csv`'s `SPLIT_PAYMENT_PORTION`
 rows already attempt), not month-level exact-sum testing.
 
 **Orphaned cash not represented in any month's `payment_total_allocated`:**
-across the full 9 years, 14 payments originally totaled **R54,902.41**
-unassigned to any billing month in `monthly_lpg_insights.csv`, even
-though the cash was received. Two of those — 38846 (R7,337.97) and 39812
-(R20,557.69) — are now resolved (§5): they settle January and February
-2025 in full, an invoice-level exact match. That leaves **R27,006.44**
-still orphaned, now confined entirely to the pre-2021 pre-STAT era
-(2018–2020). This is real, received money currently invisible to the
-per-month table — a concrete follow-up: run the same contiguous-run
-invoice-level search used to resolve 38846/39812 against these remaining
-12 payments before citing any 2018–2020 month as "genuinely unpaid."
+14 payments totaling **R54,902.41**, all pre-2021, are unassigned to any
+billing month in `monthly_lpg_insights.csv`, even though the cash was
+received: 4832, 4839, 4807, 4898, 4841, 5043, 5047, 5226, 6381, 7216,
+7226, 7348, 7489, 7572.
+
+**Tried the same contiguous-run search here (as done for 38846/39812) —
+it does not resolve, for principled reasons, not just absence of a
+match.** Building the same "open" invoice list (LPG invoices not already
+claimed by another payment's `SPLIT_PAYMENT_PORTION` rows) and searching
+contiguous date-ordered runs with a realistic ≤75-day span:
+
+1. **Ambiguous, duplicate matches.** Several targets return 2–8 equally
+   plausible contiguous matches. Worse: doc 7226 (2020-06-29) and doc
+   7489 (2020-09-04) — different payments, months apart — both "match"
+   the identical invoice range (4690–4766, Jan–Feb 2019). Two different
+   payments cannot both correctly claim the same invoices; this is the
+   signature of coincidence, not resolution.
+2. **Round-number amounts throughout this era** (R700.01, R1,400.01,
+   R3,000.00, R5,000.00, R3,250.00, R5,125.00, R930.00) recur constantly
+   as multiples of a standard per-unit rate, so exact matches against
+   round payment targets are cheap and unreliable. This is the opposite
+   of the Jan/Feb 2025 case, where the match was on non-round, unique
+   sums (R7,337.97, R20,557.69) — precision that made that match
+   credible and is absent here.
+3. A genuine **~10-month invoicing gap** (April 2020–February 2021, no
+   LPG invoices recorded at all) means a naive index-based "contiguous"
+   search silently bridges a year and calls it adjacent — a further
+   source of false positives that had to be explicitly excluded by the
+   span cap.
+
+**Verdict: these 14 payments cannot be resolved by the exact-sum /
+contiguous-run method**, consistent with §0's applicability boundary —
+this era predates JIM001's STAT-batch discipline and looks like round,
+ad hoc on-account payments rather than sums targeting specific invoices.
+Resolving them, if possible at all, needs a different kind of evidence
+(a period bank statement or bordereau), not further search over this
+same dataset.
 
 ---
 
@@ -443,10 +471,12 @@ human), the same fields would apply once ratified:
    Jun–Aug 2025 or Dec 2025–Mar 2026 windows, use it to settle both
    open items in §5 — this is exactly the kind of case Tier 1 evidence
    is needed for; internal data alone won't arbitrate it further.
-5. Reconcile the remaining R27,006.44 in orphaned pre-STAT-era cash (§6,
-   2018–2020 only now) against `allocation_edges.csv`'s invoice-level
-   splits, using the same contiguous-run search that resolved
-   38846/39812 — that method is now proven to work on this account.
+5. Do **not** re-run the contiguous-run search against the R54,902.41
+   pre-STAT-era orphans (§6) expecting another 38846/39812-style
+   resolution — it was tried and ruled out for principled reasons
+   (ambiguous/duplicate matches, round recurring amounts, a genuine
+   10-month invoicing gap). Resolving these needs a period bank
+   statement or bordereau, not further search over this same dataset.
 6. Get ERP-side confirmation of the R7,571.68 standing credit origin (§4)
    before netting it anywhere.
 
