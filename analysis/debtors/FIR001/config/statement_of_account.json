@@ -1,0 +1,92 @@
+{
+  "debtorCode": "FIR001",
+  "customerName": "FIRE AND VINE",
+  "referenceLabel": "Reference",
+  "referenceValue": "",
+  "businessHeader": [
+    "BELLA ENERGY SERVICES300 (PTY) LTD T/A GAZ EXPRESS",
+    "50 WINSTON ROAD",
+    "PIETERMARITZBURG",
+    "3201"
+  ],
+  "primaryTxt": "analysis/debtors/FIR001/raw/FIR001CURRENT.TXT.TXT",
+  "_comment_primaryTxt": "Jul–Sep 2026 CURRENT window, as-at 5 Sep 2026. EXCLUDE ALLOCATION DETAIL — open list via lpg_stripped + FIFO STAT closes, not ERP INVNO.",
+  "siteTxts": {},
+  "outputDir": "analysis/debtors/FIR001/reports",
+  "outputBaseName": "FIR001_Statement_of_Account",
+  "pdfStylesheet": "analysis/debtors/shared/templates/statement_pdf.css",
+  "openInvoiceModel": "lpg_stripped",
+  "_comment_openInvoiceModel": "JEN001 two-layer: v5 (reports/FIR001_Statement_Account_v5.md) is the operator sub-ledger. Customer SOA lists open LPG only (EMPTY pairs stripped). Closes are those v5 Part 1A returns to B/F after STAT TRANSF; generator encodes them as closedInvoiceOverrides.",
+  "allocationGate": {
+    "status": "PATTERN_ONLY",
+    "method": "lpg_stripped_fifo_stat",
+    "pilotReport": "reports/FIR001_STAT_Payment_FIFO_2026-09-05.md",
+    "note": "Not remittance-ratified. TRANSF STAT 128/129 amounts FIFO-clear LPG invoices on FIR001CURRENT.TXT.TXT. Remaining open inv 52962 R7,606.09. Generator gate REVIEW_REQUIRED until remittance or operator sets status RATIFIED."
+  },
+  "closedInvoiceOverrides": [
+    {
+      "doc": "51530",
+      "reason": "STAT 128 / payment 45093 TRANSF R8,084.86 exact match DN#22536 (FIFO). TXT 06 Jul 2026."
+    },
+    {
+      "doc": "51628",
+      "reason": "STAT 128 / payment 45103 TRANSF R7,827.07 exact match DN#22555 (FIFO). TXT 09 Jul 2026."
+    },
+    {
+      "doc": "51791",
+      "reason": "STAT 128 / payment 45205 TRANSF R16,241.18 = inv 51791+51877 (2×R8,120.59) FIFO. TXT 17 Jul 2026."
+    },
+    {
+      "doc": "51877",
+      "reason": "STAT 128 / payment 45205 TRANSF R16,241.18 = inv 51791+51877 FIFO. TXT 17 Jul 2026."
+    },
+    {
+      "doc": "52036",
+      "reason": "STAT 128 / payment 45474 TRANSF R8,120.59 exact match DN#23906 (FIFO). TXT 31 Jul 2026."
+    },
+    {
+      "doc": "52195",
+      "reason": "STAT 129 / payments 45586+45591 FIFO-clear DN#23927 R8,120.59. TXT 05–07 Aug 2026."
+    },
+    {
+      "doc": "52268",
+      "reason": "STAT 129 / payment 45586 TRANSF R7,827.07 exact match DN#24234 (amount); FIFO remainder of 45591 also closes this stack. TXT 05–07 Aug 2026."
+    },
+    {
+      "doc": "52463",
+      "reason": "STAT 129 / payment 45779 TRANSF R14,379.90 = inv 52463+52578 (2×R7,189.95) FIFO. TXT 17 Aug 2026."
+    },
+    {
+      "doc": "52578",
+      "reason": "STAT 129 / payment 45779 TRANSF R14,379.90 = inv 52463+52578 FIFO. TXT 17 Aug 2026."
+    },
+    {
+      "doc": "52736",
+      "reason": "STAT 129 / payment 45891 TRANSF R7,189.95 exact match DN#24929 (FIFO). TXT 26 Aug 2026."
+    },
+    {
+      "doc": "52844",
+      "reason": "STAT 129 / payment 45995 TRANSF R7,189.95 exact match DN#23984 (FIFO). TXT 31 Aug 2026."
+    }
+  ],
+  "customerDueBasis": "erp_header",
+  "hideAccountLevelSection": false,
+  "collapseAccountLevelAsOpeningBalance": true,
+  "collapsedAccountLevelLabel": "Opening balance (pre-Jul 2026 carry, not itemised below)",
+  "collapsedAccountLevelReference": "v5 operator sub-ledger: combined B/F R597.43 (Part 1A sticky) + Part 1B CYL close R517.50. Itemised internally in balanceBridgeLines; customer document matches JEN001 collapsed B/F presentation.",
+  "_comment_customerDueBasis": "JEN001 presentation: Amount due = ERP CURRENT BALANCE (v5 combined 1A+1B). Open list = remaining Part 1A LPG invoice only. Account-level collapsed — do not itemise CYL residual on the customer document (v5 Part 1B stays operator-only).",
+  "balanceBridgeLines": [
+    {
+      "id": "bf_carry",
+      "label": "Opening balance brought forward",
+      "amount": 597.43,
+      "reference": "TXT BALANCE B/F line 14 — sticky through Jul–Sep 2026 (never moved by STAT 128/129). Same figure as Global Reports/130720251H45M.TXT 120+ DAYS."
+    },
+    {
+      "id": "cyl_residual_52737",
+      "label": "Cylinder deposit outstanding (inv 52737 / CN 15535)",
+      "amount": 517.5,
+      "reference": "EMPTY pair DN#24929: inv 52737 R6,555.00 vs CN 15535 R−6,037.50 = R517.50 (1× 9kg deposit). TXT 22–24 Aug 2026. v5 Part 1B close."
+    }
+  ]
+}
