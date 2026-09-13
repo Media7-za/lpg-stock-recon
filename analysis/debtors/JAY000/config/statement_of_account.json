@@ -1,0 +1,27 @@
+{
+  "debtorCode": "JAY000",
+  "customerName": "JAYZ GRILL",
+  "referenceLabel": "Trading as",
+  "referenceValue": "Jays Grill",
+  "sourceKind": "dtrx_headers",
+  "_comment_sourceKind": "No DEBENQ TXT. Statement reconstructed from transaction_headers + transaction_items (DTRX ingest). Balance due is ASSERTED header-sum, not PROVEN ERP CURRENT BALANCE. Do not send to customer.",
+  "businessHeader": [
+    "BELLA ENERGY SERVICES300 (PTY) LTD T/A GAZ EXPRESS",
+    "50 WINSTON ROAD",
+    "PIETERMARITZBURG",
+    "3201"
+  ],
+  "headersCsv": "analysis/debtors/JAY000/data/dtrx_headers.csv",
+  "itemsCsv": "analysis/debtors/JAY000/data/dtrx_items.csv",
+  "reconstructedTxt": "analysis/debtors/JAY000/raw/DTRX_RECONSTRUCTED_JAY000.TXT",
+  "primaryTxt": "analysis/debtors/JAY000/raw/DTRX_RECONSTRUCTED_JAY000.TXT",
+  "_comment_primaryTxt": "Audit reconstruction only — not a DEBENQ enquiry. npm run debtors:customer-statement must not be used to send this account.",
+  "siteTxts": {},
+  "outputDir": "analysis/debtors/JAY000/reports",
+  "outputBaseName": "JAY000_Statement_of_Account",
+  "pdfStylesheet": "analysis/debtors/shared/templates/statement_pdf.css",
+  "closedInvoiceOverrides": [],
+  "balanceBridgeLines": [],
+  "customerDueBasis": "erp_header",
+  "_comment_customerDueBasis": "erp_header here means the reconstructed DTRX header-sum, not a DEBENQ CURRENT BALANCE."
+}

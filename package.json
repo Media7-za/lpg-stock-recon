@@ -23,6 +23,8 @@
     "debtors:parse-backlog": "node analysis/debtors/shared/scripts/parse_global_aged_debt.mjs",
     "debtors:knowledge-compile": "node analysis/debtors/shared/scripts/allocation_knowledge_compile.mjs",
     "debtors:customer-statement": "node analysis/debtors/shared/scripts/generate_statement_of_account.mjs",
+    "debtors:dtrx-header-statement": "node analysis/debtors/shared/scripts/generate_dtrx_header_statement.mjs",
+    "debtors:dtrx-header-export": "node analysis/debtors/shared/scripts/export_dtrx_header_evidence.mjs",
     "debtors:tag-check": "node analysis/debtors/shared/scripts/check_invoice_tag_coverage.mjs",
     "debtors:tag-check:all": "node analysis/debtors/shared/scripts/check_invoice_tag_coverage.mjs --all",
     "debtors:twk002-allocation-ingest": "node analysis/debtors/TWK002/scripts/remittance_allocation_ingest.mjs --write",
