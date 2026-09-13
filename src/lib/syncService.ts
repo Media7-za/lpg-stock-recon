@@ -279,6 +279,32 @@ export class SyncService {
                     if (retries < MAX_RETRIES) await delay(1000 * retries);
                     else progress.errors.push(`Batch error: ${error.message}`);
                 } else {
+                    // Keep Orders-Module's products table in lockstep with erp_inventory --
+                    // id reuses stockno directly (products.id has no DB-side generator, and
+                    // the Step 3 port already treats product.id as an opaque string, not
+                    // numeric, so there's no format to collide with). Pricing (cost/
+                    // retail_tier1) is deliberately not mapped here -- products has no
+                    // columns for it yet; see agri-product-catalog-prd.md Sec 4/7.
+                    const { error: productsError } = await supabase
+                        .from('products')
+                        .upsert(
+                            batch.map((b) => ({
+                                id: b.stockno,
+                                stockno: b.stockno,
+                                description: b.description,
+                                category: b.category,
+                                group: b.group,
+                                brand: b.brand,
+                                weight: b.weight,
+                                updatedAt: new Date().toISOString(),
+                            })),
+                            { onConflict: 'id' }
+                        );
+                    if (productsError) {
+                        console.error(`[SyncService] Products derivation error:`, productsError);
+                        progress.errors.push(`Products derivation error: ${productsError.message}`);
+                    }
+
                     progress.synced += batch.length;
                     success = true;
                 }

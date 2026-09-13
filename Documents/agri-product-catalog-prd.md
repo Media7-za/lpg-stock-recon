@@ -80,16 +80,16 @@ needed: `FEED` (174), `PESTIC` (149), `SEED` (80), `FERTIL` (41), `HERBIC` (38),
 hoses, couplers, sold as Agri-side stock despite being gas-related hardware) and the gas-side
 `LPG`/`GAS`/`CYL` groups.
 
-## 4. What's Not Built — `products` Derivation and the Search UI
+## 4. `products` Derivation — Done (2026-09-13)
 
-**`products` (Orders-Module's table) is still empty.** Deriving it from `erp_inventory` is the
-next concrete step and is not blocked on anything — pure SQL, no external dependency. Proposed
-mapping, not yet applied:
+**`products` is now populated** — 1,154 rows, mirroring `erp_inventory` exactly (1,027 `AGR`).
+Mapping applied:
 
 ```
-products.id          <- erp_inventory.stockno   (or a generated id, if stockno collisions with
-                                                   the pre-existing products.stockno format need
-                                                   checking first)
+products.id          <- erp_inventory.stockno   (reused directly as id -- products.id has no
+                                                   DB-side generator, and the Step 3 port already
+                                                   treats product.id as an opaque string, not
+                                                   numeric, so there's no format to collide with)
 products.stockno     <- erp_inventory.stockno
 products.description <- erp_inventory.description
 products.category    <- erp_inventory.category
@@ -98,9 +98,25 @@ products.brand       <- erp_inventory.brand
 products.weight      <- erp_inventory.weight
 ```
 
-Note `products` has no `cost`/`retail_tier1` columns today — if the order-taking UI needs to show
-price, that's a schema addition to `products` (or a join back to `erp_inventory` at read time,
-avoiding duplicated pricing data that could drift). Not decided yet.
+**Kept in lockstep going forward, not a one-off script.** `SyncService.syncInventory()`
+(`src/lib/syncService.ts`) now upserts into `products` immediately after each `erp_inventory`
+batch succeeds, on every future Stock Master re-upload — avoiding two copies of
+category/description/etc. that could silently drift apart.
+
+**Verified end to end with real data**: ran the exact transaction `upsert-order` executes —
+insert order → insert order_item referencing a real product (`00000030`, "WHOLE YELLOW MAIZE
+50KGS") against a real `commercial_customers` row — directly via SQL. Succeeded cleanly; cleaned
+up after. This closes the blocker noted in the companion delivery-migration PRD §6/§9: the
+`upsert-order` function's remaining failure is now *only* the missing `DATABASE_URL` secret, not
+also an empty product catalog.
+
+**Still not mapped, deliberately: `cost`/`retail_tier1`.** `products` has no columns for pricing
+today — if the order-taking UI needs to show price, that's a schema addition to `products` (or a
+join back to `erp_inventory` at read time, avoiding duplicated pricing data that could drift).
+Not decided yet; nothing currently needs it, since no UI reads from `products` yet.
+
+**Not yet built:** weight backfill (still ~5% coverage on Agri SKUs) and the search-first
+order-taking UI itself (§ below) — the data is ready, the UI isn't.
 
 **Weight coverage is poor.** Only 45 of the 1,027 active `AGR` rows have a non-zero `WEIGHT` in
 the source export — the rest are `0.0000`. This matters beyond display: the companion delivery
@@ -149,7 +165,7 @@ since the answer changes where the category-filter/search-bar work lives.
 | Phase | Scope | Status |
 |---|---|---|
 | ERP inventory sync pipeline | `erp_inventory` table, `parseInventory`/`syncInventory`, Data Hub UI card | **Done**, live, 1,154 rows loaded |
-| `products` derivation | Map `erp_inventory` → `products` | Not started, unblocked |
+| `products` derivation | Map `erp_inventory` → `products`, kept in lockstep on every future sync | **Done** (2026-09-13), verified end to end with a real order/order_item |
 | Weight backfill | Regex-extract bag size from `DESCRIP` where `WEIGHT = 0` | Not started |
 | One-form-vs-two decision | UX call, needed before the next line | Open question (§6) |
 | Search-first order UI | Typeahead + category chips + per-customer shortcuts | Designed, not built |
@@ -157,11 +173,13 @@ since the answer changes where the category-filter/search-bar work lives.
 
 ## 8. Risks
 
-- **`products` staying empty blocks real order-taking end to end**, independent of the delivery
-  migration's own `DATABASE_URL` blocker (see the companion PRD, §6) — `upsert-order` needs a
-  valid `productId` even once its secret is fixed, so this thread's completion gates that one's
-  full verification, not just its own goals.
 - **Re-running the STOCK.TXT import will silently correct anything wrong today** (upsert-on-
-  `stockno` always takes the latest export as truth) — good for staying current, but means a bad
-  export overwrites good data with no versioning or diff shown. Worth a "what changed" summary in
-  the sync UI if this becomes a recurring operational concern, not built now.
+  `stockno` always takes the latest export as truth, for both `erp_inventory` and now
+  `products`) — good for staying current, but means a bad export overwrites good data with no
+  versioning or diff shown. Worth a "what changed" summary in the sync UI if this becomes a
+  recurring operational concern, not built now.
+- **`products.id` reusing `stockno` directly is a one-way door once real orders exist.** Fine
+  today (`order_items` has 0 rows), but if a future ERP re-code ever changes a `stockno` for the
+  same physical product, any historical `order_items.product_id` referencing the old code would
+  need a real migration, not just an upsert. Not a problem yet — noted so it isn't a surprise
+  later.

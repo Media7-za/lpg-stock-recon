@@ -158,6 +158,14 @@ successfully run. Verified two ways:
 `orders`/`order_items`/`order_events` rows were ever created by any failed attempt — verified via
 direct count (all zero) both before and after the diagnostic test.
 
+**Update 2026-09-13: the other blocker is cleared.** `products` was empty when this was first
+diagnosed, which meant `upsert-order`'s create mode couldn't have succeeded even with the secret
+set (it requires a non-empty `items` array with valid `productId`s). The companion
+`agri-product-catalog-prd.md` now has `products` populated (1,154 rows, derived from a real ERP
+export) and kept in lockstep going forward — verified directly by running the same insert
+transaction against a real product and customer. `DATABASE_URL` is now the *only* remaining
+blocker.
+
 **Fix requires a human with dashboard or CLI access** — no MCP tool in this project can read or
 set Edge Function secrets, and constructing a database connection string with a real password is
 not something an agent should do unprompted. Two paths, either works:
@@ -197,7 +205,7 @@ answer here, but confirm against each table's actual access needs before applyin
 | Phase 4 Step 2 (Product/Customer) | Confirmed reuse of `products`/`commercial_customers` | **Done**, unmerged branch |
 | Phase 4 Step 3 (Order/OrderItem) | Form UI + `upsert-order` | **Done, but broken** (§6) |
 | Phase 4 Step 4 (Trip) | Trip UI + `upsert-trip` (undeployed) + thin Delivery read slice | **Done**, `upsert-trip` deliberately held back |
-| **Next: verify `upsert-order`** | Confirm `DATABASE_URL` secret, re-run live test | **Blocked on human action** (§6) |
+| **Next: verify `upsert-order`** | Confirm `DATABASE_URL` secret, re-run live test | **Blocked on human action only** — `products` is populated (§6 update) |
 | **Next: deploy `upsert-trip`** | Was held specifically pending `upsert-order` verification | Blocked on the above |
 | **Next: close the Order→Delivery gap** | Either extend `upsert-order` or fold into Step 5 | Not started |
 | Phase 5 (real Delivery domain) | `DeliveryItem` writes, `DeliveryReturn`, `DeliveryProof`, tracking/proof UI | Not started |
