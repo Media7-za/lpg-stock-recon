@@ -113,8 +113,80 @@ def load_payments_index() -> dict[str, dict]:
     return index
 
 
+def compute_doc_month_gross(
+    insights_rows: list[dict], payments_index: dict[str, dict]
+) -> dict[tuple[str, str], float]:
+    """
+    Split a payment doc's gross across every month it's referenced in,
+    instead of counting its full gross against each one (which double-
+    counts a payment that funded more than one month -- e.g. doc 39812
+    partially settles 2025-01 and the rest of 2025-02).
+
+    Each month's own `payment_total_allocated` in monthly_lpg_insights.csv
+    is trusted ground truth for how much cash was actually applied that
+    month. So: any month where a shared doc is the *sole* reference has
+    its contribution solved directly (= that month's allocated total).
+    Whatever of the doc's gross remains unresolved after that is the
+    amount that went to the month(s) where it co-occurs with other docs.
+
+    If a shared doc never has a solo-reference month (co-occurs with
+    other docs everywhere it appears), the remainder is split evenly
+    across those months as a fallback -- no case in this dataset needs
+    that path today (only doc 39812 is shared, and 2025-02 resolves it
+    directly), so it's untested; a future shared doc without a solo
+    month would need per-invoice evidence, not a guess like this.
+    """
+    doc_months: dict[str, list[str]] = defaultdict(list)
+    month_refs: dict[str, list[str]] = {}
+    month_need: dict[str, float] = {}
+
+    for row in insights_rows:
+        my = row["month_year"]
+        refs = parse_payment_refs(row["payment_refs_allocated"])
+        month_refs[my] = refs
+        month_need[my] = float(row["payment_total_allocated"])
+        for d in refs:
+            doc_months[d].append(my)
+
+    result: dict[tuple[str, str], float] = {}
+    resolved_doc_total: dict[str, float] = defaultdict(float)
+
+    # Pass 1: solo-reference months for a shared doc are solved directly.
+    for my, refs in month_refs.items():
+        if len(refs) == 1 and len(doc_months[refs[0]]) > 1:
+            d = refs[0]
+            amt = round(month_need[my], 2)
+            result[(my, d)] = amt
+            resolved_doc_total[d] += amt
+
+    # Pass 2: remainder of each shared doc's gross goes to the month(s)
+    # left unresolved (evenly split if more than one -- see docstring).
+    for d, months in doc_months.items():
+        if len(months) == 1:
+            continue
+        rec = payments_index.get(d)
+        total_gross = rec["gross"] if rec else 0.0
+        remaining = round(total_gross - resolved_doc_total[d], 2)
+        unresolved_months = [my for my in months if (my, d) not in result]
+        if not unresolved_months:
+            continue
+        share = round(remaining / len(unresolved_months), 2)
+        for i, my in enumerate(unresolved_months):
+            if i == len(unresolved_months) - 1:
+                amt = round(remaining - share * (len(unresolved_months) - 1), 2)
+            else:
+                amt = share
+            result[(my, d)] = amt
+
+    return result
+
+
 def resolve_payments(
-    refs_raw: str, dates_raw: str, payments_index: dict[str, dict]
+    month_year: str,
+    refs_raw: str,
+    dates_raw: str,
+    payments_index: dict[str, dict],
+    doc_month_gross: dict[tuple[str, str], float],
 ) -> tuple[str, str, float | None]:
     refs = parse_payment_refs(refs_raw)
     if not refs:
@@ -128,7 +200,8 @@ def resolve_payments(
         if rec:
             docs.append(rec["doc_display"])
             dates.append(rec["payment_date"])
-            gross_total += rec["gross"]
+            split_amt = doc_month_gross.get((month_year, clean))
+            gross_total += split_amt if split_amt is not None else rec["gross"]
         else:
             docs.append(clean.zfill(8))
             gross_total += 0.0
@@ -148,17 +221,22 @@ def load_month_rows(payments_index: dict[str, dict]) -> list[dict]:
                 continue
             docs_by_month[row["month_year"]].add(row["doc_no"])
 
-    out: list[dict] = []
     with INSIGHTS.open(newline="", encoding="utf-8") as f:
-        for row in csv.DictReader(f):
-            my = row["month_year"]
-            open_amt = max(float(row["difference"]), 0.0)
-            pmt_docs, pmt_dates, pmt_gross = resolve_payments(
-                row["payment_refs_allocated"],
-                row["payment_dates"],
-                payments_index,
-            )
-            out.append(
+        insights_rows = list(csv.DictReader(f))
+    doc_month_gross = compute_doc_month_gross(insights_rows, payments_index)
+
+    out: list[dict] = []
+    for row in insights_rows:
+        my = row["month_year"]
+        open_amt = max(float(row["difference"]), 0.0)
+        pmt_docs, pmt_dates, pmt_gross = resolve_payments(
+            my,
+            row["payment_refs_allocated"],
+            row["payment_dates"],
+            payments_index,
+            doc_month_gross,
+        )
+        out.append(
                 {
                     "billing_month": my,
                     "year": row["year"],

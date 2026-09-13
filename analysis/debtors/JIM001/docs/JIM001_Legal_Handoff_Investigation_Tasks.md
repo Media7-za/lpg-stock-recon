@@ -8,10 +8,11 @@
 
 ---
 
-## Before you start: two facts you need, not history
+## Before you start: three facts you need, not history
 
-1. **`monthly_lpg_insights.csv` is known-stale for 2025-06 and 2026-03.** The current yearly reports are correct for those months, the CSV isn't. If anything you're shown quotes the CSV for those two months without flagging this, ask for the yearly report figure instead.
+1. **`monthly_lpg_insights.csv` was stale for 2025-06 and 2026-03 as of the original Bridge review; 2025-06 is now fixed** (doc 40746 confirmed as July 2025's payment, not June's — two independent sources agree). **2026-03 (doc 44555) is still open** — see the dedicated note below. If anything you're shown disagrees with the current CSV on either month, re-check which version it's reading from.
 2. **The 2021 yearly report is factually wrong about October, November, and December** — it says all three were "completely skipped." They weren't; two of them have small partial payments that happen to offset each other. This is already corrected in the Bridge review, but don't let an old copy of the 2021 report resurface as if it were still authoritative.
+3. **Jan and Feb 2025 were also wrongly showing as unpaid — this is fixed too.** They looked unpaid because two payments (docs 38846 and 39812) were sitting in the ledger unassigned to any month. An invoice-level check found they split cleanly across exactly those two months to the cent — see below. This changes the Priority 1 claim amount: it's *smaller* than the original unpaid-months list implied.
 
 ---
 
@@ -19,7 +20,11 @@
 
 **Why this comes first:** this *is* the amount being claimed. Nothing else on this list changes the number being pursued — this is the only section that does.
 
-Unpaid months currently on record: **2025 — Jan, Feb, Apr, May, Jun, Dec. 2026 — Jan through May.**
+Unpaid months currently on record (corrected — Jan/Feb 2025 removed, see fact 3 above): **2025 — Apr, May, Jun, Dec. 2026 — Jan, Feb, Apr, May.** 2026-03 is `PARTIALLY_SETTLED` but disputed — see the note below before treating any part of it as settled or as an additional unpaid amount.
+
+**Checked and closed: is there uncaptured cash sitting behind any of these months, the way there was for Jan/Feb 2025?** No. Every payment in the ledger that isn't currently assigned to a month is from 2018–2020 — there is nothing unassigned anywhere near 2025 or 2026. Concretely: the payment sequence runs 40063 (settles Mar 2025) → 40746 (settles Jul 2025) with nothing in between, and 43199 (settles Nov 2025, posted 2026-02-05) → 44555 (disputed, see below) with nothing in between either. So Apr, May, Jun, and Dec 2025 and Jan, Feb, Apr, May 2026 are genuinely unpaid — not just unassigned — and can proceed through the rest of Priority 1's checklist as real claim items.
+
+**Open item — doc 44555 / 2026-03:** this payment (R11,666.12) either settles March 2026 in full minus a R271.44 shortfall (per the ERP's own invoice-level allocation), or settles December 2025 in full instead (per an aggregate-total match, independently corroborated once by a separate internal reconciliation workbook — not a remittance advice). The two readings move R11,666.11 between the December 2025 and March 2026 unpaid-months lines but don't change the total claimed. Don't include this payment's month in the claim as settled fact until one reading is confirmed — treat both December 2025 and March 2026 as still-open for this specific payment.
 
 For each invoice in these months:
 
