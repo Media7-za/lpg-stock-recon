@@ -2,12 +2,26 @@
 -- PDP-31: Deduplicate transaction_items rows created by fingerprint drift
 -- ============================================================================
 --
--- STATUS: NOT YET APPLIED — PENDING MANUAL REVIEW.
--- This script contains DELETE statements against production data. It must be
--- run manually, by a human, against project oqhpxnaadahohwkslive, only after
--- reviewing the SELECT preview sections below and confirming the row counts
--- and the amounts affected. Do not wire this into any automated migration
+-- STATUS: PARTIALLY APPLIED (2026-09-13) — clean cohort only, see below.
+-- This script contains DELETE statements against production data. Any further
+-- run must be manual, by a human, against project oqhpxnaadahohwkslive, only
+-- after reviewing the SELECT preview sections below and confirming the row
+-- counts and amounts affected. Do not wire this into any automated migration
 -- runner. Take a fresh backup / point-in-time-recovery checkpoint first.
+--
+-- 2026-09-13 PARTIAL PRODUCTION RUN: executed scoped to the 55 JEN001 + 50
+-- TWK002 docs verified (see JEN001_PDP31_Dedup_Simulation_2026-09-13.md /
+-- TWK002_PDP31_Dedup_Simulation_2026-09-13.md in the account report folders)
+-- to have exactly ONE transaction_headers row each — i.e. explicitly
+-- EXCLUDING every doc also affected by PDP-34's dual-header-row bug, where
+-- item/header tie-out is not yet a meaningful signal. Result: 76 rows deleted
+-- for JEN001, 139 for TWK002 (215 total); post-run reconciliation deltas on
+-- this cohort landed at R5,749.81 (JEN001) / R43,570.11 (TWK002), matching
+-- the pre-run simulation exactly. Remaining duplicates: 159 JEN001 rows / 186
+-- TWK002 rows, all within the PDP-34-confounded cohort, deliberately left
+-- untouched pending that ticket. Portfolio-wide duplication (300+ other
+-- accounts, per the original commit) is also still untouched — this run was
+-- scoped to JEN001/TWK002's clean cohort only, not a general rollout.
 --
 -- ROOT CAUSE (see src/lib/erpImportEngine.ts computeFingerprint() doc comment
 -- and the erpImportEngine.test.ts PDP-31 test block for full detail):
