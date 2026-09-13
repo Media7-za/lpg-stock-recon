@@ -48,10 +48,21 @@ incorporated and should be re-supplied if it still exists elsewhere.
 **Net position: doc 40746 (June vs. July) and doc 44555 (March-2026 vs.
 December-2025) are genuinely unresolved.** Neither the exact-sum aggregate
 match nor the ERP-ledger invoice split is authoritative here; this needs
-either a real remittance advice or ERP-side clarification of payment
-39812, not another inference from this same data. §5 below reflects this
-open state; §2, §3, §8, and §9 are updated to stop asserting either
-direction as settled.
+either a real remittance advice or resolution of docs 38846/39812's
+orphaned status, not another inference from this same data. §5 below
+reflects this open state; §2, §3, §8, and §9 are updated to stop asserting
+either direction as settled.
+
+3. A third, targeted check (also requested) ruled out one candidate
+   explanation: the disputed totals are not contaminated by cylinder
+   "shell" deposit SKUs (`docs/governance/sku_suffix_mapping.md`'s `.1`
+   suffixes). Recomputing directly from `invoices.csv` confirms both sides
+   of the dispute are already clean — see §5's shell-check paragraph.
+   Separately, payment 39812's `UNALLOCATED_PORTION` tag turned out to be
+   routine (32 of 78 payments carry it), not the anomaly the paragraph
+   above first suggested — the more promising thread is that it and doc
+   38846 have no month assignment at all, not that either is individually
+   suspicious. §5 reflects both corrections.
 
 ---
 
@@ -222,15 +233,16 @@ invoices."** — exactly this evidence tier.
 | **40746** (2025-08-22, R14,579.44) | 2025-07 (matches July's billing to the cent) | AL-0337–AL-0340: 4 invoices (43628, 43910, 44097, 44241), all dated June 2025, R38.67 short on the last | **Unresolved** — neither reading confirmed |
 | **44555** (2026-06-05, R11,666.12) | 2025-12 (matches Dec's billing to the cent) | AL-0359–AL-0361: 3 invoices (49540, 49727, 49842), all dated March 2026, R271.44 short on the last | **Unresolved** — neither reading confirmed |
 
-A related, unexplained anomaly compounds the doubt specifically for 40746:
-payment **39812** (2025-06-12, R20,557.69 — alone more than enough to cover
-all of June 2025's R14,618.11 billing) sits in the exact same window and
-is marked **100% `UNALLOCATED_PORTION`** ("leftover cash not consumed by
-LPG invoices"), with no invoice target at all. An earlier, larger payment
-being skipped while a payment arriving over two months later is credited
-with settling the same month is itself suspicious and suggests this
-stretch of ERP-derived allocation is unreliable in either direction, not
-just on this one payment.
+A related thread sits in the same window: payment **39812** (2025-06-12,
+R20,557.69 — alone more than enough to cover all of June 2025's
+R14,618.11 billing) is marked **100% `UNALLOCATED_PORTION`**, with no
+invoice target at all. This tag by itself is routine, not suspicious — 32
+of JIM001's 78 payments carry it across all 9 years, several already
+human-ratified. What is unusual is that 39812 (and doc 38846 just before
+it) have **no month assignment at all** in `monthly_lpg_insights.csv`,
+unlike the ratified cases — see the correction note below the
+recommendation for why this, not 39812's allocation tag on its own, is
+the more promising thread.
 
 **Dedup and net-amount check on doc 40746** (the discipline
 `RED001/scripts/allocation_ingest_pilot.mjs` applies via `SELECT DISTINCT
@@ -257,9 +269,40 @@ if it settles Dec-2025) are individually plausible on lag alone — **lag
 distribution doesn't discriminate between the two candidate months for
 either payment**, so it can't be used to break the tie.
 
+**Shell/CYL contamination check (requested, ruled out):** recomputed
+`is_lpg=True`-only totals directly from `invoices.csv` for all four
+candidate months (2025-06, 2025-07, 2025-12, 2026-03) per
+`docs/governance/sku_suffix_mapping.md` (the `.1`-suffix SKUs — `9.1`,
+`14.1`, `19.1`, `S.1`, `D.1` — are the brand-neutral cylinder deposit
+"shell asset" and must be stripped from the LPG ledger). All four match
+`monthly_lpg_insights.csv` exactly to the cent. Every invoice line under
+both payments' target docs (43628, 43880/43910, 44097, 44241, 49540,
+49727, 49842) is a pure `S01`/`901`/`S.4` gas-content line — none carry a
+mixed-in `.1` deposit line. Across the whole dataset, all 549 `.1`-suffix
+rows are correctly `is_cyl=True`, zero leaked into the LPG side. **This
+was not a shell-stripping bug; the numbers on both sides of the dispute
+are clean.**
+
+**Correction to the 39812 framing above:** on closer look, `payment 39812`
+being tagged `UNALLOCATED_PORTION`/`Exception` is not unique to this
+window — 32 of JIM001's 78 payments carry the same tag across all 9
+years, including several already human-ratified (2022's doc 16648,
+2023's doc 27468, 2024's docs 28893/30269/32896/33810/34425). A nonzero
+invoice-level gap is routine for this account's Rule 13 surplus / pooled-
+settlement pattern. What is still unusual about 39812 specifically is
+that, unlike those ratified cases, it has **no month assignment at all**
+in `monthly_lpg_insights.csv` — it and doc 38846 (2025-05-22, R7,337.97)
+sit as two consecutive, fully orphaned payments (R27,895.66 combined)
+immediately before the two disputed ones. April and May 2025 billing are
+also shown fully UNPAID. Neither individual amount nor the combined total
+lands on an exact cent-match against April, May, or any combination tried
+so far — but this is the most promising unexplored thread for resolving
+§5, not the "39812 alone is suspicious" framing this section originally
+used.
+
 **Recommendation:** treat both as `evidence_status: ASSERTED — UNRESOLVED`
-(§8) until a real remittance advice surfaces, or until payment 39812's
-unallocated status is explained (it may be the actual key to this whole
+(§8) until a real remittance advice surfaces, or until docs 38846/39812's
+orphaned status is resolved (it may be the actual key to this whole
 window). Do not apply either reassignment; do not cite either the CSV or
 the 2025 report as confirmed correct on this specific point.
 
