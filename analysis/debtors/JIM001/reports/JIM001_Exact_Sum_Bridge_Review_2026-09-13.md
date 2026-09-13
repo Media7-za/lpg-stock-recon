@@ -143,7 +143,7 @@ on the evidence available in this repo.** See §5.
 | 2022 | R17,682.42 | Holds — **human-ratified calibration year.** |
 | 2023 | −R17,739.02 | Holds — human-ratified (Pattern 3 mirror carry, Rule 13 surpluses, verified underpayments). |
 | 2024 | R0.51 | Holds — human-ratified pooled Apr–Nov settlement window; near-perfect net. |
-| 2025 | R89,246.79 (unaffected either way — see note) | Holds. One open item: doc 40746 settles either June (CSV) or July (2025 report) — genuinely unresolved, see §5. Total 2025 exposure is identical under both readings (it only moves which specific month carries the R38.67-vs-full-month gap). Unreviewed; real, growing exposure regardless. |
+| 2025 | ≈R61,351.13 (R89,246.79 less R27,895.66 now resolved — Jan+Feb settled by docs 38846/39812, §5/§6) | Holds. Jan and Feb move from UNPAID to SETTLED. One open item remains: doc 40746 settles either June (CSV) or July (2025 report) — genuinely unresolved, see §5; total exposure is identical under either reading. Real, growing exposure remains in Apr/May/Dec and whichever of Jun/Jul isn't settled. Unreviewed overall. |
 | 2026 (through May) | R72,399.45 | All five months genuinely unpaid — no candidate payment in the window matches any of them. One open item: doc 44555 (Jun-2026) settles either March-2026 (CSV/ledger) or December-2025 (aggregate match) — genuinely unresolved, see §5. Unreviewed. |
 
 **Verdict on the generalization:** the exact-sum-per-calendar-month test
@@ -289,22 +289,40 @@ window — 32 of JIM001's 78 payments carry the same tag across all 9
 years, including several already human-ratified (2022's doc 16648,
 2023's doc 27468, 2024's docs 28893/30269/32896/33810/34425). A nonzero
 invoice-level gap is routine for this account's Rule 13 surplus / pooled-
-settlement pattern. What is still unusual about 39812 specifically is
-that, unlike those ratified cases, it has **no month assignment at all**
-in `monthly_lpg_insights.csv` — it and doc 38846 (2025-05-22, R7,337.97)
-sit as two consecutive, fully orphaned payments (R27,895.66 combined)
-immediately before the two disputed ones. April and May 2025 billing are
-also shown fully UNPAID. Neither individual amount nor the combined total
-lands on an exact cent-match against April, May, or any combination tried
-so far — but this is the most promising unexplored thread for resolving
-§5, not the "39812 alone is suspicious" framing this section originally
-used.
+settlement pattern. What was unusual about 39812 is that, unlike those
+ratified cases, it had **no month assignment at all** in
+`monthly_lpg_insights.csv` — it and doc 38846 (2025-05-22, R7,337.97) sat
+as two consecutive, fully orphaned payments (R27,895.66 combined)
+immediately before the two disputed ones. This thread is now resolved —
+see below.
 
-**Recommendation:** treat both as `evidence_status: ASSERTED — UNRESOLVED`
-(§8) until a real remittance advice surfaces, or until docs 38846/39812's
-orphaned status is resolved (it may be the actual key to this whole
-window). Do not apply either reassignment; do not cite either the CSV or
-the 2025 report as confirmed correct on this specific point.
+**Docs 38846 and 39812 are resolved: they settle January + February 2025
+in full, not an unexplained orphan.** An exhaustive contiguous-run search
+of `invoices.csv`'s LPG invoice sequence (not just aggregate month
+totals) finds an exact, cent-precise partial-month split:
+
+| Payment | Invoices matched | Sum |
+| :--- | :--- | ---: |
+| **38846** (R7,337.97) | 39558 (2025-01-02, R2,950.74) + 39714 (2025-01-09, R4,387.23) — first 2 January invoices | R7,337.97 |
+| **39812** (R20,557.69) | 39898, 40143, 40319 (remaining 3 January invoices, R10,236.87) + 40622, 40881, 41051 (all 3 February invoices, R10,320.82) | R20,557.69 |
+| **Combined** | All of January + all of February 2025 | R27,895.66 |
+
+This matches January's (R17,574.84) and February's (R10,320.82) net LPG
+billing from `monthly_lpg_insights.csv` exactly (17,574.84 + 10,320.82 =
+27,895.66). CYL-adjusted combinations weren't needed to close this —
+`cylinder_transactions.csv` shows the CYL deposit/return pairs for this
+window net to ~R0 every cycle (the standard EMPTY-pair pattern), so there
+was no CYL residual to fold in; this resolved on plain invoice-level
+partial-month splits. **January and February 2025 should move from
+UNPAID to SETTLED** (§3, §9); the R54,902.41 orphaned-cash figure below
+drops by R27,895.66 to **R27,006.44**, now confined to the pre-2021
+pre-STAT era.
+
+This does not by itself settle the June-vs-July question for doc 40746
+(§5 above remains unresolved) — it's a different pair of payments in an
+adjacent window — but it does show the exact-sum method, applied at the
+invoice level rather than just the aggregate month level, resolves real
+gaps cleanly when the precedent actually exists.
 
 ---
 
@@ -322,15 +340,16 @@ allocation (the same route `allocation_edges.csv`'s `SPLIT_PAYMENT_PORTION`
 rows already attempt), not month-level exact-sum testing.
 
 **Orphaned cash not represented in any month's `payment_total_allocated`:**
-across the full 9 years, 14 payments totaling **R54,902.41** (mostly
-2018–2020, plus two 2025 payments — 38846 R7,337.97 and 39812 R20,557.69)
-never appear as the assigned payment for any billing month in
-`monthly_lpg_insights.csv`, even though the cash was received. This is
-real, received money currently invisible to the per-month table — a
-concrete follow-up: reconcile these against `allocation_edges.csv`'s
-invoice-level splits (that mechanism already exists for exactly this) before
-citing any month as "genuinely unpaid" in 2018–2020 or the two flagged 2025
-gaps.
+across the full 9 years, 14 payments originally totaled **R54,902.41**
+unassigned to any billing month in `monthly_lpg_insights.csv`, even
+though the cash was received. Two of those — 38846 (R7,337.97) and 39812
+(R20,557.69) — are now resolved (§5): they settle January and February
+2025 in full, an invoice-level exact match. That leaves **R27,006.44**
+still orphaned, now confined entirely to the pre-2021 pre-STAT era
+(2018–2020). This is real, received money currently invisible to the
+per-month table — a concrete follow-up: run the same contiguous-run
+invoice-level search used to resolve 38846/39812 against these remaining
+12 payments before citing any 2018–2020 month as "genuinely unpaid."
 
 ---
 
@@ -398,6 +417,8 @@ human), the same fields would apply once ratified:
 | 2019 (10 of 12 months) | calendar_month | 3 | ASSERTED |
 | 2021-04 to 2021-09 | calendar_month | 3 | ASSERTED |
 | 2021-10/11 | mirror_carry_pair | 3 | ASSERTED |
+| 2025-01 (docs 38846 partial + 39812 partial) | calendar_month, invoice-split | 3 | ASSERTED — cent-exact invoice-level match (§5/§6) |
+| 2025-02 (doc 39812 partial) | calendar_month, invoice-split | 3 | ASSERTED — cent-exact invoice-level match (§5/§6) |
 | 2025-06 or 2025-07 (doc 40746) | calendar_month, unresolved | 3 | **ASSERTED — UNRESOLVED** (§5); do not apply either month |
 | 2025 (4 other settled months) | calendar_month | 3 | ASSERTED |
 | 2026-03 or 2025-12 (doc 44555) | calendar_month, unresolved | 3 | **ASSERTED — UNRESOLVED** (§5); do not apply either month |
@@ -411,20 +432,22 @@ human), the same fields would apply once ratified:
    from the current `monthly_lpg_insights.csv` — they currently overstate
    JIM001's historical anomaly by roughly R101,500 combined and should not
    be relied on for collections or balance-confidence figures until fixed.
-2. Do **not** change `monthly_lpg_insights.csv` or the 2025 report on
+2. **Update `monthly_lpg_insights.csv`:** move 2025-01 and 2025-02 from
+   `UNPAID` to `FULLY_SETTLED`, assigning docs 38846 and 39812
+   per the invoice-level split in §5/§6 (cent-exact, no dedup issue).
+   This is confirmed, not a candidate — apply it.
+3. Do **not** change `monthly_lpg_insights.csv` or the 2025 report on
    doc 40746's month, and do not apply doc 44555's aggregate-match
-   reassignment either — both are genuinely unresolved (§5). Chase down
-   why payment 39812 (R20,557.69, 2025-06-12) is marked 100%
-   unallocated; that may be the key to resolving 40746's month, and
-   possibly explains part of the same pattern around 44555.
-3. If a real remittance advice or ERP export can be pulled for the
+   reassignment either — both remain genuinely unresolved (§5).
+4. If a real remittance advice or ERP export can be pulled for the
    Jun–Aug 2025 or Dec 2025–Mar 2026 windows, use it to settle both
    open items in §5 — this is exactly the kind of case Tier 1 evidence
    is needed for; internal data alone won't arbitrate it further.
-4. Reconcile the R54,902.41 in orphaned pre-STAT/ad-hoc cash (§6) against
-   `allocation_edges.csv`'s invoice-level splits — that mechanism already
-   exists for this, it just hasn't been run against these 14 documents.
-5. Get ERP-side confirmation of the R7,571.68 standing credit origin (§4)
+5. Reconcile the remaining R27,006.44 in orphaned pre-STAT-era cash (§6,
+   2018–2020 only now) against `allocation_edges.csv`'s invoice-level
+   splits, using the same contiguous-run search that resolved
+   38846/39812 — that method is now proven to work on this account.
+6. Get ERP-side confirmation of the R7,571.68 standing credit origin (§4)
    before netting it anywhere.
 
 No figure in this review should be reported as `PROVEN` — JIM001 has no

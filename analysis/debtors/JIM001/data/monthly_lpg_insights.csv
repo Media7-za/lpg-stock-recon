@@ -61,8 +61,8 @@ year,month,month_year,lpg_invoice_total,lpg_credit_notes,net_lpg_invoiced,paymen
 2024,October,2024-10,16419.92,-2394.34,14025.58,—,—,0.0,14025.58,UNPAID,False,No payment allocated.
 2024,November,2024-11,12524.85,0.0,12524.85,—,—,0.0,12524.85,UNPAID,False,No payment allocated.
 2024,December,2024-12,15816.63,0.0,15816.63,38481,2025-05-05,15816.63,0.0,FULLY_SETTLED,False,Settled in full.
-2025,January,2025-01,17574.84,0.0,17574.84,—,—,0.0,17574.84,UNPAID,False,No payment allocated.
-2025,February,2025-02,10320.82,0.0,10320.82,—,—,0.0,10320.82,UNPAID,False,No payment allocated.
+2025,January,2025-01,17574.84,0.0,17574.84,"38846,39812","2025-05-22,2025-06-12",17574.84,0.0,FULLY_SETTLED,False,"Settled by partial doc 38846 (R7337.97: invoices 39558+39714) + partial doc 39812 (R10236.87 of R20557.69): invoice-level exact match, JIM001_Exact_Sum_Bridge_Review_2026-09-13.md SS5/SS6."
+2025,February,2025-02,10320.82,0.0,10320.82,39812,2025-06-12,10320.82,0.0,FULLY_SETTLED,False,"Settled by remaining portion of doc 39812 (R10320.82 of R20557.69, after R10236.87 applied to Jan-2025): invoice-level exact match, JIM001_Exact_Sum_Bridge_Review_2026-09-13.md SS5/SS6."
 2025,March,2025-03,11795.24,0.0,11795.24,40063,2025-07-14,11795.24,0.0,FULLY_SETTLED,False,Settled in full.
 2025,April,2025-04,21724.53,0.0,21724.53,—,—,0.0,21724.53,UNPAID,False,No payment allocated.
 2025,May,2025-05,17667.7,-4325.33,13342.37,—,—,0.0,13342.37,UNPAID,False,No payment allocated.
