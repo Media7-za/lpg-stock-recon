@@ -22,18 +22,36 @@ repository's history or branches. This review proceeds on `SKILL.md`, the
 JIM001-specific content that file was meant to carry could not be
 incorporated and should be re-supplied if it still exists elsewhere.
 
-**Correction (same day, follow-up check):** the original version of this
-report flagged docs 40746 and 44555 as "misattribution candidates" based on
-their gross amount coincidentally exact-matching a different month's
-*aggregate* billing total. A follow-up check against
-`allocation_edges.csv` — the invoice-level ledger, which the first pass
-missed due to a truncated directory grep — shows both payments are in fact
-correctly assigned in `monthly_lpg_insights.csv`, with named invoice-level
-targets and a lag pattern that is normal and routinely human-confirmed
-elsewhere in this account. **§5 below is corrected accordingly; both
-candidates are retracted.** It is the **2025 yearly report's reassignment
-of doc 40746 to July that is wrong**, not the CSV. §2, §3, §8, and §9 are
-updated to match.
+**Correction history (same day, two follow-up checks):**
+
+1. The original version of this report flagged docs 40746 and 44555 as
+   "misattribution candidates" on an aggregate month-total coincidence
+   alone. A first follow-up found invoice-level rows for both in
+   `allocation_edges.csv` (missed on the initial pass due to a truncated
+   directory grep) and retracted the candidates, treating the invoice-level
+   split as stronger evidence than the aggregate match.
+2. **That retraction was itself premature and is now reversed.** A second
+   follow-up checked *how* those invoice-level rows were generated: every
+   payment in this dataset whose allocation rows are entirely
+   `ERP_LEDGER`/`Probable` (unconfirmed) — 6 total, including 40746 and
+   44555 — shows the same fingerprint: a dense run of invoices, all inside
+   one *already-assumed* month, filled in strict date order. That's not
+   independent per-invoice confirmation; it's the month assumption exploded
+   into invoice-level rows after the fact, and cannot arbitrate between
+   June and July on its own. `business_rules.md` §3 states outright that
+   "the ERP's built-in payment allocation system is historically broken" —
+   exactly this evidence tier. A related, unexplained anomaly compounds the
+   doubt: payment 39812 (2025-06-12, R20,557.69 — alone enough to cover all
+   of June's R14,618.11 billing) sits in the same window marked 100%
+   `UNALLOCATED_PORTION`, with no invoice target at all.
+
+**Net position: doc 40746 (June vs. July) and doc 44555 (March-2026 vs.
+December-2025) are genuinely unresolved.** Neither the exact-sum aggregate
+match nor the ERP-ledger invoice split is authoritative here; this needs
+either a real remittance advice or ERP-side clarification of payment
+39812, not another inference from this same data. §5 below reflects this
+open state; §2, §3, §8, and §9 are updated to stop asserting either
+direction as settled.
 
 ---
 
@@ -90,15 +108,16 @@ re-run of whatever produced the other six is the fix), but flags them so
 no downstream collections or balance-confidence figure keeps citing the
 stale totals.
 
-The reverse initially looked true for one payment but isn't: the **2025**
-report reassigns doc 40746 from 2025-06 to 2025-07 because the gross
-amount (`14,579.44`) happens to equal July's aggregate billing to the cent.
-`allocation_edges.csv`'s invoice-level rows (AL-0337–AL-0340) contradict
-this — the payment is split across four named invoices (43628, 43910,
-44097, 44241), all dated in June 2025, leaving a real R38.67 shortfall on
-the last one. **The CSV's June assignment is correct; the 2025 report's
-July reassignment is the error**, a false positive from trusting an
-aggregate-total coincidence over the invoice-level ledger. See §5.
+A fourth discrepancy looked like the reverse case but turned out to be
+genuinely unresolved: the **2025** report reassigns doc 40746 from 2025-06
+to 2025-07 because the gross amount (`14,579.44`) happens to equal July's
+aggregate billing to the cent. `allocation_edges.csv` does carry
+invoice-level rows for it (AL-0337–AL-0340, four invoices all dated June
+2025), but those rows are unconfirmed (`ERP_LEDGER`/`Probable`) and,
+on inspection, look like a mechanical FIFO fill of an already-assumed
+month rather than independent evidence — see §5. **Neither the CSV's June
+assignment nor the 2025 report's July reassignment can be called settled
+on the evidence available in this repo.** See §5.
 
 ---
 
@@ -113,8 +132,8 @@ aggregate-total coincidence over the invoice-level ledger. See §5.
 | 2022 | R17,682.42 | Holds — **human-ratified calibration year.** |
 | 2023 | −R17,739.02 | Holds — human-ratified (Pattern 3 mirror carry, Rule 13 surpluses, verified underpayments). |
 | 2024 | R0.51 | Holds — human-ratified pooled Apr–Nov settlement window; near-perfect net. |
-| 2025 | R89,246.79 (total unchanged — only which month carries it moves) | Holds against the invoice-level ledger, not the report's July reassignment (§5) — corrected: **six** months genuinely unpaid (Jan/Feb/Apr/May/**Jul**/Dec, not Jun), Jun is settled bar a genuine R38.67 shortfall. Unreviewed; real, growing exposure. |
-| 2026 (through May) | R72,399.45 | All five months genuinely unpaid — no candidate payment in the window matches any of them. Doc 44555 (Jun-2026) settles March-2026 invoices per the ledger, not Dec-2025 — see §5. Unreviewed. |
+| 2025 | R89,246.79 (unaffected either way — see note) | Holds. One open item: doc 40746 settles either June (CSV) or July (2025 report) — genuinely unresolved, see §5. Total 2025 exposure is identical under both readings (it only moves which specific month carries the R38.67-vs-full-month gap). Unreviewed; real, growing exposure regardless. |
+| 2026 (through May) | R72,399.45 | All five months genuinely unpaid — no candidate payment in the window matches any of them. One open item: doc 44555 (Jun-2026) settles either March-2026 (CSV/ledger) or December-2025 (aggregate match) — genuinely unresolved, see §5. Unreviewed. |
 
 **Verdict on the generalization:** the exact-sum-per-calendar-month test
 holds for JIM001 across all 9 years, in the sense that every month which
@@ -123,8 +142,9 @@ month that doesn't is either (a) a genuine partial payment/mirror carry
 already independently corroborated by candidate-invoice evidence (2019,
 2021-tail, 2022, 2023, 2024), (b) a genuinely unpaid month with no
 candidate payment anywhere in a ±3 month window (2019-01/03, 2020-02/03,
-2025's six open months, all of 2026), or (c) an aggregate-total
-coincidence that the invoice-level ledger overrides (§5). It does **not**
+2025's open months, all of 2026), or (c) one of two genuinely unresolved
+payments where an aggregate exact-sum match and an unconfirmed ERP-ledger
+invoice split disagree (§5, docs 40746 and 44555). It does **not**
 hold as a simple
 one-payment-one-month sequential pairing — that assumption is exactly what
 produced the two stale reports in §2, and is the same anti-pattern
@@ -166,49 +186,82 @@ balance without that check.
 
 ---
 
-## 5. Aggregate-total coincidences — retracted after invoice-level cross-check
+## 5. Two genuinely unresolved payments (dedup confirmed, month disputed)
 
 The original pass of this review found three payments whose *gross amount*
 exact-matches a different month's *aggregate* billing total than the one
-they're paired with in `monthly_lpg_insights.csv`, and flagged the two
-STAT-era ones as live re-attribution candidates. A follow-up check against
-`allocation_edges.csv` — the invoice-level ledger — retracts both: gross-
-total exact-sum matching is a good screen, but it must yield to invoice-
-level allocation evidence when the two disagree, exactly as `SKILL.md` §1
-says a remittance advice outranks ERP tagging. Aggregate month coincidences
-are only a *stronger-than-chronological* signal, not the top of the
-evidence order.
+they're paired with in `monthly_lpg_insights.csv`. A first follow-up
+checked `allocation_edges.csv`'s invoice-level rows and retracted two of
+them as false positives. **A second follow-up checked how those
+invoice-level rows were generated, and that retraction was itself
+premature.** Both readings for docs 40746 and 44555 remain open.
 
-| Payment | Aggregate-total coincidence | Invoice-level ledger (`allocation_edges.csv`) says | Verdict |
+**Doc 6104 is resolved** — no allocation rows exist for it in
+`allocation_edges.csv` at all, and it exact-matches 2019-08's billing only
+by coincidence (2019-08 is already fully settled by a different payment,
+doc 5988, of near-identical size). The 2019 report's original decision to
+leave it unreconciled was correct. No action.
+
+**Docs 40746 and 44555 are not resolved.** Both have invoice-level rows in
+`allocation_edges.csv`, but those rows are marked `ERP_LEDGER`/`Probable` —
+unconfirmed, not `HUMAN_WORKSHEET_AND_ERP`/`Confirmed` like most of the
+file. Isolating every payment in this dataset whose rows are *entirely*
+`ERP_LEDGER`/`Probable` turns up exactly 6, including these two. All 6 show
+the same fingerprint: a dense run of invoices, all inside **one
+already-assumed month**, filled in strict date order days apart. That is
+not independent per-invoice confirmation — it is a month assumption
+exploded into invoice-level rows after the fact, and it cannot arbitrate
+between two candidate months because it never tested the alternative.
+`analysis/debtors/shared/docs/business_rules.md` §3 (Debt Partitioning
+Rule) says plainly: **"The ERP's built-in payment allocation system is
+historically broken. Payments are not reliably matched to specific
+invoices."** — exactly this evidence tier.
+
+| Payment | Aggregate exact-sum says | ERP-ledger invoice split says (unconfirmed) | Status |
 | :--- | :--- | :--- | :--- |
-| **6104** (2019-10-21, R13,875.00) | Exact-matches 2019-08's billing (R13,874.99) — but Aug is already settled by doc 5988 (≈R13,875.00) | No allocation rows exist for 6104 | Coincidence of two similarly-sized STAT cycles. No action — the 2019 report's original caution (left unreconciled) was correct. |
-| **40746** (2025-08-22, R14,579.44) | Exact-matches 2025-07's billing (R14,579.44) | **AL-0337–AL-0340: 4 named invoices (43628, 43910, 44097, 44241), all dated June 2025, sum to the payment gross exactly, R38.67 short on the last one** | **Retracted.** June is the correct month. The **2025 report's July reassignment is the error** — a false positive from the aggregate coincidence, contradicted by the invoice-level ledger. |
-| **44555** (2026-06-05, R11,666.12) | Exact-matches 2025-12's billing (R11,666.11) | **AL-0359–AL-0361: 3 named invoices (49540, 49727, 49842), all dated March 2026, sum to the payment gross exactly, R271.44 short on the last one** | **Retracted.** March-2026 is the correct month; 2025-12 remains genuinely unpaid, unrelated to this payment. |
+| **40746** (2025-08-22, R14,579.44) | 2025-07 (matches July's billing to the cent) | AL-0337–AL-0340: 4 invoices (43628, 43910, 44097, 44241), all dated June 2025, R38.67 short on the last | **Unresolved** — neither reading confirmed |
+| **44555** (2026-06-05, R11,666.12) | 2025-12 (matches Dec's billing to the cent) | AL-0359–AL-0361: 3 invoices (49540, 49727, 49842), all dated March 2026, R271.44 short on the last | **Unresolved** — neither reading confirmed |
 
-**Dedup and net-amount check on doc 40746** (the same discipline
+A related, unexplained anomaly compounds the doubt specifically for 40746:
+payment **39812** (2025-06-12, R20,557.69 — alone more than enough to cover
+all of June 2025's R14,618.11 billing) sits in the exact same window and
+is marked **100% `UNALLOCATED_PORTION`** ("leftover cash not consumed by
+LPG invoices"), with no invoice target at all. An earlier, larger payment
+being skipped while a payment arriving over two months later is credited
+with settling the same month is itself suspicious and suggests this
+stretch of ERP-derived allocation is unreliable in either direction, not
+just on this one payment.
+
+**Dedup and net-amount check on doc 40746** (the discipline
 `RED001/scripts/allocation_ingest_pilot.mjs` applies via `SELECT DISTINCT
-ON (...)` against raw ERP segments): `payments.csv` carries exactly one row
-for 40746 (R14,579.44, "20 ERP segments" consolidated into one payment
-total at the raw-ledger level). `allocation_edges.csv` carries exactly 4
+ON (...)` against raw ERP segments, applied here to what's available
+in-repo since no raw JIM001 ERP export exists to re-run that query
+against): `payments.csv` carries exactly one row for 40746 (R14,579.44,
+"20 ERP segments" consolidated into one payment total at the raw-ledger
+level — no duplicate row). `allocation_edges.csv` carries exactly 4
 allocation rows for it, each to a **distinct** target invoice — no
 duplicate target, no double-counted amount. The 4 allocated amounts
 (4,382.95 + 3,115.05 + 4,272.07 + 2,809.37) sum to **R14,579.44**, matching
-the payment gross to the cent. **Real net amount: R14,579.44**, settling
-four June-2025 invoices with a genuine R38.67 shortfall on the last one —
-no dedup issue found.
+the payment gross exactly. **No dedup issue found — the real gross amount
+is R14,579.44 either way; what's unresolved is which month it settles, not
+its size.**
 
-**Precedent check — is a 2-3 month posting lag normal for JIM001?** Lag
-(payment date minus invoice date) across all 361 dated allocation rows,
-2018–2026: ~30% at 1 month, ~29% at 2 months, ~14% at 3 months, tapering
-through 4–12 months. 75–200+ day lags are common and routinely
-`Confirmed` by human worksheet review in the ratified 2022–2024 years
-(e.g. doc 22711 → invoice 19153, 106 days; doc 33810 → invoice 31201, 172
-days). Both 40746 (78–84 day lags to its June invoices) and 44555 (77–93
-day lags to its March-2026 invoices) sit squarely inside this normal,
-well-precedented range — **there is no 2019–2024 precedent needed to
-validate them because they are not anomalous lags in the first place.**
-The aggregate-total exact-sum coincidences that made them look like
-misattributions were exactly that: coincidences.
+**Lag-precedent check (requested, but doesn't settle this):** lag (payment
+date minus invoice date) across all 361 dated allocation rows, 2018–2026,
+runs ~30% at 1 month, ~29% at 2 months, ~14% at 3 months, tapering through
+4–12 months; 75–200+ day lags are common and routinely `Confirmed` in the
+ratified 2022–2024 years. Both readings of 40746 (78–84 days to June
+invoices, or a 1-month lag if it settles July directly) and both readings
+of 44555 (77–93 days to March-2026 invoices, or a much longer ~6-month lag
+if it settles Dec-2025) are individually plausible on lag alone — **lag
+distribution doesn't discriminate between the two candidate months for
+either payment**, so it can't be used to break the tie.
+
+**Recommendation:** treat both as `evidence_status: ASSERTED — UNRESOLVED`
+(§8) until a real remittance advice surfaces, or until payment 39812's
+unallocated status is explained (it may be the actual key to this whole
+window). Do not apply either reassignment; do not cite either the CSV or
+the 2025 report as confirmed correct on this specific point.
 
 ---
 
@@ -302,9 +355,9 @@ human), the same fields would apply once ratified:
 | 2019 (10 of 12 months) | calendar_month | 3 | ASSERTED |
 | 2021-04 to 2021-09 | calendar_month | 3 | ASSERTED |
 | 2021-10/11 | mirror_carry_pair | 3 | ASSERTED |
-| 2025-06 (doc 40746) | calendar_month, invoice-split | 3 | ASSERTED — invoice-level ledger, contradicts the 2025 report |
+| 2025-06 or 2025-07 (doc 40746) | calendar_month, unresolved | 3 | **ASSERTED — UNRESOLVED** (§5); do not apply either month |
 | 2025 (4 other settled months) | calendar_month | 3 | ASSERTED |
-| 2026-03 (doc 44555) | calendar_month, invoice-split | 3 | ASSERTED — invoice-level ledger |
+| 2026-03 or 2025-12 (doc 44555) | calendar_month, unresolved | 3 | **ASSERTED — UNRESOLVED** (§5); do not apply either month |
 | Standing credit, 2021-04–10 | n/a (not a settlement) | 3 | ASSERTED, flagged for ERP-side verification |
 
 ---
@@ -315,12 +368,16 @@ human), the same fields would apply once ratified:
    from the current `monthly_lpg_insights.csv` — they currently overstate
    JIM001's historical anomaly by roughly R101,500 combined and should not
    be relied on for collections or balance-confidence figures until fixed.
-2. Fix the **2025 report's** July reassignment of doc 40746 back to June —
-   the invoice-level ledger (§5) shows the report, not the CSV, is wrong
-   here. `monthly_lpg_insights.csv` needs no change on this row.
-3. No action needed on doc 44555 — the invoice-level ledger (§5) confirms
-   its current March-2026 assignment in `monthly_lpg_insights.csv` is
-   correct. 2025-12 remains genuinely unpaid, unrelated to this payment.
+2. Do **not** change `monthly_lpg_insights.csv` or the 2025 report on
+   doc 40746's month, and do not apply doc 44555's aggregate-match
+   reassignment either — both are genuinely unresolved (§5). Chase down
+   why payment 39812 (R20,557.69, 2025-06-12) is marked 100%
+   unallocated; that may be the key to resolving 40746's month, and
+   possibly explains part of the same pattern around 44555.
+3. If a real remittance advice or ERP export can be pulled for the
+   Jun–Aug 2025 or Dec 2025–Mar 2026 windows, use it to settle both
+   open items in §5 — this is exactly the kind of case Tier 1 evidence
+   is needed for; internal data alone won't arbitrate it further.
 4. Reconcile the R54,902.41 in orphaned pre-STAT/ad-hoc cash (§6) against
    `allocation_edges.csv`'s invoice-level splits — that mechanism already
    exists for this, it just hasn't been run against these 14 documents.
