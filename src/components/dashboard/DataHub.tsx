@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Database, FileText, CheckCircle2, AlertCircle, Loader2, Info, Clock, History } from 'lucide-react';
+import { Database, FileText, CheckCircle2, AlertCircle, Loader2, Info, Clock, History, Package } from 'lucide-react';
 import { ERPImportEngine } from '../../lib/erpImportEngine';
 import { SyncService, SyncProgress } from '../../lib/syncService';
 import { supabase } from '../../lib/supabase';
@@ -32,7 +32,7 @@ export default function DataHub() {
         fetchLogs();
     }, []);
 
-    const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, type: 'headers' | 'items') => {
+    const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, type: 'headers' | 'items' | 'inventory') => {
         const file = e.target.files?.[0];
         if (!file) return;
 
@@ -60,11 +60,16 @@ export default function DataHub() {
 
                 setState('syncing');
                 await SyncService.syncHeaders(headers, handleProgress, abortController.signal);
-            } else {
+            } else if (type === 'items') {
                 const items = await engine.parseItems(content, file.name);
 
                 setState('syncing');
                 await SyncService.syncItems(items, handleProgress, abortController.signal);
+            } else {
+                const inventory = await engine.parseInventory(content, file.name);
+
+                setState('syncing');
+                await SyncService.syncInventory(inventory, handleProgress, abortController.signal);
             }
             
             if (abortController.signal.aborted) {
@@ -128,7 +133,7 @@ export default function DataHub() {
 
             {activeTab === 'erp' ? (
                 <>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {/* Headers Upload Card */}
                 <div className="bg-surface border border-border rounded-xl p-8 hover:border-blue-500/50 transition-all group relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 blur-3xl rounded-full -mr-16 -mt-16" />
@@ -181,6 +186,35 @@ export default function DataHub() {
                                     file:text-sm file:font-semibold
                                     file:bg-emerald-500 file:text-white
                                     hover:file:bg-emerald-600
+                                    disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                            />
+                        </label>
+                    </div>
+                </div>
+
+                {/* Inventory Master Upload Card */}
+                <div className="bg-surface border border-border rounded-xl p-8 hover:border-amber-500/50 transition-all group relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 blur-3xl rounded-full -mr-16 -mt-16" />
+                    <div className="relative space-y-4">
+                        <div className="w-12 h-12 bg-amber-500/10 rounded-lg flex items-center justify-center">
+                            <Package className="w-6 h-6 text-amber-500" />
+                        </div>
+                        <h3 className="text-xl font-semibold">Stock Master</h3>
+                        <p className="text-text-secondary">Upload your <b>STOCK.TXT</b> export. This contains the current product catalog: cost, pricing, and category.</p>
+
+                        <label className="block">
+                            <span className="sr-only">Choose File</span>
+                            <input
+                                type="file"
+                                accept=".TXT,.txt,.csv"
+                                onChange={(e) => handleFileUpload(e, 'inventory')}
+                                disabled={state === 'parsing' || state === 'syncing'}
+                                className="block w-full text-sm text-text-secondary
+                                    file:mr-4 file:py-2 file:px-4
+                                    file:rounded-full file:border-0
+                                    file:text-sm file:font-semibold
+                                    file:bg-amber-500 file:text-white
+                                    hover:file:bg-amber-600
                                     disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                             />
                         </label>
@@ -283,9 +317,13 @@ export default function DataHub() {
                                 <div className="flex items-center gap-4">
                                     <div className={clsx(
                                         "w-10 h-10 rounded-lg flex items-center justify-center",
-                                        log.file_type === 'HEADERS' ? "bg-blue-100/50 text-blue-600" : "bg-emerald-100/50 text-emerald-600"
+                                        log.file_type === 'HEADERS' ? "bg-blue-100/50 text-blue-600" :
+                                        log.file_type === 'INVENTORY' ? "bg-amber-100/50 text-amber-600" :
+                                        "bg-emerald-100/50 text-emerald-600"
                                     )}>
-                                        {log.file_type === 'HEADERS' ? <FileText className="w-5 h-5" /> : <Database className="w-5 h-5" />}
+                                        {log.file_type === 'HEADERS' ? <FileText className="w-5 h-5" /> :
+                                         log.file_type === 'INVENTORY' ? <Package className="w-5 h-5" /> :
+                                         <Database className="w-5 h-5" />}
                                     </div>
                                     <div>
                                         <p className="font-medium text-text-primary text-sm">{log.filename}</p>

@@ -51,6 +51,21 @@ export interface ProcessedTransactionItem {
     fingerprint: string;
 }
 
+export interface ProcessedInventoryItem {
+    stockno: string;
+    description: string;
+    cost: number;
+    retail_tier1: number;
+    unit: string;
+    group: string;
+    category: string;
+    brand: string;
+    weight: number;
+    active: boolean;
+    suppcode: string;
+    source_file: string;
+}
+
 export interface IntegrityFinding {
     id: string;
     rule: string;
@@ -272,6 +287,48 @@ export class ERPImportEngine {
                             account_name: this.clean(row[32]),
                             source_file: fileName,
                             fingerprint: fp
+                        });
+                    }
+                    resolve(processed);
+                },
+                error: (err: Error) => reject(err),
+            });
+        });
+    }
+
+    /**
+     * Parse the ERP Stock Master export (STOCK.TXT) -- a real header-row CSV,
+     * unlike the headerless positional HEADERS/ITEMS formats above. Filters
+     * to ACTIVE = 'Y' only: the master carries dead/superseded stock codes
+     * (e.g. a legacy "00000001050" sitting alongside the real "00000001" for
+     * the same product) that shouldn't surface in a live product catalog.
+     */
+    async parseInventory(csvContent: string, fileName: string): Promise<ProcessedInventoryItem[]> {
+        return new Promise((resolve, reject) => {
+            Papa.parse<Record<string, string>>(csvContent, {
+                header: true,
+                skipEmptyLines: true,
+                complete: (results) => {
+                    const processed: ProcessedInventoryItem[] = [];
+
+                    for (const row of results.data) {
+                        const stockno = this.clean(row['STOCKNO']);
+                        if (!stockno) continue;
+                        if (this.clean(row['ACTIVE']).toUpperCase() !== 'Y') continue;
+
+                        processed.push({
+                            stockno,
+                            description: this.clean(row['DESCRIP']),
+                            cost: parseFloat(this.clean(row['COST'])) || 0,
+                            retail_tier1: parseFloat(this.clean(row['RETAILA'])) || 0,
+                            unit: this.clean(row['UNIT']),
+                            group: this.clean(row['GROUP']),
+                            category: this.clean(row['CATEGORY']),
+                            brand: this.clean(row['BRAND']),
+                            weight: parseFloat(this.clean(row['WEIGHT'])) || 0,
+                            active: true,
+                            suppcode: this.clean(row['SUPPCODE']),
+                            source_file: fileName,
                         });
                     }
                     resolve(processed);

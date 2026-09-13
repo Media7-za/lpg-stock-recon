@@ -8,7 +8,7 @@
 import { db } from './db';
 import { supabase, isCloudEnabled } from './supabase';
 import { ERPImportEngine } from './erpImportEngine';
-import type { ProcessedTransactionHeader, ProcessedTransactionItem } from './erpImportEngine';
+import type { ProcessedTransactionHeader, ProcessedTransactionItem, ProcessedInventoryItem } from './erpImportEngine';
 
 // Maximum retries before marking a sync attempt as failed
 const MAX_RETRIES = 3;
@@ -232,6 +232,68 @@ export class SyncService {
                 filename: fileName,
                 file_type: 'ITEMS',
                 records_synced: newItems.length
+            });
+        }
+    }
+
+    /**
+     * Upsert the ERP Stock Master into erp_inventory.
+     *
+     * Unlike syncHeaders/syncItems, this is NOT a delta/fingerprint sync --
+     * the stock master is a current-state snapshot (one row per stockno,
+     * re-exported whole each time), not an append-only transaction log. Every
+     * row is upserted on conflict(stockno) so cost/price/category always
+     * reflect the latest export, rather than being filtered out as "already
+     * seen".
+     */
+    static async syncInventory(
+        items: ProcessedInventoryItem[],
+        onProgress?: (p: SyncProgress) => void,
+        signal?: AbortSignal
+    ): Promise<void> {
+        if (!supabase) throw new Error("Supabase client not initialized");
+
+        const progress: SyncProgress = { total: items.length, synced: 0, errors: [], hints: [] };
+        if (onProgress) onProgress({ ...progress });
+
+        for (let i = 0; i < items.length; i += BATCH_SIZE) {
+            if (signal?.aborted) break;
+
+            const batch = items.slice(i, i + BATCH_SIZE);
+            let success = false;
+            let retries = 0;
+
+            while (!success && retries < MAX_RETRIES) {
+                if (signal?.aborted) break;
+
+                const { error } = await supabase
+                    .from('erp_inventory')
+                    .upsert(
+                        batch.map((b) => ({ ...b, updated_at: new Date().toISOString() })),
+                        { onConflict: 'stockno' }
+                    );
+
+                if (error) {
+                    console.error(`[SyncService] Inventory batch error (Attempt ${retries + 1}):`, error);
+                    retries++;
+                    if (retries < MAX_RETRIES) await delay(1000 * retries);
+                    else progress.errors.push(`Batch error: ${error.message}`);
+                } else {
+                    progress.synced += batch.length;
+                    success = true;
+                }
+            }
+
+            if (onProgress) onProgress({ ...progress });
+            await delay(200);
+        }
+
+        if (!signal?.aborted && progress.errors.length === 0) {
+            const fileName = items.length > 0 ? items[0].source_file : 'Unknown';
+            await supabase.from('sync_logs').insert({
+                filename: fileName,
+                file_type: 'INVENTORY',
+                records_synced: progress.synced
             });
         }
     }
