@@ -9,6 +9,7 @@ LPG invoice/credit doc_no in analysis/debtors/JIM001/data/invoices.csv.
 
 Payment Doc # / Date(s) from monthly_lpg_insights; Payment Gross (Original)
 = sum of abs(amount) from payments.csv for those doc(s) (consolidated cash).
+Net less gross = net_lpg_invoiced minus payment gross when a payment ref exists.
 
 Uses stdlib only (zipfile + XML); no openpyxl required.
 """
@@ -46,6 +47,7 @@ COLUMNS: list[tuple[str, str]] = [
     ("Payment Doc #", "text"),
     ("Payment Date(s)", "text"),
     ("Payment Gross (Original)", "money"),
+    ("Net LPG Invoiced less Payment Gross (Original)", "money"),
     ("Payment Allocated (Month)", "money"),
     ("Open Invoices (Sum)", "money"),
     ("Month Status", "text"),
@@ -205,12 +207,17 @@ def build_sheet_xml(rows: list[dict]) -> str:
 
     sum_cols = {
         "Net LPG Invoiced": 0.0,
+        "Net LPG Invoiced less Payment Gross (Original)": 0.0,
         "Payment Allocated (Month)": 0.0,
         "Open Invoices (Sum)": 0.0,
     }
 
     r = 4
     for item in rows:
+        gross = item["payment_gross"]
+        net_less_gross = (
+            None if gross is None else round(item["net"] - gross, 2)
+        )
         values = {
             "Billing Month": item["billing_month"],
             "Year": item["year"],
@@ -218,7 +225,8 @@ def build_sheet_xml(rows: list[dict]) -> str:
             "Net LPG Invoiced": item["net"],
             "Payment Doc #": item["payment_docs"],
             "Payment Date(s)": item["payment_dates"],
-            "Payment Gross (Original)": item["payment_gross"],
+            "Payment Gross (Original)": gross,
+            "Net LPG Invoiced less Payment Gross (Original)": net_less_gross,
             "Payment Allocated (Month)": item["allocated"],
             "Open Invoices (Sum)": item["open"],
             "Month Status": item["status"],
@@ -229,6 +237,8 @@ def build_sheet_xml(rows: list[dict]) -> str:
             cells.append(cell_for(i, r, kind, values[label]))
         data_rows.append(f'<row r="{r}" ht="20" customHeight="1">{"".join(cells)}</row>')
         sum_cols["Net LPG Invoiced"] += item["net"]
+        if net_less_gross is not None:
+            sum_cols["Net LPG Invoiced less Payment Gross (Original)"] += net_less_gross
         sum_cols["Payment Allocated (Month)"] += item["allocated"]
         sum_cols["Open Invoices (Sum)"] += item["open"]
         r += 1
@@ -241,6 +251,9 @@ def build_sheet_xml(rows: list[dict]) -> str:
         "Payment Doc #": None,
         "Payment Date(s)": None,
         "Payment Gross (Original)": None,
+        "Net LPG Invoiced less Payment Gross (Original)": round(
+            sum_cols["Net LPG Invoiced less Payment Gross (Original)"], 2
+        ),
         "Payment Allocated (Month)": round(sum_cols["Payment Allocated (Month)"], 2),
         "Open Invoices (Sum)": round(sum_cols["Open Invoices (Sum)"], 2),
         "Month Status": None,
@@ -256,7 +269,7 @@ def build_sheet_xml(rows: list[dict]) -> str:
     data_rows.append(f'<row r="{r}" ht="20" customHeight="1">{"".join(cells)}</row>')
 
     last_row = r
-    col_widths = [14, 10, 14, 18, 22, 18, 22, 22, 20, 22, 22]
+    col_widths = [14, 10, 14, 18, 22, 18, 22, 28, 22, 20, 22, 22]
     cols_xml = "".join(
         f'<col width="{w}" customWidth="1" min="{i}" max="{i}"/>'
         for i, w in enumerate(col_widths, start=1)
