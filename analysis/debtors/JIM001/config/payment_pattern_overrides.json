@@ -1,6 +1,6 @@
 {
   "debtor": "JIM001",
-  "registry_version": 1,
+  "registry_version": 2,
   "approval_policy": "Only human-approved overrides with reason and evidence_source may be applied.",
   "overrides": [
     {
@@ -16,7 +16,14 @@
       "approved_by": "human",
       "approved_date": "2026-06-16",
       "reason": "Preserves verified JIM001 monthly batch allocation for regenerated 2022 report.",
-      "evidence_source": ["gross payment amount", "monthly LPG total", "prior reviewed report"]
+      "evidence_source": [
+        "gross payment amount",
+        "monthly LPG total",
+        "prior reviewed report"
+      ],
+      "settlement_unit": "calendar_month",
+      "evidence_tier": 3,
+      "evidence_status": "ASSERTED"
     },
     {
       "year": 2022,
@@ -31,7 +38,14 @@
       "approved_by": "human",
       "approved_date": "2026-06-16",
       "reason": "Preserves verified JIM001 monthly batch allocation for regenerated 2022 report.",
-      "evidence_source": ["gross payment amount", "monthly LPG total", "prior reviewed report"]
+      "evidence_source": [
+        "gross payment amount",
+        "monthly LPG total",
+        "prior reviewed report"
+      ],
+      "settlement_unit": "calendar_month",
+      "evidence_tier": 3,
+      "evidence_status": "ASSERTED"
     },
     {
       "year": 2022,
@@ -46,7 +60,13 @@
       "approved_by": "human",
       "approved_date": "2026-06-16",
       "reason": "Verified missing statement payment gap in the 2022 sequence.",
-      "evidence_source": ["STAT sequence review", "prior reviewed report"]
+      "evidence_source": [
+        "STAT sequence review",
+        "prior reviewed report"
+      ],
+      "settlement_unit": "calendar_month",
+      "evidence_tier": 3,
+      "evidence_status": "ASSERTED"
     },
     {
       "year": 2022,
@@ -61,7 +81,14 @@
       "approved_by": "human",
       "approved_date": "2026-06-16",
       "reason": "Preserves verified JIM001 monthly batch allocation for regenerated 2022 report.",
-      "evidence_source": ["gross payment amount", "monthly LPG total", "prior reviewed report"]
+      "evidence_source": [
+        "gross payment amount",
+        "monthly LPG total",
+        "prior reviewed report"
+      ],
+      "settlement_unit": "calendar_month",
+      "evidence_tier": 3,
+      "evidence_status": "ASSERTED"
     },
     {
       "year": 2022,
@@ -76,7 +103,13 @@
       "approved_by": "human",
       "approved_date": "2026-06-16",
       "reason": "Preserves reviewed Pattern 2 candidate underpayment for 2022-05.",
-      "evidence_source": ["candidate invoice review", "prior reviewed report"]
+      "evidence_source": [
+        "candidate invoice review",
+        "prior reviewed report"
+      ],
+      "settlement_unit": "calendar_month",
+      "evidence_tier": 3,
+      "evidence_status": "ASSERTED"
     },
     {
       "year": 2022,
@@ -91,7 +124,13 @@
       "approved_by": "human",
       "approved_date": "2026-06-16",
       "reason": "Preserves reviewed Pattern 2 candidate underpayment for 2022-06.",
-      "evidence_source": ["candidate invoice review", "prior reviewed report"]
+      "evidence_source": [
+        "candidate invoice review",
+        "prior reviewed report"
+      ],
+      "settlement_unit": "calendar_month",
+      "evidence_tier": 3,
+      "evidence_status": "ASSERTED"
     },
     {
       "year": 2022,
@@ -106,7 +145,14 @@
       "approved_by": "human",
       "approved_date": "2026-06-16",
       "reason": "Preserves verified JIM001 monthly batch allocation for regenerated 2022 report.",
-      "evidence_source": ["gross payment amount", "monthly LPG total", "prior reviewed report"]
+      "evidence_source": [
+        "gross payment amount",
+        "monthly LPG total",
+        "prior reviewed report"
+      ],
+      "settlement_unit": "calendar_month",
+      "evidence_tier": 3,
+      "evidence_status": "ASSERTED"
     },
     {
       "year": 2022,
@@ -121,7 +167,14 @@
       "approved_by": "human",
       "approved_date": "2026-06-16",
       "reason": "Preserves Rule 13 gross-flow surplus treatment for August 2022.",
-      "evidence_source": ["Business Rule 13", "gross payment amount", "prior reviewed report"]
+      "evidence_source": [
+        "Business Rule 13",
+        "gross payment amount",
+        "prior reviewed report"
+      ],
+      "settlement_unit": "gross_flow_surplus",
+      "evidence_tier": 3,
+      "evidence_status": "ASSERTED"
     },
     {
       "year": 2022,
@@ -136,7 +189,13 @@
       "approved_by": "human",
       "approved_date": "2026-06-16",
       "reason": "Preserves reviewed self-cancelling mirror carry between September and October 2022.",
-      "evidence_source": ["Business Rule 14", "prior reviewed report"]
+      "evidence_source": [
+        "Business Rule 14",
+        "prior reviewed report"
+      ],
+      "settlement_unit": "mirror_carry_pair",
+      "evidence_tier": 3,
+      "evidence_status": "ASSERTED"
     },
     {
       "year": 2022,
@@ -151,7 +210,13 @@
       "approved_by": "human",
       "approved_date": "2026-06-16",
       "reason": "Preserves reviewed self-cancelling mirror carry between September and October 2022.",
-      "evidence_source": ["Business Rule 14", "prior reviewed report"]
+      "evidence_source": [
+        "Business Rule 14",
+        "prior reviewed report"
+      ],
+      "settlement_unit": "mirror_carry_pair",
+      "evidence_tier": 3,
+      "evidence_status": "ASSERTED"
     },
     {
       "year": 2022,
@@ -166,7 +231,13 @@
       "approved_by": "human",
       "approved_date": "2026-06-16",
       "reason": "Preserves reviewed self-cancelling mirror carry between November and December 2022.",
-      "evidence_source": ["Business Rule 14", "prior reviewed report"]
+      "evidence_source": [
+        "Business Rule 14",
+        "prior reviewed report"
+      ],
+      "settlement_unit": "mirror_carry_pair",
+      "evidence_tier": 3,
+      "evidence_status": "ASSERTED"
     },
     {
       "year": 2022,
@@ -181,7 +252,13 @@
       "approved_by": "human",
       "approved_date": "2026-06-16",
       "reason": "Preserves reviewed self-cancelling mirror carry between November and December 2022.",
-      "evidence_source": ["Business Rule 14", "prior reviewed report"]
+      "evidence_source": [
+        "Business Rule 14",
+        "prior reviewed report"
+      ],
+      "settlement_unit": "mirror_carry_pair",
+      "evidence_tier": 3,
+      "evidence_status": "ASSERTED"
     },
     {
       "year": 2023,
@@ -196,7 +273,14 @@
       "approved_by": "human",
       "approved_date": "2026-06-16",
       "reason": "Preserves verified JIM001 monthly batch allocation for regenerated 2023 report.",
-      "evidence_source": ["gross payment amount", "monthly LPG total", "prior reviewed report"]
+      "evidence_source": [
+        "gross payment amount",
+        "monthly LPG total",
+        "prior reviewed report"
+      ],
+      "settlement_unit": "calendar_month",
+      "evidence_tier": 3,
+      "evidence_status": "ASSERTED"
     },
     {
       "year": 2023,
@@ -211,7 +295,14 @@
       "approved_by": "human",
       "approved_date": "2026-06-16",
       "reason": "Preserves verified JIM001 monthly batch allocation for regenerated 2023 report.",
-      "evidence_source": ["gross payment amount", "monthly LPG total", "prior reviewed report"]
+      "evidence_source": [
+        "gross payment amount",
+        "monthly LPG total",
+        "prior reviewed report"
+      ],
+      "settlement_unit": "calendar_month",
+      "evidence_tier": 3,
+      "evidence_status": "ASSERTED"
     },
     {
       "year": 2023,
@@ -226,7 +317,14 @@
       "approved_by": "human",
       "approved_date": "2026-06-16",
       "reason": "Preserves reviewed 2023-03 residual underpayment.",
-      "evidence_source": ["gross payment amount", "monthly LPG total", "prior reviewed report"]
+      "evidence_source": [
+        "gross payment amount",
+        "monthly LPG total",
+        "prior reviewed report"
+      ],
+      "settlement_unit": "calendar_month",
+      "evidence_tier": 3,
+      "evidence_status": "ASSERTED"
     },
     {
       "year": 2023,
@@ -241,7 +339,14 @@
       "approved_by": "human",
       "approved_date": "2026-06-16",
       "reason": "Preserves verified JIM001 monthly batch allocation for regenerated 2023 report.",
-      "evidence_source": ["gross payment amount", "monthly LPG total", "prior reviewed report"]
+      "evidence_source": [
+        "gross payment amount",
+        "monthly LPG total",
+        "prior reviewed report"
+      ],
+      "settlement_unit": "calendar_month",
+      "evidence_tier": 3,
+      "evidence_status": "ASSERTED"
     },
     {
       "year": 2023,
@@ -256,7 +361,14 @@
       "approved_by": "human",
       "approved_date": "2026-06-16",
       "reason": "Preserves verified JIM001 monthly batch allocation for regenerated 2023 report.",
-      "evidence_source": ["gross payment amount", "monthly LPG total", "prior reviewed report"]
+      "evidence_source": [
+        "gross payment amount",
+        "monthly LPG total",
+        "prior reviewed report"
+      ],
+      "settlement_unit": "calendar_month",
+      "evidence_tier": 3,
+      "evidence_status": "ASSERTED"
     },
     {
       "year": 2023,
@@ -271,7 +383,14 @@
       "approved_by": "human",
       "approved_date": "2026-06-16",
       "reason": "Preserves verified JIM001 monthly batch allocation for regenerated 2023 report.",
-      "evidence_source": ["gross payment amount", "monthly LPG total", "prior reviewed report"]
+      "evidence_source": [
+        "gross payment amount",
+        "monthly LPG total",
+        "prior reviewed report"
+      ],
+      "settlement_unit": "calendar_month",
+      "evidence_tier": 3,
+      "evidence_status": "ASSERTED"
     },
     {
       "year": 2023,
@@ -286,7 +405,14 @@
       "approved_by": "human",
       "approved_date": "2026-06-16",
       "reason": "Preserves verified JIM001 monthly batch allocation for regenerated 2023 report.",
-      "evidence_source": ["gross payment amount", "monthly LPG total", "prior reviewed report"]
+      "evidence_source": [
+        "gross payment amount",
+        "monthly LPG total",
+        "prior reviewed report"
+      ],
+      "settlement_unit": "calendar_month",
+      "evidence_tier": 3,
+      "evidence_status": "ASSERTED"
     },
     {
       "year": 2023,
@@ -301,7 +427,14 @@
       "approved_by": "human",
       "approved_date": "2026-06-16",
       "reason": "Preserves reviewed 2023-08 residual underpayment.",
-      "evidence_source": ["gross payment amount", "monthly LPG total", "prior reviewed report"]
+      "evidence_source": [
+        "gross payment amount",
+        "monthly LPG total",
+        "prior reviewed report"
+      ],
+      "settlement_unit": "calendar_month",
+      "evidence_tier": 3,
+      "evidence_status": "ASSERTED"
     },
     {
       "year": 2023,
@@ -316,7 +449,13 @@
       "approved_by": "human",
       "approved_date": "2026-06-16",
       "reason": "Preserves reviewed self-cancelling mirror carry around August and September 2023.",
-      "evidence_source": ["Business Rule 14", "prior reviewed report"]
+      "evidence_source": [
+        "Business Rule 14",
+        "prior reviewed report"
+      ],
+      "settlement_unit": "mirror_carry_pair",
+      "evidence_tier": 3,
+      "evidence_status": "ASSERTED"
     },
     {
       "year": 2023,
@@ -331,7 +470,13 @@
       "approved_by": "human",
       "approved_date": "2026-06-16",
       "reason": "Preserves reviewed 2023-10 surplus treatment.",
-      "evidence_source": ["Business Rule 13", "prior reviewed report"]
+      "evidence_source": [
+        "Business Rule 13",
+        "prior reviewed report"
+      ],
+      "settlement_unit": "gross_flow_surplus",
+      "evidence_tier": 3,
+      "evidence_status": "ASSERTED"
     },
     {
       "year": 2023,
@@ -346,7 +491,13 @@
       "approved_by": "human",
       "approved_date": "2026-06-16",
       "reason": "Preserves reviewed 2023-11 surplus treatment.",
-      "evidence_source": ["Business Rule 13", "prior reviewed report"]
+      "evidence_source": [
+        "Business Rule 13",
+        "prior reviewed report"
+      ],
+      "settlement_unit": "gross_flow_surplus",
+      "evidence_tier": 3,
+      "evidence_status": "ASSERTED"
     },
     {
       "year": 2023,
@@ -361,7 +512,14 @@
       "approved_by": "human",
       "approved_date": "2026-06-16",
       "reason": "Preserves reviewed 2023-12 residual underpayment.",
-      "evidence_source": ["gross payment amount", "monthly LPG total", "prior reviewed report"]
+      "evidence_source": [
+        "gross payment amount",
+        "monthly LPG total",
+        "prior reviewed report"
+      ],
+      "settlement_unit": "calendar_month",
+      "evidence_tier": 3,
+      "evidence_status": "ASSERTED"
     },
     {
       "year": 2024,
@@ -376,7 +534,13 @@
       "approved_by": "human",
       "approved_date": "2026-06-16",
       "reason": "Preserves exact payment match for January 2024.",
-      "evidence_source": ["gross payment amount", "monthly LPG total"]
+      "evidence_source": [
+        "gross payment amount",
+        "monthly LPG total"
+      ],
+      "settlement_unit": "calendar_month",
+      "evidence_tier": 3,
+      "evidence_status": "ASSERTED"
     },
     {
       "year": 2024,
@@ -391,7 +555,14 @@
       "approved_by": "human",
       "approved_date": "2026-06-16",
       "reason": "Human reviewed that Doc 31179 is a near-exact R0.50 match to 2024-02 and avoids artificial May underpayment.",
-      "evidence_source": ["gross payment amount", "monthly LPG total", "user review 2026-06-16"]
+      "evidence_source": [
+        "gross payment amount",
+        "monthly LPG total",
+        "user review 2026-06-16"
+      ],
+      "settlement_unit": "calendar_month",
+      "evidence_tier": 3,
+      "evidence_status": "ASSERTED"
     },
     {
       "year": 2024,
@@ -406,7 +577,13 @@
       "approved_by": "human",
       "approved_date": "2026-06-16",
       "reason": "Preserves exact payment match for March 2024.",
-      "evidence_source": ["gross payment amount", "monthly LPG total"]
+      "evidence_source": [
+        "gross payment amount",
+        "monthly LPG total"
+      ],
+      "settlement_unit": "calendar_month",
+      "evidence_tier": 3,
+      "evidence_status": "ASSERTED"
     },
     {
       "year": 2024,
@@ -421,9 +598,16 @@
       "approved_by": "human",
       "approved_date": "2026-06-16",
       "reason": "Apr-Nov 2024 payments are better represented as a pooled settlement window than rigid monthly one-to-one matches.",
-      "evidence_source": ["settlement_windows.csv", "gross payment amount", "monthly LPG total"],
+      "evidence_source": [
+        "settlement_windows.csv",
+        "gross payment amount",
+        "monthly LPG total"
+      ],
       "reconciled_month": "2024-04 to 2024-11",
-      "summary_note": "* **2024-04 / 2024-11 Settlement Window:** Docs 32896, 33810, 34425, 35270, 36139, and 36988 settle the Apr-Nov 2024 LPG statement window as a pooled batch. Individual monthly variances self-cancel within the window."
+      "summary_note": "* **2024-04 / 2024-11 Settlement Window:** Docs 32896, 33810, 34425, 35270, 36139, and 36988 settle the Apr-Nov 2024 LPG statement window as a pooled batch. Individual monthly variances self-cancel within the window.",
+      "settlement_unit": "pooled_window",
+      "evidence_tier": 3,
+      "evidence_status": "ASSERTED"
     },
     {
       "year": 2024,
@@ -439,7 +623,14 @@
       "approved_date": "2026-06-16",
       "reason": "Part of documented Apr-Nov 2024 pooled settlement window.",
       "reconciled_month": "2024-04 to 2024-11",
-      "evidence_source": ["settlement_windows.csv", "gross payment amount", "monthly LPG total"]
+      "evidence_source": [
+        "settlement_windows.csv",
+        "gross payment amount",
+        "monthly LPG total"
+      ],
+      "settlement_unit": "pooled_window",
+      "evidence_tier": 3,
+      "evidence_status": "ASSERTED"
     },
     {
       "year": 2024,
@@ -455,7 +646,14 @@
       "approved_date": "2026-06-16",
       "reason": "Part of documented Apr-Nov 2024 pooled settlement window.",
       "reconciled_month": "2024-04 to 2024-11",
-      "evidence_source": ["settlement_windows.csv", "gross payment amount", "monthly LPG total"]
+      "evidence_source": [
+        "settlement_windows.csv",
+        "gross payment amount",
+        "monthly LPG total"
+      ],
+      "settlement_unit": "pooled_window",
+      "evidence_tier": 3,
+      "evidence_status": "ASSERTED"
     },
     {
       "year": 2024,
@@ -471,7 +669,14 @@
       "approved_date": "2026-06-16",
       "reason": "Part of documented Apr-Nov 2024 pooled settlement window.",
       "reconciled_month": "2024-04 to 2024-11",
-      "evidence_source": ["settlement_windows.csv", "gross payment amount", "monthly LPG total"]
+      "evidence_source": [
+        "settlement_windows.csv",
+        "gross payment amount",
+        "monthly LPG total"
+      ],
+      "settlement_unit": "pooled_window",
+      "evidence_tier": 3,
+      "evidence_status": "ASSERTED"
     },
     {
       "year": 2024,
@@ -487,7 +692,14 @@
       "approved_date": "2026-06-16",
       "reason": "Part of documented Apr-Nov 2024 pooled settlement window.",
       "reconciled_month": "2024-04 to 2024-11",
-      "evidence_source": ["settlement_windows.csv", "gross payment amount", "monthly LPG total"]
+      "evidence_source": [
+        "settlement_windows.csv",
+        "gross payment amount",
+        "monthly LPG total"
+      ],
+      "settlement_unit": "pooled_window",
+      "evidence_tier": 3,
+      "evidence_status": "ASSERTED"
     },
     {
       "year": 2024,
@@ -503,7 +715,14 @@
       "approved_date": "2026-06-16",
       "reason": "Part of documented Apr-Nov 2024 pooled settlement window.",
       "reconciled_month": "2024-04 to 2024-11",
-      "evidence_source": ["settlement_windows.csv", "gross payment amount", "monthly LPG total"]
+      "evidence_source": [
+        "settlement_windows.csv",
+        "gross payment amount",
+        "monthly LPG total"
+      ],
+      "settlement_unit": "pooled_window",
+      "evidence_tier": 3,
+      "evidence_status": "ASSERTED"
     },
     {
       "year": 2024,
@@ -518,7 +737,14 @@
       "approved_by": "human",
       "approved_date": "2026-06-16",
       "reason": "Covered by earlier surpluses inside the documented Apr-Nov 2024 pooled settlement window.",
-      "evidence_source": ["settlement_windows.csv", "gross payment amount", "monthly LPG total"]
+      "evidence_source": [
+        "settlement_windows.csv",
+        "gross payment amount",
+        "monthly LPG total"
+      ],
+      "settlement_unit": "pooled_window",
+      "evidence_tier": 3,
+      "evidence_status": "ASSERTED"
     },
     {
       "year": 2024,
@@ -533,7 +759,14 @@
       "approved_by": "human",
       "approved_date": "2026-06-16",
       "reason": "Covered by earlier surpluses inside the documented Apr-Nov 2024 pooled settlement window.",
-      "evidence_source": ["settlement_windows.csv", "gross payment amount", "monthly LPG total"]
+      "evidence_source": [
+        "settlement_windows.csv",
+        "gross payment amount",
+        "monthly LPG total"
+      ],
+      "settlement_unit": "pooled_window",
+      "evidence_tier": 3,
+      "evidence_status": "ASSERTED"
     },
     {
       "year": 2024,
@@ -548,7 +781,15 @@
       "approved_by": "human",
       "approved_date": "2026-06-16",
       "reason": "Payment posted in 2025 settles December 2024 LPG invoices and must enter the 2024 settlement pool.",
-      "evidence_source": ["allocation_edges.csv", "gross payment amount", "monthly LPG total"]
+      "evidence_source": [
+        "allocation_edges.csv",
+        "gross payment amount",
+        "monthly LPG total"
+      ],
+      "settlement_unit": "pooled_window",
+      "evidence_tier": 3,
+      "evidence_status": "ASSERTED"
     }
-  ]
+  ],
+  "schema_note": "settlement_unit/evidence_tier/evidence_status added 2026-09-13 by the JIM001 exact-sum bridge review (see reports/JIM001_Exact_Sum_Bridge_Review_2026-09-13.md SS8). Additive only -- no amount, approval_status, or reason field was changed. evidence_tier is capped at 3 account-wide: no remittance advice exists for JIM001, so evidence_status is ASSERTED, never PROVEN, for every entry including these already human-ratified ones."
 }

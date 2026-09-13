@@ -58,6 +58,10 @@
     {
       "date": "2026-06-16",
       "event": "Reconciled 2024 calendar year payment overrides (Doc 30891, 31179, 31792, 33810, 34425, 36139, 36988, 38481) to settle all 2024 billing."
+    },
+    {
+      "date": "2026-09-13",
+      "event": "Generalized the monthly-batch exact-sum test (SKILL_Monthly_Batch_ERP_Bridge_Reconciliation) across all 9 years. Found the 2018/2019/2021 Payment_Pattern_Analysis reports are stale (predate a later split-payment allocation pass) and overstate anomalies by ~R101,500 combined -- need regeneration. Found a standing credit (~R7,571.68, constant Apr-Oct 2021) and 3 misattribution candidates (doc 6104, 40746, 44555), one of which (44555 -> 2025-12 not 2026-03) is pending ratification. Added settlement_unit/evidence_tier/evidence_status fields to the 36 existing 2022-2024 overrides (additive; all capped at Tier 3/ASSERTED -- no remittance advice exists for JIM001). See reports/JIM001_Exact_Sum_Bridge_Review_2026-09-13.md."
     }
   ]
 }
