@@ -47,8 +47,64 @@
       "reason": "STAT 129 / doc 45717 — LIFO partial R26.77 of R623.88 (AL-0058). Remainder R597.11 open."
     }
   ],
-  "collapseAccountLevelAsOpeningBalance": true,
+  "collapseAccountLevelAsOpeningBalance": false,
   "collapsedAccountLevelLabel": "Opening balance (pre-Jul 2026 carry, not itemised below)",
   "collapsedAccountLevelReference": "B/F R22,088.10 combined (post STAT 127) minus Jul–Aug open invoice detail. Full allocation: data/allocation_edges.csv.",
-  "balanceBridgeLines": []
+  "balanceBridgeLines": [
+    {
+      "id": "open_bf_48675",
+      "label": "Invoice 48675 (08 Jan 2026, DN-21759)",
+      "amount": 2589.05,
+      "reference": "Pre-Jul 2026 open LPG — LIFO through STAT 127 (44878). allocation_ingest_pilot.mjs"
+    },
+    {
+      "id": "open_bf_49752",
+      "label": "Invoice 49752 (16 Mar 2026, DN#22130)",
+      "amount": 1471.95,
+      "reference": "Pre-Jul 2026 open LPG — LIFO through STAT 127 (44878). allocation_ingest_pilot.mjs"
+    },
+    {
+      "id": "open_bf_50146",
+      "label": "Invoice 50146 (09 Apr 2026, DN-22304)",
+      "amount": 3448.83,
+      "reference": "Pre-Jul 2026 open LPG — LIFO through STAT 127 (44878). allocation_ingest_pilot.mjs"
+    },
+    {
+      "id": "open_bf_50318",
+      "label": "Invoice 50318 (20 Apr 2026, DN-22337)",
+      "amount": 3448.83,
+      "reference": "Pre-Jul 2026 open LPG — LIFO through STAT 127 (44878). allocation_ingest_pilot.mjs"
+    },
+    {
+      "id": "open_bf_50536",
+      "label": "Invoice 50536 (05 May 2026, DN#22364)",
+      "amount": 5082.47,
+      "reference": "Pre-Jul 2026 open LPG — LIFO through STAT 127 (44878). allocation_ingest_pilot.mjs"
+    },
+    {
+      "id": "open_bf_50754",
+      "label": "Invoice 50754 (18 May 2026, DN#22734)",
+      "amount": 4140,
+      "reference": "Pre-Jul 2026 open LPG — LIFO through STAT 127 (44878). allocation_ingest_pilot.mjs"
+    },
+    {
+      "id": "open_bf_50970",
+      "label": "Invoice 50970 (01 Jun 2026, DN#22452)",
+      "amount": 2920.68,
+      "reference": "Pre-Jul 2026 open LPG — LIFO through STAT 127 (44878). allocation_ingest_pilot.mjs"
+    },
+    {
+      "id": "cyl_opening",
+      "label": "Cylinder deposit net (1 Jul 2026)",
+      "amount": -517.5,
+      "reference": "v5 Part 1B opening — config/statement_v5.json cylOpeningFinancial"
+    },
+    {
+      "id": "lpg_bf_tie",
+      "label": "LPG opening tie to ERP B/F (Part 1A vs invoice list)",
+      "amount": -496.21,
+      "reference": "Closes gap to DEBENQ B/F R22,088.10 — v5 Part 1A opening R22,605.60 vs Σ itemised LPG R23,101.81"
+    }
+  ],
+  "_comment_balanceBridgeLines": "Itemised opening balance (pre-Jul 2026). Regenerate via scripts/build_balance_bridge.mjs --write after TXT/allocation refresh."
 }

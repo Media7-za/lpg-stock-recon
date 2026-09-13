@@ -6,7 +6,7 @@
  *
  * Usage:
  *   node analysis/debtors/shared/scripts/generate_statement_of_account.mjs \
- *     --debtor [CODE] [--as-at YYYY-MM-DD] [--pdf] [--force]
+ *     --debtor [CODE] [--config path/to/config.json] [--as-at YYYY-MM-DD] [--pdf] [--force]
  *
  * Immutable snapshot (collections gate / finance sign-off / customer send):
  *   ... --snapshot [--snapshot-version v1] [--pdf] [--also-live]
@@ -47,6 +47,7 @@ import {
   analyseInvoiceTagCoverage,
   analyseLpgOpenCoverage,
   loadRemittanceInvoiceDocs,
+  loadRestartOpenInvoices,
   GATE_MEANING,
   REMEDY,
 } from './debenq_open_invoices.mjs';
@@ -71,6 +72,7 @@ function parseArgs(argv) {
     else if (argv[i] === '--snapshot-version') args.snapshotVersion = argv[++i];
     else if (argv[i] === '--also-live') args.alsoLive = true;
     else if (argv[i] === '--debtor') args.debtor = argv[++i];
+    else if (argv[i] === '--config') args.config = argv[++i];
   }
   return args;
 }
@@ -202,13 +204,10 @@ function buildProvenanceSection(meta) {
   return lines;
 }
 
-function loadConfig(debtorCode) {
-  const cfgPath = path.join(
-    ROOT,
-    'analysis/debtors',
-    debtorCode,
-    'config/statement_of_account.json',
-  );
+function loadConfig(debtorCode, configRel) {
+  const cfgPath = configRel
+    ? path.join(ROOT, configRel)
+    : path.join(ROOT, 'analysis/debtors', debtorCode, 'config/statement_of_account.json');
   if (!fs.existsSync(cfgPath)) {
     throw new Error(
       `Missing config: ${cfgPath}\n` +
@@ -235,7 +234,7 @@ function loadConfig(debtorCode) {
   cfg.customerDueBasis = cfg.customerDueBasis || 'erp_header';
   cfg.hideAccountLevelSection =
     cfg.hideAccountLevelSection ?? cfg.customerDueBasis === 'open_invoices';
-  return cfg;
+  return { cfg, cfgPath };
 }
 
 function reportTagCoverage(debtorCode, cov) {
@@ -290,8 +289,7 @@ function ageBucket(days) {
 function main() {
   const args = parseArgs(process.argv.slice(2));
   const debtorCode = args.debtor || 'TWK002';
-  const cfgPath = path.join(ROOT, 'analysis/debtors', debtorCode, 'config/statement_of_account.json');
-  const cfg = loadConfig(debtorCode);
+  const { cfg, cfgPath } = loadConfig(debtorCode, args.config);
 
   const asAt = args.asAt ? new Date(`${args.asAt}T12:00:00`) : new Date();
   const asAtIso = asAt.toISOString().slice(0, 10);
@@ -332,15 +330,46 @@ function main() {
     rows: primaryRows,
   } = parseDebenqWithRunning(primaryPath);
 
-  const useLpgStripped = cfgForRun.openInvoiceModel === 'lpg_stripped';
-  const openInvoices = useLpgStripped
-    ? computeOpenLpgInvoices(primaryRows, cfgForRun.closedInvoiceOverrides)
-    : computeOpenInvoices(primaryRows, cfgForRun.closedInvoiceOverrides);
+  const useRestart = cfgForRun.openInvoiceModel === 'remittance_restart';
+  const useLpgStripped = !useRestart && cfgForRun.openInvoiceModel === 'lpg_stripped';
+  let openInvoices;
+  if (useRestart) {
+    const csvRel =
+      cfgForRun.openInvoicesCsv ||
+      `analysis/debtors/${debtorCode}/restart/open_invoices.csv`;
+    const csvPath = snapshotCtx
+      ? path.join(snapshotCtx.snapshotDir, path.basename(csvRel))
+      : path.join(ROOT, csvRel);
+    if (!fs.existsSync(csvPath)) {
+      console.error(
+        `[${debtorCode}] ABORTED — missing ${relPath(csvPath)}. Run npm run debtors:twk002-remit-ledger-restart first.`,
+      );
+      process.exitCode = 1;
+      return;
+    }
+    openInvoices = loadRestartOpenInvoices(csvPath);
+  } else {
+    openInvoices = useLpgStripped
+      ? computeOpenLpgInvoices(primaryRows, cfgForRun.closedInvoiceOverrides)
+      : computeOpenInvoices(primaryRows, cfgForRun.closedInvoiceOverrides);
+  }
   const openingBalance = openingBalanceForMonth(primaryRows, monthStartIso);
 
   // Invoice-tag coverage gate — never bill a customer for an invoice their own
   // remittance advice says they already paid. See debenq_open_invoices.mjs.
-  const tagCoverage = useLpgStripped
+  const tagCoverage = useRestart
+    ? {
+        gate: 'ALLOWED',
+        evidence: { basis: 'REMITTANCE_RESTART' },
+        counts: { clear: openInvoices.length },
+        invoices: openInvoices.map((inv) => ({
+          doc: inv.docno,
+          risk: 'CLEAR',
+          basis: cfgForRun.openInvoicesCsv || 'restart/open_invoices.csv',
+        })),
+        invariant: { status: 'OK' },
+      }
+    : useLpgStripped
     ? analyseLpgOpenCoverage({
         rows: primaryRows,
         openInvoices,
@@ -410,7 +439,10 @@ function main() {
   // Bridge lines: config first, else one auto line.
   // when not already present in config (they also appear in Account summary).
   const bridgeLines = [...(cfgForRun.balanceBridgeLines || [])];
-  if (!bridgeLines.length && accountLevelTotal !== 0) {
+  const dueBasisEarly = cfgForRun.customerDueBasis || 'erp_header';
+  const skipAutoBridge =
+    useRestart && dueBasisEarly === 'open_invoices' && !bridgeLines.length;
+  if (!bridgeLines.length && accountLevelTotal !== 0 && !skipAutoBridge) {
     bridgeLines.push({
       label: 'Account-level balance (not on open invoices below)',
       amount: accountLevelTotal,
@@ -429,7 +461,10 @@ function main() {
     });
   }
   const bridgeSum = round2(bridgeLines.reduce((s, l) => s + l.amount, 0));
-  if (Math.abs(bridgeSum - accountLevelTotal) > 0.05) {
+  if (
+    !useRestart &&
+    Math.abs(bridgeSum - accountLevelTotal) > 0.05
+  ) {
     console.warn(
       `[${debtorCode}] WARNING: balanceBridgeLines sum R${fmtAmount(bridgeSum)} ≠ account-level R${fmtAmount(accountLevelTotal)} — check config/statement_of_account.json`,
     );
@@ -454,6 +489,14 @@ function main() {
     customerDueBasis === 'open_invoices' ? sumOpenInvoices : totalDue;
 
   const lines = [];
+  if (useRestart || cfgForRun.forkBanner?.length) {
+    const banner = cfgForRun.forkBanner || [
+      'ANALYTICAL FORK — remittance-authoritative restart ledger',
+      'Open invoices from restart/open_invoices.csv. Does not overwrite live SOA.',
+    ];
+    for (const b of banner) lines.push(`> **${b}**`);
+    lines.push('');
+  }
   lines.push('# Statement of Account', '');
   cfgForRun.businessHeader.forEach((h, i) => {
     lines.push(i === 0 ? `**${h}**  ` : `${h}  `);
@@ -471,6 +514,9 @@ function main() {
   if (customerDueBasis === 'open_invoices') {
     lines.push(`| Open invoices (detailed below) | ${fmt(sumOpenInvoices)} |`);
     lines.push(`| **Amount due** | **${fmt(customerAmountDue)}** |`);
+    if (useRestart) {
+      lines.push(`| ERP header (tie-out only — not billable) | ${fmt(primaryHeader)} |`);
+    }
   } else {
     if (openingBalance != null) {
       lines.push(`| **Opening balance** (1 ${monthLabel}) | ${fmt(openingBalance)} |`);
@@ -481,6 +527,9 @@ function main() {
       lines.push(`| ${s.code} adjustment | ${fmt(s.headerBalance)} |`);
     }
     lines.push(`| **Balance due** | **${fmt(totalDue)}** |`);
+  }
+  if (cfgForRun.tieoutNote) {
+    lines.push('', `*${cfgForRun.tieoutNote}*`);
   }
   lines.push('', '---', '', '## Aged balance — open invoices', '');
   lines.push('Age is calculated from **invoice date** to ' + ageAsAtLabel + '.', '');
@@ -509,10 +558,34 @@ function main() {
     lines.push(`| **Balance due** | **${fmt(totalDue)}** |`);
   }
   lines.push('', '---', '', '## Open invoices', '');
-  lines.push('| Inv | Inv date | DN / ref | **Due (R)** |');
-  lines.push('| :--- | :--- | :--- | ---: |');
-  for (const inv of openInvoices) {
-    lines.push(`| ${inv.docno.replace(/^0+/, '') || inv.docno} | ${displayDate(inv.iso)} | ${inv.dn} | ${fmt(inv.due)} |`);
+  const showRemittanceBill =
+    useRestart && openInvoices.some((inv) => inv.cn_doc || Math.abs(inv.cn_amount) > 0);
+  if (showRemittanceBill) {
+    lines.push(
+      'TWK remittance advices itemise **invoices and credit notes** separately; Due = invoice − paired CN(s).',
+      '',
+    );
+    lines.push('| Inv | Inv date | DN / ref | Invoice (R) | CN (R) | **Due (R)** |');
+    lines.push('| :--- | :--- | :--- | ---: | ---: | ---: |');
+    for (const inv of openInvoices) {
+      const cnCell =
+        inv.cn_doc && inv.cn_amount
+          ? `${inv.cn_doc} · ${fmt(inv.cn_amount)}`
+          : inv.cn_amount
+            ? fmt(inv.cn_amount)
+            : '—';
+      lines.push(
+        `| ${inv.docno.replace(/^0+/, '') || inv.docno} | ${displayDate(inv.iso)} | ${inv.dn} | ${fmt(inv.invoice_gross ?? inv.due)} | ${cnCell} | ${fmt(inv.due)} |`,
+      );
+    }
+  } else {
+    lines.push('| Inv | Inv date | DN / ref | **Due (R)** |');
+    lines.push('| :--- | :--- | :--- | ---: |');
+    for (const inv of openInvoices) {
+      lines.push(
+        `| ${inv.docno.replace(/^0+/, '') || inv.docno} | ${displayDate(inv.iso)} | ${inv.dn} | ${fmt(inv.due)} |`,
+      );
+    }
   }
 
   if (snapshotCtx) {
@@ -557,8 +630,11 @@ function main() {
     console.log(`[${debtorCode}] Live draft also updated: ${liveMdPath}`);
   }
   if (customerDueBasis === 'open_invoices') {
+    const residualNote = useRestart
+      ? `ERP header R${fmt(totalDue)} (tie-out only — not billable)`
+      : `internal residual R${fmt(bridgeSum)}`;
     console.log(
-      `[${debtorCode}] Customer amount due: R${fmt(customerAmountDue)} (open invoices only; ERP header R${fmt(totalDue)}, internal residual R${fmt(bridgeSum)})`,
+      `[${debtorCode}] Customer amount due: R${fmt(customerAmountDue)} (open invoices only; ${residualNote})`,
     );
   } else {
     console.log(

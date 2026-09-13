@@ -6,7 +6,7 @@
 
 **Related:** `TWK002_Model_B_Position.md` · `TWK002_Settlement_Discount_Doctrine_v2.md` · `config/statement_of_account.json` · `shared/HUMAN_TASKS.md`  
 **Root cause (2026-08-30):** `reports/TWK002_Account_Level_Residual_Root_Cause_2026-08-30.md` — sub-ledger ↔ GL desync. Tagging does **not** reduce the residual *total*.  
-**Residual lever (operator 2026-08-30):** H-027 current-period **BS reclassification** — `docs/TWK002_ERP_Agent_Note_H027_BS_Reclassification.md`. Not accept-in-header. Not P&L write-off.
+**Residual lever (operator 2026-08-30 evening):** ~~H-027 BS reclass~~. **SUPERSEDED 2026-09-03:** residual is **not an asset**; tagging does not change the *total*; **do not quarantine**. Header stays above billable. Collections = open invoices only.
 
 ---
 
@@ -17,11 +17,11 @@ The ERP “opening balance” problem is **two layers**. Do not conflate them.
 | Layer | Amount | What it is in ERP | Can it go to zero? |
 | :--- | ---: | :--- | :--- |
 | **A. BALANCE B/F (export line)** | R38,791.27 | Pre–Mar 2025 running total carried into the current export window | **No** — not one bad posting; eleven remittance-backed STAT batches (Jul 2023 → Jan 2025) rolled forward |
-| **B. Account-level residual (current window)** | R8,084.67 | Header − statement open (identity). After STAT 129 + H-025: R26,498.36 − R18,413.69 | **H-027 BS reclass** (DR suspense / CR AR) after hygiene tagging. ~~Accept vs write-off~~ **superseded 2026-08-30 (evening)** |
+| **B. Account-level residual (current window)** | R8,084.67 | Header − statement open (identity). After STAT 129 + H-025: R26,498.36 − R18,413.69 | **Not zeroable by tagging or quarantine.** Leave in AR Control; not billable. ~~H-027~~ **REJECTED 2026-09-03** — not an asset |
 
 **Collections (done):** Amount due on customer statement = **R110,046.87** only. R8,084.67 is internal Model B reconciliation — not billable.
 
-**ERP (this plan):** Path B journals are mostly posted. **Hygiene tagging first** (H-022 / H-023 / H-026) — required before the journal; does not change residual *total*. **Residual lever:** H-027 current-period BS reclassification (quarantine into AR Historical Reconciliation Suspense). Tagging is not a residual lever — see §Root cause.
+**ERP (this plan):** Path B journals are mostly posted. **Hygiene tagging** (H-022 / H-023 / H-026) is optional ERP open-list cleanup. It does **not** change residual *total*. **There is no residual lever:** H-027 quarantine **REJECTED 2026-09-03** — the amount is not a separable asset. See §Root cause.
 
 ---
 
@@ -81,10 +81,10 @@ Unallocated credits and phantom journals sit in **AR Control** (the header) with
 
 | Route | Residual effect | Status |
 | :--- | :--- | :--- |
-| **Current-period BS reclass** — DR AR Historical Reconciliation Suspense / CR AR Control | Header → statement open; artefact quarantined on BS (no P&L) | **Ratified** — **H-027** |
-| ~~Accept + leave in AR Control~~ | Header stays above billable | **Superseded 2026-08-30 (evening)** |
+| ~~Current-period BS reclass~~ DR suspense / CR AR | Would invent a BS asset; header would equal statement open by force | **REJECTED 2026-09-03** — residual is **not an asset** |
+| **Leave in AR Control** — named composition, not billable | Header stays above billable (R26,498.36 vs R18,413.69) | **Ratified 2026-09-03** |
 | ~~P&L / bad-debt write-off~~ | Hits expense | **Rejected** — not credit-risk |
-| Phase 2 tagging | **Total unchanged**; composition of 7 lines cleaner | **Required before H-027** (hygiene) |
+| Phase 2 tagging (H-022 / H-023 / H-026) | **Total unchanged**; ERP open-list composition cleaner | **Hygiene only** — not a residual lever |
 | Path A restatement | Rejected | — |
 
 ---
@@ -95,12 +95,13 @@ Unallocated credits and phantom journals sit in **AR Control** (the header) with
 H-013 fresh TXT (validate header vs open)
     ↓
 Phase 2 hygiene tagging — H-022 (112) → H-023 (114) → H-026 (129)
+    (optional; does not change residual total; does not create an asset)
     ↓
-Fresh TXT + rebuild bridge (post-tag residual; expected R8,084.67)
+Fresh TXT + rebuild bridge (expected residual still R8,084.67)
     ↓
-H-027 current-period BS reclass (DR suspense / CR AR)   ← only residual lever
+NO H-027 — do not quarantine. Header remains above billable.
     ↓
-Fresh TXT → header = open invoices → strip 42468/42470 overrides → Phase 4
+Phase 4 sign-off: collections = open invoices only; residual named in config
     ↓
 Phase 3 Path A remains optional (deposit-screen audit only)
 ```
@@ -122,13 +123,13 @@ Phase 3 Path A remains optional (deposit-screen audit only)
 
 ---
 
-### Phase 2 — Payment→invoice tagging (ERP Agent · required hygiene before H-027)
+### Phase 2 — Payment→invoice tagging (ERP Agent · hygiene only; not a residual lever)
 
 > **SUPERSEDED 2026-08-30 (afternoon) — do not follow the next sentence as a residual plan.**
 > ~~Goal: Close the current-window gap between header and open invoices.~~
-> Tagging does **not** reduce the account-level residual *total*. Residual elimination is **H-027 BS reclass**.
+> Tagging does **not** reduce the account-level residual *total*. There is **no** residual-elimination journal (H-027 rejected 2026-09-03).
 
-**Corrected goal:** Exhaust every mechanical allocation so Finance can see the residual is not unallocated cash. Clears the ERP open-invoice screen and allows `closedInvoiceOverrides` for 42468/42470 to be removed **after** H-023 verifies. Changes **composition** of the seven lines (override / untagged collapse); does **not** change the net.
+**Corrected goal:** Exhaust every mechanical allocation so Finance can see the residual is not unallocated cash. Clears the ERP open-invoice screen and allows `closedInvoiceOverrides` for 42468/42470 to be removed **after** H-023 verifies. Changes **composition** of the seven lines (override / untagged collapse); does **not** change the net; does **not** create an asset to quarantine.
 
 **Mechanism:** Tagging assigns already-posted cash to invoice rows. Header does not move. Tagging a credit to a *still-open* invoice would shrink statement open and **widen** the residual (reshuffle). H-022 / H-023 / H-026 targets are already off the remittance open list, so the **net** should stay R8,084.67.
 
@@ -153,7 +154,7 @@ Apply from `data/allocation_edges.csv`:
 | AL-0115 | REMITTANCE_EXPLICIT | 40950 | 24,821.42 |
 | AL-0116 | REMITTANCE_CN_OFFSET | 11953 (CN) | 14,968.69 |
 
-**Exit criteria (hygiene):** 42468/42470 no longer show open net in ERP; STAT 112 and STAT 129 fully allocated. H-014 (STAT 123 orphan) is **not** on the H-027 critical path. Re-run `debtors:tag-check` after each tranche. **A still-present R8,084.67 residual is expected — proceed to rebuild + H-027.**
+**Exit criteria (hygiene):** 42468/42470 no longer show open net in ERP; STAT 112 and STAT 129 fully allocated. Re-run `debtors:tag-check` after each tranche. **A still-present R8,084.67 residual is expected — do not post H-027.**
 
 ---
 
@@ -175,22 +176,24 @@ Only if finance wants **deposit screen and payment headers** to match remittance
 
 ---
 
-### Phase 2.5 — Residual quarantine (Finance · H-027)
+### Phase 2.5 — Residual quarantine (Finance · H-027) — SUPERSEDED
 
-**This is the only residual lever.** **Wait for Phase 2 tagging + rebuilt bridge** — then post.
+> **REJECTED 2026-09-03.** There is **no residual lever**. Tagging does not change the *total*. The residual is header − statement open: invoice nets (e.g. 42468/42470) plus untagged credits already inside AR. It is **not an asset**. DR suspense / CR AR is forbidden.
 
-> **SUPERSEDED 2026-08-30 (evening):** ~~Accept vs P&L write-off.~~ Operator ratified a **current-period balance-sheet reclassification**.
+~~**This is the only residual lever.** **Wait for Phase 2 tagging + rebuilt bridge** — then post.~~
 
-**Instruction:** `docs/TWK002_ERP_Agent_Note_H027_BS_Reclassification.md`.
+> ~~**SUPERSEDED 2026-08-30 (evening):** Accept vs P&L write-off. Operator ratified a current-period balance-sheet reclassification.~~ **That ratification is itself superseded 2026-09-03.**
+
+**Instruction:** `docs/TWK002_ERP_Agent_Note_H027_BS_Reclassification.md` — banner **DO NOT POST**.
+
+~~Journal shape (do not use):~~
 
 | Line | Debit | Credit |
 | :--- | :--- | :--- |
-| AR Historical Reconciliation Suspense (BS) | post-tag residual (expected R8,084.67) | |
-| Accounts Receivable Control — TWK002 (BS) | | same |
+| ~~AR Historical Reconciliation Suspense (BS)~~ | ~~post-tag residual~~ | |
+| ~~Accounts Receivable Control — TWK002 (BS)~~ | | ~~same~~ |
 
-No P&L. No 240000. No 2023–2024 period unlock. Optional: split across the seven post-tag bridge lines; one net journal + 7-line attachment is standard.
-
-**Expected after post + fresh TXT:** header = statement open (R18,413.69 if 52484 + 52803 unchanged). Suspense holds the quarantined residual with the 7-line narrative.
+~~Expected after post: header = statement open.~~ **Not applicable — journal forbidden.**
 
 ---
 
@@ -199,8 +202,8 @@ No P&L. No 240000. No 2023–2024 period unlock. Optional: split across the seve
 | Step | Action |
 | :---: | :--- |
 | 1 | Finance controller sign-off on 16 + 3 batch checklist (H-006 follow-through) |
-| 2 | **H-027 posted** — fresh TXT shows header = Σ open invoices; suspense = residual |
-| 3 | Worker: remove 42468/42470 from `closedInvoiceOverrides` if ERP closed; set `collapseAccountLevelAsOpeningBalance: false`; comment that residual is on BS suspense |
+| 2 | Residual **left in AR Control** — named in `balanceBridgeLines`; **not** quarantined; **not** billed |
+| 3 | After H-023 only: remove 42468/42470 from `closedInvoiceOverrides` **if** ERP now shows them closed (hygiene). Does not change Amount due. |
 | 4 | Set `reconState: complete` in `project.json` |
 | 5 | Snapshot customer statement if sending: `npm run debtors:twk002-statement-snapshot -- --as-at YYYY-MM-DD` |
 
@@ -215,7 +218,7 @@ There is **no sensible ERP fix that zeros B/F** without a full pre–Mar 2025 le
 | **Accept (recommended)** | Document provenance; bill open invoices only |
 | **Restate** | Reopen 2023–2024, Path A every batch, re-export — large, high risk |
 | **Cosmetic opening journal** (no suspense, no 7-line attachment) | Force header = open invoices — hides root cause. **Not** H-027. |
-| **H-027 BS reclass** (ratified) | Current-period DR suspense / CR AR with 7-line provenance — quarantines the artefact; does not restate B/F |
+| **H-027 BS reclass** | ~~Ratified 2026-08-30~~ **REJECTED 2026-09-03** — residual is not an asset; do not CR AR into suspense |
 
 **What we have instead:**
 
@@ -232,7 +235,7 @@ There is **no sensible ERP fix that zeros B/F** without a full pre–Mar 2025 le
 - Require Path A unless finance explicitly wants deposit-screen audit
 - Bill the R8,084.67 residual to the customer (collections posture locked)
 - Treat Phase 2 tagging as residual elimination (superseded 2026-08-30)
-- Leave the residual in AR Control as "accepted" (superseded 2026-08-30 evening — H-027 quarantines it)
+- Quarantine the residual via H-027 BS reclass (**REJECTED 2026-09-03** — not an asset)
 - Write the residual to P&L / bad debt / DISCOUNT ALLOWED 240000
 - Search for a missing invoice of R8,084.67 (identity already fully decomposed — H-019)
 - Mix 2025 Phase 2 forward scope into 2023–2024 sign-off
@@ -290,7 +293,7 @@ node analysis/debtors/shared/scripts/generate_statement_of_account.mjs --debtor 
 | Phase 2 tagging closes header−open gap | **ASSERTED rejected** | `reports/TWK002_Account_Level_Residual_Root_Cause_2026-08-30.md` — tagging does not post new money | A tag post is observed to change **header** (would mean a journal, not allocation) |
 | Residual = missing invoice of R8,084.67 | **ASSERTED rejected** | 7-line identity PROVEN (H-019) | Fresh TXT + config gap ≠ rebuilt bridge-line sum ± known new blank-INVNO journals |
 | Residual = sub-ledger ↔ GL desync | **ASSERTED** (operator 2026-08-30) | Gross STAT history + blank/phantom INVNO Path B/cash | Fresh export restates B/F as named invoices *and* all journals carry real INVNOs |
-| H-027 is BS reclass not P&L write-off | **ASSERTED** (operator 2026-08-30) | ERP agent note H-027 | Journal posted to 240000 or bad-debt expense |
+| H-027 is BS reclass not P&L write-off | **ASSERTED superseded** | Operator 2026-09-03: residual is not an asset; do not post H-027 | Journal posted to suspense or 240000 |
 | Path A required for arithmetic | **ASSUMED false** | Doctrine v2 §4; checklists show Path B DONE, Path A not done | Finance asserts deposit screen must tie before sign-off → triggers H-024 |
 | DB ahead of TXT (Aug 11/25 docs) | **PROVEN** | `data/db_pull_meta.json` max 2026-08-25 vs TXT ~2026-08-09 | H-013 export includes those docs |
 
@@ -304,7 +307,8 @@ node analysis/debtors/shared/scripts/generate_statement_of_account.mjs --debtor 
 | R8,084.67 not billable | `customerDueBasis` reverted to `erp_header` without operator re-ratification |
 | STAT 112 authority AL-0109–0116 | Remittance batch amended; `allocation_edges.csv` regenerated with different targets |
 | H-022/H-023 clear override invoices | `closedInvoiceOverrides` for 42468/42470 removed **before** ERP tags land |
-| Accept residual in AR Control | **Superseded 2026-08-30 (evening)** — H-027 is BS reclass |
+| Accept residual in AR Control as named non-asset | **Ratified 2026-09-03** — reopens if operator posts H-027 or bills the residual |
+| H-027 quarantine | **REJECTED 2026-09-03** — reopens only if operator re-ratifies the residual as a separable BS asset |
 | Plan ratified 2026-08-29 | Superseding plan written without marking this doc superseded |
 
 ### Proposed doctrine — NOT RATIFIED
@@ -313,5 +317,5 @@ node analysis/debtors/shared/scripts/generate_statement_of_account.mjs --debtor 
 
 | # | Proposed ruling | Operator decision needed |
 | :--- | :--- | :--- |
-| **P12** | Model B accounts with a ratified named residual may **quarantine** it via current-period BS reclass (DR historical-recon suspense / CR AR control). Never P&L write-off, never DISCOUNT ALLOWED, never leave the artefact in active AR Control after the residual is named. | Portfolio playbook, or TWK002-only? |
+| **P12** | ~~Quarantine named residual via BS reclass~~ **WITHDRAWN 2026-09-03** on TWK002 — residual is not an asset; H-027 rejected. Do not ratify portfolio-wide. | Withdrawn |
 

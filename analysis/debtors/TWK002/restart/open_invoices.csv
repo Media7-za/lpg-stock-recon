@@ -1,0 +1,3 @@
+docno,entry,doc_date,dn,invoice_gross,cn_doc,cn_amount,spine_amount,open_balance,on_remittance,note
+52484,Invoice,2026-08-12,DN#23954,18138.84,15443,-11040,18138.84,7098.84,false,
+52803,Invoice,2026-08-26,DN#24938,28392.35,15553,-17077.5,28392.35,11314.85,false,

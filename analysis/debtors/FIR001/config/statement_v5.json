@@ -1,0 +1,24 @@
+{
+  "debtorCode": "FIR001",
+  "debtorName": "FIRE AND VINE",
+  "txtPath": "analysis/debtors/FIR001/raw/FIR001CURRENT.TXT.TXT",
+  "periodStart": "2026-07-01",
+  "combinedBf": 597.43,
+  "bfSourceNote": "FIR001CURRENT.TXT.TXT line 14 — BALANCE B/F R597.43 immediately before first CURRENT-year row inv 51530 (02 Jul 2026). TXT window is Jul–Sep 2026 (periods 17–19); not a Jan YTD export.",
+  "cylOpeningFinancial": 0.0,
+  "paymentLane": "LPG",
+  "cylOpeningQty": {
+    "14.1": 0,
+    "19.1": 0,
+    "9.1": 0,
+    "D.1": 0,
+    "S.1": 0
+  },
+  "skuRates": {
+    "14.1": 575,
+    "19.1": 690,
+    "9.1": 517.5,
+    "D.1": 1150,
+    "S.1": 1150
+  }
+}

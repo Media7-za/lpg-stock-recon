@@ -9,8 +9,10 @@
     "PIETERMARITZBURG",
     "3201"
   ],
-  "primaryTxt": "analysis/debtors/TWK002/raw/DEBENQTWK002CURRENT.TXT",
-  "_comment_primaryTxt": "2026-08-30: H-013 export through 26 Aug 2026 (header R27,721.81). EXCLUDE ALLOCATION DETAIL — open list via lpg_stripped DN-net + remittance closedInvoiceOverrides, not ERP INVNO.",
+  "primaryTxt": "analysis/debtors/TWK002/raw/DEBENQ.TXT",
+  "_comment_primaryTxt": "Current-window export through 2026-08-31 (header R26,498.36 post H-025). Open list via lpg_stripped + remittance closedInvoiceOverrides.",
+  "fullHistoryTxt": "analysis/debtors/TWK002/raw/TWK002_FULL_HISTORY.TXT",
+  "_comment_fullHistoryTxt": "Stitched 2023-04-28 → 2026-08-31 (301 rows, closing R26,498.36 PROVEN). Sources: TWK0022023 + TWK0022024 + DEBENQ.TXT. Manifest: raw/TWK002_FULL_HISTORY.manifest.json. Regenerate: npm run debtors:twk002-full-history-txt. Replace when H-013 fresh ERP full-history pull lands.",
   "_comment_siteTxts": "TWK003/TWK004 temporarily excluded — TWK002-only statement until site roll-up is revisited.",
   "siteTxts": {},
   "outputDir": "analysis/debtors/TWK002/reports",
@@ -166,7 +168,7 @@
   "collapseAccountLevelAsOpeningBalance": true,
   "collapsedAccountLevelLabel": "Opening balance (pre–Mar 2025 carry and settled-period residual, not itemised below)",
   "collapsedAccountLevelReference": "See balanceBridgeLines in this config for the 7 ratified sub-lines, and reports/TWK002_Pre_Mar2025_BF_Bridge_2026-08-11.md, reports/TWK002_Phantom_CN_Nets_Breakdown_2026-08-11.md, reports/TWK002_Balance_Bridge_Line_Investigation_2026-08-11.md for full provenance.",
-  "_comment_balanceBridgeLines": "STALE as-at 2026-08-30 — computed vs header R118,131.54 / open R110,046.87. The 7-line SUM (R8,084.67) is the residual identity after H-025. Do not remove 42468/42470 overrides until H-023 tags land. After H-022/H-023/H-026 rebuild the bridge; H-027 posts that rebuilt residual as BS reclass (DR suspense / CR AR). Then set collapseAccountLevelAsOpeningBalance false when gap is 0. Root cause: reports/TWK002_Account_Level_Residual_Root_Cause_2026-08-30.md. Instruction: docs/TWK002_ERP_Agent_Note_H027_BS_Reclassification.md",
+  "_comment_balanceBridgeLines": "STALE as-at 2026-08-30 — computed vs header R118,131.54 / open R110,046.87. The 7-line SUM (R8,084.67) is the residual identity after H-025 (header R26,498.36 − open R18,413.69). Do not remove 42468/42470 overrides until H-023 tags land. H-022/H-023/H-026 do not change the residual TOTAL. H-027 BS reclass REJECTED 2026-09-03 — residual is not an asset; do not DR suspense / CR AR. Leave in AR Control; hideAccountLevelSection stays true. Root cause: reports/TWK002_Account_Level_Residual_Root_Cause_2026-08-30.md.",
   "balanceBridgeLines": [
     {
       "id": "bf_carry",

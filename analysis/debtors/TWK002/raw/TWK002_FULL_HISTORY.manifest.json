@@ -1,0 +1,51 @@
+{
+  "generatedAt": "2026-09-02",
+  "kind": "stitched_full_history",
+  "output": "analysis/debtors/TWK002/raw/TWK002_FULL_HISTORY.TXT",
+  "rowCount": 301,
+  "openingBf": 0,
+  "closingBalance": 26498.36,
+  "dateRange": {
+    "first": "2023-04-28",
+    "last": "2026-08-31"
+  },
+  "sources": [
+    {
+      "file": "analysis/debtors/TWK002/raw/TWK0022023.TXT",
+      "label": "2023 slice (YEAR: 2024 FEBRUARY)",
+      "sourceHeaderBalance": "89543.71",
+      "rowsContributed": 78
+    },
+    {
+      "file": "analysis/debtors/TWK002/raw/TWK0022024.TXT",
+      "label": "2024 slice (YEAR: 2025 MARCH)",
+      "sourceHeaderBalance": "89543.71",
+      "rowsContributed": 65
+    },
+    {
+      "file": "analysis/debtors/TWK002/raw/DEBENQ.TXT",
+      "label": "current tail (through 2026-08-31)",
+      "sourceHeaderBalance": "26498.36",
+      "rowsContributed": 158
+    }
+  ],
+  "checkpoints": [
+    {
+      "iso": "2024-02-26",
+      "expected": 87226.46,
+      "label": "2023 slice close",
+      "actual": 87226.46,
+      "proven": true
+    },
+    {
+      "iso": "2025-02-24",
+      "expected": 38791.27,
+      "label": "2024 slice close",
+      "actual": 38791.27,
+      "proven": true
+    }
+  ],
+  "duplicateRowsSkipped": 0,
+  "epistemicTag": "PROVEN",
+  "replaceWhen": "H-013 fresh full-history ERP export lands from Sources"
+}

@@ -91,14 +91,14 @@ The 2023 Path B pair inside the soup (journals `00000490` / `00000491`) nets **+
 
 | Route | Effect | Status |
 | :--- | :--- | :--- |
-| **1. Accept** — leave residual in AR Control | Header stays above billable | **SUPERSEDED 2026-08-30 (evening)** |
+| **1. Leave in AR Control** — named composition, not a separable asset | Header stays above billable; not billed | **Ratified 2026-09-03** |
 | **2. P&L / bad-debt write-off** | Hits expense | **Rejected** — not credit-risk |
-| **3. Current-period BS reclass** — DR AR Historical Reconciliation Suspense / CR AR Control | Header = open invoices; artefact quarantined on BS | **Ratified** — **H-027**. Instruction: `docs/TWK002_ERP_Agent_Note_H027_BS_Reclassification.md` |
+| **3. Current-period BS reclass** — DR suspense / CR AR | Invents a BS asset | **REJECTED 2026-09-03** (had been ratified 2026-08-30 evening) |
 | **4. Full Path A restatement** | Still would not zero B/F without rewriting pre–Mar 2025 history | **Rejected** |
 
-**Quarantine sequence (operator):** H-022 → H-023 → H-026 → rebuild bridge → H-027 post **rebuilt** residual → fresh TXT → strip 42468/42470 overrides if ERP closed → `reconState: complete`.
+**No quarantine sequence.** Tagging (H-022 / H-023 / H-026) is hygiene only. It does **not** change the residual *total*. It does **not** turn the residual into an asset. Do not post H-027.
 
-Tagging is **required before** H-027 (exhaust allocations; cleaner composition). It is **not** a residual-total lever. Tagging a credit to a still-open invoice would **widen** the gap (header unchanged, open shrinks). H-022/H-023/H-026 targets are already off the remittance open list, so the net should stay R8,084.67.
+Tagging a credit to a still-open invoice would **widen** the gap (header unchanged, open shrinks). H-022/H-023/H-026 targets are already off the remittance open list, so the net should stay R8,084.67.
 
 ---
 
@@ -109,8 +109,9 @@ Tagging is **required before** H-027 (exhaust allocations; cleaner composition).
 | Find the “missing invoice” of R8,084.67 | Identity is fully decomposed; no eighth doc |
 | Tag STAT 112 / 114 / 129 to close the gap | Cash already in the header; statement open already remittance-filtered |
 | Another Path B **discount** journal to close R8,084.67 | Discount maths is posted; this leftover is not a settlement-discount shortfall |
-| P&L write-off / 240000 | Operator: artefact is BS quarantine, not expense |
+| P&L write-off / 240000 | Not credit-risk; also not a BS asset to park |
 | Treat residual as billable opening balance | Operator locked `customerDueBasis: open_invoices` |
+| Quarantine via H-027 (DR suspense / CR AR) | Residual is not an asset — **REJECTED 2026-09-03** |
 | Path A restatement to zero B/F | Rejected; period-locked; would not zero the lump without rewriting history |
 
 ---
@@ -122,7 +123,7 @@ Tagging is **required before** H-027 (exhaust allocations; cleaner composition).
 | Residual = header − statement open (not a missing invoice) | Fresh TXT + config produce a gap that does **not** equal the (rebuilt) bridge-line sum ± known new blank-INVNO journals |
 | Tagging is not a residual lever | A tag post is observed to change **header** (that would mean a new journal was posted, not allocation) |
 | R8,084.67 not billable | `customerDueBasis` set to `erp_header` without re-ratification |
-| Accept residual in AR Control | **Superseded** — H-027 is BS reclass |
-| H-027 = BS reclass (not write-off) | Journal posted to 240000 or bad-debt expense |
+| Residual is not an asset (leave in AR Control) | Operator posts H-027 or any CR AR “clearing” journal for R8,084.67 |
+| H-027 = BS reclass | **Superseded 2026-09-03** — do not post |
 
-**Kill condition (ASSUMED):** if a fresh full-history export restates B/F as named invoice rows *and* Path B journals carry real INVNOs, rebuild the bridge — the plug identity may collapse to zero without H-027.
+**Kill condition (ASSUMED):** if a fresh full-history export restates B/F as named invoice rows *and* Path B journals carry real INVNOs, rebuild the bridge — the plug identity may collapse to zero without any journal.

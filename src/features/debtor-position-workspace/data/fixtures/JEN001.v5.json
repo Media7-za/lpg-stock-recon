@@ -2,18 +2,18 @@
   "debtorCode": "JEN001",
   "debtorName": "Spoon Eatery",
   "period": {
-    "from": "2026-07-01",
-    "to": "2026-08-14"
+    "from": "2026-01-01",
+    "to": "2026-08-19"
   },
   "version": "v5",
   "workspaceStatus": "clean",
-  "lastGeneratedAt": "2026-08-18T09:22:32.413Z",
-  "source": "analysis/debtors/JEN001/raw/DEBENQ.TXT",
+  "lastGeneratedAt": "2026-09-07T13:19:29.920Z",
+  "source": "analysis/debtors/JEN001/raw/JEN001.TXT",
   "financialPosition": {
-    "lpgGasDebt": 23202.71,
+    "lpgGasDebt": 27562.82,
     "cylinderFinancialBalance": -517.5,
-    "totalDebtorBalance": 22685.21,
-    "erpStatedBalance": 22685.21,
+    "totalDebtorBalance": 27045.32,
+    "erpStatedBalance": 27045.32,
     "erpVariance": 0,
     "subLedgerVariance": 0
   },
@@ -37,6 +37,6 @@
   },
   "artifacts": {
     "statementMarkdown": "analysis/debtors/JEN001/reports/JEN001_Statement_Account_v5.md",
-    "txtSource": "analysis/debtors/JEN001/raw/DEBENQ.TXT"
+    "txtSource": "analysis/debtors/JEN001/raw/JEN001.TXT"
   }
 }
