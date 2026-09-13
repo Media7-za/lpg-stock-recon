@@ -7,12 +7,16 @@ Open amount per month = max(monthly_lpg_insights.difference, 0) (PROVEN from
 analysis/debtors/JIM001/data/monthly_lpg_insights.csv). Doc count = distinct
 LPG invoice/credit doc_no in analysis/debtors/JIM001/data/invoices.csv.
 
+Payment Doc # / Date(s) from monthly_lpg_insights; Payment Gross (Original)
+= sum of abs(amount) from payments.csv for those doc(s) (consolidated cash).
+
 Uses stdlib only (zipfile + XML); no openpyxl required.
 """
 
 from __future__ import annotations
 
 import csv
+import re
 import shutil
 import zipfile
 from collections import defaultdict
@@ -26,21 +30,29 @@ SRC = REPORTS / f"{DEBTOR}_LPG_Reconciliation_v4.xlsx"
 DST = REPORTS / f"{DEBTOR}_LPG_Reconciliation_v4.1.xlsx"
 INSIGHTS = DATA / "monthly_lpg_insights.csv"
 INVOICES = DATA / "invoices.csv"
+PAYMENTS = DATA / "payments.csv"
 
 SHEET_NAME = "Open Invoices by Month"
 TITLE = (
     f"Jim Gas ({DEBTOR}) - Open LPG Invoices Summed by Billing Month (v4.1)"
 )
-HEADERS = [
-    "Billing Month",
-    "Year",
-    "Month",
-    "Net LPG Invoiced",
-    "Payments Allocated",
-    "Open Invoices (Sum)",
-    "Month Status",
-    "LPG Invoice Doc Count",
+
+# (header, kind) — kind: text | number | money
+COLUMNS: list[tuple[str, str]] = [
+    ("Billing Month", "text"),
+    ("Year", "number"),
+    ("Month", "text"),
+    ("Net LPG Invoiced", "money"),
+    ("Payment Doc #", "text"),
+    ("Payment Date(s)", "text"),
+    ("Payment Gross (Original)", "money"),
+    ("Payment Allocated (Month)", "money"),
+    ("Open Invoices (Sum)", "money"),
+    ("Month Status", "text"),
+    ("LPG Invoice Doc Count", "number"),
 ]
+
+EMPTY_PAYMENT = {"—", "-", "", "nan"}
 
 
 def xml_escape(text: str) -> str:
@@ -71,7 +83,62 @@ def col_letter(n: int) -> str:
     return s
 
 
-def load_month_rows() -> list[dict]:
+def parse_payment_refs(raw: str) -> list[str]:
+    if not raw or raw.strip() in EMPTY_PAYMENT:
+        return []
+    parts = re.split(r"[,;]\s*", raw.strip())
+    out: list[str] = []
+    for p in parts:
+        p = p.strip()
+        if not p or p in EMPTY_PAYMENT:
+            continue
+        clean = p.lstrip("0") or "0"
+        out.append(clean)
+    return out
+
+
+def load_payments_index() -> dict[str, dict]:
+    index: dict[str, dict] = {}
+    with PAYMENTS.open(newline="", encoding="utf-8") as f:
+        for row in csv.DictReader(f):
+            doc = row["payment_doc"]
+            clean = doc.lstrip("0") or "0"
+            index[clean] = {
+                "doc_display": doc.zfill(8) if doc.isdigit() else doc,
+                "payment_date": row["payment_date"],
+                "gross": round(abs(float(row["amount"])), 2),
+            }
+    return index
+
+
+def resolve_payments(
+    refs_raw: str, dates_raw: str, payments_index: dict[str, dict]
+) -> tuple[str, str, float | None]:
+    refs = parse_payment_refs(refs_raw)
+    if not refs:
+        return "—", "—", None
+
+    docs: list[str] = []
+    dates: list[str] = []
+    gross_total = 0.0
+    for clean in refs:
+        rec = payments_index.get(clean)
+        if rec:
+            docs.append(rec["doc_display"])
+            dates.append(rec["payment_date"])
+            gross_total += rec["gross"]
+        else:
+            docs.append(clean.zfill(8))
+            gross_total += 0.0
+
+    dates_out = dates_raw.strip() if dates_raw and dates_raw.strip() not in EMPTY_PAYMENT else ""
+    if not dates_out and dates:
+        dates_out = ",".join(dict.fromkeys(dates))
+
+    return ",".join(docs), dates_out or "—", round(gross_total, 2)
+
+
+def load_month_rows(payments_index: dict[str, dict]) -> list[dict]:
     docs_by_month: dict[str, set[str]] = defaultdict(set)
     with INVOICES.open(newline="", encoding="utf-8") as f:
         for row in csv.DictReader(f):
@@ -84,13 +151,21 @@ def load_month_rows() -> list[dict]:
         for row in csv.DictReader(f):
             my = row["month_year"]
             open_amt = max(float(row["difference"]), 0.0)
+            pmt_docs, pmt_dates, pmt_gross = resolve_payments(
+                row["payment_refs_allocated"],
+                row["payment_dates"],
+                payments_index,
+            )
             out.append(
                 {
                     "billing_month": my,
                     "year": row["year"],
                     "month": row["month"],
                     "net": float(row["net_lpg_invoiced"]),
-                    "paid": float(row["payment_total_allocated"]),
+                    "payment_docs": pmt_docs,
+                    "payment_dates": pmt_dates,
+                    "payment_gross": pmt_gross,
+                    "allocated": float(row["payment_total_allocated"]),
                     "open": round(open_amt, 2),
                     "status": row["month_status"],
                     "doc_count": len(docs_by_month.get(my, set())),
@@ -99,7 +174,23 @@ def load_month_rows() -> list[dict]:
     return out
 
 
+def cell_for(col_idx: int, row_num: int, kind: str, value) -> str:
+    ref = f"{col_letter(col_idx)}{row_num}"
+    if kind == "text":
+        return inline_cell(ref, str(value), "5")
+    if kind == "number":
+        return number_cell(ref, float(value), "6")
+    if kind == "money":
+        if value is None:
+            return inline_cell(ref, "—", "5")
+        return number_cell(ref, float(value), "6")
+    raise ValueError(kind)
+
+
 def build_sheet_xml(rows: list[dict]) -> str:
+    ncols = len(COLUMNS)
+    last_col = col_letter(ncols)
+
     data_rows: list[str] = []
     data_rows.append(
         f'<row r="1" ht="30" customHeight="1">'
@@ -108,62 +199,74 @@ def build_sheet_xml(rows: list[dict]) -> str:
     data_rows.append('<row r="2" ht="10" customHeight="1"></row>')
 
     header_cells = []
-    for i, h in enumerate(HEADERS, start=1):
-        header_cells.append(inline_cell(f"{col_letter(i)}3", h, "2"))
+    for i, (label, _) in enumerate(COLUMNS, start=1):
+        header_cells.append(inline_cell(f"{col_letter(i)}3", label, "2"))
     data_rows.append(f'<row r="3" ht="25" customHeight="1">{"".join(header_cells)}</row>')
 
+    sum_cols = {
+        "Net LPG Invoiced": 0.0,
+        "Payment Allocated (Month)": 0.0,
+        "Open Invoices (Sum)": 0.0,
+    }
+
     r = 4
-    tot_net = tot_paid = tot_open = 0.0
     for item in rows:
-        cells = [
-            inline_cell(f"A{r}", item["billing_month"], "5"),
-            number_cell(f"B{r}", float(item["year"]), "6"),
-            inline_cell(f"C{r}", item["month"], "5"),
-            number_cell(f"D{r}", item["net"], "6"),
-            number_cell(f"E{r}", item["paid"], "6"),
-            number_cell(f"F{r}", item["open"], "6"),
-            inline_cell(f"G{r}", item["status"], "5"),
-            number_cell(f"H{r}", item["doc_count"], "6"),
-        ]
+        values = {
+            "Billing Month": item["billing_month"],
+            "Year": item["year"],
+            "Month": item["month"],
+            "Net LPG Invoiced": item["net"],
+            "Payment Doc #": item["payment_docs"],
+            "Payment Date(s)": item["payment_dates"],
+            "Payment Gross (Original)": item["payment_gross"],
+            "Payment Allocated (Month)": item["allocated"],
+            "Open Invoices (Sum)": item["open"],
+            "Month Status": item["status"],
+            "LPG Invoice Doc Count": item["doc_count"],
+        }
+        cells = []
+        for i, (label, kind) in enumerate(COLUMNS, start=1):
+            cells.append(cell_for(i, r, kind, values[label]))
         data_rows.append(f'<row r="{r}" ht="20" customHeight="1">{"".join(cells)}</row>')
-        tot_net += item["net"]
-        tot_paid += item["paid"]
-        tot_open += item["open"]
+        sum_cols["Net LPG Invoiced"] += item["net"]
+        sum_cols["Payment Allocated (Month)"] += item["allocated"]
+        sum_cols["Open Invoices (Sum)"] += item["open"]
         r += 1
 
-    cells = [
-        inline_cell(f"A{r}", "TOTAL", "2"),
-        inline_cell(f"B{r}", "", "5"),
-        inline_cell(f"C{r}", "", "5"),
-        number_cell(f"D{r}", round(tot_net, 2), "6"),
-        number_cell(f"E{r}", round(tot_paid, 2), "6"),
-        number_cell(f"F{r}", round(tot_open, 2), "6"),
-        inline_cell(f"G{r}", "", "5"),
-        inline_cell(f"H{r}", "", "5"),
-    ]
+    total_values: dict[str, object] = {
+        "Billing Month": "TOTAL",
+        "Year": None,
+        "Month": None,
+        "Net LPG Invoiced": round(sum_cols["Net LPG Invoiced"], 2),
+        "Payment Doc #": None,
+        "Payment Date(s)": None,
+        "Payment Gross (Original)": None,
+        "Payment Allocated (Month)": round(sum_cols["Payment Allocated (Month)"], 2),
+        "Open Invoices (Sum)": round(sum_cols["Open Invoices (Sum)"], 2),
+        "Month Status": None,
+        "LPG Invoice Doc Count": None,
+    }
+    cells = []
+    for i, (label, kind) in enumerate(COLUMNS, start=1):
+        v = total_values[label]
+        if v is None:
+            cells.append(inline_cell(f"{col_letter(i)}{r}", "", "5"))
+        else:
+            cells.append(cell_for(i, r, kind, v))
     data_rows.append(f'<row r="{r}" ht="20" customHeight="1">{"".join(cells)}</row>')
 
     last_row = r
-    col_widths = [
-        (1, 14),
-        (2, 10),
-        (3, 14),
-        (4, 18),
-        (5, 18),
-        (6, 20),
-        (7, 22),
-        (8, 22),
-    ]
+    col_widths = [14, 10, 14, 18, 22, 18, 22, 22, 20, 22, 22]
     cols_xml = "".join(
-        f'<col width="{w}" customWidth="1" min="{mn}" max="{mn}"/>'
-        for mn, w in col_widths
+        f'<col width="{w}" customWidth="1" min="{i}" max="{i}"/>'
+        for i, w in enumerate(col_widths, start=1)
     )
 
     return (
         '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
         '<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">'
         "<sheetPr><outlinePr summaryBelow=\"1\" summaryRight=\"1\" /><pageSetUpPr /></sheetPr>"
-        f'<dimension ref="A1:H{last_row}"/>'
+        f'<dimension ref="A1:{last_col}{last_row}"/>'
         '<sheetViews><sheetView showGridLines="1" workbookViewId="0">'
         '<selection activeCell="A1" sqref="A1"/></sheetView></sheetViews>'
         '<sheetFormatPr baseColWidth="8" defaultRowHeight="15"/>'
@@ -211,8 +314,11 @@ def main() -> None:
         raise SystemExit(f"Missing source workbook: {SRC}")
     if not INSIGHTS.is_file():
         raise SystemExit(f"Missing insights CSV: {INSIGHTS}")
+    if not PAYMENTS.is_file():
+        raise SystemExit(f"Missing payments CSV: {PAYMENTS}")
 
-    rows = load_month_rows()
+    payments_index = load_payments_index()
+    rows = load_month_rows(payments_index)
     sheet_xml = build_sheet_xml(rows)
 
     shutil.copy2(SRC, DST)
