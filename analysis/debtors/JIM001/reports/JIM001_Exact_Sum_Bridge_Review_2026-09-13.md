@@ -514,6 +514,53 @@ Resolving them, if possible at all, needs a different kind of evidence
 (a period bank statement or bordereau), not further search over this
 same dataset.
 
+**A fourth attempt (2026-09-14, Supabase `transaction_headers.ref_no`) —
+looked promising, then disproved itself; still unresolved.** The
+underlying database exposes a field the earlier CSV-only analysis never
+had: each `Payment` row in `transaction_headers` can carry multiple
+sub-lines, each tagged with a `ref_no` pointing at what looks like a
+specific invoice doc number. Querying this for all 14 orphaned docs
+found real invoice-number matches for 9 of them (R36,025.02 of the
+R54,902.41), 20 of 24 individual invoice references landing exact to
+the cent — enough to look, at first pass, like genuine remittance
+evidence finally surfacing for this era.
+
+**It isn't.** Cross-checking the *same* `ref_no` mechanism against an
+already-settled payment (doc 5876, the STAT-era payment already
+assigned to July 2019 via the aggregate exact-sum test) shows why: doc
+5876 alone carries over 50 `ref_no` sub-lines, spanning invoices dated
+January through July 2019, mixing positive *and* negative amounts, plus
+one large R25,425.03 line with no `ref_no` at all. And the smoking gun —
+**the same invoice reference appears in two different payment docs,
+months apart, with amounts that exactly cancel:**
+
+| Invoice ref | Appears in doc 4898 (2019-01-09) | Appears in doc 5876 (2019-08-06) | Net |
+| :--- | ---: | ---: | ---: |
+| 4559 | −2,100.01 | +2,100.01 | 0.00 |
+| 4561 | −350.00 | +350.00 | 0.00 |
+| 4562 | −700.01 | +700.01 | 0.00 |
+| 4565 | −1,724.97 | −25.04 | −1,750.01 (invoice's full value, split across both docs) |
+
+A genuine remittance record does not get reversed and re-applied seven
+months later by an unrelated payment. This is the ERP's own **internal,
+mutable open-item allocation ledger** continuously re-sweeping cash
+against invoices as new transactions post — exactly the mechanism
+`analysis/debtors/shared/docs/business_rules.md` §3 already names:
+*"The ERP's built-in payment allocation system is historically broken.
+Payments are not reliably matched to specific invoices."* The "exact to
+the cent" matches are the expected signature of a FIFO/round-number
+sweep against this era's recurring per-unit amounts (§6 point 2 above),
+not evidence of customer intent. Checked `description`/`order_no`
+(no free-text bank narrative — just `TRANSF`/`CASH` and the known
+`batch_ref`) too: no independent remittance data exists anywhere in the
+database for this era beyond what `payments.csv` already showed.
+
+**Verdict unchanged: the R54,902.41 pre-2021 orphaned cash remains
+UNRESOLVED.** This fourth attempt closes off the one ERP-internal
+source left unchecked, with a concrete disproof rather than an absence
+of a match — reinforcing, not just repeating, recommendation §9.5.
+`monthly_lpg_insights.csv` is **not** updated by this finding.
+
 ---
 
 ## 7. Cumulative bridge cross-check
@@ -660,12 +707,17 @@ human), the same fields would apply once ratified:
    handoff (2026-09-14) — applied to `monthly_lpg_insights.csv`. Record
    this in any legal-facing material as a decision, not an independently
    proven fact: if a remittance advice for doc 44555 ever surfaces, revisit.
-5. Do **not** re-run the contiguous-run search against the R54,902.41
-   pre-STAT-era orphans (§6) expecting another 38846/39812-style
-   resolution — it was tried and ruled out for principled reasons
-   (ambiguous/duplicate matches, round recurring amounts, a genuine
-   10-month invoicing gap). Resolving these needs a period bank
-   statement or bordereau, not further search over this same dataset.
+5. Do **not** re-run the contiguous-run search *or* the
+   `transaction_headers.ref_no` lookup against the R54,902.41 pre-STAT-era
+   orphans (§6) expecting another 38846/39812-style resolution — both
+   were tried and ruled out for principled reasons (ambiguous/duplicate
+   matches, round recurring amounts, a genuine 10-month invoicing gap;
+   and, for `ref_no`, a proven mutable-ledger contradiction — the same
+   invoice reference appears in two different payment docs seven months
+   apart with amounts that exactly cancel). Every ERP-internal source
+   this account has is now exhausted. Resolving these needs a period
+   bank statement or bordereau — external evidence, not further search
+   over this same dataset.
 6. Get ERP-side confirmation of the R7,571.68 standing credit origin (§4)
    before netting it anywhere.
 
