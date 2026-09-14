@@ -1,6 +1,6 @@
 # JIM001 — Monthly-Batch Exact-Sum Bridge Review (2018–2026)
 
-Generated 2026-09-13 | Method: `analysis/skills/monthly-batch-erp-bridge-reconciliation/SKILL.md` §2 | Evidence ceiling: Tier 3 / ASSERTED (no remittance advice exists for JIM001)
+Generated 2026-09-13, updated 2026-09-14 | Method: `analysis/skills/monthly-batch-erp-bridge-reconciliation/SKILL.md` §2 | Evidence ceiling: Tier 3 / ASSERTED for most findings (no remittance advice exists for JIM001) — **one exception: doc 40746's July assignment is Tier 2 / PROVEN, verified against a raw ERP transaction export (§5)**
 
 ---
 
@@ -244,8 +244,8 @@ invoices."** — exactly this evidence tier.
 
 | Payment | Aggregate exact-sum says | ERP-ledger invoice split says (unconfirmed) | Status |
 | :--- | :--- | :--- | :--- |
-| **40746** (2025-08-22, R14,579.44) | 2025-07 (matches July's billing to the cent) | AL-0337–AL-0340: 4 invoices (43628, 43910, 44097, 44241), all dated June 2025, R38.67 short on the last | **Resolved — July** (see below) |
-| **44555** (2026-06-05, R11,666.12) | 2025-12 (matches Dec's billing to the cent) | AL-0359–AL-0361: 3 invoices (49540, 49727, 49842), all dated March 2026, R271.44 short on the last | **Unresolved** — neither reading confirmed |
+| **40746** (2025-08-22, R14,579.44) | 2025-07 (matches July's billing to the cent) | AL-0337–AL-0340: 4 invoices (43628, 43910, 44097, 44241), all dated June 2025, R38.67 short on the last | **PROVEN — July** (raw ERP ledger; see below) |
+| **44555** (2026-06-05, R11,666.12) | 2025-12 (matches Dec's billing to the cent) | AL-0359–AL-0361: 3 invoices (49540, 49727, 49842), all dated March 2026, R271.44 short on the last — **confirmed fictitious, see below** | **Unresolved** — the ERP-ledger reading is now known to have no real basis; December remains ASSERTED only |
 
 **Doc 40746 resolved (July) via an independent external source.** The
 user supplied `JIM001_LPG_Reconciliation_v4` (a Google Sheet; internal
@@ -273,6 +273,72 @@ Worth noting: it independently labels doc 38846 → "January" and doc
 (§6) exactly, before this review ever saw that file — good convergent
 validation of that resolution too, for what it's worth given it's the
 same non-Tier-1 source class.
+
+**Doc 40746 upgraded to PROVEN — a raw ERP transaction export settles it
+directly.** The user supplied a live pull from JIM001's ERP (`DEBENQ`
+enquiry screen, "YEAR: CURRENT"), saved to
+`raw/DEBENQ_CURRENT.TXT`. Unlike everything else cited for this payment,
+this is the actual system-of-record ledger, not a reconstruction. Its
+running balance is internally perfect (272 transaction rows, zero
+chain breaks, closing balance matches the file's own stated
+`CURRENT BALANCE: 122884.84` exactly) — this is a genuine, coherent
+export, not a fragment. Doc 40746's six lines in it:
+
+| Invoice tagged | Date | Amount | What it is |
+| :--- | :--- | :--- | :--- |
+| 43628 | 2025-06-05 | −R262.54 | Tiny residual cleanup on a **June** invoice |
+| 44516 | 2025-07-04 | −R3,115.05 | Full **July** invoice |
+| 44707 | 2025-07-10 | −R4,200.69 | Full **July** invoice |
+| 44933 | 2025-07-18 | −R4,200.69 | Full **July** invoice |
+| 45091 | 2025-07-24 | −R2,800.46 | Full **July** invoice |
+| 45323 | 2025-08-01 | −R0.01 | Rounding cleanup on an **August** invoice |
+
+These sum to exactly R14,579.44 — the payment's gross to the cent — and
+they are **real invoice numbers with real dates that the ERP itself
+tagged this payment against**, not an inferred split. Four of six lines,
+and the overwhelming majority of the cash (R14,316.89 of R14,579.44), are
+full July invoices. The June and August lines are boundary cleanup
+residue, consistent with how every other STAT payment in this ledger
+tidies up a few cents/Rand against the tail of the prior cycle and the
+head of the next. **This settles June vs. July definitively: July.**
+The `ERP_LEDGER`/`Probable` rows in `allocation_edges.csv` that pointed
+to June (AL-0337–AL-0340) do not correspond to anything in this real
+export — confirming what §5's fingerprint analysis already suspected,
+that those rows were a mechanical reconstruction, not genuine ERP
+tagging. `monthly_lpg_insights.csv`'s notes for 2025-06/07 have been
+updated to cite this directly.
+
+**The same export also changes the picture on doc 44555 — without
+resolving it.** Doc 44555's line in the raw ledger reads:
+
+> `LINE 272 | PERIOD 16 | DOCNO 00044555 | Payment | 05/06/2026 | INVNO: (blank) | TRANSF | STAT 127 | -11666.12 | 122884.84`
+
+**The `INVNO` field is blank.** The real ERP has not tagged this
+payment to any invoice at all — not March 2026's invoices, not
+December 2025's. This means `allocation_edges.csv`'s AL-0359–AL-0361
+rows (which claim doc 44555 splits across three named March-2026
+invoices) **do not correspond to anything in the real ERP either** —
+exactly the same mechanical-reconstruction pattern already identified
+for doc 40746's false June reading. The March-2026 reading is therefore
+now *confirmed fictitious* at the invoice-tagging level, not merely
+"unconfirmed." That doesn't make December 2025 proven — it was never
+based on ERP tagging either, only the aggregate exact-sum coincidence —
+but it removes March 2026's only claimed evidentiary basis entirely.
+**44555 stays `UNRESOLVED`, but December 2025 is now the only reading
+with any support left; March 2026 has none.**
+
+**A note on this export's own limits, so it isn't over-relied on
+elsewhere:** cross-checking every LPG/CYL invoice doc number against
+`invoices.csv`, this raw file is **complete only from 2025-03-01
+onward** (zero missing docs from that date forward) — before that, it's
+missing 420 of 620 invoice/credit-note documents that exist in
+`invoices.csv` for the 2022-05-16 to 2025-02-28 stretch, consistent with
+its "YEAR: CURRENT" filter showing only recent/still-open activity, not
+full history. **Do not use this file to bridge anything dated before
+March 2025** — it will look like a huge unexplained gap that isn't
+real, just archived-out history. From March 2025 onward, though, it's
+solid: see §7 for a full balance-bridge validation using exactly that
+window.
 
 A related thread sits in the same window: payment **39812** (2025-06-12,
 R20,557.69 — alone more than enough to cover all of June 2025's
@@ -451,6 +517,45 @@ boundary-crossing payments. **The raw cumulative gap is the more reliable
 top-line number** because it doesn't depend on any month-assignment being
 correct.
 
+### 7.1 Second bridge, against the real ERP header balance (2025-03 onward)
+
+The raw ERP export (`raw/DEBENQ_CURRENT.TXT`, §5) is complete from
+2025-03-01 onward and carries two genuine ERP-stated balance points: the
+running balance immediately before its first March-2025 entry
+(**R45,202.67**, as of the last pre-window posting, 2024-07-04) and its
+own header's **`CURRENT BALANCE: R122,884.84`** (as of the last posting,
+2026-06-05). This is the actual "transaction header balance" bridge
+this review lacked before — not a computed proxy.
+
+| | Amount |
+| :--- | ---: |
+| ERP balance immediately before window (2024-07-04) | R45,202.67 |
+| ERP `CURRENT BALANCE` (2026-06-05) | R122,884.84 |
+| **Raw ERP net movement over the window** | **R77,682.17** |
+| LPG net invoiced, 2025-03-01 onward (`invoices.csv`) | R218,795.03 |
+| CYL net invoiced, 2025-03-01 onward | R1,725.00 |
+| Cash paid, 2025-03-01 onward (`payments.csv`) | R140,422.86 |
+| **Computed net movement (LPG + CYL − cash)** | **R80,097.17** |
+| **Gap** | **R2,415.00** |
+
+R2,415.00 is itself a recognizable, round CYL-deposit unit (the same
+value appears dozens of times throughout this export as a `-EMPTY`
+credit-note/invoice pair amount) — consistent with a single boundary-date
+CYL line landing on one side of the 2025-03-01 cutoff in one dataset and
+the other side in the other, not a systemic problem. **A R2,415 gap on a
+R77,682 movement (97% tie-out) against the actual ERP header balance is
+strong, independent confirmation that `invoices.csv`/`payments.csv` are
+sound for this window** — precisely the window covering both disputed
+payments (§5).
+
+**Do not extend this specific bridge before 2025-03-01** — the raw
+export is missing 420 of 620 invoice/credit-note documents that exist in
+`invoices.csv` for 2022-05-16 through 2025-02-28 (it's a "current
+activity" snapshot, not full history; see §5's note on this file's
+limits). Anything computed against this file for that earlier stretch
+will show a large, spurious gap that reflects archived-out history, not
+a real discrepancy.
+
 ---
 
 ## 8. Registry fields (proposed, per handoff Part 4)
@@ -467,16 +572,23 @@ report). Definitions used:
   adjacent months' variances self-cancel, Business Rule 14), `pooled_window`
   (documented multi-month settlement window), or `gross_flow_surplus`
   (Business Rule 13).
-- **`evidence_tier`** — 1 (remittance advice) through 3 (gross-amount /
-  candidate-invoice reasoning only, no third-party document). **JIM001 has
-  no remittance advice on file at all; every entry in this account is
-  ceilinged at Tier 3.**
+- **`evidence_tier`** — 1 (remittance advice — a customer-issued
+  document) · 2 (the actual ERP system-of-record transaction ledger,
+  pulled directly, with real invoice-level tagging — added to the schema
+  once such a file existed for this account; see §5's raw
+  `DEBENQ_CURRENT.TXT`) · 3 (gross-amount / candidate-invoice reasoning,
+  or a *reconstructed* invoice split, with no independent document
+  behind it). **JIM001 has no remittance advice on file; nothing here
+  clears Tier 1.** Before this session, every entry was ceilinged at
+  Tier 3 — doc 40746 (§5) is the first to reach Tier 2, once a genuine
+  ERP export existed to check it against.
 - **`evidence_status`** — `ASSERTED` (this review's own conclusion) vs.
-  `PROVEN` (would require Tier 1 evidence). **Every JIM001 finding in this
-  review, including the 2022–2024 human-ratified ones, is written as
-  `ASSERTED`** — human ratification here was based on candidate-invoice
-  review and STAT-sequence review, not a remittance advice, so it does not
-  clear the bar for `PROVEN` either.
+  `PROVEN` (independently confirmed against real evidence — Tier 1 *or*
+  Tier 2, not this review's own inference). Every JIM001 finding in this
+  review is `ASSERTED` **except doc 40746, now `PROVEN`** by the raw ERP
+  ledger's direct invoice tagging (§5) — the 2022–2024 human-ratified
+  entries stay `ASSERTED`, since ratification there was candidate-invoice
+  and STAT-sequence reasoning, not a Tier 1/2 document.
 
 For the 2018–2021 and 2025–2026 findings in this review (unreviewed by a
 human), the same fields would apply once ratified:
@@ -488,9 +600,9 @@ human), the same fields would apply once ratified:
 | 2021-10/11 | mirror_carry_pair | 3 | ASSERTED |
 | 2025-01 (docs 38846 partial + 39812 partial) | calendar_month, invoice-split | 3 | ASSERTED — cent-exact invoice-level match (§5/§6) |
 | 2025-02 (doc 39812 partial) | calendar_month, invoice-split | 3 | ASSERTED — cent-exact invoice-level match (§5/§6) |
-| 2025-07 (doc 40746) | calendar_month | 3 | ASSERTED — confirmed by 2 independent sources (§5), applied |
+| 2025-07 (doc 40746) | calendar_month | **2** | **PROVEN** — raw ERP transaction ledger tags this payment to 4 named July invoices directly (§5); upgraded from Tier 3/ASSERTED once real system-of-record data existed. Still not Tier 1 (no customer remittance advice), but no longer a reconstruction. |
 | 2025 (4 other settled months) | calendar_month | 3 | ASSERTED |
-| 2026-03 or 2025-12 (doc 44555) | calendar_month, unresolved | 3 | **ASSERTED — UNRESOLVED** (§5); do not apply either month |
+| 2026-03 or 2025-12 (doc 44555) | calendar_month, unresolved | 3 | **ASSERTED — UNRESOLVED** (§5); the raw ERP ledger shows this payment untagged to any invoice, which rules out March-2026's claimed invoice-level basis (confirmed fictitious) without proving December — do not apply either month |
 | Standing credit, 2021-04–10 | n/a (not a settlement) | 3 | ASSERTED, flagged for ERP-side verification |
 
 ---
@@ -506,16 +618,17 @@ human), the same fields would apply once ratified:
    per the invoice-level split in §5/§6 (cent-exact, no dedup issue).
    This is confirmed, not a candidate — apply it.
 3. **Update `monthly_lpg_insights.csv` (done):** doc 40746 moved from
-   2025-06 to 2025-07, confirmed by `JIM001_LPG_Reconciliation_v4` and
-   the published 2025 report (§5) — two independent sources against one
-   unconfirmed mechanical split. June is now `UNPAID`, July
-   `FULLY_SETTLED`. Do not apply doc 44555's aggregate-match
-   reassignment — it remains genuinely unresolved (§5), unaddressed by
-   the same external source.
-4. If a real remittance advice or ERP export can be pulled for the
-   Dec 2025–Mar 2026 window, use it to settle doc 44555 (§5) — this is
-   exactly the kind of case Tier 1 evidence is needed for; internal data
-   alone won't arbitrate it further.
+   2025-06 to 2025-07 — now `PROVEN` (Tier 2) by the raw ERP transaction
+   ledger's direct invoice tagging (§5), on top of the earlier
+   `JIM001_LPG_Reconciliation_v4` and 2025-report convergence. June is
+   now `UNPAID`, July `FULLY_SETTLED`. Do not apply doc 44555's
+   aggregate-match reassignment — it remains genuinely unresolved (§5).
+4. **An ERP export was pulled and did not settle doc 44555** — its raw
+   ledger line carries a blank `INVNO`, i.e. genuinely untagged. This
+   killed March-2026's claimed invoice-level basis (§5) but didn't prove
+   December either. A *remittance advice* specifically (a document from
+   the customer, not another ERP pull) is the only evidence type left
+   that could settle this one — internal data has now been exhausted.
 5. Do **not** re-run the contiguous-run search against the R54,902.41
    pre-STAT-era orphans (§6) expecting another 38846/39812-style
    resolution — it was tried and ruled out for principled reasons
@@ -525,6 +638,9 @@ human), the same fields would apply once ratified:
 6. Get ERP-side confirmation of the R7,571.68 standing credit origin (§4)
    before netting it anywhere.
 
-No figure in this review should be reported as `PROVEN` — JIM001 has no
-remittance advice on file. Everything above is `ASSERTED` pending that
-evidence or explicit human ratification.
+JIM001 still has no remittance advice on file, so nothing here reaches
+Tier 1. **Doc 40746's July assignment is the one exception to
+`ASSERTED`** — it's `PROVEN` at Tier 2, verified against the actual ERP
+transaction ledger (§5), not just this review's own inference. Every
+other figure above is `ASSERTED` pending Tier 1/2 evidence or explicit
+human ratification.
