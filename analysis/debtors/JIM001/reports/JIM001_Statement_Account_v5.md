@@ -529,11 +529,16 @@
 
 ---
 
-## Ingest Gate
+## Ingest Gate (`ingestFreshness: current` · `ingestCoverage: complete`)
 
-*No coverage report found. Run `npm run debtors:ingest-check -- --debtor JIM001` before trusting Part 2 qty.*
+| Check | Status |
+| :--- | :--- |
+| Display status | `CURRENT_COMPLETE` |
+| Financial balance from TXT | **ALLOWED** |
+| Custody / Part 2 qty | **ALLOWED** |
+| SKU analysis | **ALLOWED** |
 
-*Additional caveat for this run: generated via the MCP-cache variant (DATABASE_URL unavailable in-session) -- see the note at the top of `reconcile_jim001_v5_from_mcp_cache.mjs` for how the doc-split/qty lookups were sourced.*
+*Generated via the MCP-cache variant (DATABASE_URL unavailable in-session) -- doc-split/qty lookups sourced from a Supabase MCP query on 2026-09-14, not a live DB connection at generation time.*
 
 ---
 
