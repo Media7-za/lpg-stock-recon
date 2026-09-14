@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "1.0",
+  "debtorCode": "FIR001",
+  "snapshotId": "2026-09-05_v1",
+  "generatedAt": "2026-09-08T20:37:28.021Z",
+  "generatedAtSast": "2026/09/08, 22:37:28",
+  "statementAsAt": "2026-09-05",
+  "ageingAsAt": "2026-08-31",
+  "gitCommit": "d3561724c7ea80bc6d1c1852937ea07fd0a2b471",
+  "gate": {
+    "status": "REVIEW_REQUIRED",
+    "basis": "PATTERN_ONLY",
+    "openInvoiceCount": 1
+  },
+  "amounts": {
+    "erpHeader": 8721.02,
+    "openInvoices": 7606.09,
+    "accountLevel": 1114.93,
+    "customerAmountDue": 8721.02,
+    "customerDueBasis": "erp_header",
+    "siteTotal": 0
+  },
+  "presentation": {
+    "hideAccountLevelSection": false,
+    "collapseAccountLevelAsOpeningBalance": false,
+    "openInvoiceModel": "lpg_stripped"
+  },
+  "rule": "Immutable snapshot — inputs archived in this folder. Do not regenerate for sign-off disputes; cite this manifest.",
+  "artifacts": {
+    "statementMd": {
+      "path": "analysis/debtors/FIR001/snapshots/2026-09-05_v1/FIR001_Statement_of_Account_2026-09-05_v1.md",
+      "modified": "2026-09-08T20:37:28.039Z",
+      "sha256": "f81e11b21996a1ae327d73332ae55a84a1e0baa06deb94de18372359025dab85",
+      "bytes": 2062
+    },
+    "statementPdf": {
+      "path": "analysis/debtors/FIR001/snapshots/2026-09-05_v1/FIR001_Statement_of_Account_2026-09-05_v1.pdf",
+      "modified": "2026-09-08T20:37:38.859Z",
+      "sha256": "d20489dc0f960f193fe10b7919d549ef07d47a963a202030b6682fd20583d624",
+      "bytes": 93360
+    },
+    "config": {
+      "path": "analysis/debtors/FIR001/snapshots/2026-09-05_v1/statement_of_account.json",
+      "modified": "2026-09-08T20:37:28.015Z",
+      "sha256": "1fed66f8b94402ab29a5b1b047338a45ce67fb49dfbae90035a38a712df286b0",
+      "bytes": 4014
+    },
+    "primaryTxt": {
+      "path": "analysis/debtors/FIR001/snapshots/2026-09-05_v1/FIR001CURRENT.TXT.TXT",
+      "modified": "2026-09-08T20:37:28.015Z",
+      "sha256": "a6461eb6f27fa422dd5f42d3aec55fa5855f4c232ee8073dd6f55e2797d9e508",
+      "bytes": 5285
+    },
+    "siteTxts": {}
+  }
+}
