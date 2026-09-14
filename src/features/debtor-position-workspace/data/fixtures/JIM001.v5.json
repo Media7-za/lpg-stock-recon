@@ -1,0 +1,77 @@
+{
+  "debtorCode": "JIM001",
+  "debtorName": "Jimmy's / Invesco",
+  "period": {
+    "from": "2025-03-01",
+    "to": "2026-06-05"
+  },
+  "version": "v5",
+  "workspaceStatus": "pending_review",
+  "lastGeneratedAt": "2026-09-14T12:01:57.912Z",
+  "source": "analysis/debtors/JIM001/raw/DEBENQ_CURRENT.TXT",
+  "financialPosition": {
+    "lpgGasDebt": 125306.34,
+    "cylinderFinancialBalance": -2421.5,
+    "totalDebtorBalance": 122884.84,
+    "erpStatedBalance": 122884.84,
+    "erpVariance": 0,
+    "subLedgerVariance": 0
+  },
+  "custodyPosition": {
+    "totalCustodyExposure": 21160,
+    "lines": [
+      {
+        "sku": "14.1",
+        "label": "14kg",
+        "qty": 1,
+        "depositRate": 575,
+        "exposure": 575
+      },
+      {
+        "sku": "19.1",
+        "label": "19kg",
+        "qty": 20,
+        "depositRate": 690,
+        "exposure": 13800
+      },
+      {
+        "sku": "9.1",
+        "label": "9kg",
+        "qty": 2,
+        "depositRate": 517.5,
+        "exposure": 1035
+      },
+      {
+        "sku": "D.1",
+        "label": "D.1",
+        "qty": 16,
+        "depositRate": 1150,
+        "exposure": 18400
+      },
+      {
+        "sku": "S.1",
+        "label": "S.1",
+        "qty": -11,
+        "depositRate": 1150,
+        "exposure": -12650
+      }
+    ]
+  },
+  "reconciliationPosition": {
+    "cylinderVariance": -23581.5,
+    "erpVariance": 0,
+    "subLedgerVariance": 0,
+    "exceptions": [
+      {
+        "type": "CUSTODY",
+        "basis": "ASSERTED",
+        "status": "open",
+        "description": "Part 1B financial vs Part 2 custody — check DB ingest vs TXT"
+      }
+    ]
+  },
+  "artifacts": {
+    "statementMarkdown": "analysis/debtors/JIM001/reports/JIM001_Statement_Account_v5.md",
+    "txtSource": "analysis/debtors/JIM001/raw/DEBENQ_CURRENT.TXT"
+  }
+}

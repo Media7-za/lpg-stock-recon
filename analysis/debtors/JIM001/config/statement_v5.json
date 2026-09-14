@@ -1,0 +1,26 @@
+{
+  "debtorCode": "JIM001",
+  "debtorName": "Jimmy's / Invesco",
+  "txtPath": "analysis/debtors/JIM001/raw/DEBENQ_CURRENT.TXT",
+  "periodStart": "2025-03-01",
+  "combinedBf": 45202.67,
+  "bfSourceNote": "raw/DEBENQ_CURRENT.TXT line 16 -- last posted balance before the window (04/07/2024, TXT date format DD/MM/YYYY). Period starts 2025-03-01, not 2025-01-01, because this TXT export has a real coverage gap between 2024-07-04 and 2025-03-05 (confirmed vs invoices.csv -- see JIM001_Exact_Sum_Bridge_Review_2026-09-13.md SS5/SS7.1); it is complete from 2025-03-01 onward only.",
+  "cylOpeningFinancial": -1731.5,
+  "cylOpeningFinancialSourceNote": "Supabase vw_clean_transactions, account_no=JIM001, debt_group=CYL, tx_date < 2025-03-01, same DISTINCT ON dedup as fetchDocLineSplit -- queried 2026-09-14 via Supabase MCP (DATABASE_URL not available in this session's sandbox; see reconcile_jim001_v5_from_mcp_cache.mjs).",
+  "paymentLane": "LPG",
+  "cylOpeningQty": {
+    "14.1": 1,
+    "19.1": 20,
+    "9.1": 1,
+    "D.1": 15,
+    "S.1": -9
+  },
+  "cylOpeningQtySourceNote": "Supabase vw_clean_transactions, account_no=JIM001, debt_group=CYL, tx_date < 2025-03-01, same DISTINCT ON dedup as buildPart2's cylRes query -- queried 2026-09-14. Four additional stock_no codes appear pre-period (19.6:+7, 19.7:-3, 9.2:+4, 9.7:-4) that fall outside this layout's tracked 5-SKU set; not represented here, consistent with how this generator treats every debtor.",
+  "skuRates": {
+    "14.1": 575,
+    "19.1": 690,
+    "9.1": 517.5,
+    "D.1": 1150,
+    "S.1": 1150
+  }
+}
