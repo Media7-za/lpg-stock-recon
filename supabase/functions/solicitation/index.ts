@@ -127,7 +127,12 @@ async function fetchDesk(status: "PENDING" | "LEAD" | "REVIEW_FLAGGED") {
     .from("solicitation_queue")
     .select("*, commercial_customers(*)")
     .eq("status", status)
-    .order("predicted_due_date", { ascending: true });
+    .order("predicted_due_date", { ascending: true })
+    // Tiebreak same-day rows by when they were last touched: a row nobody's
+    // called yet today keeps its old (earlier) updated_at and sorts first;
+    // a NO_ANSWER pushes updated_at to now(), sorting it to the back of
+    // today's list instead of off the queue entirely (decided 2026-09-14).
+    .order("updated_at", { ascending: true });
 
   if (status === "PENDING") {
     query = query.lte("predicted_due_date", today());
@@ -208,7 +213,10 @@ async function classify(body: any) {
     }
 
     case "NO_ANSWER": {
-      await touchQueue(queueId, replyText, { predicted_due_date: addDays(1) });
+      // Stays in TODAY's queue, pushed to the back of it -- not moved to
+      // tomorrow. touchQueue's updated_at = now() is what does the actual
+      // pushing, via fetchDesk's secondary sort (decided 2026-09-14).
+      await touchQueue(queueId, replyText, { predicted_due_date: today() });
       break;
     }
 
