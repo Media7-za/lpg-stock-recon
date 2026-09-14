@@ -1,6 +1,6 @@
 # JIM001 — Monthly-Batch Exact-Sum Bridge Review (2018–2026)
 
-Generated 2026-09-13, updated 2026-09-14 | Method: `analysis/skills/monthly-batch-erp-bridge-reconciliation/SKILL.md` §2 | Evidence ceiling: Tier 3 / ASSERTED for most findings (no remittance advice exists for JIM001) — **one exception: doc 40746's July assignment is Tier 2 / PROVEN, verified against a raw ERP transaction export (§5)**
+Generated 2026-09-13, updated 2026-09-14 | Method: `analysis/skills/monthly-batch-erp-bridge-reconciliation/SKILL.md` §2 | Evidence ceiling: Tier 3 / ASSERTED for most findings (no remittance advice exists for JIM001) — **two exceptions: doc 40746's July assignment is Tier 2 / PROVEN, verified against a raw ERP transaction export (§5); doc 44555's December-2025 assignment is an explicit account-owner DECISION (2026-09-14), not independently proven — see §5**
 
 ---
 
@@ -73,6 +73,18 @@ authoritative on its own.
    `monthly_lpg_insights.csv`. **Doc 44555 is not addressed by this
    source** (its payments table stops before that payment's date) and
    remains genuinely unresolved. §5, §8, §9 updated.
+5. **Doc 44555 is now closed by explicit account-owner decision (2026-09-14):
+   allocated to December 2025.** No new evidence emerged — the raw ERP
+   export (§5) still shows this payment's `INVNO` field blank, so neither
+   December nor March is independently proven. The account owner made the
+   call to close out the dispute in favor of December (the only reading
+   with any support at all, via the aggregate exact-sum match) rather than
+   leave it open indefinitely ahead of legal handoff. This is recorded as
+   a **DECISION**, evidence tier unchanged (3), status `ASSERTED
+   (decision)` — not `PROVEN`. Applied to `monthly_lpg_insights.csv`:
+   December 2025 moves `UNPAID` → `FULLY_SETTLED` (1-cent rounding
+   residual), March 2026 reverts to genuinely `UNPAID`. §5, §8, §9
+   updated.
 
 ---
 
@@ -154,8 +166,8 @@ CSV's June assignment (now fixed) was the error.** See §5.
 | 2022 | R17,682.42 | Holds — **human-ratified calibration year.** |
 | 2023 | −R17,739.02 | Holds — human-ratified (Pattern 3 mirror carry, Rule 13 surpluses, verified underpayments). |
 | 2024 | R0.51 | Holds — human-ratified pooled Apr–Nov settlement window; near-perfect net. |
-| 2025 | ≈R61,351.13 (R89,246.79 less R27,895.66 — Jan+Feb settled by docs 38846/39812, §5/§6) | Holds. Jan and Feb move UNPAID → SETTLED; June moves SETTLED → UNPAID and July moves UNPAID → SETTLED (doc 40746 externally confirmed as July, §5). Total exposure unaffected by the June/July move. Real, growing exposure remains in Apr/May/June/Dec. Unreviewed overall. |
-| 2026 (through May) | R72,399.45 | All five months genuinely unpaid — no candidate payment in the window matches any of them. One open item: doc 44555 (Jun-2026) settles either March-2026 (CSV/ledger) or December-2025 (aggregate match) — genuinely unresolved, see §5. Unreviewed. |
+| 2025 | ≈R49,685.01 | Holds. Jan and Feb move UNPAID → SETTLED; June moves SETTLED → UNPAID and July moves UNPAID → SETTLED (doc 40746 externally confirmed as July, §5); December moves UNPAID → SETTLED (doc 44555, account-owner decision, not independently proven — §5). Real, growing exposure remains in Apr/May/June. Unreviewed overall. |
+| 2026 (through May) | R72,399.45 | All five months genuinely unpaid — no candidate payment in the window matches any of them. Doc 44555 (Jun-2026) is allocated to December 2025 by explicit account-owner decision, not March 2026 — see §5; March 2026's full R11,937.56 accordingly stays unpaid (this total already reflected that before today's decision — see §5's note). Unreviewed. |
 
 **Verdict on the generalization:** the exact-sum-per-calendar-month test
 holds for JIM001 across all 9 years, in the sense that every month which
@@ -209,7 +221,7 @@ balance without that check.
 
 ---
 
-## 5. Two disputed payments — one resolved (July), one still open
+## 5. Two disputed payments — both now closed (one proven, one decided)
 
 The original pass of this review found three payments whose *gross amount*
 exact-matches a different month's *aggregate* billing total than the one
@@ -245,7 +257,7 @@ invoices."** — exactly this evidence tier.
 | Payment | Aggregate exact-sum says | ERP-ledger invoice split says (unconfirmed) | Status |
 | :--- | :--- | :--- | :--- |
 | **40746** (2025-08-22, R14,579.44) | 2025-07 (matches July's billing to the cent) | AL-0337–AL-0340: 4 invoices (43628, 43910, 44097, 44241), all dated June 2025, R38.67 short on the last | **PROVEN — July** (raw ERP ledger; see below) |
-| **44555** (2026-06-05, R11,666.12) | 2025-12 (matches Dec's billing to the cent) | AL-0359–AL-0361: 3 invoices (49540, 49727, 49842), all dated March 2026, R271.44 short on the last — **confirmed fictitious, see below** | **Unresolved** — the ERP-ledger reading is now known to have no real basis; December remains ASSERTED only |
+| **44555** (2026-06-05, R11,666.12) | 2025-12 (matches Dec's billing to the cent) | AL-0359–AL-0361: 3 invoices (49540, 49727, 49842), all dated March 2026, R271.44 short on the last — **confirmed fictitious, see below** | **DECIDED — December** (account-owner instruction, 2026-09-14; not independently proven — see below) |
 
 **Doc 40746 resolved (July) via an independent external source.** The
 user supplied `JIM001_LPG_Reconciliation_v4` (a Google Sheet; internal
@@ -324,8 +336,24 @@ now *confirmed fictitious* at the invoice-tagging level, not merely
 "unconfirmed." That doesn't make December 2025 proven — it was never
 based on ERP tagging either, only the aggregate exact-sum coincidence —
 but it removes March 2026's only claimed evidentiary basis entirely.
-**44555 stays `UNRESOLVED`, but December 2025 is now the only reading
-with any support left; March 2026 has none.**
+**44555 stays `UNRESOLVED` on the evidence alone, but December 2025 is now
+the only reading with any support left; March 2026 has none.**
+
+**Update (2026-09-14, same day): closed by explicit account-owner
+decision, not by new evidence.** No further document surfaced — the
+`INVNO` field above is still blank. The account owner instructed that
+doc 44555 be allocated to December 2025 to close out this item ahead of
+legal handoff, on the basis that December is the only reading with any
+support at all (the aggregate exact-sum match) and March has none.
+`monthly_lpg_insights.csv` has been updated accordingly: December 2025
+moves `UNPAID` → `FULLY_SETTLED` (R11,666.12 against R11,666.11 net
+billing — a 1-cent rounding residual, immaterial), and March 2026 reverts
+to genuinely `UNPAID` (R11,937.56). **This is recorded as a decision, not
+a proof** — evidence tier stays 3, status `ASSERTED (decision)`, not
+`PROVEN`. Unlike doc 40746 (Tier 2, independently verified against the
+real ERP ledger), nothing here changes the underlying evidence picture;
+if a remittance advice for doc 44555 ever surfaces and contradicts
+December, this allocation should be revisited.
 
 **A note on this export's own limits, so it isn't over-relied on
 elsewhere:** cross-checking every LPG/CYL invoice doc number against
@@ -602,7 +630,7 @@ human), the same fields would apply once ratified:
 | 2025-02 (doc 39812 partial) | calendar_month, invoice-split | 3 | ASSERTED — cent-exact invoice-level match (§5/§6) |
 | 2025-07 (doc 40746) | calendar_month | **2** | **PROVEN** — raw ERP transaction ledger tags this payment to 4 named July invoices directly (§5); upgraded from Tier 3/ASSERTED once real system-of-record data existed. Still not Tier 1 (no customer remittance advice), but no longer a reconstruction. |
 | 2025 (4 other settled months) | calendar_month | 3 | ASSERTED |
-| 2026-03 or 2025-12 (doc 44555) | calendar_month, unresolved | 3 | **ASSERTED — UNRESOLVED** (§5); the raw ERP ledger shows this payment untagged to any invoice, which rules out March-2026's claimed invoice-level basis (confirmed fictitious) without proving December — do not apply either month |
+| 2025-12 (doc 44555) | calendar_month | 3 | **ASSERTED (decision)** — allocated to December 2025 by explicit account-owner decision (2026-09-14), not by new evidence; the raw ERP ledger still shows this payment untagged to any invoice (§5). Not `PROVEN`. |
 | Standing credit, 2021-04–10 | n/a (not a settlement) | 3 | ASSERTED, flagged for ERP-side verification |
 
 ---
@@ -623,12 +651,15 @@ human), the same fields would apply once ratified:
    `JIM001_LPG_Reconciliation_v4` and 2025-report convergence. June is
    now `UNPAID`, July `FULLY_SETTLED`. Do not apply doc 44555's
    aggregate-match reassignment — it remains genuinely unresolved (§5).
-4. **An ERP export was pulled and did not settle doc 44555** — its raw
-   ledger line carries a blank `INVNO`, i.e. genuinely untagged. This
+4. **Doc 44555 is closed by account-owner decision, not by evidence.**
+   An ERP export was pulled and did not settle it on its own — its raw
+   ledger line carries a blank `INVNO`, i.e. genuinely untagged. That
    killed March-2026's claimed invoice-level basis (§5) but didn't prove
-   December either. A *remittance advice* specifically (a document from
-   the customer, not another ERP pull) is the only evidence type left
-   that could settle this one — internal data has now been exhausted.
+   December either. The account owner has since instructed that it be
+   allocated to December 2025 to close the item out ahead of legal
+   handoff (2026-09-14) — applied to `monthly_lpg_insights.csv`. Record
+   this in any legal-facing material as a decision, not an independently
+   proven fact: if a remittance advice for doc 44555 ever surfaces, revisit.
 5. Do **not** re-run the contiguous-run search against the R54,902.41
    pre-STAT-era orphans (§6) expecting another 38846/39812-style
    resolution — it was tried and ruled out for principled reasons
@@ -641,6 +672,9 @@ human), the same fields would apply once ratified:
 JIM001 still has no remittance advice on file, so nothing here reaches
 Tier 1. **Doc 40746's July assignment is the one exception to
 `ASSERTED`** — it's `PROVEN` at Tier 2, verified against the actual ERP
-transaction ledger (§5), not just this review's own inference. Every
-other figure above is `ASSERTED` pending Tier 1/2 evidence or explicit
-human ratification.
+transaction ledger (§5), not just this review's own inference. **Doc
+44555's December-2025 assignment is closed by explicit account-owner
+decision (2026-09-14)** — recorded as `ASSERTED (decision)`, still Tier
+3, not `PROVEN`; it should not be cited as independently confirmed.
+Every other figure above is `ASSERTED` pending Tier 1/2 evidence or
+explicit human ratification.

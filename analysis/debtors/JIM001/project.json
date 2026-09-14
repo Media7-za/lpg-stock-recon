@@ -7,7 +7,7 @@
     "totalOutstanding": 140297.23,
     "lastInvoiceDate": "2026-05-28",
     "lastPaymentDate": "2026-06-05",
-    "agedDebt180Plus": 73007.40
+    "agedDebt180Plus": 73007.4
   },
   "collections": {
     "actionRequired": false,
@@ -98,6 +98,10 @@
     {
       "date": "2026-09-14",
       "event": "Added a new sheet 'Raw ERP Findings (2026-09-14)' to reports/JIM001_LPG_Reconciliation_v4.1.xlsx presenting the raw-ERP findings from the prior entry in spreadsheet form: doc 40746's 6-line invoice tagging table (PROVEN July, live SUM formula), doc 44555's untagged line (UNRESOLVED, March-2026 basis confirmed fictitious), and the 2025-03-onward balance bridge (live subtraction/tie-out-% formulas against the raw ERP's stated balances). Matches the workbook's existing conventions (Arial, R#,##0.00 currency format, live formulas not hardcoded results). Manually verified all formula arithmetic in Python since LibreOffice recalculation is not available in this session's sandbox (confirmed environment-wide, not specific to this file). CAVEAT: build_lpg_reconciliation_v41.py regenerates v4.1.xlsx by copying v4.xlsx fresh and adding only 'Open Invoices by Month' -- re-running that script will silently wipe this manually-added sheet. Not fixed in the script; flagged for whoever next touches v4.1."
+    },
+    {
+      "date": "2026-09-14",
+      "event": "Doc 44555 closed by explicit account-owner decision (not new evidence): allocated to December 2025. The raw ERP export (see prior entries) still shows this payment's INVNO field blank -- neither December nor March-2026 is independently proven on the evidence alone. The account owner instructed closing this out in favor of December ahead of legal handoff, since December is the only reading with any support at all (the aggregate exact-sum match) and March has none (its claimed ERP invoice-level basis is confirmed fictitious, per the prior entry). Applied to monthly_lpg_insights.csv: December 2025 moved UNPAID -> FULLY_SETTLED (R11,666.12 against R11,666.11 net billing, 1-cent rounding, immaterial); March 2026 reverted to genuinely UNPAID in full (R11,937.56). Recorded as evidence_status ASSERTED (decision), tier unchanged at 3 -- explicitly NOT PROVEN, unlike doc 40746's Tier 2 resolution. If a remittance advice for doc 44555 ever surfaces and contradicts December, this allocation should be revisited. Updated JIM001_Exact_Sum_Bridge_Review_2026-09-13.md (SS0/SS3/SS5/SS8/SS9) and JIM001_Legal_Handoff_Investigation_Tasks.md (fact 1, Priority 1's unpaid-months list and the doc-44555 open item, now resolved) to match. 2025 net variance recomputed to ~R49,685.01 (was ~R61,351); 2026-through-May variance unchanged at R72,399.45 (that figure already assumed March fully unpaid before today's change)."
     }
   ]
 }
