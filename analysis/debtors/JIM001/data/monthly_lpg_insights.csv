@@ -29,7 +29,7 @@ year,month,month_year,lpg_invoice_total,lpg_credit_notes,net_lpg_invoiced,paymen
 2022,February,2022-02,13949.0,0.0,13949.0,13583,2022-04-12,13949.0,0.0,FULLY_SETTLED,False,Settled in full.
 2022,March,2022-03,14943.48,0.0,14943.48,—,—,0.0,14943.48,UNPAID,False,No payment allocated.
 2022,April,2022-04,18184.64,0.0,18184.64,14135,2022-06-01,18184.64,0.0,FULLY_SETTLED,False,Settled in full.
-2022,May,2022-05,18947.57,0.0,18947.57,15071,2022-07-26,17275.67,1671.9,PARTIALLY_SETTLED,False,Underpaid. R1671.90 remaining unpaid.
+2022,May,2022-05,18947.57,0.0,18947.57,15071,2022-07-26,17275.67,1671.9,PARTIALLY_SETTLED,False,"Underpaid. R1671.90 remaining unpaid. Per user note (2026-09-15): the unpaid portion is invoice 00013359 (2022-05-09, R1,671.90, 3x 19kg LPG) -- already the candidate allocation_edges.csv names (AL-0199, HUMAN_WORKSHEET_AND_ERP/Probable) and payment_pattern_overrides.json's ratified Pattern 2 entry describes, now confirmed by the account owner as the specific unpaid invoice. Operator to locate proof of payment; not yet resolved -- evidence_status stays ASSERTED, not PROVEN, until that proof is found."
 2022,June,2022-06,16103.76,0.0,16103.76,15473,2022-08-11,14488.95,1614.81,PARTIALLY_SETTLED,False,Underpaid. R1614.81 remaining unpaid.
 2022,July,2022-07,17169.29,0.0,17169.29,15987,2022-09-10,17169.29,0.0,FULLY_SETTLED,False,Settled in full.
 2022,August,2022-08,19171.88,-3834.38,15337.5,16648,2022-10-20,15337.5,0.0,FULLY_SETTLED,False,Settled in full.

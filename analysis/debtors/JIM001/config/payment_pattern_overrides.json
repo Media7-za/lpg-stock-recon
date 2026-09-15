@@ -97,7 +97,7 @@
       "payment_date": "2022-07-26",
       "amount": 17275.67,
       "variance": 1671.9,
-      "notes": "Underpaid R1,671.90. Possible cross-batch carry - see Section 2.1 for candidates.",
+      "notes": "Underpaid R1,671.90. Possible cross-batch carry - see Section 2.1 for candidates. Per user note (2026-09-15): the unpaid invoice is 00013359 (2022-05-09, R1,671.90, 3x 19kg LPG) -- matches allocation_edges.csv AL-0199. Operator to locate proof of payment; not yet resolved.",
       "override_type": "PATTERN_2_CANDIDATE_UNDERPAYMENT",
       "approval_status": "approved",
       "approved_by": "human",
