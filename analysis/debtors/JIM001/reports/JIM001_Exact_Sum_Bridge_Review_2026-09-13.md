@@ -577,7 +577,133 @@ fix, four payment docs still carry unconsumed leftover cash within 2024
 (`33810`: R7,597.32 · `34425`: R5,210.82 · `36139`: R6,893.89 · `36988`:
 R4,366.24 — R24,068.27 combined). This investigation does not resolve
 where that cash actually belongs; it only shows it does **not** belong
-to Sept/Oct/Nov under a lag-plausible reading. Flagged, not resolved.
+to Sept/Oct/Nov under a lag-plausible reading. Flagged, not resolved —
+see §5.3, which maps the option space and, importantly, **weakens the
+confidence of this section's own verdict.**
+
+### 5.2a Calibration caveat on the lag test (added 2026-09-15, same day)
+
+The rejection above rests on payment-lag plausibility. A systematic
+lag-outlier scan run afterwards (§5.3) shows **the lag test produces
+false positives**, which materially limits how much weight it can
+carry:
+
+> **Doc 40746's July-2025 assignment — the one allocation on this
+> account that is PROVEN at Tier 2 by the raw ERP's own invoice
+> tagging (§5) — shows a 38-day lag and is flagged by the same test as
+> a −79-day outlier.**
+
+So "lag looks wrong" does not imply "assignment is wrong." What
+survives of §5.2's argument is the narrower, still-reasonable point
+that Sept/Oct/Nov would require a *sustained three-month regime dip*
+(43–80 days) inside an otherwise 135–190-day stretch, then an immediate
+recovery to ~141 days — a pattern-level anomaly, not a single-month
+flag, and doc 40746's 38 days sits inside a genuine regime shift where
+*all* neighbouring months also ran 38–82 days. That distinction is real
+but it is **not proof**. §5.2's verdict should be read as *the better
+of the available readings*, not as settled: the claim-side consequence
+(R41,887.32 moving into Priority 1) is `ASSERTED`, and is flagged as
+such in the Legal Handoff doc.
+
+---
+
+## 5.3 The R24,068.27 leftover — allocation possibilities mapped (2026-09-15)
+
+Five candidate explanations tested. Ranked by what the evidence
+actually supports, not by which is most convenient.
+
+### P1 — The assignment chain is mis-sequenced (strongest)
+
+Same defect the user caught for Feb/May 2024, appearing elsewhere. A
+lag-outlier scan across 2022-01 → 2025-12 flags two severe cases:
+
+| Month | Doc | Lag | vs neighbours |
+| :--- | :--- | ---: | ---: |
+| 2023-10 | 30269 | 192 days | **+86** |
+| 2023-12 | 35270 | 355 days | **+239** — worst in the dataset |
+
+And there is one genuinely high-quality match supporting a re-sequence:
+**doc 27468's leftover is R13,528.54, which equals October 2023's net
+billing exactly, to the cent.** That is a non-round, unique five-figure
+sum — the precision standard §6 itself uses to separate credible
+matches from cheap ones.
+
+A coherent alternative chain follows from it:
+
+```
+2023-09  R 8,026.98  <- doc 27468 (part of R24,801.28)
+2023-10  R13,528.54  <- doc 27468 leftover          EXACT, to the cent
+2023-11  R11,625.12  <- doc 28893 (R14,208.48), leftover R2,583.36
+2023-12  R18,734.46  <- doc 30269 (R16,151.04) + 28893 leftover (R2,583.36)
+                        = R18,734.40   (6 cents short)
+```
+
+This resolves **both** lag outliers, closes December 2023 to six cents,
+and frees doc `35270` (R18,441.12) — currently parked on Dec 2023 at
+that absurd 355-day lag — to move into 2024, where a ~142-day lag would
+put it on July 2024, squarely on trend.
+
+*Against:* it cascades — freeing 35270 displaces whatever currently
+holds its new home, and that chain isn't resolved here. No Tier-2
+confirmation is available (see P5).
+
+### P2 — Genuine on-account overpayment credit
+
+The ERP's **own** dashboard carries the field
+`unmatched_overpayments: R105,964.31` (`data/dashboard_metrics.json`)
+account-wide. The R24,068.27 sits inside that pool. This is the one
+possibility supported by the ERP asserting it directly rather than by
+our inference.
+
+*Against:* it names the bucket without explaining how the cash got
+there — compatible with P1 rather than exclusive of it.
+
+### P3 — It does cover Sept/Oct/Nov 2024 (reopened, not excluded)
+
+§5.2 rejected this on lag. Per §5.2a that rejection is weaker than it
+first appeared. Adding the freed doc `35270` to the four leftovers:
+
+| | Amount |
+| :--- | ---: |
+| Sept + Oct + Nov 2024 need | R41,887.32 |
+| doc 35270 + the four leftovers | R42,509.39 |
+| **Excess** | **R622.07** |
+
+R622.07 is, to within a cent, the R622.08 shortfall independently
+computed for May 2024 under today's doc-32896 reassignment (§5.1).
+
+*Against — and this matters:* that convergence is **probably not
+independent evidence.** 2024's total cash across this stretch already
+ties to 2024's total need almost exactly (the full-year FIFO in §5.2
+zeroed out to the cent). Once cumulative cash equals cumulative need,
+*any* regrouping of the same cash will close — so this is largely the
+same arithmetic identity re-expressed, not fresh confirmation. Recorded
+because it is striking, explicitly **not** relied on.
+
+### P4 — It covers cylinder (CYL) deposits — REJECTED
+
+Tested directly: 2024's entire net CYL charge is **R1,028.50** (deposit
+invoices and `-EMPTY` credit notes cancel out, as expected). Cannot
+absorb R24,068.27. Also confirms the v5 statement's `paymentLane: LPG`
+config is not hiding a cross-lane split of this size.
+
+### P5 — Settle it from the raw ERP ledger — UNAVAILABLE
+
+The move that proved doc 40746 cannot be repeated here. All four docs
+(2024-09-30 through 2025-02-21) fall inside `DEBENQ_CURRENT.TXT`'s
+coverage gap (**2024-07-04 → 2025-03-05**) and carry no lines in that
+export at all. Worth noting the shape of this: **every month from
+2025-03 onward settles with zero leftover, and that is exactly where
+the raw export becomes complete.** The leftovers cluster precisely in
+the un-Tier-2-verifiable stretch, which is at least suggestive that
+they are a reconstruction artifact rather than real floating cash.
+
+### What would actually settle it
+
+An ERP export covering 2024-07 → 2025-03 — the same `DEBENQ` pull
+already used for the current window, just run for the prior year.
+That would give invoice-level tagging for all four docs and decide P1
+vs P2 vs P3 outright, rather than by inference.
 
 ---
 
