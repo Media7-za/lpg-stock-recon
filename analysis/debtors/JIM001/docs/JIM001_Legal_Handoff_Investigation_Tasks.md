@@ -60,6 +60,12 @@ For each invoice in these months:
 | Oct 2021 shortfall / Nov 2021 overpayment (mirror pair) | R399.91 each way | A bank deposit reference for the Nov 2021 payment (doc `12719`, paid 2022-01-31) naming what it was for | Bank statement for that period |
 | Dec 2021 residual | R239.48 | Same — a reference for the payment that mostly-but-not-fully covered December | Bank statement for that period |
 
+| 2023-12 — payer mis-tagged (see below) | R18,441.12 | The ERP *View Payment Allocations* screens for receipts `27468`, `28893` and `30269` | The ERP, same screen used for the 2024 window |
+
+**2023-12 is new as of 2026-09-15 and is the largest item in this section — read this before deciding on materiality.** `monthly_lpg_insights.csv` credits receipt `35270` to December 2023 *and* to May/August 2024. It cannot be both. The ERP allocation screen for `35270` settles it: that receipt allocates to invoices 32531, 32614, 34849, 35094, 35297, 35522 and 35749 — all 2024, none from December 2023 — so the 2023-12 attribution is wrong and that month has **no identified payer**. Its real shortfall is R18,734.46, not the R293.34 currently on file.
+
+The money is very likely not missing: the three unapplied receipts `27468` + `28893` + `30269` sum to R18,734.40, six cents off December 2023's billing, and that is the *only* subset of the unapplied pool that comes within a rand. But this is an inference from aggregates, and inference from aggregates has been wrong three times on this account already. Pull the three ERP screens — it is the same cheap, definitive move that closed April–November 2024. See Bridge §3.5.
+
 **Decision needed from you, not something to resolve unilaterally:** is R639.79 (both items combined) material enough to spend time chasing bank records from 2021–2022, or immaterial enough to just note as "known, small, unproven, not pursued" and move on? There's no universally correct answer here — record whichever you decide, and why, so it's not silently forgotten or silently assumed resolved.
 
 ---

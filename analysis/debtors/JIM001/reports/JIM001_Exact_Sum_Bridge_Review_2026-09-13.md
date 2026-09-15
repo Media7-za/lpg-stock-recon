@@ -874,6 +874,37 @@ ERP's own per-invoice allocation record does.
 
 ---
 
+## 5.6 Doc `35270` is double-counted — 2023-12 has no valid payer (2026-09-15)
+
+Surfaced while revising the 2021-03 → 2026-06 bridge under the account owner's two exclusion rules. It is a defect in `monthly_lpg_insights.csv`, not in the ERP.
+
+**The error, PROVEN.** Receipt `35270` (R18,441.12, banked 2024-12-04) is credited in two places:
+
+- **2023-12**, for its full gross, leaving a R293.34 shortfall — inferred, and the only payer that month has;
+- **2024-05 and 2024-08**, where §5.5's ERP screen proves it against invoices 34849, 35094, 35297, 35522, 35749.
+
+The ERP *View Payment Allocations* screen for `35270` allocates to invoices **32531, 32614, 34849, 35094, 35297, 35522, 35749** — every one a 2024 invoice, none from December 2023. A receipt banked in December 2024 was never December 2023's payer. The 2024 reading is observed; the 2023-12 reading is inferred and wrong.
+
+**Consequence.** 2023-12's true shortfall is **R18,734.46**, not R293.34, and the month has no identified payer. R18,441.12 of cash was being counted twice.
+
+**Where the money probably is — Tier 3, ASSERTED, not proven.** The three unapplied receipts nearest in time sum to within six cents of December 2023's billing:
+
+```
+27468 (2023-12-29)  R13,528.54
+28893 (2024-02-20)  R 2,583.36
+30269 (2024-04-24)  R 2,622.50
+──────────────────────────────
+                    R18,734.40   vs  R18,734.46   (Δ R0.06)
+```
+
+Of the 63 possible subsets of the six-doc unapplied pool, exactly one lands within R1.00 — this one, at R0.06. It also survives excluding doc `17578`, which is already committed to the ratified 2022-09 mirror carry. That is a strong exact-sum signal rather than combinatorial noise.
+
+**But §5.1–§5.4 are the reason this stops at ASSERTED.** Three readings of the 2024 stretch inferred allocation from aggregates and all three were wrong. The same discipline applies here: **pull the ERP allocation screens for receipts `27468`, `28893` and `30269`.** 2023-09 → 2023-12 carries the identical fingerprint to the 2024 window — long payment lags, a chain of leftovers mis-sequencing against their assigned months — and the same five-screen treatment would settle it outright.
+
+`monthly_lpg_insights.csv`'s 2023-12 row is flagged `review_required = TRUE` with this finding in its notes. The figures themselves are left as recorded; the correction is carried as an explicit line in the bridge's reconciliation (§4 there) rather than silently restated.
+
+---
+
 ## 6. Applicability boundary — pre-STAT-batch era (2018-12 to 2019-03)
 
 `SKILL.md` §0 scopes itself to monthly-batch (STAT-style) payers. JIM001's
