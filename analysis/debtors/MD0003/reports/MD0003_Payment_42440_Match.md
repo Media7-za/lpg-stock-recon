@@ -2,7 +2,7 @@
 
 **Payment doc:** 42440 · **Date:** 2025-11-28 · **Gross:** R47,511.17 · **STAT:** 121  
 **Generated:** 2026-08-11  
-**Sources:** `raw/Enquiry/DEBENQ_CURRENT.TXT` (allocation detail), `raw/Remittance/10.10.2025.pdf` (customer AP snapshot — see §4)
+**Sources:** `raw/Enquiry/DEBENQ_CURRENT.TXT` (allocation detail), `raw/Remittances/10.10.2025.pdf` (customer AP snapshot — see §4)
 
 ---
 
@@ -56,7 +56,7 @@ This file is a **customer A/P vendor transaction report** (APVTRN01), session **
 
 **Use:** Pre–42440 **open-item cross-check** — confirms Aug/Sep invoices still open on customer side before the Nov-28 ERP payment posted. **Not** COD remittance advice for doc 42440.
 
-Archived copy: `raw/Remittance/LEDER 2020-2023.xls` and prior `MD0003_DETAILED_LEDGER.xls` cover earlier AP windows.
+Archived copy: `raw/Remittances/LEDER 2020-2023.xls` and prior `MD0003_DETAILED_LEDGER.xls` cover earlier AP windows.
 
 ---
 

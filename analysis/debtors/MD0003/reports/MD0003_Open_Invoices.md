@@ -114,7 +114,7 @@ Measured after each batch as *(commercial open − ERP balance)*, the credit is 
 
 ### Settled — exclude from open list (STAT:129 remittance 01.08.2026)
 
-Docs **50996**, **50998**, **51099**, **51398** — paid in full per `raw/Remittance/01.08.2026.pdf` (R14,863.43).
+Docs **50996**, **50998**, **51099**, **51398** — paid in full per `raw/Remittances/01.08.2026.pdf` (R14,863.43).
 
 ---
 
