@@ -114,6 +114,10 @@
     {
       "date": "2026-09-15",
       "event": "User identified the specific unpaid invoice behind 2022-06's known R1,614.81 shortfall: doc 00014788 (2022-06-23, R1,614.81, 3x 19kg LPG, D/N 1376). Matches allocation_edges.csv (AL-0212, HUMAN_WORKSHEET_AND_ERP/Probable) and the ratified Pattern 2 override in payment_pattern_overrides.json -- confirms, doesn't add new evidence. Same treatment as 2022-05/doc 13359: added as a note citation only in monthly_lpg_insights.csv and the override entry (amount/variance/approval_status/evidence_tier/evidence_status unchanged, still ASSERTED not PROVEN). Operator to locate proof of payment."
+    },
+    {
+      "date": "2026-09-15",
+      "event": "User asked whether an invoice exists for September 2022's R2,767.68 shortfall. First answer was wrong/incomplete: cited invoice 00015782 (partial payment, allocation_edges.csv AL-0227, HUMAN_WORKSHEET_AND_ERP/Probable) without first checking whether a ratified override already existed for this month -- it did. payment_pattern_overrides.json's human-approved 2022-09 entry (2026-06-16) already treats this as a Pattern 3 mirror carry: the identical R2,767.68 appears as unconsumed leftover cash on October's payment (doc 17578, allocation_edges.csv AL-0383/UNALLOCATED_PORTION) -- September under, October over, self-cancelling per Business Rule 14, already 'treated as fully settled' by the human reviewer. Corrected the answer to the user and rewrote monthly_lpg_insights.csv's 2022-09 note to lead with the ratified mirror-carry explanation, citing invoice 15782 only as a secondary, non-ratified candidate that should not be treated as authoritative. No change to payment_pattern_overrides.json (an earlier accidental edit there -- a botched old_string match on the billing_month key -- was caught and reverted immediately, confirmed clean via git diff)."
     }
   ]
 }
