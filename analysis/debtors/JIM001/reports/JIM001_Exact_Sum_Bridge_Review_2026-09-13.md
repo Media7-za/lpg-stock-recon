@@ -165,7 +165,7 @@ CSV's June assignment (now fixed) was the error.** See §5.
 | 2021 | ≈R239.49 | Holds cleanly for 7 of 10 months (exact to the cent); Oct/Nov is a genuine self-cancelling mirror pair, Dec a small genuine residual. **Report stale — see §2.** Standing credit detected mid-year — see §4. |
 | 2022 | R17,682.42 | Holds — **human-ratified calibration year.** |
 | 2023 | −R17,739.02 | Holds — human-ratified (Pattern 3 mirror carry, Rule 13 surpluses, verified underpayments). |
-| 2024 | R0.51 | Holds — human-ratified pooled Apr–Nov settlement window; near-perfect net. |
+| 2024 | R42,509.90 | **Revised 2026-09-15** — the previous "R0.51, near-perfect net" figure did not match the underlying month rows (Sept/Oct/Nov show zero payment allocation, contradicting the "six payments cleared eight months Apr–Nov" pooled-window claim) and could not be reproduced from current data by either the naive per-month sum or a raw invoiced-vs-cash check; treat it as a pre-existing error, not a change caused by today's edit. Feb and May were reassigned today (doc 31179→Feb, doc 32896→May, both ASSERTED via aggregate+lag+STAT-sequence, not invoice-proven — see §5.1). Sept/Oct/Nov (R41,887.32 combined) remain genuinely unpaid and unexplained — **not confirmed** as covered by the pooled window despite the ratified Priority 3 narrative; flagged for follow-up, not yet resolved. |
 | 2025 | ≈R49,685.01 | Holds. Jan and Feb move UNPAID → SETTLED; June moves SETTLED → UNPAID and July moves UNPAID → SETTLED (doc 40746 externally confirmed as July, §5); December moves UNPAID → SETTLED (doc 44555, account-owner decision, not independently proven — §5). Real, growing exposure remains in Apr/May/June. Unreviewed overall. |
 | 2026 (through May) | R72,399.45 | All five months genuinely unpaid — no candidate payment in the window matches any of them. Doc 44555 (Jun-2026) is allocated to December 2025 by explicit account-owner decision, not March 2026 — see §5; March 2026's full R11,937.56 accordingly stays unpaid (this total already reflected that before today's decision — see §5's note). Unreviewed. |
 
@@ -459,6 +459,59 @@ This does not by itself settle the June-vs-July question for doc 40746
 adjacent window — but it does show the exact-sum method, applied at the
 invoice level rather than just the aggregate month level, resolves real
 gaps cleanly when the precedent actually exists.
+
+---
+
+## 5.1 Doc 31179 / doc 32896 swap — Feb and May 2024 (2026-09-15)
+
+User flagged that doc 31179 looked like a better fit for February 2024
+than its assigned month (May). Checked and applied:
+
+| | Old assignment | New assignment |
+| :--- | :--- | :--- |
+| **Doc 31179** (STAT:104, R13,862.03) | May 2024 — 3 invoices fully paid + 1 partial, R4,394.91 short across 3 fragmented invoices | **February 2024** — R0.50 from Feb's exact R13,862.53 net billing |
+| **Doc 32896** (STAT:106, R17,634.86) | February 2024 — all 4 Feb invoices paid exactly, R3,772.33 leftover unconsumed | **May 2024** — FIFO-applied across May's 6 invoices, fully pays the first 5, R622.08 short on invoice 00032614 alone |
+
+**Why the swap:** three independent signals, none of them invoice-level
+proof on their own, but converging:
+
+1. **Amount.** Doc 31179 (R13,862.03) sits R0.50 from February's exact
+   net billing (R13,862.53) — far closer than its old fit against May.
+2. **STAT sequence.** STAT numbers were running out of order under the
+   old assignment: STAT:104 (May) settling a *later* month than STAT:105
+   (March) and STAT:106 (February) settling an *earlier* one. Lower STAT
+   numbers should generally precede higher ones chronologically — the
+   swap restores that order (104→Feb, before 105→March).
+3. **Payment lag.** Doc 31179's lag to its old (May) invoices was 10–39
+   days — an outlier with no precedent anywhere else in this account's
+   2024 STAT cycle. Its lag to February (109–130 days) matches March's
+   already-confirmed 103–130 day lag almost exactly. Doc 32896's lag to
+   May (84–113 days) is also a better fit than its old 183–204 day lag
+   to February.
+
+No stray credit note explains February's R0.50 gap — checked directly
+against `invoices.csv` and it's real, not a rounding artifact.
+
+**Evidence status: ASSERTED, not PROVEN.** This is aggregate + lag +
+STAT-sequence reasoning, the same tier as the original (now-superseded)
+assignment — no `allocation_edges.csv` rows exist yet confirming either
+payment against these specific invoices one by one. Both months are
+flagged `review_required: True` in `monthly_lpg_insights.csv` pending
+that invoice-level check.
+
+**This also surfaced a separate, bigger problem, not yet resolved:**
+recomputing 2024's full-year figures after the swap (§3) shows the
+previously-reported "R0.51, near-perfect net" 2024 verdict does not
+match the underlying data at all — 2024-09/10/11 show **zero** payment
+allocation (R41,887.32 combined), directly contradicting the ratified
+Priority 3 narrative ("six payments jointly cleared eight months of
+invoicing, Apr–Nov 2024"). That R0.51 figure could not be reproduced by
+either the naive per-month sum or a raw invoiced-vs-cash check on
+current data. This predates today's swap — it is not something the
+Feb/May reassignment caused — but it means **Sept/Oct/Nov 2024's
+R41,887.32 should not be treated as historical/settled** until someone
+checks whether it belongs in the current claim instead. Not
+investigated further in this pass; flagged for explicit follow-up.
 
 ---
 
