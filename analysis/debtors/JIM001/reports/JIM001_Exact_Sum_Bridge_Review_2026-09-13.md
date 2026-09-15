@@ -165,7 +165,7 @@ CSV's June assignment (now fixed) was the error.** See §5.
 | 2021 | ≈R239.49 | Holds cleanly for 7 of 10 months (exact to the cent); Oct/Nov is a genuine self-cancelling mirror pair, Dec a small genuine residual. **Report stale — see §2.** Standing credit detected mid-year — see §4. |
 | 2022 | R17,682.42 | Holds — **human-ratified calibration year.** |
 | 2023 | −R17,739.02 | Holds — human-ratified (Pattern 3 mirror carry, Rule 13 surpluses, verified underpayments). |
-| 2024 | R42,509.90 | **Revised 2026-09-15** — the previous "R0.51, near-perfect net" figure did not match the underlying month rows (Sept/Oct/Nov show zero payment allocation, contradicting the "six payments cleared eight months Apr–Nov" pooled-window claim) and could not be reproduced from current data by either the naive per-month sum or a raw invoiced-vs-cash check; treat it as a pre-existing error, not a change caused by today's edit. Feb and May were reassigned today (doc 31179→Feb, doc 32896→May, both ASSERTED via aggregate+lag+STAT-sequence, not invoice-proven — see §5.1). Sept/Oct/Nov (R41,887.32 combined) remain genuinely unpaid and unexplained — **not confirmed** as covered by the pooled window despite the ratified Priority 3 narrative; flagged for follow-up, not yet resolved. |
+| 2024 | R0.50 | **Holds — and is now ERP-PROVEN (§5.5).** The original "R0.51, near-perfect net" verdict was correct; a 2026-09-15 recomputation briefly declared it wrong (R42,509.90) and that recomputation was itself the error — it summed per-month differences built on month assignments the ERP has since disproved. The account owner's *View Payment Allocations* screens for receipts 33810/34425/35270/36139/36988 account for every LPG invoice from May to November 2024 to the cent. Apr–Nov 2024 all settle in full. |
 | 2025 | ≈R49,685.01 | Holds. Jan and Feb move UNPAID → SETTLED; June moves SETTLED → UNPAID and July moves UNPAID → SETTLED (doc 40746 externally confirmed as July, §5); December moves UNPAID → SETTLED (doc 44555, account-owner decision, not independently proven — §5). Real, growing exposure remains in Apr/May/June. Unreviewed overall. |
 | 2026 (through May) | R72,399.45 | All five months genuinely unpaid — no candidate payment in the window matches any of them. Doc 44555 (Jun-2026) is allocated to December 2025 by explicit account-owner decision, not March 2026 — see §5; March 2026's full R11,937.56 accordingly stays unpaid (this total already reflected that before today's decision — see §5's note). Unreviewed. |
 
@@ -464,9 +464,11 @@ gaps cleanly when the precedent actually exists.
 
 ## 5.1 Doc 31179 / doc 32896 swap — Feb and May 2024 (2026-09-15)
 
-> ⚠️ **SUPERSEDED IN PART BY §5.4 (2026-09-15).** A screenshot of the ERP's own
-> *View Payment Allocations* screen has since falsified the "leftover cash"
-> premise this section is built on. Read §5.4 before relying on anything below.
+> ⚠️ **SUPERSEDED — see §5.5 (2026-09-15, final).** The ERP's own *View Payment
+> Allocations* screens for all five receipts have since settled this stretch
+> outright. The "leftover cash" premise below is an artifact and the conclusions
+> drawn from it are withdrawn. Read §5.5 first; treat §5.1–§5.4 as working notes
+> retained only to show how the error was found and corrected.
 
 User flagged that doc 31179 looked like a better fit for February 2024
 than its assigned month (May). Checked and applied:
@@ -521,9 +523,11 @@ directly as a follow-up — see §5.2.
 
 ## 5.2 Sept/Oct/Nov 2024 investigated (2026-09-15) — genuinely unpaid, not pooled
 
-> ⚠️ **SUPERSEDED IN PART BY §5.4 (2026-09-15).** A screenshot of the ERP's own
-> *View Payment Allocations* screen has since falsified the "leftover cash"
-> premise this section is built on. Read §5.4 before relying on anything below.
+> ⚠️ **SUPERSEDED — see §5.5 (2026-09-15, final).** The ERP's own *View Payment
+> Allocations* screens for all five receipts have since settled this stretch
+> outright. The "leftover cash" premise below is an artifact and the conclusions
+> drawn from it are withdrawn. Read §5.5 first; treat §5.1–§5.4 as working notes
+> retained only to show how the error was found and corrected.
 
 Tested whether the "six payments cleared eight months" Priority 3 claim
 could be reconstructed directly, using real payment gross amounts (not
@@ -617,9 +621,11 @@ such in the Legal Handoff doc.
 
 ## 5.3 The R24,068.27 leftover — allocation possibilities mapped (2026-09-15)
 
-> ⚠️ **SUPERSEDED IN PART BY §5.4 (2026-09-15).** A screenshot of the ERP's own
-> *View Payment Allocations* screen has since falsified the "leftover cash"
-> premise this section is built on. Read §5.4 before relying on anything below.
+> ⚠️ **SUPERSEDED — see §5.5 (2026-09-15, final).** The ERP's own *View Payment
+> Allocations* screens for all five receipts have since settled this stretch
+> outright. The "leftover cash" premise below is an artifact and the conclusions
+> drawn from it are withdrawn. Read §5.5 first; treat §5.1–§5.4 as working notes
+> retained only to show how the error was found and corrected.
 
 Five candidate explanations tested. Ranked by what the evidence
 actually supports, not by which is most convenient.
@@ -794,6 +800,77 @@ which invoices each paid, and would resolve Sept/Oct/Nov 2024, the residual
 May 2024 R8,256.94, and the "leftover" question outright. Four screenshots
 replace every inference in §5.1–§5.3. This is the highest-value outstanding
 task on the account.
+
+---
+
+## 5.5 ERP allocation screens, all five receipts — the stretch is settled (2026-09-15, FINAL)
+
+The account owner supplied the ERP's **View Payment Allocations** invoice
+lists for all five receipts. Cross-checked against `invoices.csv`, they
+account for **every LPG invoice from May through November 2024, to the
+cent.** This supersedes §5.1–§5.4.
+
+| Receipt | Paid | Gross | Allocated invoices | Settles |
+| :--- | :--- | ---: | :--- | :--- |
+| `33810` | 2024-09-30 | R20,232.18 | 31997, 32219, 32787, 32976, 33272, 33533 | rest of May + **June** |
+| `34425` | 2024-10-28 | R20,443.00 | 32219, 32409, 33806, 33830*, 34098, 34326, 34383, 34614 | May stragglers + **July** |
+| `35270` | 2024-12-04 | R18,441.12 | 32531, 32614, 34849, 35094, 35297, 35522, 35749 | May stragglers + **August** |
+| `36139` | 2025-01-17 | R22,336.89 | 35961, 35990, 36191, 36395, 36680, 37020, 37216, 37363 | **September** + part of October |
+| `36988` | 2025-02-21 | R19,550.42 | 37363, 37619, 37799, 38040, 38266, 38456, 38664 | rest of October + **November** |
+
+\* `33830` is a R1,051.83 INT-30 interest invoice, fully credited back the
+same day by CN `12313` — net zero, and outside this file's LPG-only scope.
+
+**Month coverage — every invoice, exactly:**
+
+| Month | Net billed | Covered by the screens |
+| :--- | ---: | :--- |
+| 2024-05 | R18,256.94 | 6 of 6 invoices |
+| 2024-06 | R15,232.18 | 4 of 4 |
+| 2024-07 | R15,443.00 | 6 of 6 |
+| 2024-08 | R15,184.18 | 5 of 5 |
+| **2024-09** | **R15,336.89** | **6 of 6** |
+| **2024-10** | **R14,025.58** | **all (the 2 not listed are an invoice + CN netting to R0.00)** |
+| **2024-11** | **R12,524.85** | **5 of 5** |
+
+April 2024 has no screen but is proven by the cent-exact interlock in §5.4.
+2024's net variance is now **R0.50**.
+
+### What this overturns
+
+1. **Sept/Oct/Nov 2024 (R41,887.32) are PAID IN FULL.** §5.2 declared them
+   genuinely unpaid and moved them into the Legal Handoff doc's Priority 1.
+   That was wrong. Withdrawn — and now disproved outright, not merely
+   doubted.
+
+2. **The original "2024: R0.51, near-perfect net" verdict was correct.**
+   The 2026-09-15 recomputation that declared it wrong (R42,509.90) was
+   itself the error: it summed a per-month `difference` column whose month
+   assignments the ERP has now disproved. The ERP-proven figure is R0.50 —
+   one cent from the original. *The pre-existing analysis was right and the
+   "correction" introduced the fault.*
+
+3. **There is no leftover cash.** R24,068.27 (§5.3) and R50,129.93 (the
+   2021–2026 bridge) are artifacts of a one-payment-per-month model applied
+   to a ledger that allocates per invoice across month boundaries. Every
+   rand of these five receipts is allocated.
+
+4. **May 2024 is settled in full**, not R8,256.94 short as recorded earlier
+   the same day. Doc 33810 does skip three late-May invoices — but 34425 and
+   35270 come back for them. Allocation is neither one-month-per-payment nor
+   strictly FIFO: it is per-invoice, mostly oldest-first, and it revisits
+   stragglers.
+
+### Methodological note
+
+Three successive conclusions on this stretch were wrong, each corrected by
+better evidence: the pooled-window reading, then the "genuinely unpaid"
+reading, then the "leftover cash" reading. All three failed the same way —
+they inferred allocation from aggregates (month totals, payment lag,
+residuals) instead of observing it. The lag heuristic in particular flags
+doc 40746, a Tier-2-proven-correct assignment, as an outlier. **On this
+account, aggregate reasoning does not establish allocation.** Only the
+ERP's own per-invoice allocation record does.
 
 ---
 

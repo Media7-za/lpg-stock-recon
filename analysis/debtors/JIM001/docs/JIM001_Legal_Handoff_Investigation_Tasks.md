@@ -16,27 +16,26 @@
 
 ---
 
-## Priority 1 — The actual claim: 2024, 2025 & 2026 unpaid invoices
+## Priority 1 — The actual claim: 2025–2026 unpaid invoices
 
 **Why this comes first:** this *is* the amount being claimed. Nothing else on this list changes the number being pursued — this is the only section that does.
 
 Unpaid months currently on record (corrected — Jan/Feb/Dec 2025 removed, see fact 3 and the note below): **2025 — Apr, May, Jun. 2026 — Jan, Feb, Mar, Apr, May.** 2026-03 is now genuinely `UNPAID` in full (R11,937.56) — doc 44555 no longer applies to it; see the note below.
 
-> ⚠️ **2024-09/10/11 (R41,887.32) was added to this list on 2026-09-15 and REMOVED again the same day. Do not claim it yet.** It was added on the strength of a payment-lag argument that a screenshot of the ERP's own *View Payment Allocations* screen has since falsified — see the 2024 note below and Bridge review §5.4. Its true status is now **UNKNOWN, under active investigation**, and it is more likely covered than not. Putting it into a legal claim on the current evidence would be unsafe.
+> ✅ **2024-09/10/11 (R41,887.32) is NOT a claim item. Settled, proven, closed.** It was added to
+> this list on 2026-09-15 and removed the same day. The ERP's *View Payment Allocations* screens for
+> receipts `36139` and `36988` allocate every September, October and November 2024 invoice, to the
+> cent. Do not pursue it. See Bridge review §5.5.
 
 **Checked and closed for 2025/2026: is there uncaptured cash sitting behind any of these months, the way there was for Jan/Feb 2025?** No. Every payment in the ledger that isn't currently assigned to a month is from 2018–2020 — there is nothing unassigned anywhere near 2025 or 2026. Concretely: the payment sequence runs 40063 (settles Mar 2025) → 40746 (settles Jul 2025) with nothing in between, and 43199 (settles Nov 2025, posted 2026-02-05) → 44555 (settles Dec 2025, see below) with nothing in between either. So Apr, May, Jun 2025 and Jan, Feb, Mar, Apr, May 2026 are genuinely unpaid — not just unassigned — and can proceed through the rest of Priority 1's checklist as real claim items.
 
-**2024-09/10/11 — WITHDRAWN from the claim list the same day it was added. Status: unknown.**
+**2024-09/10/11 — RESOLVED. Paid in full. Not claimable.**
 
-The reasoning that put it there has been falsified by direct evidence. On 2026-09-15 the account owner pulled the ERP's **View Payment Allocations** screen for receipt `00033810` and it shows, unambiguously:
+This was briefly added to the claim on 2026-09-15 on the strength of a payment-lag argument, and removed the same day. It is now settled outright by direct evidence: the account owner pulled the ERP's **View Payment Allocations** screens for all five receipts in the window, and receipts `36139` and `36988` between them allocate **every single September, October and November 2024 invoice** — R15,336.89, R14,025.58 and R12,524.85 respectively, each matching the month's billing to the cent.
 
-- The receipt is **fully allocated** — six lines totalling **R20,232.18**, exactly its gross. The "R7,597.32 of leftover cash" this analysis had attributed to it **does not exist**; it was an artifact of forcing a one-payment-per-month model onto a ledger that does not work that way.
-- It does **not** settle April 2024 (which is what our data said). It settles the tail of May 2024 and all of June 2024.
-- It interlocks to the cent with the preceding receipt `00032896`, which covers April 2024 in full plus the first-and-a-bit May invoices.
+The same five screens also settle May through August 2024 in full, and reduce 2024's whole-year net variance to **R0.50** — confirming the original "R0.51, near-perfect net" figure that an earlier pass on 2026-09-15 had wrongly declared broken.
 
-Because the "leftover cash" premise is unsound, every conclusion built on it — including the lag argument used to declare Sept/Oct/Nov unpaid — has to be set aside. On the corrected model the later receipts plausibly **do** reach Sept/Oct/Nov. That is not yet proven either, which is why the status is *unknown* rather than *settled*.
-
-**What settles it, cheaply and definitively:** the same *View Payment Allocations* screen for the next four receipts — **`00034425`, `00035270`, `00036139`, `00036988`**. Those four screens would show, line by line, exactly which invoices each one paid, and would resolve Sept/Oct/Nov 2024 outright — no inference required. This is now the single highest-value outstanding task on this account.
+**Lesson worth carrying into the rest of this handoff:** three separate readings of this stretch were wrong before the ERP screens arrived, and all three failed the same way — they inferred allocation from aggregates (month totals, payment lag, residual cash) rather than observing it. Where an allocation matters to the claim, get the ERP's per-invoice allocation screen. It is cheap, it is definitive, and on this account aggregate reasoning has repeatedly pointed the wrong way.
 
 **Resolved — doc 44555, now allocated to December 2025 (account-owner decision, 2026-09-14):** this payment (R11,666.12) either settled March 2026 in full minus a R271.44 shortfall, or December 2025 in full instead. The March-2026 reading was originally attributed to "the ERP's own invoice-level allocation" — **that turned out to be wrong.** The raw ERP export (fact 1 above) shows doc 44555 with a blank invoice-tag field: it is not actually allocated to any invoice in the real ERP, March-2026's included. So the March-2026 reading has no real evidentiary basis at all, while December 2025 has the aggregate-total match (an internal workbook computation, not a remittance advice — still not proof, but the only reading with any support). **No new evidence resolved this — the account owner made the call** to close it out in favor of December ahead of legal handoff, rather than leave it open indefinitely. `monthly_lpg_insights.csv` now reflects this: December 2025 `FULLY_SETTLED`, March 2026 `UNPAID` in full. Do not represent this to legal as an independently proven fact — it's a decision, and it should be revisited if a remittance advice for doc 44555 ever surfaces.
 
@@ -65,15 +64,27 @@ For each invoice in these months:
 
 ---
 
-## Priority 3 — 2024 pooled settlement window (REVISED 2026-09-15 — part of this moved to Priority 1)
+## Priority 3 — 2024 settlement window: CLOSED, ERP-PROVEN (2026-09-15)
 
-This section used to claim six payments jointly cleared eight months of invoicing (Apr–Nov 2024), treated as historical and already settled — **that claim did not survive a direct check.**
+**Nothing to do here. This section is resolved and requires no evidence-gathering.**
 
-**What's actually confirmed now:** April, May, June, July, and August 2024 are genuinely settled (May's payment doc was swapped 2026-09-15 — doc 31179 moved to February, doc 32896 moved to May — both still `ASSERTED`, not invoice-proven, but internally consistent with this account's payment-lag pattern). **September, October, and November 2024 are not settled at all — R41,887.32 combined, genuinely unpaid, real current exposure.** A full-year cash-flow reconstruction was tested (applying every 2024 payment's real gross, in date order, against every month's billing, in date order) — it does mathematically zero out, but only by requiring collections lag to suddenly drop from a rising ~100–190 days to ~43–80 days for exactly these three months and then jump back up afterward. That's not a plausible business pattern; it's the same kind of mechanical-fill artifact already ruled out elsewhere on this account (see `JIM001_Exact_Sum_Bridge_Review_2026-09-13.md` §5.2). Treat Sept/Oct/Nov 2024 as real, unpaid, and **move it to Priority 1** — this is not historical.
+April–November 2024 is settled in full. The account owner pulled the ERP's **View Payment Allocations** screens for all five receipts covering the window — `33810`, `34425`, `35270`, `36139`, `36988` — and they allocate every LPG invoice across those months to the cent:
 
-**What's still genuinely unexplained, separately:** four 2024 payment docs carry R24,068.27 of unconsumed leftover cash (`33810`, `34425`, `36139`, `36988`) that doesn't belong to Sept/Oct/Nov under the lag check above, and hasn't been traced anywhere else either. Not part of the current claim, not proven historical either — just open. `evidence_status: ASSERTED` is not the right resting place for this the way it might be for a genuinely closed historical item; it needs an actual decision the same way doc 44555 got one.
+| Receipt | Paid | Settles |
+| :--- | :--- | :--- |
+| `33810` | 2024-09-30 | rest of May + all June |
+| `34425` | 2024-10-28 | May stragglers + all July |
+| `35270` | 2024-12-04 | May stragglers + all August |
+| `36139` | 2025-01-17 | all September + part of October |
+| `36988` | 2025-02-21 | rest of October + all November |
 
-**What would help:** remittance advices for the payments involved, if the client sent any at the time.
+April is covered by receipt `32896`, proven by a cent-exact interlock with `33810`'s screen. 2024's whole-year net variance is **R0.50**.
+
+**The old "six payments cleared eight months, no clean single-month attribution" framing was directionally right** — the window *is* settled as a pooled/rolling window rather than one payment per month — it just had the mechanism wrong. Allocation is per-invoice, mostly oldest-first, and it revisits skipped invoices in later receipts.
+
+**The R24,068.27 of "unconsumed leftover cash" does not exist.** It was an artifact of forcing a one-payment-per-month model onto a per-invoice ledger. Every rand of these five receipts is allocated. Nothing to chase.
+
+**No remittance advices needed.** The ERP's own allocation record is better evidence than a remittance advice would be, and we have it.
 
 ---
 
