@@ -110,6 +110,10 @@
     {
       "date": "2026-09-15",
       "event": "User identified the specific unpaid invoice behind 2022-05's known R1,671.90 shortfall: doc 00013359 (2022-05-09, R1,671.90, 3x 19kg LPG). This matches what allocation_edges.csv (AL-0199, HUMAN_WORKSHEET_AND_ERP/Probable) and the ratified Pattern 2 override in payment_pattern_overrides.json already pointed to -- the user's note confirms the same invoice from their own review, not new evidence. Added this citation to monthly_lpg_insights.csv's 2022-05 notes and to the override entry's notes field (additive only -- amount/variance/approval_status/evidence_tier/evidence_status unchanged, still ASSERTED not PROVEN). Operator to locate proof of payment; flagged as not yet resolved."
+    },
+    {
+      "date": "2026-09-15",
+      "event": "User identified the specific unpaid invoice behind 2022-06's known R1,614.81 shortfall: doc 00014788 (2022-06-23, R1,614.81, 3x 19kg LPG, D/N 1376). Matches allocation_edges.csv (AL-0212, HUMAN_WORKSHEET_AND_ERP/Probable) and the ratified Pattern 2 override in payment_pattern_overrides.json -- confirms, doesn't add new evidence. Same treatment as 2022-05/doc 13359: added as a note citation only in monthly_lpg_insights.csv and the override entry (amount/variance/approval_status/evidence_tier/evidence_status unchanged, still ASSERTED not PROVEN). Operator to locate proof of payment."
     }
   ]
 }
