@@ -464,6 +464,10 @@ gaps cleanly when the precedent actually exists.
 
 ## 5.1 Doc 31179 / doc 32896 swap — Feb and May 2024 (2026-09-15)
 
+> ⚠️ **SUPERSEDED IN PART BY §5.4 (2026-09-15).** A screenshot of the ERP's own
+> *View Payment Allocations* screen has since falsified the "leftover cash"
+> premise this section is built on. Read §5.4 before relying on anything below.
+
 User flagged that doc 31179 looked like a better fit for February 2024
 than its assigned month (May). Checked and applied:
 
@@ -516,6 +520,10 @@ directly as a follow-up — see §5.2.
 ---
 
 ## 5.2 Sept/Oct/Nov 2024 investigated (2026-09-15) — genuinely unpaid, not pooled
+
+> ⚠️ **SUPERSEDED IN PART BY §5.4 (2026-09-15).** A screenshot of the ERP's own
+> *View Payment Allocations* screen has since falsified the "leftover cash"
+> premise this section is built on. Read §5.4 before relying on anything below.
 
 Tested whether the "six payments cleared eight months" Priority 3 claim
 could be reconstructed directly, using real payment gross amounts (not
@@ -608,6 +616,10 @@ such in the Legal Handoff doc.
 ---
 
 ## 5.3 The R24,068.27 leftover — allocation possibilities mapped (2026-09-15)
+
+> ⚠️ **SUPERSEDED IN PART BY §5.4 (2026-09-15).** A screenshot of the ERP's own
+> *View Payment Allocations* screen has since falsified the "leftover cash"
+> premise this section is built on. Read §5.4 before relying on anything below.
 
 Five candidate explanations tested. Ranked by what the evidence
 actually supports, not by which is most convenient.
@@ -704,6 +716,84 @@ An ERP export covering 2024-07 → 2025-03 — the same `DEBENQ` pull
 already used for the current window, just run for the prior year.
 That would give invoice-level tagging for all four docs and decide P1
 vs P2 vs P3 outright, rather than by inference.
+
+---
+
+## 5.4 ERP *View Payment Allocations* screen — the model was wrong (2026-09-15)
+
+The account owner opened the ERP's **View Payment Allocations** screen for
+receipt **`00033810`** and supplied the screen capture. It is the
+system-of-record's own allocation view — the strongest evidence class
+available on this account short of a customer remittance advice, and it
+settles several things this review had been inferring.
+
+**What the screen shows.** Receipt `00033810`, period 7, 30/09/2024, deposit
+ref `STAT:107`, bank account 580003, local total **R20,232.18** — with six
+allocation lines:
+
+| INVNO | Customer ref | Allocated | Our `invoices.csv` record | |
+| :--- | :--- | ---: | :--- | :--- |
+| 00031997 | DN#8718 | R3,426.28 | 2024-05-09, full R4,213.14 | partial |
+| 00032219 | DN#8749 | R1,573.72 | 2024-05-17, full R2,808.76 | partial |
+| 00032787 | DN#8532 | R2,808.76 | 2024-06-06, full R2,808.76 | full |
+| 00032976 | DN#9064 | R4,141.14 | 2024-06-11, full R4,141.14 | full |
+| 00033272 | DN#9101 | R4,141.14 | 2024-06-20, full R4,141.14 | full |
+| 00033533 | DN#9130 | R4,141.14 | 2024-06-27, full R4,141.14 | full |
+| **Total** | | **R20,232.18** | = the receipt's full gross | |
+
+Every invoice number, delivery-note reference and amount cross-checks
+against `invoices.csv`.
+
+**Three findings, each overturning something this review asserted:**
+
+1. **There is no leftover.** The six lines exhaust the receipt to the cent.
+   The **R7,597.32** this review had recorded as doc 33810's "unconsumed
+   leftover cash" **does not exist.** It was an artifact of forcing a
+   one-payment-settles-one-month model onto a ledger that allocates
+   per-invoice across month boundaries. By extension the **R24,068.27**
+   headline figure in §5.3 — and the R50,129.93 in the 2021-03→2026-06
+   bridge — are not reliable measures of anything real.
+
+2. **Doc 33810 does not settle April 2024**, which is what
+   `monthly_lpg_insights.csv` said. It settles the tail of May and all of
+   June 2024. April's actual payer is doc **32896**, and that interlocks to
+   the cent:
+
+   ```
+   April 2024, all 4 invoices          R12,634.86
+   + inv 00031801 (2024-05-02), full   R 4,213.14
+   + inv 00031997, part                R   786.86
+                                       ----------
+                                       R17,634.86  = doc 32896 gross, exactly
+
+   inv 00031997 remainder = 4,213.14 - 786.86 = R3,426.28
+                          = exactly what the ERP screen shows 33810 paying
+   ```
+
+   An independent handover point, cent-exact from both directions. This is
+   the single best-evidenced allocation fact on this account after doc 40746.
+
+3. **Allocation is not strictly FIFO.** Doc 33810 pays part of inv 00032219
+   (2024-05-17) and then **skips** invs 00032409, 00032531 and 00032614
+   (R7,021.90 of late-May) to jump to June. Oldest-first is therefore not a
+   safe modelling assumption here — which undercuts *both* the FIFO
+   reconstruction §5.2 rejected **and** the lag-based reasoning §5.1 and
+   §5.2 used to reject it.
+
+**Consequences for the claim.** §5.2 concluded Sept/Oct/Nov 2024
+(R41,887.32) were genuinely unpaid and that conclusion was carried into the
+Legal Handoff doc's Priority 1. **That has been withdrawn.** The lag
+baseline it relied on was computed from month assignments now known to be
+wrong, and the "leftover cash" it treated as floating is not floating. On
+the corrected model the later receipts plausibly do reach Sept/Oct/Nov.
+Status is now **unknown, under investigation** — not settled, not claimable.
+
+**What closes this out.** The same screen for the next four receipts —
+**`00034425`, `00035270`, `00036139`, `00036988`** — would show line by line
+which invoices each paid, and would resolve Sept/Oct/Nov 2024, the residual
+May 2024 R8,256.94, and the "leftover" question outright. Four screenshots
+replace every inference in §5.1–§5.3. This is the highest-value outstanding
+task on the account.
 
 ---
 
