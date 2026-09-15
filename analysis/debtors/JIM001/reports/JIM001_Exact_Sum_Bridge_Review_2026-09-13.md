@@ -510,8 +510,74 @@ either the naive per-month sum or a raw invoiced-vs-cash check on
 current data. This predates today's swap — it is not something the
 Feb/May reassignment caused — but it means **Sept/Oct/Nov 2024's
 R41,887.32 should not be treated as historical/settled** until someone
-checks whether it belongs in the current claim instead. Not
-investigated further in this pass; flagged for explicit follow-up.
+checks whether it belongs in the current claim instead. Investigated
+directly as a follow-up — see §5.2.
+
+---
+
+## 5.2 Sept/Oct/Nov 2024 investigated (2026-09-15) — genuinely unpaid, not pooled
+
+Tested whether the "six payments cleared eight months" Priority 3 claim
+could be reconstructed directly, using real payment gross amounts (not
+the CSV's per-month-capped figures) applied in strict chronological
+order against the whole year's invoicing.
+
+**The full-year FIFO simulation does resolve to exactly zero residual
+across all 12 months** — every payment from `28893` (Feb) through a
+partial `36988` (Feb 2025) applied in date order against every month's
+net billing in date order, with no gaps, consumes the entire
+R174,818.13 of 2024 billing to the cent, using exactly the cash already
+on file. On its face this looks like it vindicates the pooled-window
+claim: Sept/Oct/Nov's invoices get covered by the tail of doc `34425`,
+most of doc `35270`, and the head of doc `36139`.
+
+**Rejected anyway — the implied payment lag doesn't hold up.** Building
+a proper lag baseline from every *confirmed*, single-payment 2024 month
+(mid-invoice-month to payment date):
+
+| Month | Lag |
+| :--- | ---: |
+| 2024-01 | ~133 days |
+| 2024-02 | ~116 days |
+| 2024-03 | ~116 days |
+| 2024-04 | ~168 days |
+| 2024-05 | ~100 days |
+| 2024-06 | ~135 days |
+| 2024-07 | ~186 days |
+| 2024-08 | ~190 days |
+| 2024-12 | ~141 days |
+
+Lag runs **100–190 days and trends upward** across the year — consistent
+with an account whose collections gap is widening, which matches
+everything else already established about JIM001 (2025–2026 show a
+growing run of genuinely unpaid months too). The full-year FIFO
+reconstruction requires the *opposite*: Sept/Oct/Nov's implied lag under
+that model is only **~43–80 days** — a sudden drop of well over 100 days
+right in the middle of an otherwise-rising trend, before snapping back
+up to ~141 days by December. There is no plausible business reason for
+collections to speed up by that much for exactly three months and then
+slow back down. That's the same red flag `business_rules.md` §3 already
+names for this ERP's allocation behavior generally: a mechanical,
+date-ordered fill will always look clean on paper (it can't help but
+balance to zero once cumulative cash catches up to cumulative need) —
+that's arithmetic, not evidence of what actually happened. The zero
+residual is not surprising or diagnostic once you notice total cash
+across this stretch comfortably exceeds total need; some FIFO ordering
+was always going to tie out.
+
+**Verdict: Sept/Oct/Nov 2024 (R41,887.32 combined) are genuinely
+UNPAID — real, current exposure, not a pooled-window artifact.** The
+ratified Priority 3 narrative in the Legal Handoff doc ("six payments
+jointly cleared eight months... historical, not part of the current
+claim") does not survive this check and should not be relied on. See
+the Legal Handoff doc's Priority 3 section, updated to match.
+
+**What remains genuinely unexplained, separately:** after today's Feb/May
+fix, four payment docs still carry unconsumed leftover cash within 2024
+(`33810`: R7,597.32 · `34425`: R5,210.82 · `36139`: R6,893.89 · `36988`:
+R4,366.24 — R24,068.27 combined). This investigation does not resolve
+where that cash actually belongs; it only shows it does **not** belong
+to Sept/Oct/Nov under a lag-plausible reading. Flagged, not resolved.
 
 ---
 

@@ -16,13 +16,15 @@
 
 ---
 
-## Priority 1 — The actual claim: 2025–2026 unpaid invoices
+## Priority 1 — The actual claim: 2024, 2025 & 2026 unpaid invoices
 
 **Why this comes first:** this *is* the amount being claimed. Nothing else on this list changes the number being pursued — this is the only section that does.
 
-Unpaid months currently on record (corrected — Jan/Feb/Dec 2025 removed, see fact 3 and the note below): **2025 — Apr, May, Jun. 2026 — Jan, Feb, Mar, Apr, May.** 2026-03 is now genuinely `UNPAID` in full (R11,937.56) — doc 44555 no longer applies to it; see the note below.
+Unpaid months currently on record (corrected — Jan/Feb/Dec 2025 removed, see fact 3 and the note below; **2024-09/10/11 added 2026-09-15**, moved here from what used to be Priority 3 — see that section): **2024 — Sep, Oct, Nov (R41,887.32). 2025 — Apr, May, Jun. 2026 — Jan, Feb, Mar, Apr, May.** 2026-03 is now genuinely `UNPAID` in full (R11,937.56) — doc 44555 no longer applies to it; see the note below.
 
-**Checked and closed: is there uncaptured cash sitting behind any of these months, the way there was for Jan/Feb 2025?** No. Every payment in the ledger that isn't currently assigned to a month is from 2018–2020 — there is nothing unassigned anywhere near 2025 or 2026. Concretely: the payment sequence runs 40063 (settles Mar 2025) → 40746 (settles Jul 2025) with nothing in between, and 43199 (settles Nov 2025, posted 2026-02-05) → 44555 (settles Dec 2025, see below) with nothing in between either. So Apr, May, Jun 2025 and Jan, Feb, Mar, Apr, May 2026 are genuinely unpaid — not just unassigned — and can proceed through the rest of Priority 1's checklist as real claim items.
+**Checked and closed for 2025/2026: is there uncaptured cash sitting behind any of these months, the way there was for Jan/Feb 2025?** No. Every payment in the ledger that isn't currently assigned to a month is from 2018–2020 — there is nothing unassigned anywhere near 2025 or 2026. Concretely: the payment sequence runs 40063 (settles Mar 2025) → 40746 (settles Jul 2025) with nothing in between, and 43199 (settles Nov 2025, posted 2026-02-05) → 44555 (settles Dec 2025, see below) with nothing in between either. So Apr, May, Jun 2025 and Jan, Feb, Mar, Apr, May 2026 are genuinely unpaid — not just unassigned — and can proceed through the rest of Priority 1's checklist as real claim items.
+
+**Checked, differently, for 2024-09/10/11:** unlike 2025/2026, there *is* unconsumed cash floating around 2024 (R24,068.27 across four payment docs — see the old Priority 3 section, now revised). A full cash-flow reconstruction was tested to see if that cash actually covers Sept/Oct/Nov — it mathematically can, but only by requiring collections lag to implausibly halve for exactly those three months against the account's own established pattern (see the Bridge review §5.2 for the full check). Rejected on that basis. Treat Sept/Oct/Nov 2024 as genuinely unpaid for claim purposes, and treat the R24,068.27 leftover cash as a separate, still-open question — not proof these three months are covered.
 
 **Resolved — doc 44555, now allocated to December 2025 (account-owner decision, 2026-09-14):** this payment (R11,666.12) either settled March 2026 in full minus a R271.44 shortfall, or December 2025 in full instead. The March-2026 reading was originally attributed to "the ERP's own invoice-level allocation" — **that turned out to be wrong.** The raw ERP export (fact 1 above) shows doc 44555 with a blank invoice-tag field: it is not actually allocated to any invoice in the real ERP, March-2026's included. So the March-2026 reading has no real evidentiary basis at all, while December 2025 has the aggregate-total match (an internal workbook computation, not a remittance advice — still not proof, but the only reading with any support). **No new evidence resolved this — the account owner made the call** to close it out in favor of December ahead of legal handoff, rather than leave it open indefinitely. `monthly_lpg_insights.csv` now reflects this: December 2025 `FULLY_SETTLED`, March 2026 `UNPAID` in full. Do not represent this to legal as an independently proven fact — it's a decision, and it should be revisited if a remittance advice for doc 44555 ever surfaces.
 
@@ -51,11 +53,15 @@ For each invoice in these months:
 
 ---
 
-## Priority 3 — 2024 pooled settlement window
+## Priority 3 — 2024 pooled settlement window (REVISED 2026-09-15 — part of this moved to Priority 1)
 
-Six payments jointly cleared eight months of invoicing (Apr–Nov 2024) with no clean single-month attribution. This is currently a reconstructed pattern (`ASSERTED`), not confirmed against remittances.
+This section used to claim six payments jointly cleared eight months of invoicing (Apr–Nov 2024), treated as historical and already settled — **that claim did not survive a direct check.**
 
-**What would help:** remittance advices for those six payments, if the client sent any at the time. If none exist, this stays `ASSERTED` — that's an acceptable place for it to sit, since (like Priority 2) it's historical and already fully settled in substance, not part of the current claim.
+**What's actually confirmed now:** April, May, June, July, and August 2024 are genuinely settled (May's payment doc was swapped 2026-09-15 — doc 31179 moved to February, doc 32896 moved to May — both still `ASSERTED`, not invoice-proven, but internally consistent with this account's payment-lag pattern). **September, October, and November 2024 are not settled at all — R41,887.32 combined, genuinely unpaid, real current exposure.** A full-year cash-flow reconstruction was tested (applying every 2024 payment's real gross, in date order, against every month's billing, in date order) — it does mathematically zero out, but only by requiring collections lag to suddenly drop from a rising ~100–190 days to ~43–80 days for exactly these three months and then jump back up afterward. That's not a plausible business pattern; it's the same kind of mechanical-fill artifact already ruled out elsewhere on this account (see `JIM001_Exact_Sum_Bridge_Review_2026-09-13.md` §5.2). Treat Sept/Oct/Nov 2024 as real, unpaid, and **move it to Priority 1** — this is not historical.
+
+**What's still genuinely unexplained, separately:** four 2024 payment docs carry R24,068.27 of unconsumed leftover cash (`33810`, `34425`, `36139`, `36988`) that doesn't belong to Sept/Oct/Nov under the lag check above, and hasn't been traced anywhere else either. Not part of the current claim, not proven historical either — just open. `evidence_status: ASSERTED` is not the right resting place for this the way it might be for a genuinely closed historical item; it needs an actual decision the same way doc 44555 got one.
+
+**What would help:** remittance advices for the payments involved, if the client sent any at the time.
 
 ---
 
