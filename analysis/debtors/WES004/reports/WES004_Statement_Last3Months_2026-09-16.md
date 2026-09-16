@@ -22,7 +22,7 @@ Closing balance ties exactly to the combined ERP position (WES002 R7,443.73 + WE
 
 ## 2. Transaction Movement (16 Jun 2026 – 16 Sep 2026)
 
-Cylinder-deposit invoice/credit-note pairs that net to zero (gross-up-and-reverse within 0–1 days) have been stripped from this view per `business_rules.md` Rule 11 — they have zero impact on the closing balance and only added clutter. See §2.2 for the stripped pairs.
+Cylinder-deposit invoice/credit-note pairs that net to zero (gross-up-and-reverse within 0–1 days) have been stripped from this view per `business_rules.md` Rule 11 — they have zero impact on the closing balance and only added clutter.
 
 | Date | Doc No | Type | Reference | Amount | Balance |
 |---|---|---|---|---:|---:|
@@ -48,16 +48,6 @@ Cylinder-deposit invoice/credit-note pairs that net to zero (gross-up-and-revers
 | **Net Movement** | | **+R4,661.02** |
 
 Net movement is unchanged from before stripping — the 5 stripped pairs contributed R0.00 net by construction. Payments continue on the `TRANSF | STAT nnn` EFT series (STAT 128, 129, 130).
-
-### 2.2 Stripped cylinder-deposit pairs (net R0.00, not shown above)
-
-| Invoice | Date | Amount | Credit Note | Date | Amount |
-|---|---|---:|---|---|---:|
-| 00051545 (DN#22540=EMPTY) | 2 Jul | 2,415.00 | 00015167 | 3 Jul | -2,415.00 |
-| 00051859 (DN#22577=EMPTY=) | 15 Jul | 2,415.00 | 00015266 | 15 Jul | -2,415.00 |
-| 00052200 (DN#23925:EMPTY) | 30 Jul | 2,415.00 | 00015359 | 31 Jul | -2,415.00 |
-| 00052668 (DN#22885-EMPTY) | 19 Aug | 1,207.50 | 00015502 | 19 Aug | -1,207.50 |
-| 00052882 (DN#23991-EMPTY) | 31 Aug | 2,415.00 | 00015577 | 31 Aug | -2,415.00 |
 
 ---
 
