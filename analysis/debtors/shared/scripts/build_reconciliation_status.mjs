@@ -603,6 +603,15 @@ function buildReconciliationStatus(code, { tolerance = DEFAULT_TOLERANCE, skipGa
   validateOrphanInvariant(code, edges, profile);
   const { settledByDoc, consumptionByPayment } = computeAllocations(edges, profile);
 
+  // D-NEW.7 (Portfolio Review doctrine): a doc predating allocation_edges.csv's own
+  // earliest payment was never in scope for the allocator to consider — that's a
+  // coverage gap, not an open item. (JEN001 precedent: 36 of 90 invoices looked
+  // like a backlog but predated the edges file's earliest payment entirely.)
+  const coverageStart = edges.rows
+    .map((r) => r.payment_date)
+    .filter(Boolean)
+    .sort()[0];
+
   const invoiceDocs = universe.docs.filter((d) => d.entry_type === 'Invoice' && d.isLpg);
   for (const d of invoiceDocs) {
     d.settledAmount = settledByDoc.get(normDoc(d.doc_no))?.amount || 0;
@@ -654,6 +663,17 @@ function buildReconciliationStatus(code, { tolerance = DEFAULT_TOLERANCE, skipGa
     if (candidate) {
       const basket = basketCheck(candidate);
       const isExact = candidate.type !== 'PROXIMITY';
+      const isPooled =
+        candidate.type === 'EXACT_SUM_RUN' && new Set(candidate.runDocs.map((x) => x.month_year)).size > 1;
+      // Tier per D-NEW.5 (Portfolio Review doctrine, see reconciliation_status_taxonomy.md):
+      // an exact-sum match is real evidence the month/window ties out — tier 3, same ceiling
+      // as the LIFO/FIFO profiles — NOT a flat tier 4. Only a non-exact proximity match is tier 4.
+      const settlement_unit = !isExact
+        ? 'PROXIMITY_ONLY'
+        : isPooled
+          ? 'POOLED_MULTI_MONTH_WINDOW'
+          : 'PER_CALENDAR_MONTH_EXACT_SUM';
+      const evidence_tier = !isExact ? 4 : 3;
       rows.push({
         doc_no: d.doc_no,
         doc_type: 'INVOICE',
@@ -662,18 +682,32 @@ function buildReconciliationStatus(code, { tolerance = DEFAULT_TOLERANCE, skipGa
         gross_amount: d.lpgAmount,
         settled_amount: d.settledAmount,
         open_amount: d.openAmount,
-        settlement_unit:
-          candidate.type === 'EXACT_SUM_RUN'
-            ? (candidate.runSize > 1 && new Set(candidate.runDocs.map((x) => x.month_year)).size > 1
-                ? 'POOLED_MULTI_MONTH_WINDOW'
-                : 'PER_CALENDAR_MONTH_EXACT_SUM')
-            : candidate.type === 'EXACT_SUM_SINGLE'
-              ? 'PER_CALENDAR_MONTH_EXACT_SUM'
-              : 'PROXIMITY_ONLY',
-        evidence_tier: 4,
+        settlement_unit,
+        evidence_tier,
         evidence_status: isExact && basket.passed ? 'ASSERTED' : 'UNASSESSED',
         matched_against: candidate.payment.payment_doc,
-        notes: `STEP 3 candidate (${candidate.type}) vs payment ${candidate.payment.payment_doc}; basket-check: ${basket.reason}. Script-generated — not ERP/human-confirmed.`,
+        notes: `STEP 3 candidate (${candidate.type}) vs payment ${candidate.payment.payment_doc}; basket-check: ${basket.reason}. Script-generated — not ERP/human-confirmed. Per D-NEW.5, ${settlement_unit === 'PER_CALENDAR_MONTH_EXACT_SUM' ? 'month-level tie-out only — never treat as per-invoice-confident' : settlement_unit === 'POOLED_MULTI_MONTH_WINDOW' ? 'window-level only, weak' : 'balance-only, no invoice-level claim'}.`,
+      });
+      continue;
+    }
+
+    // D-NEW.7 — check coverage boundary before Step 5's cross-account sweep, and
+    // before ever calling this a genuine gap: absence of a match outside the
+    // allocator's own scope is not evidence of non-payment.
+    if (coverageStart && d.tx_date < coverageStart) {
+      rows.push({
+        doc_no: d.doc_no,
+        doc_type: 'INVOICE',
+        tx_date: d.tx_date,
+        month_year: d.month_year,
+        gross_amount: d.lpgAmount,
+        settled_amount: d.settledAmount,
+        open_amount: d.openAmount,
+        settlement_unit: 'UNCHARACTERIZED',
+        evidence_tier: 5,
+        evidence_status: 'UNASSESSED',
+        matched_against: '',
+        notes: `NOT_ATTEMPTED_BY_DESIGN (D-NEW.7): doc predates allocation_edges.csv's earliest payment_date (${coverageStart}) — outside the allocator's coverage, not a genuine gap. Verify against the raw ERP export before treating as open.`,
       });
       continue;
     }
@@ -741,7 +775,11 @@ function buildReconciliationStatus(code, { tolerance = DEFAULT_TOLERANCE, skipGa
     summary: {
       invoiceDocs: invoiceDocs.length,
       settled: rows.filter((r) => r.doc_type === 'INVOICE' && Math.abs(r.open_amount) <= tolerance).length,
-      gaps: rows.filter((r) => r.doc_type === 'INVOICE' && r.evidence_tier === 5).length,
+      gaps: rows.filter(
+        (r) => r.doc_type === 'INVOICE' && r.evidence_tier === 5 && !r.notes.startsWith('NOT_ATTEMPTED_BY_DESIGN'),
+      ).length,
+      notAttemptedByDesign: rows.filter((r) => r.doc_type === 'INVOICE' && r.notes.startsWith('NOT_ATTEMPTED_BY_DESIGN'))
+        .length,
       candidates: candidates.size,
       orphanedPayments: unconsumedPayments.length,
     },
@@ -796,6 +834,7 @@ function main() {
     console.log(
       `Invoices: ${result.summary.invoiceDocs} | settled: ${result.summary.settled} | ` +
         `candidate matches: ${result.summary.candidates} | genuine gaps: ${result.summary.gaps} | ` +
+        `not-attempted-by-design (D-NEW.7): ${result.summary.notAttemptedByDesign} | ` +
         `orphaned payments: ${result.summary.orphanedPayments}`,
     );
     if (result.invariant.held === null) {

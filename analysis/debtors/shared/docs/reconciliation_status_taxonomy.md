@@ -9,9 +9,51 @@ be found. This doc records what was actually checked, what was decided, and
 where the taxonomy's definitions now live, so a future session doesn't
 re-run the same search.
 
-## The missing source document
+## UPDATE 2026-09-16 — the source document surfaced
 
-Confirmed absent from this repository by two independent checks:
+The doc has been found: the user supplied a Google Docs link,
+[`DOCTRINE (PROPOSED, NOT RATIFIED) — Layered Reconciliation Architecture`](https://docs.google.com/document/d/1i-DsX4ZdRKIO2Du00O6kRUjOrMpDOd-6yIPtTgGoRJs/edit),
+now saved into this repo verbatim as
+`DOCTRINE_Layered_Reconciliation_Architecture_PROPOSED.md` in this same
+directory. Its title differs from the ticket's citation, but its content is
+unmistakably the same material — D-NEW.5 gives the exact `settlement_unit` →
+`evidence_tier` mapping this taxonomy needs, built from the same TWK002/
+JEN001/JIM001/MOZ002/BU0002 evidence base. **It is still marked PROPOSED, NOT
+RATIFIED** by its own status line — a future session should check whether
+it's since been ratified or superseded before treating it as unconditionally
+binding, but it is now a citable, in-repo artifact rather than a chat-only
+claim.
+
+Reconciling `build_reconciliation_status.mjs` against it on 2026-09-16 found
+one real bug and one real gap, both fixed:
+
+1. **Tier assignment bug.** The script originally assigned `evidence_tier: 4`
+   uniformly to every STEP 3 candidate (exact-sum single, exact-sum
+   contiguous-run, and proximity-only alike). D-NEW.5's table says an
+   exact-sum match — `PER_CALENDAR_MONTH_EXACT_SUM` or
+   `POOLED_MULTI_MONTH_WINDOW` — is tier 3, the same ceiling as the LIFO/FIFO
+   profiles, because "the exact-sum test proves the month ties out." Only
+   `PROXIMITY_ONLY` (a genuinely non-exact match) is tier 4. Fixed to match.
+2. **Missing D-NEW.7 check.** The doctrine's "absence of a match is not
+   evidence of non-payment" rule — established from a real JEN001 case where
+   36 invoices predating `allocation_edges.csv`'s own earliest payment looked
+   like a backlog but were simply outside the allocator's scope — was not
+   implemented. Added: the script now computes `allocation_edges.csv`'s
+   earliest `payment_date` as a coverage boundary, and any doc before it is
+   classified `NOT_ATTEMPTED_BY_DESIGN` (in the row's `notes`, since that
+   phrase is not part of the ticket's closed `settlement_unit` enum) rather
+   than counted as a genuine gap. This reclassified 4 TWK002 docs and 1
+   JIM001 doc on re-run.
+
+D-NEW.6 (lane classification is a property of the line, never the document)
+was already satisfied without changes — the script's STEP 1 aggregates
+`lpgAmount` from `is_lpg=True` line rows only, never infers lane from a
+doc-level heuristic.
+
+## The missing source document (original 2026-09-15 search — kept for record)
+
+Confirmed absent from this repository by two independent checks, before the
+Google Doc above was supplied:
 
 1. `analysis/debtors/JIM001/reports/JIM001_Exact_Sum_Bridge_Review_2026-09-13.md`
    (§0) already hit this exact gap on 2026-09-13, handling
@@ -22,13 +64,13 @@ Confirmed absent from this repository by two independent checks:
    full-repo text search for "Portfolio Review", "Payment-Pattern
    Classification", and "Reconciliation_Status_Methodology" (the prose
    methodology doc PDP-46 also cites) — no hits beyond the JIM001 report's
-   own mention of the missing filename. Neither document exists in this repo.
+   own mention of the missing filename. Neither document existed in-repo at
+   that point — the file now saved as `DOCTRINE_Layered_Reconciliation_
+   Architecture_PROPOSED.md` lived only in Google Docs until 2026-09-16.
 
 **Decision (PDP-46, 2026-09-15, explicit user call):** proceed on the
-taxonomy as given in the PDP-46 ticket text, documented here as chat-sourced
-rather than pulled from a citable artifact. If the real Portfolio Review doc
-resurfaces, diff it against this file and the `PROFILES` registry in
-`build_reconciliation_status.mjs` before trusting either blindly.
+taxonomy as given in the PDP-46 ticket text. Superseded the next day once the
+real source was supplied — see the UPDATE section above.
 
 ## The three fields
 
@@ -50,18 +92,20 @@ mappings):
 
 ### `evidence_tier` (1 → 5)
 
-The ticket gives only the two endpoints ("1 (remittance advice) → 5
-(unallocated)"); the middle of the ladder is this script's own
-operationalization, built to agree with the only two numbered precedents
-that exist in-repo:
+Now sourced directly from D-NEW.5 of `DOCTRINE_Layered_Reconciliation_
+Architecture_PROPOSED.md` (see UPDATE above), which gives an explicit
+`settlement_unit` → tier mapping rather than just the two endpoints the
+ticket text alone gave:
 
-| Tier | Meaning | In-repo precedent |
+| Tier | `settlement_unit` | In-repo precedent |
 | :--- | :--- | :--- |
-| 1 | Remittance advice — a customer-supplied document names the target invoice | TWK002's `REMITTANCE_EXPLICIT`/`REMITTANCE_CN_OFFSET` rows |
-| 2 | Bank/ERP-confirmed narrative without a remittance document | *(not yet used by any registered profile — reserved)* |
-| 3 | ERP-ledger or pattern-based allocation with a specific target claimed, no remittance | JEN001's `LIFO_FULL`/`LIFO_PARTIAL`; JIM001's `SPLIT_PAYMENT_PORTION` — both match `JIM001_Exact_Sum_Bridge_Review` §8's explicit "ceilinged at Tier 3" finding |
-| 4 | This script's own generated candidate pairing (exact-sum, contiguous-run, or proximity) — unconfirmed by ERP or a human | `build_reconciliation_status.mjs` STEP 3 output |
-| 5 | Unallocated / no target at all | `UNALLOCATED_REMAINDER` (JEN001), `UNALLOCATED_PORTION` (JIM001), and STEP 6 orphaned cash with no candidate |
+| 1–2 | `PER_INVOICE_REF_LINKED` | TWK002's `REMITTANCE_EXPLICIT`/`REMITTANCE_CN_OFFSET` rows (this script always assigns the stronger 1, since these are `confidence=Confirmed` ERP-direct links) |
+| 1 | `REMITTANCE_BATCH` | *(not yet used by any registered profile — reserved for an advice that names a batch rather than a specific invoice)* |
+| 3 | `PER_CALENDAR_MONTH_EXACT_SUM` | This script's STEP 3 exact-sum single/contiguous-run candidates within one month — "the exact-sum test proves the month ties out," per D-NEW.5, not a weaker tier-4 guess |
+| 3 (ASSERTED) | `PER_INVOICE_FIFO_BATCH` / `PER_INVOICE_LIFO_BATCH` | JEN001's `LIFO_FULL`/`LIFO_PARTIAL`; JIM001's `SPLIT_PAYMENT_PORTION` — matches `JIM001_Exact_Sum_Bridge_Review` §8's "ceilinged at Tier 3" finding |
+| 3 (weak) | `POOLED_MULTI_MONTH_WINDOW` | This script's STEP 3 exact-sum contiguous-run candidates spanning more than one calendar month |
+| 4 | `PROXIMITY_ONLY` | This script's STEP 3 non-exact proximity-band fallback — the weakest inferential basis per D-NEW.5 |
+| 5 | `UNCHARACTERIZED` | `UNALLOCATED_REMAINDER` (JEN001), `UNALLOCATED_PORTION` (JIM001), STEP 6 orphaned cash with no candidate, and STEP-2 D-NEW.7 not-attempted-by-design docs |
 
 ### `evidence_status`
 
