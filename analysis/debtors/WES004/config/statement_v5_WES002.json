@@ -1,0 +1,26 @@
+{
+  "debtorCode": "WES002",
+  "debtorName": "West Coast Fish & Chips",
+  "txtPath": "analysis/debtors/WES004/raw/WES002.TXT",
+  "periodStart": "2025-07-01",
+  "combinedBf": 0.0,
+  "bfSourceNote": "WES002.TXT line 13 — BALANCE B/F: 0.00 (first line of exported history)",
+  "cylOpeningFinancial": 0.0,
+  "paymentLane": "LPG",
+  "cylOpeningQty": {
+    "14.1": 0,
+    "19.1": 0,
+    "9.1": 0,
+    "D.1": 0,
+    "S.1": 0
+  },
+  "skuRates": {
+    "14.1": 575,
+    "19.1": 690,
+    "9.1": 517.5,
+    "D.1": 1150,
+    "S.1": 1150
+  },
+  "siblingAccounts": ["WES004"],
+  "siblingNote": "WES004 is the current active ERP code for the same customer (West Coast Fish & Chips), opened 05/12/2025. WES002 is legacy/dormant -- no activity since 10/04/2026, balance under Letter of Demand collection action."
+}

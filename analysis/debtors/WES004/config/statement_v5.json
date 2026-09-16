@@ -1,0 +1,26 @@
+{
+  "debtorCode": "WES004",
+  "debtorName": "West Coast Fish & Chips",
+  "txtPath": "analysis/debtors/WES004/raw/WES004.TXT",
+  "periodStart": "2025-12-01",
+  "combinedBf": 0.0,
+  "bfSourceNote": "WES004.TXT line 15 — BALANCE B/F: 0.00 (new ERP account code opened 05/12/2025; no carry-forward from WES002)",
+  "cylOpeningFinancial": 0.0,
+  "paymentLane": "LPG",
+  "cylOpeningQty": {
+    "14.1": 0,
+    "19.1": 0,
+    "9.1": 0,
+    "D.1": 0,
+    "S.1": 0
+  },
+  "skuRates": {
+    "14.1": 575,
+    "19.1": 690,
+    "9.1": 517.5,
+    "D.1": 1150,
+    "S.1": 1150
+  },
+  "siblingAccounts": ["WES002"],
+  "siblingNote": "WES002 is the legacy ERP code for the same customer (West Coast Fish & Chips), migrated to WES004 on 05/12/2025. Not merged per doctrine -- see WES002_Statement_Account_v5.md for the separate sibling statement."
+}

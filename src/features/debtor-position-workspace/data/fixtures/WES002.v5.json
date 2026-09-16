@@ -1,0 +1,48 @@
+{
+  "debtorCode": "WES002",
+  "debtorName": "West Coast Fish & Chips",
+  "period": {
+    "from": "2025-07-01",
+    "to": "2026-04-10"
+  },
+  "version": "v5",
+  "workspaceStatus": "pending_review",
+  "lastGeneratedAt": "2026-09-16T00:00:00.000Z",
+  "source": "analysis/debtors/WES004/raw/WES002.TXT",
+  "financialPosition": {
+    "lpgGasDebt": 7443.73,
+    "cylinderFinancialBalance": 0.0,
+    "totalDebtorBalance": 7443.73,
+    "erpStatedBalance": 7443.73,
+    "erpVariance": 0,
+    "subLedgerVariance": 0
+  },
+  "custodyPosition": {
+    "totalCustodyExposure": 0,
+    "lines": []
+  },
+  "reconciliationPosition": {
+    "cylinderVariance": 0,
+    "erpVariance": 0,
+    "subLedgerVariance": 0,
+    "exceptions": [
+      {
+        "type": "CUSTODY",
+        "basis": "ASSUMED",
+        "status": "open",
+        "description": "Part 2 custody not computed — same transaction_headers duplicate-row pattern as WES004 (2-16 rows per doc_no). TXT itself is current (matches DB exactly through 2026-04-10)."
+      },
+      {
+        "type": "OTHER",
+        "basis": "ASSERTED",
+        "status": "open",
+        "description": "Letter of Demand issued 2026-06-15 with a 2026-06-29 deadline (project.json) is ~11 weeks overdue with no recorded response. Operator follow-up needed — not a statement-reconciliation gap."
+      }
+    ]
+  },
+  "allocationEvidence": [],
+  "artifacts": {
+    "statementMarkdown": "analysis/debtors/WES004/reports/WES002_Statement_Account_v5.md",
+    "txtSource": "analysis/debtors/WES004/raw/WES002.TXT"
+  }
+}

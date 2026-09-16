@@ -1,0 +1,48 @@
+{
+  "debtorCode": "WES004",
+  "debtorName": "West Coast Fish & Chips",
+  "period": {
+    "from": "2025-12-01",
+    "to": "2026-06-11"
+  },
+  "version": "v5",
+  "workspaceStatus": "erp_exception",
+  "lastGeneratedAt": "2026-09-16T00:00:00.000Z",
+  "source": "analysis/debtors/WES004/raw/WES004.TXT",
+  "financialPosition": {
+    "lpgGasDebt": 28772.47,
+    "cylinderFinancialBalance": 0.0,
+    "totalDebtorBalance": 28772.47,
+    "erpStatedBalance": 28772.47,
+    "erpVariance": 0,
+    "subLedgerVariance": 0
+  },
+  "custodyPosition": {
+    "totalCustodyExposure": 0,
+    "lines": []
+  },
+  "reconciliationPosition": {
+    "cylinderVariance": 0,
+    "erpVariance": 0,
+    "subLedgerVariance": 0,
+    "exceptions": [
+      {
+        "type": "SOURCE_GAP",
+        "basis": "PROVEN",
+        "status": "open",
+        "description": "WES004.TXT last transaction 2026-06-11; Supabase transaction_headers/transaction_items for WES004 run through 2026-08-31 (20 additional documents, ~R7,081.67 net movement not reflected in this statement). Fresh TXT pull required before this balance can be called current."
+      },
+      {
+        "type": "CUSTODY",
+        "basis": "ASSUMED",
+        "status": "open",
+        "description": "Part 2 custody not computed — every doc_no in transaction_headers/transaction_items for WES004 has 2-16 rows from overlapping source-file re-ingests and apparent ERP allocation-detail sub-rows. DB SUM() would overstate custody until root-caused (lpg-recon-bug-fixer)."
+      }
+    ]
+  },
+  "allocationEvidence": [],
+  "artifacts": {
+    "statementMarkdown": "analysis/debtors/WES004/reports/WES004_Statement_Account_v5.md",
+    "txtSource": "analysis/debtors/WES004/raw/WES004.TXT"
+  }
+}
