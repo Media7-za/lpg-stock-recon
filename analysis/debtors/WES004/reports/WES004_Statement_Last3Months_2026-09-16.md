@@ -59,13 +59,7 @@ Pattern consistent with the account's established cycle: each gas delivery invoi
 
 ---
 
-## 3. Outstanding WES002 legacy debt (no movement, carried in the balance above)
-
-R7,443.73 (Nov–Dec 2025 invoices) remains unpaid since the last payment on **10 April 2026** — unresponsive to the Letter of Demand sent 15 June 2026 (deadline 29 June 2026). Included in the R29,697.87 closing balance above but had zero transaction activity this period.
-
----
-
-## 4. Reconciliation Sign-off
+## 3. Reconciliation Sign-off
 
 | Check | Result |
 |---|---:|
