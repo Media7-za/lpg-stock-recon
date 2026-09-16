@@ -15,7 +15,7 @@
       "asAt": "2026-09-16",
       "source": "analysis/debtors/WES004/raw/WES002CURRENT16092026.TXT; analysis/debtors/WES004/raw/WES004CURRENT16092026.TXT",
       "basis": "PROVEN",
-      "operatorConfirmation": "pending"
+      "operatorConfirmation": "confirmed"
     }
   },
   "collections": {
@@ -23,9 +23,9 @@
     "actionType": "letter-of-demand",
     "dateSent": "2026-06-15",
     "deadlineDate": "2026-06-29",
-    "nextAction": "operator_confirm_collectable_balance",
+    "nextAction": "escalate_wes002",
     "nextActionDate": null,
-    "notes": "WES002 balance of R7,443.73 is long overdue and unchanged since 10 Apr 2026 (no payment received in the fresh 16 Sep 2026 export either) — the Jun 2026 Letter of Demand produced no logged payment. WES004 account remains active and paying (balance moved 28,772.47 -> 22,254.14 since the last anchor via ongoing invoices/payments). Combined collectable balance re-anchored to fresh WES002/WES004 ERP account-enquiry exports dated 2026-09-16 (STALE_SOURCE blocker below resolved by this re-pull). Awaiting operator confirmation of the new anchor before further collection action.",
+    "notes": "WES002 balance of R7,443.73 is long overdue and unchanged since 10 Apr 2026 (no payment received in the fresh 16 Sep 2026 export either) — the Jun 2026 Letter of Demand produced no logged payment. WES004 account remains active and paying (balance moved 28,772.47 -> 22,254.14 since the last anchor via ongoing invoices/payments). Combined collectable balance re-anchored to fresh WES002/WES004 ERP account-enquiry exports dated 2026-09-16 (STALE_SOURCE blocker below resolved by this re-pull). Operator confirmed the R29,697.87 anchor on 2026-09-16 — account is collections-eligible per D17/D18.",
     "blockers": [
       {
         "type": "STALE_SOURCE",
@@ -48,6 +48,10 @@
     {
       "date": "2026-09-16",
       "event": "Fresh WES002/WES004 ERP account-enquiry exports supplied and ingested (saved as raw/WES002CURRENT16092026.TXT, raw/WES004CURRENT16092026.TXT; originals retained unmodified). Re-anchored collectable balance to R29,697.87 (WES002 R7,443.73 unchanged + WES004 R22,254.14, down from R28,772.47 on continued payments). lastInvoiceDate -> 2026-08-31, lastPaymentDate -> 2026-09-04. STALE_SOURCE blocker resolved. WES002 aged-debt portion (R7,443.73) confirmed still fully outstanding with zero payment activity since 10 Apr 2026, spanning the entire LOD deadline (2026-06-29) with no logged response. operatorConfirmation on the new anchor remains pending — repo agent cannot self-ratify per doctrine role separation."
+    },
+    {
+      "date": "2026-09-16",
+      "event": "Operator confirmed the R29,697.87 collectable-balance anchor (financials.collectable.operatorConfirmation: pending -> confirmed). Account is now collections-eligible per D17/D18 — no open blockers, reconState complete, basis PROVEN, confirmed. WES002's R7,443.73 remains unpaid since 10 Apr 2026 with no response to the Jun 2026 Letter of Demand; flagged for escalation."
     }
   ]
 }
