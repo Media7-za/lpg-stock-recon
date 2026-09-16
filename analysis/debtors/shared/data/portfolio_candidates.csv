@@ -25,7 +25,7 @@ JEN001,JENS SPOON PTY LTD,,27599.08,0.00,yes,defer,B,active portfolio
 DU0001,DUZE GAS & JUICE,7,-23792.12,0.00,no,defer,B,
 MOZ002,MOZAMBIK,,22898.47,3190.07,no,defer,B,
 SAT001,SATHA GAS,COD,-21635.85,0.00,no,defer,B,
-WES004,WEST COAST FISH & CHIPS,,28772.47,0.00,yes,allocation,B,active portfolio; balance corrected 2026-09-16 to match raw WES004.TXT CURRENT BALANCE (was stale at 20848.20)
+WES004,WEST COAST FISH & CHIPS,,22254.14,0.00,yes,allocation,B,active portfolio; balance refreshed 2026-09-16 from fresh WES004CURRENT16092026.TXT account enquiry
 BU0002,BULWER CASH STORE,COD,-18913.50,0.00,no,defer,B,
 SA0001,SAKI - VICTORIA RD,7,17790.66,0.00,yes,position_recon,B,active portfolio
 NEW001,NEW KING STORES,,17054.85,0.00,no,defer,B,
