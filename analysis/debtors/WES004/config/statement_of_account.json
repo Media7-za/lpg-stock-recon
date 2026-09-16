@@ -1,0 +1,22 @@
+{
+  "debtorCode": "WES004",
+  "customerName": "WEST COAST FISH & CHIPS",
+  "referenceLabel": "Reference",
+  "referenceValue": "",
+  "businessHeader": [
+    "BELLA ENERGY SERVICES300 (PTY) LTD T/A GAZ EXPRESS",
+    "50 WINSTON ROAD",
+    "PIETERMARITZBURG",
+    "3201"
+  ],
+  "primaryTxt": "analysis/debtors/WES004/raw/WES004CURRENT16092026.TXT",
+  "siteTxts": {
+    "WES002": "analysis/debtors/WES004/raw/WES002CURRENT16092026.TXT"
+  },
+  "_comment_siteTxts": "WES002 is the legacy predecessor code for the same customer (migrated to WES004 ~Dec 2025). Rolled up as a balance-only site adjustment (R7,443.73, unpaid since 10 Apr 2026) per generate_statement_of_account.mjs's siteTxts model -- no open-invoice/ageing detail is computed for it, only its ERP header balance added to Balance due.",
+  "outputDir": "analysis/debtors/WES004/reports",
+  "outputBaseName": "WES004_Statement_of_Account",
+  "pdfStylesheet": "analysis/debtors/shared/templates/statement_pdf.css",
+  "closedInvoiceOverrides": [],
+  "balanceBridgeLines": []
+}

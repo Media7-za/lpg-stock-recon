@@ -1,0 +1,26 @@
+{
+  "debtorCode": "WES004",
+  "debtorName": "West Coast Fish & Chips",
+  "_comment_scope": "WES004 CODE ONLY. The v5 generator (reconcile_debtor_v5_from_txt.mjs) takes a single txtPath and has no siteTxts/multi-code roll-up (unlike statement_of_account.json). WES002 (legacy predecessor code, R7,443.73, unpaid since 10 Apr 2026) is NOT represented in this statement or its Part 1A/1B split. Do not present this v5 output as the full WES002+WES004 position -- use the combined project.json financials.collectable (R29,697.87) or WES004_Statement_of_Account.md (with siteTxts.WES002) for that.",
+  "_comment_lane": "WES004 is routed to the 'allocation' lane in portfolio_candidates.csv. SKILL_Debtor_Statement_v5_From_TXT.md's own routing table says v5 is for position_recon accounts, not allocation -- SKILL_Payment_To_Invoice_Allocation.md is the doctrine-preferred tool for this lane. Set up here on explicit operator request (2026-09-16); treat v5 output for WES004 as supplementary sub-ledger detail, not the account's primary reconciliation artifact.",
+  "txtPath": "analysis/debtors/WES004/raw/WES004CURRENT16092026.TXT",
+  "periodStart": "2025-12-05",
+  "combinedBf": 0.0,
+  "bfSourceNote": "WES004CURRENT16092026.TXT line 13 -- BALANCE B/F: 0.00. WES004 is a newly opened ERP code (first transaction 05 Dec 2025, migrated off predecessor WES002); periodStart set to inception so the statement covers the code's full life with a zero B/F, rather than an arbitrary mid-year cut needing an estimated carry.",
+  "cylOpeningFinancial": 0.0,
+  "paymentLane": "LPG",
+  "cylOpeningQty": {
+    "14.1": 0,
+    "19.1": 0,
+    "9.1": 0,
+    "D.1": 0,
+    "S.1": 0
+  },
+  "skuRates": {
+    "14.1": 575,
+    "19.1": 690,
+    "9.1": 517.5,
+    "D.1": 1150,
+    "S.1": 1150
+  }
+}
