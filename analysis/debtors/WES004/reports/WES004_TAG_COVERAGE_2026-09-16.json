@@ -1,0 +1,442 @@
+{
+  "debtor": "WES004",
+  "generated_at": "2026-09-16T11:13:52.889Z",
+  "statement_txt": "analysis/debtors/WES004/raw/WES004CURRENT16092026.TXT",
+  "config_found": true,
+  "remittance_sources": 0,
+  "gate": "BLOCKED",
+  "blocking_reason": "OPEN_LIST_OVERSTATES_ACCOUNT",
+  "export_quality": "ALLOCATION_DETAIL_PRESENT",
+  "evidence": {
+    "basis": "PATTERN_ONLY",
+    "remittance_invoice_docs": 0,
+    "checks_run": [
+      "INVARIANT",
+      "STALENESS_ANOMALY"
+    ],
+    "checks_inert": [
+      "REMITTANCE_CONTRADICTION"
+    ],
+    "note": "No extracted remittance lines for this account (data/remittance_lines_*.csv), so the remittance-contradiction check could not run. Settlement claims here rest on payment patterns, business rules and operator ratification — see business_rules.md §15, authority order B."
+  },
+  "tagging": {
+    "settlement_rows": 54,
+    "tagged_rows": 44,
+    "tagged_pct": 81.5,
+    "credit_note": {
+      "rows": 25,
+      "tagged": 25,
+      "pct": 100
+    },
+    "payment": {
+      "rows": 29,
+      "tagged": 19,
+      "pct": 65.5
+    }
+  },
+  "counts": {
+    "likely_paid": 0,
+    "stale_open": 0,
+    "clear": 26,
+    "unassessable": 0
+  },
+  "invariant": {
+    "name": "Σ(open invoices) ≤ ERP CURRENT BALANCE",
+    "status": "BREACHED",
+    "overstated_by": 35978
+  },
+  "untagged_credits": [
+    {
+      "docno": "00000444",
+      "entry": "Journal",
+      "iso": "2026-02-03",
+      "dn": "",
+      "amount": -600
+    },
+    {
+      "docno": "00043750",
+      "entry": "Payment",
+      "iso": "2026-03-23",
+      "dn": "TRANSF | STAT 124",
+      "amount": -1320
+    },
+    {
+      "docno": "00043953",
+      "entry": "Payment",
+      "iso": "2026-04-10",
+      "dn": "TRANSF | STAT 125",
+      "amount": -2658
+    },
+    {
+      "docno": "00044313",
+      "entry": "Payment",
+      "iso": "2026-05-14",
+      "dn": "TRANSF | STAT 126",
+      "amount": -2800
+    },
+    {
+      "docno": "00044684",
+      "entry": "Payment",
+      "iso": "2026-06-10",
+      "dn": "TRANSF | STAT 127",
+      "amount": -2800
+    },
+    {
+      "docno": "00044679",
+      "entry": "Payment",
+      "iso": "2026-06-15",
+      "dn": "CASH | T2000422",
+      "amount": -10000
+    },
+    {
+      "docno": "00045326",
+      "entry": "Payment",
+      "iso": "2026-07-20",
+      "dn": "TRANSF | STAT 128",
+      "amount": -5000
+    },
+    {
+      "docno": "00045469",
+      "entry": "Payment",
+      "iso": "2026-07-29",
+      "dn": "TRANSF | STAT 128",
+      "amount": -5000
+    },
+    {
+      "docno": "00045929",
+      "entry": "Payment",
+      "iso": "2026-08-27",
+      "dn": "TRANSF | STAT 129",
+      "amount": -2800
+    },
+    {
+      "docno": "00046010",
+      "entry": "Payment",
+      "iso": "2026-09-04",
+      "dn": "TRANSF | STAT 130",
+      "amount": -3000
+    }
+  ],
+  "untagged_credit_total": -35978,
+  "last_untagged_credit_date": "2026-09-04",
+  "stale_gap_days": 90,
+  "sum_open_invoices": 58232.14,
+  "header_balance": 22254.14,
+  "balance_bf": 0,
+  "reconciliation_gap": -35978,
+  "ratified_closed": [],
+  "invoices": [
+    {
+      "doc": "48580",
+      "key": "48580",
+      "iso": "2025-12-31",
+      "dn": "DN#21444",
+      "due": 89.92,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 10,
+      "untagged_credit_pool_after_invoice": -35978
+    },
+    {
+      "doc": "48754",
+      "key": "48754",
+      "iso": "2026-01-13",
+      "dn": "DN-21634",
+      "due": 1890,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 10,
+      "untagged_credit_pool_after_invoice": -35978
+    },
+    {
+      "doc": "49024",
+      "key": "49024",
+      "iso": "2026-01-30",
+      "dn": "D/N 20997",
+      "due": 1875,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 10,
+      "untagged_credit_pool_after_invoice": -35978
+    },
+    {
+      "doc": "49025",
+      "key": "49025",
+      "iso": "2026-01-30",
+      "dn": "D/N 20998 HILTON",
+      "due": 1875,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 10,
+      "untagged_credit_pool_after_invoice": -35978
+    },
+    {
+      "doc": "49036",
+      "key": "49036",
+      "iso": "2026-01-31",
+      "dn": "DN#21233",
+      "due": 1320,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 10,
+      "untagged_credit_pool_after_invoice": -35978
+    },
+    {
+      "doc": "49038",
+      "key": "49038",
+      "iso": "2026-01-31",
+      "dn": "DN#21234- TOWNBUSH",
+      "due": 2640.01,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 10,
+      "untagged_credit_pool_after_invoice": -35978
+    },
+    {
+      "doc": "49075",
+      "key": "49075",
+      "iso": "2026-02-03",
+      "dn": "DN-21675",
+      "due": 1750,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 9,
+      "untagged_credit_pool_after_invoice": -35378
+    },
+    {
+      "doc": "49819",
+      "key": "49819",
+      "iso": "2026-03-18",
+      "dn": "DN-21974",
+      "due": 1329.6,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 9,
+      "untagged_credit_pool_after_invoice": -35378
+    },
+    {
+      "doc": "49891",
+      "key": "49891",
+      "iso": "2026-03-24",
+      "dn": "DN-22151-HILTON",
+      "due": 1329.6,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 8,
+      "untagged_credit_pool_after_invoice": -34058
+    },
+    {
+      "doc": "49896",
+      "key": "49896",
+      "iso": "2026-03-24",
+      "dn": "DN-22154-TOWNBUSH",
+      "due": 1329.6,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 8,
+      "untagged_credit_pool_after_invoice": -34058
+    },
+    {
+      "doc": "50225",
+      "key": "50225",
+      "iso": "2026-04-14",
+      "dn": "DN-22169.-TOWNBUSH",
+      "due": 2947.2,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 7,
+      "untagged_credit_pool_after_invoice": -31400
+    },
+    {
+      "doc": "50238",
+      "key": "50238",
+      "iso": "2026-04-15",
+      "dn": "DN-22319-HILTON",
+      "due": 1473.6,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 7,
+      "untagged_credit_pool_after_invoice": -31400
+    },
+    {
+      "doc": "50484",
+      "key": "50484",
+      "iso": "2026-05-02",
+      "dn": "DN#22362- TOWNBUSH",
+      "due": 2947.2,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 7,
+      "untagged_credit_pool_after_invoice": -31400
+    },
+    {
+      "doc": "50689",
+      "key": "50689",
+      "iso": "2026-05-15",
+      "dn": "DN#22712-",
+      "due": 1685.41,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 6,
+      "untagged_credit_pool_after_invoice": -28600
+    },
+    {
+      "doc": "50700",
+      "key": "50700",
+      "iso": "2026-05-15",
+      "dn": "DN#22422- TOWNBUSH",
+      "due": 3370.81,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 6,
+      "untagged_credit_pool_after_invoice": -28600
+    },
+    {
+      "doc": "50873",
+      "key": "50873",
+      "iso": "2026-05-26",
+      "dn": "DN#2243- TOWNBUSH",
+      "due": 3370.81,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 6,
+      "untagged_credit_pool_after_invoice": -28600
+    },
+    {
+      "doc": "50874",
+      "key": "50874",
+      "iso": "2026-05-26",
+      "dn": "DN#22434-HILTON",
+      "due": 1685.41,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 6,
+      "untagged_credit_pool_after_invoice": -28600
+    },
+    {
+      "doc": "51164",
+      "key": "51164",
+      "iso": "2026-06-11",
+      "dn": "DN#22639",
+      "due": 3241.3,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 5,
+      "untagged_credit_pool_after_invoice": -25800
+    },
+    {
+      "doc": "51241",
+      "key": "51241",
+      "iso": "2026-06-15",
+      "dn": "DN# 22503",
+      "due": 1620.65,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 4,
+      "untagged_credit_pool_after_invoice": -15800
+    },
+    {
+      "doc": "51544",
+      "key": "51544",
+      "iso": "2026-07-02",
+      "dn": "DN#22540=TOWN BUSH",
+      "due": 3255.08,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 4,
+      "untagged_credit_pool_after_invoice": -15800
+    },
+    {
+      "doc": "51858",
+      "key": "51858",
+      "iso": "2026-07-15",
+      "dn": "",
+      "due": 3255.08,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 4,
+      "untagged_credit_pool_after_invoice": -15800
+    },
+    {
+      "doc": "51994",
+      "key": "51994",
+      "iso": "2026-07-21",
+      "dn": "DN#22837",
+      "due": 3255.08,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 3,
+      "untagged_credit_pool_after_invoice": -10800
+    },
+    {
+      "doc": "52199",
+      "key": "52199",
+      "iso": "2026-07-30",
+      "dn": "DN#23925",
+      "due": 3255.08,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 2,
+      "untagged_credit_pool_after_invoice": -5800
+    },
+    {
+      "doc": "52652",
+      "key": "52652",
+      "iso": "2026-08-19",
+      "dn": "DN#24278",
+      "due": 3096.28,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 2,
+      "untagged_credit_pool_after_invoice": -5800
+    },
+    {
+      "doc": "52667",
+      "key": "52667",
+      "iso": "2026-08-19",
+      "dn": "DN#22885",
+      "due": 1448.14,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 2,
+      "untagged_credit_pool_after_invoice": -5800
+    },
+    {
+      "doc": "52881",
+      "key": "52881",
+      "iso": "2026-08-31",
+      "dn": "DN#23991",
+      "due": 2896.28,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 1,
+      "untagged_credit_pool_after_invoice": -3000
+    }
+  ]
+}

@@ -9,11 +9,9 @@
     "PIETERMARITZBURG",
     "3201"
   ],
-  "primaryTxt": "analysis/debtors/WES004/raw/WES004CURRENT16092026.TXT",
-  "siteTxts": {
-    "WES002": "analysis/debtors/WES004/raw/WES002CURRENT16092026.TXT"
-  },
-  "_comment_siteTxts": "WES002 is the legacy predecessor code for the same customer (migrated to WES004 ~Dec 2025). Rolled up as a balance-only site adjustment (R7,443.73, unpaid since 10 Apr 2026) per generate_statement_of_account.mjs's siteTxts model -- no open-invoice/ageing detail is computed for it, only its ERP header balance added to Balance due.",
+  "primaryTxt": "analysis/debtors/WES004/raw/WES004_WES002_COMBINED16092026.TXT",
+  "siteTxts": {},
+  "_comment_primaryTxt": "2026-09-16: switched from WES004-only + siteTxts.WES002 (balance-only roll-up) to a single merged ledger so the account presents as one continuous history instead of two balances. Built by analysis/debtors/WES004/scripts/build_combined_ledger.mjs, which interleaves WES002CURRENT16092026.TXT + WES004CURRENT16092026.TXT by date (Rule 2 ordering), recomputes one running balance from BALANCE B/F 0.00, and verified zero variance against the combined ERP header total (R29,697.87). No doc_no collisions between the two codes. Re-run that script if either source TXT is refreshed -- this file does not regenerate itself.",
   "outputDir": "analysis/debtors/WES004/reports",
   "outputBaseName": "WES004_Statement_of_Account",
   "pdfStylesheet": "analysis/debtors/shared/templates/statement_pdf.css",
