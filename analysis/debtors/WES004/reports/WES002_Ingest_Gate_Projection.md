@@ -12,9 +12,11 @@
 | SKU analysis | **BLOCKED** — same reason |
 | Allocation | Not applicable — lane is `position_recon` |
 
-## DB row-count anomaly (shared with WES004)
+## PDP-31 — confirmed, not just suspected (shared with WES004)
 
-Every `doc_no` in `transaction_headers` for WES002 has 2+ rows (up to 16 for some `Payment` docs), same pattern as WES004 — see `WES004_Ingest_Gate_Projection.md` for detail. This blocks Part 2 custody/SKU sign-off even though WES002's TXT itself is current and fully covered.
+Root-caused via the `lpg-recon-bug-fixer` skill and confirmed against this account: [PDP-31](https://media7.atlassian.net/browse/PDP-31) (`transaction_headers`/`transaction_items` fingerprint dedup fails across re-exported files). Grouped on the true fingerprint-input tuple (`account_no, entry_type, doc_no, ref_no, batch_ref, tx_date, amount_excl, tax_amount`), WES002 has **137 true duplicate header groups / 137 extra rows** (of 292 total) — every one sourced from both `DTRX2603.TXT` and `DETRANS2307.TXT`. At the item level, **100% of rows (116/116) sit in duplicate groups**: WES002 is dormant (no activity since 2026-04-10), so its entire item history was effectively re-ingested wholesale in the July 2026 export. This blocks Part 2 custody/SKU sign-off even though WES002's TXT itself is current and fully covered.
+
+**Not every multi-row `doc_no` is this bug.** `Payment` docs legitimately carry several header rows sharing one `doc_no` (ERP allocation-detail sub-rows, `ref_no='Alloc'` or a settled invoice number) — e.g. doc `00040407` has 8 rows with different amounts that net to exactly the TXT's stated -R2,405.00. Already documented in `WES004_BASELINE_v1.md` §6.3; not a defect. Only rows duplicating on the full tuple above are PDP-31.
 
 ## Collections status (context, not an ingest concern)
 
@@ -23,5 +25,5 @@ WES002's `project.json` (dated 2026-06-15) records a Letter of Demand issued 202
 ## Next Sources action
 
 1. No fresh TXT pull needed for WES002 itself (already current — it's simply inactive).
-2. Same as WES004: run `lpg-recon-bug-fixer` against the `transaction_headers` duplication before trusting any DB-derived custody/SKU figure for this account.
+2. PDP-31 is tracked and confirmed (see link above) — no further action from this account's side; wait for the fingerprint/dedup fix.
 3. Operator: resolve the overdue Letter of Demand deadline (see above).

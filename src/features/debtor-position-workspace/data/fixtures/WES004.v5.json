@@ -34,9 +34,9 @@
       },
       {
         "type": "CUSTODY",
-        "basis": "ASSUMED",
+        "basis": "PROVEN",
         "status": "open",
-        "description": "Part 2 custody not computed — every doc_no in transaction_headers/transaction_items for WES004 has 2-16 rows from overlapping source-file re-ingests and apparent ERP allocation-detail sub-rows. DB SUM() would overstate custody until root-caused (lpg-recon-bug-fixer)."
+        "description": "Part 2 custody not computed — PDP-31 (confirmed via lpg-recon-bug-fixer: https://media7.atlassian.net/browse/PDP-31) causes fingerprint-dedup failures across re-exported ERP files. WES004 has 67 true duplicate header groups / 69 extra rows (of 220) and 142/164 (86.6%) of item rows in duplicate groups. DB SUM() would overstate custody until the fingerprint fix + dedup migration land."
       }
     ]
   },

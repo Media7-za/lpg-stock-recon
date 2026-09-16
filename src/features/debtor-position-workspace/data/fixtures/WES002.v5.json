@@ -28,9 +28,9 @@
     "exceptions": [
       {
         "type": "CUSTODY",
-        "basis": "ASSUMED",
+        "basis": "PROVEN",
         "status": "open",
-        "description": "Part 2 custody not computed — same transaction_headers duplicate-row pattern as WES004 (2-16 rows per doc_no). TXT itself is current (matches DB exactly through 2026-04-10)."
+        "description": "Part 2 custody not computed — PDP-31 (confirmed via lpg-recon-bug-fixer: https://media7.atlassian.net/browse/PDP-31). WES002 has 137 true duplicate header groups / 137 extra rows (of 292) and 100% of item rows in duplicate groups (dormant account — whole history re-ingested wholesale). TXT itself is current (matches DB exactly through 2026-04-10)."
       },
       {
         "type": "OTHER",

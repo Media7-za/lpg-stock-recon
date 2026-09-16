@@ -29,7 +29,7 @@
       {
         "type": "OTHER",
         "status": "open",
-        "description": "transaction_headers/transaction_items row-count anomaly (2-16x rows per doc_no) confirmed on both WES002 and WES004 — blocks Part 2 custody/SKU sign-off until root-caused via lpg-recon-bug-fixer; likely affects the wider portfolio (same ingest pipeline).",
+        "description": "PDP-31 (https://media7.atlassian.net/browse/PDP-31) confirmed on both WES002 and WES004 at the transaction_headers level (previously items-only) via lpg-recon-bug-fixer: fingerprint dedup fails across re-exported files DTRX2603.TXT -> DETRANS2307.TXT. WES004: 67 true dup header groups / 69 extra rows of 220. WES002: 137 dup groups / 137 extra rows of 292 (dormant account, ~100% of item rows duplicated). Blocks Part 2 custody/SKU sign-off until the fingerprint fix + a transaction_headers-scoped dedup migration land (existing draft is transaction_items-only). Not every multi-row doc_no is this bug -- Payment docs legitimately carry allocation-detail sub-rows (ref_no='Alloc') per WES004_BASELINE_v1.md §6.3.",
         "source": "reports/WES004_Ingest_Gate_Projection.md",
         "asAt": "2026-09-16"
       },
@@ -60,7 +60,11 @@
     },
     {
       "date": "2026-09-16",
-      "event": "v5 Turn 1: lane confirmed position_recon from TXT evidence (overrides portfolio_candidates.csv's 'allocation' hint). Built separate v5 statements for WES004 and sibling WES002 (not merged, per doctrine) — Part 1 bridge R0.00 both. Discovered WES004.TXT is ~3 months stale vs Supabase (DB runs to 2026-08-31). Discovered systemic transaction_headers/transaction_items duplicate-row anomaly (2-16x per doc_no) on both accounts, blocking Part 2 custody/SKU sign-off pending lpg-recon-bug-fixer investigation. reconState downgraded from 'complete' to 'financial_only'. WES002 Letter of Demand deadline flagged as overdue."
+      "event": "v5 Turn 1: lane confirmed position_recon from TXT evidence (overrides portfolio_candidates.csv's 'allocation' hint). Built separate v5 statements for WES004 and sibling WES002 (not merged, per doctrine) — Part 1 bridge R0.00 both. Discovered WES004.TXT is ~3 months stale vs Supabase (DB runs to 2026-08-31). reconState downgraded from 'complete' to 'financial_only'. WES002 Letter of Demand deadline flagged as overdue."
+    },
+    {
+      "date": "2026-09-16",
+      "event": "Ran lpg-recon-bug-fixer against the header duplicate-row finding above. Confirmed it as PDP-31 (already-tracked bug) extended to transaction_headers for the first time (was items-only) — reproduced the fingerprint-mismatch signature exactly on WES004 doc 00048117. Quantified: WES004 67 true dup groups/69 extra header rows of 220; WES002 137 dup groups/137 extra rows of 292 (~100% of item rows). Corrected the initial 'every doc_no has 2-16 rows' framing — most of that was legitimate Payment allocation-detail sub-rows (ref_no='Alloc'), not duplication. Posted findings to PDP-31 (https://media7.atlassian.net/browse/PDP-31). No dedup executed — draft migration requires human sign-off and doesn't yet cover transaction_headers."
     }
   ]
 }
