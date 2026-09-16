@@ -22,40 +22,42 @@ Closing balance ties exactly to the combined ERP position (WES002 R7,443.73 + WE
 
 ## 2. Transaction Movement (16 Jun 2026 – 16 Sep 2026)
 
+Cylinder-deposit invoice/credit-note pairs that net to zero (gross-up-and-reverse within 0–1 days) have been stripped from this view per `business_rules.md` Rule 11 — they have zero impact on the closing balance and only added clutter. See §2.2 for the stripped pairs.
+
 | Date | Doc No | Type | Reference | Amount | Balance |
 |---|---|---|---|---:|---:|
 | 2026-07-02 | 00051544 | Invoice | DN#22540=TOWN BUSH | 3,255.08 | 28,291.93 |
-| 2026-07-02 | 00051545 | Invoice | DN#22540=EMPTY | 2,415.00 | 30,706.93 |
-| 2026-07-03 | 00015167 | Crd Note | DN#22540=EMPTY | -2,415.00 | 28,291.93 |
 | 2026-07-15 | 00051858 | Invoice | — | 3,255.08 | 31,547.01 |
-| 2026-07-15 | 00051859 | Invoice | DN#22577=EMPTY= | 2,415.00 | 33,962.01 |
-| 2026-07-15 | 00015266 | Crd Note | DN#22577=EMPTY= | -2,415.00 | 31,547.01 |
 | 2026-07-20 | 00045326 | Payment | TRANSF \| STAT 128 | -5,000.00 | 26,547.01 |
 | 2026-07-21 | 00051994 | Invoice | DN#22837 | 3,255.08 | 29,802.09 |
 | 2026-07-29 | 00045469 | Payment | TRANSF \| STAT 128 | -5,000.00 | 24,802.09 |
 | 2026-07-30 | 00052199 | Invoice | DN#23925 | 3,255.08 | 28,057.17 |
-| 2026-07-30 | 00052200 | Invoice | DN#23925:EMPTY | 2,415.00 | 30,472.17 |
-| 2026-07-31 | 00015359 | Crd Note | DN#23925:EMPTY | -2,415.00 | 28,057.17 |
 | 2026-08-19 | 00052652 | Invoice | DN#24278 | 3,096.28 | 31,153.45 |
 | 2026-08-19 | 00052667 | Invoice | DN#22885 | 1,448.14 | 32,601.59 |
-| 2026-08-19 | 00052668 | Invoice | DN#22885-EMPTY | 1,207.50 | 33,809.09 |
-| 2026-08-19 | 00015502 | Crd Note | DN#22885-EMPTY | -1,207.50 | 32,601.59 |
 | 2026-08-27 | 00045929 | Payment | TRANSF \| STAT 129 | -2,800.00 | 29,801.59 |
 | 2026-08-31 | 00052881 | Invoice | DN#23991 | 2,896.28 | 32,697.87 |
-| 2026-08-31 | 00052882 | Invoice | DN#23991-EMPTY | 2,415.00 | 35,112.87 |
-| 2026-08-31 | 00015577 | Crd Note | DN#23991-EMPTY | -2,415.00 | 32,697.87 |
 | 2026-09-04 | 00046010 | Payment | TRANSF \| STAT 130 | -3,000.00 | 29,697.87 |
 
 ### 2.1 Movement breakdown
 
 | Category | Count | Amount |
 |---|---:|---:|
-| Invoices | 12 | R31,328.52 |
-| Credit Notes | 5 | -R10,867.50 |
+| Invoices (gas only, CYL pairs stripped) | 7 | R20,461.02 |
+| Credit Notes (all were CYL pairs, stripped) | 0 | R0.00 |
 | Payments | 4 | -R15,800.00 |
 | **Net Movement** | | **+R4,661.02** |
 
-Pattern consistent with the account's established cycle: each gas delivery invoice is typically paired with a cylinder-deposit invoice (`-EMPTY` reference), with prompt-return credit notes reversing most deposit charges same-day or within days. Payments continue on the `TRANSF | STAT nnn` EFT series (STAT 128, 129, 130).
+Net movement is unchanged from before stripping — the 5 stripped pairs contributed R0.00 net by construction. Payments continue on the `TRANSF | STAT nnn` EFT series (STAT 128, 129, 130).
+
+### 2.2 Stripped cylinder-deposit pairs (net R0.00, not shown above)
+
+| Invoice | Date | Amount | Credit Note | Date | Amount |
+|---|---|---:|---|---|---:|
+| 00051545 (DN#22540=EMPTY) | 2 Jul | 2,415.00 | 00015167 | 3 Jul | -2,415.00 |
+| 00051859 (DN#22577=EMPTY=) | 15 Jul | 2,415.00 | 00015266 | 15 Jul | -2,415.00 |
+| 00052200 (DN#23925:EMPTY) | 30 Jul | 2,415.00 | 00015359 | 31 Jul | -2,415.00 |
+| 00052668 (DN#22885-EMPTY) | 19 Aug | 1,207.50 | 00015502 | 19 Aug | -1,207.50 |
+| 00052882 (DN#23991-EMPTY) | 31 Aug | 2,415.00 | 00015577 | 31 Aug | -2,415.00 |
 
 ---
 
