@@ -7,19 +7,43 @@
     "totalOutstanding": 36216.20,
     "lastInvoiceDate": "2026-06-11",
     "lastPaymentDate": "2026-04-10",
-    "agedDebt180Plus": 7443.73
+    "agedDebt180Plus": 7443.73,
+    "collectable": {
+      "amount": 36216.20,
+      "erpBalance": 36216.20,
+      "ratifiedHoldsTotal": 0.0,
+      "asAt": "2026-06-15",
+      "source": "analysis/debtors/WES004/reports/WES004_BASELINE_v1.md",
+      "basis": "PROVEN",
+      "operatorConfirmation": "pending"
+    }
   },
   "collections": {
     "actionRequired": true,
     "actionType": "letter-of-demand",
     "dateSent": "2026-06-15",
     "deadlineDate": "2026-06-29",
-    "notes": "WES002 balance of R7,443.73 is long overdue. Letter of Demand sent. WES004 account is active."
+    "nextAction": "reingest_erp_export",
+    "nextActionDate": null,
+    "notes": "WES002 balance of R7,443.73 is long overdue. Letter of Demand sent 2026-06-15, deadline 2026-06-29; no follow-up outcome logged in this record since. WES004 account is active. Combined collectable balance anchored to WES002.TXT/WES004.TXT exports dated 2026-06-15 (zero-variance reconciliation per WES004_BASELINE_v1.md) — no newer ERP export has been ingested since.",
+    "blockers": [
+      {
+        "type": "STALE_SOURCE",
+        "status": "open",
+        "description": "Collectable balance anchor (R36,216.20) is sourced from WES002.TXT/WES004.TXT exports dated 2026-06-15 — over 3 months old as of this refresh. No newer ERP export has been pulled or ingested for either code. Re-pull and re-anchor required before presenting the balance as current or drafting further demand text.",
+        "source": "analysis/debtors/WES004/raw/WES002.TXT; analysis/debtors/WES004/raw/WES004.TXT",
+        "asAt": "2026-09-16"
+      }
+    ]
   },
   "history": [
     {
       "date": "2026-06-15",
       "event": "Onboarded debtor. Confirmed WES002 and WES004 mapping. Drafted and issued formal Letter of Demand for WES002 aged debt."
+    },
+    {
+      "date": "2026-09-16",
+      "event": "Record refresh: added D18 financials.collectable and collections.blockers contract, missing since status was set to collection under pre-D18 rules. No newer WES002/WES004 ERP export is available in the repo to re-anchor financials, so totalOutstanding/lastInvoiceDate/lastPaymentDate/agedDebt180Plus are unchanged from the 2026-06-15 anchor. Flagged an open STALE_SOURCE blocker (source data now >3 months old) pending a fresh ERP pull; this blocks further demand drafting per D18 until resolved. LOD deadline (2026-06-29) has no logged outcome on record."
     }
   ]
 }
