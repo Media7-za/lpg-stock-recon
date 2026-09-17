@@ -1,0 +1,24 @@
+{
+  "debtorCode": "CAP000",
+  "debtorName": "CAPITOL CATERERS SELECT (PTY)",
+  "txtPath": "analysis/debtors/CAP000/raw/DEBENQ.TXT",
+  "periodStart": "2026-01-01",
+  "combinedBf": 15083.55,
+  "bfSourceNote": "DEBENQ.TXT line 191 — last running BALANCE before first 2026 row (18 Dec 2025 payment 00042697/STAT 121 close R15,083.55)",
+  "cylOpeningFinancial": -9683.00,
+  "paymentLane": "LPG",
+  "cylOpeningQty": {
+    "14.1": 0,
+    "19.1": -8,
+    "9.1": -1,
+    "D.1": 0,
+    "S.1": 4
+  },
+  "skuRates": {
+    "14.1": 575,
+    "19.1": 690,
+    "9.1": 517.5,
+    "D.1": 1150,
+    "S.1": 1150
+  }
+}

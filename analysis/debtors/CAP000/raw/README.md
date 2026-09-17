@@ -13,4 +13,11 @@ All four carry allocation detail (`INVNO` populated) — CAP000 is **not** one o
 
 `CAP000.TXT` (pre-existing, stale — closes 2026-08-03 at R56,654.30, no allocation detail) is retained for provenance only; superseded by `DEBENQ.TXT` above.
 
-Statement: `reports/CAP000_Statement_Account.md` (Part 1 combined ledger, TXT-only). Still needed: `DATABASE_URL` access for the v4/v5 LPG/CYL sub-ledger split and Part 2 custody tracker — see **H-028**. No remittance PDFs received or required (lane re-locked `position_recon`, not `settlement_discount`).
+Statements:
+
+| Version | Path | Notes |
+| :--- | :--- | :--- |
+| Part 1 (combined, TXT-only) | `reports/CAP000_Statement_Account.md` | ERP variance R0.00 |
+| v5 (LPG/CYL sub-ledger + custody) | `reports/CAP000_Statement_Account_v5.md` | ERP variance R0.00, sub-ledger tie R0.00. DB data sourced via Supabase MCP `execute_sql` against the `lpg-stock-recon` project (`oqhpxnaadahohwkslive`), no local `DATABASE_URL` — see `config/statement_v5.json`. Open **H-029**: R8,245.50 CYL custody variance. |
+
+No remittance PDFs received or required (lane re-locked `position_recon`, not `settlement_discount`).

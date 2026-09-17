@@ -1,0 +1,63 @@
+{
+  "debtorCode": "CAP000",
+  "debtorName": "CAPITOL CATERERS SELECT (PTY)",
+  "period": {
+    "from": "2026-01-01",
+    "to": "2026-09-17"
+  },
+  "version": "v5",
+  "workspaceStatus": "pending_review",
+  "lastGeneratedAt": "2026-09-17T07:38:58.821Z",
+  "source": "analysis/debtors/CAP000/raw/DEBENQ.TXT",
+  "financialPosition": {
+    "lpgGasDebt": 80456.28,
+    "cylinderFinancialBalance": -9683,
+    "totalDebtorBalance": 70773.28,
+    "erpStatedBalance": 70773.28,
+    "erpVariance": 0,
+    "subLedgerVariance": 0
+  },
+  "custodyPosition": {
+    "totalCustodyExposure": -1437.5,
+    "lines": [
+      {
+        "sku": "19.1",
+        "label": "19kg",
+        "qty": -8,
+        "depositRate": 690,
+        "exposure": -5520
+      },
+      {
+        "sku": "9.1",
+        "label": "9kg",
+        "qty": -1,
+        "depositRate": 517.5,
+        "exposure": -517.5
+      },
+      {
+        "sku": "S.1",
+        "label": "S.1",
+        "qty": 4,
+        "depositRate": 1150,
+        "exposure": 4600
+      }
+    ]
+  },
+  "reconciliationPosition": {
+    "cylinderVariance": -8245.5,
+    "erpVariance": 0,
+    "subLedgerVariance": 0,
+    "exceptions": [
+      {
+        "type": "CUSTODY",
+        "basis": "ASSERTED",
+        "status": "open",
+        "description": "Part 1B financial vs Part 2 custody — check DB ingest vs TXT"
+      }
+    ]
+  },
+  "artifacts": {
+    "statementMarkdown": "analysis/debtors/CAP000/reports/CAP000_Statement_Account_v5.md",
+    "txtSource": "analysis/debtors/CAP000/raw/DEBENQ.TXT"
+  }
+}

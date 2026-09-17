@@ -3,7 +3,7 @@
 **Updated:** 2026-09-17 (Turn 002)  
 **Account:** CAP000 — CAPITOL CATERERS SELECT (PTY)  
 **Lane (locked):** `position_recon` — **LOCKED** (`settlement_discount` disconfirmed — see Turn 002 below)  
-**reconState:** **part1_complete_pending_db_split**
+**reconState:** **v5_complete_custody_variance_open**
 
 ---
 
@@ -23,9 +23,34 @@ All four carry allocation detail (`INVNO` populated) — this account is **not**
 
 **Lane-lock finding:** of 226 payment rows, 181 matched their invoice's INVNO for the exact invoice value and only 42 were short — and those short payments show no consistent discount ratio (samples ranged ~3%–75% of invoice value), inconsistent with a fixed early-settlement discount. This **disconfirms** the Turn 001 `settlement_discount` ASSUMPTION. Lane re-locked to **`position_recon`**.
 
-**Still open:** `DATABASE_URL` access for the LPG (1A) vs. CYL deposit (1B) financial split and the Part 2 physical cylinder custody tracker — tracked as **H-028**. Sibling **CAP002** (empties account) remains out of scope.
+**Still open (at the time):** `DATABASE_URL` access for the LPG (1A) vs. CYL deposit (1B) financial split and the Part 2 physical cylinder custody tracker — tracked as **H-028**. Sibling **CAP002** (empties account) remains out of scope.
 
 ---
+
+## Turn 002 continued (2026-09-17) — H-028 resolved via Supabase MCP, v5 statement generated
+
+No local `DATABASE_URL`, but the Supabase MCP server exposed the same `lpg-stock-recon` Supabase project (`oqhpxnaadahohwkslive`, confirmed via `mcp__Supabase__list_projects` and table row counts matching this account: 1,364 `transaction_headers` rows for CAP000). Pulled the two DB queries `reconcile_debtor_v5_from_txt.mjs` needs (`fetchDocLineSplit`, `buildPart2` CYL qty) via `mcp__Supabase__execute_sql` and ran the canonical script's logic standalone against that data (parsing, splitting, markdown template, and fixture output are line-for-line identical to the shared script — only the DB transport differs).
+
+**Config created:** `config/statement_v5.json` — `periodStart: 2026-01-01`, `combinedBf: R15,083.55` (DEBENQ.TXT line 191, last balance before the first 2026 row), `cylOpeningFinancial: -R9,683.00` (cumulative pre-2026 CYL debt_group invoice/CN net from DB), `cylOpeningQty` from cumulative pre-2026 CYL qty by SKU.
+
+**Outputs:**
+
+| Artifact | Path |
+| :--- | :--- |
+| v5 statement | `reports/CAP000_Statement_Account_v5.md` |
+| Workspace fixture | `src/features/debtor-position-workspace/data/fixtures/CAP000.v5.json` |
+
+**Gates:**
+
+| Check | Result |
+| :--- | :--- |
+| ERP variance (1A+1B vs TXT header) | **R0.00** — PASS |
+| Sub-ledger tie (1A+1B vs combined running) | **R0.00** — PASS |
+| Cylinder position (1B financial vs Part 2 custody) | **R8,245.50** — **OPEN exception**, tracked as **H-029** |
+
+**H-029 finding:** Part 1B (CYL deposit sub-ledger) closes at **-R9,683.00**, but Part 2 physical custody as of Sep 2026 (19.1: -8, 9.1: -1, S.1: +4) values at only **-R1,437.50**. The negative physical quantities on 19.1/9.1 are themselves atypical for a returnable-deposit tracker (implies more units credited back than ever issued in the DB's history). This is a genuine data question — not an artifact of the MCP-based DB access, since it uses the identical `debt_group`/`stock_no`/`qty` fields the canonical script would read from a live connection.
+
+H-028 is now **DONE**. Sibling **CAP002** (empties account) remains out of scope.
 
 ---
 
@@ -103,25 +128,26 @@ Reference playbook (not applicable here — retained for contrast): `analysis/de
 | Turn | Deliverable | Status |
 | :---: | :--- | :---: |
 | 001 | Scaffold + global anchor + H-011 | ✅ **PARTIAL** |
-| 002 | Ingest TXT + lane lock + baseline statement | ✅ **DONE (Part 1)** — see Turn 002 note above |
-| 003+ | DB-dependent v4/v5 sub-ledger split + Part 2 custody (H-028) | ⏸ **NEXT** (blocked on `DATABASE_URL`) |
+| 002 | Ingest TXT + lane lock + baseline statement + v5 sub-ledger split | ✅ **DONE** — see Turn 002 notes above |
+| 003+ | Resolve H-029 CYL custody variance | ⏸ **NEXT** |
 
 ---
 
 ## Blockers
 
-1. **H-028 OPEN** — no `DATABASE_URL` available; LPG/CYL sub-ledger split and Part 2 custody tracker cannot be built.
+1. **H-029 OPEN** — R8,245.50 variance between Part 1B financial CYL balance and Part 2 physical custody valuation; negative 19.1/9.1 custody quantities need investigation.
 2. **CAP002** — empties account not linked; confirm combined exposure policy with operator.
 3. Aged-debt bucket breakdown (`agedDebt180Plus` etc.) still sourced from the stale 2025-07-13 global anchor — a fresh global aged-debt TXT would refresh this (not required for the balance itself, which is now TXT-verified).
 
 ---
 
-## Next commands (Turn 003, after DATABASE_URL is available)
+## Next commands (Turn 003 — H-029 investigation)
 
 ```bash
-cp analysis/debtors/shared/templates/statement_v5_config.template.json analysis/debtors/CAP000/config/statement_v5.json
-# Edit: debtorCode CAP000, debtorName CAPITOL CATERERS SELECT (PTY), txtPath raw/DEBENQ.TXT,
-# periodStart 2022-07-23, combinedBf 0.00, paymentLane LPG, cylOpeningQty/skuRates per template.
-npm run debtors:ingest-check -- --debtor CAP000
+# Re-run with a live DATABASE_URL (or via Supabase MCP execute_sql as done 2026-09-17) to
+# inspect individual CYL debt_group/stock_no/qty rows behind the R8,245.50 variance, e.g.:
+#   SELECT tx_date, doc_no, entry_type, stock_no, qty, line_total
+#   FROM vw_clean_transactions WHERE account_no = 'CAP000' AND debt_group = 'CYL'
+#   ORDER BY tx_date;
 node analysis/debtors/shared/scripts/reconcile_debtor_v5_from_txt.mjs --debtor CAP000
 ```

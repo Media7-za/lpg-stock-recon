@@ -2,7 +2,7 @@
   "debtorCode": "CAP000",
   "clientName": "CAPITOL CATERERS SELECT (PTY)",
   "status": "active",
-  "reconState": "part1_complete_pending_db_split",
+  "reconState": "v5_complete_custody_variance_open",
   "financials": {
     "totalOutstanding": 70773.28,
     "lastInvoiceDate": "2026-09-17",
@@ -19,7 +19,7 @@
     "deadlineDate": null,
     "nextAction": null,
     "nextActionDate": null,
-    "notes": "Turn 002 complete for Part 1. TXT-verified balance R70,773.28 (2026-09-17). No collection action pending — reconState still short of 'complete' until DB access allows the v4/v5 LPG/CYL split and Part 2 custody tracker."
+    "notes": "Turn 002 complete: Part 1 (combined) and v5 (LPG/CYL sub-ledger split + custody) both generated, ERP variance R0.00 and sub-ledger tie R0.00 on both. No collection action pending — an open CUSTODY exception (H-029, R8,245.50 variance between Part 1B financial and Part 2 physical custody) should be investigated before any deposit-related customer communication."
   },
   "history": [
     {
@@ -33,6 +33,10 @@
     {
       "date": "2026-09-17",
       "event": "Turn 002: H-011 resolved. Operator supplied 4 chronological ERP account-enquiry TXT exports (DEBENQ23/24/25/CURRENT.TXT) covering the full account history 23 Jul 2022 → 17 Sep 2026, B/F-chained with zero variance at each boundary (R0.00 → 48,267.34 → 60,437.64 → 43,865.94 → 70,773.28). No DATABASE_URL available this session, so built Part 1 (combined financial ledger, TXT-only per Tier-3 doctrine) standalone rather than via reconcile_debtor_v4/v5_from_txt.mjs (both require DB for Part 2/sub-ledger split). Reconciliation gate: ERP variance R0.00. Output: reports/CAP000_Statement_Account.md. Lane-lock: payment-to-invoice matching (INVNO populated, allocation detail present, not H-016-flagged) shows no consistent settlement-discount ratio — re-locked settlement_discount (ASSUMED) → position_recon. H-028 opened for DB-dependent v4/v5 sub-ledger + custody work."
+    },
+    {
+      "date": "2026-09-17",
+      "event": "H-028 DONE: no local DATABASE_URL, but the Supabase MCP server exposed the same lpg-stock-recon project (oqhpxnaadahohwkslive) — pulled the v5 generator's two DB queries (fetchDocLineSplit, buildPart2 CYL qty) via MCP execute_sql and ran the canonical reconcile_debtor_v5_from_txt.mjs logic standalone against them. config/statement_v5.json created (periodStart 2026-01-01, combinedBf R15,083.55 from DEBENQ.TXT line 191, cylOpeningFinancial -R9,683.00 = cumulative pre-2026 CYL debt_group invoice/CN net from DB, cylOpeningQty from cumulative pre-2026 CYL qty). Generated reports/CAP000_Statement_Account_v5.md and src/features/debtor-position-workspace/data/fixtures/CAP000.v5.json: ERP variance R0.00, sub-ledger tie variance R0.00. Opened H-029: Part 1B financial CYL close (-R9,683.00) vs Part 2 physical custody valuation (-R1,437.50) differ by R8,245.50 — a genuine ASSERTED exception, not a script defect, since it uses the same DB debt_group/qty data the canonical script would use."
     }
   ]
 }
