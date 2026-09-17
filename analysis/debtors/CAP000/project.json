@@ -37,6 +37,10 @@
     {
       "date": "2026-09-17",
       "event": "H-028 DONE: no local DATABASE_URL, but the Supabase MCP server exposed the same lpg-stock-recon project (oqhpxnaadahohwkslive) — pulled the v5 generator's two DB queries (fetchDocLineSplit, buildPart2 CYL qty) via MCP execute_sql and ran the canonical reconcile_debtor_v5_from_txt.mjs logic standalone against them. config/statement_v5.json created (periodStart 2026-01-01, combinedBf R15,083.55 from DEBENQ.TXT line 191, cylOpeningFinancial -R9,683.00 = cumulative pre-2026 CYL debt_group invoice/CN net from DB, cylOpeningQty from cumulative pre-2026 CYL qty). Generated reports/CAP000_Statement_Account_v5.md and src/features/debtor-position-workspace/data/fixtures/CAP000.v5.json: ERP variance R0.00, sub-ledger tie variance R0.00. Opened H-029: Part 1B financial CYL close (-R9,683.00) vs Part 2 physical custody valuation (-R1,437.50) differ by R8,245.50 — a genuine ASSERTED exception, not a script defect, since it uses the same DB debt_group/qty data the canonical script would use."
+    },
+    {
+      "date": "2026-09-17",
+      "event": "Payment-gap screening (analysis/debtors/shared/scripts/debenq_open_invoices.mjs): 19 of 51 months have zero payment rows — routine for this account's periodic STAT-batch payment style, not itself a signal. The open-invoice invariant is BREACHED by R29,936.98 (gate BLOCKED, OPEN_LIST_OVERSTATES_ACCOUNT). R26,854.98 of that is a clean match: two untagged payments (17886 -R15,383.27 30/01/2023; 18484 -R11,471.71 28/02/2023, both TRANSF|STAT:89, no INVNO) net to the exact rand of 7 STALE_OPEN invoices from Nov 2022-Jan 2023 — very likely already paid, just untagged. Remaining R3,082.00 is scattered small partial-payment residue, not a gap. No evidence of a genuinely missing payment. Opened H-030 (ERP Agent: tag INVNO on 17886/18484). Report: reports/CAP000_Payment_Gap_Report_2026-09-17.md."
     }
   ]
 }
