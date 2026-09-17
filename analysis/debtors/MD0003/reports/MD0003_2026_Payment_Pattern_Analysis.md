@@ -63,6 +63,8 @@ Cylinder container transactions were strictly ledger-only loop of returns and we
 | **Doc 44561** | 44561 | 2026-06-01 | −R13,014.20 | 2026-04 | ✅ Present. |
 | **Doc 44972** | 44972 | 2026-07-01 | −R17,311.60 | 2026-05 | ✅ Present. |
 
+> **⚠ FLAGGED 2026-09-17 — §4.1/§4.2 below do not match the verified ledger.** A full fiscal-year-by-fiscal-year reconstruction of `DEBENQ_2017.TXT`–`DEBENQ_CURRENT.TXT` (see `MD0003_Lifetime_Balance_Investigation_2026-09-17.md`) shows the actual ERP balance at 31/12/2025 was **R5,735.63** (a small debtor balance), not the **R-48,722.41 credit balance** claimed below, and the account's balance is positive at every fiscal year-end since FY2017 — a R1.5M+ pre-2026 LPG component never appears in the raw export. Treat §4.1–4.2 as unreliable pending a from-scratch regeneration; do not cite the figures below.
+
 ### 4.1 Ledger-Wide Historical Balance Reconciliation (View A/B)
 
 This section reconciles the lifetime-to-date ledger balances starting from the opening balance as of 2026-01-01 through to the closing balance as of 2026-12-31, incorporating historical carry-forwards, cylinder flows, and journal adjustments:

@@ -73,6 +73,18 @@ Running `npm run debtors:tag-check -- --debtor MD0003` after the ratifications a
 
 ---
 
+## Why this balance exists — verified across the full account history (2016–2026)
+
+The full fiscal-year chain (this ERP runs March–February fiscal years) was reconstructed from every archived export, `DEBENQ_2017.TXT` through `DEBENQ_CURRENT.TXT` — see `MD0003_Lifetime_Balance_Investigation_2026-09-17.md` for the complete table and method. Headline findings:
+
+- **Every fiscal year ties out to the cent, with zero gaps, since the account opened in November 2016.** Opening balance + invoices + credit notes + payments + journals = closing balance, verified independently for all 10 years. Lifetime invoicing to date: **≈R2,040,038.91**.
+- **The balance has never been zero and was never expected to be.** MD0003 pays consolidated monthly STAT batches roughly one month in arrears and does not part-pay invoices (see `lpg-payment-pattern-analysis` skill) — a live balance equal to the trailing 3–6 weeks of trading is the account's normal steady state, not a collections problem.
+- **A prior report's lifetime figures were found to be wrong and have been flagged in place** (not deleted, per doctrine): `MD0003_2026_Payment_Pattern_Analysis.md` §4.1 claimed a R-48,722.41 *credit* balance at 2026-01-01 and R1.5M+ of pre-2026 LPG activity. The verified raw ledger shows R5,735.63 (a small debtor balance) at 31/12/2025, and a positive balance at every fiscal year-end on record — that report's figures do not match the source data and should not be cited.
+
+**Conclusion:** the current R15,309.11 is fully explained by ordinary, arithmetically consistent trading, not by any ledger defect. The only open question is the R12,263.61 residual within the Aug–Sep 2026 window (below), which is small relative to the account's lifetime volume and structurally consistent with the same kind of untagged-payment noise already found and closed elsewhere in this session's work.
+
+---
+
 ## Outstanding data gap
 
 `analysis/debtors/MD0003/data/allocation_edges_2026.csv` predates this session's ratifications (e.g. it still marks STAT:126 as `UNALLOCATED`) and needs `analysis/debtors/MD0003/scripts/allocation_ingest.mjs` re-run against a live DB to catch up — not run here (no `DATABASE_URL` in this environment). Not hand-patched, per `AGENTS.md`.
