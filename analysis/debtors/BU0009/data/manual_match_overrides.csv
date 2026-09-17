@@ -1,0 +1,3 @@
+doc_no,payment_doc,decision,settlement_unit,evidence_tier,evidence_status,notes,confirmed_by,confirmed_date
+INV-1004,PMT-2003,CONFIRMED,,,,Reviewed bank statement directly - PMT-2003 was a delayed part-payment for INV-1004 despite the date gap; ERP narrative field confirms reference,test-reviewer,2026-09-17
+INV-1003,PMT-2002,REJECTED,,,,Reviewer confirmed PMT-2002 is unrelated cash received for a phone order not yet invoiced - do not auto-match to INV-1003 despite exact amount coincidence,test-reviewer,2026-09-17

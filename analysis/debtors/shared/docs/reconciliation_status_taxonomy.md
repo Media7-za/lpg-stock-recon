@@ -9,6 +9,68 @@ be found. This doc records what was actually checked, what was decided, and
 where the taxonomy's definitions now live, so a future session doesn't
 re-run the same search.
 
+## UPDATE 2026-09-17 — STEP 3 extended: more match patterns, ambiguity flagging, human-in-the-loop overrides
+
+Reconciling the script against real JIM001 data surfaced a live instance of
+exactly the "too many false positives" risk this whole doc exists to guard
+against, distinct from the doc-39812 unallocated-row bug: **five invoices
+with the identical amount R700.01** (docs 00004562, 00004566, 00004568,
+00004578, 00004617, all dated 2019-01-02 to 2019-01-10) each exact-sum-match
+either of only **two** available payments (00004807, 00004841). The old
+Pass 1 loop took the first payment it found for each doc in date order and
+marked it used — silently "settling" docs 00004562 and 00004566 (an
+arbitrary pick, not evidence) while reporting 00004568/78/617 as genuine
+gaps, when in fact any 2 of the 5 could be the ones actually paid. Confirmed
+directly against the previously-committed `JIM001/reports/
+reconciliation_status.csv`, which had exactly this pattern baked in.
+
+Three changes, all in `candidatePairSearch()`:
+
+1. **Ambiguity detection (D-NEW.4 "loud failure on ambiguity").** Pass 1 now
+   collects *every* payment that exact-sum-matches a doc before deciding.
+   More than one match → the doc is marked `AMBIGUOUS` (evidence_tier 5,
+   `UNCHARACTERIZED`, all candidate payments listed in `matched_against`)
+   instead of silently resolving to whichever iterated first. None of the
+   candidate payments are marked "used," so they stay available for other
+   docs / for a human to assign correctly. This is the JIM001 case above,
+   caught automatically once re-run.
+2. **Many-payments-to-one-doc (new Pass 1b), the reverse of the existing
+   one-payment-to-many-docs contiguous-run pass.** A bounded subset-sum
+   search (`findExactSumCombo`, max 4 payments, max 25-payment pool to keep
+   it cheap) catches an invoice settled by two or more partial/split
+   payments where no single payment matches it exactly. Tagged
+   `EXACT_SUM_MULTI_PAYMENT`, tier 3 like the existing run-match (exact-sum
+   still proves the total ties out), with an explicit note that no
+   alternative grouping was checked.
+3. **Human-in-the-loop overrides — `data/manual_match_overrides.csv`
+   (optional per account).** This is the "train the matching algorithm"
+   mechanism: a human reviewing an `AMBIGUOUS` row (or any candidate/gap
+   they disagree with) records a `CONFIRMED` or `REJECTED` decision with a
+   required rationale, and it persists across every future re-run —
+   `CONFIRMED` settles the doc directly (tier 2, `HUMAN_CONFIRMED_MATCH`,
+   `ASSERTED` by default — still not `PROVEN` without an actual remittance
+   document, per this script's own tier ladder) without going through
+   STEP 3's automated search at all; `REJECTED` permanently excludes that
+   specific doc/payment pair from every STEP 3 pass (including the
+   combinatorial ones), so a human correcting one wrong guess doesn't have
+   to keep correcting the same wrong guess on every future run. Required
+   columns: `doc_no,payment_doc,decision,settlement_unit,evidence_tier,
+   evidence_status,notes,confirmed_by,confirmed_date` — `notes` is
+   mandatory (the audit trail), and an unrecognized `decision` value or a
+   missing `notes` throws rather than being silently ignored.
+
+New `settlement_unit` enum value: `HUMAN_CONFIRMED_MATCH` (tier 2) — for
+`CONFIRMED` overrides only; not part of the original PDP-46 ticket
+enum, added here since it's a distinct evidentiary basis (a human's
+reviewed judgment, not a remittance document or exact-sum arithmetic) that
+the ticket's taxonomy didn't anticipate.
+
+Verified against `BU0009`'s synthetic fixtures with both a `CONFIRMED`
+override (settled a genuine gap directly, freed up its payment from the
+orphaned-cash sweep) and a `REJECTED` override (correctly excluded a
+previously-auto-matched pair, reverting the doc to a genuine gap) — see
+`analysis/debtors/BU0009/data/manual_match_overrides.csv`.
+
 ## UPDATE 2026-09-16 — the source document surfaced
 
 The doc has been found: the user supplied a Google Docs link,
@@ -90,6 +152,11 @@ mappings):
 · `PER_CALENDAR_MONTH_EXACT_SUM` · `POOLED_MULTI_MONTH_WINDOW` ·
 `REMITTANCE_BATCH` · `PROXIMITY_ONLY` · `UNCHARACTERIZED`
 
+Plus `HUMAN_CONFIRMED_MATCH` (tier 2), added 2026-09-17 for `manual_match_
+overrides.csv` `CONFIRMED` rows — see the UPDATE 2026-09-17 section above.
+Not part of the original ticket enum; a human's reviewed judgment is a
+distinct evidentiary basis the ticket's taxonomy didn't anticipate.
+
 ### `evidence_tier` (1 → 5)
 
 Now sourced directly from D-NEW.5 of `DOCTRINE_Layered_Reconciliation_
@@ -101,11 +168,12 @@ ticket text alone gave:
 | :--- | :--- | :--- |
 | 1–2 | `PER_INVOICE_REF_LINKED` | TWK002's `REMITTANCE_EXPLICIT`/`REMITTANCE_CN_OFFSET` rows (this script always assigns the stronger 1, since these are `confidence=Confirmed` ERP-direct links) |
 | 1 | `REMITTANCE_BATCH` | *(not yet used by any registered profile — reserved for an advice that names a batch rather than a specific invoice)* |
-| 3 | `PER_CALENDAR_MONTH_EXACT_SUM` | This script's STEP 3 exact-sum single/contiguous-run candidates within one month — "the exact-sum test proves the month ties out," per D-NEW.5, not a weaker tier-4 guess |
+| 2 | `HUMAN_CONFIRMED_MATCH` | `manual_match_overrides.csv` `CONFIRMED` rows (added 2026-09-17) — a human's reviewed judgment outranks any script-generated STEP 3 guess but still isn't an actual remittance document, so it can't claim tier 1/`PROVEN` |
+| 3 | `PER_CALENDAR_MONTH_EXACT_SUM` | This script's STEP 3 exact-sum single/contiguous-run/multi-payment candidates within one month — "the exact-sum test proves the month ties out," per D-NEW.5, not a weaker tier-4 guess |
 | 3 (ASSERTED) | `PER_INVOICE_FIFO_BATCH` / `PER_INVOICE_LIFO_BATCH` | JEN001's `LIFO_FULL`/`LIFO_PARTIAL`; JIM001's `SPLIT_PAYMENT_PORTION` — matches `JIM001_Exact_Sum_Bridge_Review` §8's "ceilinged at Tier 3" finding |
 | 3 (weak) | `POOLED_MULTI_MONTH_WINDOW` | This script's STEP 3 exact-sum contiguous-run candidates spanning more than one calendar month |
 | 4 | `PROXIMITY_ONLY` | This script's STEP 3 non-exact proximity-band fallback — the weakest inferential basis per D-NEW.5 |
-| 5 | `UNCHARACTERIZED` | `UNALLOCATED_REMAINDER` (JEN001), `UNALLOCATED_PORTION` (JIM001), STEP 6 orphaned cash with no candidate, and STEP-2 D-NEW.7 not-attempted-by-design docs |
+| 5 | `UNCHARACTERIZED` | `UNALLOCATED_REMAINDER` (JEN001), `UNALLOCATED_PORTION` (JIM001), STEP 6 orphaned cash with no candidate, STEP-2 D-NEW.7 not-attempted-by-design docs, and (added 2026-09-17) STEP 3 `AMBIGUOUS` rows — multiple exact-sum candidates tied, deliberately left unresolved rather than guessed |
 
 ### `evidence_status`
 

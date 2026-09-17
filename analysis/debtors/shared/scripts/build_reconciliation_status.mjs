@@ -10,7 +10,13 @@
  *   1. Deduped doc universe (SELECT DISTINCT-equivalent wrapper — PDP-31)
  *   2. Diff against allocation_edges.csv, auto-detecting the account's
  *      settlement mechanism (see PROFILES below)
- *   3. Candidate-pair search for gap docs (exact-sum, contiguous-run, proximity)
+ *   2.5 Apply human-in-the-loop CONFIRMED/REJECTED overrides from
+ *      data/manual_match_overrides.csv (optional; see loadManualOverrides)
+ *   3. Candidate-pair search for gap docs: exact-sum single, many-payments-
+ *      to-one-doc (bounded subset-sum), one-payment-to-many-docs contiguous
+ *      run, proximity fallback — with tied/ambiguous exact-sum matches
+ *      flagged rather than silently resolved (D-NEW.4 loud-failure-on-
+ *      ambiguity)
  *   4. Basket-check (line-item/SKU-set and debt_group-lane consistency)
  *   5. Multi-site/cross-account sweep before flagging a genuine error
  *   6. Orphaned-cash sweep
@@ -179,6 +185,7 @@ function debtorPaths(code) {
     invoicesCsv: path.join(dir, 'data/invoices.csv'),
     paymentsCsv: path.join(dir, 'data/payments.csv'),
     edgesCsv: path.join(dir, 'data/allocation_edges.csv'),
+    overridesCsv: path.join(dir, 'data/manual_match_overrides.csv'),
     dashboardJson: path.join(dir, 'data/dashboard_metrics.json'),
     knowledgeBundleJson: path.join(dir, 'data/knowledge-bundle.json'),
     reportsDir: path.join(dir, 'reports'),
@@ -412,23 +419,133 @@ function computeAllocations(edges, profile) {
 }
 
 // ---------------------------------------------------------------------------
+// STEP 2.5 — human-in-the-loop match overrides (manual_match_overrides.csv)
+// ---------------------------------------------------------------------------
+/**
+ * Optional per-account file letting a human record CONFIRMED or REJECTED
+ * doc/payment pairings, so a review decision persists across re-runs instead
+ * of being silently re-guessed (or re-flagged) every time the script runs.
+ * This is the "train the matching algorithm" mechanism: CONFIRMED rows
+ * settle a doc directly without going through STEP 3's automated search;
+ * REJECTED rows permanently exclude a specific doc/payment pair from ever
+ * being offered as a STEP 3 candidate again (including combinatorial
+ * passes), so a human correcting one wrong guess doesn't have to keep
+ * correcting the same wrong guess on every future run.
+ *
+ * Columns: doc_no,payment_doc,decision,settlement_unit,evidence_tier,
+ *          evidence_status,notes,confirmed_by,confirmed_date
+ *   - decision: CONFIRMED | REJECTED (required)
+ *   - notes: required always — this is the audit trail, not optional color
+ *   - settlement_unit/evidence_tier/evidence_status: only used for
+ *     CONFIRMED rows; default to HUMAN_CONFIRMED_MATCH / 2 / ASSERTED (a
+ *     human review without an actual remittance document still can't claim
+ *     PROVEN per this script's tier ladder — see header comment — but it
+ *     outranks every script-generated STEP 3 guess).
+ */
+function loadManualOverrides(code, paths) {
+  const csv = readCsv(paths.overridesCsv);
+  const confirmed = new Map(); // normDoc(doc_no) -> override row
+  const rejected = new Set(); // `${normDoc(doc_no)}|${normDoc(payment_doc)}`
+  if (!csv) return { confirmed, rejected };
+
+  for (const row of csv.rows) {
+    if (!row.doc_no || !row.payment_doc || !row.decision) {
+      throw new ReconError(
+        `manual_match_overrides.csv FAILED for ${code}: row missing doc_no/payment_doc/decision ` +
+          `(doc_no=${row.doc_no || '(blank)'}, payment_doc=${row.payment_doc || '(blank)'}, decision=${row.decision || '(blank)'}).`,
+      );
+    }
+    if (!row.notes || row.notes.trim() === '') {
+      throw new ReconError(
+        `manual_match_overrides.csv FAILED for ${code}: row for doc_no=${row.doc_no}/payment_doc=${row.payment_doc} ` +
+          `has no notes — every override needs a stated rationale (audit trail), not just a decision.`,
+      );
+    }
+    const docKey = normDoc(row.doc_no);
+    const payKey = normDoc(row.payment_doc);
+    if (row.decision === 'CONFIRMED') {
+      confirmed.set(docKey, row);
+    } else if (row.decision === 'REJECTED') {
+      rejected.add(`${docKey}|${payKey}`);
+    } else {
+      throw new ReconError(
+        `manual_match_overrides.csv FAILED for ${code}: unknown decision "${row.decision}" for ` +
+          `doc_no=${row.doc_no}/payment_doc=${row.payment_doc} — must be CONFIRMED or REJECTED.`,
+      );
+    }
+  }
+  return { confirmed, rejected };
+}
+
+// ---------------------------------------------------------------------------
 // STEP 3 — candidate-pair search for gap docs
 // ---------------------------------------------------------------------------
-function candidatePairSearch(gapDocs, unconsumedPayments, tolerance) {
+/** Bounded subset-sum search: find a combination of up to maxSize items from
+ * `pool` whose residuals sum exactly (within tolerance) to `target`. Sorted
+ * ascending with running-sum pruning so it stays cheap for realistic
+ * per-account payment counts. Returns the first combo found, or null. */
+function findExactSumCombo(pool, target, tolerance, maxSize) {
+  const sorted = [...pool].sort((a, b) => a.residual - b.residual);
+  let found = null;
+  function search(startIdx, remaining, chosen) {
+    if (found) return;
+    if (Math.abs(remaining) <= tolerance && chosen.length > 1) {
+      found = [...chosen];
+      return;
+    }
+    if (chosen.length >= maxSize) return;
+    for (let i = startIdx; i < sorted.length; i++) {
+      if (sorted[i].residual - tolerance > remaining) break; // sorted ascending — no smaller items left that fit
+      chosen.push(sorted[i]);
+      search(i + 1, round2(remaining - sorted[i].residual), chosen);
+      chosen.pop();
+      if (found) return;
+    }
+  }
+  search(0, target, []);
+  return found;
+}
+
+function candidatePairSearch(gapDocs, unconsumedPayments, tolerance, rejectedPairs = new Set()) {
+  const isRejected = (doc, pay) => rejectedPairs.has(`${normDoc(doc.doc_no)}|${normDoc(pay.payment_doc)}`);
   const sortedDocs = [...gapDocs].sort((a, b) => a.tx_date.localeCompare(b.tx_date));
   const usedPayments = new Set();
-  const results = new Map(); // doc_no -> { type, payment, diff?, runDocs? }
+  const results = new Map(); // doc_no -> { type, payment|payments, diff?, runDocs? }
 
-  // Pass 1: exact single-doc-to-single-payment match.
+  // Pass 1: exact single-doc-to-single-payment match. Collects ALL matching
+  // payments before deciding — if more than one payment exact-sums to the
+  // same doc, that is a genuine ambiguity (D-NEW.4 "loud failure on
+  // ambiguity"), not something to silently resolve by picking whichever
+  // payment happened to iterate first. Ambiguous docs leave their candidate
+  // payments unconsumed so other docs can still match them.
   for (const doc of sortedDocs) {
-    for (const pay of unconsumedPayments) {
-      if (usedPayments.has(pay.payment_doc)) continue;
-      const diff = Math.abs(pay.residual - doc.openAmount);
-      if (diff <= tolerance) {
-        results.set(doc.doc_no, { type: 'EXACT_SUM_SINGLE', payment: pay, diff, runDocs: [doc] });
-        usedPayments.add(pay.payment_doc);
-        break;
-      }
+    const matches = unconsumedPayments.filter(
+      (pay) => !usedPayments.has(pay.payment_doc) && !isRejected(doc, pay) && Math.abs(pay.residual - doc.openAmount) <= tolerance,
+    );
+    if (matches.length === 1) {
+      results.set(doc.doc_no, { type: 'EXACT_SUM_SINGLE', payment: matches[0], diff: Math.abs(matches[0].residual - doc.openAmount), runDocs: [doc] });
+      usedPayments.add(matches[0].payment_doc);
+    } else if (matches.length > 1) {
+      results.set(doc.doc_no, { type: 'AMBIGUOUS', payments: matches, runDocs: [doc] });
+    }
+  }
+
+  // Pass 1b: many-payments-to-one-doc (the reverse of Pass 2's one-payment-
+  // to-many-docs) — catches an invoice settled via two or more partial/split
+  // payments where no single payment matches it exactly. Bounded to a small
+  // combo size and payment-pool size to keep the subset-sum search cheap;
+  // stays tier 3 (exact-sum) like Pass 2's run match, but flagged in notes
+  // as needing verification that no alternative combination also ties out.
+  const MAX_COMBO_SIZE = 4;
+  const MAX_COMBO_POOL = 25;
+  let stillGapAfter1 = sortedDocs.filter((d) => !results.has(d.doc_no));
+  for (const doc of stillGapAfter1) {
+    const avail = unconsumedPayments.filter((pay) => !usedPayments.has(pay.payment_doc) && !isRejected(doc, pay));
+    if (avail.length < 2 || avail.length > MAX_COMBO_POOL) continue;
+    const combo = findExactSumCombo(avail, doc.openAmount, tolerance, MAX_COMBO_SIZE);
+    if (combo) {
+      results.set(doc.doc_no, { type: 'EXACT_SUM_MULTI_PAYMENT', payments: combo, runDocs: [doc] });
+      combo.forEach((p) => usedPayments.add(p.payment_doc));
     }
   }
 
@@ -440,8 +557,10 @@ function candidatePairSearch(gapDocs, unconsumedPayments, tolerance) {
     if (usedPayments.has(pay.payment_doc)) continue;
     let matched = false;
     for (let start = 0; start < stillGap.length && !matched; start++) {
+      if (isRejected(stillGap[start], pay)) continue;
       let sum = 0;
       for (let end = start; end < stillGap.length && end < start + 12; end++) {
+        if (isRejected(stillGap[end], pay)) break; // a rejected doc breaks the contiguous run at that point
         sum = round2(sum + stillGap[end].openAmount);
         if (Math.abs(sum - pay.residual) <= tolerance && end > start) {
           const run = stillGap.slice(start, end + 1);
@@ -462,7 +581,7 @@ function candidatePairSearch(gapDocs, unconsumedPayments, tolerance) {
   for (const doc of stillGap) {
     let best = null;
     for (const pay of unconsumedPayments) {
-      if (usedPayments.has(pay.payment_doc)) continue;
+      if (usedPayments.has(pay.payment_doc) || isRejected(doc, pay)) continue;
       const diff = Math.abs(pay.residual - doc.openAmount);
       if (diff <= PROXIMITY_BAND && (!best || diff < best.diff)) best = { type: 'PROXIMITY', payment: pay, diff, runDocs: [doc] };
     }
@@ -617,6 +736,24 @@ function buildReconciliationStatus(code, { tolerance = DEFAULT_TOLERANCE, skipGa
     d.settledAmount = settledByDoc.get(normDoc(d.doc_no))?.amount || 0;
     d.openAmount = round2(d.lpgAmount - d.settledAmount);
   }
+
+  // --- Step 2.5 — apply human-in-the-loop CONFIRMED overrides before anything
+  // downstream treats a doc as a gap. Also credits the referenced payment so
+  // it isn't double-reported as orphaned cash. REJECTED pairs are threaded
+  // into STEP 3 below rather than applied here.
+  const overrides = loadManualOverrides(code, paths);
+  for (const d of invoiceDocs) {
+    const ov = overrides.confirmed.get(normDoc(d.doc_no));
+    if (!ov || d.openAmount <= tolerance) continue;
+    const amountSettled = d.openAmount;
+    d.humanOverride = ov;
+    d.settledAmount = round2(d.settledAmount + amountSettled);
+    d.openAmount = 0;
+    const payKey = normDoc(ov.payment_doc);
+    if (!consumptionByPayment.has(payKey)) consumptionByPayment.set(payKey, { settled: 0, unallocated: 0, rows: [] });
+    consumptionByPayment.get(payKey).settled = round2(consumptionByPayment.get(payKey).settled + amountSettled);
+  }
+
   const gapDocs = invoiceDocs.filter((d) => Math.abs(d.openAmount) > tolerance);
 
   // Unconsumed payments = payments with residual cash beyond their edges-recorded settlement.
@@ -630,13 +767,33 @@ function buildReconciliationStatus(code, { tolerance = DEFAULT_TOLERANCE, skipGa
     .filter((p) => p.residual > tolerance);
 
   // --- Step 3 ---
-  const candidates = candidatePairSearch(gapDocs, unconsumedPayments, tolerance);
+  const candidates = candidatePairSearch(gapDocs, unconsumedPayments, tolerance, overrides.rejected);
 
   // --- Step 4 + 5 applied per gap doc ---
   const crossAccountIndex = buildCrossAccountIndex(code);
   const rows = [];
   for (const d of invoiceDocs) {
     if (Math.abs(d.openAmount) <= tolerance) {
+      if (d.humanOverride) {
+        const ov = d.humanOverride;
+        rows.push({
+          doc_no: d.doc_no,
+          doc_type: 'INVOICE',
+          tx_date: d.tx_date,
+          month_year: d.month_year,
+          gross_amount: d.lpgAmount,
+          settled_amount: d.settledAmount,
+          open_amount: d.openAmount,
+          settlement_unit: ov.settlement_unit || 'HUMAN_CONFIRMED_MATCH',
+          evidence_tier: ov.evidence_tier ? Number(ov.evidence_tier) : 2,
+          evidence_status: ov.evidence_status || 'ASSERTED',
+          matched_against: ov.payment_doc,
+          notes:
+            `Human-confirmed match (manual_match_overrides.csv): ${ov.notes}` +
+            (ov.confirmed_by ? ` — confirmed by ${ov.confirmed_by}${ov.confirmed_date ? ` on ${ov.confirmed_date}` : ''}.` : '.'),
+        });
+        continue;
+      }
       const evidence = settledByDoc.get(normDoc(d.doc_no))?.evidence || [];
       const best = evidence.reduce(
         (acc, e) => (acc === null || e.evidence_tier < acc.evidence_tier ? e : acc),
@@ -660,9 +817,30 @@ function buildReconciliationStatus(code, { tolerance = DEFAULT_TOLERANCE, skipGa
     }
 
     const candidate = candidates.get(d.doc_no);
+    if (candidate && candidate.type === 'AMBIGUOUS') {
+      rows.push({
+        doc_no: d.doc_no,
+        doc_type: 'INVOICE',
+        tx_date: d.tx_date,
+        month_year: d.month_year,
+        gross_amount: d.lpgAmount,
+        settled_amount: d.settledAmount,
+        open_amount: d.openAmount,
+        settlement_unit: 'UNCHARACTERIZED',
+        evidence_tier: 5,
+        evidence_status: 'UNASSESSED',
+        matched_against: candidate.payments.map((p) => p.payment_doc).join(';'),
+        notes:
+          `AMBIGUOUS (D-NEW.4 loud-failure-on-ambiguity): ${candidate.payments.length} payments each exact-sum-match ` +
+          `this doc's open amount (${candidate.payments.map((p) => p.payment_doc).join(', ')}). Script refuses to ` +
+          `silently pick one. Resolve by adding a CONFIRMED/REJECTED row to manual_match_overrides.csv.`,
+      });
+      continue;
+    }
     if (candidate) {
       const basket = basketCheck(candidate);
       const isExact = candidate.type !== 'PROXIMITY';
+      const isMultiPayment = candidate.type === 'EXACT_SUM_MULTI_PAYMENT';
       const isPooled =
         candidate.type === 'EXACT_SUM_RUN' && new Set(candidate.runDocs.map((x) => x.month_year)).size > 1;
       // Tier per D-NEW.5 (Portfolio Review doctrine, see reconciliation_status_taxonomy.md):
@@ -674,6 +852,8 @@ function buildReconciliationStatus(code, { tolerance = DEFAULT_TOLERANCE, skipGa
           ? 'POOLED_MULTI_MONTH_WINDOW'
           : 'PER_CALENDAR_MONTH_EXACT_SUM';
       const evidence_tier = !isExact ? 4 : 3;
+      const matchedAgainst = isMultiPayment ? candidate.payments.map((p) => p.payment_doc).join(';') : candidate.payment.payment_doc;
+      const matchedLabel = isMultiPayment ? `payments ${matchedAgainst}` : `payment ${matchedAgainst}`;
       rows.push({
         doc_no: d.doc_no,
         doc_type: 'INVOICE',
@@ -685,8 +865,11 @@ function buildReconciliationStatus(code, { tolerance = DEFAULT_TOLERANCE, skipGa
         settlement_unit,
         evidence_tier,
         evidence_status: isExact && basket.passed ? 'ASSERTED' : 'UNASSESSED',
-        matched_against: candidate.payment.payment_doc,
-        notes: `STEP 3 candidate (${candidate.type}) vs payment ${candidate.payment.payment_doc}; basket-check: ${basket.reason}. Script-generated — not ERP/human-confirmed. Per D-NEW.5, ${settlement_unit === 'PER_CALENDAR_MONTH_EXACT_SUM' ? 'month-level tie-out only — never treat as per-invoice-confident' : settlement_unit === 'POOLED_MULTI_MONTH_WINDOW' ? 'window-level only, weak' : 'balance-only, no invoice-level claim'}.`,
+        matched_against: matchedAgainst,
+        notes:
+          `STEP 3 candidate (${candidate.type}) vs ${matchedLabel}; basket-check: ${basket.reason}. Script-generated — ` +
+          `not ERP/human-confirmed. Per D-NEW.5, ${settlement_unit === 'PER_CALENDAR_MONTH_EXACT_SUM' ? 'month-level tie-out only — never treat as per-invoice-confident' : settlement_unit === 'POOLED_MULTI_MONTH_WINDOW' ? 'window-level only, weak' : 'balance-only, no invoice-level claim'}.` +
+          (isMultiPayment ? ' Multi-payment combination — verify no alternative grouping also sums exactly before treating as settled.' : ''),
       });
       continue;
     }
@@ -734,7 +917,16 @@ function buildReconciliationStatus(code, { tolerance = DEFAULT_TOLERANCE, skipGa
   }
 
   // --- Step 6 — orphaned-cash sweep ---
-  const consumedByCandidate = new Set([...candidates.values()].map((c) => c.payment.payment_doc));
+  // AMBIGUOUS candidates consume nothing (all their payments stay available
+  // for review/other matches); EXACT_SUM_MULTI_PAYMENT consumes every payment
+  // in its combo, not just one.
+  const consumedByCandidate = new Set(
+    [...candidates.values()].flatMap((c) => {
+      if (c.type === 'AMBIGUOUS') return [];
+      if (c.payments) return c.payments.map((p) => p.payment_doc);
+      return [c.payment.payment_doc];
+    }),
+  );
   for (const p of unconsumedPayments) {
     const crossHits = crossAccountLookup(crossAccountIndex, p.payment_doc);
     rows.push({
@@ -775,12 +967,14 @@ function buildReconciliationStatus(code, { tolerance = DEFAULT_TOLERANCE, skipGa
     summary: {
       invoiceDocs: invoiceDocs.length,
       settled: rows.filter((r) => r.doc_type === 'INVOICE' && Math.abs(r.open_amount) <= tolerance).length,
+      humanConfirmed: invoiceDocs.filter((d) => d.humanOverride).length,
       gaps: rows.filter(
-        (r) => r.doc_type === 'INVOICE' && r.evidence_tier === 5 && !r.notes.startsWith('NOT_ATTEMPTED_BY_DESIGN'),
+        (r) => r.doc_type === 'INVOICE' && r.evidence_tier === 5 && !r.notes.startsWith('NOT_ATTEMPTED_BY_DESIGN') && !r.notes.startsWith('AMBIGUOUS'),
       ).length,
+      ambiguous: [...candidates.values()].filter((c) => c.type === 'AMBIGUOUS').length,
       notAttemptedByDesign: rows.filter((r) => r.doc_type === 'INVOICE' && r.notes.startsWith('NOT_ATTEMPTED_BY_DESIGN'))
         .length,
-      candidates: candidates.size,
+      candidates: [...candidates.values()].filter((c) => c.type !== 'AMBIGUOUS').length,
       orphanedPayments: unconsumedPayments.length,
     },
     invariant,
@@ -832,8 +1026,9 @@ function main() {
       `Doc universe: ${result.dedup.totalLines} lines, ${result.dedup.dupLineCount} PDP-31 duplicates removed.`,
     );
     console.log(
-      `Invoices: ${result.summary.invoiceDocs} | settled: ${result.summary.settled} | ` +
-        `candidate matches: ${result.summary.candidates} | genuine gaps: ${result.summary.gaps} | ` +
+      `Invoices: ${result.summary.invoiceDocs} | settled: ${result.summary.settled} ` +
+        `(${result.summary.humanConfirmed} human-confirmed) | candidate matches: ${result.summary.candidates} | ` +
+        `ambiguous (needs review): ${result.summary.ambiguous} | genuine gaps: ${result.summary.gaps} | ` +
         `not-attempted-by-design (D-NEW.7): ${result.summary.notAttemptedByDesign} | ` +
         `orphaned payments: ${result.summary.orphanedPayments}`,
     );
