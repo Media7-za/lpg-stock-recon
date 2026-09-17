@@ -1,9 +1,31 @@
 # CAP000 — Onboarding Status
 
-**Updated:** 2026-08-05  
+**Updated:** 2026-09-17 (Turn 002)  
 **Account:** CAP000 — CAPITOL CATERERS SELECT (PTY)  
-**Lane (triage):** `settlement_discount` — **ASSUMED** (not TXT-locked)  
-**reconState:** **pending** (Turn 001 PARTIAL — awaiting debtor TXT)
+**Lane (locked):** `position_recon` — **LOCKED** (`settlement_discount` disconfirmed — see Turn 002 below)  
+**reconState:** **part1_complete_pending_db_split**
+
+---
+
+## Turn 002 (2026-09-17) — H-011 resolved, Part 1 statement generated
+
+Operator supplied 4 chronological ERP account-enquiry TXT exports (`DEBENQ23.TXT`, `DEBENQ24.TXT`, `DEBENQ25.TXT`, `DEBENQ.TXT`), covering the full account history **23 Jul 2022 → 17 Sep 2026**, B/F-chained with **zero variance** at every slice boundary:
+
+R0.00 → R48,267.34 → R60,437.64 → R43,865.94 → **R70,773.28 (current)**
+
+All four carry allocation detail (`INVNO` populated) — this account is **not** one of the `H-016` EXCLUDE-flagged accounts, so payment→invoice matching is trustworthy here.
+
+**No `DATABASE_URL` was available this session**, so `reconcile_debtor_v4/v5_from_txt.mjs` (both DB-dependent for Part 2/sub-ledger split) could not be run. Built **Part 1 only** (combined financial ledger) with a standalone TXT-only script, consistent with repo doctrine that ERP TXT is Tier-3 authority for the combined balance:
+
+- **Reconciliation gate:** ERP variance **R0.00** (computed final balance vs. `DEBENQ.TXT` CURRENT BALANCE) — PASS
+- 105 EMPTY-pair deposit invoice/CN pairs stripped for readability (v4 doctrine)
+- Output: `reports/CAP000_Statement_Account.md`
+
+**Lane-lock finding:** of 226 payment rows, 181 matched their invoice's INVNO for the exact invoice value and only 42 were short — and those short payments show no consistent discount ratio (samples ranged ~3%–75% of invoice value), inconsistent with a fixed early-settlement discount. This **disconfirms** the Turn 001 `settlement_discount` ASSUMPTION. Lane re-locked to **`position_recon`**.
+
+**Still open:** `DATABASE_URL` access for the LPG (1A) vs. CYL deposit (1B) financial split and the Part 2 physical cylinder custody tracker — tracked as **H-028**. Sibling **CAP002** (empties account) remains out of scope.
+
+---
 
 ---
 
@@ -42,13 +64,14 @@ Epistemic tag: **ASSERTED_STALE** (global row, ~13 months old) — not **PROVEN*
 
 | Input | Path | Status |
 | :--- | :--- | :---: |
-| ERP debtor account TXT | `raw/CAP000CURRENT.TXT` (expected) | ❌ **missing** — **H-011** |
-| Remittance PDFs | `raw/Remittances/` | ❌ not received |
-| Global aged debt | `Global Reports/130720251H45M.TXT` | ✅ |
-| Partial activity snippet | `shared/raw/april_dump.TXT` (7 CAP000 rows, Apr 2026) | ⚠️ advisory only |
+| ERP debtor account TXT (full history, 4 slices) | `raw/DEBENQ23/24/25/.TXT` | ✅ **received 2026-09-17** — H-011 DONE |
+| Remittance PDFs | `raw/Remittances/` | ⏸ not required (lane locked `position_recon`) |
+| Global aged debt | `Global Reports/130720251H45M.TXT` | ⚠️ superseded for balance; only source for aging buckets |
+| Partial activity snippet | `shared/raw/april_dump.TXT` (7 CAP000 rows, Apr 2026) | ⏸ superseded by full TXT |
 | Item-level STTRANS | `ERP RAW DATA/STTRANS.TXT` | ⚠️ not canonical for AR |
-| `project.json` | `project.json` | ✅ Turn 001 |
-| Settlement override registry | `config/settlement_discount_overrides.json` | ⏸ empty scaffold |
+| `project.json` | `project.json` | ✅ Turn 002 |
+| Settlement override registry | `config/settlement_discount_overrides.json` | ⏸ empty scaffold — not needed (lane not `settlement_discount`) |
+| Statement of Account (Part 1) | `reports/CAP000_Statement_Account.md` | ✅ **generated 2026-09-17**, ERP variance R0.00 |
 
 ### april_dump snippet (non-authoritative)
 
@@ -62,17 +85,16 @@ Last invoice date in snippet: **2026-04-30** — advisory only; **not** written 
 
 ---
 
-## Lane lock (pending TXT)
+## Lane lock (Turn 002 — LOCKED)
 
 | Signal | Evidence | Lock |
 | :--- | :--- | :---: |
-| Backlog triage | `portfolio_candidates.csv` → `settlement_discount` | ASSUMED |
-| Model B (2.5% / remittance batch) | — | ❌ not tested |
-| Payment STAT pattern | — | ❌ |
-| EMPTY / CYL pairing | april_dump `-EMPTY` headers | hint only |
-| Alternative lane | `position_recon` + v4/v5 statement | fallback if no discount pattern |
+| Backlog triage | `portfolio_candidates.csv` → `settlement_discount` | ASSUMED (Turn 001) |
+| Payment/invoice value matching | 181/226 payments = exact invoice value; 42 short with no consistent ratio (~3%–75%) | ❌ **disconfirms** `settlement_discount` |
+| EMPTY / CYL pairing | 105 exact invoice+CN reversal pairs confirmed in full TXT | consistent with normal deposit handling |
+| Locked lane | `position_recon` + Part 1 combined statement (Part 2 pending DB) | ✅ **LOCKED 2026-09-17** |
 
-Reference playbook if Model B confirmed: `analysis/debtors/TWK002/docs/TWK002_Settlement_Discount_Doctrine_v2.md`.
+Reference playbook (not applicable here — retained for contrast): `analysis/debtors/TWK002/docs/TWK002_Settlement_Discount_Doctrine_v2.md`.
 
 ---
 
@@ -81,26 +103,25 @@ Reference playbook if Model B confirmed: `analysis/debtors/TWK002/docs/TWK002_Se
 | Turn | Deliverable | Status |
 | :---: | :--- | :---: |
 | 001 | Scaffold + global anchor + H-011 | ✅ **PARTIAL** |
-| 002 | Ingest TXT + lane lock + baseline statement | ⏳ **NEXT** (blocked on H-011) |
-| 003+ | Settlement batches **or** position/custody per locked lane | ⏸ |
+| 002 | Ingest TXT + lane lock + baseline statement | ✅ **DONE (Part 1)** — see Turn 002 note above |
+| 003+ | DB-dependent v4/v5 sub-ledger split + Part 2 custody (H-028) | ⏸ **NEXT** (blocked on `DATABASE_URL`) |
 
 ---
 
 ## Blockers
 
-1. **H-011 OPEN** — no authoritative debtor account TXT in `raw/`.
-2. **No remittance PDFs** — required if lane locks to `settlement_discount`.
-3. **CAP002** — empties account not linked; confirm combined exposure policy with operator.
+1. **H-028 OPEN** — no `DATABASE_URL` available; LPG/CYL sub-ledger split and Part 2 custody tracker cannot be built.
+2. **CAP002** — empties account not linked; confirm combined exposure policy with operator.
+3. Aged-debt bucket breakdown (`agedDebt180Plus` etc.) still sourced from the stale 2025-07-13 global anchor — a fresh global aged-debt TXT would refresh this (not required for the balance itself, which is now TXT-verified).
 
 ---
 
-## Next commands (after H-011)
+## Next commands (Turn 003, after DATABASE_URL is available)
 
 ```bash
-npm run debtors:sync
-# When raw/CAP000CURRENT.TXT exists:
+cp analysis/debtors/shared/templates/statement_v5_config.template.json analysis/debtors/CAP000/config/statement_v5.json
+# Edit: debtorCode CAP000, debtorName CAPITOL CATERERS SELECT (PTY), txtPath raw/DEBENQ.TXT,
+# periodStart 2022-07-23, combinedBf 0.00, paymentLane LPG, cylOpeningQty/skuRates per template.
 npm run debtors:ingest-check -- --debtor CAP000
 node analysis/debtors/shared/scripts/reconcile_debtor_v5_from_txt.mjs --debtor CAP000
 ```
-
-Dispatch **Turn 002** worker brief from orchestrator after TXT lands.

@@ -2,15 +2,15 @@
   "debtorCode": "CAP000",
   "clientName": "CAPITOL CATERERS SELECT (PTY)",
   "status": "active",
-  "reconState": "pending",
+  "reconState": "part1_complete_pending_db_split",
   "financials": {
-    "totalOutstanding": 46228.47,
-    "lastInvoiceDate": null,
-    "lastPaymentDate": null,
+    "totalOutstanding": 70773.28,
+    "lastInvoiceDate": "2026-09-17",
+    "lastPaymentDate": "2026-03-31",
     "agedDebt180Plus": 20302.25,
     "globalAgedDebtSource": "analysis/debtors/Global Reports/130720251H45M.TXT",
     "globalAgedDebtAsAt": "2025-07-13",
-    "globalAgedDebtNote": "Corrected 2026-08-05 self-review from an initial 2026-07-13 transcription error (filename DDMMYYYYHMM = 13/07/2025). Anchor is ~13 months old as of 2026-08 — ASSERTED_STALE, not routine ASSERTED. agedDebt180Plus populated from global 120+ DAYS column until debtor TXT available. lastInvoiceDate nulled — the only prior source (april_dump.TXT, 2026-04-30) was explicitly advisory-only in CAP000_Onboarding_Status.md and should not sit in a schema field unqualified."
+    "globalAgedDebtNote": "STALE — superseded as the balance source by the TXT-verified totalOutstanding above (2026-09-17, ERP variance R0.00). agedDebt180Plus is still the only aging-bucket figure available (the DEBENQ*.TXT enquiries carry transactions, not an aged-debt breakdown) and remains sourced from the 2025-07-13 global anchor until a fresh aged-debt TXT is pulled — do not treat it as current."
   },
   "collections": {
     "actionRequired": false,
@@ -19,7 +19,7 @@
     "deadlineDate": null,
     "nextAction": null,
     "nextActionDate": null,
-    "notes": "Turn 001 onboarded. No collection until reconState complete and D17 satisfied. Global balance R46,228.47 operator-confirmed 2026-08-05, but anchor itself is ~13 months stale (2025-07-13) — debtor TXT pending (H-011)."
+    "notes": "Turn 002 complete for Part 1. TXT-verified balance R70,773.28 (2026-09-17). No collection action pending — reconState still short of 'complete' until DB access allows the v4/v5 LPG/CYL split and Part 2 custody tracker."
   },
   "history": [
     {
@@ -29,6 +29,10 @@
     {
       "date": "2026-08-05",
       "event": "Self-review correction: globalAgedDebtAsAt was mistranscribed as 2026-07-13 during Turn 001 execution (orchestrator-stage message correctly stated 2025-07-13). Corrected to 2025-07-13 — anchor is ~13 months stale, not ~3 weeks. Re-tagged ASSERTED_STALE. Removed duplicate lastInvoiceDate key and nulled it (prior value sourced an advisory-only snippet without a caveat)."
+    },
+    {
+      "date": "2026-09-17",
+      "event": "Turn 002: H-011 resolved. Operator supplied 4 chronological ERP account-enquiry TXT exports (DEBENQ23/24/25/CURRENT.TXT) covering the full account history 23 Jul 2022 → 17 Sep 2026, B/F-chained with zero variance at each boundary (R0.00 → 48,267.34 → 60,437.64 → 43,865.94 → 70,773.28). No DATABASE_URL available this session, so built Part 1 (combined financial ledger, TXT-only per Tier-3 doctrine) standalone rather than via reconcile_debtor_v4/v5_from_txt.mjs (both require DB for Part 2/sub-ledger split). Reconciliation gate: ERP variance R0.00. Output: reports/CAP000_Statement_Account.md. Lane-lock: payment-to-invoice matching (INVNO populated, allocation detail present, not H-016-flagged) shows no consistent settlement-discount ratio — re-locked settlement_discount (ASSUMED) → position_recon. H-028 opened for DB-dependent v4/v5 sub-ledger + custody work."
     }
   ]
 }
