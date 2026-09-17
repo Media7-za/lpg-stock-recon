@@ -13,5 +13,33 @@
   "siteTxts": {},
   "outputDir": "analysis/debtors/MD0003/reports",
   "outputBaseName": "MD0003_Statement_of_Account",
-  "pdfStylesheet": "analysis/debtors/shared/templates/statement_pdf.css"
+  "pdfStylesheet": "analysis/debtors/shared/templates/statement_pdf.css",
+  "allocationGate": {
+    "status": "RATIFIED",
+    "method": "remittance_explicit",
+    "authorityOrder": "A (remittance-backed) — business_rules.md §15",
+    "note": "2026-09-17: DEBENQ_CURRENT.TXT refreshed through 15/09/2026 (balance R15,309.11). debtors:tag-check BLOCKED (Σ open exceeded balance by R89,510.12). Closed 20 invoices via remittance-backed exact-sum matches (STAT:126/127/128/129/130). Found ERP mistag: STAT:127 (doc 44561) tagged invoice 50524 in its own INVNO column, but its own remittance advice (01.06.2026.pdf) names invoices 50100/50234/50429 — 50100 was open and undertagged as a result; 50524 is separately, correctly claimed and reconciled by the STAT:128 remittance (01.07.2026.pdf). See MD0003_TAG_COVERAGE_2026-09-17.md."
+  },
+  "closedInvoiceOverrides": [
+    { "doc": "49573", "reason": "Paid via STAT:126 (ERP doc 44231, 04/05/2026). Remittance 01.05.2026.pdf batch total R15,017.78 = exact sum of 49573+49796+49905+50004+50013." },
+    { "doc": "49796", "reason": "Paid via STAT:126 (ERP doc 44231, 04/05/2026). Remittance 01.05.2026.pdf batch total R15,017.78 = exact sum of 49573+49796+49905+50004+50013." },
+    { "doc": "49905", "reason": "Paid via STAT:126 (ERP doc 44231, 04/05/2026). Remittance 01.05.2026.pdf batch total R15,017.78 = exact sum of 49573+49796+49905+50004+50013." },
+    { "doc": "50004", "reason": "Paid via STAT:126 (ERP doc 44231, 04/05/2026). Remittance 01.05.2026.pdf batch total R15,017.78 = exact sum of 49573+49796+49905+50004+50013." },
+    { "doc": "50013", "reason": "Paid via STAT:126 (ERP doc 44231, 04/05/2026). Remittance 01.05.2026.pdf batch total R15,017.78 = exact sum of 49573+49796+49905+50004+50013." },
+    { "doc": "50100", "reason": "Paid via STAT:127 (ERP doc 44561, 01/06/2026). Remittance 01.06.2026.pdf names 50100 (R5,205.68) + 50234 + 50429 = R13,014.20 exact. ERP's own INVNO tagging on this payment mis-tagged the R5,205.68 slice as doc 50524 instead of 50100 — advice outranks ERP tagging (business_rules.md §15 Order A step 1 > step 4). Flagged for portfolio-wide mistag sweep, not just this account." },
+    { "doc": "50671", "reason": "Paid via STAT:128 (ERP doc 44972, 01/07/2026). Remittance 01.07.2026.pdf names 50524+50671+50867+50886 = R17,311.60 exact. 50524 already excluded from the open list by ERP's (mistagged, see doc 50100 override) INVNO tag on STAT:127 — not double-closed here." },
+    { "doc": "50867", "reason": "Paid via STAT:128 (ERP doc 44972, 01/07/2026). Remittance 01.07.2026.pdf names 50524+50671+50867+50886 = R17,311.60 exact." },
+    { "doc": "50886", "reason": "Paid via STAT:128 (ERP doc 44972, 01/07/2026). Remittance 01.07.2026.pdf names 50524+50671+50867+50886 = R17,311.60 exact." },
+    { "doc": "50996", "reason": "Paid via STAT:129 (ERP doc 45595, 03/08/2026). Remittance 01.08.2026.pdf names 50996+50998+51099+51398 = R14,863.43 exact. See MD0003_Remittance_Payment_45595.md." },
+    { "doc": "50998", "reason": "Paid via STAT:129 (ERP doc 45595, 03/08/2026). Remittance 01.08.2026.pdf names 50996+50998+51099+51398 = R14,863.43 exact. See MD0003_Remittance_Payment_45595.md." },
+    { "doc": "51099", "reason": "Paid via STAT:129 (ERP doc 45595, 03/08/2026). Remittance 01.08.2026.pdf names 50996+50998+51099+51398 = R14,863.43 exact. See MD0003_Remittance_Payment_45595.md." },
+    { "doc": "51398", "reason": "Paid via STAT:129 (ERP doc 45595, 03/08/2026). Remittance 01.08.2026.pdf names 50996+50998+51099+51398 = R14,863.43 exact. See MD0003_Remittance_Payment_45595.md." },
+    { "doc": "51470", "reason": "Paid via STAT:130 (ERP doc 46021, 01/09/2026). Remittance 01.09.2026.pdf names 51470+51655+51839+51923+52102+52219+52242 = R30,053.70 exact. See MD0003_Remittance_Payment_46021.md." },
+    { "doc": "51655", "reason": "Paid via STAT:130 (ERP doc 46021, 01/09/2026). Remittance 01.09.2026.pdf names 51470+51655+51839+51923+52102+52219+52242 = R30,053.70 exact. See MD0003_Remittance_Payment_46021.md." },
+    { "doc": "51839", "reason": "Paid via STAT:130 (ERP doc 46021, 01/09/2026). Remittance 01.09.2026.pdf names 51470+51655+51839+51923+52102+52219+52242 = R30,053.70 exact. See MD0003_Remittance_Payment_46021.md." },
+    { "doc": "51923", "reason": "Paid via STAT:130 (ERP doc 46021, 01/09/2026). Remittance 01.09.2026.pdf names 51470+51655+51839+51923+52102+52219+52242 = R30,053.70 exact. See MD0003_Remittance_Payment_46021.md." },
+    { "doc": "52102", "reason": "Paid via STAT:130 (ERP doc 46021, 01/09/2026). Remittance 01.09.2026.pdf names 51470+51655+51839+51923+52102+52219+52242 = R30,053.70 exact. See MD0003_Remittance_Payment_46021.md." },
+    { "doc": "52219", "reason": "Paid via STAT:130 (ERP doc 46021, 01/09/2026). Remittance 01.09.2026.pdf names 51470+51655+51839+51923+52102+52219+52242 = R30,053.70 exact. See MD0003_Remittance_Payment_46021.md." },
+    { "doc": "52242", "reason": "Paid via STAT:130 (ERP doc 46021, 01/09/2026). Remittance 01.09.2026.pdf names 51470+51655+51839+51923+52102+52219+52242 = R30,053.70 exact. See MD0003_Remittance_Payment_46021.md." }
+  ]
 }

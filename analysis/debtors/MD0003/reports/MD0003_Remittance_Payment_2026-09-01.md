@@ -1,3 +1,5 @@
+> **CONFIRMED 2026-09-17** — the refreshed `DEBENQ_CURRENT.TXT` shows ERP payment doc **46021** (STAT:130, posted 01/09/2026, −R30,053.70) matching this batch exactly. See `MD0003_Remittance_Payment_46021.md` for the confirmed cross-check. Body below retained as the original ASSERTED analysis — no longer current.
+
 # MD0003 — Remittance Cross-Check: Batch RM-2026-09-01 (ERP payment not yet posted)
 
 **Source:** COD Remittance Advice dated **01/09/2026**

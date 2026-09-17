@@ -1,5 +1,7 @@
 # MD0003 — Open Invoices
 
+> **SUPERSEDED 2026-09-17** — `DEBENQ_CURRENT.TXT` has been refreshed through 15/09/2026 (balance R15,309.11) and 20 further invoices have since been ratified closed via remittance evidence (STAT:126–130). See `MD0003_TAG_COVERAGE_2026-09-17.md` and `MD0003_Statement_of_Account.md` for the current picture. Body below retained as historical record of the 11 Aug 2026 snapshot — do not use for current balances.
+
 **As-at:** 9 August 2026 (last row in `raw/Enquiry/DEBENQ_CURRENT.TXT`)  
 **Account:** MD0003 — BLUFF MEAT SUPPLY(PTY) LTD  
 **ERP `CURRENT BALANCE`:** **R18,853.36**  

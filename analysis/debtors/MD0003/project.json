@@ -20,11 +20,11 @@
     }
   ],
   "financials": {
-    "totalOutstanding": 16371.56,
-    "lastInvoiceDate": "2026-07-15",
-    "lastPaymentDate": "2026-07-01",
+    "totalOutstanding": 15309.11,
+    "lastInvoiceDate": "2026-09-15",
+    "lastPaymentDate": "2026-09-01",
     "agedDebt180Plus": 0.0,
-    "balanceSource": "MD0003CURRENT.TXT header 2026-07-16"
+    "balanceSource": "DEBENQ_CURRENT.TXT header, refreshed pull 2026-09-17, ledger through 2026-09-15"
   },
   "collections": {
     "actionRequired": false,
@@ -63,6 +63,10 @@
     {
       "date": "2026-09-17",
       "event": "Remittance ingested: COD advice 01.09.2026.pdf, ref 000000000020726413, R30,053.70, 7 LPG docs (51470, 51655, 51839, 51923, 52102, 52219, 52242) — all cent-exact vs DEBENQ_CURRENT.TXT gross. No corresponding ERP Payment row exists yet (raw TXT pulls end 09/08/2026, balance R16,371.56 / R18,853.36 across the two exports). Registered as batch RM-2026-09-01 in remittance_manifest_2026.json, status AWAITING_ERP_POST — ASSERTED, not PROVEN, pending next ERP TXT pull. See reports/MD0003_Remittance_Payment_2026-09-01.md."
+    },
+    {
+      "date": "2026-09-17",
+      "event": "Refreshed raw/Enquiry/DEBENQ_CURRENT.TXT (new account enquiry pull through 15/09/2026, balance R15,309.11 — was R18,853.36 at 09/08/2026). Confirms STAT:130 (doc 46021, 01/09/2026, -R30,053.70) = the previously AWAITING_ERP_POST batch RM-2026-09-01; promoted to PROVEN, see MD0003_Remittance_Payment_46021.md. Ran debtors:tag-check — BLOCKED (Σ open invoices exceeded balance by R89,510.12). Read the 3 remittance PDFs already in raw/Remittances/ that lacked line-level detail (01.05, 01.06, 01.07.2026.pdf) and ratified 20 invoices into config/statement_of_account.json closedInvoiceOverrides across STAT:126/127/128/129/130, all remittance-backed exact-sum matches (business_rules.md §15 Order A). Found a real ERP mistagging bug in the process: payment doc 44561 (STAT:127) tags invoice 50524 in its own INVNO column, but its own remittance advice (01.06.2026.pdf) proves the R5,205.68 slice actually settled invoice 50100 — 50524 is separately and correctly closed by the STAT:128 remittance a month later. Recommend a portfolio-wide payment-INVNO-vs-remittance cross-check sweep (lpg-recon-bug-fixer Pattern 2 methodology). After ratification, debtors:tag-check is still BLOCKED for the 9 invoices dated 08 Aug-15 Sep 2026 (Σ R27,572.72 vs balance R15,309.11, gap R12,263.61) — no remittance or exact-sum evidence yet identifies which part is settled; left open and unratified rather than guessed. Generated reports/MD0003_Statement_of_Account.md reflecting only the release-safe balance total plus the reconciled/unresolved breakdown; did not release an itemized open-invoice list for the blocked window. allocation_edges_2026.csv is now stale relative to these findings but requires a live DB (allocation_ingest.mjs) to regenerate — not run in this session."
     }
   ]
 }
