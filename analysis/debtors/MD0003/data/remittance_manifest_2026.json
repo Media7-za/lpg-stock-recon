@@ -81,6 +81,18 @@
       "lineCount": 4,
       "status": "Posted",
       "notes": "Docs 50996, 50998, 51099, 51398. Partial June — see MD0003_Remittance_Payment_45595.md"
+    },
+    {
+      "batchId": "RM-2026-09-01",
+      "remittanceDate": "2026-09-01",
+      "file": "raw/Remittances/01.09.2026.pdf",
+      "paymentReference": "000000000020726413",
+      "erpPaymentDoc": null,
+      "erpBatchRef": null,
+      "remittanceTotal": 30053.70,
+      "lineCount": 7,
+      "status": "AWAITING_ERP_POST",
+      "notes": "Docs 51470, 51655, 51839, 51923, 52102, 52219, 52242 — all cent-exact vs DEBENQ_CURRENT.TXT gross. No matching Payment entry exists yet in DEBENQ_CURRENT.TXT (raw pull ends 09/08/2026, balance R18,853.36) — ASSERTED from advice only, not PROVEN. Tripwire: re-anchor erpPaymentDoc/erpBatchRef/status once the next ERP TXT pull shows this batch posted. See MD0003_Remittance_Payment_2026-09-01.md"
     }
   ],
   "otherFiles": [
