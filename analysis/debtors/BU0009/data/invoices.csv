@@ -1,0 +1,6 @@
+debtor_code,doc_no,entry_type,tx_date,month_year,stock_code,description,debt_group,lane,qty,amount_excl,tax_amount,amount_incl,is_cyl,is_lpg,paired_cyl_doc,notes
+BU0009,INV-1001,Invoice,2025-06-01,2025-06,LPG-9KG,LPG Gas Delivery,LPG,LPG,10,869.57,130.43,1000.00,False,True,,Synthetic PDP-46 test data
+BU0009,INV-1002,Invoice,2025-06-10,2025-06,LPG-9KG,LPG Gas Delivery,LPG,LPG,15,1304.35,195.65,1500.00,False,True,,Synthetic PDP-46 test data
+BU0009,INV-1003,Invoice,2025-07-01,2025-07,LPG-9KG,LPG Gas Delivery,LPG,LPG,8,695.65,104.35,800.00,False,True,,Synthetic PDP-46 test data
+BU0009,INV-1004,Invoice,2025-07-15,2025-07,LPG-9KG,LPG Gas Delivery,LPG,LPG,12,1043.48,156.52,1200.00,False,True,,Synthetic PDP-46 test data
+BU0009,INV-1005,Invoice,2025-05-01,2025-05,LPG-9KG,LPG Gas Delivery,LPG,LPG,5,434.78,65.22,500.00,False,True,,Synthetic PDP-46 test data — predates allocation_edges.csv coverage
