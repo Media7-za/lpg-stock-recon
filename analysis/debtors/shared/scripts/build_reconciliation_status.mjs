@@ -854,6 +854,12 @@ function buildReconciliationStatus(code, { tolerance = DEFAULT_TOLERANCE, skipGa
       const evidence_tier = !isExact ? 4 : 3;
       const matchedAgainst = isMultiPayment ? candidate.payments.map((p) => p.payment_doc).join(';') : candidate.payment.payment_doc;
       const matchedLabel = isMultiPayment ? `payments ${matchedAgainst}` : `payment ${matchedAgainst}`;
+      // Many-payments-to-one-doc is rare and combinatorially weaker evidence than a
+      // single-payment or contiguous-run exact-sum match (more degrees of freedom
+      // means a higher chance the exact sum is coincidence, not the real pairing) —
+      // never auto-ASSERTED regardless of basket-check; always requires an operator
+      // to confirm via manual_match_overrides.csv before it counts as evidence.
+      const evidence_status = isMultiPayment ? 'UNASSESSED' : isExact && basket.passed ? 'ASSERTED' : 'UNASSESSED';
       rows.push({
         doc_no: d.doc_no,
         doc_type: 'INVOICE',
@@ -864,12 +870,14 @@ function buildReconciliationStatus(code, { tolerance = DEFAULT_TOLERANCE, skipGa
         open_amount: d.openAmount,
         settlement_unit,
         evidence_tier,
-        evidence_status: isExact && basket.passed ? 'ASSERTED' : 'UNASSESSED',
+        evidence_status,
         matched_against: matchedAgainst,
         notes:
           `STEP 3 candidate (${candidate.type}) vs ${matchedLabel}; basket-check: ${basket.reason}. Script-generated — ` +
           `not ERP/human-confirmed. Per D-NEW.5, ${settlement_unit === 'PER_CALENDAR_MONTH_EXACT_SUM' ? 'month-level tie-out only — never treat as per-invoice-confident' : settlement_unit === 'POOLED_MULTI_MONTH_WINDOW' ? 'window-level only, weak' : 'balance-only, no invoice-level claim'}.` +
-          (isMultiPayment ? ' Multi-payment combination — verify no alternative grouping also sums exactly before treating as settled.' : ''),
+          (isMultiPayment
+            ? ' Multi-payment combination — rare pattern, not auto-asserted. Requires operator confirmation (CONFIRMED row in manual_match_overrides.csv) before being treated as settled; verify no alternative grouping also sums exactly.'
+            : ''),
       });
       continue;
     }

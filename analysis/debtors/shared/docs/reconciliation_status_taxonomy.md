@@ -40,8 +40,15 @@ Three changes, all in `candidatePairSearch()`:
    it cheap) catches an invoice settled by two or more partial/split
    payments where no single payment matches it exactly. Tagged
    `EXACT_SUM_MULTI_PAYMENT`, tier 3 like the existing run-match (exact-sum
-   still proves the total ties out), with an explicit note that no
-   alternative grouping was checked.
+   still proves the total ties out) — **but always `evidence_status:
+   UNASSESSED`, never auto-`ASSERTED`, regardless of basket-check.** This
+   pattern is rare in practice and combinatorially weaker than a
+   single-payment or contiguous-run match (more degrees of freedom means a
+   higher chance the exact sum is coincidence rather than the real
+   pairing), so per explicit operator direction it always requires a
+   `CONFIRMED` row in `manual_match_overrides.csv` before counting as
+   evidence — it surfaces the candidate but never settles the doc on its
+   own.
 3. **Human-in-the-loop overrides — `data/manual_match_overrides.csv`
    (optional per account).** This is the "train the matching algorithm"
    mechanism: a human reviewing an `AMBIGUOUS` row (or any candidate/gap
