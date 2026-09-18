@@ -1,0 +1,39 @@
+{
+  "debtorCode": "JAY000",
+  "asAtIso": "2026-09-08",
+  "sourceKind": "dtrx_headers",
+  "reconstructedBalance": 13860.14,
+  "openInvoices": [
+    {
+      "doc": "52688",
+      "iso": "2026-08-18",
+      "dn": "DN#24274",
+      "due": 12967.57
+    },
+    {
+      "doc": "52793",
+      "iso": "2026-08-25",
+      "dn": "DN#23979",
+      "due": 892.57
+    }
+  ],
+  "tagGate": "ALLOWED",
+  "tagBasis": "PATTERN_ONLY",
+  "itemTie": 13860.14,
+  "itemHeaderVariance": 0,
+  "anomalies": [
+    {
+      "cnDoc": "15594",
+      "targetInv": "52793",
+      "cnGroup": "CYL",
+      "invGroup": "LPG",
+      "cnAmount": -6037.5,
+      "cnRef": "DN#24950 EMPTIES",
+      "basis": "DTRX items: CN 15594 is CYL but header ref_no tags LPG/CYL-mismatched invoice 52793 (LPG)"
+    }
+  ],
+  "lpgNet": 13860.14,
+  "cylNet": 0,
+  "epistemic": "ASSERTED",
+  "notProvenBecause": "No DEBENQ CURRENT BALANCE — reconstructed from DTRX headers only"
+}

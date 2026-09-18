@@ -1,0 +1,54 @@
+{
+  "debtorCode": "JAY000",
+  "clientName": "JAYZ GRILL",
+  "status": "active",
+  "reconState": "pending",
+  "financials": {
+    "totalOutstanding": 13860.14,
+    "totalOutstandingNote": "ASSERTED — reconstructed Σ DTRX transaction_headers (excl+tax) as-at 2026-09-03 last tx. Not PROVEN: no DEBENQ CURRENT BALANCE. Artifact: data/dtrx_header_statement.json",
+    "lastInvoiceDate": "2026-08-25",
+    "lastPaymentDate": null,
+    "agedDebt180Plus": 0
+  },
+  "collections": {
+    "actionRequired": false,
+    "actionType": null,
+    "dateSent": null,
+    "deadlineDate": null,
+    "nextAction": "Sources: export DEBENQ_JAY000.TXT. Do not send reports/JAY000_Statement_of_Account.md — DTRX reconstruction only. Operator review CN 15594 CYL tagged to LPG inv 52793.",
+    "nextActionDate": null,
+    "notes": "Onboarded from headers/DTRX only (operator 2026-09-08). ERP name JAYZ GRILL. No payments in ingested headers.",
+    "blockers": [
+      {
+        "type": "STALE_SOURCE",
+        "status": "open",
+        "description": "No DEBENQ / statement TXT — reconstructed header total R13,860.14 is ASSERTED, not a §2 ERP anchor",
+        "source": "analysis/debtors/JAY000/data/dtrx_header_statement.json",
+        "asAt": "2026-09-08"
+      },
+      {
+        "type": "OTHER",
+        "status": "open",
+        "description": "CN 15594 (CYL empties R6,037.50) header ref_no tags LPG invoice 52793 — item stock group disagrees. Open-invoice split is a screening hypothesis.",
+        "source": "analysis/debtors/JAY000/reports/JAY000_DTRX_Header_Ledger.md",
+        "asAt": "2026-09-08"
+      }
+    ]
+  },
+  "ingestGate": {
+    "status": "unverified",
+    "ingestFreshness": "unverified",
+    "ingestCoverage": "unverified",
+    "displayStatus": "NO_TXT_DTRX_ONLY",
+    "asAt": "2026-09-08",
+    "reportPath": "analysis/debtors/JAY000/reports/JAY000_Onboarding_Status.md",
+    "ingestBlockedScopes": ["custody", "sku_analysis", "allocation", "financial_bridge_from_txt"],
+    "exceptions": []
+  },
+  "history": [
+    {
+      "date": "2026-09-08",
+      "event": "Onboarded JAY000 JAYZ GRILL from transaction_headers (9 rows, 2026-08-18..2026-09-03) + transaction_items (10 lines). Reconstructed header total R13,860.14 ASSERTED. No DEBENQ TXT. Internal SOA: reports/JAY000_Statement_of_Account.md — do not send."
+    }
+  ]
+}
