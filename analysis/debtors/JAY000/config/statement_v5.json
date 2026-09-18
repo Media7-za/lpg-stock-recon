@@ -1,0 +1,24 @@
+{
+  "debtorCode": "JAY000",
+  "debtorName": "JAYZ GRILL",
+  "txtPath": "analysis/debtors/JAY000/raw/JAY000CURRENT.TXT.TXT",
+  "periodStart": "2026-08-01",
+  "combinedBf": 0.0,
+  "bfSourceNote": "JAY000CURRENT.TXT.TXT line 13 — BALANCE B/F R0.00. Brand-new account; first row is CN 15509 on 18 Aug 2026. No prior-year carry.",
+  "cylOpeningFinancial": 0.0,
+  "paymentLane": "LPG",
+  "cylOpeningQty": {
+    "14.1": 0,
+    "19.1": 0,
+    "9.1": 0,
+    "D.1": 0,
+    "S.1": 0
+  },
+  "skuRates": {
+    "14.1": 575,
+    "19.1": 690,
+    "9.1": 517.5,
+    "D.1": 1150,
+    "S.1": 1150
+  }
+}
