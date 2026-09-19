@@ -50,8 +50,6 @@ PIETERMARITZBURG
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
 | **01 Feb** | **Opening Balance** | — | | **15,839.95** |
-| 12 Feb 2026 | Invoice | 49211 | 4,319.99 | 20,159.94 |
-| 12 Feb 2026 | Crd Note | 14420 | -4,319.99 | 15,839.95 |
 | 13 Feb 2026 | Invoice | 49257 | 4,319.99 | 20,159.94 |
 | 27 Feb 2026 | Payment | 43476 | -7,199.98 | 12,959.96 |
 | 27 Feb 2026 | Payment | 43476 | -8,639.97 | 4,319.99 |
@@ -80,8 +78,6 @@ PIETERMARITZBURG
 | 15 Apr 2026 | Invoice | 50242 | 7,199.98 | 21,599.94 |
 | 28 Apr 2026 | Payment | 44142 | -7,199.98 | 14,399.96 |
 | 29 Apr 2026 | Invoice | 50434 | 7,199.98 | 21,599.94 |
-| 30 Apr 2026 | Invoice | 50471 | 7,199.98 | 28,799.92 |
-| 30 Apr 2026 | Crd Note | 14825 | -7,199.98 | 21,599.94 |
 
 ---
 
@@ -146,3 +142,5 @@ PIETERMARITZBURG
 | 12 Sept 2026 | Invoice | 53102 | 7,199.98 | -5,759.98 |
 
 ---
+
+*2 invoice/credit-note pairs of equal value (net R0.00, no balance impact) omitted above for clarity: docs 49211, 50471 — full detail on the internal reconciliation statement.*

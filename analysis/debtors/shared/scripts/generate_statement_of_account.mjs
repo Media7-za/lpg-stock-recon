@@ -273,6 +273,76 @@ function extractV5LpgLedgerMarkdown(v5Md) {
   return section.trim();
 }
 
+// Presentation-only: an Invoice and a Crd Note of identical |amount| within
+// maxDaysApart days net to zero and never move the running balance, so
+// showing both rows on a customer-facing statement is pure noise (the v5
+// operator statement keeps the full, unnetted detail — this never touches
+// that file). Opt-in per account via config `netZeroPairs.enabled` so
+// existing statements (FIR001/JAY000) are unaffected unless they ask for it.
+const LEDGER_MONTH_NAMES = {
+  jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5,
+  jul: 6, aug: 7, sep: 8, sept: 8, oct: 9, nov: 10, dec: 11,
+};
+
+function parseLedgerRowDayIndex(dateStr) {
+  const m = dateStr.trim().match(/^(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})$/);
+  if (!m) return null;
+  const month = LEDGER_MONTH_NAMES[m[2].toLowerCase()];
+  if (month === undefined) return null;
+  return Math.floor(Date.UTC(Number(m[3]), month, Number(m[1])) / 86400000);
+}
+
+function parseLedgerTableRows(block) {
+  const rows = [];
+  for (const line of block.split('\n')) {
+    const t = line.trim();
+    if (!t.startsWith('|') || t.includes(':---') || t.startsWith('| Date |')) continue;
+    const cells = t.split('|').slice(1, -1).map((c) => c.trim());
+    if (cells.length !== 5 || cells[1].startsWith('**')) continue; // skip Opening/Closing Balance rows
+    rows.push({
+      raw: line,
+      date: cells[0],
+      entryType: cells[1],
+      doc: cells[2],
+      amount: Number(cells[3].replace(/,/g, '')),
+    });
+  }
+  return rows;
+}
+
+function netZeroInvoiceCrdNotePairs(lpgLedgerMd, { maxDaysApart = 0 } = {}) {
+  const blocks = lpgLedgerMd.split(/\n\n---\n\n/);
+  const rows = blocks.flatMap((block) => parseLedgerTableRows(block));
+  const invoices = rows.filter((r) => r.entryType === 'Invoice');
+  const credits = rows.filter((r) => r.entryType === 'Crd Note');
+  const usedCredits = new Set();
+  const removedRaw = new Set();
+  const pairs = [];
+
+  for (const inv of invoices) {
+    const invDay = parseLedgerRowDayIndex(inv.date);
+    if (invDay == null) continue;
+    const matchIdx = credits.findIndex((cn, i) => {
+      if (usedCredits.has(i)) return false;
+      if (Math.abs(Math.abs(cn.amount) - Math.abs(inv.amount)) > 0.01) return false;
+      const cnDay = parseLedgerRowDayIndex(cn.date);
+      return cnDay != null && Math.abs(cnDay - invDay) <= maxDaysApart;
+    });
+    if (matchIdx === -1) continue;
+    usedCredits.add(matchIdx);
+    removedRaw.add(inv.raw);
+    removedRaw.add(credits[matchIdx].raw);
+    pairs.push({ invoice: inv, credit: credits[matchIdx] });
+  }
+
+  if (!pairs.length) return { md: lpgLedgerMd, pairs: [] };
+
+  const md = blocks
+    .map((block) => block.split('\n').filter((line) => !removedRaw.has(line)).join('\n'))
+    .join('\n\n---\n\n');
+  return { md, pairs };
+}
+
 function buildLpgLedgerPlusPositionLines({
   cfg,
   debtorCode,
@@ -281,6 +351,7 @@ function buildLpgLedgerPlusPositionLines({
   cylClose,
   totalDue,
   lpgLedgerMd,
+  nettedPairs = [],
 }) {
   const lpgLabel = cfg.financialPositionLabels?.lpg || 'LPG';
   const cylLabel = cfg.financialPositionLabels?.cylinder || 'Cylinder deposits';
@@ -309,6 +380,17 @@ function buildLpgLedgerPlusPositionLines({
   lines.push(`## ${cfg.lpgLedgerHeading || 'LPG account'}`, '');
   lines.push(`*${cfg.lpgLedgerIntro || 'Deliveries, payments, and credits.'}*`, '');
   lines.push(lpgLedgerMd, '');
+  if (nettedPairs.length) {
+    const list = nettedPairs
+      .map((p) => `${p.invoice.doc ?? ''}`.trim())
+      .filter(Boolean);
+    lines.push(
+      `*${nettedPairs.length} invoice/credit-note pair${nettedPairs.length > 1 ? 's' : ''} of equal value (net R0.00, no balance impact) omitted above for clarity` +
+        (list.length ? `: doc${list.length > 1 ? 's' : ''} ${list.join(', ')}` : '') +
+        ' — full detail on the internal reconciliation statement.*',
+      '',
+    );
+  }
   return lines;
 }
 
@@ -564,6 +646,20 @@ function main() {
         `[${debtorCode}] WARNING: LPG R${fmt(lpgClose)} + cylinder R${fmt(cylClose)} ≠ v5 total R${fmt(positionTotal)}`,
       );
     }
+    let lpgLedgerMd = extractV5LpgLedgerMarkdown(v5Md);
+    let nettedPairs = [];
+    if (cfgForRun.netZeroPairs?.enabled) {
+      const netted = netZeroInvoiceCrdNotePairs(lpgLedgerMd, {
+        maxDaysApart: cfgForRun.netZeroPairs.maxDaysApart ?? 0,
+      });
+      lpgLedgerMd = netted.md;
+      nettedPairs = netted.pairs;
+      if (nettedPairs.length) {
+        console.log(
+          `[${debtorCode}] Netted ${nettedPairs.length} same-value Invoice/Crd Note pair(s) off the customer ledger: ${nettedPairs.map((p) => `${p.invoice.doc}/${p.credit.doc}`).join(', ')}`,
+        );
+      }
+    }
     lines = buildLpgLedgerPlusPositionLines({
       cfg: cfgForRun,
       debtorCode,
@@ -571,7 +667,8 @@ function main() {
       lpgClose,
       cylClose,
       totalDue,
-      lpgLedgerMd: extractV5LpgLedgerMarkdown(v5Md),
+      lpgLedgerMd,
+      nettedPairs,
     });
     console.log(`[${debtorCode}] Customer layout lpg_ledger_plus_position from ${v5MdRel}`);
   } else {

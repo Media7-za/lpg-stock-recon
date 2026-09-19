@@ -25,5 +25,10 @@
   },
   "v5StatementPath": "analysis/debtors/IVE001/reports/IVE001_Statement_Account_v5.md",
   "v5FixturePath": "src/features/debtor-position-workspace/data/fixtures/IVE001.v5.json",
-  "customerDueBasis": "erp_header"
+  "customerDueBasis": "erp_header",
+  "netZeroPairs": {
+    "enabled": true,
+    "maxDaysApart": 0,
+    "_comment": "Operator instruction 2026-09-19: same-value Invoice/Crd Note pairs in close proximity read as noise on the customer document and don't move the balance, so omit them (full detail stays on the v5 operator statement). Scoped to same-day pairs only (0 days) to avoid netting anything that isn't an exact, unambiguous reversal. IVE001 has two as at this generation: Invoice 49211 / Crd Note 14420 (12 Feb 2026) and Invoice 50471 / Crd Note 14825 (30 Apr 2026)."
+  }
 }
