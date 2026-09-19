@@ -1,10 +1,10 @@
 {
   "debtorCode": "IVE001",
   "debtorName": "ST IVES",
-  "txtPath": "analysis/debtors/IVE001/raw/IVE001X22072026.TXT",
+  "txtPath": "analysis/debtors/IVE001/raw/IVE001X19092026.TXT",
   "periodStart": "2026-01-01",
   "combinedBf": 25919.93,
-  "bfSourceNote": "IVE001X22072026.TXT — chronological balance before first 2026 row (pay 42855, 2 Jan 2026)",
+  "bfSourceNote": "Confirmed independently from IVE001X19092026.TXT (full history from 07/04/2025, BALANCE B/F 0.00) — sum of all 2025 Invoice/Crd Note/Payment rows = 25919.93, matching prior derivation from IVE001X22072026.TXT (chronological balance before first 2026 row, pay 42855, 2 Jan 2026)",
   "cylOpeningFinancial": 0.0,
   "paymentLane": "LPG",
   "cylOpeningQty": {
