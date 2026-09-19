@@ -1,5 +1,26 @@
 # ERP Agent Note — TWK002 H-027 current-period BS reclassification
 
+> ## HOLD — DO NOT POST (2026-08-31)
+>
+> Two of this note's premises failed verification:
+>
+> 1. **Root cause falsified.** AR Control **GL = R26,498.36** — equal to the sub-ledger header.
+>    There is no sub-ledger ↔ GL desync (see §Problem below, now superseded).
+> 2. **B/F not itemised.** `raw/TWK0022024.TXT` (`YEAR: 2025 MARCH`) was exported with
+>    `EXCLUDE: ALLOCATION DETAIL`, so R8,084.67 cannot yet be shown to exclude collectable
+>    pre-Mar-2025 debt. Two amounts inside the B/F (R1,600.30 and R1,497.13) are unexplained.
+>
+> **Also:** the rebuild command in §Prerequisites is a **footgun** — `build_balance_bridge.mjs` is
+> hardcoded to the stale `raw/DEBENQ_TWK002.TXT` and reports gap **R118,131.54**; `--write`
+> overwrites the ratified `config/balance_bridge_lines.json`. Do not run it until fixed.
+>
+> **Blocked on:** GL extract artifact in `raw/` · re-export of `YEAR: 2025 MARCH` **with**
+> allocation detail (**H-028**) · operator ruling.
+>
+> Challenge memo: `reports/TWK002_H027_Evidence_Challenge_2026-08-31.md`
+> (`PROPOSED — NOT RATIFIED`). Instruction text below is retained unaltered for when the hold
+> lifts; if it lifts, post the **rebuilt** residual, never R8,084.67 from memory.
+
 **Account:** TWK002 — TWK AGRI PTY LTD · ref B226  
 **Task:** **H-027**  
 **Class:** Current-period **balance-sheet reclassification** — not DISCOUNT ALLOWED, not bad-debt write-off, not Path A restatement  
