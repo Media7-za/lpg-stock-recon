@@ -1,0 +1,29 @@
+{
+  "debtorCode": "IVE001",
+  "customerName": "ST IVES",
+  "referenceLabel": "Reference",
+  "referenceValue": "",
+  "businessHeader": [
+    "BELLA ENERGY SERVICES (PTY) LTD T/A GAZ EXPRESS",
+    "50 WINSTON ROAD",
+    "PIETERMARITZBURG",
+    "3201"
+  ],
+  "primaryTxt": "analysis/debtors/IVE001/raw/IVE001X19092026.TXT",
+  "_comment_primaryTxt": "Full-history export through 14 Sep 2026 (last row 12/09/2026). Header now a credit balance (CURRENT BALANCE -4552.48) — see reports/IVE001_Statement_Account_v5.md for the Part 1A/1B sub-ledger split behind it.",
+  "siteTxts": {},
+  "outputDir": "analysis/debtors/IVE001/reports",
+  "outputBaseName": "IVE001_Customer_Ledger_Sep2026",
+  "pdfStylesheet": "analysis/debtors/shared/templates/statement_pdf.css",
+  "customerLayout": "lpg_ledger_plus_position",
+  "_comment_customerLayout": "House pattern from FIR001/JAY000 (2026-09): customer SOA = v5 LPG ledger (Part 1A, plain English) + 3-row account position (LPG vs cylinder deposits). Chosen here because the prior IVE001_Customer_Ledger_Apr2026.md only ever showed LPG activity and its Amount due happened to equal the combined ERP balance because Part 1B netted to R0.00 at that point in time (2026-07-22) — that coincidence no longer holds (Part 1B now closes at R1,207.50), so the account position table is needed to avoid an LPG-only ledger implying a different balance than the ERP header.",
+  "lpgLedgerHeading": "LPG account",
+  "lpgLedgerIntro": "Deliveries, payments, and credits.",
+  "financialPositionLabels": {
+    "lpg": "LPG",
+    "cylinder": "Cylinder deposits"
+  },
+  "v5StatementPath": "analysis/debtors/IVE001/reports/IVE001_Statement_Account_v5.md",
+  "v5FixturePath": "src/features/debtor-position-workspace/data/fixtures/IVE001.v5.json",
+  "customerDueBasis": "erp_header"
+}
