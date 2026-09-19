@@ -87,7 +87,7 @@ function parseTxtDate(d) {
 
 function parseTxtStatement(filePath, periodStart) {
   const txt = fs.readFileSync(filePath, 'utf8');
-  const headerBalance = Number(txt.match(/CURRENT BALANCE:","([0-9.]+)"/)?.[1] ?? NaN);
+  const headerBalance = Number(txt.match(/CURRENT BALANCE:","(-?[0-9.]+)"/)?.[1] ?? NaN);
   const docs = new Map();
   let maxIso = periodStart;
 

@@ -3,22 +3,22 @@
   "debtorName": "ST IVES",
   "period": {
     "from": "2026-01-01",
-    "to": "2026-07-15"
+    "to": "2026-09-14"
   },
   "version": "v5",
   "workspaceStatus": "pending_review",
-  "lastGeneratedAt": "2026-07-24T04:45:43.264Z",
-  "source": "analysis/debtors/IVE001/raw/IVE001X22072026.TXT",
+  "lastGeneratedAt": "2026-09-19T08:10:33.677Z",
+  "source": "analysis/debtors/IVE001/raw/IVE001X19092026.TXT",
   "financialPosition": {
-    "lpgGasDebt": 2879.99,
-    "cylinderFinancialBalance": 0,
-    "totalDebtorBalance": 2879.99,
-    "erpStatedBalance": 2879.99,
+    "lpgGasDebt": -5759.98,
+    "cylinderFinancialBalance": 1207.5,
+    "totalDebtorBalance": -4552.48,
+    "erpStatedBalance": -4552.48,
     "erpVariance": 0,
     "subLedgerVariance": 0
   },
   "custodyPosition": {
-    "totalCustodyExposure": 5750,
+    "totalCustodyExposure": 1150,
     "lines": [
       {
         "sku": "D.1",
@@ -30,14 +30,14 @@
       {
         "sku": "S.1",
         "label": "S.1",
-        "qty": 6,
+        "qty": 2,
         "depositRate": 1150,
-        "exposure": 6900
+        "exposure": 2300
       }
     ]
   },
   "reconciliationPosition": {
-    "cylinderVariance": -5750,
+    "cylinderVariance": 57.5,
     "erpVariance": 0,
     "subLedgerVariance": 0,
     "exceptions": [
@@ -51,6 +51,6 @@
   },
   "artifacts": {
     "statementMarkdown": "analysis/debtors/IVE001/reports/IVE001_Statement_Account_v5.md",
-    "txtSource": "analysis/debtors/IVE001/raw/IVE001X22072026.TXT"
+    "txtSource": "analysis/debtors/IVE001/raw/IVE001X19092026.TXT"
   }
 }
