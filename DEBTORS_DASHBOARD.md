@@ -1,6 +1,6 @@
 # Debtors Portfolio Management Dashboard
 
-*Last Updated: 2026-08-25*
+*Last Updated: 2026-09-20*
 
 > **View dashboard:** `npm run debtors:sync` then read this file. Orchestrator skill: `.agents/skills/SKILL_Debtors_Orchestrator.md`
 
@@ -10,10 +10,10 @@
 
 | Days Overdue | Account | What | Detail |
 |---:|---|---|---|
-| **70** | TAN001 | draft_lod | "draft_lod" was due 2026-06-16, 70d ago |
-| **70** | TAN001 | H-009 (Collections Agent) | Deadline 2026-06-16 passed, 70d ago — still OPEN |
-| **57** | WES004 | letter-of-demand | Deadline 2026-06-29 passed, 57d ago — status still "collection" |
-| **57** | WES004 | H-008 (Collections Agent) | Deadline 2026-06-29 passed, 57d ago — still OPEN |
+| **96** | TAN001 | draft_lod | "draft_lod" was due 2026-06-16, 96d ago |
+| **96** | TAN001 | H-009 (Collections Agent) | Deadline 2026-06-16 passed, 96d ago — still OPEN |
+| **83** | WES004 | letter-of-demand | Deadline 2026-06-29 passed, 83d ago — status still "collection" |
+| **83** | WES004 | H-008 (Collections Agent) | Deadline 2026-06-29 passed, 83d ago — still OPEN |
 
 ## 🎯 Orchestrator KPIs
 
@@ -47,12 +47,12 @@ Accounts are automatically sorted by Risk Score using the Collections Intelligen
 
 | Risk | Code | Client Name | Recon State | Workflow Status | Outstanding | Aged 180d+ | Next Action |
 |---|---|---|---|---|---|---|---|
-| **100** | [WES004](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/WES004/) | West Coast Fish & Chips | ✅ Complete | ⛔ COLLECTIONS_BLOCKED | R36 216,20 | R7 443,73 | ⚠️ **letter-of-demand** (🔴 was due 2026-06-29, 57d overdue) |
+| **100** | [WES004](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/WES004/) | West Coast Fish & Chips | ✅ Complete | ⛔ COLLECTIONS_BLOCKED | R36 216,20 | R7 443,73 | ⚠️ **letter-of-demand** (🔴 was due 2026-06-29, 83d overdue) |
+| **65** | [JIM001](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/JIM001/) | Jim Gas | ✅ Complete | 🟢 ACTIVE | R140 297,23 | R73 007,40 | None |
+| **65** | [TAN001](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/TAN001/) | Tanya Lehman | ✅ Complete | ⛔ COLLECTIONS_BLOCKED | R96 284,18 | R66 565,10 | ⚠️ **draft_lod** (🔴 was due 2026-06-16, 96d overdue) |
 | **55** | [BU0005](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/BU0005/) | CHOBOZA - BULWER | 🔄 In Progress | 🟢 ACTIVE | R3 450,17 | R203,57 | None |
-| **40** | [JIM001](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/JIM001/) | Jim Gas | ✅ Complete | 🟢 ACTIVE | R140 297,23 | R73 007,40 | None |
+| **55** | [WO0001](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/WO0001/) | L3 Cash and Carry | ⏳ Pending | 🟢 ACTIVE | R110 789,36 | R51 628,92 | None |
 | **40** | [MOZ002](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/MOZ002/) | MOZAMBIK | ✅ Complete | 🟢 ACTIVE | R22 898,47 | R3 190,07 | None |
-| **40** | [TAN001](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/TAN001/) | Tanya Lehman | ✅ Complete | ⛔ COLLECTIONS_BLOCKED | R96 284,18 | R66 565,10 | ⚠️ **draft_lod** (🔴 was due 2026-06-16, 70d overdue) |
-| **30** | [WO0001](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/WO0001/) | L3 Cash and Carry | ⏳ Pending | 🟢 ACTIVE | R110 789,36 | R51 628,92 | None |
 | **25** | [TWK002](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/TWK002/) | TWK AGRI PTY LTD | 🔄 In Progress | 🟢 ACTIVE | R118 131,54 | R0,00 | None |
 | **0** | [BU0009](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/BU0009/) | BU0009 Client Placeholder | ⏳ Pending | 🟢 ACTIVE | R0,00 | R0,00 | None |
 | **0** | [FAM000](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/FAM000/) | FAM000 Client Placeholder | ⏳ Pending | 🟢 ACTIVE | R0,00 | R0,00 | None |
