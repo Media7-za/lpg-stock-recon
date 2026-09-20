@@ -25,6 +25,14 @@ description: >-
 
 **Do not use** this skill as the primary matcher for **monthly STAT batch payers** (JIM001, BR0001, MD0003 gross-month lane). There, use `analysis/skills/lpg-payment-pattern-analysis/SKILL.md` at month-pool level. Use **this** skill when **invoice-level** tags or DEBENQ open lists are in play.
 
+### Why this is a separate skill, not merged into the batch skills
+
+Considered and rejected 2026-09-20. The repo already splits this payer class by **artifact**, not by payer type: `lpg-payment-pattern-analysis` (annual variance report) and `monthly-batch-erp-bridge-reconciliation` (point-in-time bridge + customer statement) are deliberate companions covering the same payers. Tag trust is a third concern, and it is **cross-cutting** — it applies to invoice-linked payers and DEBENQ open lists too, which both batch skills explicitly disclaim.
+
+Merging would also require amending the `DEBTORS_DOCTRINE.md` §4 *Scoped-canonical implementation* table, which names `lpg-payment-pattern-analysis` as the constitutional home for the JIM001 class. Worker sessions do not author constitutional changes (§7).
+
+**What this skill owns instead:** it is the scoped-canonical home for *"may this tag close this invoice?"* Sibling skills reference it rather than restating the gates.
+
 ---
 
 ## Tag reliability (hard rules — from §15)
@@ -54,7 +62,7 @@ Determine basis from tag-check output: `REMITTANCE_BACKED` vs `PATTERN_ONLY`.
 
 ### Order B — pattern-only (most accounts)
 
-1. **Exact-sum arithmetic** — payment equals sum of a defined LPG invoice set (often one billing month); CYL `-EMPTY` pairs excluded from payable pool
+1. **Exact-sum arithmetic** — payment equals sum of a defined LPG invoice set (often one billing month). Procedure and tolerance are **not restated here**: run `monthly-batch-erp-bridge-reconciliation` §2 (exact-sum-per-calendar-month test) or `lpg-payment-pattern-analysis` §5, and consume the result
 2. Established **payment pattern** — `config/payment_pattern_overrides.json`, §14 mirror carry / Rule 13 surplus
 3. Business rules — LPG/CYL partition, monthly cadence
 4. Operator judgement — ratified in `closedInvoiceOverrides` or `ratification_scenarios.json` with named basis
@@ -103,6 +111,21 @@ Also enforce allocation-lane rule: `payment_date < invoice_date` → **UNALLOCAT
 | `REMITTANCE_BACKED` | Remittance line cites doc or month pool; batch total ties |
 | `PATTERN_ONLY` | Month-pool exact sum or registered override in `payment_pattern_overrides.json` |
 | Allocation lane | Tier in `allocation_edges.csv` is Confirmed / OPEN_BALANCE_MATCH with gates 1–2 passed |
+
+#### Gate 3a — Provenance (reject circular evidence)
+
+> **Named rule: `TAG_EVIDENCE_PROVENANCE`** — invoice-level rows derived *from* a month assumption cannot confirm that month assumption.
+
+Before citing `allocation_edges.csv` as independent corroboration, check how those rows were generated:
+
+```
+REJECT as independent if every edge for the payment is ERP_LEDGER / Probable
+  AND the targets are a dense date-ordered run inside one already-assumed month
+```
+
+That fingerprint is the month assumption exploded into invoice rows after the fact, not per-invoice confirmation, and it cannot arbitrate between two candidate months. Only `Confirmed` tiers backed by remittance or independently-computed matches count at this gate.
+
+**Reference case:** JIM001 docs **40746** / **44555** — a retraction of two misattribution candidates was itself reversed once provenance was checked; 6 payments shared this fingerprint. Doc 40746 resolved only when a **second independent computation** converged on July. See `JIM001_Exact_Sum_Bridge_Review_2026-09-13.md`.
 
 ### Gate 4 — Known-bad-pattern registry
 
@@ -157,6 +180,7 @@ Each entry should include: `id`, `invno`, optional `payment_doc`, `effective_bef
 | `check_invoice_tag_coverage.mjs` | CLI wrapper |
 | `SKILL_Payment_To_Invoice_Allocation.md` | Invoice-linked payers after tags verified |
 | `analysis/skills/lpg-payment-pattern-analysis/SKILL.md` | Monthly batch — **month pools**, not INVNO tags |
+| `analysis/skills/monthly-batch-erp-bridge-reconciliation/SKILL.md` | §2 exact-sum test (Gate 3 input); §1 schedule gate; §7 anti-patterns |
 | `business_rules.md` §15 | Constitutional authority order |
 
 ---
@@ -166,6 +190,15 @@ Each entry should include: `id`, `invno`, optional `payment_doc`, `effective_bef
 ```
 Payment INVNO about to close an invoice?
   ├── Monthly STAT batch payer (30T, blank ref)? → lpg-payment-pattern-analysis (month pool)
-  ├── Invoice-linked ref_no/doc_no payer?       → Payment-To-Invoice Allocation (after this skill)
-  └── Open list / DEBENQ export?                → THIS SKILL + debtors:tag-check
+  ├── Monthly batch, need bridge/statement?      → monthly-batch-erp-bridge-reconciliation
+  ├── Invoice-linked ref_no/doc_no payer?         → Payment-To-Invoice Allocation (after this skill)
+  └── Open list / DEBENQ export?                  → THIS SKILL + debtors:tag-check
 ```
+
+Division of labour within the monthly-batch family:
+
+| Concern | Owner |
+| :--- | :--- |
+| Which month did this cash settle? | `monthly-batch-erp-bridge-reconciliation` §2 |
+| Annual variance / Rule 13 / mirror carry narrative | `lpg-payment-pattern-analysis` |
+| May this tag close this invoice? | **This skill** |
