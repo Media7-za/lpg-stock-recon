@@ -1,0 +1,26 @@
+{
+  "debtorCode": "MD0003",
+  "debtorName": "BLUFF MEAT SUPPLY(PTY) LTD",
+  "txtPath": "analysis/debtors/MD0003/raw/Enquiry/DEBENQ_CURRENT.TXT",
+  "periodStart": "2026-01-01",
+  "combinedBf": 5735.63,
+  "bfSourceNote": "DEBENQ_CURRENT.TXT line 204 (doc 42858/STAT:122, 31/12/2025) — running balance R5,735.63, verified 2026-09-17 lifetime chain investigation. PROVEN.",
+  "cylOpeningFinancial": 0.0,
+  "cylOpeningFinancialNote": "UNVERIFIED PLACEHOLDER. Not computed from a DB-backed CYL sub-ledger replay (no DATABASE_URL/pg in this session). Known non-zero CYL exceptions predating this period exist (doc 46445 R57.50 under-credited 17/09/2025; doc 48927 R57.50 over-credited 22/01/2026) but a full 2016-2025 CYL-only running balance has not been reconstructed. Do not treat as PROVEN.",
+  "paymentLane": "LPG",
+  "cylOpeningQty": {
+    "14.1": 0,
+    "19.1": 0,
+    "9.1": 0,
+    "D.1": 0,
+    "S.1": 0
+  },
+  "cylOpeningQtyNote": "UNVERIFIED PLACEHOLDER — all zero because no DB access this session (Part 2 physical custody requires transaction_items). Do not treat as PROVEN or use for collections/custody claims.",
+  "skuRates": {
+    "14.1": 575,
+    "19.1": 690,
+    "9.1": 517.5,
+    "D.1": 1150,
+    "S.1": 1150
+  }
+}
