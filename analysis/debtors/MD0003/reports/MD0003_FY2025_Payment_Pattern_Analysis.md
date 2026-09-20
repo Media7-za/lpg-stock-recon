@@ -15,7 +15,13 @@
 * **Genuine outstanding anomaly: R5,376.00, invoice 38939 (December 2024 billing month).** December's full LPG billing (R24,178.73 = invoices 38757 + 38918 + 38939 + 39277, net of their own credit notes) was due via STAT:112 (03/02/2025, within this fiscal year). STAT:112 paid R18,802.73 of it — invoice 38939 (R8,928.14 net) was only ever paid R3,552.14, leaving **R5,376.00 unpaid since December 2024**. This is the same shortfall already found and reported to the operator during this session's earlier "R12,263.61 gap" investigation — confirmed here as a genuine within-year underpayment, not a timing artifact. See §2.1.
 * **Not anomalies — normal end-of-window pipeline:** January 2025 (R21,718.57) and February 2025 (R15,633.20) billing had not yet reached their 2-month due date when this fiscal year closed (due March and April 2025 respectively — both outside this window). Both are independently confirmed paid in full shortly after, per `MD0003_2025_Payment_Pattern_Analysis.md` (STAT:113, STAT:114). **Not skipped months** — flagging this explicitly because a prior report (`MD0003_2026_Payment_Pattern_Analysis.md`, before its 2026-09-20 correction) made exactly this mistake for a later fiscal-year boundary.
 * **Two small untagged residuals remain unexplained:** R44.74 and R889.56, both on STAT:112 (03/02/2025). Already investigated with the operator this session — no remittance exists for this payment date, no exact-sum match found in the TXT or the AP ledger. Left flagged, not force-closed.
-* **Portfolio-relevant finding: doc reference "48372" appears to be reused as a placeholder/residual tag, not a genuine invoice link, for years before it became a real invoice.** Payment slices tagging invno `48372` appear on STAT:103 (02/05/2024, −R629.74) — **19 months before** invoice 48372 was ever created (19/12/2025, confirmed in this session's earlier investigation) — and again on two 2025 payments before finally, coincidentally, also being the correct tag for the real invoice once it existed (STAT:123, 02/02/2026). The same applies to invno values `12187`, `17143`, `21110`, `24010` (recur across STAT:103 and STAT:107, 5 months apart, matching no FY2025 invoice at all). This reads as a systemic ERP behaviour — recycled/placeholder reference numbers used for unallocated residuals — worth a dedicated `lpg-recon-bug-fixer` ticket across the portfolio, not just this account.
+* **Portfolio-relevant finding: doc reference "48372" is reused as a placeholder/residual tag, not a genuine invoice link, for 19 months before it became a real invoice.** Payment slice tagging invno `48372` on STAT:103 (02/05/2024, −R629.74) predates invoice 48372's actual creation (19/12/2025, confirmed in this session's earlier investigation) by 19 months — chronologically impossible as a real link. It later, coincidentally, becomes the correct tag once that invoice number is genuinely reused (STAT:123, 02/02/2026).
+* **CORRECTION 2026-09-20 (originally overstated in this report):** the other four "no matching FY2025 invoice" tags on STAT:103/STAT:107 — `12187`, `17143`, `21110`, `24010` — were wrongly grouped with 48372's placeholder-reuse pattern above. Checked against the older archives while building `MD0003_FY2024_Payment_Pattern_Analysis.md` (and one against `DEBENQ_2022.TXT`): all four are **real, legitimate invoices**, just much older than this fiscal year — normal old-debt cleanup, not a bug:
+  * `12187` = R345.00, invoice 05/02/2022 (`DEBENQ_2022.TXT`, FY2022, "REFER TO INV12186")
+  * `17143` = R1,196.00, invoice 31/12/2022 (`DEBENQ_2023.TXT`, FY2023, "D/N2943 EMPTIES")
+  * `21110` = R598.00, invoice 08/06/2023 (`DEBENQ_2024.TXT`, FY2024, "D/N 5316 EMPTIES R") — this is the exact R598.00 net-open CYL residual on that invoice identified in the FY2024 report's §3
+  * `24010` = R1,196.00 total, invoice 01/09/2023 (`DEBENQ_2024.TXT`, FY2024, "D/N 6421 EMPTIES") — settled across two slices, R335.09 here on STAT:103 and R860.91 on STAT:107 below, summing exactly
+  So the "systemic recycled-reference" finding narrows to **`48372` alone** — a single genuinely anomalous case, not a five-item pattern. Still worth its own `lpg-recon-bug-fixer` ticket; the other four are this account routinely clearing multi-year-old small debts, which is normal.
 
 ---
 
@@ -23,7 +29,7 @@
 
 | Billing Month | LPG Invoice Total | Payment Date | Payment Doc | Payment Amount | Reconciliation Notes |
 | :--- | :---: | :---: | :---: | :---: | :--- |
-| **2024-03** | R10,863.40 | 2024-05-02 | 30410 (STAT:103) | −R10,863.40 | Invoices 30219+30626+30811, cent-exact. STAT:103 also carries R3,103.83 of unrelated small legacy-reference tags (12187/17143/21110/24010/48372) that match no FY2025 invoice — pre-FY2025 residual, not netted here. |
+| **2024-03** | R10,863.40 | 2024-05-02 | 30410 (STAT:103) | −R10,863.40 | Invoices 30219+30626+30811, cent-exact. STAT:103 also clears R2,474.09 of genuine old-debt (FY2022–FY2024 invoices 12187/17143/21110, partial 24010 — see correction note in §1) plus the anomalous R629.74 `48372` placeholder tag — none of this is FY2025 activity, not netted here. |
 | **2024-04** | R23,232.34 | 2024-06-01 | 31375 (STAT:104) | −R23,232.34 | Invoices 30920+30962+31554+31733, cent-exact. |
 | **2024-05** | R21,468.82 | 2024-07-01 | 31842 (STAT:105) | −R21,468.82 | Invoices 31768+32046+32206+32573, cent-exact. |
 | **2024-06** | R11,979.04 | 2024-08-01 | 32604 (STAT:106, partial) | −R11,979.04 | Invoices 32723+33294, cent-exact. STAT:106 also picks up invoice 33704 (R4,407.89, dated 01/07/2024) a month early — see 2024-07 row. |
@@ -66,7 +72,7 @@
 | STAT:104 | 31375 | 2024-06-01 | −R23,232.34 | 2024-04 | ✅ Present, cent-exact |
 | STAT:105 | 31842 | 2024-07-01 | −R21,468.82 | 2024-05 | ✅ Present, cent-exact |
 | STAT:106 | 32604 | 2024-08-01 | −R16,386.93 | 2024-06 (R11,979.04) + 1 early Jul invoice (R4,407.89) | ✅ Present, cent-exact |
-| STAT:107 | 33247 | 2024-09-02 | −R26,447.35 | 2024-07 remainder (R22,039.46) + R4,407.89 legacy residual (blank/24010 tags) | ✅ core amount present |
+| STAT:107 | 33247 | 2024-09-02 | −R26,447.35 | 2024-07 remainder (R22,039.46) + R860.91 clearing the rest of old FY2024 invoice 24010 (see §1 correction) + R3,546.98 blank-invno residual | ✅ core amount present |
 | STAT:108 | 33817 | 2024-10-01 | −R13,927.72 | 2024-08 | ✅ Present, cent-exact |
 | STAT:109 | 34555 + 34686 | 2024-11-01/07 | −R11,715.50 | 2024-09 | ✅ Present, cent-exact (split across 2 docs) |
 | STAT:110 | 35269 | 2024-12-02 | −R26,348.14 | 2024-10 | ✅ Present, cent-exact |
