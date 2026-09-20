@@ -77,3 +77,45 @@ The R12,263.61 gap (see prior session Q&A) is real and small relative to the R2.
 1. The next remittance/STAT batch (expected ~01/10/2026, covering August invoices) — will very likely absorb most or all of the 9 currently-open August/September invoices, the same way STAT:130 absorbed the June carry-over.
 2. A DB-backed re-run of `analysis/debtors/MD0003/scripts/allocation_ingest.mjs` (not possible in this session — no `DATABASE_URL`) to regenerate `allocation_edges_2026.csv` and cross-check the R12,263.61 against the allocation lane rather than the TXT alone.
 3. If the gap persists after the next remittance, escalate to a dedicated Payment Pattern Analysis re-run for 2025–2026 (per `lpg-payment-pattern-analysis` skill) rather than treating it as resolved.
+
+---
+
+## Addendum (2026-09-20) — what the R12,263.61 gap actually decomposes into so far
+
+Following on from §6, the operator and this session traced the gap by hand (no `DATABASE_URL` available, so remittance/proximity matching per `business_rules.md` §15 Order B, not ERP tags) rather than waiting for the next STAT batch. Progress so far:
+
+### Confirmed contributor: R3,273.10 — invoice 48372 over-credited via two impossible ERP tags
+
+Invoice 48372 (R5,630.46, invoiced 19/12/2025) is correctly and fully settled by STAT:123 (02/02/2026) alone. But two **earlier** payment slices also carry the tag `48372`:
+- STAT:121 (doc 42440, 28/11/2025, −R3,070.77) — dated **three weeks before invoice 48372 was ever created**, chronologically impossible as a real link.
+- STAT:122 (doc 42858, 31/12/2025, −R202.33) — same pattern, smaller amount.
+
+Real cash left the account's balance via these two slices without genuinely retiring 48372 (already settled by STAT:123). This R3,273.10 is "lost" to the open-invoice model — it should have applied to whatever invoice(s) it actually belongs to, which would reduce that invoice's open balance for real, but the true target is unknown without a remittance for doc 42440 (none exists in the repo). **Contributes an estimated R3,273.10 toward the R12,263.61 gap, not force-closed.**
+
+### Resolved, not a contributor: R469.87 (doc 42051, STAT:121, 01/11/2025)
+
+Traced to the already-known "CYL 46445" discrepancy (remittance claimed R3,105.00 against that CYL invoice; ERP's own ledger shows only R57.50 open on it). ERP's tagging on doc 42051 compensates for the R3,047.50 difference by additionally crediting a separate, genuinely open invoice (43319, R2,577.63) plus this R469.87 blank remainder — a self-contained wash. **Explained; does not contribute to the gap.**
+
+### Checked, still genuinely unresolved: R4,973.79 (four small residuals)
+
+R44.74 and R889.56 (STAT:112, 03/02/2025) and R1,787.18 and R2,252.18 (STAT:121 2nd tranche, doc 42440, 28/11/2025). No remittance exists for either payment date; no exact-sum match found anywhere in the TXT, and no match in GAZ's own independent AP ledger (`MD0003_DETAILED_LEDGER.xls`, parsed this session with `openpyxl`/`xlrd`). Left flagged, not force-closed.
+
+### A separate, independently confirmed finding — NOT part of the R12,263.61 gap
+
+While parsing `MD0003_DETAILED_LEDGER.xls` to chase the residuals above, found invoice **38939** (09/12/2024, R13,758.14 gross / R8,928.14 net of its own credit note) was only ever paid **R3,552.14** — a **R5,376.00 shortfall silently unresolved since December 2024**. This predates `DEBENQ_CURRENT.TXT`'s own window entirely (it lives in the archived `DEBENQ_2025.TXT`), so it was invisible to every open-invoice check run against the current ledger. `MD0003_FY2025_Payment_Pattern_Analysis.md` (generated 2026-09-20) since pinned this precisely to the December 2024 billing month — see that report's §2.1. **This is real, aged, additional debt — it does not explain any part of the R12,263.61 gap (which is about the current ledger over-counting open invoices); if anything it means total lifetime exposure is understated elsewhere by this amount.** Needs an operator decision: pursue collection or ratify a write-off (`DEBTORS_DOCTRINE.md` §5 idempotency — belongs in `config/`, not silently absorbed).
+
+### Two full fiscal-year Payment Pattern Analyses added, extending this investigation backward
+
+- `MD0003_FY2025_Payment_Pattern_Analysis.md` (01/03/2024–28/02/2025): confirmed the 2-month payment lag holds throughout, found the invoice-38939 shortfall precisely dated, corrected the FY2026 report's "2026-07 skipped month" error before it could recur at this boundary.
+- `MD0003_FY2024_Payment_Pattern_Analysis.md` (01/03/2023–29/02/2024): the cleanest fiscal year found — no genuine underpayment. Surfaced a real archive-filing trap (August 2023's payment is filed in `DEBENQ_2025.TXT`, not `DEBENQ_2024.TXT`, despite its date) and a R2,392.00 open CYL exposure as of year-end, itemized to 5 invoice/CN pairs. While cross-checking, **disproved most of the FY2025 report's initial "systemic placeholder reuse" claim** — four of five flagged reference numbers turned out to be real, legitimate multi-year-old invoices being cleared late; only `48372` (above) survives as a genuine anomaly. Corrected in place in the FY2025 report per doctrine (appended, not deleted).
+
+### Net position on the R12,263.61 gap as of 2026-09-20
+
+| Component | Amount (R) | Status |
+| :--- | ---: | :--- |
+| Confirmed contributor (doc 48372 mistag) | 3,273.10 | Identified, true target unknown, not force-closed |
+| Genuinely unresolved (4 small residuals) | 4,973.79 | Checked exhaustively (remittance, exact-sum, AP ledger) — no match found |
+| Still unaccounted for | ~4,016.72 | No lead yet |
+| **Total** | **12,263.61** | Matches exactly |
+
+Recommended next step for the remaining ~R4,016.72: a portfolio-wide `lpg-recon-bug-fixer` sweep for the same reference-mistagging pattern now confirmed at least twice (doc 48372, and the recurring ~R598-per-unit CYL under/over-credit signature spanning FY2024 through FY2026 — docs 21110/22004/23961 in FY2024, 46445/48927 in FY2026) — this looks systemic to the ERP's residual-crediting behaviour, not specific to one invoice.
