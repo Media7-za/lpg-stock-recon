@@ -3,7 +3,7 @@
 **Combined Opening B/F:** R60,355.10 (ERP verified — source: `analysis/debtors/TAN001/raw/TAN001CURRENT.TXT` TAN001_BASELINE_v4.md — ERP combined opening B/F as at 1 Jan 2026 (pending TXT line confirmation))
 **LPG Opening B/F (1A):** R66,565.10 &nbsp;|&nbsp; **CYL Opening B/F (1B):** R-6,210.00
 **Payment routing:** LPG lane (payments post to Part 1A unless configured otherwise)
-**Last regenerated:** 2026-07-30 from ERP TXT (`reconcile_debtor_v5_from_txt.mjs`)
+**Last regenerated:** 2026-09-21 from ERP TXT (`reconcile_debtor_v5_from_txt.mjs`)
 
 ---
 

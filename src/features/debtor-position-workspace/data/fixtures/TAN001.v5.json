@@ -7,7 +7,7 @@
   },
   "version": "v5",
   "workspaceStatus": "pending_review",
-  "lastGeneratedAt": "2026-07-30T11:03:29.405Z",
+  "lastGeneratedAt": "2026-09-21T11:44:56.933Z",
   "source": "analysis/debtors/TAN001/raw/TAN001CURRENT.TXT",
   "financialPosition": {
     "lpgGasDebt": 93039.62,

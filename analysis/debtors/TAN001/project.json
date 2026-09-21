@@ -69,6 +69,10 @@
     {
       "date": "2026-07-30",
       "event": "ERP TXT placed at raw/TAN001CURRENT.TXT; ingest CURRENT_COMPLETE; v5 statement generated. D17 still blocked: collectable STALE/pending confirmation; open blockers for R4,480 header vs sub-ledger bridge and UD/header total mismatch."
+    },
+    {
+      "date": "2026-09-21",
+      "event": "v5 statement re-run (reconcile_debtor_v5_from_txt.mjs logic, DB rows sourced via Supabase MCP execute_sql against project lpg-stock-recon — no DATABASE_URL configured in this sandbox session). Same TXT (raw/TAN001CURRENT.TXT, unchanged since 29 Aug 2026 commit) and same DB rows as the 2026-07-30 run: output identical (combined 92,177.12 vs ERP header 87,697.12, R4,480.00 variance unchanged; sub-ledger tie R0.00). No new evidence; both open blockers and the draft-LOD action (H-009) remain outstanding."
     }
   ]
 }
