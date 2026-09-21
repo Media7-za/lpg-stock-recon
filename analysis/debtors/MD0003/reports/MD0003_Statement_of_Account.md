@@ -34,15 +34,6 @@ Age is calculated from **invoice date** to 31 August 2026.
 
 ## 2026 Open Invoices
 
-> **Unverified — hand-entered, not yet in `raw/Enquiry/DEBENQ_CURRENT.TXT`.** That
-> export's latest row is 09 Aug 2026; the rows below run through 15 Sep 2026 and
-> were supplied directly by the operator, not derived from an ERP export in this
-> repo. Per operator instruction, entered as a one-off — this table is **not**
-> reproducible by re-running `generate_statement_of_account.mjs` and will be
-> silently reverted by the next regeneration until a matching DEBENQ export
-> (or CSV) lands in `raw/` and `closedInvoiceOverrides` / `openInvoicesFromDate`
-> are re-validated against it. See `docs/handoffs/2026-09-21.md` §6.
-
 | Invoice | Date | DN / Reference | Amount (R) |
 | :--- | :--- | :--- | ---: |
 | 52421 | 08 Aug 2026 | DN#23948-ROSEDALE | 545.77 |
