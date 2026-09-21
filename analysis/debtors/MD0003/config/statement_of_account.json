@@ -20,6 +20,8 @@
   "_comment_openInvoicesFromDate": "2026-09-21 operator decision: scope this statement to FY2026 only. Pre-2026 rows (including 4 unratified 2025 billing months — Mar/Apr/May/Aug — and the R12,263.61 standing-credit origin traced to payment 42440/STAT:121) are excluded entirely, not asserted paid. That pre-2026 gap is tracked separately in MD0003_Open_Invoices.md and project.json and is not shown on this document until resolved.",
   "customerDueBasis": "open_invoices",
   "_comment_customerDueBasis": "Amount due = open FY2026 LPG invoices only (R30,599.47). No opening balance / account-level bridge shown on the customer document while the pre-2026 gap is under investigation.",
+  "groupOpenInvoicesByMonth": true,
+  "_comment_groupOpenInvoicesByMonth": "2026-09-21: present the open-invoice schedule as one subsection per calendar month (with a subtotal each), matching the monthly-STAT-batch billing cadence business rule in payment_pattern_overrides.json.",
   "closedInvoiceOverrides": [
     { "doc": "48737", "reason": "2026-01 STAT:124 batch (payment 43494, R13,845.67, remittance 02.03.2026) — ratified in config/payment_pattern_overrides.json." },
     { "doc": "48784", "reason": "2026-01 STAT:124 batch (payment 43494, R13,845.67, remittance 02.03.2026) — ratified in config/payment_pattern_overrides.json." },

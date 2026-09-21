@@ -34,13 +34,28 @@ Age is calculated from **invoice date** to 31 August 2026.
 
 ## Open invoices
 
+### June 2026
+
 | Inv | Inv date | DN / ref | **Due (R)** |
 | :--- | :--- | :--- | ---: |
 | 51470 | 29 Jun 2026 | DN#22920=ROSEDALE | 5,039.52 |
+| | | **Subtotal** | **5,039.52** |
+
+### July 2026
+
+| Inv | Inv date | DN / ref | **Due (R)** |
+| :--- | :--- | :--- | ---: |
 | 51655 | 07 Jul 2026 | DN#22806 | 4,366.11 |
 | 51839 | 15 Jul 2026 | DN#22575=ROSEDALE | 4,366.11 |
 | 51923 | 20 Jul 2026 | DN#22830- MKONDENI | 2,910.74 |
 | 52102 | 27 Jul 2026 | DN#22847 | 4,366.11 |
 | 52219 | 31 Jul 2026 | DN#24226 | 4,366.11 |
 | 52242 | 31 Jul 2026 | DN#24230 | 4,639.00 |
+| | | **Subtotal** | **25,014.18** |
+
+### August 2026
+
+| Inv | Inv date | DN / ref | **Due (R)** |
+| :--- | :--- | :--- | ---: |
 | 52421 | 08 Aug 2026 | DN#23948- ROSEDALE | 545.77 |
+| | | **Subtotal** | **545.77** |

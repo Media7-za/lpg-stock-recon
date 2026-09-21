@@ -237,6 +237,10 @@ function loadConfig(debtorCode) {
   // this date feed the open-invoice list/gate — e.g. to scope a statement to
   // the current year while an earlier period's reconciliation is unresolved.
   cfg.openInvoicesFromDate = cfg.openInvoicesFromDate || null;
+  // groupOpenInvoicesByMonth (optional): render the "Open invoices" table as
+  // one subsection per calendar month (invoice date), each with its own
+  // subtotal, instead of a single flat table.
+  cfg.groupOpenInvoicesByMonth = Boolean(cfg.groupOpenInvoicesByMonth);
   cfg.hideAccountLevelSection =
     cfg.hideAccountLevelSection ?? cfg.customerDueBasis === 'open_invoices';
   cfg.customerLayout = cfg.customerLayout || 'outstanding_open_invoices';
@@ -644,10 +648,40 @@ function main() {
     lines.push(`| **Balance due** | **${fmt(totalDue)}** |`);
   }
   lines.push('', '---', '', '## Open invoices', '');
-  lines.push('| Inv | Inv date | DN / ref | **Due (R)** |');
-  lines.push('| :--- | :--- | :--- | ---: |');
-  for (const inv of openInvoices) {
-    lines.push(`| ${inv.docno.replace(/^0+/, '') || inv.docno} | ${displayDate(inv.iso)} | ${inv.dn} | ${fmt(inv.due)} |`);
+  if (cfgForRun.groupOpenInvoicesByMonth) {
+    let groupLabel = null;
+    let groupRows = [];
+    const flushGroup = () => {
+      if (groupLabel === null) return;
+      lines.push(`### ${groupLabel}`, '');
+      lines.push('| Inv | Inv date | DN / ref | **Due (R)** |');
+      lines.push('| :--- | :--- | :--- | ---: |');
+      let groupSum = 0;
+      for (const inv of groupRows) {
+        groupSum = round2(groupSum + inv.due);
+        lines.push(`| ${inv.docno.replace(/^0+/, '') || inv.docno} | ${displayDate(inv.iso)} | ${inv.dn} | ${fmt(inv.due)} |`);
+      }
+      lines.push(`| | | **Subtotal** | **${fmt(groupSum)}** |`, '');
+    };
+    for (const inv of openInvoices) {
+      const label = new Date(`${inv.iso}T12:00:00`).toLocaleDateString('en-ZA', {
+        month: 'long',
+        year: 'numeric',
+      });
+      if (label !== groupLabel) {
+        flushGroup();
+        groupLabel = label;
+        groupRows = [];
+      }
+      groupRows.push(inv);
+    }
+    flushGroup();
+  } else {
+    lines.push('| Inv | Inv date | DN / ref | **Due (R)** |');
+    lines.push('| :--- | :--- | :--- | ---: |');
+    for (const inv of openInvoices) {
+      lines.push(`| ${inv.docno.replace(/^0+/, '') || inv.docno} | ${displayDate(inv.iso)} | ${inv.dn} | ${fmt(inv.due)} |`);
+    }
   }
   }
 
