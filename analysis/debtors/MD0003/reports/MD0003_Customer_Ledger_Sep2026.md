@@ -49,9 +49,3 @@ If any line does not match your records, please send your remittance advice or A
 ---
 
 *GAZ EXPRESS · Customer statement · Generated 21 September 2026*
-
----
-
-> **⚠ INTERNAL DOCUMENT — DO NOT SEND TO THE CUSTOMER AS-IS.** Per operator request, an "Open Invoices" section has been added above listing the 9 currently-open 2026 invoices, totalling **R27,572.72**. This does **not** reconcile with the **Amount due (R15,309.11)** stated at the top of this same statement — a **R12,263.61 gap**, currently under active investigation (`MD0003_Lifetime_Balance_Investigation_2026-09-17.md` §Addendum, `MD0003_TAG_COVERAGE_2026-09-21.md`, `MD0003_2026_Open_Invoices_Working.md`).
->
-> This account's `debtors:tag-check` gate is `BLOCKED` for exactly this reason (`OPEN_LIST_OVERSTATES_ACCOUNT`). Per `business_rules.md` §15: *"the open-invoice list must not go to the customer; the ERP balance total is still safe to quote"* until the gate clears. Sending this document as it now stands would show the customer two different, unreconciled totals on one statement — worse than sending neither. The **R15,309.11 balance-due figure remains PROVEN and safe on its own** (verified against the raw TXT running balance with zero divergence — see the full activity ledger in git history of this file, or regenerate via the account activity section removed in this revision); it is only the **Open Invoices section that is not yet safe to release**. Strip that section (or wait for the gap to close) before this goes out.
