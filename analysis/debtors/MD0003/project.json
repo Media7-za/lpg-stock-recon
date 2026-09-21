@@ -107,6 +107,10 @@
     {
       "date": "2026-09-21",
       "event": "Generated reports/MD0003_Customer_Ledger_Sep2026.md, matching the style of analysis/debtors/IVE001/reports/IVE001_Customer_Ledger_Apr2026.md per operator request - a plain chronological ledger (Balance brought forward + every Invoice/Crd Note/Payment line to date, running balance column), not the doctrine-heavy internal Statement of Account format. Covers 1 Jan-15 Sep 2026, opening R5,735.63 (PROVEN) to closing R15,309.11 (PROVEN, matches ERP CURRENT BALANCE header exactly at every one of 134 lines - verified against the raw TXT running balance with zero divergence). Deliberately omits the IVE001 template's 'Open delivery: [specific invoice]' summary line and any open-invoice breakdown, since this account's debtors:tag-check gate is BLOCKED (R12,263.61 over-statement) and itemising which delivery makes up the balance is exactly the claim that gate blocks - the ledger and balance-due figure themselves are safe to send (fully reconciled), the attribution of which invoice is 'the' open one is not. Added an internal-only footer note flagging this distinction, marked for removal before actual customer distribution."
+    },
+    {
+      "date": "2026-09-21",
+      "event": "Operator asked to modify MD0003_Customer_Ledger_Sep2026.md to add an Open Invoices section (the 9 items, R27,572.72). Added it as requested, replacing the vague 'Deliveries since last payment' summary line. This reintroduces the exact problem the document originally avoided: the statement now shows two unreconciled totals (Amount due R15,309.11 vs Open Invoices total R27,572.72, a R12,263.61 gap) on the same page. Rewrote the internal footer note to escalate from 'omit this for now' to an explicit do-not-send warning, naming the specific contradiction and pointing to the gap investigation docs, since sending it as-is would show the customer two conflicting totals - worse than showing neither. Balance-due figure and the activity ledger remain PROVEN and safe on their own; only the newly-added Open Invoices section is flagged as not release-ready."
     }
   ]
 }
