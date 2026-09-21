@@ -111,6 +111,10 @@
     {
       "date": "2026-09-21",
       "event": "Operator asked to modify MD0003_Customer_Ledger_Sep2026.md to add an Open Invoices section (the 9 items, R27,572.72). Added it as requested, replacing the vague 'Deliveries since last payment' summary line. This reintroduces the exact problem the document originally avoided: the statement now shows two unreconciled totals (Amount due R15,309.11 vs Open Invoices total R27,572.72, a R12,263.61 gap) on the same page. Rewrote the internal footer note to escalate from 'omit this for now' to an explicit do-not-send warning, naming the specific contradiction and pointing to the gap investigation docs, since sending it as-is would show the customer two conflicting totals - worse than showing neither. Balance-due figure and the activity ledger remain PROVEN and safe on their own; only the newly-added Open Invoices section is flagged as not release-ready."
+    },
+    {
+      "date": "2026-09-21",
+      "event": "Operator asked to remove the Account activity section from MD0003_Customer_Ledger_Sep2026.md. Removed the full 134-line transaction table, leaving Amount due, Summary, Open Invoices, and Queries. Updated the internal footer note's dangling reference to 'the activity table' (no longer in this file) to point to git history / the account-activity generation method instead, since the R15,309.11 balance-due figure's PROVEN status rests on that ledger reconstruction even though the table itself is no longer shown in this revision."
     }
   ]
 }
