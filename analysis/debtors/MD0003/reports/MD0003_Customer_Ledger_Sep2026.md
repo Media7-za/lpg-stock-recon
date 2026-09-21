@@ -10,7 +10,9 @@ Period: **1 January 2026 to 15 September 2026**
 
 | | Amount |
 | :--- | ---: |
-| **Balance due (as at 15 September 2026)** | **R 15,309.11** |
+| **Balance due (as at 15 September 2026)** | **R 27,572.72** |
+
+*Assumes an opening balance of R 0.00 (ASSUMED). Amount due = total open invoices below.*
 
 Please remit payment at your earliest convenience. If you have made a recent payment not yet reflected below, contact us with your remittance advice.
 
@@ -20,7 +22,7 @@ Please remit payment at your earliest convenience. If you have made a recent pay
 
 | Item | Detail |
 | :--- | :--- |
-| **Amount due** | **R 15,309.11** |
+| **Amount due** | **R 27,572.72** |
 | Last payment | **1 Sep 2026** — R 30,053.70 (settled the outstanding June delivery plus the full July billing month) |
 
 ---
