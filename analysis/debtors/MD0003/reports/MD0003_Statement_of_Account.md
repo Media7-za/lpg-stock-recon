@@ -45,4 +45,4 @@ Age is calculated from **invoice date** to 31 August 2026.
 | 53004 | 07 Sep 2026 | DN#24826-ROSEDALE | 5,709.61 |
 | 53019 | 07 Sep 2026 | DN#24972 | 4,440.15 |
 | 53138 | 15 Sep 2026 | DN#24853 | 3,599.99 |
-| | | **Total open (2026, no opening balance)** | **27,572.72** |
+| | | **Total open** | **27,572.72** |
