@@ -1,13 +1,17 @@
 {
   "debtorCode": "TAN002",
   "clientName": "TANDOOR THE CLAY OVEN",
-  "status": "on-hold",
-  "reconState": "pending",
+  "status": "active",
+  "reconState": "in-progress",
   "financials": {
-    "totalOutstanding": 3523.86,
-    "lastInvoiceDate": null,
-    "lastPaymentDate": null,
-    "agedDebt180Plus": 739.87
+    "totalOutstanding": 2052.39,
+    "lastInvoiceDate": "2026-08-20",
+    "lastPaymentDate": "2026-07-15",
+    "agedDebt180Plus": 0.00,
+    "erpTxtClosing": 2052.39,
+    "erpTxtClosingAsOf": "2026-08-20",
+    "erpTxtSource": "raw/TAN002CURRENT.TXT (CURRENT BALANCE header); chain-verified against raw/TAN002_2024.TXT → raw/TAN002_2025.TXT → raw/TAN002CURRENT.TXT B/F handoffs",
+    "erpTxtChainVerified": true
   },
   "collections": {
     "actionRequired": false,
@@ -16,12 +20,16 @@
     "deadlineDate": null,
     "nextAction": null,
     "nextActionDate": null,
-    "notes": "Not yet onboarded into the active portfolio (shared/data/portfolio_candidates.csv: in_portfolio=no, suggested_lane=defer, triage_tier=C). totalOutstanding and agedDebt180Plus are ASSERTED from that candidates list only — agedDebt180Plus is a proxy for the CSV's aged_120_plus column (739.87), not a verified 180+ breakdown. No ERP-anchored statement (§2) exists yet; see raw/README.md. status held at on-hold pending operator decision to activate this account."
+    "notes": "Operator supplied 3 DEBENQ statement exports this session (raw/TAN002_2024.TXT, raw/TAN002_2025.TXT, raw/TAN002CURRENT.TXT) covering 19/09/2023 to 20/08/2026 continuously. B/F chain ties exactly across all 3 files (2024 close R2,641.92 = 2025 B/F; 2025 close R16,828.85 = CURRENT B/F; CURRENT close R2,052.39 = CURRENT BALANCE header) — PROVEN §2 identity per DEBTORS_DOCTRINE.md; see reports/TAN002_Statement_Chain_2026-09-21.md. agedDebt180Plus is ASSERTED, not PROVEN: inferred from the running-balance dates in raw/TAN002CURRENT.TXT (entire R2,052.39 composed of invoices/credit notes dated 20/08/2026, 32 days old), not a FIFO/open-invoice aging run. Custody, SKU, and allocation lanes are NOT verified — no DATABASE_URL this session, so reconcile_debtor_v5_from_txt.mjs / validate_txt_db_coverage.mjs could not run; ingestGate intentionally absent (D19: absence = not-assessed for those scopes, never clearance). Previous totalOutstanding (R3,523.86) and agedDebt180Plus (R739.87) sourced from shared/data/portfolio_candidates.csv were a stale mid-period snapshot (matches the running balance after DOCNO 00051543 on 02/07/2026, before the 15/07/2026 payment) — superseded by this PROVEN anchor, not reconciled with it."
   },
   "history": [
     {
       "date": "2026-09-21",
       "event": "Folder scaffolded (config/raw/reports) per AGENTS.md layout. raw/TAN002_{DETRANS,STTRANS,2024,CURRENT}.TXT extracted verbatim from portfolio-wide ERP RAW DATA dumps (ACCNO=TAN002; 342/258/75/434 rows respectively — line-item exports, not a DEBENQ statement). No DEBENQ TAN002CURRENT.TXT statement export and no DATABASE_URL available this session, so no §2 ERP-anchored balance, ingestGate, or v5 reconciliation could be produced. status set to on-hold (matches candidates-list suggested_lane=defer); reconState pending. Not a collections-eligible account under D17/D18."
+    },
+    {
+      "date": "2026-09-21",
+      "event": "Operator supplied 3 DEBENQ account-enquiry TXT exports (2024, 2025, CURRENT periods). Renamed the prior line-item extracts to raw/TAN002_STOCKTXN_{DETRANS,STTRANS,2024,CURRENT}.TXT to free the TAN002_2024.TXT / TAN002CURRENT.TXT names for the real statements (no data lost — 2024 stock-txn extract regenerated identically from ERP RAW DATA/2024.TXT after an accidental overwrite). Verified B/F chain ties exactly across all 3 DEBENQ files end-to-end (19/09/2023 → 20/08/2026); status promoted on-hold→active, reconState pending→in-progress; financials.totalOutstanding/erpTxtClosing set to the PROVEN R2,052.39 anchor, superseding the stale portfolio_candidates.csv snapshot. Custody/SKU/allocation lanes and ingestGate remain unverified (no DATABASE_URL this session)."
     }
   ]
 }
