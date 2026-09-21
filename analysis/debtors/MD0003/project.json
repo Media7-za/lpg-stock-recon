@@ -103,6 +103,10 @@
     {
       "date": "2026-09-21",
       "event": "Operator asked to project a 2026 statement of open invoices only, with no opening balance, as a working baseline while the R12,263.61 gap remains under investigation. Re-ran debtors:tag-check (still BLOCKED, over-stated by R12,263.61, same 9 open items dated 08 Aug-15 Sep 2026, R27,572.72) to confirm the current state before building on it. Wrote reports/MD0003_2026_Open_Invoices_Working.md: no B/F line, itemizes only the 9 currently-open 2026 invoices, marked INTERNAL_ONLY per business_rules.md §15 (the gate is BLOCKED, so this must not go to the customer), and includes the gap reconciliation table (R3,273.10 identified / R4,973.79 checked-unresolved / ~R4,016.72 no lead) so the investigation has a stable reference without re-deriving the open list each time. Explicitly does not include the standalone invoice-38939 shortfall (Dec 2024) since that predates 2026."
+    },
+    {
+      "date": "2026-09-21",
+      "event": "Generated reports/MD0003_Customer_Ledger_Sep2026.md, matching the style of analysis/debtors/IVE001/reports/IVE001_Customer_Ledger_Apr2026.md per operator request - a plain chronological ledger (Balance brought forward + every Invoice/Crd Note/Payment line to date, running balance column), not the doctrine-heavy internal Statement of Account format. Covers 1 Jan-15 Sep 2026, opening R5,735.63 (PROVEN) to closing R15,309.11 (PROVEN, matches ERP CURRENT BALANCE header exactly at every one of 134 lines - verified against the raw TXT running balance with zero divergence). Deliberately omits the IVE001 template's 'Open delivery: [specific invoice]' summary line and any open-invoice breakdown, since this account's debtors:tag-check gate is BLOCKED (R12,263.61 over-statement) and itemising which delivery makes up the balance is exactly the claim that gate blocks - the ledger and balance-due figure themselves are safe to send (fully reconciled), the attribution of which invoice is 'the' open one is not. Added an internal-only footer note flagging this distinction, marked for removal before actual customer distribution."
     }
   ]
 }
