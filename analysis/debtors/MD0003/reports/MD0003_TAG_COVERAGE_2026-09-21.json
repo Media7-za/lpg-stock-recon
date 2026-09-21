@@ -1,0 +1,319 @@
+{
+  "debtor": "MD0003",
+  "generated_at": "2026-09-21T08:42:11.003Z",
+  "statement_txt": "analysis/debtors/MD0003/raw/Enquiry/DEBENQ_CURRENT.TXT",
+  "config_found": true,
+  "remittance_sources": 0,
+  "gate": "BLOCKED",
+  "blocking_reason": "OPEN_LIST_OVERSTATES_ACCOUNT",
+  "export_quality": "ALLOCATION_DETAIL_PRESENT",
+  "evidence": {
+    "basis": "PATTERN_ONLY",
+    "remittance_invoice_docs": 0,
+    "checks_run": [
+      "INVARIANT",
+      "STALENESS_ANOMALY"
+    ],
+    "checks_inert": [
+      "REMITTANCE_CONTRADICTION"
+    ],
+    "note": "No extracted remittance lines for this account (data/remittance_lines_*.csv), so the remittance-contradiction check could not run. Settlement claims here rest on payment patterns, business rules and operator ratification — see business_rules.md §15, authority order B."
+  },
+  "tagging": {
+    "settlement_rows": 162,
+    "tagged_rows": 152,
+    "tagged_pct": 93.8,
+    "credit_note": {
+      "rows": 80,
+      "tagged": 80,
+      "pct": 100
+    },
+    "payment": {
+      "rows": 82,
+      "tagged": 72,
+      "pct": 87.8
+    }
+  },
+  "counts": {
+    "likely_paid": 0,
+    "stale_open": 0,
+    "clear": 9,
+    "unassessable": 0
+  },
+  "invariant": {
+    "name": "Σ(open invoices) ≤ ERP CURRENT BALANCE",
+    "status": "BREACHED",
+    "overstated_by": 12263.61
+  },
+  "untagged_credits": [
+    {
+      "docno": "00044785",
+      "entry": "Payment",
+      "iso": "2023-10-02",
+      "dn": "TRANSF | STAT: 96",
+      "amount": -12838.37
+    },
+    {
+      "docno": "00037143",
+      "entry": "Payment",
+      "iso": "2025-02-03",
+      "dn": "TRANSF | STAT:112",
+      "amount": -44.74
+    },
+    {
+      "docno": "00037144",
+      "entry": "Payment",
+      "iso": "2025-02-03",
+      "dn": "TRANSF | STAT:112",
+      "amount": -889.56
+    },
+    {
+      "docno": "00042051",
+      "entry": "Payment",
+      "iso": "2025-11-01",
+      "dn": "TRANSF | STAT:121",
+      "amount": -469.87
+    },
+    {
+      "docno": "00042440",
+      "entry": "Payment",
+      "iso": "2025-11-28",
+      "dn": "TRANSF | STAT:121",
+      "amount": -1787.18
+    },
+    {
+      "docno": "00042440",
+      "entry": "Payment",
+      "iso": "2025-11-28",
+      "dn": "TRANSF | STAT:121",
+      "amount": -2252.18
+    },
+    {
+      "docno": "00044231",
+      "entry": "Payment",
+      "iso": "2026-05-04",
+      "dn": "TRANSF | STAT:126",
+      "amount": -15017.78
+    },
+    {
+      "docno": "00044972",
+      "entry": "Payment",
+      "iso": "2026-07-01",
+      "dn": "TRANSF | STAT:128",
+      "amount": -17311.6
+    },
+    {
+      "docno": "00045595",
+      "entry": "Payment",
+      "iso": "2026-08-03",
+      "dn": "TRANSF | STAT:129",
+      "amount": -14863.43
+    },
+    {
+      "docno": "00046021",
+      "entry": "Payment",
+      "iso": "2026-09-01",
+      "dn": "TRANSF | STAT:130",
+      "amount": -30053.7
+    }
+  ],
+  "untagged_credit_total": -95528.41,
+  "last_untagged_credit_date": "2026-09-01",
+  "stale_gap_days": 90,
+  "sum_open_invoices": 27572.72,
+  "header_balance": 15309.11,
+  "balance_bf": 52607.52,
+  "reconciliation_gap": -12263.61,
+  "ratified_closed": [
+    {
+      "doc": "49573",
+      "reason": "Paid via STAT:126 (ERP doc 44231, 04/05/2026). Remittance 01.05.2026.pdf batch total R15,017.78 = exact sum of 49573+49796+49905+50004+50013."
+    },
+    {
+      "doc": "49796",
+      "reason": "Paid via STAT:126 (ERP doc 44231, 04/05/2026). Remittance 01.05.2026.pdf batch total R15,017.78 = exact sum of 49573+49796+49905+50004+50013."
+    },
+    {
+      "doc": "49905",
+      "reason": "Paid via STAT:126 (ERP doc 44231, 04/05/2026). Remittance 01.05.2026.pdf batch total R15,017.78 = exact sum of 49573+49796+49905+50004+50013."
+    },
+    {
+      "doc": "50004",
+      "reason": "Paid via STAT:126 (ERP doc 44231, 04/05/2026). Remittance 01.05.2026.pdf batch total R15,017.78 = exact sum of 49573+49796+49905+50004+50013."
+    },
+    {
+      "doc": "50013",
+      "reason": "Paid via STAT:126 (ERP doc 44231, 04/05/2026). Remittance 01.05.2026.pdf batch total R15,017.78 = exact sum of 49573+49796+49905+50004+50013."
+    },
+    {
+      "doc": "50100",
+      "reason": "Paid via STAT:127 (ERP doc 44561, 01/06/2026). Remittance 01.06.2026.pdf names 50100 (R5,205.68) + 50234 + 50429 = R13,014.20 exact. ERP's own INVNO tagging on this payment mis-tagged the R5,205.68 slice as doc 50524 instead of 50100 — advice outranks ERP tagging (business_rules.md §15 Order A step 1 > step 4). Flagged for portfolio-wide mistag sweep, not just this account."
+    },
+    {
+      "doc": "50671",
+      "reason": "Paid via STAT:128 (ERP doc 44972, 01/07/2026). Remittance 01.07.2026.pdf names 50524+50671+50867+50886 = R17,311.60 exact. 50524 already excluded from the open list by ERP's (mistagged, see doc 50100 override) INVNO tag on STAT:127 — not double-closed here."
+    },
+    {
+      "doc": "50867",
+      "reason": "Paid via STAT:128 (ERP doc 44972, 01/07/2026). Remittance 01.07.2026.pdf names 50524+50671+50867+50886 = R17,311.60 exact."
+    },
+    {
+      "doc": "50886",
+      "reason": "Paid via STAT:128 (ERP doc 44972, 01/07/2026). Remittance 01.07.2026.pdf names 50524+50671+50867+50886 = R17,311.60 exact."
+    },
+    {
+      "doc": "50996",
+      "reason": "Paid via STAT:129 (ERP doc 45595, 03/08/2026). Remittance 01.08.2026.pdf names 50996+50998+51099+51398 = R14,863.43 exact. See MD0003_Remittance_Payment_45595.md."
+    },
+    {
+      "doc": "50998",
+      "reason": "Paid via STAT:129 (ERP doc 45595, 03/08/2026). Remittance 01.08.2026.pdf names 50996+50998+51099+51398 = R14,863.43 exact. See MD0003_Remittance_Payment_45595.md."
+    },
+    {
+      "doc": "51099",
+      "reason": "Paid via STAT:129 (ERP doc 45595, 03/08/2026). Remittance 01.08.2026.pdf names 50996+50998+51099+51398 = R14,863.43 exact. See MD0003_Remittance_Payment_45595.md."
+    },
+    {
+      "doc": "51398",
+      "reason": "Paid via STAT:129 (ERP doc 45595, 03/08/2026). Remittance 01.08.2026.pdf names 50996+50998+51099+51398 = R14,863.43 exact. See MD0003_Remittance_Payment_45595.md."
+    },
+    {
+      "doc": "51470",
+      "reason": "Paid via STAT:130 (ERP doc 46021, 01/09/2026). Remittance 01.09.2026.pdf names 51470+51655+51839+51923+52102+52219+52242 = R30,053.70 exact. See MD0003_Remittance_Payment_46021.md."
+    },
+    {
+      "doc": "51655",
+      "reason": "Paid via STAT:130 (ERP doc 46021, 01/09/2026). Remittance 01.09.2026.pdf names 51470+51655+51839+51923+52102+52219+52242 = R30,053.70 exact. See MD0003_Remittance_Payment_46021.md."
+    },
+    {
+      "doc": "51839",
+      "reason": "Paid via STAT:130 (ERP doc 46021, 01/09/2026). Remittance 01.09.2026.pdf names 51470+51655+51839+51923+52102+52219+52242 = R30,053.70 exact. See MD0003_Remittance_Payment_46021.md."
+    },
+    {
+      "doc": "51923",
+      "reason": "Paid via STAT:130 (ERP doc 46021, 01/09/2026). Remittance 01.09.2026.pdf names 51470+51655+51839+51923+52102+52219+52242 = R30,053.70 exact. See MD0003_Remittance_Payment_46021.md."
+    },
+    {
+      "doc": "52102",
+      "reason": "Paid via STAT:130 (ERP doc 46021, 01/09/2026). Remittance 01.09.2026.pdf names 51470+51655+51839+51923+52102+52219+52242 = R30,053.70 exact. See MD0003_Remittance_Payment_46021.md."
+    },
+    {
+      "doc": "52219",
+      "reason": "Paid via STAT:130 (ERP doc 46021, 01/09/2026). Remittance 01.09.2026.pdf names 51470+51655+51839+51923+52102+52219+52242 = R30,053.70 exact. See MD0003_Remittance_Payment_46021.md."
+    },
+    {
+      "doc": "52242",
+      "reason": "Paid via STAT:130 (ERP doc 46021, 01/09/2026). Remittance 01.09.2026.pdf names 51470+51655+51839+51923+52102+52219+52242 = R30,053.70 exact. See MD0003_Remittance_Payment_46021.md."
+    }
+  ],
+  "invoices": [
+    {
+      "doc": "52421",
+      "key": "52421",
+      "iso": "2026-08-08",
+      "dn": "DN#23948- ROSEDALE",
+      "due": 545.77,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 1,
+      "untagged_credit_pool_after_invoice": -30053.7
+    },
+    {
+      "doc": "52422",
+      "key": "52422",
+      "iso": "2026-08-08",
+      "dn": "DN#23948-EMPTY",
+      "due": 517.5,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 1,
+      "untagged_credit_pool_after_invoice": -30053.7
+    },
+    {
+      "doc": "52542",
+      "key": "52542",
+      "iso": "2026-08-14",
+      "dn": "DN#24270 - VICTORIA",
+      "due": 3827.91,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 1,
+      "untagged_credit_pool_after_invoice": -30053.7
+    },
+    {
+      "doc": "52720",
+      "key": "52720",
+      "iso": "2026-08-21",
+      "dn": "DN#24926-MKONDENI",
+      "due": 2551.94,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 1,
+      "untagged_credit_pool_after_invoice": -30053.7
+    },
+    {
+      "doc": "52757",
+      "key": "52757",
+      "iso": "2026-08-23",
+      "dn": "DN#228976",
+      "due": 2551.94,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 1,
+      "untagged_credit_pool_after_invoice": -30053.7
+    },
+    {
+      "doc": "52772",
+      "key": "52772",
+      "iso": "2026-08-25",
+      "dn": "DN#22897- VICTORIA",
+      "due": 3827.91,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 1,
+      "untagged_credit_pool_after_invoice": -30053.7
+    },
+    {
+      "doc": "53004",
+      "key": "53004",
+      "iso": "2026-09-07",
+      "dn": "DN#24826- ROSEDALE",
+      "due": 5709.61,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 0,
+      "untagged_credit_pool_after_invoice": 0
+    },
+    {
+      "doc": "53019",
+      "key": "53019",
+      "iso": "2026-09-07",
+      "dn": "DN#24972",
+      "due": 4440.15,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 0,
+      "untagged_credit_pool_after_invoice": 0
+    },
+    {
+      "doc": "53138",
+      "key": "53138",
+      "iso": "2026-09-15",
+      "dn": "DN#24853",
+      "due": 3599.99,
+      "risk": "CLEAR",
+      "basis": "Postdates the last long payment gap; consistent with the account’s live debt cluster.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 0,
+      "untagged_credit_pool_after_invoice": 0
+    }
+  ]
+}
