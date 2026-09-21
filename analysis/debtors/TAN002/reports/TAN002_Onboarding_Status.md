@@ -69,15 +69,29 @@ balance that would warrant it.
 
 ## 5. Next steps
 
-1. Obtain `DATABASE_URL` and run:
+1. `config/statement_v5.json` now exists (periodStart 2025-02-22, combinedBf
+   R16,828.85 PROVEN). `cylOpeningFinancial` and `cylOpeningQty` are
+   explicitly-flagged unverified placeholders (R0.00 / all-zero) — establish
+   real figures (DB-backed historical split, or an operator stocktake)
+   before trusting Part 1A/1B or Part 2.
+2. A **Part 1 only** v5 statement exists at
+   `reports/TAN002_Statement_Account_v5.md` — produced by manually
+   reproducing the generator's own DB-unavailable fallback logic (not
+   guessed; see its §0). Combined balance ties PROVEN to the R2,052.39
+   anchor; Part 1A/1B split is ASSERTED (regex-based); Part 2 is not
+   computed.
+3. Obtain `DATABASE_URL` **and** install dependencies (`node_modules`/`pg`
+   are missing in this checkout — the generator fails on both counts before
+   even attempting to connect), then run:
    ```bash
+   npm install
    npm run debtors:ingest-check -- --debtor TAN002
    node analysis/debtors/shared/scripts/reconcile_debtor_v5_from_txt.mjs --debtor TAN002
    ```
-2. Build `config/statement_v5.json` (B/F, `cylOpeningQty`, `skuRates`) —
-   see `TAN001/config/statement_v5.json` for the field shape. R16,828.85 as
-   at 22/02/2025 is the latest available period-start anchor.
-3. Re-evaluate `reconState` toward `complete` once custody/SKU/ingest are
+   This regenerates `reports/TAN002_Statement_Account_v5.md` with the
+   DB-verified Part 1A/1B split and full Part 2 custody — overwrite the
+   manually-reproduced version above once it runs.
+4. Re-evaluate `reconState` toward `complete` once custody/SKU/ingest are
    verified.
 
 ---
