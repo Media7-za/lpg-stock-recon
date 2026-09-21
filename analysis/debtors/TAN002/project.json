@@ -1,0 +1,27 @@
+{
+  "debtorCode": "TAN002",
+  "clientName": "TANDOOR THE CLAY OVEN",
+  "status": "on-hold",
+  "reconState": "pending",
+  "financials": {
+    "totalOutstanding": 3523.86,
+    "lastInvoiceDate": null,
+    "lastPaymentDate": null,
+    "agedDebt180Plus": 739.87
+  },
+  "collections": {
+    "actionRequired": false,
+    "actionType": null,
+    "dateSent": null,
+    "deadlineDate": null,
+    "nextAction": null,
+    "nextActionDate": null,
+    "notes": "Not yet onboarded into the active portfolio (shared/data/portfolio_candidates.csv: in_portfolio=no, suggested_lane=defer, triage_tier=C). totalOutstanding and agedDebt180Plus are ASSERTED from that candidates list only — agedDebt180Plus is a proxy for the CSV's aged_120_plus column (739.87), not a verified 180+ breakdown. No ERP-anchored statement (§2) exists yet; see raw/README.md. status held at on-hold pending operator decision to activate this account."
+  },
+  "history": [
+    {
+      "date": "2026-09-21",
+      "event": "Folder scaffolded (config/raw/reports) per AGENTS.md layout. raw/TAN002_{DETRANS,STTRANS,2024,CURRENT}.TXT extracted verbatim from portfolio-wide ERP RAW DATA dumps (ACCNO=TAN002; 342/258/75/434 rows respectively — line-item exports, not a DEBENQ statement). No DEBENQ TAN002CURRENT.TXT statement export and no DATABASE_URL available this session, so no §2 ERP-anchored balance, ingestGate, or v5 reconciliation could be produced. status set to on-hold (matches candidates-list suggested_lane=defer); reconState pending. Not a collections-eligible account under D17/D18."
+    }
+  ]
+}
