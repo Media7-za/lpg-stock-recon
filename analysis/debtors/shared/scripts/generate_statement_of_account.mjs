@@ -233,6 +233,10 @@ function loadConfig(debtorCode) {
   //   open_invoices — Amount due = Σ open invoice Due only; account-level
   //     residual stays internal (bridge still validated in config)
   cfg.customerDueBasis = cfg.customerDueBasis || 'erp_header';
+  // openInvoicesFromDate (optional): ISO date. When set, only rows on/after
+  // this date feed the open-invoice list/gate — e.g. to scope a statement to
+  // the current year while an earlier period's reconciliation is unresolved.
+  cfg.openInvoicesFromDate = cfg.openInvoicesFromDate || null;
   cfg.hideAccountLevelSection =
     cfg.hideAccountLevelSection ?? cfg.customerDueBasis === 'open_invoices';
   cfg.customerLayout = cfg.customerLayout || 'outstanding_open_invoices';
@@ -415,23 +419,33 @@ function main() {
   } = parseDebenqWithRunning(primaryPath);
 
   const useLpgStripped = cfgForRun.openInvoiceModel === 'lpg_stripped';
+  // openInvoicesFromDate: scope the open-invoice list (and its coverage gate)
+  // to rows on/after this ISO date, e.g. to draw a statement for the current
+  // year only while an earlier period's reconciliation is still open. Rows
+  // before the cutoff are dropped from consideration entirely — not asserted
+  // paid, just out of scope for this document. headerBalance/ageing/opening
+  // balance are unaffected (and not shown when customerDueBasis is
+  // 'open_invoices').
+  const openInvoiceRows = cfgForRun.openInvoicesFromDate
+    ? primaryRows.filter((r) => r.iso >= cfgForRun.openInvoicesFromDate)
+    : primaryRows;
   const openInvoices = useLpgStripped
-    ? computeOpenLpgInvoices(primaryRows, cfgForRun.closedInvoiceOverrides)
-    : computeOpenInvoices(primaryRows, cfgForRun.closedInvoiceOverrides);
+    ? computeOpenLpgInvoices(openInvoiceRows, cfgForRun.closedInvoiceOverrides)
+    : computeOpenInvoices(openInvoiceRows, cfgForRun.closedInvoiceOverrides);
   const openingBalance = openingBalanceForMonth(primaryRows, monthStartIso);
 
   // Invoice-tag coverage gate — never bill a customer for an invoice their own
   // remittance advice says they already paid. See debenq_open_invoices.mjs.
   const tagCoverage = useLpgStripped
     ? analyseLpgOpenCoverage({
-        rows: primaryRows,
+        rows: openInvoiceRows,
         openInvoices,
         headerBalance: primaryHeader,
         closedOverrides: cfgForRun.closedInvoiceOverrides,
         ratifiedAllocation: Boolean(cfgForRun.allocationGate?.status === 'RATIFIED'),
       })
     : analyseInvoiceTagCoverage({
-        rows: primaryRows,
+        rows: openInvoiceRows,
         openInvoices,
         headerBalance: primaryHeader,
         balanceBf: primaryBf,
