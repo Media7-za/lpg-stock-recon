@@ -24,6 +24,20 @@ mismatches), and the `BALANCE B/F` of each file ties exactly to the closing
 exactly to its last transaction row's balance — the header is not a separate
 claim, it is this chain's terminus.
 
+**Note on the period overlap (22/02/2025 vs 27/02/2025):** `TAN002CURRENT.TXT`'s
+first dated row (payment `00036865`, 22/02/2025) predates
+`TAN002_2025.TXT`'s own last row (27/02/2025) — the two "period" windows
+overlap by 5 days on the calendar, even though the B/F/close handoff
+between them ties exactly (R16,828.85 either way). Per operator-supplied
+context (2026-09-22, ASSERTED — not independently verifiable from the TXT
+or DB), payment `00036865` related to the account's carry balance as at
+17/02/2025; the 22/02/2025 date is most likely when the SpeedPoint
+terminal batch was posted into the ERP, not the underlying settlement
+date. Confirmed via Supabase MCP that `transaction_headers` for this doc
+is fully and cleanly `INVNO`-tagged across all 9 lines — this overlap does
+not affect the chain's arithmetic in any way, it only explains why the two
+files' calendar windows don't cut cleanly at a single date.
+
 **Conclusion:** R2,052.39 is a **PROVEN** §2 ERP anchor as at the last
 transaction date, **20 August 2026** (invoice DN#22891-EMPTY, DOCNO
 00052694). No arithmetic gap, no unexplained jump, continuous coverage from
