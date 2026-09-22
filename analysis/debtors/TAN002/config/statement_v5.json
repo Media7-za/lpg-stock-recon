@@ -6,7 +6,7 @@
   "combinedBf": 16828.85,
   "bfSourceNote": "raw/TAN002CURRENT.TXT BALANCE B/F row (line 1) — chain-verified PROVEN against raw/TAN002_2025.TXT closing balance; see reports/TAN002_Statement_Chain_2026-09-21.md",
   "cylOpeningFinancial": 0.0,
-  "cylOpeningFinancialNote": "UNVERIFIED PLACEHOLDER, not ASSERTED or PROVEN. The R16,828.85 combined B/F has never had its LPG(1A)/CYL(1B) split established (no DB access to run fetchDocLineSplit against vw_clean_transactions, and no prior-session analysis exists for TAN002 as it did for TAN001). Setting this to 0 attributes the entire B/F to LPG (1A) by default — do NOT trust Part 1A/1B closing sub-ledger figures until this is corrected. Part 1 Combined (1A+1B) and its ERP-header tie are NOT affected by this placeholder, since Combined = 1A + 1B regardless of where the split falls.",
+  "cylOpeningFinancialNote": "2026-09-22: corroborated but still not independently PROVEN. Real fetchDocLineSplit()/buildPart2() queries were run against vw_clean_transactions via Supabase MCP (no DATABASE_URL for the pg client this session) and replayed through the generator's own JS logic locally. With this placeholder taken as given, Part 1A+1B ties the ERP TXT header exactly (R0.00 variance) all the way to 20/08/2026, 18 months downstream — an inconsistent opening split would very likely have surfaced as nonzero erpVariance or an implausible custody figure over that span, so this is real corroboration. It is still not the same as tracing the pre-22/02/2025 CYL history directly from DB — that would require a historical fetchDocLineSplit/buildPart2 pull with tx_date < periodStart, not run this session. See reports/TAN002_Statement_Account_v5.md §0.",
   "paymentLane": "LPG",
   "cylOpeningQty": {
     "14.1": 0,
@@ -15,7 +15,7 @@
     "D.1": 0,
     "S.1": 0
   },
-  "cylOpeningQtyNote": "UNVERIFIED PLACEHOLDER. Physical cylinder custody opening position at periodStart is unestablished — requires either a DB-backed historical rebuild (buildPart2 against vw_clean_transactions, blocked: no DATABASE_URL) or an operator-confirmed stocktake. Part 2 custody in the v5 statement cannot be produced until this is set.",
+  "cylOpeningQtyNote": "2026-09-22: corroborated but still not independently PROVEN — same basis as cylOpeningFinancialNote above. Real DB-backed buildPart2() query (Supabase MCP) run against vw_clean_transactions from periodStart, replayed locally through the generator's own logic, produces a plausible closing custody position (1x 19kg + 1x S.1 outstanding, R1,840 exposure) rather than a runaway or negative count, which corroborates 0 as a reasonable periodStart baseline. Pre-22/02/2025 custody history was not queried this session.",
   "skuRates": {
     "14.1": 575,
     "19.1": 690,

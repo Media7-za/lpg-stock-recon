@@ -1,0 +1,56 @@
+{
+  "debtorCode": "TAN002",
+  "debtorName": "TANDOOR THE CLAY OVEN",
+  "period": {
+    "from": "2025-02-22",
+    "to": "2026-08-20"
+  },
+  "version": "v5",
+  "workspaceStatus": "pending_review",
+  "lastGeneratedAt": "2026-09-22T19:43:06.732Z",
+  "source": "analysis/debtors/TAN002/raw/TAN002CURRENT.TXT",
+  "financialPosition": {
+    "lpgGasDebt": 1362.39,
+    "cylinderFinancialBalance": 690,
+    "totalDebtorBalance": 2052.39,
+    "erpStatedBalance": 2052.39,
+    "erpVariance": 0,
+    "subLedgerVariance": 0
+  },
+  "custodyPosition": {
+    "totalCustodyExposure": 1840,
+    "lines": [
+      {
+        "sku": "19.1",
+        "label": "19kg",
+        "qty": 1,
+        "depositRate": 690,
+        "exposure": 690
+      },
+      {
+        "sku": "S.1",
+        "label": "S.1",
+        "qty": 1,
+        "depositRate": 1150,
+        "exposure": 1150
+      }
+    ]
+  },
+  "reconciliationPosition": {
+    "cylinderVariance": -1150,
+    "erpVariance": 0,
+    "subLedgerVariance": 0,
+    "exceptions": [
+      {
+        "type": "CUSTODY",
+        "basis": "ASSERTED",
+        "status": "open",
+        "description": "Part 1B financial vs Part 2 custody — check DB ingest vs TXT"
+      }
+    ]
+  },
+  "artifacts": {
+    "statementMarkdown": "analysis/debtors/TAN002/reports/TAN002_Statement_Account_v5.md",
+    "txtSource": "analysis/debtors/TAN002/raw/TAN002CURRENT.TXT"
+  }
+}
