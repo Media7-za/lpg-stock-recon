@@ -132,6 +132,45 @@ case. **Unexplained**, flagged as the same suspected pattern.
 
 ---
 
+## 3a. Addendum (2026-09-22, same day) — are these related to the R454.09/R739.87 float?
+
+Checked whether the 5 over-credited CNs are connected to the untagged
+R454.09 (6 Mar 2026) / R1,193.96 (21 Apr 2026) payments from
+`TAN002_R739.87_Float_Deep_Dive_2026-09-22.md`. **No relationship found,
+tested three ways:**
+
+| Total balance of the 5 over-credited CNs | Amount |
+| :--- | ---: |
+| Sum of the 5 CN amounts | -R12,040.50 |
+| Sum of the invoices they're tagged to | R7,912.00 |
+| **Total over-credit (the "excess")** | **R4,128.50** |
+
+1. **Arithmetic** — every subset sum (31 combinations) of the 5 over-credit
+   amounts (R598, R598, R517.50, R1,207.50, R1,207.50), and separately of
+   the 5 full CN amounts, checked against 454.09 and 739.87. Zero matches.
+2. **Coincidental balance landing** — the running balance immediately after
+   each of the 5 CNs: R11,252.66 / R695.52 / R15,906.08 / -R3,386.95 /
+   -R5,247.68. None near either figure.
+3. **Timing** — closest CN to the 6 Mar 2026 blank payment is 37 days
+   earlier (28/01/2026); the others are 127–612 days earlier.
+
+**Mechanically they can't be related either.** A mistagged CN still nets
+out somewhere in the ledger — confirmed directly by the one explained case
+above: CN `13780` landed on the wrong invoice (`47421`), but the *correct*
+invoice (`47430`) still closed exactly via a different CN + payment. Mistagged
+CNs are self-contained noise that cancels within their own document
+cluster; they can't leak cash forward into an unrelated later period. The
+R454.09/R1,193.96 gap is a different kind of defect — a payment with **no
+`INVNO` at all** — which is why it (and only it) shows up in the open
+balance.
+
+**Conclusion: two separate, unrelated data-quality issues in the same
+account** — CN mistagging (Jul 2024–Jan 2026, self-contained, zero net
+effect) and the untagged-payment gap (Mar–Apr 2026, the actual driver of
+today's open balance).
+
+---
+
 ## 4. What this means
 
 - **Aggregate balance unaffected.** All 5 mistagged/over-credited
