@@ -7,7 +7,7 @@
     "totalOutstanding": 2052.39,
     "lastInvoiceDate": "2026-08-20",
     "lastPaymentDate": "2026-07-15",
-    "agedDebt180Plus": 0.00,
+    "agedDebt180Plus": 0.0,
     "erpTxtClosing": 2052.39,
     "erpTxtClosingAsOf": "2026-08-20",
     "erpTxtSource": "raw/TAN002CURRENT.TXT (CURRENT BALANCE header); chain-verified against raw/TAN002_2024.TXT → raw/TAN002_2025.TXT → raw/TAN002CURRENT.TXT B/F handoffs",
@@ -66,6 +66,10 @@
     {
       "date": "2026-09-22",
       "event": "Operator stated payment 00036865 (22/02/2025, batch PC-76-17, SpeedPoint terminal) was related to the carry balance as at 17/02/2025 - ASSERTED, operator-supplied business context (bank/remittance record), not independently verifiable from the TXT or DB: queried transaction_headers for this doc and confirmed it is fully, cleanly tagged (9 lines, each INVNO-matched to a specific invoice: 39479/39758/39765/39954/40129/40325/40502/40585/40709, exact amounts, no tax-convention issue, no ambiguity) - no mention of '17/02/2025' or 'carry balance' anywhere in the DB record itself. This explains, without changing any figures, an oddity noted in TAN002_Statement_Chain_2026-09-21.md: this payment's 22/02/2025 date sits before raw/TAN002_2025.TXT's own last transaction (27/02/2025), which was previously described only as 'business-as-usual' without a real explanation - a bank-side settlement lag between the card terminal batch date and the ERP posting date is consistent with the operator's note. Payment 00036865 was already fully accounted for in every prior reconciliation this session; nothing about R2,052.39, R739.87, or R454.09 changes."
+    },
+    {
+      "date": "2026-09-22",
+      "event": "Operator flagged that INVNO/ref_no tags are unreliable as evidence of debtor intent, not just 'advisory rank' per doctrine but specifically likely ERP-backfilled: supporting evidence already gathered this session - payments tagged to invoices that did not exist yet at the payment's own date (49360, 40709/42427 fragments), and doc 00043562's header carrying ref_no='Alloc', a literal system placeholder, not a human-entered reference. Added explicit correction/caveat blocks to reports/TAN002_Outstanding_Balance_Investigation_2026-09-21.md, reports/TAN002_R739.87_Float_Deep_Dive_2026-09-22.md, and reports/TAN002_Credit_Note_Reconciliation_2026-09-22.md: every claim in those reports about WHICH specific invoice a payment/CN fragment relates to (the 00049971 vs 00050035 FIFO guess, the 47421/47430 'transposition' theory, the 40709/42574 spillover breakdown) is downgraded from ASSERTED to an unverified hypothesis about ERP-internal bookkeeping, not proof of actual payer intent. What is NOT downgraded: balance-arithmetic findings that never touched INVNO - the R2,052.39/R739.87 totals themselves, the 17/02/2025 true zero-point (payment 36865 vs the TAN002_2025.TXT running balance, exact to the cent), and the R1,338.79 residual left after payment 37780 on 27/03/2025 (also confirmed pure arithmetic: balance 11,770.14 before, -10,431.35 payment, 1,338.79 after - and this balance never returns to exactly 0.00 again anywhere in the rest of the export). Net effect: the account's TRUE last full clear-to-zero is 17/02/2025 (reconstructed via true value-date, not the ERP-posted date), one payment cycle earlier than 27/03/2025 where the first unrecovered residual (R1,338.79) appears - refining, not contradicting, the R739.87 deep-dive's conclusion that the account's permanent-carry era is recent (2025), not November-2025-plus as first (wrongly) claimed."
     }
   ]
 }

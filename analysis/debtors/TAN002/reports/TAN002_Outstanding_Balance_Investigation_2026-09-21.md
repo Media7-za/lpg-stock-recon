@@ -9,8 +9,27 @@ it's *made of*: which invoices remain unpaid, and why.
 exports to the `Invoice` row it names via the TXT's own `INVNO` field. This
 account's exports carry **no `"EXCLUDE:","ALLOCATION DETAIL"` header**
 (unlike `TAN001CURRENT.TXT`/`FIR001CURRENT.TXT.TXT`), so `INVNO` here is the
-ERP's real system allocation, not stripped — structural-rank evidence per
-`DEBTORS_DOCTRINE.md` §4, not a free-text guess.
+ERP's real system allocation, not a text heuristic I invented.
+
+---
+
+> **⚠ 2026-09-22 correction — `INVNO` is weaker evidence than this report
+> originally treated it as.** "Not stripped from the export" only proves
+> `INVNO` isn't an *export* artifact — it doesn't prove the value itself is
+> reliable. Direct evidence found later this session: payments are tagged to
+> invoices that don't exist yet at the payment's own date (e.g. a
+> 20/01/2026-dated payment tagged to invoice `49360`, raised 21/02/2026 — a
+> month later), and one payment batch (`00043562`) carries a header row with
+> `ref_no = "Alloc"`, a literal system placeholder, not a human-entered
+> reference. Together these indicate `INVNO`/`ref_no` is likely
+> **backfilled by an automated allocation process after the fact**, not a
+> real-time record of what the debtor's remittance actually said. It's
+> useful as a working hypothesis for which document a payment relates to,
+> but it is **not proof of actual payer intent** — downgrade every
+> `INVNO`-based claim below accordingly. Only the balance-arithmetic finding
+> in §1 (the `R2,052.39` identity itself) is unaffected; anything below
+> naming *which specific invoice* is open or closed is not. See
+> `TAN002_R739.87_Float_Deep_Dive_2026-09-22.md` for the full discussion.
 
 ---
 
@@ -62,11 +81,14 @@ certainly closes one of them. **Which one is not recorded in the source.**
 Every *other* multi-line payment batch in this ledger closes its invoices in
 ascending doc-number/date order (e.g. batch `00043067` on 20/01/2026 closes
 `048353→048538→048646→048693→048698→048722→048730`, strictly ascending).
-Applying that same observed pattern here (ASSERTED, not proven) points to
-**00049971 (28/03) closing and 00050035 (31/03) remaining open** — but this
-is circumstantial. Confirming it needs either DB-level allocation detail
-(`vw_clean_transactions`, blocked — no `DATABASE_URL` this session) or the
-STAT 125 remittance advice.
+Applying that same observed pattern here points to **00049971 (28/03)
+closing and 00050035 (31/03) remaining open** — but per the correction
+above, this is now read as a **weak, unverified guess about ERP-internal
+bookkeeping, not a claim about what the debtor actually paid for**.
+Confirming it needs the actual STAT 125 remittance advice or bank record —
+DB access (obtained later this session) did not resolve it either, since
+`ref_no` on that payment line is blank in the database too (see
+`TAN002_DB_CN_Tax_Convention_Bug_2026-09-22.md` §5).
 
 ## 4. The recurring R454.09 / R739.87 checkpoint — the more interesting finding
 

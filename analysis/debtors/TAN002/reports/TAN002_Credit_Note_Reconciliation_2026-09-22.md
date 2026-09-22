@@ -12,6 +12,27 @@ invoice's own full amount.
 
 ---
 
+> **⚠ 2026-09-22 correction (added after this report was first written) —
+> `INVNO` is weaker evidence than treated below.** Later this session,
+> direct evidence surfaced that `INVNO`/`ref_no` is likely **backfilled by
+> an automated ERP allocation process**, not entered live by a human against
+> the debtor's actual remittance: payments have been found tagged to
+> invoices that didn't exist yet at the payment's own date, and one document
+> (`00043562`) carries a header row with `ref_no = "Alloc"` — a system
+> placeholder, not a real reference. **What survives this correction:** the
+> 292/295 "exact match" and "5 over-credited" *counts* in the summary table
+> are still valid — they only measure whether the ERP's own bookkeeping is
+> internally self-consistent (does the tagged total match the tagged
+> invoice?), which doesn't require the tag to reflect genuine debtor intent.
+> **What doesn't survive:** §3's "data-entry slip" framing for the 5
+> over-credited cases implies a human keying error; given the backfill
+> finding, an allocation-algorithm quirk is at least as likely, and the
+> `47421`/`47430` "probable transposition" read (§3, §6) should be treated
+> as one unverified hypothesis among others, not the most likely explanation
+> it was originally presented as.
+
+---
+
 ## Summary — 295 invoices, 2023–2026
 
 | Category | Count | What it means |
@@ -112,10 +133,12 @@ same reference text. `47430` itself is *also* separately closed (via CN
 `13781` + a R517.50 payment fragment — see §2's row for 47430), so in
 aggregate both invoices net out correctly; it's the **per-document
 attribution** that's scrambled. `47421` and `47430` differ by one
-transposed-looking digit pair — the most likely explanation is an `INVNO`
-data-entry slip in the source ERP between two adjacent same-day documents.
-**ASSERTED, not proven** — ties out numerically and narratively, but no
-DB-level allocation record confirms it.
+transposed-looking digit pair, which reads like a data-entry slip — but per
+the correction above, an allocation-algorithm quirk (rather than a human
+keying error) is at least as plausible given `INVNO` now looks
+ERP-backfilled generally. **Unverified either way** — ties out numerically
+and narratively, but no DB-level allocation record or remittance advice
+confirms the actual mechanism.
 
 ### 48980 (28/01/2026)
 
@@ -183,10 +206,13 @@ today's open balance).
   reported as genuinely unresolved rather than force-fit to a theory.
 - **Same class of issue as the R454.09/R1,193.96 untagged payments**
   already found in `TAN002_R739.87_Float_Deep_Dive_2026-09-22.md` — this
-  account's `INVNO` tagging is very good (99%+ correct across 295 invoices
-  and dozens of credit notes) but not perfect, and the errors cluster
-  around same-day multi-document batches where two documents share very
-  similar reference text.
+  account's `INVNO` tagging is internally self-consistent 99%+ of the time
+  (295 invoices, dozens of credit notes: the tagged amounts sum correctly),
+  but per the correction added above, "self-consistent" is not the same
+  claim as "reflects genuine debtor intent" — the errors cluster around
+  same-day multi-document batches where two documents share very similar
+  reference text, consistent with either a human slip or an allocation
+  algorithm picking the wrong sibling.
 
 ## 5. Next steps
 
@@ -201,6 +227,6 @@ for those dates — not available from the TXT export alone.
 
 | Statement | Reopens if |
 | :--- | :--- |
-| 47421/47430 is a probable INVNO transposition | DB allocation detail shows CN 13780 genuinely belongs to 47421 as tagged |
+| 47421/47430 mismatch has an ERP-side explanation (transposition or algorithm quirk) — unverified | DB allocation detail or remittance advice confirms which invoice CN 13780 actually relates to |
 | 33750, 36139, 45078, 48980 are unexplained | A wider search (DB, remittance paperwork) finds a matching sibling document |
 | No impact on the PROVEN R2,052.39 balance | Any evidence surfaces that one of these CNs was never actually applied in the real cash ledger |
