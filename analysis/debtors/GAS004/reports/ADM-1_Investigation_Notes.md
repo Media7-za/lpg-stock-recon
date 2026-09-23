@@ -149,11 +149,29 @@ This is **minor and expected** under Rule 6 (ERP Header Cross-Check). The +0.01 
 
 ---
 
-## Reference Files
-- **Raw Data:** `analysis/debtors/GAS004/raw/DEBENQ_CURRENT.TXT`
+## Reference Files & Analysis Slices
+
+### Primary Investigation Files
+- **Raw ERP Data:** `analysis/debtors/GAS004/raw/DEBENQ_CURRENT.TXT`
 - **Statement Report:** `analysis/debtors/GAS004/reports/GAS004_Statement_Account_v5.md`
+- **Investigation Notes:** `analysis/debtors/GAS004/reports/ADM-1_Investigation_Notes.md` (this file)
 - **Project Metadata:** `analysis/debtors/GAS004/project.json`
-- **Business Rules:** `analysis/debtors/shared/docs/business_rules.md` (Rule 3, Rule 6, Rule 8b)
+
+### Bank Reconciliation Analysis Slice (Phase 1)
+- **Analysis Script:** `analysis/debtors/GAS004/scripts/bank_reconciliation_analysis.mjs`
+- **Analysis Report:** `analysis/debtors/GAS004/reports/Bank_Reconciliation_Analysis.md`
+- **Data Export:** `analysis/debtors/GAS004/data/ud_payment_bank_matches.csv`
+
+This slice identifies:
+- 2 stale undeposited receipts (R-4,755.04, 1-2 years old)
+- 1 suspected duplicate entry (R-2,712.96, Jul 30 & Aug 3 2026)
+- Age analysis for all 10 UD entries
+
+### Business Rules & Doctrine
+- **Rule 3:** Debt Partitioning (unallocated payments pooling)
+- **Rule 6:** ERP Header Cross-Check (header/items tieout)
+- **Rule 8b:** CSV Ground Truth sorting enforcement
+- **Full documentation:** `analysis/debtors/shared/docs/business_rules.md`
 
 ---
 
