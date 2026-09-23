@@ -7,13 +7,13 @@
 
 ## Executive Summary
 
-GAS004's ERP account balance discrepancy resolves to exactly 10 unallocated/unapplied payment (UD) rows totaling **R-10,180.95**. These represent:
+GAS004's ERP account balance discrepancy resolves to exactly 10 **undeposited payments (UD)** — receipts captured in the ERP but **not yet posted to the bank ledger** — totaling **R-10,180.95**. These represent:
 
-- **Historical unallocated:** R-4,755.04 (2024-2025 entries, 1-2 years old)
-- **Recent duplicates:** R-5,425.92 (July-August 2026, identical amounts)
+- **Stale receipts never deposited:** R-4,755.04 (2024-2025 entries, 1-2 years old)
+- **Duplicate receipt entries:** R-5,425.92 (July-August 2026, identical amounts)
 - **Rounding residual:** R-0.01 (reversal mismatch)
 
-**Key Finding:** Two July-August 2026 UD Payment entries are identical in amount (both -2,712.96) with successive dates (30 July → 3 August), suggesting possible duplication rather than independent payments.
+**Key Finding:** Two July-August 2026 UD Payment entries are identical in amount (both -2,712.96) on successive dates (30 July → 3 August), **almost certainly a duplicate receipt entry for a single bank deposit** that was recorded twice in the ERP.
 
 ---
 
@@ -38,47 +38,62 @@ GAS004's ERP account balance discrepancy resolves to exactly 10 unallocated/unap
 
 ---
 
-## Hypothesis 1: Historical Stale Unallocated Payments (Entries #1-2)
+## Hypothesis 1: Stale Undeposited Receipts (Entries #1-2)
 
-**R-4,755.04 from 2024-2025 payments remain unallocated**
+**R-4,755.04 from 2024-2025 receipts were never deposited to the bank**
 
 ### Evidence
-- Both have invoice references (InvNos 00033041 and 00042102)
 - Both are > 1 year old (July 2024, April 2025)
+- Both reference customer invoices (InvNos 00033041 and 00042102)
+- Both still sit as "UD" (undeposited) in the ERP, meaning no bank posting ever occurred
 - Neither appears in the 2026 statement segment
 
-### Questions to investigate
-1. **Do these invoice references still exist in the database?**
-   - Query: `SELECT doc_no, entry_type, tx_date FROM transaction_headers WHERE account_no='GAS004' AND doc_no IN ('00033041', '00042102')`
-2. **Have the corresponding invoices been fully paid off elsewhere?**
-   - These might represent "advance payments" or "pre-payments" against future invoices
-3. **Why are they classified as "Ud Paymnt" if they're linked to invoices?**
-   - Rule 3 (Debt Partitioning) allows unallocated payments to pool; these may be legitimately unmatched despite the invoice reference
+### Critical Questions
+1. **Are these checks/payment instruments still valid?**
+   - Checks dated 2024 are likely stale and uncashable
+   - Bank transfer confirmations may be long since expired
+2. **Were these receipts lost or misfiled?**
+   - If the physical check/receipt still exists, has it been deposited since the ERP entry?
+   - If the deposit slip was never created, is the cash still in a petty cash box?
+3. **Should these be reversed as unrecoverable?**
+   - At 1-2 years old, these likely need to be written off as bad debts or lost receipts
+   - A negative UD entry reversal would clear the ERP balance
 
 ---
 
-## Hypothesis 2: July-August 2026 Duplication (Entries #9-10)
+## Hypothesis 2: Duplicate Receipt Entry (Entries #9-10)
 
-**Two entries with identical amount (-2,712.96) on successive dates**
+**Two identical-amount undeposited receipts on successive dates — almost certainly a data-entry error**
 
 ### Evidence
 ```
-Entry #9:  30/07/2026  DocNo 00045412  InvNo 00052202  Amount -2,712.96
-Entry #10: 03/08/2026  DocNo 00045484  InvNo 00052262  Amount -2,712.96
+Entry #9:  30/07/2026  DocNo 00045412  InvNo 00052202  Amount -2,712.96  (UD payment)
+Entry #10: 03/08/2026  DocNo 00045484  InvNo 00052262  Amount -2,712.96  (UD payment)
 ```
 
-- Identical amount to the cent
-- InvNos differ (00052202 vs 00052262) — different documents
-- Dates are 4 calendar days apart
-- Both remain "unallocated" (not reversed by later entries)
+- **Identical amount to the cent** (not a coincidence)
+- InvNos differ (00052202 vs 00052262) — but this doesn't mean different payments
+- Dates are 4 calendar days apart — likely a delayed correction attempt or duplicate data entry
+- Both remain undeposited (still "UD" status)
+
+### Probable Root Cause
+A single bank deposit of **R-2,712.96 was received on or around July 30, 2026**, and was:
+1. Entered once with InvNo 00052202 on July 30
+2. **Re-entered with a different InvNo (00052262) on August 3** — possibly:
+   - As a correction attempt that didn't void the original
+   - As a duplicate entry by a different clerk
+   - As a reconciliation adjustment that was never reversed
+
+### Critical Action
+**One of these two entries must be reversed immediately.** They represent the same physical bank deposit recorded twice, which:
+- Overstates the UD balance by R-2,712.96
+- Blocks the account from reconciliation
+- Will cause bank statement mismatch when the actual R-2,712.96 deposit posts (the duplicate entry will appear unexplained)
 
 ### Questions to investigate
-1. **Is this a PDP-31 fingerprint-duplication pattern?**
-   - Query: `SELECT doc_no, entry_type, tx_date, COUNT(*) FROM transaction_headers WHERE account_no='GAS004' AND doc_no IN ('00045412', '00045484') GROUP BY doc_no, entry_type, tx_date HAVING COUNT(*) > 1`
-   - If both exist with identical amounts, check `transaction_items` for line-level duplication
-2. **Or are these intentionally two separate customer payments on different dates?**
-   - Check payment reference/memo fields on both doc_no entries to see if they're linked (e.g., same bank reference)
-3. **Do the corresponding invoices (00052202, 00052262) exist and tie to the same customer issue?**
+1. **Which entry is correct?** (likely the first: DocNo 00045412, July 30)
+2. **Can we find the actual bank deposit record?** (check July 30 bank reconciliation in the GL)
+3. **Who entered DocNo 00045484 on August 3, and why?** (may reveal if it was intentional or a data-entry error)
 
 ---
 
@@ -104,26 +119,33 @@ This is **minor and expected** under Rule 6 (ERP Header Cross-Check). The +0.01 
 
 ## Investigation Checklist
 
-### Phase 1: Database Verification (Requires Supabase Access)
-- [ ] Query `transaction_headers` for all 10 doc_no entries; confirm entry_type and amounts
-- [ ] For entries #1-2 (2024-2025): Verify invoice doc_nos 00033041, 00042102 exist; check their aging
-- [ ] For entries #9-10 (July-August 2026): Check for line-item duplication in `transaction_items`
-- [ ] For entries #3-8 (reversed pairs): Confirm pairs appear in both headers and items with correct amounts
+### Phase 1: Bank Reconciliation (URGENT)
+- [ ] **Jul-Aug duplicates (R-5,425.92):** Pull the actual July 2026 & August 2026 bank reconciliation / GL posting
+  - Was R-2,712.96 actually deposited once or twice?
+  - If once, which of the two UD entries (DocNo 00045412 vs 00045484) matches the real deposit?
+  - If not yet deposited, which entry should be reversed?
+- [ ] **Stale receipts (R-4,755.04):** Check July 2024 & April 2025 bank statements
+  - Were the R-3,000 and R-1,755.04 deposits ever posted to the bank?
+  - If not, are the original checks/payment instruments still in the petty cash or lost?
 
-### Phase 2: Invoice Tieout (ERP Reconciliation)
-- [ ] Retrieve full DTRX/H-021 fresh DEBENQ/DTRX export for GAS004 through current date (currently queued)
-- [ ] Compare 2024-2025 payment references against original delivery notes/sales orders
-- [ ] For July-August duplicates, check whether both payment doc_nos appear on the same H-021 export or if one is from an older file
+### Phase 2: ERP Data Correction (Once Bank Truth is Established)
+- [ ] For Jul-Aug duplicates: **Reverse the duplicate entry** (likely DocNo 00045484 on Aug 3) via a reversing UD Paymnt entry
+  - Document the reversal as "Duplicate receipt correction — real deposit was July 30, DocNo 00045412"
+  - After reversal, the UD balance should drop from R-10,180.95 to R-7,468.00
+- [ ] For stale receipts (R-4,755.04): Decide per bank findings:
+  - If deposits never posted: create reversing UD entries (dated current date) to write off as uncollected
+  - If deposits eventually posted: create a positive UD entry to net the original negative out
 
 ### Phase 3: Customer Communication
-- [ ] Determine if GAS004 has been notified of the R-4,755.04 stale unallocated balance
-- [ ] Check whether customer disputes these payments or acknowledges them as valid but misallocated
-- [ ] If July-August duplication is real, determine which payment customer actually made and which is the erroneous re-entry
+- [ ] Notify GAS004 of the R-4,755.04 undeposited receipts from 2024-2025
+  - Ask: "Did you send checks/transfers on these dates? Are they still valid, or should we treat them as cancelled?"
+- [ ] If Jul-Aug entries both represent real payments from the customer, clarify which date/amount is correct
+  - Otherwise, explain that we found a duplicate entry and are correcting it
 
-### Phase 4: ERP Action (If Duplicated)
-- [ ] If PDP-31-style duplication is confirmed, apply dedup migration (after human sign-off)
-- [ ] If entries are intentional (two real payments), document the customer reason and leave as-is
-- [ ] For 2024-2025 stale entries, decide: allocate to open invoices, reverse, or refund
+### Phase 4: Reconciliation Cleanup
+- [ ] Once UD entries are corrected, regenerate GAS004_Statement_Account_v5.md
+  - The running balance and header CURRENT BALANCE variance should narrow significantly
+- [ ] Update project.json with new UD balance and status (awaiting customer response on stale receipts)
 
 ---
 
