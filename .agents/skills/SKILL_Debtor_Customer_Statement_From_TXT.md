@@ -205,6 +205,33 @@ npm run debtors:customer-statement -- --debtor TWK002 --as-at 2026-08-11 --snaps
 Auto-versioning: if `2026-08-11_v1` exists, the next run creates `_v2`, etc. Override with
 `--snapshot-version v1` only when re-capturing deliberately.
 
+## 3.3 Optional config: scoping to a period, grouping by month
+
+Added 2026-09-21 (MD0003) — two opt-in `config/statement_of_account.json` fields,
+default off, no effect on an account that doesn't set them:
+
+- **`openInvoicesFromDate`** (ISO date) — drops every row **before** this date
+  from the open-invoice list and its coverage gate, entirely. This is a scope cut,
+  not a settlement claim: excluded rows are not marked paid, just left off this
+  document. Use it to draw a statement for the current period only while an
+  earlier period's reconciliation (an unratified month, a standing-credit origin,
+  etc.) is still open — see `analysis/debtors/MD0003/config/statement_of_account.json`
+  and `MD0003_Open_Invoices.md` for the worked example (statement scoped to
+  FY2026; the pre-2026 gap stays in its own report, untouched). Combine with
+  `customerDueBasis: open_invoices` so no opening-balance/account-level line
+  leaks the excluded period back onto the customer document.
+  **Expect the invariant gate to BLOCK** when the scoped Σ open invoices is
+  compared against the full-account ERP header — that comparison is no longer
+  meaningful once you've cut the period, and `--force` is required. Record why in
+  `allocationGate.note`, same discipline as any other `--force`.
+- **`groupOpenInvoicesByMonth`** (bool) — renders the `## Open invoices` table as
+  one subsection per calendar month (invoice date), each with its own subtotal,
+  instead of one flat table. Presentation only; does not change any figure.
+
+Both live in `generate_statement_of_account.mjs`; see MD0003's config for a
+worked `closedInvoiceOverrides` set built from `payment_pattern_overrides.json`
+evidence rather than assumed from the date cut alone.
+
 ## 4. Scripts
 
 | Script | Role |
