@@ -1,0 +1,121 @@
+{
+  "generated_by": "analysis/debtors/shared/scripts/render_skill_registry.mjs",
+  "generated_at": "2026-09-29T12:14:38.381Z",
+  "registry_version": "1.0.0",
+  "registry_status": "PROPOSED — NOT RATIFIED",
+  "totals": {
+    "declared": 27,
+    "discovered_on_disk": 27,
+    "roots": 5,
+    "auto_loadable": 19,
+    "without_frontmatter": 8
+  },
+  "by_root": {
+    ".agents/skills": 21,
+    "analysis/skills": 2,
+    ".claude/skills": 1,
+    "docs/skills": 1,
+    "analysis/debtors": 2
+  },
+  "by_status": {
+    "active": 17,
+    "unregistered": 8,
+    "duplicate": 2
+  },
+  "by_kind": {
+    "orchestrator": 4,
+    "worker": 4,
+    "generator": 6,
+    "gate": 2,
+    "human-role": 3,
+    "account-local": 2,
+    "role-prompt": 5,
+    "reference": 1
+  },
+  "gates": {
+    "PATH_EXISTS": {
+      "failures": 0,
+      "warnings": 0
+    },
+    "NO_ORPHAN_FILES": {
+      "failures": 0,
+      "warnings": 0
+    },
+    "NAME_UNIQUE": {
+      "failures": 0,
+      "warnings": 1
+    },
+    "FRONTMATTER_MATCH": {
+      "failures": 0,
+      "warnings": 0
+    },
+    "SLICE_IDS_VALID": {
+      "failures": 0,
+      "warnings": 0
+    },
+    "SCRIPT_TARGETS_VALID": {
+      "failures": 0,
+      "warnings": 0
+    }
+  },
+  "failures": [],
+  "warnings": [
+    {
+      "gate": "NAME_UNIQUE",
+      "detail": "name \"lsr-pm\" declared by 2 records (pipeline.pm.full, pipeline.pm.short) — acknowledged, awaiting operator decision D2"
+    }
+  ],
+  "skills_without_frontmatter": [
+    "analysis/debtors/FAM000/docs/FAM000_reconciliation_skill.md",
+    "analysis/debtors/JEN001/docs/JEN001_reconciliation_skill.md",
+    ".agents/skills/SKILL_PM_Agent.md",
+    ".agents/skills/SKILL_QA_Agent.md",
+    ".agents/skills/SKILL_Coding_Agent.md",
+    ".agents/skills/SKILL_Ticket_Architect.md",
+    "docs/skills/erp_price_maintenance_agent.md",
+    ".agents/skills/TDR-001_Platform_Architecture_ERPNext.md"
+  ],
+  "slice_coverage": {
+    "slices_claimed": [
+      "allocation.edges",
+      "allocation.report",
+      "balance.bridge",
+      "creditor.ingest.coverage",
+      "creditor.v5.statement",
+      "customer.soa",
+      "customer.soa.open_invoices",
+      "d17.collections",
+      "erp.freshness",
+      "event.ledger",
+      "fixture.v4",
+      "fixture.v5",
+      "payment.pattern",
+      "portfolio.action_prompts",
+      "portfolio.dashboard",
+      "portfolio.register",
+      "statement.v4.composed",
+      "statement.v5.composed",
+      "tag.coverage",
+      "turn.brief",
+      "turn.manifest",
+      "txt.parse",
+      "v4.header",
+      "v4.part1.financial",
+      "v4.part2.custody",
+      "v4.position.summary",
+      "v5.bridge",
+      "v5.part1a.lpg",
+      "v5.part1b.cyl",
+      "v5.part2.custody",
+      "v5.position.summary",
+      "v5.ratification"
+    ],
+    "slices_unclaimed": [
+      "ingest.coverage",
+      "onboarding.status",
+      "settlement.discount",
+      "v4.part1.financial.month",
+      "v4.part2.custody.month"
+    ]
+  }
+}
