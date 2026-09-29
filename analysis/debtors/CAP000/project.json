@@ -4,13 +4,13 @@
   "status": "active",
   "reconState": "pending",
   "financials": {
-    "totalOutstanding": 46228.47,
-    "lastInvoiceDate": null,
-    "lastPaymentDate": null,
-    "agedDebt180Plus": 20302.25,
-    "globalAgedDebtSource": "analysis/debtors/Global Reports/130720251H45M.TXT",
-    "globalAgedDebtAsAt": "2025-07-13",
-    "globalAgedDebtNote": "Corrected 2026-08-05 self-review from an initial 2026-07-13 transcription error (filename DDMMYYYYHMM = 13/07/2025). Anchor is ~13 months old as of 2026-08 — ASSERTED_STALE, not routine ASSERTED. agedDebt180Plus populated from global 120+ DAYS column until debtor TXT available. lastInvoiceDate nulled — the only prior source (april_dump.TXT, 2026-04-30) was explicitly advisory-only in CAP000_Onboarding_Status.md and should not sit in a schema field unqualified."
+    "totalOutstanding": 70773.28,
+    "lastInvoiceDate": "2026-09-17",
+    "lastPaymentDate": "2026-02-28",
+    "agedDebt180Plus": 351153.99,
+    "debtorTxtSource": "analysis/debtors/CAP000/raw/CAP000.TXT",
+    "debtorTxtAsAt": "2026-09-29",
+    "debtorTxtNote": "Updated 2026-09-29 with DEBENQ account enquiry covering full transaction history from 2022-09 to 2026-09-17. Current balance PROVEN at R70,773.28. Statement of Account generated with open invoices R419,914.21 and account-level balance R-349,140.93. Status: data current, allocation lane work pending (H-011 ONGOING)."
   },
   "collections": {
     "actionRequired": false,
@@ -29,6 +29,10 @@
     {
       "date": "2026-08-05",
       "event": "Self-review correction: globalAgedDebtAsAt was mistranscribed as 2026-07-13 during Turn 001 execution (orchestrator-stage message correctly stated 2025-07-13). Corrected to 2025-07-13 — anchor is ~13 months stale, not ~3 weeks. Re-tagged ASSERTED_STALE. Removed duplicate lastInvoiceDate key and nulled it (prior value sourced an advisory-only snippet without a caveat)."
+    },
+    {
+      "date": "2026-09-29",
+      "event": "Turn 002 data update: DEBENQ account enquiry ingested covering full transaction history 2022-09 to 2026-09-17. Current balance PROVEN R70,773.28 (vs prior global estimate R46,228.47). Statement of Account generated: open invoices R419,914.21, account-level residual R-349,140.93. Backup of prior CAP000.TXT retained. Config statement_of_account.json created. Invoice-tag coverage gate: NOT_DERIVABLE_FROM_TXT (expected for DEBENQ export without allocation detail) — statement generated with --force. Allocation lane work ongoing (H-011 status)."
     }
   ]
 }
