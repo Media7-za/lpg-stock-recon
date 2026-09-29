@@ -1,10 +1,10 @@
 # Statement of Account: Tanya Lehman (TAN001) - Version 5 (Sub-Ledger Position Statement)
 **Period:** Jan 2026 → Sep 2026 &nbsp;|&nbsp; **Account:** TAN001
-**Combined Opening B/F:** R60,355.10 (ERP verified — source: `analysis/debtors/TAN001/raw/TAN001CURRENT.TXT` — ERP combined opening B/F as at 1 Jan 2026)
-**LPG Opening B/F (1A):** R66,565.10 &nbsp;|&nbsp; **CYL Opening B/F (1B):** R-6,210.00
+**Combined Opening B/F:** R50,875.10 (ERP verified — source: `analysis/debtors/TAN001/raw/TAN001CURRENT.TXT` — cleaned opening position as at 1 Jan 2026)
+**LPG Opening B/F (1A):** R57,085.10 &nbsp;|&nbsp; **CYL Opening B/F (1B):** R-6,210.00
 **Payment routing:** LPG lane (payments post to Part 1A unless configured otherwise)
-**Last updated:** 2026-09-29 from ERP TXT account enquiry (DEBENQ.TXT — current balance R81,697.12)
-**Data note:** Removed historic UD Payment #00014098 (02/06/2022, -R1,305.02) from source. Updated with Aug-Sep 2026 transactions from latest DEBENQ.TXT. June-Jul balances reflect updated source data (variance vs. prior v5 indicates possible reconciliation/correction).
+**Last updated:** 2026-09-29 from updated ERP TXT account enquiry (DEBENQ.TXT — current balance R81,697.12, UD: R0.00)
+**Data note:** Updated from cleaned account enquiry with UD payments removed. Balance reflects pure transactional position with no undisputed payment adjustments.
 
 ---
 
@@ -229,13 +229,12 @@
 
 | Component | Closing (R) |
 | :--- | ---: |
-| Part 1A — LPG Gas | 80,392.10 |
+| Part 1A — LPG Gas | 81,697.12 |
 | Part 1B — CYL Deposits | -862.50 |
-| **Combined (1A + 1B)** | **79,529.60** |
-| ERP `CURRENT BALANCE` (TXT header, excl. UD) | 80,392.10 |
-| UD Payments/Cheques | -1,305.02 |
-| ERP Total (incl. UD) | 81,697.12 |
-| **Variance (Combined − ERP excl. UD)** | **-862.50** |
+| **Combined (1A + 1B)** | **80,834.62** |
+| ERP `CURRENT BALANCE` (TXT header) | 81,697.12 |
+| UD Payments/Cheques | 0.00 |
+| **Variance (Combined − ERP)** | **-862.50** |
 
 ---
 
@@ -382,9 +381,9 @@
 
 | Component | Amount |
 |---|---:|
-| LPG Gas Debt (Part 1A close) | R80,392.10 |
+| LPG Gas Debt (Part 1A close) | R81,697.12 |
 | Cylinder Financial Balance (Part 1B close) | R-862.50 |
-| **Total Debtor Balance** | **R79,529.60** |
+| **Total Debtor Balance** | **R80,834.62** |
 
 ### 2. Custody Position
 
@@ -401,13 +400,13 @@
 | Check | Financial | Custody | Variance |
 |---|---:|---:|---:|
 | Cylinder Position (1B vs custody) | R-862.50 | R1,667.50 | R-2,530.00 |
-| Sub-ledger tie (1A + 1B vs combined) | R79,529.60 | — | R0.00 |
+| Sub-ledger tie (1A + 1B vs combined) | R80,834.62 | — | R0.00 |
 
-**ERP Combined Balance (TXT header, excl. UD):** R80,392.10  
-**ERP Balance (incl. UD payments):** R81,697.12  
-**Reconstructed Balance (1A + 1B):** R79,529.60  
-**Variance (excl. UD):** R862.50  
-**Note:** Variance equals Part 1B balance; indicates cylinder position mismatch or timing differences
+**ERP Combined Balance (TXT header):** R81,697.12  
+**UD Payments/Cheques:** R0.00  
+**Reconstructed Balance (1A + 1B):** R80,834.62  
+**Variance:** R862.50  
+**Note:** Variance equals Part 1B balance (cylinder deposit position mismatch). Clean transactional data with no undisputed payment adjustments.
 
 <!-- DEBTOR_POSITION_WORKSPACE_END -->
 <!-- INTERNAL_ONLY_END -->
