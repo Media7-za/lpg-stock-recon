@@ -1,16 +1,16 @@
-# Skill Registry (v1.0.0)
+# Skill Registry (v1.1.0)
 
-> **Status:** `PROPOSED — NOT RATIFIED`  
+> **Status:** `RATIFIED`  
 > **Canonical machine-readable registry:** `analysis/debtors/shared/SKILL_REGISTRY.json`  
 > **Audit:** `analysis/debtors/shared/docs/SKILL_REGISTRY_AUDIT.json`  
-> **Plan:** `analysis/debtors/shared/docs/REGISTERS_PLAN_PROPOSED.md`  
+> **Plan:** `analysis/debtors/shared/docs/REGISTERS_PLAN.md`  
 > **Authority:** `analysis/debtors/shared/DEBTORS_DOCTRINE.md`  
 > **Generated — do not edit.** Regenerate: `npm run debtors:skill-registry:write`
 
-27 skill files across 5 roots. 19 carry frontmatter and are auto-loadable by an agent runtime; 8 do not and are reachable only by explicit path.
+27 skill files across 4 roots. 20 carry frontmatter and are auto-loadable by an agent runtime; 7 do not and are reachable only by explicit path.
 
 **Kinds:** `worker` · `generator` · `orchestrator` · `gate` · `human-role` · `role-prompt` · `reference` · `account-local`  
-**Statuses:** `active` · `duplicate` · `unregistered` · `superseded`
+**Statuses:** `active` · `unregistered` · `superseded`
 
 ---
 
@@ -34,8 +34,8 @@ _Accounts receivable recon._
 | `human.sources` | `human-sources-agent` | human-role | active | Human intake role — gathering remittance PDFs, ERP TXT exports, aged-debt reports, deposit screenshots into the correct raw/ folders. |
 | `human.erp` | `human-erp-agent` | human-role | active | Human ERP/finance clerk role — posting journals, correcting payments, exporting fresh TXT, executing HUMAN_TASKS.md rows scoped to Role ERP Agent. |
 | `human.collections` | `human-collections-agent` | human-role | active | Human collections / creditor-controller role — payment reminders and LOD, portfolio queue prioritisation, recon sign-off before collection, ACTION_PROMPTS.md execution. |
-| `fam000.recon` | _(no frontmatter)_ | account-local | **unregistered** | Family Gas consolidated recon across ERP codes FAM000 (parent) and FAM002 (child). |
-| `jen001.recon` | _(no frontmatter)_ | account-local | **unregistered** | Jennings Gas recon across JEN001 (active) and JEN010 (legacy LPG-only). |
+| `fam000.recon` | `fam000-reconciliation` | account-local | active | Family Gas consolidated recon across ERP codes FAM000 (parent) and FAM002 (child). Owns two mandatory ERP bug bypasses: header double-taxation on credit notes, and up to 18 credit notes omitted from the printed statement. |
+| `jen001.recon` | `jen001-reconciliation` | account-local | active | Jennings Gas recon under the Stripped Gas Model — Part 1 LPG-only financial ledger with deposits stripped, Part 2 quantity-only cylinder ledger. Owns the JEN010 exclusion rule. |
 
 ## Lane: creditors
 
@@ -69,8 +69,8 @@ _Feature delivery pipeline (Jira, PRD, QA)._
 
 | ID | Name | Kind | Status | Canonical for |
 | :--- | :--- | :--- | :--- | :--- |
-| `pipeline.pm.full` | `lsr-pm` | orchestrator | **duplicate** | The two-phase Feature Pipeline — feature kickoff, LSR ticket creation, pipeline status, stage artifact approval. |
-| `pipeline.pm.short` | `lsr-pm` | orchestrator | **duplicate** | Nothing exclusively — appears to be a summary of pipeline.pm.full. |
+| `pipeline.pm.full` | `lsr-pm` | orchestrator | active | The two-phase Feature Pipeline — feature kickoff, LSR ticket creation, pipeline status, stage artifact approval. |
+| `pipeline.pm.short` | _(no frontmatter)_ | orchestrator | **superseded** | Nothing — superseded. Retained only so the supersession is discoverable. |
 | `role.pm` | _(no frontmatter)_ | role-prompt | **unregistered** | Product Manager role — backlog, scope decisions, PRDs, Jira. Writes no code, merges no branches. |
 | `role.qa` | _(no frontmatter)_ | role-prompt | **unregistered** | QA role — verifying implemented features against acceptance criteria pre-merge. Reports pass/fail; the PM decides the merge. |
 | `role.coding` | _(no frontmatter)_ | role-prompt | **unregistered** | Coding role — implementing to spec on feature branches, never on main. Makes no scope decisions. |
@@ -100,11 +100,11 @@ What each skill must **not** be used for. Carried from skill frontmatter — the
 | `human.sources` | Interpreting the evidence it collects. |
 | `human.erp` | Deciding what the correction should be — that comes from a worker checklist. |
 | `human.collections` | Contacting a customer before recon sign-off. |
-| `fam000.recon` | Any other account. |
-| `jen001.recon` | Any other account. |
+| `fam000.recon` | Any other account. Never query FAM000 or FAM002 in isolation, and never trust transaction_headers running balances for this account. |
+| `jen001.recon` | Any other account. Never merge legacy JEN010 — it shifts the 9kg physical opening balance from -1 to +5. Settlement discount for this account lives in JEN001_Settlement_Discount_Doctrine_v1.md. |
 | `bug.fixer` | Feature work. |
 | `pipeline.pm.full` | Debtor recon — that is debtors.pm. |
-| `pipeline.pm.short` | Debtor recon. |
+| `pipeline.pm.short` | Loading. It is marked SUPERSEDED in-file and its name: key was removed. |
 | `role.pm` | Pipeline stage orchestration — defers to pipeline.pm.full. |
 | `role.qa` | Writing features or merging branches. |
 | `role.coding` | Scope decisions. |
@@ -134,8 +134,8 @@ What each skill must **not** be used for. Carried from skill frontmatter — the
 | `human.sources` | `.agents/skills/SKILL_Human_Sources_Agent.md` | `debtors:ingest-check` `debtors:parse-backlog` `debtors:sync` `debtors:tag-check` | `erp.freshness` |
 | `human.erp` | `.agents/skills/SKILL_Human_ERP_Agent.md` | `debtors:sync` | `erp.freshness` |
 | `human.collections` | `.agents/skills/SKILL_Human_Collections_Agent.md` | `debtors:sync` | `portfolio.action_prompts` `d17.collections` |
-| `fam000.recon` | `analysis/debtors/FAM000/docs/FAM000_reconciliation_skill.md` | — | `statement.v4.composed` |
-| `jen001.recon` | `analysis/debtors/JEN001/docs/JEN001_reconciliation_skill.md` | — | `statement.v4.composed` |
+| `fam000.recon` | `.agents/skills/SKILL_FAM000_Reconciliation.md` | — | `statement.v4.composed` |
+| `jen001.recon` | `.agents/skills/SKILL_JEN001_Reconciliation.md` | — | `statement.v4.composed` |
 | `bug.fixer` | `.claude/skills/lpg-recon-bug-fixer/SKILL.md` | — | — |
 | `pipeline.pm.full` | `.agents/skills/New_Feature_PM_Skill.md` | — | — |
 | `pipeline.pm.short` | `.agents/skills/lsr-pm_SKILL.md` | — | — |
@@ -154,10 +154,7 @@ Records that are not `active`. Each states why.
 
 | ID | Status | Note |
 | :--- | :--- | :--- |
-| `fam000.recon` | **unregistered** | No frontmatter, and outside every skill root — invisible to agent auto-discovery. Multi-code consolidation logic exists nowhere else. Staged as D3. |
-| `jen001.recon` | **unregistered** | Same defect as fam000.recon. Drives a Python script (reconcile_jen_db_only_monthly_stripped.py) with no registered entry point. Staged as D3. |
-| `pipeline.pm.full` | **duplicate** | DEFECT: declares name 'lsr-pm', also declared by pipeline.pm.short. 559 lines vs 56 — this is the fuller of the two and the likely canonical one. Operator decision D2. |
-| `pipeline.pm.short` | **duplicate** | DEFECT: same name as pipeline.pm.full. 56 lines. Which runtime wins is load-order dependent and therefore undefined. Operator decision D2. |
+| `pipeline.pm.short` | **superseded** | Superseded by pipeline.pm.full on 2026-09-29 (operator decision D2). Both files declared name 'lsr-pm', so which loaded depended on load order. The name: key is removed rather than the file deleted — amendments append, superseded text is marked. See DEBTORS_DOCTRINE.md D20. |
 | `role.pm` | **unregistered** | No frontmatter — not auto-loadable. Staged as D3. |
 | `role.qa` | **unregistered** | No frontmatter — not auto-loadable. Staged as D3. |
 | `role.coding` | **unregistered** | No frontmatter — not auto-loadable. Staged as D3. |
@@ -173,12 +170,12 @@ Records that are not `active`. Each states why.
 | :--- | ---: | ---: |
 | `PATH_EXISTS` | 0 | 0 |
 | `NO_ORPHAN_FILES` | 0 | 0 |
-| `NAME_UNIQUE` | 0 | 1 |
+| `NAME_UNIQUE` | 0 | 0 |
 | `FRONTMATTER_MATCH` | 0 | 0 |
 | `SLICE_IDS_VALID` | 0 | 0 |
 | `SCRIPT_TARGETS_VALID` | 0 | 0 |
 
-- **WARN** `NAME_UNIQUE` — name "lsr-pm" declared by 2 records (pipeline.pm.full, pipeline.pm.short) — acknowledged, awaiting operator decision D2
+_All gates clean._
 
 ---
 

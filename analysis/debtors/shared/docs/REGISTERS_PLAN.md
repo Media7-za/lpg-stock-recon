@@ -1,11 +1,21 @@
 # Registers Plan — Skills, Scripts, Account Artifacts
 
-**Status:** `PROPOSED — NOT RATIFIED`
+**Status:** `RATIFIED 2026-09-29` — see `DEBTORS_DOCTRINE.md` **D20**
 **Raised:** 2026-09-29 (BR0001 v5 session)
-**Authority to ratify:** Operator. Per `DEBTORS_DOCTRINE.md` §7 a worker session
-consumes doctrine and does not author portfolio-wide rules. Everything in this
-document that binds future sessions is staged, not in force.
-**Related:** `SLICE_REGISTRY.json` (the one register that already exists and works)
+**Related:** `SLICE_REGISTRY.json` (the one register that already existed and worked)
+
+> **Superseded status line, retained per the amendments-append rule:**
+> ~~`PROPOSED — NOT RATIFIED` · Authority to ratify: Operator. Per §7 a worker session
+> consumes doctrine and does not author portfolio-wide rules. Everything in this
+> document that binds future sessions is staged, not in force.~~
+>
+> Ratified in-session by the operator — *"yes to all recommendations"*, 2026-09-29 —
+> against the enumerated decision list in §9. **D6 alone remains open.** The §7 vehicle
+> deviation (worker session, no turn brief) is recorded in `DEBTORS_DOCTRINE.md` §7.
+
+**File renamed** from `REGISTERS_PLAN_PROPOSED.md` on ratification; a file named
+`_PROPOSED` that is in force misleads the next cold reader, which is the failure mode
+this repo exists to prevent.
 
 ---
 
@@ -275,19 +285,22 @@ Per doctrine, a closed ruling names the events that reopen it.
 
 ---
 
-## 9. Operator decisions required
+## 9. Operator decisions — answered 2026-09-29
 
-Nothing below is assumed. Silence is not ratification.
+Ratified in-session: *"yes to all recommendations"*. Recorded here with the ruling,
+not just the fact of approval, because the ruling is what the next session needs.
 
-| # | Decision | Blocks |
+| # | Decision | Ruling |
 | :--- | :--- | :--- |
-| D1 | Ratify Register 1's schema and the 6 gates as portfolio convention | Register 1 moving from `PROPOSED` to ratified |
-| D2 | `lsr-pm` — which of the two files is canonical, and is the other superseded or deleted? | `NAME_UNIQUE` becoming a hard gate |
-| D3 | The 4 role prompts and 1 TDR in `.agents/skills/` — do they stay there as `role-prompt`/`reference`, or move out of a skills directory? | Register 1 `status` values settling |
-| D4 | Register 2 — artifact index **in** `project.json` or **beside** it? Fail or report on stale? | Register 2 implementation |
-| D5 | Register 3 — adopt the header docblock convention? | Register 3 implementation |
-| D6 | Payer class taxonomy — promote to a register? (doctrine change, §7) | Register 4, if any |
+| D1 | Ratify Register 1's schema and the 6 gates as portfolio convention | **Adopted.** `DEBTORS_DOCTRINE.md` D20; wired into `AGENTS.md` |
+| D2 | `lsr-pm` — which file is canonical, and is the other superseded or deleted? | **`New_Feature_PM_Skill.md` is canonical** (559 lines). `lsr-pm_SKILL.md` is marked **superseded, not deleted**, and its `name:` removed so it can no longer be auto-loaded. `NAME_UNIQUE` promoted to a hard gate |
+| D3 | The role prompts, TDR, and account-local skills — stay, or move? | **Account-local skills move and gain frontmatter** — `FAM000`/`JEN001` recon skills relocate to `.agents/skills/`, matching the `SKILL_BU0005_Allocation_Worker.md` precedent, because they carry bug-bypass rules that exist nowhere else. **Role prompts and the TDR stay in place, relabelled in-file** with a banner; deliberately **no** `name:` frontmatter, so they remain non-auto-loadable |
+| D4 | Register 2 — artifact index **in** `project.json` or **beside** it? Fail or report on stale? | **Beside it**, in `PORTFOLIO_ARTIFACT_INDEX.json`, **report-only**. `PROJECT_SCHEMA.md` is therefore untouched |
+| D5 | Register 3 — adopt the header docblock convention? | **Adopted.** First fix: `reconcile_debtor_v5_from_txt.mjs` registered as `npm run debtors:statement-v5` |
+| D6 | Payer class taxonomy — promote to a register? | **Still open.** Explicitly excluded from the ratification. Lane routing is doctrine (§7) |
 
-Register 1 is built in this session as a working proposal, so D1–D3 are decided
-against something real and runnable rather than against a description of it. It is
-marked `PROPOSED — NOT RATIFIED` in the JSON itself until D1 is answered.
+### What D3 turned up
+
+`JEN001_reconciliation_skill.md` is cited three times as **"Primary"** evidence by
+`JEN001_Settlement_Discount_Doctrine_v1.md`. Those references were updated with the
+move rather than left dangling — the kind of breakage a rename does silently.

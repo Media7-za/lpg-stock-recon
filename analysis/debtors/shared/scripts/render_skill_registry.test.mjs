@@ -109,35 +109,49 @@ describe('NO_ORPHAN_FILES', () => {
 });
 
 describe('NAME_UNIQUE', () => {
-  test('warns, not fails, when colliding records are both declared duplicate', () => {
+  // Hard since doctrine D20 (2026-09-29). There is no longer an "acknowledged
+  // duplicate" state: a collision must be resolved by superseding one side.
+  const collidingEnv = (statusA, statusB) => {
     const env = cleanEnv();
     env.registry.skills = [
-      { ...env.registry.skills[0], id: 'one', status: 'duplicate' },
-      { ...env.registry.skills[0], id: 'two', status: 'duplicate', path: '.agents/skills/beta.md' },
+      { ...env.registry.skills[0], id: 'one', status: statusA },
+      { ...env.registry.skills[0], id: 'two', status: statusB, path: '.agents/skills/beta.md' },
     ];
     env.discovered = [
       { root: '.agents/skills', path: '.agents/skills/alpha.md' },
       { root: '.agents/skills', path: '.agents/skills/beta.md' },
     ];
-    const result = checkGates(env);
-    assert.deepEqual(result.failures, []);
-    assert.equal(result.warnings.length, 1);
-    assert.match(result.warnings[0].detail, /awaiting operator decision D2/);
+    return env;
+  };
+
+  test('fails on a name collision between two active records', () => {
+    const result = checkGates(collidingEnv('active', 'active'));
+    assert.ok(gatesHit(result).includes('NAME_UNIQUE'));
+    assert.match(result.failures[0].detail, /resolve by marking one superseded/);
   });
 
-  test('fails when a collision is not acknowledged as duplicate', () => {
-    const env = cleanEnv();
-    env.registry.skills = [
-      { ...env.registry.skills[0], id: 'one', status: 'active' },
-      { ...env.registry.skills[0], id: 'two', status: 'active', path: '.agents/skills/beta.md' },
-    ];
-    env.discovered = [
-      { root: '.agents/skills', path: '.agents/skills/alpha.md' },
-      { root: '.agents/skills', path: '.agents/skills/beta.md' },
-    ];
-    const result = checkGates(env);
-    assert.ok(gatesHit(result).includes('NAME_UNIQUE'));
-    assert.match(result.failures[0].detail, /without status "duplicate"/);
+  test('still fails when a collision is merely labelled, never downgraded to a warning', () => {
+    // Guards the D20 promotion: labelling a collision must not buy tolerance.
+    for (const status of ['duplicate', 'superseded', 'unregistered']) {
+      const result = checkGates(collidingEnv(status, status));
+      assert.ok(
+        gatesHit(result).includes('NAME_UNIQUE'),
+        `collision with status "${status}" should still be a hard failure`,
+      );
+      assert.equal(result.warnings.length, 0, 'NAME_UNIQUE must never warn');
+    }
+  });
+
+  test('a superseded record with its name removed no longer collides', () => {
+    // This is the shape D2 resolved lsr-pm into.
+    const env = collidingEnv('active', 'superseded');
+    env.registry.skills[1].name = null;
+    const result = checkGates({
+      ...env,
+      frontmatterName: (p) => (p === '.agents/skills/beta.md' ? null : 'alpha-skill'),
+    });
+    assert.deepEqual(result.failures, []);
+    assert.deepEqual(result.warnings, []);
   });
 
   test('null names never collide with each other', () => {
@@ -315,12 +329,45 @@ describe('live repository registry', () => {
     }
   });
 
-  test('the lsr-pm duplicate is present and acknowledged, not silently passing', () => {
-    // Regression guard: this defect is real today. If it disappears without the
-    // registry being updated, the registry has stopped describing the repo.
-    const warn = result.warnings.find((w) => w.gate === 'NAME_UNIQUE');
-    assert.ok(warn, 'expected the lsr-pm collision to be reported');
-    assert.match(warn.detail, /lsr-pm/);
+  test('the lsr-pm collision is resolved — exactly one record claims the name', () => {
+    // Regression guard for operator decision D2. The collision was real; if a second
+    // claimant reappears, which file an agent loads becomes load-order dependent again.
+    const claimants = registry.skills.filter((s) => s.name === 'lsr-pm');
+    assert.equal(claimants.length, 1, 'exactly one record may claim "lsr-pm"');
+    assert.equal(claimants[0].path, '.agents/skills/New_Feature_PM_Skill.md');
+  });
+
+  test('the superseded lsr-pm file is retained, marked, and un-loadable', () => {
+    // Amendments append: the file must still exist, must be flagged superseded, and
+    // must have lost its name: key so no runtime can pick it up.
+    const short = registry.skills.find((s) => s.id === 'pipeline.pm.short');
+    assert.equal(short.status, 'superseded');
+    assert.equal(short.name, null);
+    const body = fs.readFileSync(path.join(ROOT, short.path), 'utf8');
+    assert.ok(fs.existsSync(path.join(ROOT, short.path)), 'superseded file must not be deleted');
+    assert.match(body, /SUPERSEDED/);
+    assert.equal(parseFrontmatterName(body), null, 'superseded file must declare no name');
+  });
+
+  test('registry statuses no longer offer "duplicate" as a tolerable state', () => {
+    assert.ok(!registry.statuses.duplicate, '"duplicate" must be retired, not active');
+    assert.ok(registry.retired_statuses?.duplicate, 'retirement must be recorded, not erased');
+  });
+
+  test('relocated account-local skills are auto-loadable and still account-scoped', () => {
+    for (const id of ['fam000.recon', 'jen001.recon']) {
+      const s = registry.skills.find((x) => x.id === id);
+      assert.ok(s.name, `${id} must declare a name so a runtime can discover it`);
+      assert.equal(s.kind, 'account-local');
+      assert.match(s.not_for, /Any other account/);
+    }
+  });
+
+  test('no skill file remains outside a skill root', () => {
+    // D20: an account-local skill left under analysis/debtors/{CODE}/docs/ is
+    // undiscoverable. The root is still scanned so a new one trips NO_ORPHAN_FILES.
+    const stragglers = discovered.filter((d) => d.root === 'analysis/debtors');
+    assert.deepEqual(stragglers, []);
   });
 
   test('the rendered markdown view is deterministic for fixed input', () => {

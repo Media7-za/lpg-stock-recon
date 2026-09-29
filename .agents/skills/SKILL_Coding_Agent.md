@@ -1,4 +1,12 @@
 # SKILL.md — Coding Agent
+
+<!-- registry-label -->
+> **Role prompt — not an auto-loadable skill.** A software-delivery role definition, not a recon skill.
+>
+> No `name:` frontmatter by design (operator decision D3, 2026-09-29), so no agent
+> runtime discovers this file; it is reachable only by explicit path.
+> Registry record: `role.coding` in `analysis/debtors/shared/SKILL_REGISTRY.json`.
+
 **Role:** Software Engineer  
 **Version:** 1.0  
 **Project:** LPG Stock Recon App  

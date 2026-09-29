@@ -1,26 +1,25 @@
 {
   "generated_by": "analysis/debtors/shared/scripts/render_skill_registry.mjs",
-  "generated_at": "2026-09-29T12:14:38.381Z",
-  "registry_version": "1.0.0",
-  "registry_status": "PROPOSED — NOT RATIFIED",
+  "generated_at": "2026-09-29T12:40:44.236Z",
+  "registry_version": "1.1.0",
+  "registry_status": "RATIFIED",
   "totals": {
     "declared": 27,
     "discovered_on_disk": 27,
-    "roots": 5,
-    "auto_loadable": 19,
-    "without_frontmatter": 8
+    "roots": 4,
+    "auto_loadable": 20,
+    "without_frontmatter": 7
   },
   "by_root": {
-    ".agents/skills": 21,
+    ".agents/skills": 23,
     "analysis/skills": 2,
     ".claude/skills": 1,
-    "docs/skills": 1,
-    "analysis/debtors": 2
+    "docs/skills": 1
   },
   "by_status": {
-    "active": 17,
-    "unregistered": 8,
-    "duplicate": 2
+    "active": 20,
+    "superseded": 1,
+    "unregistered": 6
   },
   "by_kind": {
     "orchestrator": 4,
@@ -43,7 +42,7 @@
     },
     "NAME_UNIQUE": {
       "failures": 0,
-      "warnings": 1
+      "warnings": 0
     },
     "FRONTMATTER_MATCH": {
       "failures": 0,
@@ -59,15 +58,9 @@
     }
   },
   "failures": [],
-  "warnings": [
-    {
-      "gate": "NAME_UNIQUE",
-      "detail": "name \"lsr-pm\" declared by 2 records (pipeline.pm.full, pipeline.pm.short) — acknowledged, awaiting operator decision D2"
-    }
-  ],
+  "warnings": [],
   "skills_without_frontmatter": [
-    "analysis/debtors/FAM000/docs/FAM000_reconciliation_skill.md",
-    "analysis/debtors/JEN001/docs/JEN001_reconciliation_skill.md",
+    ".agents/skills/lsr-pm_SKILL.md",
     ".agents/skills/SKILL_PM_Agent.md",
     ".agents/skills/SKILL_QA_Agent.md",
     ".agents/skills/SKILL_Coding_Agent.md",

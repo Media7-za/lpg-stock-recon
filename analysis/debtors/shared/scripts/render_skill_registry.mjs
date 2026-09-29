@@ -69,9 +69,9 @@ export function checkGates({
     }
   }
 
-  // NAME_UNIQUE — no two records share a name. Hard failure only for collisions the
-  // registry has not already declared as `duplicate`; acknowledged collisions warn
-  // until the operator rules (decision D2 in the registers plan).
+  // NAME_UNIQUE — no two records share a name. Hard since 2026-09-29 (doctrine D20):
+  // a name declared twice makes which file loads depend on load order, so a collision
+  // must be resolved by superseding one side, not acknowledged in place.
   const byName = new Map();
   for (const s of skills) {
     if (!s.name) continue;
@@ -80,18 +80,11 @@ export function checkGates({
   }
   for (const [name, group] of byName) {
     if (group.length < 2) continue;
-    const ids = group.map((s) => s.id).join(', ');
-    if (group.every((s) => s.status === 'duplicate')) {
-      warn(
-        'NAME_UNIQUE',
-        `name "${name}" declared by ${group.length} records (${ids}) — acknowledged, awaiting operator decision D2`,
-      );
-    } else {
-      fail(
-        'NAME_UNIQUE',
-        `name "${name}" declared by ${group.length} records (${ids}) without status "duplicate"`,
-      );
-    }
+    fail(
+      'NAME_UNIQUE',
+      `name "${name}" declared by ${group.length} records (${group.map((s) => s.id).join(', ')}) — ` +
+        'resolve by marking one superseded and removing its name: key',
+    );
   }
 
   // FRONTMATTER_MATCH — declared name agrees with the file on disk, and a file that

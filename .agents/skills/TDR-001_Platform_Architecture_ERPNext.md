@@ -1,5 +1,12 @@
 # TDR-001: Platform Architecture — ERPNext & Medusa Integration Strategy
 
+<!-- registry-label -->
+> **Reference — technical decision record — not an auto-loadable skill.** A decision record, not a skill. Read for architectural context; never executed. Filed in a skills directory for historical reasons.
+>
+> No `name:` frontmatter by design (operator decision D3, 2026-09-29), so no agent
+> runtime discovers this file; it is reachable only by explicit path.
+> Registry record: `reference.tdr001` in `analysis/debtors/shared/SKILL_REGISTRY.json`.
+
 **Status:** Accepted  
 **Date:** 2026-05-24  
 **Author:** PM  

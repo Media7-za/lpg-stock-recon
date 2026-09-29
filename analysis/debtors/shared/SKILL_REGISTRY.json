@@ -1,11 +1,12 @@
 {
   "$schema": "debtors/skill-registry/v1",
-  "version": "1.0.0",
-  "ratified": null,
-  "status": "PROPOSED — NOT RATIFIED",
+  "version": "1.1.0",
+  "ratified": "2026-09-29",
+  "status": "RATIFIED",
   "staged": "2026-09-29",
+  "ruling": "DEBTORS_DOCTRINE.md D20 — registers declare; discovery only contradicts. Operator ratification in-session: \"yes to all recommendations\", 2026-09-29.",
   "authority": "analysis/debtors/shared/DEBTORS_DOCTRINE.md",
-  "plan": "analysis/debtors/shared/docs/REGISTERS_PLAN_PROPOSED.md",
+  "plan": "analysis/debtors/shared/docs/REGISTERS_PLAN.md",
   "description": "Canonical skill registry — every agent skill file in the repo, its lane, what it is canonical for, the scripts it drives, and the SLICE_REGISTRY slices it produces. Declared by hand; verified against the filesystem by render_skill_registry.mjs.",
   "generator": "analysis/debtors/shared/scripts/render_skill_registry.mjs",
   "views": {
@@ -17,7 +18,7 @@
     "analysis/skills": "Directory-per-skill form (<name>/SKILL.md). Recon-lane skills.",
     ".claude/skills": "Claude Code skill root. Loaded only by that runtime.",
     "docs/skills": "Legacy prose role descriptions. No frontmatter — not loadable as skills.",
-    "analysis/debtors": "Account-local reconciliation skills under {CODE}/docs/."
+    "analysis/debtors": "Account-local reconciliation skills under {CODE}/docs/. Emptied 2026-09-29 by operator decision D3 — FAM000 and JEN001 moved to .agents/skills. Still scanned deliberately: a new account-local skill placed here must trip NO_ORPHAN_FILES rather than sit undiscovered."
   },
   "kinds": {
     "worker": "Executes a recon lane turn-by-turn against one account or account family.",
@@ -38,9 +39,11 @@
   },
   "statuses": {
     "active": "In force. Safe to load and follow.",
-    "duplicate": "Declares a name another record already declares. Awaiting operator ruling.",
-    "unregistered": "File carries no frontmatter, so no agent runtime can auto-load it. Reachable only by explicit path.",
-    "superseded": "Replaced by another record. Retained per the amendments-append rule."
+    "unregistered": "File carries no frontmatter, so no agent runtime can auto-load it. Reachable only by explicit path. Deliberate for role prompts and reference docs.",
+    "superseded": "Replaced by another record. Retained per the amendments-append rule; name: removed so it cannot be auto-loaded."
+  },
+  "retired_statuses": {
+    "duplicate": "Retired 2026-09-29 by DEBTORS_DOCTRINE.md D20. Two files sharing one skill name is no longer a tolerable state — NAME_UNIQUE is a hard gate, so a collision must be resolved rather than acknowledged."
   },
   "gates": [
     "PATH_EXISTS",
@@ -333,33 +336,33 @@
     },
     {
       "id": "fam000.recon",
-      "name": null,
-      "path": "analysis/debtors/FAM000/docs/FAM000_reconciliation_skill.md",
-      "root": "analysis/debtors",
+      "name": "fam000-reconciliation",
+      "path": ".agents/skills/SKILL_FAM000_Reconciliation.md",
+      "root": ".agents/skills",
       "kind": "account-local",
       "lane": "debtors",
-      "status": "unregistered",
-      "canonical_for": "Family Gas consolidated recon across ERP codes FAM000 (parent) and FAM002 (child).",
-      "not_for": "Any other account.",
+      "status": "active",
+      "canonical_for": "Family Gas consolidated recon across ERP codes FAM000 (parent) and FAM002 (child). Owns two mandatory ERP bug bypasses: header double-taxation on credit notes, and up to 18 credit notes omitted from the printed statement.",
+      "not_for": "Any other account. Never query FAM000 or FAM002 in isolation, and never trust transaction_headers running balances for this account.",
       "owns_scripts": [],
       "produces_slices": ["statement.v4.composed"],
       "related": ["jen001.recon", "statement.v4"],
-      "notes": "No frontmatter, and outside every skill root — invisible to agent auto-discovery. Multi-code consolidation logic exists nowhere else. Staged as D3."
+      "notes": "Relocated 2026-09-29 from analysis/debtors/FAM000/docs/ and given frontmatter (operator decision D3). It previously sat outside every skill root with no frontmatter, so its bug-bypass rules — which exist nowhere else — were invisible to auto-discovery."
     },
     {
       "id": "jen001.recon",
-      "name": null,
-      "path": "analysis/debtors/JEN001/docs/JEN001_reconciliation_skill.md",
-      "root": "analysis/debtors",
+      "name": "jen001-reconciliation",
+      "path": ".agents/skills/SKILL_JEN001_Reconciliation.md",
+      "root": ".agents/skills",
       "kind": "account-local",
       "lane": "debtors",
-      "status": "unregistered",
-      "canonical_for": "Jennings Gas recon across JEN001 (active) and JEN010 (legacy LPG-only).",
-      "not_for": "Any other account.",
+      "status": "active",
+      "canonical_for": "Jennings Gas recon under the Stripped Gas Model — Part 1 LPG-only financial ledger with deposits stripped, Part 2 quantity-only cylinder ledger. Owns the JEN010 exclusion rule.",
+      "not_for": "Any other account. Never merge legacy JEN010 — it shifts the 9kg physical opening balance from -1 to +5. Settlement discount for this account lives in JEN001_Settlement_Discount_Doctrine_v1.md.",
       "owns_scripts": [],
       "produces_slices": ["statement.v4.composed"],
       "related": ["fam000.recon", "statement.v4"],
-      "notes": "Same defect as fam000.recon. Drives a Python script (reconcile_jen_db_only_monthly_stripped.py) with no registered entry point. Staged as D3."
+      "notes": "Relocated 2026-09-29 from analysis/debtors/JEN001/docs/ and given frontmatter (operator decision D3). JEN001_Settlement_Discount_Doctrine_v1.md cites it as Primary evidence; those 3 references were repointed with the move. Drives reconcile_jen_db_only_monthly_stripped.py, which still has no registered entry point — see SCRIPT_REGISTRY."
     },
     {
       "id": "bug.fixer",
@@ -383,28 +386,28 @@
       "root": ".agents/skills",
       "kind": "orchestrator",
       "lane": "pipeline",
-      "status": "duplicate",
+      "status": "active",
       "canonical_for": "The two-phase Feature Pipeline — feature kickoff, LSR ticket creation, pipeline status, stage artifact approval.",
       "not_for": "Debtor recon — that is debtors.pm.",
       "owns_scripts": [],
       "produces_slices": [],
       "related": ["pipeline.pm.short", "role.pm", "role.ticket.architect"],
-      "notes": "DEFECT: declares name 'lsr-pm', also declared by pipeline.pm.short. 559 lines vs 56 — this is the fuller of the two and the likely canonical one. Operator decision D2."
+      "notes": "Sole canonical holder of the name 'lsr-pm' since 2026-09-29 (operator decision D2). Supersedes pipeline.pm.short, which was the 56-line summary."
     },
     {
       "id": "pipeline.pm.short",
-      "name": "lsr-pm",
+      "name": null,
       "path": ".agents/skills/lsr-pm_SKILL.md",
       "root": ".agents/skills",
       "kind": "orchestrator",
       "lane": "pipeline",
-      "status": "duplicate",
-      "canonical_for": "Nothing exclusively — appears to be a summary of pipeline.pm.full.",
-      "not_for": "Debtor recon.",
+      "status": "superseded",
+      "canonical_for": "Nothing — superseded. Retained only so the supersession is discoverable.",
+      "not_for": "Loading. It is marked SUPERSEDED in-file and its name: key was removed.",
       "owns_scripts": [],
       "produces_slices": [],
       "related": ["pipeline.pm.full"],
-      "notes": "DEFECT: same name as pipeline.pm.full. 56 lines. Which runtime wins is load-order dependent and therefore undefined. Operator decision D2."
+      "notes": "Superseded by pipeline.pm.full on 2026-09-29 (operator decision D2). Both files declared name 'lsr-pm', so which loaded depended on load order. The name: key is removed rather than the file deleted — amendments append, superseded text is marked. See DEBTORS_DOCTRINE.md D20."
     },
     {
       "id": "role.pm",
