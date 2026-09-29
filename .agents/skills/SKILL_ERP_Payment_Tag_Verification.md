@@ -10,7 +10,11 @@ description: >-
 
 # ERP Payment Tag Verification
 
-> **Status:** PROPOSED — operator ratification pending. Consumes `business_rules.md` §15; does not amend constitutional doctrine.
+> **Status:** **RATIFIED 2026-09-29** — `DEBTORS_DOCTRINE.md` **D21**. Operator ratification in-session: *"yes to all recommendations"*.
+> Consumes `business_rules.md` §15 and is now its scoped-canonical home for tag verification.
+> Gate 4 (false leads) is **enforced** by `npm run debtors:tag-check`.
+>
+> ~~Superseded status line, retained per the amendments-append rule: `PROPOSED — operator ratification pending. Consumes business_rules.md §15; does not amend constitutional doctrine.`~~
 
 ---
 

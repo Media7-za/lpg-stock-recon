@@ -28,6 +28,7 @@ import {
   computeOpenInvoices,
   analyseInvoiceTagCoverage,
   loadRemittanceInvoiceDocs,
+  loadPaymentTagFalseLeads,
   displayDate,
   fmtAmount,
   GATE_MEANING,
@@ -114,6 +115,7 @@ export function checkDebtor(debtorCode, txtOverride) {
   const { headerBalance, balanceBf, excludesAllocationDetail, rows } = parseDebenqWithRunning(txtPath);
   const openInvoices = computeOpenInvoices(rows, closedOverrides);
   const remittanceDocs = loadRemittanceInvoiceDocs(debtorDir);
+  const falseLeads = loadPaymentTagFalseLeads(debtorDir);
   const analysis = analyseInvoiceTagCoverage({
     rows,
     openInvoices,
@@ -122,6 +124,7 @@ export function checkDebtor(debtorCode, txtOverride) {
     excludesAllocationDetail,
     closedOverrides,
     remittanceDocs,
+    falseLeads,
   });
 
   return {
@@ -130,6 +133,7 @@ export function checkDebtor(debtorCode, txtOverride) {
     statement_txt: path.relative(ROOT, txtPath),
     config_found: configFound,
     remittance_sources: remittanceDocs.size,
+    false_leads_registered: falseLeads.size,
     ...analysis,
   };
 }
@@ -185,6 +189,81 @@ function renderMarkdown(res) {
       '',
       'Concretely: the remittance-contradiction check did **not** run on this account, so a clean result below rests on arithmetic (the invariant) and an anomaly heuristic (staleness) alone. Neither can detect a settled invoice whose credit was untagged *and* whose absence does not break the account total. Establishing settlement here requires the pattern route — exact-sum month tests, the account’s established payment cadence, the business rules for that payer type, and operator ratification recorded in config.',
     );
+  }
+
+  L.push('', '---', '', '## Payment tag integrity (D21)', '');
+  const pti = res.payment_tag_integrity;
+  if (!pti) {
+    L.push('_Not evaluated._', '');
+  } else {
+    L.push(
+      `**Status:** ${pti.status === 'PASS' ? 'PASS' : `**${pti.status}**`}  `,
+      `**False leads registered:** ${pti.false_leads_loaded}  `,
+      `**Chronology violations:** ${pti.chronology_violations} (${pti.chronology_violations_recorded} already ruled on, **${pti.chronology_violations_unrecorded} unrecorded**)`,
+      '',
+      '`INVNO_TAG_CHRONOLOGY` — a settlement row naming an invoice dated *after* it cannot be paying that invoice; it is a prepay or placeholder pointer. This is derived from the TXT, not read from config, so it catches violations nobody has recorded yet.',
+      '',
+    );
+
+    if (pti.unrecorded.length) {
+      L.push(
+        '### Unrecorded chronology violations',
+        '',
+        'Each needs a ruling. If confirmed a false lead, append it to `config/payment_tag_false_leads.json` so it survives regeneration — a decision made only in a session does not.',
+        '',
+        '| Settlement | Type | Settled | Tags invoice | Invoice dated | Days early | Amount |',
+        '| :--- | :--- | :--- | :--- | :--- | ---: | ---: |',
+      );
+      for (const v of pti.unrecorded) {
+        L.push(
+          `| ${v.settlement_doc} | ${v.settlement_entry} | ${displayDate(v.settlement_iso)} | ${v.tagged_invno} | ${displayDate(v.invoice_iso)} | ${v.days_early} | R${fmtAmount(v.amount)} |`,
+        );
+      }
+      L.push('');
+    }
+
+    if (pti.closed_on_false_tag.length) {
+      L.push(
+        '### Closed on a false tag — blocking',
+        '',
+        'These invoices are carried as settled via `closedInvoiceOverrides`, but the account has already ratified the underlying tag as false.',
+        '',
+        '| Invoice | Classification | Ratified | Reason |',
+        '| :--- | :--- | :--- | :--- |',
+      );
+      for (const f of pti.closed_on_false_tag) {
+        L.push(
+          `| ${f.invno} | ${f.classification ?? '—'} | ${f.ratified_at ?? '—'} | ${(f.reason ?? '—').replace(/\|/g, '\\|')} |`,
+        );
+      }
+      L.push('');
+    }
+
+    if (pti.false_lead_contradicted_by_remittance.length) {
+      L.push(
+        '### Tripwire fired — remittance contradicts a ratified false lead',
+        '',
+        'A remittance outranks tag chronology (authority order A), so the false-lead entry is what must be reopened — not the remittance.',
+        '',
+        '| Invoice | Recorded reason | Tripwire as written |',
+        '| :--- | :--- | :--- |',
+      );
+      for (const f of pti.false_lead_contradicted_by_remittance) {
+        L.push(
+          `| ${f.invno} | ${(f.reason ?? '—').replace(/\|/g, '\\|')} | ${(f.tripwire ?? '—').replace(/\|/g, '\\|')} |`,
+        );
+      }
+      L.push('');
+    }
+
+    if (pti.status === 'PASS') {
+      L.push(
+        pti.false_leads_loaded
+          ? 'No unrecorded chronology violation, no closure resting on a ratified false lead, and no remittance contradicting one.'
+          : 'No chronology violation found. No false-lead registry exists for this account, so the registry check was inert — absence of recorded false leads is not evidence there are none.',
+        '',
+      );
+    }
   }
 
   L.push('', '---', '', '## Invariant', '');
