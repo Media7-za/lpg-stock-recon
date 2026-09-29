@@ -1,7 +1,7 @@
 {
   "$schema": "debtors/portfolio-artifact-index/v1",
   "generated_by": "analysis/debtors/shared/scripts/portfolio_artifact_index.mjs",
-  "generated_at": "2026-09-29T13:38:19.854Z",
+  "generated_at": "2026-09-29T13:47:14.521Z",
   "authority": "analysis/debtors/shared/DEBTORS_DOCTRINE.md",
   "plan": "analysis/debtors/shared/docs/REGISTERS_PLAN.md",
   "ruling": "Operator decision D4 — index lives beside project.json in one portfolio file, and is report-only. Staleness never fails debtors:sync.",
@@ -1616,8 +1616,8 @@
           "paths": [
             "analysis/debtors/BR0001/project.json"
           ],
-          "last_change": "2026-09-29T13:36:44.863Z",
-          "last_change_source": "filesystem"
+          "last_change": "2026-09-29T13:40:20.000Z",
+          "last_change_source": "git"
         },
         "turn.brief": {
           "tier": "governance",
@@ -1986,8 +1986,8 @@
           "paths": [
             "analysis/debtors/BU0002/project.json"
           ],
-          "last_change": "2026-09-29T13:38:01.143Z",
-          "last_change_source": "filesystem"
+          "last_change": "2026-09-29T13:40:20.000Z",
+          "last_change_source": "git"
         },
         "turn.brief": {
           "tier": "governance",
@@ -5006,8 +5006,8 @@
           "paths": [
             "analysis/debtors/IVE001/project.json"
           ],
-          "last_change": "2026-09-29T13:37:28.003Z",
-          "last_change_source": "filesystem"
+          "last_change": "2026-09-29T13:40:20.000Z",
+          "last_change_source": "git"
         },
         "turn.brief": {
           "tier": "governance",
