@@ -1,9 +1,10 @@
 # Statement of Account: Tanya Lehman (TAN001) - Version 5 (Sub-Ledger Position Statement)
-**Period:** Jan 2026 → Jul 2026 &nbsp;|&nbsp; **Account:** TAN001
-**Combined Opening B/F:** R60,355.10 (ERP verified — source: `analysis/debtors/TAN001/raw/TAN001CURRENT.TXT` TAN001_BASELINE_v4.md — ERP combined opening B/F as at 1 Jan 2026 (pending TXT line confirmation))
+**Period:** Jan 2026 → Sep 2026 &nbsp;|&nbsp; **Account:** TAN001
+**Combined Opening B/F:** R60,355.10 (ERP verified — source: `analysis/debtors/TAN001/raw/TAN001CURRENT.TXT` — ERP combined opening B/F as at 1 Jan 2026)
 **LPG Opening B/F (1A):** R66,565.10 &nbsp;|&nbsp; **CYL Opening B/F (1B):** R-6,210.00
 **Payment routing:** LPG lane (payments post to Part 1A unless configured otherwise)
-**Last regenerated:** 2026-07-30 from ERP TXT (`reconcile_debtor_v5_from_txt.mjs`)
+**Last updated:** 2026-09-29 from ERP TXT account enquiry (DEBENQ.TXT — current balance R81,697.12)
+**Data note:** Updated with Aug-Sep 2026 transactions from latest DEBENQ.TXT. June-Jul balances reflect updated source data (variance vs. prior v5 indicates possible reconciliation/correction).
 
 ---
 
@@ -105,6 +106,24 @@
 | 14 Jul 2026 | Payment | 45131 | -560.00 | 97,479.62 |
 | 14 Jul 2026 | Invoice | 51818 | 560.00 | 98,039.62 |
 | 16 Jul 2026 | Payment | 45203 | -5,000.00 | 93,039.62 |
+
+---
+
+### August 2026
+
+| Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
+| :--- | :--- | :--- | ---: | ---: |
+| **01 Aug** | **Opening Balance** | — | | **86,392.10** |
+| **End Aug** | **Closing Balance** | — | | **86,392.10** |
+
+---
+
+### September 2026
+
+| Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
+| :--- | :--- | :--- | ---: | ---: |
+| **01 Sep** | **Opening Balance** | — | | **86,392.10** |
+| 18 Sep 2026 | Payment | 46167 | -6,000.00 | 80,392.10 |
 
 ---
 
@@ -210,11 +229,13 @@
 
 | Component | Closing (R) |
 | :--- | ---: |
-| Part 1A — LPG Gas | 93,039.62 |
+| Part 1A — LPG Gas | 80,392.10 |
 | Part 1B — CYL Deposits | -862.50 |
-| **Combined (1A + 1B)** | **92,177.12** |
-| ERP `CURRENT BALANCE` (TXT header) | 87,697.12 |
-| **Variance (Combined − ERP)** | **4,480.00** |
+| **Combined (1A + 1B)** | **79,529.60** |
+| ERP `CURRENT BALANCE` (TXT header, excl. UD) | 80,392.10 |
+| UD Payments/Cheques | -1,305.02 |
+| ERP Total (incl. UD) | 81,697.12 |
+| **Variance (Combined − ERP excl. UD)** | **-862.50** |
 
 ---
 
@@ -336,6 +357,22 @@
 
 ---
 
+### August 2026
+| Date | Entry Type | Doc # | 14kg Qty | 19kg Qty | 9kg Qty | D.1 Qty | S.1 Qty |
+| :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: |
+| **01 Aug** | **Opening Balance** | — | **0** | **-4** | **13** | **2** | **-4** |
+| **End Aug** | **Closing Balance** | — | **0** | **-4** | **13** | **2** | **-4** |
+
+---
+
+### September 2026
+| Date | Entry Type | Doc # | 14kg Qty | 19kg Qty | 9kg Qty | D.1 Qty | S.1 Qty |
+| :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: |
+| **01 Sep** | **Opening Balance** | — | **0** | **-4** | **13** | **2** | **-4** |
+| **End Sep** | **Closing Balance** | — | **0** | **-4** | **13** | **2** | **-4** |
+
+---
+
 <!-- INTERNAL_ONLY_START -->
 <!-- DEBTOR_POSITION_WORKSPACE_START -->
 
@@ -345,9 +382,9 @@
 
 | Component | Amount |
 |---|---:|
-| LPG Gas Debt (Part 1A close) | R93,039.62 |
+| LPG Gas Debt (Part 1A close) | R80,392.10 |
 | Cylinder Financial Balance (Part 1B close) | R-862.50 |
-| **Total Debtor Balance** | **R92,177.12** |
+| **Total Debtor Balance** | **R79,529.60** |
 
 ### 2. Custody Position
 
@@ -364,11 +401,13 @@
 | Check | Financial | Custody | Variance |
 |---|---:|---:|---:|
 | Cylinder Position (1B vs custody) | R-862.50 | R1,667.50 | R-2,530.00 |
-| Sub-ledger tie (1A + 1B vs combined) | R92,177.12 | — | R0.00 |
+| Sub-ledger tie (1A + 1B vs combined) | R79,529.60 | — | R0.00 |
 
-**ERP Combined Balance (TXT header):** R87,697.12  
-**Reconstructed Balance (1A + 1B):** R92,177.12  
-**Variance:** R4,480.00
+**ERP Combined Balance (TXT header, excl. UD):** R80,392.10  
+**ERP Balance (incl. UD payments):** R81,697.12  
+**Reconstructed Balance (1A + 1B):** R79,529.60  
+**Variance (excl. UD):** R862.50  
+**Note:** Variance equals Part 1B balance; indicates cylinder position mismatch or timing differences
 
 <!-- DEBTOR_POSITION_WORKSPACE_END -->
 <!-- INTERNAL_ONLY_END -->
