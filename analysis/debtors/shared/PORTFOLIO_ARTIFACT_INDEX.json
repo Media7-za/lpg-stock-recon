@@ -1,13 +1,13 @@
 {
   "$schema": "debtors/portfolio-artifact-index/v1",
   "generated_by": "analysis/debtors/shared/scripts/portfolio_artifact_index.mjs",
-  "generated_at": "2026-09-29T13:47:14.521Z",
+  "generated_at": "2026-09-29T13:52:15.466Z",
   "authority": "analysis/debtors/shared/DEBTORS_DOCTRINE.md",
   "plan": "analysis/debtors/shared/docs/REGISTERS_PLAN.md",
   "ruling": "Operator decision D4 — index lives beside project.json in one portfolio file, and is report-only. Staleness never fails debtors:sync.",
   "slice_registry_version": "1.0.0",
   "enforcement": "report-only",
-  "date_basis": "Last git commit touching the file. Filesystem mtime is not used for comparison: a fresh clone stamps every file with the checkout time, which made 265 report files share 3 mtimes and produced 21 false staleness findings. An uncommitted artifact falls back to mtime and is labelled last_change_source: \"filesystem\", and is never compared.",
+  "date_basis": "Last git commit touching the file. Filesystem mtime is not used for comparison: a fresh clone stamps every file with the checkout time, which put all 265 report mtimes inside a two-second window and produced 21 false staleness findings. An uncommitted artifact falls back to mtime and is labelled last_change_source: \"filesystem\", and is never compared.",
   "reading_guide": {
     "present": "At least one file matched the slice output pattern.",
     "absent": "No file matched. NOT a defect on its own — a lane-specific slice is absent by design on an account not routed to that lane, and lane routing is not machine-readable today.",
@@ -4623,7 +4623,7 @@
           "paths": [
             "analysis/debtors/GAS004/project.json"
           ],
-          "last_change": "2026-08-29T16:46:42.000Z",
+          "last_change": "2026-09-29T13:47:46.000Z",
           "last_change_source": "git"
         },
         "turn.brief": {

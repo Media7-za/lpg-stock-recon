@@ -47,10 +47,12 @@ export const NON_ACCOUNT_DIRS = new Set(['shared', 'Global Reports', 'evidence_e
  * `git log` pass.
  *
  * Filesystem mtime cannot answer "when was this generated" in a git working tree: a
- * fresh clone stamps every file with the checkout time. Measured on this repo, 265
- * account report files carried just 3 distinct mtimes spanning two seconds, which
- * produced 21 confident and entirely false staleness findings. Commit time is the only
- * date here that survives a clone.
+ * fresh clone stamps every file with the checkout time. Measured on this repo, all 265
+ * account report files carried mtimes inside a two-second window, which produced 21
+ * confident and entirely false staleness findings. Commit time is the only date here
+ * that survives a clone.
+ *
+ *   find analysis/debtors -path '*\/reports/*' -type f -printf '%T@\n' | cut -d. -f1 | sort -u
  *
  * @param {(args:string[])=>string} runGit
  */
@@ -383,7 +385,7 @@ export function buildIndex({ sliceRegistry, accounts, listFiles, dateOf, now = (
     slice_registry_version: sliceRegistry.version,
     enforcement: 'report-only',
     date_basis:
-      'Last git commit touching the file. Filesystem mtime is not used for comparison: a fresh clone stamps every file with the checkout time, which made 265 report files share 3 mtimes and produced 21 false staleness findings. An uncommitted artifact falls back to mtime and is labelled last_change_source: "filesystem", and is never compared.',
+      'Last git commit touching the file. Filesystem mtime is not used for comparison: a fresh clone stamps every file with the checkout time, which put all 265 report mtimes inside a two-second window and produced 21 false staleness findings. An uncommitted artifact falls back to mtime and is labelled last_change_source: "filesystem", and is never compared.',
     reading_guide: {
       present: 'At least one file matched the slice output pattern.',
       absent:

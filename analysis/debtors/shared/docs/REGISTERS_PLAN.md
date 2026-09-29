@@ -184,8 +184,8 @@ The recommendation was adopted as ruled (D4). Three things the design above got 
 found by running it:
 
 **1. Filesystem `mtime` cannot answer "how stale".** The plan assumed `mtime` was the
-staleness signal. In a git working tree it is the *checkout* time: 265 account report
-files in this repo carry **3 distinct mtimes spanning two seconds**, and the first
+staleness signal. In a git working tree it is the *checkout* time: all **265** account
+report files in this repo carry mtimes inside a **two-second window**, and the first
 implementation produced **21 confident staleness findings, all false**. The index now
 anchors every date to the **last git commit** touching the file — one
 `git log --name-only` pass, 34 ms — and a comparison is made only when *both* sides are
