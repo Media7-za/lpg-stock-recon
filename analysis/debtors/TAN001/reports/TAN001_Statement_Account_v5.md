@@ -4,7 +4,7 @@
 **LPG Opening B/F (1A):** R66,565.10 &nbsp;|&nbsp; **CYL Opening B/F (1B):** R-6,210.00
 **Payment routing:** LPG lane (payments post to Part 1A unless configured otherwise)
 **Last updated:** 2026-09-29 from ERP TXT account enquiry (DEBENQ.TXT — current balance R81,697.12)
-**Data note:** Updated with Aug-Sep 2026 transactions from latest DEBENQ.TXT. June-Jul balances reflect updated source data (variance vs. prior v5 indicates possible reconciliation/correction).
+**Data note:** Removed historic UD Payment #00014098 (02/06/2022, -R1,305.02) from source. Updated with Aug-Sep 2026 transactions from latest DEBENQ.TXT. June-Jul balances reflect updated source data (variance vs. prior v5 indicates possible reconciliation/correction).
 
 ---
 
