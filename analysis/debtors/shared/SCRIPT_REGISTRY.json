@@ -1089,6 +1089,35 @@
       "notes": null
     },
     {
+      "id": "debtors.shared.portfolio.artifact.index",
+      "path": "analysis/debtors/shared/scripts/portfolio_artifact_index.mjs",
+      "lane": "debtors",
+      "scope": "universal",
+      "kind": "entrypoint",
+      "durability": "permanent",
+      "evidence": "npm-entrypoint",
+      "entrypoints": [
+        "debtors:artifact-index",
+        "debtors:artifact-index:write"
+      ],
+      "owns_slices": [],
+      "notes": "Register 2 (decision D4). Called by debtors_sync with write:true so there is one portfolio entry point, and exposed directly as debtors:artifact-index for regeneration. Report-only: nothing it finds may fail the sync."
+    },
+    {
+      "id": "debtors.shared.portfolio.artifact.index.test",
+      "path": "analysis/debtors/shared/scripts/portfolio_artifact_index.test.mjs",
+      "lane": "debtors",
+      "scope": "universal",
+      "kind": "test",
+      "durability": "permanent",
+      "evidence": "test-suite",
+      "entrypoints": [
+        "debtors:test"
+      ],
+      "owns_slices": [],
+      "notes": null
+    },
+    {
       "id": "debtors.shared.projection.collectable.derivation.test",
       "path": "analysis/debtors/shared/scripts/projection_collectable_derivation.test.mjs",
       "lane": "debtors",

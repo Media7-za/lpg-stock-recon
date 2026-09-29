@@ -178,6 +178,46 @@ around them.
 `project.json` diffs clean and cannot break the sync path that the whole portfolio
 depends on.
 
+### Built 2026-09-29 — what the implementation had to change
+
+The recommendation was adopted as ruled (D4). Three things the design above got wrong,
+found by running it:
+
+**1. Filesystem `mtime` cannot answer "how stale".** The plan assumed `mtime` was the
+staleness signal. In a git working tree it is the *checkout* time: 265 account report
+files in this repo carry **3 distinct mtimes spanning two seconds**, and the first
+implementation produced **21 confident staleness findings, all false**. The index now
+anchors every date to the **last git commit** touching the file — one
+`git log --name-only` pass, 34 ms — and a comparison is made only when *both* sides are
+git-anchored. An uncommitted artifact is labelled `last_change_source: "filesystem"`
+and is never compared.
+
+`PROVEN` — `analysis/debtors/shared/PORTFOLIO_ARTIFACT_INDEX.json` § `date_basis`.
+
+**2. Commit-splitting is not staleness.** With commit dates, FIR001's v5 statement read
+as stale against its own ingest coverage — committed **5 seconds later**, in a commit
+whose message records the v5 regeneration. Regenerating a chain and committing it in two
+parts is normal. Pairs inside a declared one-hour window are reported as
+`same_session_regeneration` rather than silently dropped. Genuine staleness survives:
+TWK002 is 19 days and 13 days behind on two chains.
+
+**3. Slices are lane-scoped, and some are not per-account at all.**
+`008ORY` is a creditor, and its own `reports/008ORY_Statement_Account_v5.md` matched the
+**debtor** `statement.v5.composed` pattern — the creditor read as a debtor on v5. Slice
+lane is now derived from where its outputs land. Separately, `portfolio.dashboard` writes
+one `DEBTORS_DASHBOARD.md`; matched per account it read as "present on all 22", which is
+true and says nothing about any account. Portfolio-wide slices are reported once.
+
+**Also corrected:** scanning a hand-picked list of roots reported all **19** existing
+`project.json` files as absent. Scan roots are now derived from the patterns themselves.
+
+**Confirmed report-only.** `debtors:sync` exit code is identical with findings present,
+with the indexer deliberately crashed, and at the base commit —
+`/opt/cursor/artifacts/artifact_index_report_only_proof.log`. The refresh sits *before*
+the hard-failure exit, because the index reads nothing out of `project.json`: gating an
+artifact inventory on schema validity would mean that today, with two accounts carrying a
+legacy `reconState`, the register silently never ran.
+
 ---
 
 ## 5. Register 3 — Script Catalog
@@ -218,6 +258,54 @@ scripts nothing points at is inventory, not governance. It gets its value from
 `owns_scripts` in Register 1 and the generator stamps in Register 2. Building it
 first would mean building the least connected piece before the things that connect
 to it.
+
+### Built 2026-09-29 — what the implementation had to change
+
+**102 governed scripts** declared; `debtors:statement-v5` registered as planned, along
+with `debtors:statement-v4`. Four departures from the sketch above:
+
+**1. Durability is mostly unprovable, and says so.** The plan implied every script would
+be classified `permanent | one-shot | deprecated`. Classifying 102 scripts by reading
+them was not done, and guessing would have been worse than the gap. A record claims
+`permanent` only against a named, machine-checkable citation — a registered npm target, a
+`*.test.mjs` suite, or an import/subprocess edge from something that runs. **58 stay
+`unclassified` with `evidence: "none"`**, which is a visible triage backlog, not a verdict
+of dead. `EVIDENCE_REQUIRED` fails on any `permanent` claim citing nothing, and also
+re-checks the two graph-derived citations against the graph instead of trusting them.
+
+**2. Reachability must include subprocess edges.** `debtors_sync` reaches
+`debtors_dashboard` only through `spawnSync` — no import scan sees it. An import-only
+graph filed the generator of `portfolio.dashboard` and `portfolio.action_prompts` as
+`unclassified`, one deletion away from breaking the portfolio dashboard.
+
+**3. The docblock is the script-side analogue of skill frontmatter,** not the source of
+the register. `DOCBLOCK_MATCH` fails when a file's `@scope`/`@durability` contradicts its
+record, and the pre-existing `@deprecated` convention (2 scripts) is honoured rather than
+requiring those authors' intent to be restated.
+
+**4. Slice ownership is declared per script, never derived.** An attempt to derive it by
+matching `SLICE_REGISTRY` output literals against script source matched the word
+`reports` and claimed 13 owners for `tag.coverage`. Output paths are config-driven
+(`cfg.reportPath`), so they are not statically resolvable. Nine ownership claims were each
+verified by reading the write path; the rest are left empty rather than guessed.
+
+### The live defect Register 3 found
+
+`npm run debtors:parse-backlog` names `analysis/debtors/shared/scripts/parse_global_aged_debt.mjs`.
+**That file has never existed on any branch** (`git log --all` is empty for it), while
+`CHANGELOG.md`, `DEBTORS_ORCHESTRATION_PRD.md`, `DEBTORS_ORCHESTRATION_ROADMAP.md`, two
+skills, and the dashboard action prompt all describe it as delivered. `PROVEN`.
+
+This is the gap Register 1 could not see: `SCRIPT_TARGETS_VALID` checks that a target
+*name* exists in `package.json`, not that it *runs*.
+
+**Consequence:** `analysis/debtors/shared/data/portfolio_candidates.csv` (68 rows, last
+committed 2026-08-29) cannot be refreshed, and nothing records the ERP date behind it, so
+portfolio triage reads a frozen input as current.
+
+Resolution needs the operator — write the parser, or retire the target and the four
+documents claiming it. Declared in `SCRIPT_REGISTRY.json` § `missing_entrypoints` with a
+tripwire, because a gate that fails on a defect nobody can close gets switched off.
 
 ---
 

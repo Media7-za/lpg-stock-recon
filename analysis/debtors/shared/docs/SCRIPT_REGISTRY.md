@@ -7,7 +7,7 @@
 > **Authority:** `analysis/debtors/shared/DEBTORS_DOCTRINE.md`  
 > **Generated — do not edit.** Regenerate: `npm run debtors:script-registry:write`
 
-100 governed scripts. 39 are proven load-bearing (registered entry point, test suite, or imported by one). 58 are `unclassified`: durability is unproven, which is not the same as dead. Each needs a read to classify, and that backlog is the point of counting it.
+102 governed scripts. 41 are proven load-bearing (registered entry point, test suite, or imported by one). 58 are `unclassified`: durability is unproven, which is not the same as dead. Each needs a read to classify, and that backlog is the point of counting it.
 
 **Durability** is never inferred from a filename. **Scope** and **lane** are read from the path and so are always known.
 
@@ -27,7 +27,7 @@ Documented `npm run` commands whose script is **absent from the repo**. These fa
 
 | Durability | Count | Meaning |
 | :--- | ---: | :--- |
-| `permanent` | 39 | Load-bearing. Deleting it breaks a registered entry point, a test, or a caller. |
+| `permanent` | 41 | Load-bearing. Deleting it breaks a registered entry point, a test, or a caller. |
 | `one-shot` | 0 | Ran once for a specific investigation and is not expected to run again. |
 | `deprecated` | 2 | Superseded but retained; a replacement is named. |
 | `superseded` | 1 | Replaced. Kept only for provenance. |
@@ -35,8 +35,8 @@ Documented `npm run` commands whose script is **absent from the repo**. These fa
 
 | Evidence | Count | Meaning |
 | :--- | ---: | :--- |
-| `npm-entrypoint` | 19 | A package.json script names this file. |
-| `test-suite` | 7 | Matches the *.test.mjs convention run by debtors:test. |
+| `npm-entrypoint` | 20 | A package.json script names this file. |
+| `test-suite` | 8 | Matches the *.test.mjs convention run by debtors:test. |
 | `imported-by-permanent` | 12 | Static import from a script reachable from an entry point. |
 | `invoked-by-permanent` | 1 | Subprocess call from a script reachable from an entry point. |
 | `docblock-deprecated` | 2 | The file carries an @deprecated tag naming its replacement. |
@@ -64,6 +64,8 @@ Documented `npm run` commands whose script is **absent from the repo**. These fa
 | `debtors:sync` | `analysis/debtors/shared/scripts/debtors_sync.mjs` | debtors | `d17.collections` |
 | `debtors:customer-statement` `debtors:twk002-statement-snapshot` | `analysis/debtors/shared/scripts/generate_statement_of_account.mjs` | debtors | `customer.soa` |
 | `debtors:test` | `analysis/debtors/shared/scripts/ingest_coverage_classifier.test.mjs` | debtors | — |
+| `debtors:artifact-index` `debtors:artifact-index:write` | `analysis/debtors/shared/scripts/portfolio_artifact_index.mjs` | debtors | — |
+| `debtors:test` | `analysis/debtors/shared/scripts/portfolio_artifact_index.test.mjs` | debtors | — |
 | `debtors:test` | `analysis/debtors/shared/scripts/projection_collectable_derivation.test.mjs` | debtors | — |
 | `debtors:pull-db` | `analysis/debtors/shared/scripts/pull_debtor_transactions_from_db.mjs` | debtors | — |
 | `debtors:statement-v4` | `analysis/debtors/shared/scripts/reconcile_debtor_v4_from_txt.mjs` | debtors | `statement.v4.composed` `fixture.v4` |
@@ -144,5 +146,5 @@ No registered entry point, not a test, not imported by anything that runs. That 
 | `EVIDENCE_REQUIRED` | 0 | 1 |
 
 - **WARN** `ENTRYPOINT_RESOLVES` — debtors:parse-backlog -> analysis/debtors/shared/scripts/parse_global_aged_debt.mjs is absent; acknowledged: ABSENT — no such file, and git log shows it has never existed on any branch. The npm target, two skills, the PRD, the roadmap and CHANGELOG all describe it as delivered.
-- **WARN** `EVIDENCE_REQUIRED` — 58 of 100 scripts are unclassified — durability unproven, not assumed dead
+- **WARN** `EVIDENCE_REQUIRED` — 58 of 102 scripts are unclassified — durability unproven, not assumed dead
 

@@ -32,6 +32,8 @@
     "debtors:skill-registry:write": "node analysis/debtors/shared/scripts/render_skill_registry.mjs --write",
     "debtors:script-registry": "node analysis/debtors/shared/scripts/render_script_registry.mjs",
     "debtors:script-registry:write": "node analysis/debtors/shared/scripts/render_script_registry.mjs --write",
+    "debtors:artifact-index": "node analysis/debtors/shared/scripts/portfolio_artifact_index.mjs",
+    "debtors:artifact-index:write": "node analysis/debtors/shared/scripts/portfolio_artifact_index.mjs --write",
     "debtors:twk002-allocation-ingest": "node analysis/debtors/TWK002/scripts/remittance_allocation_ingest.mjs --write",
     "debtors:twk002-phantom-cn-report": "node analysis/debtors/TWK002/scripts/build_phantom_cn_report.mjs --write",
     "debtors:twk002-bf-bridge": "node analysis/debtors/TWK002/scripts/build_pre_mar2025_bf_bridge.mjs --write",
