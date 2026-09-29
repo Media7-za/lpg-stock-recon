@@ -28,6 +28,7 @@ import {
   renderMarkdown,
   discoverAccounts,
   runArtifactIndex,
+  sameExceptGeneratedAt,
 } from './portfolio_artifact_index.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../../..');
@@ -469,5 +470,48 @@ describe('the live repository', () => {
     const before = fs.readFileSync(indexPath, 'utf8');
     runArtifactIndex(ROOT);
     assert.equal(fs.readFileSync(indexPath, 'utf8'), before);
+  });
+
+  test('writing when only the clock moved leaves the committed views untouched', () => {
+    // debtors:sync writes the index on every run. If a moved generated_at counted as a
+    // change, every sync would dirty the tree, and a register whose diffs are always
+    // noise is a register whose real findings get skimmed past.
+    const indexPath = path.join(ROOT, 'analysis/debtors/shared/PORTFOLIO_ARTIFACT_INDEX.json');
+    const viewPath = path.join(ROOT, 'analysis/debtors/shared/docs/PORTFOLIO_ARTIFACT_INDEX.md');
+    const before = { index: fs.readFileSync(indexPath, 'utf8'), view: fs.readFileSync(viewPath, 'utf8') };
+
+    const { written } = runArtifactIndex(ROOT, { write: true });
+
+    assert.deepEqual(written, [], 'nothing should have been rewritten');
+    assert.equal(fs.readFileSync(indexPath, 'utf8'), before.index);
+    assert.equal(fs.readFileSync(viewPath, 'utf8'), before.view);
+  });
+});
+
+describe('sameExceptGeneratedAt', () => {
+  const doc = (stamp, body) => `{\n  "generated_at": "${stamp}",\n  "totals": { "accounts": ${body} }\n}\n`;
+
+  test('a moved timestamp alone is not a change', () => {
+    assert.ok(sameExceptGeneratedAt(doc('2026-09-29T10:00:00.000Z', 23), doc('2026-09-29T11:00:00.000Z', 23)));
+  });
+
+  test('a changed finding is a change even when the timestamp is identical', () => {
+    assert.ok(!sameExceptGeneratedAt(doc('2026-09-29T10:00:00.000Z', 23), doc('2026-09-29T10:00:00.000Z', 24)));
+  });
+
+  test('a changed finding is a change when the timestamp also moved', () => {
+    assert.ok(!sameExceptGeneratedAt(doc('2026-09-29T10:00:00.000Z', 23), doc('2026-09-29T11:00:00.000Z', 24)));
+  });
+
+  test('only the first generated_at is normalised, so a nested one still counts', () => {
+    // Guards against the strip becoming global and swallowing a real per-account field.
+    const a = `{\n  "generated_at": "A",\n  "x": {\n    "generated_at": "P"\n  }\n}\n`;
+    const b = `{\n  "generated_at": "B",\n  "x": {\n    "generated_at": "Q"\n  }\n}\n`;
+    assert.ok(!sameExceptGeneratedAt(a, b));
+  });
+
+  test('content with no timestamp at all compares exactly', () => {
+    assert.ok(sameExceptGeneratedAt('# View\n\nrow\n', '# View\n\nrow\n'));
+    assert.ok(!sameExceptGeneratedAt('# View\n\nrow\n', '# View\n\nother\n'));
   });
 });

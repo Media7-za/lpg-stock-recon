@@ -656,11 +656,37 @@ export function runArtifactIndex(ROOT, { write = false } = {}) {
 
   const written = [];
   if (write) {
-    fs.writeFileSync(path.join(ROOT, INDEX_REL), `${JSON.stringify(index, null, 2)}\n`);
-    fs.writeFileSync(path.join(ROOT, VIEW_REL), renderMarkdown(index, sliceRegistry));
-    written.push(INDEX_REL, VIEW_REL);
+    const json = `${JSON.stringify(index, null, 2)}\n`;
+    if (writeIfChanged(path.join(ROOT, INDEX_REL), json, sameExceptGeneratedAt)) written.push(INDEX_REL);
+    if (writeIfChanged(path.join(ROOT, VIEW_REL), renderMarkdown(index, sliceRegistry), sameExceptGeneratedAt)) {
+      written.push(VIEW_REL);
+    }
   }
   return { index, written };
+}
+
+/**
+ * `generated_at` moves on every run, so an unconditional write would leave a modified
+ * file behind each time `debtors:sync` ran — and the index runs there automatically.
+ * A register whose only change is its own clock trains readers to ignore its diffs,
+ * which is how a real drift finding gets skimmed past. The timestamp is kept, but it
+ * now means "when the findings last changed", not "when the script last ran".
+ */
+export function sameExceptGeneratedAt(a, b) {
+  const strip = (s) => s.replace(/^(\s*"generated_at":\s*).*$/m, '$1');
+  return strip(a) === strip(b);
+}
+
+function writeIfChanged(absPath, next, equivalent) {
+  let current = null;
+  try {
+    current = fs.readFileSync(absPath, 'utf8');
+  } catch {
+    // Absent — first generation, always a write.
+  }
+  if (current !== null && equivalent(current, next)) return false;
+  fs.writeFileSync(absPath, next);
+  return true;
 }
 
 function main() {
@@ -668,7 +694,9 @@ function main() {
   const ROOT = path.resolve(__dirname, '../../../..');
   const { index, written } = runArtifactIndex(ROOT, { write: process.argv.includes('--write') });
 
+  const writing = process.argv.includes('--write');
   for (const w of written) console.log(`Wrote ${w}`);
+  if (writing && !written.length) console.log('Unchanged — findings identical to the committed views.');
   console.log(
     `\nArtifact index — ${index.totals.accounts} accounts × ${index.totals.slices} slices · ` +
       `${index.totals.stale_rows} stale (report-only)`,
