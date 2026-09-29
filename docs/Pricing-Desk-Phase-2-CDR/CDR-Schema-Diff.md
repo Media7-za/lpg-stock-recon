@@ -251,12 +251,11 @@ tables (see comment header in `supabase/create_operational_tables.sql`).
 
 1. **Auth — fully resolved.** `useAuth.ts` now calls real `supabase.auth.getSession()` /
    `onAuthStateChange`, gated by `src/components/auth/LoginScreen.tsx`. RLS is enabled
-   with `authenticated`-only policies (see "Superseded" note above). One interim
-   credential exists (`pricing.desk.depot.manager@gmail.com`, created directly via SQL
-   because `supabase.auth.signUp()` hit this project's email rate limit — see commit
-   message for detail). This is a single shared credential, not per-user accounts;
-   real user management (one account per depot staff member, `approved_by` tied to a
-   real identity) remains future work.
+   with `authenticated`-only policies (see "Superseded" note above). One shared
+   default credential: **`56847p@gmail.com`** (Supabase Auth user with
+   `user_metadata.role = "Depot Manager"`). Password is the project Postgres password
+   stored in `.env` / operator password manager — not committed to git. Per-user
+   accounts (`approved_by` tied to a real identity) remain future work.
 2. **`approved_by`**: still free-text, matching current `RecommendationCard` UX
    (now has an "Approved by" field). Not yet `auth.uid()`-derived — the app has one
    shared credential, not per-user identity, so free-text remains the only option
