@@ -1,7 +1,7 @@
 {
   "$schema": "debtors/portfolio-artifact-index/v1",
   "generated_by": "analysis/debtors/shared/scripts/portfolio_artifact_index.mjs",
-  "generated_at": "2026-09-29T13:27:25.565Z",
+  "generated_at": "2026-09-29T13:38:19.854Z",
   "authority": "analysis/debtors/shared/DEBTORS_DOCTRINE.md",
   "plan": "analysis/debtors/shared/docs/REGISTERS_PLAN.md",
   "ruling": "Operator decision D4 — index lives beside project.json in one portfolio file, and is report-only. Staleness never fails debtors:sync.",
@@ -1068,6 +1068,8 @@
       "not_a_file": false,
       "accounts_in_scope": 22,
       "accounts_present": [
+        "BR0001",
+        "BU0002",
         "BU0005",
         "BU0009",
         "CAP000",
@@ -1075,6 +1077,7 @@
         "FAM001",
         "FIR001",
         "GAS004",
+        "IVE001",
         "JAY000",
         "JEN001",
         "JIM001",
@@ -1088,12 +1091,8 @@
         "WES004",
         "WO0001"
       ],
-      "present_count": 19,
-      "accounts_absent": [
-        "BR0001",
-        "BU0002",
-        "IVE001"
-      ]
+      "present_count": 22,
+      "accounts_absent": []
     },
     "turn.brief": {
       "tier": "governance",
@@ -1284,8 +1283,8 @@
         "position_recon + statement v5"
       ],
       "counts": {
-        "present": 4,
-        "absent": 28,
+        "present": 5,
+        "absent": 27,
         "not-a-file": 0
       },
       "stale": [],
@@ -1612,11 +1611,13 @@
           "scope": "universal",
           "lane": null,
           "optional": false,
-          "status": "absent",
-          "count": 0,
-          "paths": [],
-          "last_change": null,
-          "last_change_source": null
+          "status": "present",
+          "count": 1,
+          "paths": [
+            "analysis/debtors/BR0001/project.json"
+          ],
+          "last_change": "2026-09-29T13:36:44.863Z",
+          "last_change_source": "filesystem"
         },
         "turn.brief": {
           "tier": "governance",
@@ -1659,8 +1660,8 @@
       "lane_root": "debtors",
       "observed_lanes": [],
       "counts": {
-        "present": 1,
-        "absent": 31,
+        "present": 2,
+        "absent": 30,
         "not-a-file": 0
       },
       "stale": [],
@@ -1980,11 +1981,13 @@
           "scope": "universal",
           "lane": null,
           "optional": false,
-          "status": "absent",
-          "count": 0,
-          "paths": [],
-          "last_change": null,
-          "last_change_source": null
+          "status": "present",
+          "count": 1,
+          "paths": [
+            "analysis/debtors/BU0002/project.json"
+          ],
+          "last_change": "2026-09-29T13:38:01.143Z",
+          "last_change_source": "filesystem"
         },
         "turn.brief": {
           "tier": "governance",
@@ -4670,8 +4673,8 @@
         "position_recon + statement v5"
       ],
       "counts": {
-        "present": 4,
-        "absent": 28,
+        "present": 5,
+        "absent": 27,
         "not-a-file": 0
       },
       "stale": [],
@@ -4998,11 +5001,13 @@
           "scope": "universal",
           "lane": null,
           "optional": false,
-          "status": "absent",
-          "count": 0,
-          "paths": [],
-          "last_change": null,
-          "last_change_source": null
+          "status": "present",
+          "count": 1,
+          "paths": [
+            "analysis/debtors/IVE001/project.json"
+          ],
+          "last_change": "2026-09-29T13:37:28.003Z",
+          "last_change_source": "filesystem"
         },
         "turn.brief": {
           "tier": "governance",

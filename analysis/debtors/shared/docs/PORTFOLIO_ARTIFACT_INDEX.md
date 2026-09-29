@@ -46,7 +46,7 @@
 | `payment.pattern` | derived | lane-specific | 3/22 | `JIM001` `MD0003` `TWK002` |
 | `event.ledger` | derived | account-specific | 1/22 | `RED001` |
 | `erp.freshness` | governance | universal | 4/22 | `CAP000` `GAS004` `SA0001` `WO0001` |
-| `portfolio.register` | governance | universal | 19/22 | `BU0005` `BU0009` `CAP000` `FAM000` `FAM001` `FIR001` `GAS004` `JAY000` `JEN001` `JIM001` `MD0003` `MON001` `MOZ002` `RED001` `SA0001` `TAN001` `TWK002` `WES004` `WO0001` |
+| `portfolio.register` | governance | universal | 22/22 | `BR0001` `BU0002` `BU0005` `BU0009` `CAP000` `FAM000` `FAM001` `FIR001` `GAS004` `IVE001` `JAY000` `JEN001` `JIM001` `MD0003` `MON001` `MOZ002` `RED001` `SA0001` `TAN001` `TWK002` `WES004` `WO0001` |
 | `turn.brief` | governance | universal | 3/22 | `CAP000` `GAS004` `SA0001` |
 | `turn.manifest` | governance | universal | 4/22 | `CAP000` `GAS004` `SA0001` `WO0001` |
 | `onboarding.status` | presentation | universal | 14/22 | `BR0001` `BU0002` `BU0005` `CAP000` `FIR001` `GAS004` `IVE001` `JEN001` `MD0003` `MON001` `MOZ002` `RED001` `SA0001` `TWK002` |
@@ -72,8 +72,8 @@ One artifact for the whole portfolio, so presence says nothing about any single 
 | Account | Observed lanes | Present | Absent | Stale |
 | :--- | :--- | ---: | ---: | ---: |
 | `008ORY` | creditor position_recon v5 | 2 | 0 | — |
-| `BR0001` | position_recon + statement v5 | 4 | 28 | — |
-| `BU0002` | _none observed_ | 1 | 31 | — |
+| `BR0001` | position_recon + statement v5 | 5 | 27 | — |
+| `BU0002` | _none observed_ | 2 | 30 | — |
 | `BU0005` | _none observed_ | 2 | 30 | — |
 | `BU0009` | allocation | 2 | 30 | — |
 | `CAP000` | _none observed_ | 5 | 27 | — |
@@ -81,7 +81,7 @@ One artifact for the whole portfolio, so presence says nothing about any single 
 | `FAM001` | _none observed_ | 1 | 31 | — |
 | `FIR001` | customer statement · position_recon + statement v5 | 7 | 25 | — |
 | `GAS004` | position_recon + statement v5 | 8 | 24 | — |
-| `IVE001` | position_recon + statement v5 | 4 | 28 | — |
+| `IVE001` | position_recon + statement v5 | 5 | 27 | — |
 | `JAY000` | customer statement · position_recon + statement v5 | 5 | 27 | — |
 | `JEN001` | allocation · customer statement · position_recon + statement v4 · position_recon + statement v5 | 10 | 22 | — |
 | `JIM001` | allocation · position_recon · position_recon + statement v4 | 4 | 28 | — |
