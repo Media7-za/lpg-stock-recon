@@ -1,0 +1,24 @@
+{
+  "debtorCode": "DON001",
+  "debtorName": "DONNYBROOK",
+  "txtPath": "analysis/debtors/DON001/raw/DON001CURRENT.TXT",
+  "periodStart": "2022-01-20",
+  "combinedBf": 103562.40,
+  "bfSourceNote": "Opening balance from ERP account enquiry extract (DON001CURRENT.TXT) dated through Feb 23, 2025. Starting point for transaction reconciliation.",
+  "cylOpeningFinancial": 0.0,
+  "paymentLane": "LPG",
+  "cylOpeningQty": {
+    "14.1": 0,
+    "19.1": 0,
+    "9.1": 0,
+    "D.1": 0,
+    "S.1": 0
+  },
+  "skuRates": {
+    "14.1": 575,
+    "19.1": 690,
+    "9.1": 517.5,
+    "D.1": 1150,
+    "S.1": 1150
+  }
+}

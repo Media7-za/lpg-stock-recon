@@ -1,0 +1,49 @@
+{
+  "debtorCode": "DON001",
+  "clientName": "DONNYBROOK",
+  "status": "setup",
+  "reconState": "onboarding",
+  "financials": {
+    "totalOutstanding": 97976.63,
+    "totalOutstandingNote": "ASSERTED from ERP CURRENT BALANCE header on raw/DON001CURRENT.TXT as of 2025-02-23. v5 statement under generation.",
+    "lastInvoiceDate": "2026-09-29",
+    "lastPaymentDate": "2026-09-29",
+    "agedDebt180Plus": null
+  },
+  "collections": {
+    "actionRequired": false,
+    "actionType": null,
+    "dateSent": null,
+    "deadlineDate": null,
+    "nextAction": "Generate v5 statement, verify opening balance against complete ERP export, set up allocation workflow.",
+    "nextActionDate": null,
+    "notes": "Account onboarding in progress. Account enquiry data received covering Jan 2022 through Feb 2025. Awaiting full ERP transaction export for comprehensive reconciliation.",
+    "blockers": [
+      {
+        "type": "DATA_MISSING",
+        "status": "open",
+        "description": "Complete ERP export needed to verify opening balance (103562.40) and reconcile all transactions",
+        "source": "DON001 setup",
+        "asAt": "2026-09-29"
+      }
+    ]
+  },
+  "ingestGate": {
+    "status": "pending",
+    "ingestFreshness": "current",
+    "ingestCoverage": "partial",
+    "displayStatus": "SETUP_PARTIAL",
+    "asAt": "2026-09-29",
+    "reportPath": null,
+    "ingestBlockedScopes": ["custody", "sku_analysis", "allocation"],
+    "exceptions": []
+  },
+  "history": [
+    {
+      "date": "2026-09-29",
+      "actor": "system-setup",
+      "action": "account-created",
+      "notes": "DON001 folder structure created. Account enquiry files ingested. v5 statement generation pending."
+    }
+  ]
+}
