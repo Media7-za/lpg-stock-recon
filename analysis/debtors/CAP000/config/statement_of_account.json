@@ -11,7 +11,7 @@
   "primaryTxt": "analysis/debtors/CAP000/raw/CAP000.TXT",
   "siteTxts": {},
   "outputDir": "analysis/debtors/CAP000/reports",
-  "outputBaseName": "CAP000_Statement_of_Account",
+  "outputBaseName": "CAP000_Statement_Account_v5",
   "pdfStylesheet": "analysis/debtors/shared/templates/statement_pdf.css",
   "_comment_closedInvoiceOverrides": "Optional. List invoices proven paid (e.g. by a remittance advice) whose ERP CN/payment row was never tagged with that invno, so they'd otherwise wrongly show as open.",
   "closedInvoiceOverrides": [],
