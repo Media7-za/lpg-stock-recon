@@ -841,6 +841,20 @@
       "notes": null
     },
     {
+      "id": "debtors.shared.check.invoice.tag.coverage.test",
+      "path": "analysis/debtors/shared/scripts/check_invoice_tag_coverage.test.mjs",
+      "lane": "debtors",
+      "scope": "universal",
+      "kind": "test",
+      "durability": "permanent",
+      "evidence": "test-suite",
+      "entrypoints": [
+        "debtors:test"
+      ],
+      "owns_slices": [],
+      "notes": "Console legibility of the D21 gate. The finding arithmetic is covered by debenq_open_invoices.test.mjs; this covers whether it reaches the screen."
+    },
+    {
       "id": "debtors.shared.debenq.open.invoices",
       "path": "analysis/debtors/shared/scripts/debenq_open_invoices.mjs",
       "lane": "debtors",

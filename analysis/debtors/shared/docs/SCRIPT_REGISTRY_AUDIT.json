@@ -1,24 +1,24 @@
 {
   "generated_by": "analysis/debtors/shared/scripts/render_script_registry.mjs",
-  "generated_at": "2026-09-29T13:27:25.674Z",
+  "generated_at": "2026-09-29T13:47:14.629Z",
   "registry_version": "1.0.0",
   "registry_status": "RATIFIED",
   "totals": {
-    "declared": 102,
-    "discovered_on_disk": 102,
+    "declared": 103,
+    "discovered_on_disk": 103,
     "reachable_by_import": 12,
     "reachable_by_invoke": 1,
     "npm_targets_into_analysis": 27,
-    "permanent": 41,
+    "permanent": 42,
     "unclassified": 58
   },
   "by_lane": {
     "creditors": 9,
-    "debtors": 92,
+    "debtors": 93,
     "inventory": 1
   },
   "by_scope": {
-    "universal": 53,
+    "universal": 54,
     "account:FAM000": 10,
     "account:JEN001": 9,
     "account:JIM001": 4,
@@ -35,12 +35,12 @@
     "module": 12,
     "wrapper": 2,
     "backup": 1,
-    "test": 8,
+    "test": 9,
     "query": 2
   },
   "by_durability": {
     "unclassified": 58,
-    "permanent": 41,
+    "permanent": 42,
     "deprecated": 2,
     "superseded": 1
   },
@@ -50,7 +50,7 @@
     "imported-by-permanent": 12,
     "docblock-deprecated": 2,
     "backup-directory": 1,
-    "test-suite": 8,
+    "test-suite": 9,
     "invoked-by-permanent": 1
   },
   "gates": {
@@ -175,7 +175,7 @@
     },
     {
       "gate": "EVIDENCE_REQUIRED",
-      "detail": "58 of 102 scripts are unclassified — durability unproven, not assumed dead"
+      "detail": "58 of 103 scripts are unclassified — durability unproven, not assumed dead"
     }
   ]
 }
