@@ -3,6 +3,8 @@
  *
  * A manual diagnostic, not part of `npm test`. Point DATABASE_URL/DIRECT_URL
  * at a real Postgres (staging Supabase or otherwise), apply migrations, then:
+ *   (the operational fleet seed, prisma/seeds/20260904_delivery_fleet_provisional.sql,
+ *    is applied idempotently by this script; it is not part of any migration)
  *
  *   npx tsx scripts/deliveryCostAcceptance.ts
  *
@@ -22,6 +24,15 @@
  */
 import { prisma } from '../src/lib/prisma';
 import { calculateDeliveryCost, getDeliveryCostCalculation } from '../src/features/pricing-desk/lib/deliveryCostCalculator';
+import { readFileSync } from 'node:fs';
+
+async function applyOperationalSeed() {
+  const sql = readFileSync(new URL('../prisma/seeds/20260904_delivery_fleet_provisional.sql', import.meta.url), 'utf8')
+    .split('\n').filter((l) => !l.trimStart().startsWith('--')).join('\n');
+  for (const stmt of sql.split(';').map((x) => x.trim()).filter(Boolean)) {
+    await prisma.$executeRawUnsafe(stmt);
+  }
+}
 
 let passed = 0;
 let failed = 0;
@@ -46,6 +57,7 @@ async function expectThrows(label: string, fn: () => Promise<unknown>) {
 }
 
 async function main() {
+  await applyOperationalSeed();
   console.log('\n=== Scenario 3: Shopline / Dalton against the pure-math expectation ===');
   const shopline = await calculateDeliveryCost({
     customer_id: 'SHOPLINE001',
