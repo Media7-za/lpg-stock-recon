@@ -1,5 +1,6 @@
 import { apiClient } from "./client";
 import { v4 as uuidv4 } from 'uuid';
+import type { CalculateDeliveryCostInput } from '../../features/pricing-desk/types/deliveryCostCalculator';
 
 export const startCountSession = (date: string) =>
   apiClient.post("/sessions/start", { date, idempotencyKey: uuidv4() });
@@ -34,7 +35,7 @@ export const getReconciliationReport = (sessionId: string) =>
 export const upsertDiscrepancyNote = (sessionId: string, note: string) =>
   apiClient.post("/discrepancies/notes", { sessionId, note, idempotencyKey: uuidv4() });
 
-export const calculateDeliveryCost = (payload: any) =>
+export const calculateDeliveryCost = (payload: CalculateDeliveryCostInput) =>
   apiClient.post("/pricing/delivery-cost-calculate", { ...payload, idempotencyKey: uuidv4() });
 
 export const getDeliveryCostCalculation = (calculationId: string) =>
