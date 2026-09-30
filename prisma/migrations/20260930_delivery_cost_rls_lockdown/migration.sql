@@ -14,3 +14,18 @@ ALTER TABLE "delivery_vehicle_cost_profiles" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "delivery_cost_calculations" ENABLE ROW LEVEL SECURITY;
 
 REVOKE ALL ON TABLE "delivery_vehicles", "delivery_vehicle_cost_profiles", "delivery_cost_calculations" FROM anon, authenticated;
+
+-- Explicit server-side access. Do not rely on Supabase default privileges:
+-- live currently inherits service_role access from them, and ADM-38 will
+-- change defaults for future objects. The calculator (pricing Edge Function)
+-- needs to read fleet/profiles and write calculations; nothing more.
+-- Role-aware: plain Postgres test databases have no service_role.
+DO $$
+BEGIN
+  IF EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'service_role') THEN
+    GRANT SELECT, INSERT, UPDATE, DELETE
+      ON TABLE "delivery_vehicles", "delivery_vehicle_cost_profiles", "delivery_cost_calculations"
+      TO service_role;
+  END IF;
+END
+$$;
