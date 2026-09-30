@@ -52,8 +52,9 @@ psql "$DIRECT_URL" -Atc "select migration_name, left(checksum,12), applied_steps
 #    expect c787274bb390 / 7e612183c650, applied_steps_count 0
 ```
 **Do not run `prisma migrate deploy` until `status` shows no unexpected pending migrations.** If `status` lists anything
-other than the two calculator migrations, stop. Do **not** run `scripts/deliveryCostAcceptance.ts` against live. It refuses
-Supabase hosts, and it needs `ACCEPTANCE_ISOLATED_DB=1`.
+other than the two calculator migrations, stop. Do **not** run `scripts/deliveryCostAcceptance.ts` against live. It requires `ACCEPTANCE_ISOLATED_DB=1`, a connected database
+named `delivery_cost_acceptance_*` (checked via `current_database()` after connecting, so tunnels can't bypass it), and the marker
+created by `scripts/acceptance/create_isolation_marker.sql`. It also refuses Supabase hosts.
 
 ## 4. Rehearsal evidence (local, 2026-09-30, re-run after the grant change)
 Built a DB in live's exact state: Prisma history = init only; calculator DDL + the **as-applied (pre-grant)** lockdown +
@@ -69,6 +70,8 @@ Fresh-DB checks:
   anon has none; RLS on; 0 vehicles (seed not in migration)
 - `ACCEPTANCE_ISOLATED_DB=1` acceptance → **32/32 passed** (29 scenarios + stored-row byte-identity, cleanup completeness,
   real-fleet fingerprint unchanged `d0b7e8ba…` → `d0b7e8ba…`)
+- Allow-list (added later): refuses a tunnel-style localhost DB with a non-acceptance name, a correctly named DB without the marker, and a
+  copied DB whose marker names a different database. In every case exit 2 and 0 rows written. With all three present: 32/32, fleet fingerprint unchanged
 - Guard: refuses without the flag (exit 2), and refuses `*.pooler.supabase.com`, `db.<ref>.supabase.co`, any Supabase
   `DIRECT_URL`, even with the flag
 - Seed re-run over a governed value (4.10, PUBLISHED) left it unchanged: insert-only, `ON CONFLICT DO NOTHING`

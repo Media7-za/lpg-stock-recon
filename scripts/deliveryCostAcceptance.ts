@@ -3,12 +3,19 @@
  *
  * A manual diagnostic, not part of `npm test`. ISOLATED TEST DATABASES ONLY.
  * It applies the operational fleet seed (insert-only), creates temporary test
- * vehicles/profiles/calculations and deletes them again. It refuses to run
- * unless ACCEPTANCE_ISOLATED_DB=1 is set, and it always refuses Supabase-hosted
- * databases (*.supabase.co, *.supabase.com, the live project ref), even with the flag.
+ * vehicles/profiles/calculations and deletes them again.
  *
- *   DATABASE_URL=postgresql://…@localhost:5432/scratch DIRECT_URL=… \
- *   npx prisma migrate deploy && \
+ * Safety: deny-list AND allow-list. Before any seed, write or cleanup it requires ALL of:
+ *   1. ACCEPTANCE_ISOLATED_DB=1
+ *   2. the connected database's actual name (current_database(), checked after connecting,
+ *      so tunnels/alternate hostnames cannot bypass it) matches ^delivery_cost_acceptance_[a-z0-9_]+$
+ *   3. the marker row created only by scripts/acceptance/create_isolation_marker.sql
+ * and it additionally refuses Supabase-hosted URLs (*.supabase.co/.com, pooler, live ref).
+ *
+ *   createdb delivery_cost_acceptance_local
+ *   export DATABASE_URL=postgresql://…@localhost:5432/delivery_cost_acceptance_local DIRECT_URL=$DATABASE_URL
+ *   npx prisma migrate deploy
+ *   psql "$DATABASE_URL" -f scripts/acceptance/create_isolation_marker.sql
  *   ACCEPTANCE_ISOLATED_DB=1 npx tsx scripts/deliveryCostAcceptance.ts
  *
  * The real fleet rows (CS70HKZN / CS70HMZN and their cost profiles) are never
@@ -65,6 +72,35 @@ function assertIsolatedDatabase() {
 }
 assertIsolatedDatabase();
 
+// ---- allow-list, verified AFTER connecting (defeats tunnels / alternate hostnames) ----
+const ACCEPTANCE_DB_NAME = /^delivery_cost_acceptance_[a-z0-9_]+$/;
+const ISOLATION_MARKER = 'delivery-cost-acceptance-isolated-v1';
+async function assertConnectedToIsolatedDatabase() {
+  const [{ db }] = await prisma.$queryRawUnsafe<{ db: string }[]>('SELECT current_database() AS db');
+  if (!ACCEPTANCE_DB_NAME.test(db)) {
+    console.error(`REFUSING TO RUN: connected database "${db}" does not match ${ACCEPTANCE_DB_NAME}. Use a dedicated disposable database.`);
+    process.exit(2);
+  }
+  const marker = await prisma.$queryRawUnsafe<{ ok: boolean }[]>(
+    `SELECT EXISTS (
+       SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' AND table_name = '_delivery_cost_acceptance_isolation_marker'
+     ) AS ok`,
+  );
+  if (!marker[0]?.ok) {
+    console.error('REFUSING TO RUN: isolation marker table missing. Run scripts/acceptance/create_isolation_marker.sql on the disposable test database first.');
+    process.exit(2);
+  }
+  const rows = await prisma.$queryRawUnsafe<{ n: number }[]>(
+    `SELECT count(*)::int AS n FROM public._delivery_cost_acceptance_isolation_marker WHERE marker = $1 AND database_name = current_database()`,
+    ISOLATION_MARKER,
+  );
+  if ((rows[0]?.n ?? 0) !== 1) {
+    console.error('REFUSING TO RUN: isolation marker value missing or created for a different database name.');
+    process.exit(2);
+  }
+  console.log(`Isolation verified: database "${db}", marker present.`);
+}
+
 // Real fleet rows: fingerprinted before/after; must never change.
 const REAL_FLEET_VEHICLE_IDS = ['veh_cs70hkzn', 'veh_cs70hmzn'];
 async function realFleetFingerprint(): Promise<string> {
@@ -116,6 +152,7 @@ async function expectThrows(label: string, fn: () => Promise<unknown>) {
 }
 
 async function main() {
+  await assertConnectedToIsolatedDatabase();
   await applyOperationalSeed();
   const fleetBaseline = await realFleetFingerprint();
   console.log(`Real fleet fingerprint (baseline): ${fleetBaseline}`);
