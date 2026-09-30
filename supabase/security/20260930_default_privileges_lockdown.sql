@@ -1,6 +1,6 @@
 -- Project-wide: stop NEW public-schema objects inheriting client (anon/authenticated) access.
 -- STATUS: PROPOSED, NOT APPLIED. Dry-run verified on live inside a rolled-back
--- transaction (2026-09-30); see ADM-37. Affects only objects created AFTER it runs.
+-- transaction (2026-09-30); see ADM-38. Affects only objects created AFTER it runs.
 --
 -- Scope limits, verified:
 --  * Only role `postgres` is changeable by the migration role. Defaults owned by
@@ -9,7 +9,7 @@
 --    created as supabase_admin in public still inherit. Raise with Supabase / avoid
 --    creating app objects as that role.
 --  * `service_role` is deliberately left untouched (server-side paths keep working).
---  * Existing objects are NOT changed by this file (separate audit: ADM-35/ADM-37).
+--  * Existing objects are NOT changed by this file (separate audit: ADM-35/ADM-39).
 --
 -- Gotcha proven in dry-run: `... IN SCHEMA public REVOKE EXECUTE ON FUNCTIONS FROM PUBLIC`
 -- does NOT remove the built-in PUBLIC execute default; the GLOBAL form (no IN SCHEMA) is required.
