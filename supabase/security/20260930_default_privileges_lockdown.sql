@@ -1,5 +1,5 @@
 -- Project-wide: stop NEW public-schema objects inheriting client (anon/authenticated) access.
--- STATUS: PROPOSED, NOT APPLIED. Dry-run verified on live inside a rolled-back
+-- STATUS: PROPOSED, NOT APPLIED (see README.md). Dry-run verified on live inside a rolled-back
 -- transaction (2026-09-30); see ADM-38. Affects only objects created AFTER it runs.
 --
 -- Scope limits, verified:
