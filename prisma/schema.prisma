@@ -437,7 +437,14 @@ model Vehicle {
   deliveryCalculations DeliveryCostCalculation[]
 
   @@index([registration])
-  @@map("vehicles")
+  // Mapped to a non-obvious table name: the lpg-stock-recon Supabase
+  // project already has an unrelated, pre-existing "vehicles" table
+  // (simple make/model/capacity schema, FK'd from a "trips" table used by
+  // some other in-progress feature). Renamed to avoid colliding with it
+  // rather than touching that table — see the 004B hardening history for
+  // context. Prisma model name stays "Vehicle"; only the physical table
+  // name differs.
+  @@map("delivery_vehicles")
 }
 
 model VehicleCostProfile {
@@ -482,7 +489,7 @@ model VehicleCostProfile {
 
   @@index([vehicleId])
   @@index([status])
-  @@map("vehicle_cost_profiles")
+  @@map("delivery_vehicle_cost_profiles")
 }
 
 model DeliveryCostCalculation {

@@ -8,7 +8,11 @@ CREATE TYPE "CalculationStatus" AS ENUM ('CALCULATED', 'PARTIAL', 'ERROR');
 CREATE TYPE "CostProfileStatus" AS ENUM ('PROVISIONAL', 'PUBLISHED', 'SUPERSEDED', 'ARCHIVED');
 
 -- CreateTable
-CREATE TABLE "vehicles" (
+-- Named "delivery_vehicles" (not "vehicles") because this Supabase project
+-- already has an unrelated, pre-existing "vehicles" table (integer id,
+-- make/model/capacity schema) FK'd from a "trips" table belonging to a
+-- different, in-progress feature. See 004B hardening history.
+CREATE TABLE "delivery_vehicles" (
     "id" TEXT NOT NULL,
     "registration" TEXT NOT NULL,
     "vehicle_type" TEXT NOT NULL,
@@ -24,11 +28,11 @@ CREATE TABLE "vehicles" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "vehicles_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "delivery_vehicles_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "vehicle_cost_profiles" (
+CREATE TABLE "delivery_vehicle_cost_profiles" (
     "id" TEXT NOT NULL,
     "vehicle_id" TEXT NOT NULL,
     "profile_code" TEXT NOT NULL,
@@ -63,7 +67,7 @@ CREATE TABLE "vehicle_cost_profiles" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "vehicle_cost_profiles_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "delivery_vehicle_cost_profiles_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -110,19 +114,19 @@ CREATE TABLE "delivery_cost_calculations" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "vehicles_registration_key" ON "vehicles"("registration");
+CREATE UNIQUE INDEX "delivery_vehicles_registration_key" ON "delivery_vehicles"("registration");
 
 -- CreateIndex
-CREATE INDEX "vehicles_registration_idx" ON "vehicles"("registration");
+CREATE INDEX "delivery_vehicles_registration_idx" ON "delivery_vehicles"("registration");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "vehicle_cost_profiles_profile_code_key" ON "vehicle_cost_profiles"("profile_code");
+CREATE UNIQUE INDEX "delivery_vehicle_cost_profiles_profile_code_key" ON "delivery_vehicle_cost_profiles"("profile_code");
 
 -- CreateIndex
-CREATE INDEX "vehicle_cost_profiles_vehicle_id_idx" ON "vehicle_cost_profiles"("vehicle_id");
+CREATE INDEX "delivery_vehicle_cost_profiles_vehicle_id_idx" ON "delivery_vehicle_cost_profiles"("vehicle_id");
 
 -- CreateIndex
-CREATE INDEX "vehicle_cost_profiles_status_idx" ON "vehicle_cost_profiles"("status");
+CREATE INDEX "delivery_vehicle_cost_profiles_status_idx" ON "delivery_vehicle_cost_profiles"("status");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "delivery_cost_calculations_calculation_code_key" ON "delivery_cost_calculations"("calculation_code");
@@ -143,13 +147,13 @@ CREATE INDEX "delivery_cost_calculations_vehicle_id_idx" ON "delivery_cost_calcu
 CREATE INDEX "delivery_cost_calculations_calculated_at_idx" ON "delivery_cost_calculations"("calculated_at");
 
 -- AddForeignKey
-ALTER TABLE "vehicle_cost_profiles" ADD CONSTRAINT "vehicle_cost_profiles_vehicle_id_fkey" FOREIGN KEY ("vehicle_id") REFERENCES "vehicles"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "delivery_vehicle_cost_profiles" ADD CONSTRAINT "delivery_vehicle_cost_profiles_vehicle_id_fkey" FOREIGN KEY ("vehicle_id") REFERENCES "delivery_vehicles"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "delivery_cost_calculations" ADD CONSTRAINT "delivery_cost_calculations_vehicle_id_fkey" FOREIGN KEY ("vehicle_id") REFERENCES "vehicles"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "delivery_cost_calculations" ADD CONSTRAINT "delivery_cost_calculations_vehicle_id_fkey" FOREIGN KEY ("vehicle_id") REFERENCES "delivery_vehicles"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "delivery_cost_calculations" ADD CONSTRAINT "delivery_cost_calculations_vehicle_cost_profile_id_fkey" FOREIGN KEY ("vehicle_cost_profile_id") REFERENCES "vehicle_cost_profiles"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "delivery_cost_calculations" ADD CONSTRAINT "delivery_cost_calculations_vehicle_cost_profile_id_fkey" FOREIGN KEY ("vehicle_cost_profile_id") REFERENCES "delivery_vehicle_cost_profiles"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- ============================================================================
 -- Governed seed data
@@ -166,14 +170,14 @@ ALTER TABLE "delivery_cost_calculations" ADD CONSTRAINT "delivery_cost_calculati
 -- operator supplies it via vehicle.override_payload_kg or a data update.
 -- ============================================================================
 
-INSERT INTO "vehicles"
+INSERT INTO "delivery_vehicles"
   ("id", "registration", "vehicle_type", "active_status", "recommended_payload_kg", "maximum_payload_kg", "driver_count", "assistant_count", "governed_status", "effective_from", "created_at", "updated_at")
 VALUES
   ('veh_cs70hkzn', 'CS70HKZN', 'rigid_body_small', 'active', 500, NULL, 1, 1, 'governed', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
   ('veh_cs70hmzn', 'CS70HMZN', 'rigid_body_large', 'active', NULL, NULL, 1, 1, 'governed', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
 ON CONFLICT ("registration") DO NOTHING;
 
-INSERT INTO "vehicle_cost_profiles"
+INSERT INTO "delivery_vehicle_cost_profiles"
   ("id", "vehicle_id", "profile_code", "status", "source", "total_running_cost_per_km", "driver_hourly_rate", "assistant_hourly_rate", "effective_from", "created_at", "updated_at")
 VALUES
   ('vcp_cs70hkzn_prov_2026_09', 'veh_cs70hkzn', 'VCP-2026-09-CS70HKZN-PROV', 'PROVISIONAL', 'legacy_pricing_desk_rate', 3.66, NULL, NULL, CURRENT_DATE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
