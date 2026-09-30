@@ -399,3 +399,130 @@ enum DecisionType {
   MODIFY
   ESCALATE
 }
+
+enum VehicleSelectionMode {
+  RECOMMEND
+  OVERRIDE
+}
+
+enum CalculationStatus {
+  CALCULATED
+  PARTIAL
+  ERROR
+}
+
+enum CostProfileStatus {
+  PROVISIONAL
+  PUBLISHED
+  SUPERSEDED
+  ARCHIVED
+}
+
+model Vehicle {
+  id                        String   @id @default(cuid())
+  registration              String   @unique
+  vehicleType               String
+  activeStatus              String   @default("active")
+  minEconomicPayloadKg      Decimal? @db.Decimal(10, 2)
+  recommendedPayloadKg      Decimal? @db.Decimal(10, 2)
+  maximumPayloadKg          Decimal? @db.Decimal(10, 2)
+  driverCount               Int?
+  assistantCount            Int?
+  governedStatus            String?
+  effectiveFrom             DateTime @default(now())
+  effectiveTo               DateTime?
+  createdAt                 DateTime @default(now())
+  updatedAt                 DateTime @updatedAt
+  costProfiles              VehicleCostProfile[]
+  deliveryCalculations      DeliveryCostCalculation[]
+
+  @@index([registration])
+  @@map("vehicles")
+}
+
+model VehicleCostProfile {
+  id                            String           @id @default(cuid())
+  vehicleId                     String           @map("vehicle_id")
+  vehicle                       Vehicle          @relation(fields: [vehicleId], references: [id])
+  profileCode                   String           @unique @map("profile_code")
+  status                        CostProfileStatus @default(PROVISIONAL) @map("status")
+  source                        String?          @map("source")
+  fuelConsumptionLPerKm         Decimal?         @db.Decimal(10, 4) @map("fuel_consumption_l_per_km")
+  fuelPricePerLitre             Decimal?         @db.Decimal(10, 4) @map("fuel_price_per_litre")
+  activeTypres                  Int?             @map("active_tyres")
+  tyreUnitCost                  Decimal?         @db.Decimal(10, 2) @map("tyre_unit_cost")
+  tyreLifespanKm                Decimal?         @db.Decimal(12, 0) @map("tyre_lifespan_km")
+  serviceIntervalKm             Decimal?         @db.Decimal(12, 0) @map("service_interval_km")
+  standardServiceCost           Decimal?         @db.Decimal(10, 2) @map("standard_service_cost")
+  maintenanceCostPerKm          Decimal?         @db.Decimal(10, 4) @map("maintenance_cost_per_km")
+  annualInsuranceCost           Decimal?         @db.Decimal(10, 2) @map("annual_insurance_cost")
+  annualLicensingCost           Decimal?         @db.Decimal(10, 2) @map("annual_licensing_cost")
+  purchaseValue                 Decimal?         @db.Decimal(12, 2) @map("purchase_value")
+  depreciatoinPeriodYears       Int?             @map("depreciation_period_years")
+  residualValue                 Decimal?         @db.Decimal(12, 2) @map("residual_value")
+  expectedUtilisationKmPerMonth Decimal?         @db.Decimal(10, 0) @map("expected_utilisation_km_per_month")
+  driverHourlyRate              Decimal?         @db.Decimal(10, 2) @map("driver_hourly_rate")
+  assistantHourlyRate           Decimal?         @db.Decimal(10, 2) @map("assistant_hourly_rate")
+  fuelCostPerKm                 Decimal?         @db.Decimal(10, 4) @map("fuel_cost_per_km")
+  tyreCostPerKm                 Decimal?         @db.Decimal(10, 4) @map("tyre_cost_per_km")
+  serviceCostPerKm              Decimal?         @db.Decimal(10, 4) @map("service_cost_per_km")
+  insuranceCostPerKm            Decimal?         @db.Decimal(10, 4) @map("insurance_cost_per_km")
+  licensingCostPerKm            Decimal?         @db.Decimal(10, 4) @map("licensing_cost_per_km")
+  depreciationCostPerKm         Decimal?         @db.Decimal(10, 4) @map("depreciation_cost_per_km")
+  totalRunningCostPerKm         Decimal?         @db.Decimal(10, 4) @map("total_running_cost_per_km")
+  publishedAt                   DateTime?        @map("published_at")
+  effectiveFrom                 DateTime         @default(now()) @map("effective_from")
+  effectiveTo                   DateTime?        @map("effective_to")
+  createdAt                     DateTime         @default(now()) @map("created_at")
+  updatedAt                     DateTime         @updatedAt @map("updated_at")
+  deliveryCalculations          DeliveryCostCalculation[]
+
+  @@index([vehicleId])
+  @@index([status])
+  @@map("vehicle_cost_profiles")
+}
+
+model DeliveryCostCalculation {
+  id                            String            @id @default(cuid())
+  calculationCode               String            @unique @map("calculation_code")
+  customerId                    String?           @map("customer_id")
+  quoteId                       String?           @map("quote_id")
+  orderId                       String?           @map("order_id")
+  calculatedAt                  DateTime          @default(now()) @map("calculated_at")
+  calculationDate               DateTime          @db.Date @map("calculation_date")
+  totalLpgKg                    Decimal           @db.Decimal(10, 2) @map("total_lpg_kg")
+  vehicleId                     String            @map("vehicle_id")
+  vehicle                       Vehicle           @relation(fields: [vehicleId], references: [id])
+  vehicleSelectionMode          VehicleSelectionMode @default(RECOMMEND) @map("vehicle_selection_mode")
+  vehicleOverrideReason         String?           @map("vehicle_override_reason")
+  payloadLimitKg                Decimal           @db.Decimal(10, 2) @map("payload_limit_kg")
+  requiredTrips                 Int               @map("required_trips")
+  roundTripKm                   Decimal           @db.Decimal(10, 2) @map("round_trip_km")
+  tripHours                     Decimal           @db.Decimal(10, 2) @map("trip_hours")
+  tolls                         Decimal           @default(0) @db.Decimal(10, 2)
+  vehicleCostProfileId          String            @map("vehicle_cost_profile_id")
+  vehicleCostProfile            VehicleCostProfile @relation(fields: [vehicleCostProfileId], references: [id])
+  runningCostPerKmSnapshot      Decimal           @db.Decimal(10, 4) @map("running_cost_per_km_snapshot")
+  driverHourlyRateSnapshot      Decimal?          @db.Decimal(10, 2) @map("driver_hourly_rate_snapshot")
+  assistantHourlyRateSnapshot   Decimal?          @db.Decimal(10, 2) @map("assistant_hourly_rate_snapshot")
+  runningCost                   Decimal           @db.Decimal(12, 2) @map("running_cost")
+  labourCost                    Decimal           @db.Decimal(12, 2) @map("labour_cost")
+  tollCost                      Decimal           @default(0) @db.Decimal(12, 2) @map("toll_cost")
+  totalExecutionCost            Decimal           @db.Decimal(12, 2) @map("total_execution_cost")
+  deliveryCostPerKg             Decimal           @db.Decimal(10, 4) @map("delivery_cost_per_kg")
+  deliveryCostPerUnit           Decimal?          @db.Decimal(10, 4) @map("delivery_cost_per_unit")
+  status                        CalculationStatus @default(CALCULATED)
+  warnings                      String[]          @default([])
+  inputSnapshot                 Json              @map("input_snapshot")
+  resultSnapshot                Json              @map("result_snapshot")
+  createdBy                     String?           @map("created_by")
+  createdAt                     DateTime          @default(now()) @map("created_at")
+  updatedAt                     DateTime          @updatedAt @map("updated_at")
+
+  @@index([customerId])
+  @@index([quoteId])
+  @@index([orderId])
+  @@index([vehicleId])
+  @@index([calculatedAt])
+  @@map("delivery_cost_calculations")
+}

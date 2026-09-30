@@ -33,3 +33,9 @@ export const getReconciliationReport = (sessionId: string) =>
 
 export const upsertDiscrepancyNote = (sessionId: string, note: string) =>
   apiClient.post("/discrepancies/notes", { sessionId, note, idempotencyKey: uuidv4() });
+
+export const calculateDeliveryCost = (payload: any) =>
+  apiClient.post("/pricing/delivery-cost-calculate", { ...payload, idempotencyKey: uuidv4() });
+
+export const getDeliveryCostCalculation = (calculationId: string) =>
+  apiClient.get(`/pricing/delivery-cost?calculationId=${calculationId}`);
