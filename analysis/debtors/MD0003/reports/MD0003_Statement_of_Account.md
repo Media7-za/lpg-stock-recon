@@ -9,7 +9,7 @@ PIETERMARITZBURG
 
 **To:** BLUFF MEAT SUPPLY(PTY) LTD  
 **Account:** MD0003  
-**Statement date:** 11 August 2026  
+**Statement date:** 30 September 2026  
 
 ---
 
@@ -17,48 +17,202 @@ PIETERMARITZBURG
 
 | | Amount (R) |
 | :--- | ---: |
-| **Balance due** | **30,599.47** |
-
-Balance reflects **open LPG gas invoices only** (full invoice amounts — no partial payments applied). Cylinder deposit lines are excluded as they net to zero once matched with their return credit note.
+| **Opening balance** (1 September 2026) | 31,613.06 |
+| Movement this month (invoices, payments, journals) | -8,473.63 |
+| MD0003 balance | 23,139.43 |
+| **Balance due** | **23,139.43** |
 
 ---
 
-## Aged balance (as at statement date)
+## Aged balance — open invoices
 
-Age is calculated by **calendar month** (not rolling 30-day windows). Current = August 2026; 30 day = July 2026; 60 day = June 2026; and so on, anchored to month-end 31 July 2026.
+Age is calculated from **invoice date** to 31 August 2026.
 
-| Current (Aug) | 30 day (Jul) | 60 day (Jun) | 90 day (May) | 120 day | **Total due** |
+| Current | 30 day | 60 day | 90 day | 120+ day | **Subtotal** |
 | ---: | ---: | ---: | ---: | ---: | ---: |
-| 545.77 | 25,014.18 | 5,039.52 | 0.00 | 0.00 | **30,599.47** |
+| 61,623.04 | 41,919.18 | 36,750.45 | 28,179.10 | 454,391.30 | **622,863.07** |
 
 ---
 
-## Open invoices (LPG gas — full amounts only)
+## Account-level balance
 
-### June 2026 — not on STAT:129 remittance
+Debt not attributable to the open invoice lines below (opening carry, untagged settlements).
 
-| Inv | Date | DN / ref | **Due (R)** |
-| :--- | :--- | :--- | ---: |
-| 51470 | 29 Jun 2026 | DN#22920=ROSEDALE | **5,039.52** |
-
-### July 2026 — no STAT:130 payment yet (full month open)
-
-| Inv | Date | DN / ref | **Due (R)** |
-| :--- | :--- | :--- | ---: |
-| 51655 | 07 Jul 2026 | DN#22806 | **4,366.11** |
-| 51839 | 15 Jul 2026 | DN#22575=ROSEDALE | **4,366.11** |
-| 51923 | 20 Jul 2026 | DN#22830- MKONDENI | **2,910.74** |
-| 52102 | 27 Jul 2026 | DN#22847 | **4,366.11** |
-| 52219 | 31 Jul 2026 | DN#24226 | **4,366.11** |
-| 52242 | 31 Jul 2026 | DN#24230 | **4,639.00** |
-
-### August 2026
-
-| Inv | Date | DN / ref | **Due (R)** |
-| :--- | :--- | :--- | ---: |
-| 52421 | 08 Aug 2026 | DN#23948- ROSEDALE | **545.77** |
-| | | **Subtotal (gas)** | **30,599.47** |
+| | Amount (R) |
+| :--- | ---: |
+| Account-level balance (not on open invoices below) | -599,723.64 |
+| **Account-level subtotal** | **-599,723.64** |
+| Open invoice subtotal (aged table above) | 622,863.07 |
+| **Balance due** | **23,139.43** |
 
 ---
 
-Please remit **R30,053.70** (all amounts prior to current month) on payment. If payment has already been made, send proof of payment so we can allocate it promptly.
+## Open invoices
+
+| Inv | Inv date | DN / ref | **Due (R)** |
+| :--- | :--- | :--- | ---: |
+| 41324 | 08 Mar 2025 | DN#11738 - 245472 | 4,689.96 |
+| 41325 | 08 Mar 2025 | DN#11738-EMPTY VICT | 3,622.50 |
+| 42011 | 04 Apr 2025 | DN#12997 | 4,689.96 |
+| 42012 | 04 Apr 2025 | DN#12997-EMPTY | 3,622.50 |
+| 42092 | 04 Apr 2025 | DN#12997-250758 VICT | 3,808.83 |
+| 42046 | 07 Apr 2025 | DN#10544 | 2,539.22 |
+| 42047 | 07 Apr 2025 | DN#10544-EMPTY | 2,415.00 |
+| 42279 | 15 Apr 2025 | DN#13067- 245210 | 3,808.83 |
+| 42280 | 15 Apr 2025 | DN#13067-EMPTY | 3,622.50 |
+| 42318 | 16 Apr 2025 | DN#13017 ROSE-24984 | 10,156.89 |
+| 42319 | 16 Apr 2025 | DN#13017-EMPTY | 9,660.00 |
+| 42676 | 30 Apr 2025 | 256821- DN13179 | 3,808.83 |
+| 42677 | 30 Apr 2025 | DN#13179-EMPTY | 3,622.50 |
+| 43062 | 14 May 2025 | DN#13141 | 3,808.83 |
+| 43063 | 14 May 2025 | DN#13141-EMPTY | 3,622.50 |
+| 43289 | 23 May 2025 | DN#12111- ROSEDALE | 2,415.00 |
+| 43290 | 23 May 2025 | DN#12111- ROSE 24986 | 2,577.63 |
+| 43319 | 24 May 2025 | DN#12111-ROSE | 2,577.63 |
+| 43377 | 27 May 2025 | DN#12119-VICTORIA | 3,866.45 |
+| 43378 | 27 May 2025 | DN#12119-EMPTY | 3,622.50 |
+| 43387 | 27 May 2025 | DN#12268- MKONDENI | 2,577.63 |
+| 43636 | 05 Jun 2025 | ROSEDALE- DN#12297 | 2,016.80 |
+| 43721 | 09 Jun 2025 | DN#12361 | 3,866.45 |
+| 43722 | 09 Jun 2025 | DN#12361-EMPTY | 3,622.50 |
+| 43878 | 12 Jun 2025 | DN#12385 | 7,511.13 |
+| 43879 | 12 Jun 2025 | DN#12385-EMPTY | 7,245.00 |
+| 44136 | 23 Jun 2025 | DN#12586 - 245285 | 3,755.57 |
+| 44137 | 23 Jun 2025 | DN#12586-EMPTY | 3,622.50 |
+| 44439 | 02 Jul 2025 | DN#12151 | 3,755.57 |
+| 44440 | 02 Jul 2025 | DN#12151-EMPTY | 3,622.50 |
+| 44634 | 08 Jul 2025 | DN#12173-MKONDENI | 2,456.12 |
+| 44635 | 08 Jul 2025 | DN#12173-EMPTY | 2,415.00 |
+| 44872 | 16 Jul 2025 | DN#12642-ROSEDALE | 6,140.31 |
+| 44873 | 16 Jul 2025 | DN#12642-EMPTY | 6,037.50 |
+| 44937 | 18 Jul 2025 | 257203- DN#12715 | 3,684.19 |
+| 44938 | 18 Jul 2025 | DN#12715-EMPTY- VICT | 3,622.50 |
+| 45160 | 26 Jul 2025 | ON:257219 DN20011 | 3,684.19 |
+| 45161 | 26 Jul 2025 | ON 257219 | 3,622.50 |
+| 45435 | 06 Aug 2025 | DN#20138- VICTORIA | 3,684.19 |
+| 45436 | 06 Aug 2025 | DN#20138-EMPTY VICT | 3,622.50 |
+| 45437 | 06 Aug 2025 | DN#20139 | 4,912.25 |
+| 45438 | 06 Aug 2025 | DN#20139-EMPTY-ROSE | 4,830.00 |
+| 45778 | 20 Aug 2025 | MKONDENI- DN20430 | 2,398.72 |
+| 45779 | 20 Aug 2025 | MKONDENI DN20430 EMP | 2,415.00 |
+| 45787 | 20 Aug 2025 | DN#20430 MKONDENI | 150.02 |
+| 45895 | 26 Aug 2025 | 257284- DN20443 VICT | 3,598.07 |
+| 45896 | 26 Aug 2025 | DN#20443- EMPTY | 3,622.50 |
+| 46055 | 01 Sept 2025 | DN#20353 | 4,797.43 |
+| 46056 | 01 Sept 2025 | DN#20353-EMPTY ROSE | 4,830.00 |
+| 46075 | 02 Sept 2025 | DN#20569- VICTORIA | 3,598.07 |
+| 46076 | 02 Sept 2025 | DN#20569-EMPTY | 3,622.50 |
+| 46334 | 12 Sept 2025 | DN#20483- VICTORIA | 3,432.06 |
+| 46335 | 12 Sept 2025 | DN#20483-EMPTY | 3,622.50 |
+| 46444 | 17 Sept 2025 | DN#20387- ROSEDALE | 2,740.88 |
+| 46445 | 17 Sept 2025 | DN#20387-EMPTY- ROS | 3,105.00 |
+| 46724 | 29 Sept 2025 | DN#20085-VICTORIA | 3,432.06 |
+| 46725 | 29 Sept 2025 | DN#20085-EMPTY-VICTO | 3,622.50 |
+| 46760 | 30 Sept 2025 | DN#21078-MKONDENI | 2,288.04 |
+| 46761 | 30 Sept 2025 | DN#21078-EMPTY MKOND | 2,415.00 |
+| 46861 | 03 Oct 2025 | DN#21094 | 3,432.06 |
+| 46862 | 03 Oct 2025 | DN#21094-EMPTY | 3,622.50 |
+| 47094 | 14 Oct 2025 | DN#20722 | 3,432.06 |
+| 47095 | 14 Oct 2025 | DN#20722-EMPTY | 3,622.50 |
+| 47101 | 15 Oct 2025 | DN#20723- ROSEDALE | 5,720.10 |
+| 47102 | 15 Oct 2025 | DN#20723-EMPTY | 6,037.50 |
+| 47333 | 27 Oct 2025 | DN#20628- VICTORIA | 3,432.06 |
+| 47334 | 27 Oct 2025 | DN#20628-EMPTY | 3,622.50 |
+| 47558 | 08 Nov 2025 | DN#20807- VICTORIA | 3,360.06 |
+| 47622 | 12 Nov 2025 | DN#20787-MKONDENI | 2,240.04 |
+| 47623 | 12 Nov 2025 | DN#20787-EMPTY | 2,415.00 |
+| 47734 | 18 Nov 2025 | DN#21158 | 5,600.10 |
+| 47735 | 18 Nov 2025 | DN#21158-EMPTY | 6,037.50 |
+| 47763 | 19 Nov 2025 | DN#20843- VICTORIA | 3,360.06 |
+| 47764 | 19 Nov 2025 | DN#20843-EMPTY | 3,622.50 |
+| 47827 | 20 Nov 2025 | DN-20843-ROSEDALE | 5,600.10 |
+| 47828 | 20 Nov 2025 | DN-21158 | 3,360.06 |
+| 48019 | 01 Dec 2025 | DN#20695- 260974 VIC | 3,360.06 |
+| 48021 | 01 Dec 2025 | DN#20695-EMPTY | 3,622.50 |
+| 48165 | 09 Dec 2025 | DN#20907 | 3,378.27 |
+| 48166 | 09 Dec 2025 | DN#20907-EMPTY | 3,622.50 |
+| 48190 | 10 Dec 2025 | DN#20913- MKONDENI | 2,252.18 |
+| 48191 | 10 Dec 2025 | DN#20913- EMPTY | 2,415.00 |
+| 48372 | 19 Dec 2025 | DN#21721 | 5,630.46 |
+| 48373 | 19 Dec 2025 | DN#21721-EMPTY | 6,037.50 |
+| 48523 | 29 Dec 2025 | DN#21744- VICTORIA | 3,378.27 |
+| 48524 | 29 Dec 2025 | DN#21744-EMPTY | 3,622.50 |
+| 48737 | 12 Jan 2026 | DN-21630 | 3,378.27 |
+| 48738 | 12 Jan 2026 | DN-21630-EMPTY | 3,622.50 |
+| 48784 | 14 Jan 2026 | DN#21635-KONDENI | 2,252.18 |
+| 48785 | 14 Jan 2026 | DN#21635MPTY-KONDENI | 2,415.00 |
+| 48906 | 22 Jan 2026 | DN#21659 | 3,403.63 |
+| 48907 | 22 Jan 2026 | DN-21659EMPTY | 3,622.50 |
+| 48927 | 22 Jan 2026 | DN#21502- EMPTY | 5,462.50 |
+| 48919 | 23 Jan 2026 | DN#21502ROSEDALE | 4,869.09 |
+| 48920 | 23 Jan 2026 | DN#21502EMPTY | 5,462.50 |
+| 49119 | 06 Feb 2026 | DN#21680 | 3,443.48 |
+| 49120 | 06 Feb 2026 | DN#21680-EMPTY | 3,622.50 |
+| 49128 | 06 Feb 2026 | DN#21680-VICTORIA | 3,443.48 |
+| 49166 | 10 Feb 2026 | DN#21242- MKONDENI | 2,295.65 |
+| 49167 | 10 Feb 2026 | DN#2124EMPTY-KONDENI | 2,415.00 |
+| 49322 | 19 Feb 2026 | DN-VICTORIA | 3,443.48 |
+| 49323 | 19 Feb 2026 | DN-212EMPTY-VICTORIA | 3,622.50 |
+| 49443 | 26 Feb 2026 | DN#21931-ROSEDALE | 4,591.31 |
+| 49444 | 26 Feb 2026 | DN#21931-ROSE-EMPTY | 4,830.00 |
+| 49573 | 04 Mar 2026 | DN#22113 | 3,443.48 |
+| 49574 | 04 Mar 2026 | DN#22113-EMPTY | 3,622.50 |
+| 49796 | 18 Mar 2026 | DN#22134- VICTORIA | 3,472.29 |
+| 49797 | 18 Mar 2026 | DN#22134- EMPTY | 3,622.50 |
+| 49905 | 25 Mar 2026 | DN-0-ROSEDALE | 1,157.43 |
+| 49906 | 25 Mar 2026 | DN-21978-ROSEDALE | 1,207.50 |
+| 50004 | 30 Mar 2026 | DN-22033-KONDENI | 3,472.29 |
+| 50005 | 30 Mar 2026 | DN-22033-KONDE-EMPTY | 3,622.50 |
+| 50013 | 31 Mar 2026 | DN-21851-VICTORIA | 3,472.29 |
+| 50014 | 31 Mar 2026 | DN-21851-VICT-EMPTY | 3,622.50 |
+| 50100 | 06 Apr 2026 | DN-22047-ROSEDALE | 5,205.68 |
+| 50101 | 06 Apr 2026 | DN-22047-EMPTY-ROSE | 4,830.00 |
+| 50234 | 15 Apr 2026 | DN-22170-VICT | 3,904.26 |
+| 50235 | 15 Apr 2026 | DN-22170-EMPTY-VIC | 3,622.50 |
+| 50429 | 29 Apr 2026 | DN-21358-VICTORIA | 3,904.26 |
+| 50430 | 29 Apr 2026 | DN-21358-EMPTY-VICT | 3,622.50 |
+| 50524 | 05 May 2026 | DN#22225- ROSEDALE | 5,205.68 |
+| 50525 | 05 May 2026 | DN#22225-EMPTY | 4,830.00 |
+| 50671 | 14 May 2026 | DN#22389 | 4,539.72 |
+| 50867 | 25 May 2026 | DN#22431- MKONDENI | 3,026.48 |
+| 50868 | 25 May 2026 | DN#22431-EMPTY | 2,415.00 |
+| 50886 | 27 May 2026 | DN#22759 | 4,539.72 |
+| 50887 | 27 May 2026 | DN#22759-EMPTY | 3,622.50 |
+| 50996 | 02 Jun 2026 | DN#22616-ROSEDALE | 5,822.54 |
+| 50997 | 02 Jun 2026 | DN#22616-EMPTY | 4,830.00 |
+| 50998 | 02 Jun 2026 | BMS ROSEDALE 22616 | 349.99 |
+| 51099 | 09 Jun 2026 | DN#22631 | 4,345.45 |
+| 51100 | 09 Jun 2026 | DN#22631 | 3,622.50 |
+| 51398 | 24 Jun 2026 | DN#22523 | 4,345.45 |
+| 51399 | 24 Jun 2026 | DN#22523=EMPTY | 3,622.50 |
+| 51470 | 29 Jun 2026 | DN#22920=ROSEDALE | 5,039.52 |
+| 51471 | 29 Jun 2026 | DN#22920=EMPTY=ROSED | 4,772.50 |
+| 51655 | 07 Jul 2026 | DN#22806 | 4,366.11 |
+| 51656 | 07 Jul 2026 | DN#22806=EMPTY | 3,622.50 |
+| 51839 | 15 Jul 2026 | DN#22575=ROSEDALE | 4,366.11 |
+| 51840 | 15 Jul 2026 | DN#22575-EMPTY=ROSED | 3,622.50 |
+| 51923 | 20 Jul 2026 | DN#22830- MKONDENI | 2,910.74 |
+| 51924 | 20 Jul 2026 | DN#22830-EMPTY | 2,415.00 |
+| 52102 | 27 Jul 2026 | DN#22847 | 4,366.11 |
+| 52103 | 27 Jul 2026 | DN#22847=EMPTY | 3,622.50 |
+| 52219 | 31 Jul 2026 | DN#24226 | 4,366.11 |
+| 52220 | 31 Jul 2026 | DN#24226-EMPTY | 3,622.50 |
+| 52242 | 31 Jul 2026 | DN#24230 | 4,639.00 |
+| 52243 | 01 Aug 2026 | DN#24230-EMPTY | 4,140.00 |
+| 52421 | 08 Aug 2026 | DN#23948- ROSEDALE | 545.77 |
+| 52422 | 08 Aug 2026 | DN#23948-EMPTY | 1,035.00 |
+| 52542 | 14 Aug 2026 | DN#24270 - VICTORIA | 3,827.91 |
+| 52543 | 14 Aug 2026 | DN#24270-EMPTY | 3,622.50 |
+| 52720 | 21 Aug 2026 | DN#24926-MKONDENI | 2,551.94 |
+| 52721 | 21 Aug 2026 | DN#24926-EMPTY | 2,415.00 |
+| 52757 | 23 Aug 2026 | DN#228976 | 2,551.94 |
+| 52758 | 23 Aug 2026 | DN#22896- ROSEDALE | 2,415.00 |
+| 52772 | 25 Aug 2026 | DN#22897- VICTORIA | 3,827.91 |
+| 52773 | 25 Aug 2026 | DN#22897-EMPTY | 3,622.50 |
+| 53004 | 07 Sept 2026 | DN#24826- ROSEDALE | 5,709.61 |
+| 53005 | 07 Sept 2026 | DN#24826-EMPTY | 5,865.00 |
+| 53019 | 07 Sept 2026 | DN#24972 | 4,440.15 |
+| 53138 | 15 Sept 2026 | DN#24853 | 3,599.99 |
+| 53259 | 23 Sept 2026 | DN#24871 | 3,915.16 |
+| 53316 | 26 Sept 2026 | DN#21383 | 3,915.16 |
+| 53317 | 26 Sept 2026 | DN#21383-EMPTY | 3,622.50 |
