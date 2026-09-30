@@ -1,4 +1,4 @@
-# Security SQL: evidence and proposals (project oqhpxnaadahohwkslive)
+# Security SQL: applied evidence (project oqhpxnaadahohwkslive)
 
 Nothing in `docs/` is executed by any tool. This location is deliberate.
 
@@ -29,7 +29,6 @@ The two calculator migrations exist in `prisma/migrations/` but are **not** in l
 live, record them as applied, without executing them: run `prisma migrate resolve --applied <migration_name>`.
 This writes the correct checksum. Note: the live seed rows were inserted separately and are not part of any migration.
 
-## Proposed (not applied, need review)
-- `proposed/default_privileges_lockdown.PROPOSED.sql` (ADM-38)
-- `proposed/function_search_path.PROPOSED.sql` (ADM-39). Test on an isolated DB, including real CDR inserts and both CDR triggers.
-When approved, move a proposed file into whatever migration mechanism is in use and apply it once.
+## Other security work
+Later applied containment and any open hardening items are tracked privately (Linear), not in this repository.
+Do not add descriptions of unremediated weaknesses here; commit SQL only once it is applied and the object is secured.
