@@ -20,11 +20,11 @@
     }
   ],
   "financials": {
-    "totalOutstanding": 16371.56,
-    "lastInvoiceDate": "2026-07-15",
-    "lastPaymentDate": "2026-07-01",
+    "totalOutstanding": 23139.43,
+    "lastInvoiceDate": "2026-09-26",
+    "lastPaymentDate": "2026-09-01",
     "agedDebt180Plus": 0.0,
-    "balanceSource": "MD0003CURRENT.TXT header 2026-07-16"
+    "balanceSource": "DEBENQ_CURRENT.TXT header 2026-09-28"
   },
   "collections": {
     "actionRequired": false,
@@ -59,6 +59,10 @@
     {
       "date": "2026-08-11",
       "event": "Confirmed MD0004 (BMS FOODS (PTY) LTD) is the same entity as MD0003 and linked. MD0004 has no DEBENQ ledger export; reconstructed 51 historical lines (2016-2024) from global ERP RAW DATA stock-transaction dumps found explicit 2017 credit-note references transferring charges to MD0003. Last known MD0004 balance R4,413.86 (13 Jul 2025, stale/unverified). Combined group exposure estimated at R23,267.22. Recommended pulling a live MD0004 DEBENQ export next."
+    },
+    {
+      "date": "2026-09-30",
+      "event": "Updated enquiry files ingested: DEBENQ_CURRENT.TXT (2026-09-28, balance R23,139.43), DEBENQ_2025.TXT (Feb 2025, B/F R48,432.91), DEBENQ_2024.TXT, DEBENQ_2023.TXT (historical). Statement_v5.json config created using 2025-01-01 period start. Latest transactions: STAT:130 payment 2026-09-01 (R30,053.70), invoices DN#21383 through DN#24871 (2026-09-07 to 2026-09-26)."
     }
   ]
 }
