@@ -65,6 +65,60 @@
 
 ---
 
+### 2025 May - September (Summary)
+
+| Month | Opening Balance | Net Activity | Closing Balance |
+| :--- | ---: | ---: | ---: |
+| May 2025 | 96,093.63 | 5,884.65 (net) | 101,978.28 |
+| June 2025 | 101,978.28 | 4,707.13 (net) | 106,685.41 |
+| July 2025 | 106,685.41 | 29,686.01 (invoices) - R7,417.50 (payments) | 128,953.92 |
+| August 2025 | 128,953.92 | R9,504.38 (net) - R5,690.00 (payments) | 132,768.30 |
+| September 2025 | 132,768.30 | R11,706.78 (invoices) - R97,933.00 (payment 41466) | 46,542.08 |
+
+---
+
+### 2025 October - 2026 January (Summary)
+
+| Month | Opening Balance | Key Transactions | Closing Balance |
+| :--- | ---: | :--- | ---: |
+| October 2025 | 46,542.08 | Multiple invoices/credits + Payment 42043: -R7,120.32 | 72,177.00 |
+| November 2025 | 72,177.00 | Multiple invoices/credits with net reduction | 72,033.00 |
+| December 2025 | 72,033.00 | Moderate activity | 15,083.55 |
+| January 2026 | 15,083.55 | 8 transactions (invoices + credits) | 85,213.03 |
+
+---
+
+### 2026 February - September (Summary)
+
+| Month | Opening Balance | Key Transactions | Closing Balance |
+| :--- | ---: | :--- | ---: |
+| February 2026 | 85,213.03 | Invoices + Payment 43472: -R8,443.46 | 85,292.73 |
+| March 2026 | 85,292.73 | Invoices + Payment 43872: -R9,908.97 | 84,530.63 |
+| April 2026 | 84,530.63 | Multiple invoices/credits | 89,253.02 |
+| May 2026 | 89,253.02 | Invoice 50875: R4,551.00 | 94,427.11 |
+| June 2026 | 94,427.11 | Multiple invoices/credits | 105,099.83 |
+| July 2026 | 105,099.83 | Multiple invoices/credits | 115,813.87 |
+| August 2026 | 115,813.87 | Multiple invoices/credits | 125,766.02 |
+| **September 2026** | **125,766.02** | **Invoice 52933 (R4,617.82) + Invoice 53169 (R4,617.82)** | **70,773.28** |
+
+---
+
+### Transaction Summary: Mar 2025 - Sep 2026
+
+**Total Transactions:** 208 document lines
+- **Invoices:** 70+ invoices
+- **Credit Notes:** Multiple adjustments for EMPTY, EMPTIES containers
+- **Payments:** Regular payments (Sep 2023 onwards)
+- **Period Coverage:** Mar 2025 (B/F: R43,865.94) → Sep 2026 (Final: R135,001.66)
+
+**Key Payment Events:**
+- 05 May 2025: Payment -R27,000.00
+- 29 Sep 2025: Payment 41466 -R97,933.00 (significant reduction)
+- 26 Feb 2026: Payment 43472 -R8,443.46
+- 31 Mar 2026: Payment 43872 -R9,908.97
+
+---
+
 ## Part 1 — Reconciliation Bridge
 
 | Component | Closing (R) |
