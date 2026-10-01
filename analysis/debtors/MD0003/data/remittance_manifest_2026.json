@@ -72,7 +72,7 @@
     {
       "batchId": "RM-2026-08-01",
       "remittanceDate": "2026-08-01",
-      "file": "raw/Remittance/01.08.2026.pdf",
+      "file": "raw/Remittances/01.08.2026.pdf",
       "paymentReference": "000000000090726105",
       "erpPaymentDoc": "45595",
       "erpBatchRef": "STAT:129",
@@ -92,7 +92,7 @@
       "notes": "Not a GAZ COD remittance — unrelated payment proof"
     },
     {
-      "file": "raw/Remittance/10.10.2025.pdf",
+      "file": "raw/Remittances/10.10.2025.pdf",
       "type": "customer_ap_ledger",
       "reportCode": "APVTRN01",
       "sessionDate": "2025-10-10",

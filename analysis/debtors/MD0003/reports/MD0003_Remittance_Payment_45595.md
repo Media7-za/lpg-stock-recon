@@ -1,7 +1,7 @@
 # MD0003 — Remittance Cross-Check: Payment 45595 (STAT 129)
 
 **Source:** COD Remittance Advice dated **01/08/2026**  
-**File:** `raw/Remittance/01.08.2026.pdf`  
+**File:** `raw/Remittances/01.08.2026.pdf`  
 **Payer:** BLUFF MEAT SUPPLY (PTY) LTD (MD0003)  
 **Payee:** GAZ EXPRESS  
 **Bank reference:** `000000000090726105`  

@@ -1,0 +1,408 @@
+{
+  "debtor": "FIR001",
+  "generated_at": "2026-09-08T20:37:21.118Z",
+  "statement_txt": "analysis/debtors/FIR001/raw/FIR001CURRENT.TXT.TXT",
+  "config_found": true,
+  "remittance_sources": 0,
+  "gate": "NOT_DERIVABLE_FROM_TXT",
+  "blocking_reason": "NO_INVOICE_TAGGING_IN_EXPORT",
+  "export_quality": "NO_ALLOCATION_DETAIL",
+  "evidence": {
+    "basis": "PATTERN_ONLY",
+    "remittance_invoice_docs": 0,
+    "checks_run": [
+      "INVARIANT",
+      "STALENESS_ANOMALY"
+    ],
+    "checks_inert": [
+      "REMITTANCE_CONTRADICTION"
+    ],
+    "note": "No extracted remittance lines for this account (data/remittance_lines_*.csv), so the remittance-contradiction check could not run. Settlement claims here rest on payment patterns, business rules and operator ratification — see business_rules.md §15, authority order B."
+  },
+  "tagging": {
+    "settlement_rows": 21,
+    "tagged_rows": 0,
+    "tagged_pct": 0,
+    "credit_note": {
+      "rows": 12,
+      "tagged": 0,
+      "pct": 0
+    },
+    "payment": {
+      "rows": 9,
+      "tagged": 0,
+      "pct": 0
+    }
+  },
+  "counts": {
+    "likely_paid": 0,
+    "stale_open": 0,
+    "clear": 0,
+    "unassessable": 13
+  },
+  "invariant": {
+    "name": "Σ(open invoices) ≤ ERP CURRENT BALANCE",
+    "status": "NOT_APPLICABLE",
+    "overstated_by": 0
+  },
+  "untagged_credits": [
+    {
+      "docno": "00015165",
+      "entry": "Crd Note",
+      "iso": "2026-07-03",
+      "dn": "DN#22536=EMPTY",
+      "amount": -6555
+    },
+    {
+      "docno": "00015181",
+      "entry": "Crd Note",
+      "iso": "2026-07-06",
+      "dn": "DN#22555=EMPTY",
+      "amount": -6037.5
+    },
+    {
+      "docno": "00045093",
+      "entry": "Payment",
+      "iso": "2026-07-06",
+      "dn": "TRANSF | STAT 128",
+      "amount": -8084.86
+    },
+    {
+      "docno": "00045103",
+      "entry": "Payment",
+      "iso": "2026-07-09",
+      "dn": "TRANSF | STAT 128",
+      "amount": -7827.07
+    },
+    {
+      "docno": "00015253",
+      "entry": "Crd Note",
+      "iso": "2026-07-13",
+      "dn": "DN#22809=EMPTY",
+      "amount": -6555
+    },
+    {
+      "docno": "00015269",
+      "entry": "Crd Note",
+      "iso": "2026-07-16",
+      "dn": "DN#22960=EMPTY",
+      "amount": -6555
+    },
+    {
+      "docno": "00045205",
+      "entry": "Payment",
+      "iso": "2026-07-17",
+      "dn": "TRANSF | STAT 128",
+      "amount": -16241.18
+    },
+    {
+      "docno": "00015319",
+      "entry": "Crd Note",
+      "iso": "2026-07-24",
+      "dn": "DN#23906-EMPTY",
+      "amount": -6555
+    },
+    {
+      "docno": "00015361",
+      "entry": "Crd Note",
+      "iso": "2026-07-31",
+      "dn": "DN#23927:EMPTY",
+      "amount": -6555
+    },
+    {
+      "docno": "00045474",
+      "entry": "Payment",
+      "iso": "2026-07-31",
+      "dn": "TRANSF | STAT 128",
+      "amount": -8120.59
+    },
+    {
+      "docno": "00015379",
+      "entry": "Crd Note",
+      "iso": "2026-08-03",
+      "dn": "DN#24234-EMPTY",
+      "amount": -6037.5
+    },
+    {
+      "docno": "00045586",
+      "entry": "Payment",
+      "iso": "2026-08-05",
+      "dn": "TRANSF | STAT 129",
+      "amount": -7827.07
+    },
+    {
+      "docno": "00045591",
+      "entry": "Payment",
+      "iso": "2026-08-07",
+      "dn": "TRANSF | STAT 129",
+      "amount": -8120.59
+    },
+    {
+      "docno": "00015439",
+      "entry": "Crd Note",
+      "iso": "2026-08-11",
+      "dn": "DN#24259-EMPTY",
+      "amount": -6555
+    },
+    {
+      "docno": "00015488",
+      "entry": "Crd Note",
+      "iso": "2026-08-15",
+      "dn": "DN#24913-EMPTY",
+      "amount": -6555
+    },
+    {
+      "docno": "00045779",
+      "entry": "Payment",
+      "iso": "2026-08-17",
+      "dn": "TRANSF | STAT 129",
+      "amount": -14379.9
+    },
+    {
+      "docno": "00015535",
+      "entry": "Crd Note",
+      "iso": "2026-08-24",
+      "dn": "DN#24929-EMPTY",
+      "amount": -6037.5
+    },
+    {
+      "docno": "00045891",
+      "entry": "Payment",
+      "iso": "2026-08-26",
+      "dn": "TRANSF | STAT 129",
+      "amount": -7189.95
+    },
+    {
+      "docno": "00015569",
+      "entry": "Crd Note",
+      "iso": "2026-08-28",
+      "dn": "DN#23984-EMPTY",
+      "amount": -6555
+    },
+    {
+      "docno": "00045995",
+      "entry": "Payment",
+      "iso": "2026-08-31",
+      "dn": "TRANSF | STAT 129",
+      "amount": -7189.95
+    },
+    {
+      "docno": "00015604",
+      "entry": "Crd Note",
+      "iso": "2026-09-05",
+      "dn": "DN#24820-EMPTY",
+      "amount": -7072.5
+    }
+  ],
+  "untagged_credit_total": -162606.16,
+  "last_untagged_credit_date": "2026-09-05",
+  "stale_gap_days": 90,
+  "sum_open_invoices": 85748.59,
+  "header_balance": 8721.02,
+  "balance_bf": 597.43,
+  "reconciliation_gap": -77027.57,
+  "ratified_closed": [
+    {
+      "doc": "51530",
+      "reason": "STAT 128 / payment 45093 TRANSF R8,084.86 exact match DN#22536 (FIFO). TXT 06 Jul 2026."
+    },
+    {
+      "doc": "51628",
+      "reason": "STAT 128 / payment 45103 TRANSF R7,827.07 exact match DN#22555 (FIFO). TXT 09 Jul 2026."
+    },
+    {
+      "doc": "51791",
+      "reason": "STAT 128 / payment 45205 TRANSF R16,241.18 = inv 51791+51877 (2×R8,120.59) FIFO. TXT 17 Jul 2026."
+    },
+    {
+      "doc": "51877",
+      "reason": "STAT 128 / payment 45205 TRANSF R16,241.18 = inv 51791+51877 FIFO. TXT 17 Jul 2026."
+    },
+    {
+      "doc": "52036",
+      "reason": "STAT 128 / payment 45474 TRANSF R8,120.59 exact match DN#23906 (FIFO). TXT 31 Jul 2026."
+    },
+    {
+      "doc": "52195",
+      "reason": "STAT 129 / payments 45586+45591 FIFO-clear DN#23927 R8,120.59. TXT 05–07 Aug 2026."
+    },
+    {
+      "doc": "52268",
+      "reason": "STAT 129 / payment 45586 TRANSF R7,827.07 exact match DN#24234 (amount); FIFO remainder of 45591 also closes this stack. TXT 05–07 Aug 2026."
+    },
+    {
+      "doc": "52463",
+      "reason": "STAT 129 / payment 45779 TRANSF R14,379.90 = inv 52463+52578 (2×R7,189.95) FIFO. TXT 17 Aug 2026."
+    },
+    {
+      "doc": "52578",
+      "reason": "STAT 129 / payment 45779 TRANSF R14,379.90 = inv 52463+52578 FIFO. TXT 17 Aug 2026."
+    },
+    {
+      "doc": "52736",
+      "reason": "STAT 129 / payment 45891 TRANSF R7,189.95 exact match DN#24929 (FIFO). TXT 26 Aug 2026."
+    },
+    {
+      "doc": "52844",
+      "reason": "STAT 129 / payment 45995 TRANSF R7,189.95 exact match DN#23984 (FIFO). TXT 31 Aug 2026."
+    }
+  ],
+  "invoices": [
+    {
+      "doc": "51531",
+      "key": "51531",
+      "iso": "2026-07-02",
+      "dn": "DN#22536=EMPTY",
+      "due": 6555,
+      "risk": "UNASSESSABLE",
+      "basis": "Export carries no allocation detail — open/closed status cannot be determined for any invoice.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 21,
+      "untagged_credit_pool_after_invoice": -162606.16
+    },
+    {
+      "doc": "51629",
+      "key": "51629",
+      "iso": "2026-07-06",
+      "dn": "DN#22555=EMPTY",
+      "due": 6037.5,
+      "risk": "UNASSESSABLE",
+      "basis": "Export carries no allocation detail — open/closed status cannot be determined for any invoice.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 18,
+      "untagged_credit_pool_after_invoice": -141928.8
+    },
+    {
+      "doc": "51792",
+      "key": "51792",
+      "iso": "2026-07-13",
+      "dn": "DN#22809=EMPTY",
+      "due": 6555,
+      "risk": "UNASSESSABLE",
+      "basis": "Export carries no allocation detail — open/closed status cannot be determined for any invoice.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 16,
+      "untagged_credit_pool_after_invoice": -127546.73
+    },
+    {
+      "doc": "51878",
+      "key": "51878",
+      "iso": "2026-07-16",
+      "dn": "DN#22960=EMPTY",
+      "due": 6555,
+      "risk": "UNASSESSABLE",
+      "basis": "Export carries no allocation detail — open/closed status cannot be determined for any invoice.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 15,
+      "untagged_credit_pool_after_invoice": -120991.73
+    },
+    {
+      "doc": "52037",
+      "key": "52037",
+      "iso": "2026-07-23",
+      "dn": "DN#23906-EMPTY",
+      "due": 6555,
+      "risk": "UNASSESSABLE",
+      "basis": "Export carries no allocation detail — open/closed status cannot be determined for any invoice.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 14,
+      "untagged_credit_pool_after_invoice": -104750.55
+    },
+    {
+      "doc": "52196",
+      "key": "52196",
+      "iso": "2026-07-30",
+      "dn": "DN#23927:EMPTY",
+      "due": 6555,
+      "risk": "UNASSESSABLE",
+      "basis": "Export carries no allocation detail — open/closed status cannot be determined for any invoice.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 13,
+      "untagged_credit_pool_after_invoice": -98195.55
+    },
+    {
+      "doc": "52269",
+      "key": "52269",
+      "iso": "2026-08-03",
+      "dn": "DN#24234-EMPTY",
+      "due": 6037.5,
+      "risk": "UNASSESSABLE",
+      "basis": "Export carries no allocation detail — open/closed status cannot be determined for any invoice.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 10,
+      "untagged_credit_pool_after_invoice": -77482.46
+    },
+    {
+      "doc": "52464",
+      "key": "52464",
+      "iso": "2026-08-11",
+      "dn": "DN#24259-EMPTY",
+      "due": 6555,
+      "risk": "UNASSESSABLE",
+      "basis": "Export carries no allocation detail — open/closed status cannot be determined for any invoice.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 7,
+      "untagged_credit_pool_after_invoice": -54979.8
+    },
+    {
+      "doc": "52579",
+      "key": "52579",
+      "iso": "2026-08-14",
+      "dn": "DN#24913-EMPTY",
+      "due": 6555,
+      "risk": "UNASSESSABLE",
+      "basis": "Export carries no allocation detail — open/closed status cannot be determined for any invoice.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 7,
+      "untagged_credit_pool_after_invoice": -54979.8
+    },
+    {
+      "doc": "52737",
+      "key": "52737",
+      "iso": "2026-08-22",
+      "dn": "DN#24929-EMPTY",
+      "due": 6555,
+      "risk": "UNASSESSABLE",
+      "basis": "Export carries no allocation detail — open/closed status cannot be determined for any invoice.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 5,
+      "untagged_credit_pool_after_invoice": -34044.9
+    },
+    {
+      "doc": "52845",
+      "key": "52845",
+      "iso": "2026-08-28",
+      "dn": "DN#23984-EMPTY",
+      "due": 6555,
+      "risk": "UNASSESSABLE",
+      "basis": "Export carries no allocation detail — open/closed status cannot be determined for any invoice.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 2,
+      "untagged_credit_pool_after_invoice": -14262.45
+    },
+    {
+      "doc": "52962",
+      "key": "52962",
+      "iso": "2026-09-05",
+      "dn": "DN#24820",
+      "due": 7606.09,
+      "risk": "UNASSESSABLE",
+      "basis": "Export carries no allocation detail — open/closed status cannot be determined for any invoice.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 0,
+      "untagged_credit_pool_after_invoice": 0
+    },
+    {
+      "doc": "52963",
+      "key": "52963",
+      "iso": "2026-09-05",
+      "dn": "DN#24820-EMPTY",
+      "due": 7072.5,
+      "risk": "UNASSESSABLE",
+      "basis": "Export carries no allocation detail — open/closed status cannot be determined for any invoice.",
+      "on_remittance": null,
+      "untagged_credits_after_invoice": 0,
+      "untagged_credit_pool_after_invoice": 0
+    }
+  ]
+}

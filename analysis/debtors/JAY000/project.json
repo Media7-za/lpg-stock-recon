@@ -1,0 +1,45 @@
+{
+  "debtorCode": "JAY000",
+  "clientName": "JAYZ GRILL",
+  "status": "active",
+  "reconState": "in-progress",
+  "financials": {
+    "totalOutstanding": 13860.14,
+    "totalOutstandingNote": "PROVEN — raw/JAY000CURRENT.TXT.TXT CURRENT BALANCE. Part 1A LPG R13,860.14 + Part 1B CYL R0.00. ERP variance R0.00, sub-ledger tie R0.00.",
+    "lastInvoiceDate": "2026-08-25",
+    "lastPaymentDate": null,
+    "erpTxtClosing": 13860.14,
+    "erpTxtClosingAsOf": "2026-09-03",
+    "erpTxtSource": "raw/JAY000CURRENT.TXT.TXT"
+  },
+  "collections": {
+    "actionRequired": false,
+    "actionType": null,
+    "dateSent": null,
+    "deadlineDate": null,
+    "nextAction": "No customer SOA config yet (config/statement_of_account.json). Brand-new account, no payments recorded yet — confirm collection posture before generating a customer-facing statement.",
+    "nextActionDate": null,
+    "notes": "First v5 run 2026-09-14. Account opened 18 Aug 2026, B/F R0.00, no payments to date. Invoice 52688 (18 Aug) bundles both LPG gas and CYL deposit lines in one document (likely a reissue replacing invoices 52631+52632, which were credited same day via CN 15509/15510) — correctly split Part 1A/1B via DB debt_group, not text heuristic. CN 15594 (03 Sep) has a mismatched DN reference (\"DN#24950 EMPTIES\" vs the DN#23979 series) but its INVNO/debt_group correctly ties it to closing out invoice 52688's CYL portion — verified via ingest-complete DB detail, not assumed.",
+    "blockers": []
+  },
+  "ingestGate": {
+    "status": "pass",
+    "ingestFreshness": "current",
+    "ingestCoverage": "complete",
+    "displayStatus": "CURRENT_COMPLETE",
+    "asAt": "2026-09-14",
+    "reportPath": "reports/JAY000_INGEST_COVERAGE_2026-09-14.json",
+    "ingestBlockedScopes": [],
+    "exceptions": []
+  },
+  "history": [
+    {
+      "date": "2026-09-14",
+      "event": "Turn 001 scaffold: folder + project.json created. No statement TXT in raw/. DB spot-check only (9 rows, unverified)."
+    },
+    {
+      "date": "2026-09-14",
+      "event": "ERP TXT export (JAYZ.TXT) provided by operator, saved to raw/JAY000CURRENT.TXT.TXT. v5 generated: combined R13,860.14 PROVEN (Part 1A R13,860.14 + Part 1B R0.00), ERP variance R0.00, sub-ledger tie R0.00. Ingest coverage CURRENT_COMPLETE (0 gaps) — custody and SKU gates both ALLOWED."
+    }
+  ]
+}

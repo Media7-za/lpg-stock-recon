@@ -30,7 +30,8 @@ table {
 
 th, td {
   border: 1px solid #ccc;
-  padding: 6px 8px;
+  padding: 5px 8px;
+  white-space: nowrap;
 }
 
 th {

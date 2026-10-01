@@ -1,8 +1,8 @@
 # FIR001 — Onboarding Status
 
-**Updated:** 2026-09-07  
+**Updated:** 2026-09-08  
 **Lane:** `position_recon` + v5 sub-ledger layout (Part 1A LPG / Part 1B CYL) — **locked from TXT**  
-**reconState:** financial **closed from TXT** · custody **blocked** (ingest gate)
+**reconState:** financial **closed from TXT** · custody **blocked** (ingest gate) · two-layer **v5 operator / customer SOA** (JEN001 pattern) · gate `REVIEW_REQUIRED` / `PATTERN_ONLY`
 
 ---
 
@@ -25,9 +25,13 @@
 | DTRX headers | Supabase | ⚠️ `CURRENT_PARTIAL` — 2 missing payment headers |
 | ITEMS lines | Supabase | ⚠️ CN **15488** missing header + lines |
 | v5 config | `config/statement_v5.json` | ✅ |
-| v5 statement | `reports/FIR001_Statement_Account_v5.md` | ✅ **R0.00 bridge** |
+| v5 statement | `reports/FIR001_Statement_Account_v5.md` | ✅ operator layer · **R0.00 bridge** |
 | Ingest coverage | `reports/FIR001_INGEST_COVERAGE_2026-09-07.json` | ✅ `CURRENT_PARTIAL` |
 | Workspace fixture | `src/features/debtor-position-workspace/data/fixtures/FIR001.v5.json` | ✅ `pending_review` (custody) |
+| Presentation layer | `reports/FIR001_Presentation_Layer.md` | ✅ JEN001 two-layer map |
+| Customer SoA config | `config/statement_of_account.json` | ✅ collapsed opening (JEN001) |
+| Customer SoA (live) | `reports/FIR001_Statement_of_Account.md` | ✅ Amount due **R8,721.02** |
+| Customer SoA snapshot | `snapshots/2026-09-05_v2/` | ✅ send candidate — cite manifest, not live draft / not v1 |
 
 ---
 
@@ -82,10 +86,36 @@ The Part 2 qty inflation (2× 9kg + 5× S.1) is explained by missing CN **15488*
 | 1 | ERP TXT ingest + v5 rebuild | ✅ |
 | 1 | Ingest coverage check | ✅ `CURRENT_PARTIAL` |
 | 1 | Part 2 custody sign-off | ❌ blocked |
-| 2 | Fresh DTRX + ITEMS (15488, 45779, 45995) | ⏳ **next — Sources Agent** |
+| 2 | Customer Statement of Account (JEN001 presentation) | ✅ snapshot `2026-09-05_v2` — gate **REVIEW_REQUIRED** |
+| 2 | Fresh DTRX + ITEMS (15488, 45779, 45995) | ⏳ Sources Agent (custody only — does not change Amount due) |
+
+---
+
+## Customer Statement of Account (2026-09-08)
+
+JEN001 two-layer: **v5 is operator-only**; customer document is `reports/FIR001_Statement_of_Account.md`. Map: `reports/FIR001_Presentation_Layer.md`.
+
+| Check | Result |
+| :--- | :--- |
+| Amount due | **R8,721.02** **PROVEN** — v5 combined = TXT `CURRENT BALANCE` |
+| Open LPG | inv **52962** R7,606.09 (v5 Part 1A Sep close minus B/F) |
+| Collapsed opening | R1,114.93 (v5 B/F R597.43 + Part 1B R517.50) — **not itemised** on customer face |
+| Generator gate | **REVIEW_REQUIRED** · `PATTERN_ONLY` |
+| Send record | `snapshots/2026-09-05_v2/` |
+| Superseded | `snapshots/2026-09-05_v1/` itemised CYL on customer face — **do not send** |
+
+**Do not send** the v5 composed sub-ledger. **Do not send** until the operator reviews the PATTERN_ONLY open list.
 
 ---
 
 ## Next action
 
-Re-export DTRX + ITEMS through **5 Sep 2026**, including CN **15488** and payments **45779** / **45995**, then re-run ingest-check and v5. Do not send a customer statement until custody gate clears or exceptions are ratified.
+Operator: authorise send from **`snapshots/2026-09-05_v2/`** (Amount due **R8,721.02**), **or** hold until remittance / `allocationGate.status: RATIFIED`.
+
+```bash
+# Cite snapshot v2, not live draft, not v1, not v5:
+# snapshots/2026-09-05_v2/FIR001_Statement_of_Account_2026-09-05_v2.pdf
+# snapshots/2026-09-05_v2/manifest.json
+```
+
+Sources (custody only): re-export DTRX + ITEMS through **5 Sep 2026**, including CN **15488** and payments **45779** / **45995**.

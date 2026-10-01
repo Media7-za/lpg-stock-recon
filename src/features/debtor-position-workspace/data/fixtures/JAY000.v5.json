@@ -1,0 +1,34 @@
+{
+  "debtorCode": "JAY000",
+  "debtorName": "JAYZ GRILL",
+  "period": {
+    "from": "2026-08-01",
+    "to": "2026-09-03"
+  },
+  "version": "v5",
+  "workspaceStatus": "clean",
+  "lastGeneratedAt": "2026-09-14T13:47:52.673Z",
+  "source": "analysis/debtors/JAY000/raw/JAY000CURRENT.TXT.TXT",
+  "financialPosition": {
+    "lpgGasDebt": 13860.14,
+    "cylinderFinancialBalance": 0,
+    "totalDebtorBalance": 13860.14,
+    "erpStatedBalance": 13860.14,
+    "erpVariance": 0,
+    "subLedgerVariance": 0
+  },
+  "custodyPosition": {
+    "totalCustodyExposure": 0,
+    "lines": []
+  },
+  "reconciliationPosition": {
+    "cylinderVariance": 0,
+    "erpVariance": 0,
+    "subLedgerVariance": 0,
+    "exceptions": []
+  },
+  "artifacts": {
+    "statementMarkdown": "analysis/debtors/JAY000/reports/JAY000_Statement_Account_v5.md",
+    "txtSource": "analysis/debtors/JAY000/raw/JAY000CURRENT.TXT.TXT"
+  }
+}

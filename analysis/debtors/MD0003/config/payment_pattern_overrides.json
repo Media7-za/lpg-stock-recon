@@ -206,7 +206,7 @@
       "approved_by": "operator",
       "approved_date": "2026-08-11",
       "reason": "Remittance confirms partial June pool; ERP DEBENQ_CURRENT payment 45595 posted. Remaining Jun exposure rolls to open invoice list.",
-      "evidence_source": ["remittance_advice", "raw/Remittance/01.08.2026.pdf", "erp_debenq", "raw/Enquiry/DEBENQ_CURRENT.TXT"],
+      "evidence_source": ["remittance_advice", "raw/Remittances/01.08.2026.pdf", "erp_debenq", "raw/Enquiry/DEBENQ_CURRENT.TXT"],
       "reconciled_month": "2026-06",
       "summary_note": "* **2026-06 STAT:129 batch:** Payment 45595 R14,863.43 confirmed via COD remittance (01/08/2026). R4,689.53 Pattern 2 residual."
     },

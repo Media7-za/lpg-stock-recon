@@ -1,0 +1,28 @@
+{
+  "name": "Solicitation Desk",
+  "short_name": "Solicitation",
+  "description": "Chat-driven order solicitation call desk — reorder, leads, and review queues.",
+  "start_url": "/solicitation",
+  "scope": "/solicitation",
+  "display": "standalone",
+  "theme_color": "#0f0f0f",
+  "background_color": "#0f0f0f",
+  "icons": [
+    {
+      "src": "/icons/solicitation-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/solicitation-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/solicitation-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

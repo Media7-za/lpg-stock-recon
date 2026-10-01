@@ -62,3 +62,9 @@
 | File | Rows |
 | :--- | ---: |
 | `data/allocation_edges.csv` | 58 |
+
+---
+
+## Merge note (origin/main, 2026-09-12)
+
+Main regenerated this pilot with **57** allocation edges (vs **56** here), open LPG **10 lines / R29,047.32** (vs **8 / R23,698.92**), STAT 127 target **51154** (not 51155) on DN#22474, and STAT 129 partial on **51669** (not 51564). This report keeps the PR-branch figures for JEN001 balance-bridge continuity; use main’s tables if sending allocation detail to the customer.

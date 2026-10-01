@@ -234,7 +234,81 @@ function loadConfig(debtorCode, configRel) {
   cfg.customerDueBasis = cfg.customerDueBasis || 'erp_header';
   cfg.hideAccountLevelSection =
     cfg.hideAccountLevelSection ?? cfg.customerDueBasis === 'open_invoices';
+  cfg.customerLayout = cfg.customerLayout || 'outstanding_open_invoices';
   return { cfg, cfgPath };
+}
+
+function loadV5CustomerSources(cfg, debtorCode) {
+  const v5MdRel =
+    cfg.v5StatementPath || `analysis/debtors/${debtorCode}/reports/${debtorCode}_Statement_Account_v5.md`;
+  const fixtureRel =
+    cfg.v5FixturePath ||
+    `src/features/debtor-position-workspace/data/fixtures/${debtorCode}.v5.json`;
+  const v5MdPath = path.join(ROOT, v5MdRel);
+  const fixturePath = path.join(ROOT, fixtureRel);
+  if (!fs.existsSync(v5MdPath)) {
+    throw new Error(`customerLayout lpg_ledger_plus_position requires v5 statement: ${v5MdRel}`);
+  }
+  if (!fs.existsSync(fixturePath)) {
+    throw new Error(`customerLayout lpg_ledger_plus_position requires v5 fixture: ${fixtureRel}`);
+  }
+  return {
+    v5Md: fs.readFileSync(v5MdPath, 'utf8'),
+    fixture: JSON.parse(fs.readFileSync(fixturePath, 'utf8')),
+    v5MdRel,
+    fixtureRel,
+  };
+}
+
+function extractV5LpgLedgerMarkdown(v5Md) {
+  const start = v5Md.search(/^## Part 1A:/m);
+  const end = v5Md.search(/^## Part 1B:/m);
+  if (start < 0 || end < 0 || end <= start) {
+    throw new Error('Could not extract Part 1A LPG ledger from v5 markdown (missing Part 1A/1B headings).');
+  }
+  let section = v5Md.slice(start, end).trim();
+  section = section.replace(/^## Part 1A:[^\n]*\n+/, '');
+  section = section.replace(/^\*[^\n]*\n+/, '');
+  return section.trim();
+}
+
+function buildLpgLedgerPlusPositionLines({
+  cfg,
+  debtorCode,
+  asAtLabel,
+  lpgClose,
+  cylClose,
+  totalDue,
+  lpgLedgerMd,
+}) {
+  const lpgLabel = cfg.financialPositionLabels?.lpg || 'LPG';
+  const cylLabel = cfg.financialPositionLabels?.cylinder || 'Cylinder deposits';
+  const lines = [];
+  lines.push('# Statement of Account', '');
+  cfg.businessHeader.forEach((h, i) => {
+    lines.push(i === 0 ? `**${h}**  ` : `${h}  `);
+  });
+  lines.push('', '---', '');
+  lines.push(`**To:** ${cfg.customerName}  `);
+  lines.push(`**Account:** ${debtorCode}  `);
+  if (cfg.referenceValue) {
+    lines.push(`**${cfg.referenceLabel}:** ${cfg.referenceValue}  `);
+  }
+  lines.push(`**Statement date:** ${asAtLabel}  `);
+  lines.push('', '---', '');
+  lines.push('## Amount due', '');
+  lines.push(`**R${fmtAmount(totalDue)}**`, '');
+  lines.push('---', '', '## Account position', '');
+  lines.push('| | Amount (R) |');
+  lines.push('| :--- | ---: |');
+  lines.push(`| ${lpgLabel} | ${fmtAmount(lpgClose)} |`);
+  lines.push(`| ${cylLabel} | ${fmtAmount(cylClose)} |`);
+  lines.push(`| **Amount due** | **${fmtAmount(totalDue)}** |`);
+  lines.push('', '---', '');
+  lines.push(`## ${cfg.lpgLedgerHeading || 'LPG account'}`, '');
+  lines.push(`*${cfg.lpgLedgerIntro || 'Deliveries, payments, and credits.'}*`, '');
+  lines.push(lpgLedgerMd, '');
+  return lines;
 }
 
 function reportTagCoverage(debtorCode, cov) {
@@ -290,6 +364,14 @@ function main() {
   const args = parseArgs(process.argv.slice(2));
   const debtorCode = args.debtor || 'TWK002';
   const { cfg, cfgPath } = loadConfig(debtorCode, args.config);
+  if (!args.asAt && cfg.customerLayout === 'lpg_ledger_plus_position') {
+    try {
+      const { fixture } = loadV5CustomerSources(cfg, debtorCode);
+      if (fixture?.period?.to) args.asAt = fixture.period.to;
+    } catch {
+      // Fall through to today; the layout branch will throw with a clearer error.
+    }
+  }
 
   const asAt = args.asAt ? new Date(`${args.asAt}T12:00:00`) : new Date();
   const asAtIso = asAt.toISOString().slice(0, 10);
@@ -387,7 +469,18 @@ function main() {
         remittanceDocs: loadRemittanceInvoiceDocs(path.join(ROOT, 'analysis/debtors', debtorCode)),
       });
   reportTagCoverage(debtorCode, tagCoverage);
-  if ((tagCoverage.gate === 'BLOCKED' || tagCoverage.gate === 'NOT_DERIVABLE_FROM_TXT') && !args.force) {
+  const skipOpenInvoiceGateAbort =
+    (cfgForRun.customerLayout || cfg.customerLayout) === 'lpg_ledger_plus_position';
+  if (skipOpenInvoiceGateAbort && (tagCoverage.gate === 'BLOCKED' || tagCoverage.gate === 'NOT_DERIVABLE_FROM_TXT')) {
+    console.warn(
+      `[${debtorCode}] Open-invoice tag gate ${tagCoverage.gate} is not applied to customerLayout lpg_ledger_plus_position (customer document does not list open invoices). Amount due remains the ERP header.`,
+    );
+  }
+  if (
+    (tagCoverage.gate === 'BLOCKED' || tagCoverage.gate === 'NOT_DERIVABLE_FROM_TXT') &&
+    !args.force &&
+    !skipOpenInvoiceGateAbort
+  ) {
     console.error(
       `[${debtorCode}] ABORTED — statement not written. Resolve the invoices above, or re-run with --force if you have a recorded reason.`,
     );
@@ -485,10 +578,38 @@ function main() {
   const fmt = fmtAmount;
   const customerDueBasis = cfgForRun.customerDueBasis || 'erp_header';
   const hideAccountLevel = cfgForRun.hideAccountLevelSection ?? customerDueBasis === 'open_invoices';
+  const customerLayout = cfgForRun.customerLayout || 'outstanding_open_invoices';
   const customerAmountDue =
     customerDueBasis === 'open_invoices' ? sumOpenInvoices : totalDue;
 
-  const lines = [];
+  let lines = [];
+  if (customerLayout === 'lpg_ledger_plus_position') {
+    const { v5Md, fixture, v5MdRel } = loadV5CustomerSources(cfgForRun, debtorCode);
+    const fp = fixture.financialPosition;
+    const lpgClose = round2(fp.lpgGasDebt);
+    const cylClose = round2(fp.cylinderFinancialBalance);
+    const positionTotal = round2(fp.totalDebtorBalance);
+    if (Math.abs(positionTotal - totalDue) > 0.05) {
+      console.warn(
+        `[${debtorCode}] WARNING: v5 totalDebtorBalance R${fmt(positionTotal)} ≠ ERP header R${fmt(totalDue)} — Amount due uses ERP header`,
+      );
+    }
+    if (Math.abs(round2(lpgClose + cylClose) - positionTotal) > 0.05) {
+      console.warn(
+        `[${debtorCode}] WARNING: LPG R${fmt(lpgClose)} + cylinder R${fmt(cylClose)} ≠ v5 total R${fmt(positionTotal)}`,
+      );
+    }
+    lines = buildLpgLedgerPlusPositionLines({
+      cfg: cfgForRun,
+      debtorCode,
+      asAtLabel,
+      lpgClose,
+      cylClose,
+      totalDue,
+      lpgLedgerMd: extractV5LpgLedgerMarkdown(v5Md),
+    });
+    console.log(`[${debtorCode}] Customer layout lpg_ledger_plus_position from ${v5MdRel}`);
+  } else {
   if (useRestart || cfgForRun.forkBanner?.length) {
     const banner = cfgForRun.forkBanner || [
       'ANALYTICAL FORK — remittance-authoritative restart ledger',
@@ -586,6 +707,7 @@ function main() {
         `| ${inv.docno.replace(/^0+/, '') || inv.docno} | ${displayDate(inv.iso)} | ${inv.dn} | ${fmt(inv.due)} |`,
       );
     }
+  }
   }
 
   if (snapshotCtx) {

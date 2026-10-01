@@ -1,0 +1,5 @@
+{
+  "debtor_code": "BU0009",
+  "corrected_erp_stated_balance": 2500.00,
+  "notes": "Synthetic test data for PDP-46 build_reconciliation_status.mjs validation. Σ(open) = INV-1003 (800.00, STEP-3 ASSERTED candidate — still open, not PROVEN) + INV-1004 (1200.00, genuine gap) + INV-1005 (500.00, NOT_ATTEMPTED_BY_DESIGN) = 2500.00."
+}

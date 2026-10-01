@@ -1,0 +1,4 @@
+debtor_code,payment_doc,payment_date,batch_ref,stat_no,amount,source_file,split_count,is_split_payment,notes
+BU0009,PMT-2001,2025-06-20,TRANSF,1,-2500.00,SYNTHETIC_TEST.TXT,2,True,Consolidated from 2 remittance-linked segments
+BU0009,PMT-2002,2025-07-20,TRANSF,2,-800.00,SYNTHETIC_TEST.TXT,1,False,Single segment payment — no remittance advice
+BU0009,PMT-2003,2025-08-01,TRANSF,3,-333.33,SYNTHETIC_TEST.TXT,1,False,Orphaned cash — no matching invoice
