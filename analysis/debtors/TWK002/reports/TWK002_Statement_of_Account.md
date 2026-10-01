@@ -16,6 +16,18 @@ PIETERMARITZBURG
 
 ## Account summary
 
+### Balance Movement (01 March 2025 → 30 September 2026)
+
+| | Amount (R) |
+| :--- | ---: |
+| Opening balance (01 March 2025) | 38,791.27 |
+| Add: Invoices issued | 540,618.84 |
+| Less: Credit notes issued | (531,714.78) |
+| Less: Payments received | (200,687.09) |
+| **Closing balance (30 September 2026)** | **47,695.33** |
+
+### Current Position
+
 | | Amount (R) |
 | :--- | ---: |
 | Open invoices (detailed below) | 47,695.33 |
