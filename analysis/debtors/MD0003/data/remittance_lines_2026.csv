@@ -1,0 +1,32 @@
+batch_id,line_type,doc_no,doc_date,our_ref,original_amount,discount_amount,net_amount,discount_eligible,on_remittance,source_type,notes
+RM-2026-04-01,Invoice,00049128,2026-02-09,,3443.48,0.00,3443.48,false,true,remittance_advice,erp_payment=43854; stat=STAT:125; source=raw/Remittances/01.04.2026.pdf
+RM-2026-04-01,Invoice,00049166,2026-02-09,,2295.65,0.00,2295.65,false,true,remittance_advice,erp_payment=43854; stat=STAT:125; source=raw/Remittances/01.04.2026.pdf
+RM-2026-04-01,Invoice,00049322,2026-02-09,,3443.48,0.00,3443.48,false,true,remittance_advice,erp_payment=43854; stat=STAT:125; source=raw/Remittances/01.04.2026.pdf
+RM-2026-04-01,Invoice,00049443,2026-02-09,,4591.31,0.00,4591.31,false,true,remittance_advice,erp_payment=43854; stat=STAT:125; source=raw/Remittances/01.04.2026.pdf
+RM-2026-05-01,Invoice,00049573,2026-03-09,,3443.48,0.00,3443.48,false,true,remittance_advice,erp_payment=44231; stat=STAT:126; source=raw/Remittances/01.05.2026.pdf
+RM-2026-05-01,Invoice,00049796,2026-03-09,,3472.29,0.00,3472.29,false,true,remittance_advice,erp_payment=44231; stat=STAT:126; source=raw/Remittances/01.05.2026.pdf
+RM-2026-05-01,Invoice,00049905,2026-03-09,,1157.43,0.00,1157.43,false,true,remittance_advice,erp_payment=44231; stat=STAT:126; source=raw/Remittances/01.05.2026.pdf
+RM-2026-05-01,Invoice,00050004,2026-03-09,,3472.29,0.00,3472.29,false,true,remittance_advice,erp_payment=44231; stat=STAT:126; source=raw/Remittances/01.05.2026.pdf
+RM-2026-05-01,Invoice,00050013,2026-03-09,,3472.29,0.00,3472.29,false,true,remittance_advice,erp_payment=44231; stat=STAT:126; source=raw/Remittances/01.05.2026.pdf
+RM-2026-06-01,Invoice,00050100,2026-04-07,,5205.68,0.00,5205.68,false,true,remittance_advice,erp_payment=44561; stat=STAT:127; source=raw/Remittances/01.06.2026.pdf
+RM-2026-06-01,Invoice,00050234,2026-04-07,,3904.26,0.00,3904.26,false,true,remittance_advice,erp_payment=44561; stat=STAT:127; source=raw/Remittances/01.06.2026.pdf
+RM-2026-06-01,Invoice,00050429,2026-04-29,,3904.26,0.00,3904.26,false,true,remittance_advice,erp_payment=44561; stat=STAT:127; source=raw/Remittances/01.06.2026.pdf
+RM-2026-07-01,Invoice,00050524,2026-05-05,,5205.68,0.00,5205.68,false,true,remittance_advice,erp_payment=44972; stat=STAT:128; source=raw/Remittances/01.07.2026.pdf
+RM-2026-07-01,Invoice,00050671,2026-05-14,,4539.72,0.00,4539.72,false,true,remittance_advice,erp_payment=44972; stat=STAT:128; source=raw/Remittances/01.07.2026.pdf
+RM-2026-07-01,Invoice,00050867,2026-05-25,,3026.48,0.00,3026.48,false,true,remittance_advice,erp_payment=44972; stat=STAT:128; source=raw/Remittances/01.07.2026.pdf
+RM-2026-07-01,Invoice,00050886,2026-05-27,,4539.72,0.00,4539.72,false,true,remittance_advice,erp_payment=44972; stat=STAT:128; source=raw/Remittances/01.07.2026.pdf
+RM-2026-08-01,Invoice,00050996,2026-06-08,,5822.54,0.00,5822.54,false,true,remittance_advice,erp_payment=45595; stat=STAT:129; source=raw/Remittances/01.08.2026.pdf
+RM-2026-08-01,Invoice,00050998,2026-06-08,,349.99,0.00,349.99,false,true,remittance_advice,erp_payment=45595; stat=STAT:129; source=raw/Remittances/01.08.2026.pdf
+RM-2026-08-01,Invoice,00051099,2026-06-09,,4345.45,0.00,4345.45,false,true,remittance_advice,erp_payment=45595; stat=STAT:129; source=raw/Remittances/01.08.2026.pdf
+RM-2026-08-01,Invoice,00051398,2026-06-24,,4345.45,0.00,4345.45,false,true,remittance_advice,erp_payment=45595; stat=STAT:129; source=raw/Remittances/01.08.2026.pdf
+RM-2026-03-02,Invoice,00048737,2026-01-19,,3378.27,0.00,3378.27,false,true,remittance_advice,erp_payment=43494; stat=STAT:124; source=raw/Remittances/02.03.2026.pdf
+RM-2026-03-02,Invoice,00048784,2026-01-19,,2252.80,0.00,2252.80,false,true,remittance_advice,erp_payment=43494; stat=STAT:124; source=raw/Remittances/02.03.2026.pdf
+RM-2026-03-02,Invoice,00048906,2026-01-19,,3403.01,0.00,3403.01,false,true,remittance_advice,erp_payment=43494; stat=STAT:124; source=raw/Remittances/02.03.2026.pdf
+RM-2026-03-02,Invoice,00048919,2026-01-19,,4869.09,0.00,4869.09,false,true,remittance_advice,erp_payment=43494; stat=STAT:124; source=raw/Remittances/02.03.2026.pdf
+RM-2026-03-02,Invoice,00048927,2026-01-19,,5462.50,0.00,5462.50,false,true,remittance_advice,erp_payment=43494; stat=STAT:124; source=raw/Remittances/02.03.2026.pdf
+RM-2026-03-02,Crd Note,00014328,2026-01-19,,-5520.00,0.00,-5520.00,false,true,remittance_advice,erp_payment=43494; stat=STAT:124; source=raw/Remittances/02.03.2026.pdf
+RM-2026-01-31,Invoice,00048019,2025-12-09,,3360.06,0.00,3360.06,false,true,remittance_advice,erp_payment=43239; stat=STAT:123; source=raw/Remittances/31.01.2026.pdf
+RM-2026-01-31,Invoice,00048165,2025-12-09,,3378.27,0.00,3378.27,false,true,remittance_advice,erp_payment=43239; stat=STAT:123; source=raw/Remittances/31.01.2026.pdf
+RM-2026-01-31,Invoice,00048190,2025-12-09,,2252.18,0.00,2252.18,false,true,remittance_advice,erp_payment=43239; stat=STAT:123; source=raw/Remittances/31.01.2026.pdf
+RM-2026-01-31,Invoice,00048372,2025-12-09,,5630.46,0.00,5630.46,false,true,remittance_advice,erp_payment=43239; stat=STAT:123; source=raw/Remittances/31.01.2026.pdf
+RM-2026-01-31,Invoice,00048523,2025-12-28,,3378.27,0.00,3378.27,false,true,remittance_advice,erp_payment=43239; stat=STAT:123; source=raw/Remittances/31.01.2026.pdf

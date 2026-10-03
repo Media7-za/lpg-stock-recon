@@ -1,0 +1,11 @@
+batch_id,line_type,doc_no,doc_date,our_ref,original_amount,discount_amount,net_amount,discount_eligible,on_remittance,source_type,notes
+RM-2025-11-01,Invoice,00043721,2025-09-30,,3866.45,0.00,3866.45,false,true,remittance_advice,erp_payment=42051; stat=STAT:121; source=raw/Remittances/01.11.2025.pdf
+RM-2025-11-01,Invoice,00045437,2025-09-30,,4912.25,0.00,4912.25,false,true,remittance_advice,erp_payment=42051; stat=STAT:121; source=raw/Remittances/01.11.2025.pdf
+RM-2025-11-01,Invoice,00045895,2025-09-30,,3598.07,0.00,3598.07,false,true,remittance_advice,erp_payment=42051; stat=STAT:121; source=raw/Remittances/01.11.2025.pdf
+RM-2025-11-01,Invoice,00046055,2025-09-09,,4797.43,0.00,4797.43,false,true,remittance_advice,erp_payment=42051; stat=STAT:121; source=raw/Remittances/01.11.2025.pdf
+RM-2025-11-01,Invoice,00046075,2025-09-09,,3598.07,0.00,3598.07,false,true,remittance_advice,erp_payment=42051; stat=STAT:121; source=raw/Remittances/01.11.2025.pdf
+RM-2025-11-01,Invoice,00046334,2025-09-30,,3432.06,0.00,3432.06,false,true,remittance_advice,erp_payment=42051; stat=STAT:121; source=raw/Remittances/01.11.2025.pdf
+RM-2025-11-01,Invoice,00046444,2025-09-30,,2740.88,0.00,2740.88,false,true,remittance_advice,erp_payment=42051; stat=STAT:121; source=raw/Remittances/01.11.2025.pdf
+RM-2025-11-01,Invoice,00046445,2025-09-30,,3105.00,0.00,3105.00,false,true,remittance_advice,erp_payment=42051; stat=STAT:121; source=raw/Remittances/01.11.2025.pdf; lane=CYL
+RM-2025-11-01,Invoice,00046724,2025-09-09,,3432.06,0.00,3432.06,false,true,remittance_advice,erp_payment=42051; stat=STAT:121; source=raw/Remittances/01.11.2025.pdf
+RM-2025-11-01,Invoice,00046760,2025-09-09,,2288.04,0.00,2288.04,false,true,remittance_advice,erp_payment=42051; stat=STAT:121; source=raw/Remittances/01.11.2025.pdf

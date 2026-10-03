@@ -1,0 +1,5 @@
+batch_id,line_type,doc_no,doc_date,our_ref,original_amount,discount_amount,net_amount,discount_eligible,on_remittance,source_type,notes
+RM-2023-01-01,Invoice,00016425,2022-11-13,,1273.05,0.00,1273.05,false,true,remittance_advice,erp_payment=17669; stat=STAT207; source=raw/Remittances/01.01.2023.pdf
+RM-2023-01-01,Invoice,00016474,2022-11-17,,4032.01,0.00,4032.01,false,true,remittance_advice,erp_payment=17669; stat=STAT207; source=raw/Remittances/01.01.2023.pdf
+RM-2023-01-01,Invoice,00016544,2022-11-20,,2688.01,0.00,2688.01,false,true,remittance_advice,erp_payment=17669; stat=STAT207; source=raw/Remittances/01.01.2023.pdf
+RM-2023-01-01,Invoice,00016615,2022-11-28,,4032.01,0.00,4032.01,false,true,remittance_advice,erp_payment=17669; stat=STAT207; source=raw/Remittances/01.01.2023.pdf
