@@ -33,6 +33,10 @@
     {
       "date": "2026-09-29",
       "event": "Turn 002 data update: DEBENQ account enquiry ingested covering full transaction history 2022-09 to 2026-09-17. Current balance PROVEN R70,773.28 (vs prior global estimate R46,228.47). Statement of Account generated: open invoices R419,914.21, account-level residual R-349,140.93. Backup of prior CAP000.TXT retained. Config statement_of_account.json created. Invoice-tag coverage gate: NOT_DERIVABLE_FROM_TXT (expected for DEBENQ export without allocation detail) — statement generated with --force. Allocation lane work ongoing (H-011 status)."
+    },
+    {
+      "date": "2026-10-03",
+      "event": "Turn 003 reconciliation pass: Registered UNALLOCATED_DEBENQ_ONLY settlement profile in build_reconciliation_status.mjs. Generated invoices.csv (207 rows, LPG/CYL classified from DEBENQ descriptions) and allocation_edges.csv (8 unallocated payments totaling R182,213.63). Reconciliation status produced: 129 invoices, 104 genuine gaps, 25 pre-allocation-coverage flags. Automated allocation matching failed (0/8 payments matched) — likely partial/multi-invoice payments. Created CAP000_Allocation_Gap_Analysis.md documenting three options: (A) supply remittance advice, (B) manual allocation, or (C) accept pending state. Account balance verified R70,773.28 ✓. Tag-check skipped (expected NOT_DERIVABLE_FROM_TXT). Awaiting customer remittance advice or manual allocation mapping (H-011 status)."
     }
   ]
 }
