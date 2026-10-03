@@ -19,7 +19,7 @@
     "deadlineDate": null,
     "nextAction": null,
     "nextActionDate": null,
-    "notes": "No collection until reconState complete and D17 satisfied. Account balance PROVEN R70,773.28. H-011 ALLOCATION_PENDING: 3/8 remittances located on Google Drive (R51,321.29 ASSERTED amount match) \u2014 ingest pending before PROVEN edge upgrade; 5/8 still missing (R132,692.34). See reports/CAP000_Remittance_Discovery_2026-10-03.md. Side-tracks PROPOSED: H-029 custody; H-030 ERP tag 17886/18484."
+    "notes": "No collection until reconState complete and D17 satisfied. Account balance PROVEN R70,773.28. H-011: 3/8 remittances ingested (R51,321.29) \u2014 7 invoices PROVEN tier 1; 5 payments still UNALLOCATED (R132,692.34), chase starting with 00041466. OPEN review: R113.75 adj; CN 12245 mapping. Side-tracks PROPOSED: H-029 custody; H-030 ERP tag 17886/18484."
   },
   "history": [
     {

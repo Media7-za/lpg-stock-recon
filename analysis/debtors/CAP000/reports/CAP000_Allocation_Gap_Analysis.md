@@ -46,13 +46,13 @@ As a result, **8 payment transactions totaling R184,013.63** (`PROVEN` from `dat
 ## Next Steps (Choose One)
 
 ### Option A: Obtain Remittance Advice
-**Partial progress 2026-10-03:** 3 of 8 remittance Excel files located on Google Drive with exact amount matches (R51,321.29 / 27.9%) — see `raw/Remittances/CAP000_REMITTANCE_MAPPING.md` and `reports/CAP000_Remittance_Discovery_2026-10-03.md`. Files are **not yet downloaded/ingested**; edges remain `UNALLOCATED` (amount match = ASSERTED, not PROVEN allocation).
+**Done for 3/8 (2026-10-03 ingest):** Capitol AP-allocation printouts for 00038536 / 00042043 / 00042697 are in `raw/Remittances/Remittances/`, parsed into `config/remittance_allocations.json`, and regenerated into edges via `scripts/remittance_allocation_ingest.mjs`. Status profile `REMITTANCE_PARTIAL_COVERAGE`: **7 invoices PROVEN tier 1**; orphaned payments **5** (R132,692.34).
 
-Next: download the 3 `.xlsx` into `raw/Remittances/`, extract invoice lines, write `REMITTANCE_EXPLICIT` edges, then:
+Still request remittances for the remaining five, starting with **00041466 (R97,933.00)**. After any new remittance lands:
 ```bash
+node analysis/debtors/CAP000/scripts/remittance_allocation_ingest.mjs
 npm run debtors:reconciliation-status -- --debtor CAP000
 ```
-Still request remittances for the remaining **5 payments (R132,692.34)**.
 
 ### Option B: Manual Allocation Review
 Manually update `analysis/debtors/CAP000/data/allocation_edges.csv`:

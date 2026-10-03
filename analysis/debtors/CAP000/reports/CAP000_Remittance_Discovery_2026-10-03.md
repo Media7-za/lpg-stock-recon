@@ -2,8 +2,8 @@
 
 **Account:** CAP000 — CAPITOL CATERERS SELECT (PTY)  
 **Lane:** H-011 allocation (DEBENQ-only → remittance evidence)  
-**Status:** Discovery committed; **ingestion not yet run**  
-**Canonical unallocated total:** **R184,013.63** (`PROVEN` — `data/allocation_edges.csv`)
+**Status:** Discovery + **ingest of 3/8 complete** (see amendment below); 5 payments still missing remittance  
+**Canonical payment universe:** **R184,013.63** (`PROVEN` — eight DEBENQ Payment rows)
 
 ---
 
@@ -15,7 +15,7 @@ Folder: https://drive.google.com/drive/folders/1zSMLoURs99ML8SnMpRTlg8wZYWCrm9Yg
 
 ---
 
-## Three remittances ready for ingestion
+## Three remittances (ingested)
 
 | Remittance | Payment Doc | Date | Amount (R) | Drive file ID | Epistemic |
 | :--- | :--- | :--- | ---: | :--- | :--- |
@@ -47,31 +47,30 @@ Prior remaining figure **R132,891.34** is **SUPERSEDED**.
 
 ---
 
-## H-011 impact
+## H-011 impact (post-ingest amendment)
 
 | Claim | Verdict |
 | :--- | :--- |
-| “28% can now be closed” | **Path opened**, not closed — Excel not yet in-repo; edges still `UNALLOCATED` |
-| “ASSUMED → PROVEN” | **Premature** until remittance lines → `REMITTANCE_EXPLICIT` edges + recon-status regenerate |
-| Current best tag for the 3 | **ASSERTED** (exact amount match to Drive workbook) |
+| 3 remittances ingested | **Done** — `config/remittance_allocations.json` + ingest script |
+| ASSUMED → PROVEN | **7 in-universe invoices** now `PROVEN` / tier 1 in `reconciliation_status.csv` |
+| Payment coverage | R51,321.29 of R184,013.63 linked; **5 orphans R132,692.34** |
+| Account balance | Still **PROVEN R70,773.28** |
 
-Account balance remains **PROVEN R70,773.28** (unchanged).
+Open review items: R113.75 adj on 00038536 (not in ERP); CN 12245 mapping Medium/ASSERTED.
 
 ---
 
 ## Next steps (executable)
 
 ```bash
-# After placing the 3 .xlsx files in raw/Remittances/ and writing edges:
+node analysis/debtors/CAP000/scripts/remittance_allocation_ingest.mjs
 npm run debtors:reconciliation-status -- --debtor CAP000
 ```
 
-1. Download the 3 Excel files into `analysis/debtors/CAP000/raw/Remittances/`.
-2. Extract invoice-level breakdowns.
-3. Update `data/allocation_edges.csv` (`allocation_type: REMITTANCE_EXPLICIT`).
-4. Re-run reconciliation-status for CAP000.
-5. Confirm PROVEN / remittance-linked rows in `reports/reconciliation_status.csv`.
-6. Request customer remittances for the remaining **R132,692.34**.
+1. Request remittances for the remaining **R132,692.34**, starting with **00041466**.
+2. Operator decision on R113.75 “adj to statement” (settlement-discount candidate).
+3. Confirm or replace CN 12245 ↔ printout “CN 42146” mapping.
+4. Optional: move non-CAP000 files out of `raw/Remittances/Remittances/` (GAZ EXPRESS / BELLA / MIDLANDS dump).
 
 ---
 
@@ -79,6 +78,7 @@ npm run debtors:reconciliation-status -- --debtor CAP000
 
 | Ruling | Reopens / falsifies if |
 | :--- | :--- |
-| Drive amount match for a payment | Downloaded workbook totals a different amount, or names a different payment doc |
-| Matched subtotal R51,321.29 | Any of the three payment amounts in `allocation_edges.csv` change |
+| Remittance net = ERP payment | Fresh printout totals differ, or ingest script throws |
+| 7 PROVEN in-universe invoices | Edge regeneration drops a Confirmed `REMITTANCE_EXPLICIT` row |
 | Remaining R132,692.34 | Additional remittances found for the five missing docs |
+| R113.75 review_required | ERP posts the adjustment, or operator allocates it to a named invoice |
