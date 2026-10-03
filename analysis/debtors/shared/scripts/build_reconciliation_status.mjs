@@ -315,6 +315,17 @@ const PROFILES = [
       return { settlement_unit: 'PER_INVOICE_FIFO_BATCH', evidence_tier: 3, evidence_status: 'ASSERTED' };
     },
   },
+  {
+    id: 'UNALLOCATED_DEBENQ_ONLY',
+    label: 'Fully unallocated, DEBENQ-only (CAP000 precedent)',
+    requiredColumns: ['payment_doc', 'payment_date', 'payment_amount', 'allocation_type', 'confidence'],
+    settlementTypes: new Set(),
+    orphanTypes: new Set(['UNALLOCATED']),
+    orphanResidualColumn: null,
+    classify() {
+      return { settlement_unit: 'UNALLOCATED_CASH_PENDING_ANALYSIS', evidence_tier: 5, evidence_status: 'ASSUMED' };
+    },
+  },
 ];
 
 function allTypesKnown(profile, types) {
