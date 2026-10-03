@@ -43,6 +43,8 @@ description: >-
 3. If it matches a month exactly, that payment **settles that month in full** — regardless of where the ERP's running balance chronologically applied the cash internally.
 4. Only fall back to FIFO/chronological slicing if no exact month match exists (rare for disciplined STAT payers).
 
+> **Two candidate months both plausible?** Do not arbitrate with `allocation_edges.csv` rows whose tiers are all `ERP_LEDGER`/`Probable` — those are usually the month assumption expanded into invoice rows, so they cannot confirm it (`TAG_EVIDENCE_PROVENANCE`, `.agents/skills/SKILL_ERP_Payment_Tag_Verification.md`). JIM001 doc 40746 needed a second independent computation to resolve.
+
 **Worked fix (MD0003):** payment 45595 (R14,863.43) exactly equals June's four remittance-listed invoices — not a chronological credit consumed against July. The first bridge attempt without this test wrongly attributed R12,263.61 to "July invoices cleared early."
 
 ---
@@ -114,6 +116,7 @@ Worked example: MD0003/MD0004 (`MD0003_MD0004_Combined_Exposure.md`).
 | Skill | When |
 | :--- | :--- |
 | `lpg-payment-pattern-analysis` | Annual payment-pattern variance report for the same payer class |
+| `.agents/skills/SKILL_ERP_Payment_Tag_Verification.md` | Before a Payment `INVNO` closes a specific invoice: `INVNO_TAG_CHRONOLOGY` (reject tags naming an invoice that postdates the payment) and `TAG_EVIDENCE_PROVENANCE` (reject `ERP_LEDGER`/`Probable` edges derived from the month assumption as independent confirmation) |
 | `SKILL_Debtor_Customer_Statement_From_TXT.md` | Algorithmic statement generation from raw TXT (invoice-linked or simple payers) |
 | `SKILL_Payment_To_Invoice_Allocation.md` | Invoice-linked (ref_no) payers — different payer class entirely |
 

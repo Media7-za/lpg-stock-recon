@@ -1,0 +1,28 @@
+{
+  "debtorCode": "EMB002",
+  "clientName": "Placeholder - EMB002 client name TBC",
+  "status": "active",
+  "reconState": "pending",
+  "financials": {
+    "totalOutstanding": 0,
+    "lastInvoiceDate": null,
+    "lastPaymentDate": null,
+    "agedDebt180Plus": 0
+  },
+  "collections": {
+    "actionRequired": false,
+    "actionType": null,
+    "dateSent": null,
+    "deadlineDate": null,
+    "nextAction": null,
+    "nextActionDate": null,
+    "notes": "Account initialization",
+    "blockers": []
+  },
+  "history": [
+    {
+      "date": "2026-10-03",
+      "event": "Initialized micro-project scaffolding"
+    }
+  ]
+}

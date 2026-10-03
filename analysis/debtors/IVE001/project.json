@@ -1,0 +1,66 @@
+{
+  "debtorCode": "IVE001",
+  "clientName": "ST IVES",
+  "status": "active",
+  "reconState": "in-progress",
+  "financials": {
+    "totalOutstanding": 2879.99,
+    "totalOutstandingNote": "PROVEN as-at 2026-07-15 — raw/IVE001X22072026.TXT header CURRENT BALANCE R2,879.99, reconstructed as Part 1A LPG R2,879.99 + Part 1B CYL R0.00 with variance R0.00 (reports/IVE001_Statement_Account_v5.md). Supersedes the global aged-debt IVE001 row R12,959.96, which omits payment 45099 (see the STALE_SOURCE blocker). PROVEN against its own source date only: the TXT last row is 2026-07-15.",
+    "lastInvoiceDate": "2026-07-15",
+    "lastPaymentDate": "2026-07-07",
+    "agedDebt180Plus": 0.0,
+    "agedDebt180PlusNote": "PROVEN — Part 1A running balance was R-4,319.99 (credit) on 2026-07-07 after payment 45099, so the entire R2,879.99 close arises from invoice 51844 dated 2026-07-15; Part 1B closes at R0.00. Nothing in the balance is 180 days old. Anchored to the statement chronology, not to the global snapshot, because the global IVE001 row is provably missing a payment.",
+    "erpTxtClosing": 2879.99,
+    "erpTxtClosingAsOf": "2026-07-15",
+    "erpTxtSource": "raw/IVE001X22072026.TXT"
+  },
+  "collections": {
+    "actionRequired": false,
+    "actionType": null,
+    "dateSent": null,
+    "deadlineDate": null,
+    "nextAction": "Sources Agent H-010 (partially satisfied): the statement TXT landed 2026-07-24, but DTRX headers and ITEMS lines are still synced to 2026-07-01. Supply same-session DTRX + ITEMS covering past 2026-07-15 and re-run npm run debtors:ingest-check -- --debtor IVE001. Custody, SKU and allocation stay BLOCKED until then.",
+    "nextActionDate": null,
+    "notes": "Lane position_recon locked from the TXT (TRANSF payments with STAT batch refs, no settlement discount). Financial bridge PROVEN at R0.00; Part 2 custody sign-off BLOCKED by the ingest gate. Account is one of the eight EXCLUDE ALLOCATION DETAIL accounts under H-016 - invoice-level route is an open operator decision, not an export defect. reports/IVE001_Onboarding_Status.md is dated 2026-07-22 and still records the statement TXT as not yet ingested; it predates the 2026-07-24 ingest and is stale, not contradictory. No collections action proposed: the balance is R2,879.99 and the anchor is PROVEN only as-at 2026-07-15.",
+    "blockers": [
+      {
+        "type": "STALE_SOURCE",
+        "status": "open",
+        "description": "Ingest STALE_PARTIAL - DB header/items sync 2026-07-01 against TXT as-at 2026-07-15; 9 of 52 period documents incomplete (14883 missing lines; payments 44457 and 45099 missing headers; 15188, 51603, 51604, 15265, 51844, 51845 missing both). Blocks custody, sku_analysis and allocation. Does not change the financial close R2,879.99.",
+        "source": "reports/IVE001_INGEST_COVERAGE_2026-07-24.json",
+        "asAt": "2026-07-24"
+      },
+      {
+        "type": "STALE_SOURCE",
+        "status": "open",
+        "description": "The global aged-debt IVE001 row overstates the account by exactly R17,279.95: R12,959.96 less payment 45099 (doc date 2026-07-07, STAT 128) equals R-4,319.99, the TXT chronological balance on that date. The snapshot therefore excludes a payment whose document date precedes it, most likely late ERP capture. Do not use the global row for IVE001 ageing or exposure. Reopens if a fresher global export still omits 45099, which would mean the payment is not merely late-captured.",
+        "source": "analysis/debtors/Global Reports/130720251H45M.TXT",
+        "asAt": "2026-09-29"
+      }
+    ]
+  },
+  "ingestGate": {
+    "status": "pass",
+    "ingestFreshness": "stale",
+    "ingestCoverage": "partial",
+    "displayStatus": "STALE_PARTIAL",
+    "asAt": "2026-07-24",
+    "reportPath": "reports/IVE001_INGEST_COVERAGE_2026-07-24.json",
+    "ingestBlockedScopes": ["custody", "sku_analysis", "allocation"],
+    "exceptions": []
+  },
+  "history": [
+    {
+      "date": "2026-07-22",
+      "event": "Turn 001 scaffold: folder + config/statement_v5.json. No statement TXT in raw/ at that point. Lane preliminary position_recon (not locked). Global anchor R12,959.96 treated as reference only. H-010 queued for Sources. reports/IVE001_Onboarding_Status.md."
+    },
+    {
+      "date": "2026-07-24",
+      "event": "raw/IVE001X22072026.TXT ingested (export 2026-07-22, last row 2026-07-15). v5 statement composed: PROVEN Part 1A R2,879.99 + Part 1B R0.00 = R2,879.99 = ERP CURRENT BALANCE, variance R0.00. Lane position_recon locked. Ingest STALE_PARTIAL - 9 incomplete docs of 52; custody, SKU and allocation BLOCKED."
+    },
+    {
+      "date": "2026-09-29",
+      "event": "project.json authored. The account had raw/, config/ and nine reports but no register entry, so it was invisible to debtors:sync, the dashboard and the D17/D18 gates. The gap was surfaced by Register 2 (analysis/debtors/shared/PORTFOLIO_ARTIFACT_INDEX.json reported portfolio.register absent for IVE001). Earlier entries are reconstructed from the dated artifacts on disk, not recorded live. PROVEN while authoring: the global aged-debt row for this account omits payment 45099 exactly (R12,959.96 - R17,279.95 = R-4,319.99) - recorded as an open blocker, and ageing is anchored to the statement chronology instead."
+    }
+  ]
+}

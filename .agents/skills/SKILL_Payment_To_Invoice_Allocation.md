@@ -69,6 +69,7 @@ stored in the debtor workspace (`allocation_edges.csv` + narrative report).
 | Document | Role |
 | :--- | :--- |
 | `analysis/skills/lpg-payment-pattern-analysis/SKILL.md` | Monthly batch payers — **mutually exclusive** with this skill |
+| `SKILL_ERP_Payment_Tag_Verification.md` | Before trusting Payment `INVNO` / DEBENQ open lists — gates 1–2 incl. **INVNO_TAG_CHRONOLOGY** |
 | `debtors-analysis_Skill.md` | Graph states, exception taxonomy — apply after edges are built |
 | `ALLOCATION_DOCTRINE.md` | Evidence tiers and cylinder settlement rules |
 | `business_rules.md` | VAT sign, Dual-Line Pattern, Rule 13 surplus, override registry doctrine |

@@ -1,0 +1,20 @@
+{
+  "_comment": "Known ERP INVNO / payment-slice false leads. Append only; do not delete superseded entries — mark superseded: true.",
+  "account_no": "XXXXXX",
+  "registry_version": 1,
+  "entries": [
+    {
+      "id": "PTFL-XXXXXX-001",
+      "invno": "00000000",
+      "payment_doc": "00000000",
+      "effective_before": "YYYY-MM-DD",
+      "effective_after": null,
+      "classification": "PLACEHOLDER_REUSE | PREPAY_POINTER | MISTAG",
+      "reason": "One sentence — why this tag must not be read as settlement",
+      "evidence_path": "analysis/debtors/XXXXXX/reports/...",
+      "ratified_by": "operator",
+      "ratified_at": "YYYY-MM-DD",
+      "tripwire": "Fresh DEBENQ export, remittance for this batch, or ERP fix to allocation detail"
+    }
+  ]
+}
