@@ -53,6 +53,10 @@
     {
       "date": "2026-10-03",
       "event": "Remittance ingest (3 of 8 payments): parsed Capitol 'Accounts Payable Allocations' printouts from raw/Remittances/Remittances/ into config/remittance_allocations.json; scripts/remittance_allocation_ingest.mjs regenerates data/allocation_edges.csv and refuses any remittance that does not reconcile to the ERP payment. 00038536 R35,844.65 -> 10 invoices (7 of them Jan-Feb 2025, inside the opening B/F, not in invoices.csv); 00042043 R7,120.32 -> 2 invoices + CN offset R1,380 (CN 12245 mapping to printout 'CN 42146' is INFERRED, tagged Medium/ASSERTED); 00042697 R8,356.32 -> 2 invoices. 7 in-universe invoices now PROVEN tier 1 in reports/reconciliation_status.csv. OPEN: (a) printout for 00038536 lists invoices totalling R35,958.40 and a R113.75 'adj to statement' debit absent from the ERP - which invoice carries the R113.75 is unknown (review_required true); (b) 5 payments R132,692.34 still UNALLOCATED (00041466, 00042518, 00043235, 00043472, 00043872); (c) added data/payments.csv - without it the script silently reported 0 orphaned payments (also true of the earlier 0/8 run); (d) new profile REMITTANCE_PARTIAL_COVERAGE. Sum(open) R384,893.21 is not meaningful as open debt - DEBENQ has no CN/payment tagging for the other invoices. reconState remains pending."
+    },
+    {
+      "date": "2026-10-03",
+      "event": "Correction: data/invoices.csv wrongly contained the 8 Payment rows (207 rows). Payment doc 00042697 shares a document number with invoice 42697 (R2,415.00, 30/04/2025), so the status script merged them and showed invoice 42697 at -R5,941.32. Payment rows removed (199 rows); invoice 42697 now R2,415.00 and the status sum of open invoices moves from R384,893.21 to R387,308.21 (not meaningful as open debt, see prior entry). Settled 7, orphaned 5 unchanged. Prior text citing 207 rows or R384,893.21 is superseded."
     }
   ]
 }
