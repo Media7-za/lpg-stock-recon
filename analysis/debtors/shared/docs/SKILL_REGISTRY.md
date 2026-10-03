@@ -7,7 +7,7 @@
 > **Authority:** `analysis/debtors/shared/DEBTORS_DOCTRINE.md`  
 > **Generated — do not edit.** Regenerate: `npm run debtors:skill-registry:write`
 
-27 skill files across 4 roots. 20 carry frontmatter and are auto-loadable by an agent runtime; 7 do not and are reachable only by explicit path.
+28 skill files across 4 roots. 21 carry frontmatter and are auto-loadable by an agent runtime; 7 do not and are reachable only by explicit path.
 
 **Kinds:** `worker` · `generator` · `orchestrator` · `gate` · `human-role` · `role-prompt` · `reference` · `account-local`  
 **Statuses:** `active` · `unregistered` · `superseded`
@@ -36,6 +36,7 @@ _Accounts receivable recon._
 | `human.collections` | `human-collections-agent` | human-role | active | Human collections / creditor-controller role — payment reminders and LOD, portfolio queue prioritisation, recon sign-off before collection, ACTION_PROMPTS.md execution. |
 | `fam000.recon` | `fam000-reconciliation` | account-local | active | Family Gas consolidated recon across ERP codes FAM000 (parent) and FAM002 (child). Owns two mandatory ERP bug bypasses: header double-taxation on credit notes, and up to 18 credit notes omitted from the printed statement. |
 | `jen001.recon` | `jen001-reconciliation` | account-local | active | Jennings Gas recon under the Stripped Gas Model — Part 1 LPG-only financial ledger with deposits stripped, Part 2 quantity-only cylinder ledger. Owns the JEN010 exclusion rule. |
+| `debtor.scaffold` | `debtor-scaffold` | generator | active | Creating a new debtor micro-project: directories plus a schema-valid project.json via debtors:scaffold. |
 
 ## Lane: creditors
 
@@ -111,6 +112,7 @@ What each skill must **not** be used for. Carried from skill frontmatter — the
 | `role.ticket.architect` | Production code or product decisions. |
 | `role.erp.price` | Deciding prices. |
 | `reference.tdr001` | Execution. It is a decision record, not a skill. |
+| `debtor.scaffold` | Ingesting ERP evidence, writing config overrides, or any reconciliation. It creates the shell only. |
 
 ---
 
@@ -145,6 +147,7 @@ What each skill must **not** be used for. Carried from skill frontmatter — the
 | `role.ticket.architect` | `.agents/skills/SKILL_Ticket_Architect.md` | `build` | — |
 | `role.erp.price` | `docs/skills/erp_price_maintenance_agent.md` | — | — |
 | `reference.tdr001` | `.agents/skills/TDR-001_Platform_Architecture_ERPNext.md` | — | — |
+| `debtor.scaffold` | `.agents/skills/SKILL_Debtor_Scaffold.md` | `debtors:scaffold` | — |
 
 ---
 

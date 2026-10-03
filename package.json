@@ -17,6 +17,7 @@
     "test:ui": "vitest --ui",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
+    "debtors:scaffold": "node analysis/debtors/shared/scripts/scaffold.mjs",
     "debtors:sync": "node analysis/debtors/shared/scripts/debtors_sync.mjs",
     "debtors:ingest-check": "node analysis/debtors/shared/scripts/validate_txt_db_coverage.mjs",
     "debtors:statement-v4": "node analysis/debtors/shared/scripts/reconcile_debtor_v4_from_txt.mjs",

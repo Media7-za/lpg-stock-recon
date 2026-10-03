@@ -1276,6 +1276,34 @@
       "notes": null
     },
     {
+      "id": "debtors.shared.scaffold",
+      "path": "analysis/debtors/shared/scripts/scaffold.mjs",
+      "kind": "entrypoint",
+      "durability": "permanent",
+      "evidence": "npm-entrypoint",
+      "entrypoints": [
+        "debtors:scaffold"
+      ],
+      "lane": "debtors",
+      "scope": "universal",
+      "owns_slices": [],
+      "notes": null
+    },
+    {
+      "id": "debtors.shared.scaffold.test",
+      "path": "analysis/debtors/shared/scripts/scaffold.test.mjs",
+      "kind": "test",
+      "durability": "permanent",
+      "evidence": "test-suite",
+      "entrypoints": [
+        "debtors:test"
+      ],
+      "lane": "debtors",
+      "scope": "universal",
+      "owns_slices": [],
+      "notes": null
+    },
+    {
       "id": "debtors.shared.stages.buildcases",
       "path": "analysis/debtors/shared/scripts/stages/buildCases.mjs",
       "lane": "debtors",
