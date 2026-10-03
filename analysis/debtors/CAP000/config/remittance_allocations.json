@@ -1,0 +1,46 @@
+{
+  "debtorCode": "CAP000",
+  "_comment": "Operator-recorded remittance evidence parsed from Capitol's 'Accounts Payable Allocations' printouts (raw/Remittances/Remittances/*.xlsx). Edge generation: scripts/remittance_allocation_ingest.mjs. Invoice dates/amounts are the ERP DEBENQ values, not the remittance's (remittance swaps 41378/41768 dates).",
+  "payments": [
+    {
+      "paymentDoc": "00038536",
+      "erpStat": "TRANSF | STAT 114",
+      "source": "analysis/debtors/CAP000/raw/Remittances/Remittances/R35 844.65 Jan-Mar 2025.xlsx",
+      "remittanceNet": 35844.65,
+      "remittanceAdjustment": { "code": "DS", "amount": 113.75, "note": "'adj to statement' debit on Capitol's printout; not present in ERP DEBENQ. Invoices total 35,958.40 vs payment 35,844.65." },
+      "lines": [
+        { "type": "IN", "doc": "00040026", "date": "2025-01-20", "amount": 1856.00 },
+        { "type": "IN", "doc": "00040051", "date": "2025-01-21", "amount": 3125.88 },
+        { "type": "IN", "doc": "00040386", "date": "2025-02-03", "amount": 4688.83 },
+        { "type": "IN", "doc": "00040526", "date": "2025-02-07", "amount": 3149.87 },
+        { "type": "IN", "doc": "00040626", "date": "2025-02-11", "amount": 4724.81 },
+        { "type": "IN", "doc": "00040631", "date": "2025-02-11", "amount": 2493.66 },
+        { "type": "IN", "doc": "00040836", "date": "2025-02-19", "amount": 169.99 },
+        { "type": "IN", "doc": "00041307", "date": "2025-03-07", "amount": 9449.62 },
+        { "type": "IN", "doc": "00041378", "date": "2025-03-10", "amount": 3149.87 },
+        { "type": "IN", "doc": "00041768", "date": "2025-03-27", "amount": 3149.87 }
+      ]
+    },
+    {
+      "paymentDoc": "00042043",
+      "erpStat": "TRANSF | STAT 119",
+      "source": "analysis/debtors/CAP000/raw/Remittances/Remittances/R7120.32_.September 2025 xlsx.xlsx",
+      "remittanceNet": 7120.32,
+      "lines": [
+        { "type": "IN", "doc": "00046241", "date": "2025-09-09", "amount": 4250.16 },
+        { "type": "IN", "doc": "00046538", "date": "2025-09-20", "amount": 4250.16 },
+        { "type": "CN", "doc": "00012245", "date": "2025-04-09", "amount": 1380.00, "confidence": "Medium", "note": "Printout shows 'CN 42146' debit 1380 dated 4 Sep 2025 (Excel day/month swap of 09/04). ERP has Crd Note 12245 -1380.00 on 09/04/2025 against invoice 42146 (2760.00). Mapping 42146->CN 12245 is inferred." }
+      ]
+    },
+    {
+      "paymentDoc": "00042697",
+      "erpStat": "TRANSF | STAT 121",
+      "source": "analysis/debtors/CAP000/raw/Remittances/Remittances/R8356.32 November remittance.xlsx",
+      "remittanceNet": 8356.32,
+      "lines": [
+        { "type": "IN", "doc": "00047664", "date": "2025-11-14", "amount": 4178.16 },
+        { "type": "IN", "doc": "00048003", "date": "2025-11-29", "amount": 4178.16 }
+      ]
+    }
+  ]
+}

@@ -316,6 +316,18 @@ const PROFILES = [
     },
   },
   {
+    id: 'REMITTANCE_PARTIAL_COVERAGE',
+    label: 'Remittance-linked where available, remainder unallocated (CAP000 precedent)',
+    requiredColumns: ['payment_doc', 'target_doc', 'allocated_amount', 'allocation_type', 'confidence'],
+    settlementTypes: new Set(['REMITTANCE_EXPLICIT', 'REMITTANCE_CN_OFFSET']),
+    orphanTypes: new Set(['UNALLOCATED']),
+    orphanResidualColumn: null,
+    classify(row) {
+      const evidence_status = row.confidence === 'Confirmed' ? 'PROVEN' : 'ASSERTED';
+      return { settlement_unit: 'PER_INVOICE_REF_LINKED', evidence_tier: 1, evidence_status };
+    },
+  },
+  {
     id: 'UNALLOCATED_DEBENQ_ONLY',
     label: 'Fully unallocated, DEBENQ-only (CAP000 precedent)',
     requiredColumns: ['payment_doc', 'payment_date', 'payment_amount', 'allocation_type', 'confidence'],

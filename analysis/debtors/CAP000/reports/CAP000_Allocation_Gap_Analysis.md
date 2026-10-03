@@ -11,7 +11,7 @@
 
 The DEBENQ account enquiry for CAP000 was exported with **ALLOCATION DETAIL EXCLUDED**, meaning the INVNO (invoice reference) column is omitted. This was a deliberate ERP configuration choice to exclude untrustworthy ERP payment-allocation metadata.
 
-As a result, **8 payment transactions totaling R182,213.63 cannot be automatically matched to open invoices** using heuristic methods (exact-sum, contiguous-run, proximity).
+As a result, **8 payment transactions totaling R184,013.63** (`PROVEN` from `data/allocation_edges.csv` row sum; prior prose total R182,213.63 was an arithmetic error of R1,800.00, corrected 2026-10-03) **cannot be automatically matched to open invoices** using heuristic methods (exact-sum, contiguous-run, proximity).
 
 ---
 
@@ -27,7 +27,7 @@ As a result, **8 payment transactions totaling R182,213.63 cannot be automatical
 | 00043235 | 2026-02-05 | 3,656.43 | TRANSF \| STAT 123 | Unallocated |
 | 00043472 | 2026-02-26 | 8,443.46 | TRANSF \| STAT 123 | Unallocated |
 | 00043872 | 2026-03-31 | 9,908.97 | TRANSF \| STAT 124 | Unallocated |
-| **TOTAL** | — | **182,213.63** | — | — |
+| **TOTAL** | — | **184,013.63** | — | — |
 
 ---
 
@@ -46,9 +46,11 @@ As a result, **8 payment transactions totaling R182,213.63 cannot be automatical
 ## Next Steps (Choose One)
 
 ### Option A: Obtain Remittance Advice
-Supply CAP000's remittance advices (payment breakdowns) as PDF or CSV to `analysis/debtors/CAP000/raw/Remittances/`.  
-Once ingested, re-run:
+**Done for 3/8 (2026-10-03 ingest):** Capitol AP-allocation printouts for 00038536 / 00042043 / 00042697 are in `raw/Remittances/Remittances/`, parsed into `config/remittance_allocations.json`, and regenerated into edges via `scripts/remittance_allocation_ingest.mjs`. Status profile `REMITTANCE_PARTIAL_COVERAGE`: **7 invoices PROVEN tier 1**; orphaned payments **5** (R132,692.34).
+
+Still request remittances for the remaining five, starting with **00041466 (R97,933.00)**. After any new remittance lands:
 ```bash
+node analysis/debtors/CAP000/scripts/remittance_allocation_ingest.mjs
 npm run debtors:reconciliation-status -- --debtor CAP000
 ```
 
@@ -81,9 +83,18 @@ This reflects the deliberate ERP DEBENQ-only posture: it gives correct **account
 ## Reconciliation Status Current State
 
 - **Open invoices (gross):** 129 invoices, R417,499.21
-- **Unallocated payments:** R182,213.63
+- **Unallocated payments:** R184,013.63 (`PROVEN` — sum of `data/allocation_edges.csv`)
 - **Account balance (verified):** R70,773.28 ✓
 - **Tag-check gate:** SKIPPED (NOT_DERIVABLE_FROM_TXT — expected)
 
 The account's overall balance is reconciled. The open-invoice allocation remains pending customer evidence.
 
+
+---
+
+## Amendment 2026-10-03 (appended; text above is superseded where it conflicts)
+
+- 3 of the 8 payments now carry remittance-linked edges (00038536, 00042043, 00042697; R51,321.29). Source: `config/remittance_allocations.json`; regenerate via `node analysis/debtors/CAP000/scripts/remittance_allocation_ingest.mjs`.
+- 5 payments remain unallocated: R132,692.34 (00041466, 00042518, 00043235, 00043472, 00043872). The "0/8 matched" and R182,213.63 figures above are superseded (the 8-payment total is R184,013.63).
+- Open: R113.75 adjustment on 00038536 absent from the ERP; CN 12245 <-> printout "CN 42146" mapping is inferred.
+- Tripwire: a remittance for any of the 5 remaining payments, or an ERP correction of the R113.75, reopens this ruling.
