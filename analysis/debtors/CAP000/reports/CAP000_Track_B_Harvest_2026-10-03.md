@@ -55,7 +55,7 @@ Track B marks H-011 as "resolved" based on account B/F chain variance = R0.00.
 | **Account-level balance** | Verified R70,773.28 (ERP = reconstructed, variance R0.00) ✓ |
 | **Invoice-level allocation** | Pending — awaiting remittance advice or manual mapping ⏸ |
 
-The 8 STAT payments (May 2025–Mar 2026, R182,213.63) remain unallocated and require external evidence (remittance advice, payment instruction detail, or manual review).
+The 8 STAT payments (May 2025–Mar 2026, **R184,013.63** — `PROVEN` from `data/allocation_edges.csv`; prior R182,213.63 figure superseded) remain unallocated and require external evidence (remittance advice, payment instruction detail, or manual review).
 
 ---
 

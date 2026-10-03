@@ -19,7 +19,7 @@
     "deadlineDate": null,
     "nextAction": null,
     "nextActionDate": null,
-    "notes": "No collection until reconState complete and D17 satisfied. Account balance PROVEN R70,773.28 (2026-09-29 DEBENQ). H-011 is ALLOCATION_PENDING (8 STAT payments R182,213.63) — not TXT-missing. Side-track OPEN items from Track B harvest (PROPOSED): H-029 custody R8,245.50; H-030 ERP tag INVNO on 17886/18484. See reports/CAP000_Allocation_Gap_Analysis.md and reports/CAP000_Track_B_Harvest_2026-10-03.md."
+    "notes": "No collection until reconState complete and D17 satisfied. Account balance PROVEN R70,773.28 (2026-09-29 DEBENQ). H-011 is ALLOCATION_PENDING (8 STAT payments R184,013.63 PROVEN from allocation_edges.csv) — not TXT-missing. Side-track OPEN items from Track B harvest (PROPOSED): H-029 custody R8,245.50; H-030 ERP tag INVNO on 17886/18484. See reports/CAP000_Allocation_Gap_Analysis.md and reports/CAP000_Track_B_Harvest_2026-10-03.md."
   },
   "history": [
     {
@@ -41,6 +41,10 @@
     {
       "date": "2026-10-03",
       "event": "Canonical close: dazzling-brown Turn 003 landed on main as allocation-pending story. Track B (claude/cap000-folder-576j34) harvested as PROPOSED — NOT RATIFIED in reports/CAP000_Track_B_Harvest_2026-10-03.md — H-029 custody variance R8,245.50 (ASSERTED from Track B v5) and H-030 2023 untagged STAT:89 exact-sum hypothesis R26,854.98 (ASSERTED, not remittance-proven). Clarified H-011: balance-verified, allocation-pending — Track B B/F chain does not close invoice allocation. HUMAN_TASKS H-011 rewritten; H-029/H-030 added OPEN. reconState remains pending. Handoff: docs/handoffs/2026-10-03.md."
+    },
+    {
+      "date": "2026-10-03",
+      "event": "Arithmetic correction: Turn 003 prose total R182,213.63 for the 8 unallocated STAT payments is SUPERSEDED. PROVEN row-sum of data/allocation_edges.csv is R184,013.63 (delta +R1,800.00). Gap analysis TOTAL, harvest note, HUMAN_TASKS H-011, and collections.notes updated. Prior Turn 003 history text left marked by this supersession — do not re-quote R182,213.63."
     }
   ]
 }
