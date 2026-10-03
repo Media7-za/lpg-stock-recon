@@ -19,7 +19,7 @@
     "deadlineDate": null,
     "nextAction": null,
     "nextActionDate": null,
-    "notes": "Turn 001 onboarded. No collection until reconState complete and D17 satisfied. Global balance R46,228.47 operator-confirmed 2026-08-05, but anchor itself is ~13 months stale (2025-07-13) — debtor TXT pending (H-011)."
+    "notes": "No collection until reconState complete and D17 satisfied. Account balance PROVEN R70,773.28 (2026-09-29 DEBENQ). H-011 is ALLOCATION_PENDING (8 STAT payments R182,213.63) — not TXT-missing. Side-track OPEN items from Track B harvest (PROPOSED): H-029 custody R8,245.50; H-030 ERP tag INVNO on 17886/18484. See reports/CAP000_Allocation_Gap_Analysis.md and reports/CAP000_Track_B_Harvest_2026-10-03.md."
   },
   "history": [
     {
@@ -37,6 +37,10 @@
     {
       "date": "2026-10-03",
       "event": "Turn 003 reconciliation pass: Registered UNALLOCATED_DEBENQ_ONLY settlement profile in build_reconciliation_status.mjs. Generated invoices.csv (207 rows, LPG/CYL classified from DEBENQ descriptions) and allocation_edges.csv (8 unallocated payments totaling R182,213.63). Reconciliation status produced: 129 invoices, 104 genuine gaps, 25 pre-allocation-coverage flags. Automated allocation matching failed (0/8 payments matched) — likely partial/multi-invoice payments. Created CAP000_Allocation_Gap_Analysis.md documenting three options: (A) supply remittance advice, (B) manual allocation, or (C) accept pending state. Account balance verified R70,773.28 ✓. Tag-check skipped (expected NOT_DERIVABLE_FROM_TXT). Awaiting customer remittance advice or manual allocation mapping (H-011 status)."
+    },
+    {
+      "date": "2026-10-03",
+      "event": "Canonical close: dazzling-brown Turn 003 landed on main as allocation-pending story. Track B (claude/cap000-folder-576j34) harvested as PROPOSED — NOT RATIFIED in reports/CAP000_Track_B_Harvest_2026-10-03.md — H-029 custody variance R8,245.50 (ASSERTED from Track B v5) and H-030 2023 untagged STAT:89 exact-sum hypothesis R26,854.98 (ASSERTED, not remittance-proven). Clarified H-011: balance-verified, allocation-pending — Track B B/F chain does not close invoice allocation. HUMAN_TASKS H-011 rewritten; H-029/H-030 added OPEN. reconState remains pending. Handoff: docs/handoffs/2026-10-03.md."
     }
   ]
 }
