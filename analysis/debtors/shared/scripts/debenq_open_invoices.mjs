@@ -589,3 +589,35 @@ export const REMEDY = {
   OPEN_LIST_OVERSTATES_ACCOUNT:
     'The itemised list exceeds what the account owes, so settled debt is being carried as open. Identify which invoices the untagged credits cleared and ratify them into closedInvoiceOverrides. Route depends on what the account has: remittance-by-remittance where advices exist, otherwise the pattern route (exact-sum month tests, established payment cadence, operator ratification) per business_rules.md §15 authority order B. Until then the open-invoice list must not go to the customer; the ERP balance total is still safe to quote.',
 };
+
+/**
+ * Load open invoices from TWK002 restart/remittance ledger output.
+ * Tier-1 authority: remittance_alloc + spine CN pairing — not ERP tags or overrides.
+ */
+export function loadRestartOpenInvoices(csvAbsPath) {
+  const lines = fs.readFileSync(csvAbsPath, 'utf8').split(/\r?\n/).filter(Boolean);
+  if (lines.length < 2) return [];
+  const header = parseCsvLine(lines[0]);
+  const idx = (name) => header.indexOf(name);
+  const out = [];
+  for (let i = 1; i < lines.length; i++) {
+    const p = parseCsvLine(lines[i]);
+    const rawDoc = p[idx('docno')] ?? '';
+    const docno = String(rawDoc).replace(/^0+/, '') || rawDoc;
+    const due = round2(Number(p[idx('open_balance')] ?? 0));
+    if (due <= 0) continue;
+    out.push({
+      docno,
+      doc: docno,
+      key: normDoc(docno),
+      iso: p[idx('doc_date')] ?? '',
+      dn: p[idx('dn')] || '—',
+      due,
+      invoice_gross: round2(Number(p[idx('invoice_gross')] ?? p[idx('spine_amount')] ?? due)),
+      cn_doc: p[idx('cn_doc')] ?? '',
+      cn_amount: round2(Number(p[idx('cn_amount')] ?? 0)),
+    });
+  }
+  out.sort((a, b) => a.iso.localeCompare(b.iso) || String(a.docno).localeCompare(String(b.docno)));
+  return out;
+}

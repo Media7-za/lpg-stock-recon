@@ -33,12 +33,12 @@
 | Layer | Amount | Epistemic | ERP action |
 | :--- | ---: | :--- | :--- |
 | B/F export carry | R38,791.27 | **PROVEN** (11 STAT batches) | Accept — not zeroable without full restatement |
-| Account-level residual | R8,084.67 | **PROVEN** (7 bridge lines sum) | **H-027 BS reclass** after H-022/H-023/H-026 — tagging does **not** move the *total* |
+| Account-level residual | R8,084.67 | **PROVEN** (7 bridge lines sum) | **Leave in AR Control** — not an asset; H-027 **REJECTED**. Tagging does **not** move the *total* |
 | Path B journals posted | 16 + 3 batches | **PROVEN** (checklists DONE) | No further discount journal wave |
 
-**Human tasks:** H-013 → **H-022 → H-023 → H-026** → rebuild bridge → **H-027** (DR suspense / CR AR) → Phase 4. H-024 Path A still optional.
+**Human tasks:** H-013 → **H-022 → H-023 → H-026** (hygiene only) → rebuild bridge → Phase 4. **No H-027.** H-024 Path A still optional.
 
-**Residual lever ratified 2026-08-30 (evening):** current-period BS reclassification — `docs/TWK002_ERP_Agent_Note_H027_BS_Reclassification.md`. Accept-in-header and P&L write-off superseded.
+**Residual ruling 2026-09-03:** residual is not an asset; tagging does not change the total; do not quarantine. `docs/TWK002_ERP_Agent_Note_H027_BS_Reclassification.md` = **DO NOT POST**. ~~2026-08-30 evening BS reclass~~ superseded.
 
 **Collections posture unchanged:** customer due = open invoices only (live draft R18,413.69 after STAT 129; snapshot `2026-08-11_v1` stale). ERP plan does not change billable amount.
 

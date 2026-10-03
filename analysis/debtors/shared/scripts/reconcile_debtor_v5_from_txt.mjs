@@ -3,8 +3,9 @@
  * Rebuild debtor Statement of Account v5 from ERP TXT (Tier-3 authority).
  * Part 1 split: 1A LPG Gas | 1B CYL Deposits | Bridge (1A+1B = ERP).
  *
- * Usage: node analysis/debtors/shared/scripts/reconcile_debtor_v5_from_txt.mjs --debtor JEN001
- * Config: analysis/debtors/[CODE]/config/statement_v5.json
+ * Usage: node analysis/debtors/shared/scripts/reconcile_debtor_v5_from_txt.mjs --debtor JEN001 [--config path/to/config.json]
+ * Config: analysis/debtors/[CODE]/config/statement_v5.json (default)
+ * Layouts: `full` (default) · `lpg_financial` (Part 1A only — omits 1B, ingest gate, Part 2, workspace summary)
  */
 import pg from 'pg';
 import fs from 'fs';
@@ -166,8 +167,40 @@ ${scenario.assumption}
 `;
 }
 
-function loadConfig(debtorCode) {
-  const configPath = path.join(ROOT, 'analysis/debtors', debtorCode, 'config/statement_v5.json');
+function resolveLayout(cfg) {
+  const layout = cfg.layout || 'full';
+  if (layout === 'lpg_financial') {
+    return {
+      layout,
+      titleSuffix: 'Version 5 (LPG Financial Statement)',
+      showHeaderMeta: false,
+      compactTitle: true,
+      showPart1B: false,
+      showIngestGate: false,
+      showPart2: false,
+      showDebtorSummary: false,
+      showFullBridge: false,
+    };
+  }
+  return {
+    layout: 'full',
+    titleSuffix: 'Version 5 (Sub-Ledger Position Statement)',
+    showHeaderMeta: true,
+    compactTitle: false,
+    showPart1B: true,
+    showIngestGate: true,
+    showPart2: true,
+    showDebtorSummary: true,
+    showFullBridge: true,
+  };
+}
+
+function loadConfig(debtorCode, configArg) {
+  const configPath = configArg
+    ? path.isAbsolute(configArg)
+      ? configArg
+      : path.join(ROOT, configArg)
+    : path.join(ROOT, 'analysis/debtors', debtorCode, 'config/statement_v5.json');
   if (!fs.existsSync(configPath)) {
     throw new Error(
       `Missing config: ${configPath}\nCopy from analysis/debtors/shared/templates/statement_v5_config.template.json`,
@@ -185,8 +218,18 @@ function loadConfig(debtorCode) {
   const combinedBf = Number(cfg.combinedBf);
   const ratificationScenario = loadRatificationScenario(cfg);
   const ratificationRows = ratificationScenario ? buildRatificationRows(ratificationScenario) : [];
+  const defaultReport = path.join(
+    ROOT,
+    `analysis/debtors/${debtorCode}/reports/${debtorCode}_Statement_Account_v5.md`,
+  );
+  const reportPath = cfg.reportPath
+    ? path.isAbsolute(cfg.reportPath)
+      ? cfg.reportPath
+      : path.join(ROOT, cfg.reportPath)
+    : defaultReport;
   return {
     ...cfg,
+    configPath,
     txtPath,
     combinedBf,
     cylOpeningFinancial,
@@ -194,10 +237,8 @@ function loadConfig(debtorCode) {
     paymentLane: cfg.paymentLane || 'LPG',
     ratificationScenario,
     ratificationRows,
-    reportPath: path.join(
-      ROOT,
-      `analysis/debtors/${debtorCode}/reports/${debtorCode}_Statement_Account_v5.md`,
-    ),
+    reportPath,
+    layoutOptions: resolveLayout(cfg),
     fixturePath: path.join(
       ROOT,
       `src/features/debtor-position-workspace/data/fixtures/${debtorCode}.v5.json`,
@@ -210,10 +251,14 @@ function loadConfig(debtorCode) {
 function parseArgs() {
   const idx = process.argv.indexOf('--debtor');
   if (idx === -1 || !process.argv[idx + 1]) {
-    console.error('Usage: node reconcile_debtor_v5_from_txt.mjs --debtor CODE');
+    console.error('Usage: node reconcile_debtor_v5_from_txt.mjs --debtor CODE [--config path/to/config.json]');
     process.exit(1);
   }
-  return process.argv[idx + 1].toUpperCase();
+  const configIdx = process.argv.indexOf('--config');
+  return {
+    debtorCode: process.argv[idx + 1].toUpperCase(),
+    configPath: configIdx !== -1 ? process.argv[configIdx + 1] : null,
+  };
 }
 
 const round2 = (n) => Math.round(Number(n) * 100) / 100;
@@ -533,8 +578,9 @@ async function buildPart2(client, cfg) {
 }
 
 async function main() {
-  const debtorCode = parseArgs();
-  const cfg = loadConfig(debtorCode);
+  const { debtorCode, configPath } = parseArgs();
+  const cfg = loadConfig(debtorCode, configPath);
+  const layout = cfg.layoutOptions;
   const { rows, headerBalance } = parseTxtRows(cfg.txtPath);
   const allRows = mergeRatificationRows(rows, cfg.ratificationRows);
 
@@ -544,7 +590,8 @@ async function main() {
   for (const [k, v] of buildRatificationDocSplit(cfg.ratificationRows)) {
     docSplit.set(k, v);
   }
-  const { sections: part2, currentCyl } = await buildPart2(client, cfg);
+  const part2Result = await buildPart2(client, cfg);
+  const { sections: part2, currentCyl } = part2Result;
   await client.end();
 
   const { part1a, part1b, financial, finalLpg, finalCyl, finalCombined } = buildPart1Split(
@@ -576,31 +623,24 @@ async function main() {
   const ingestGateSection = buildIngestGateSection(coverage, cfg.debtorCode);
   const custodyBlockedNote = buildCustodyBlockedNote(coverage);
   const ratificationSection = buildRatificationSection(cfg.ratificationScenario, erpVariance);
+  const openingBfLine = layout.showPart1B
+    ? `**Combined Opening B/F:** R${fmt(cfg.combinedBf)} (ERP verified — source: \`${txtRel}\` ${cfg.bfSourceNote || ''})
+**LPG Opening B/F (1A):** R${fmt(cfg.lpgOpeningBf)} &nbsp;|&nbsp; **CYL Opening B/F (1B):** R${fmt(cfg.cylOpeningFinancial)}`
+    : `**Opening B/F:** R${fmt(cfg.lpgOpeningBf)} (ERP verified — source: \`${txtRel}\` ${cfg.bfSourceNote || ''})`;
 
-  const md = `# Statement of Account: ${cfg.debtorName} (${cfg.debtorCode}) - Version 5 (Sub-Ledger Position Statement)
-**Period:** ${periodStartLabel} → ${periodEndLabel} &nbsp;|&nbsp; **Account:** ${cfg.debtorCode}
-**Combined Opening B/F:** R${fmt(cfg.combinedBf)} (ERP verified — source: \`${txtRel}\` ${cfg.bfSourceNote || ''})
-**LPG Opening B/F (1A):** R${fmt(cfg.lpgOpeningBf)} &nbsp;|&nbsp; **CYL Opening B/F (1B):** R${fmt(cfg.cylOpeningFinancial)}
-**Payment routing:** ${cfg.paymentLane} lane (payments post to Part 1A unless configured otherwise)
-**Last regenerated:** ${new Date().toISOString().slice(0, 10)} from ERP TXT (\`reconcile_debtor_v5_from_txt.mjs\`)${cfg.ratificationScenario ? ' · **Ratification scenario active**' : ''}
-
----
-
-${ratificationSection}
-
-## Part 1A: LPG Gas Financial Statement
-*Gas fill invoices, credit notes, and payments since ${periodStartLabel}. Payments route to this sub-ledger per debtor config (\`paymentLane: ${cfg.paymentLane}\`).*
-
-${part1a.length ? part1a.join('\n\n---\n\n') : '_No LPG activity in period._'}
-
----
+  const part1bSection = layout.showPart1B
+    ? `---
 
 ## Part 1B: Cylinder Deposit Financial Statement
 *Cylinder deposit charges and reversals (\`-EMPTY\` / \`EMPTIES\` refs). Paired inv+CN rows remain visible; net-zero pairs are expected for standard deliveries.*
 
 ${part1b.length ? part1b.join('\n\n---\n\n') : '_No CYL deposit activity in period._'}
 
----
+`
+    : '';
+
+  const bridgeSection = layout.showFullBridge
+    ? `---
 
 ## Part 1 — Reconciliation Bridge
 
@@ -612,18 +652,31 @@ ${part1b.length ? part1b.join('\n\n---\n\n') : '_No CYL deposit activity in peri
 | ERP \`CURRENT BALANCE\` (TXT header) | ${fmt(headerBalance)} |
 | **Variance (Combined − ERP)** | **${fmt(erpVariance)}** |
 
----
+`
+    : `---
 
-${ingestGateSection}
+## Balance Due
 
-## Part 2: Cylinder (CYL) Ledger (Physical Asset Tracker)
+| | Amount (R) |
+| :--- | ---: |
+| **Balance due (ERP)** | **${fmt(headerBalance)}** |
+
+`;
+
+  const ingestSection = layout.showIngestGate ? `${ingestGateSection}\n` : '';
+  const part2Section = layout.showPart2
+    ? `## Part 2: Cylinder (CYL) Ledger (Physical Asset Tracker)
 *Cylinders tracked by physical count. Opening balances per \`config/statement_v5.json\`.${coverage?.gates?.custody === 'BLOCKED' ? ' **Gate: custody BLOCKED — see Ingest Gate above.**' : ''}*
 
 ${part2.join('\n\n---\n\n')}
 
 ---
 
-<!-- INTERNAL_ONLY_START -->
+`
+    : '';
+
+  const debtorSummarySection = layout.showDebtorSummary
+    ? `<!-- INTERNAL_ONLY_START -->
 <!-- DEBTOR_POSITION_WORKSPACE_START -->
 
 ## Debtor Position Summary
@@ -656,10 +709,44 @@ ${custodyBlockedNote}
 
 <!-- DEBTOR_POSITION_WORKSPACE_END -->
 <!-- INTERNAL_ONLY_END -->
-`;
+`
+    : '';
+
+  const headerMetaSection = layout.showHeaderMeta
+    ? `**Period:** ${periodStartLabel} → ${periodEndLabel} &nbsp;|&nbsp; **Account:** ${cfg.debtorCode}
+${openingBfLine}
+**Payment routing:** ${cfg.paymentLane} lane (payments post to Part 1A unless configured otherwise)
+**Last regenerated:** ${new Date().toISOString().slice(0, 10)} from ERP TXT (\`reconcile_debtor_v5_from_txt.mjs\`)${cfg.ratificationScenario ? ' · **Ratification scenario active**' : ''}
+
+---
+
+`
+    : '';
+
+  const titleLine = layout.compactTitle
+    ? `# Statement of Account: ${cfg.debtorName}`
+    : `# Statement of Account: ${cfg.debtorName} (${cfg.debtorCode}) - ${layout.titleSuffix}`;
+
+  const md = `${titleLine}
+${headerMetaSection}${ratificationSection}
+
+## Part 1A: LPG Gas Financial Statement
+*Gas fill invoices, credit notes, and payments since ${periodStartLabel}. Payments route to this sub-ledger per debtor config (\`paymentLane: ${cfg.paymentLane}\`).*
+
+${part1a.length ? part1a.join('\n\n---\n\n') : '_No LPG activity in period._'}
+
+${part1bSection}${bridgeSection}${ingestSection}${part2Section}${debtorSummarySection}`;
 
   fs.mkdirSync(path.dirname(cfg.reportPath), { recursive: true });
   fs.writeFileSync(cfg.reportPath, md);
+
+  if (layout.layout !== 'full') {
+    console.log(`[${cfg.debtorCode}] TXT header: R${fmt(headerBalance)}`);
+    console.log(`[${cfg.debtorCode}] Part 1A LPG close: R${fmt(finalLpg)}`);
+    console.log(`[${cfg.debtorCode}] Layout: ${layout.layout} — workspace fixture unchanged`);
+    console.log(`Written ${cfg.reportPath}`);
+    return;
+  }
 
   // Boundary (DEBTORS_DOCTRINE.md D18 / PROJECT_PROJECTION_SCHEMA.md "collectable —
   // derivation rule"): this generator computes Statement-of-Account sub-ledger
@@ -725,7 +812,7 @@ ${custodyBlockedNote}
       ],
     },
     artifacts: {
-      statementMarkdown: `analysis/debtors/${cfg.debtorCode}/reports/${cfg.debtorCode}_Statement_Account_v5.md`,
+      statementMarkdown: path.relative(ROOT, cfg.reportPath),
       txtSource: txtRel,
     },
   };

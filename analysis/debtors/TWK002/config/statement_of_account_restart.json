@@ -1,0 +1,31 @@
+{
+  "debtorCode": "TWK002",
+  "customerName": "TWK AGRI PTY LTD",
+  "referenceLabel": "TWK reference",
+  "referenceValue": "B226",
+  "businessHeader": [
+    "BELLA ENERGY SERVICES300 (PTY) LTD T/A GAZ EXPRESS",
+    "50 WINSTON ROAD",
+    "PIETERMARITZBURG",
+    "3201"
+  ],
+  "primaryTxt": "analysis/debtors/TWK002/raw/DEBENQ.TXT",
+  "_comment_primaryTxt": "ERP header tie-out only. Open list from restart ledger — not TXT reconstruction.",
+  "openInvoiceModel": "remittance_restart",
+  "openInvoicesCsv": "analysis/debtors/TWK002/restart/open_invoices.csv",
+  "outputDir": "analysis/debtors/TWK002/reports/restart",
+  "outputBaseName": "TWK002_Statement_of_Account_RESTART",
+  "pdfStylesheet": "analysis/debtors/TWK002/reports/statement_pdf.css",
+  "closedInvoiceOverrides": [],
+  "_comment_overrides": "EMPTY. 42468/42470 natively closed by remittance allocation in restart ledger.",
+  "balanceBridgeLines": [],
+  "_comment_bridge": "EMPTY. No ERP-hygiene plug — customer due = remittance open list only.",
+  "collapseAccountLevelAsOpeningBalance": false,
+  "customerDueBasis": "open_invoices",
+  "hideAccountLevelSection": true,
+  "forkBanner": [
+    "ANALYTICAL FORK — remittance-authoritative restart ledger",
+    "Open invoices from restart/open_invoices.csv. Does not overwrite live SOA."
+  ],
+  "tieoutNote": "ERP header shown for tie-out only — not billable. Remittance restart ledger: see restart/erp_tieout.md."
+}

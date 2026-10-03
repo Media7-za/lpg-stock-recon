@@ -1,0 +1,54 @@
+{
+  "debtorCode": "LIN001",
+  "clientName": "SLINDOKUHLE ENTERPRISES (PTY) LTD",
+  "status": "active",
+  "reconState": "in-progress",
+  "financials": {
+    "totalOutstanding": 81960.94,
+    "totalOutstandingNote": "PROVEN — raw/DEBENQ (1).TXT CURRENT BALANCE + running close inv 52924 (2 Sep 2026). Supersedes global aged-debt R12,040.44 (13 Jul 2026, stale).",
+    "lastInvoiceDate": "2026-09-02",
+    "lastPaymentDate": "2026-08-22",
+    "agedDebt180Plus": 0,
+    "erpTxtClosing": 81960.94,
+    "erpTxtClosingAsOf": "2026-09-02",
+    "erpTxtSource": "raw/DEBENQ (1).TXT"
+  },
+  "collections": {
+    "actionRequired": false,
+    "actionType": null,
+    "dateSent": null,
+    "deadlineDate": null,
+    "nextAction": "Sources: re-export DTRX + ITEMS for missing docs 44976, 45840, 52924 (ingest STALE_PARTIAL). Custody sign-off blocked until CURRENT_COMPLETE or ratified exception.",
+    "nextActionDate": null,
+    "notes": "Turn 001 v5 from DEBENQ (1).TXT. Lane position_recon locked. Financial bridge R0.00 PROVEN. Part 2 custody BLOCKED (STALE_PARTIAL).",
+    "blockers": [
+      {
+        "type": "OTHER",
+        "status": "open",
+        "description": "Ingest STALE_PARTIAL — 3 missing headers (44976, 45840, 52924). Custody / SKU conclusions not signed off.",
+        "source": "reports/LIN001_INGEST_COVERAGE_2026-09-02.json",
+        "asAt": "2026-09-02"
+      }
+    ]
+  },
+  "ingestGate": {
+    "status": "pass",
+    "ingestFreshness": "stale",
+    "ingestCoverage": "partial",
+    "displayStatus": "STALE_PARTIAL",
+    "asAt": "2026-09-02",
+    "reportPath": "reports/LIN001_INGEST_COVERAGE_2026-09-02.json",
+    "ingestBlockedScopes": ["custody", "sku_analysis", "allocation"],
+    "exceptions": []
+  },
+  "history": [
+    {
+      "date": "2026-09-02",
+      "event": "Turn 001 scaffold: folder + statement_v5.json. No statement TXT in raw/. Lane preliminary position_recon (not locked). Ingest UNVERIFIED. H-028 queued for Sources."
+    },
+    {
+      "date": "2026-09-02",
+      "event": "Turn 001 complete: DEBENQ (1).TXT ingested. v5 ERP variance R0.00 (combined R81,960.94 PROVEN). Lane position_recon locked. Ingest STALE_PARTIAL — gaps 44976/45840/52924. Custody gate BLOCKED."
+    }
+  ]
+}

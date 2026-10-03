@@ -4,7 +4,7 @@
 **Updated:** 2026-08-29  
 **Authority:** This document is the reconciliation objective for TWK002. All balance, ageing, statement, and collections work should be read against it.
 
-**ERP execution plan (ratified 2026-08-29; residual lever ratified 2026-08-30 evening):** `docs/TWK002_ERP_Opening_Balance_Fix_Plan.md` — hygiene tagging H-022/H-023/H-026 first; residual lever is **H-027 current-period BS reclass** (DR suspense / CR AR). Not accept-in-header. Not P&L write-off. B/F R38,791.27 accepted as historical carry. Instruction: `docs/TWK002_ERP_Agent_Note_H027_BS_Reclassification.md`.
+**ERP execution plan (ratified 2026-08-29; residual lever **REJECTED** 2026-09-03):** `docs/TWK002_ERP_Opening_Balance_Fix_Plan.md` — hygiene tagging H-022/H-023/H-026 does **not** change residual *total*. H-027 BS reclass **do not post** — residual is not an asset. Leave in AR Control; bill open invoices only. B/F R38,791.27 accepted as historical carry.
 
 ---
 

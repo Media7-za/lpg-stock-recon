@@ -1,0 +1,26 @@
+{
+  "debtorCode": "JEN001",
+  "debtorName": "Spoon Eatery",
+  "layout": "lpg_financial",
+  "txtPath": "analysis/debtors/JEN001/raw/JEN001.TXT",
+  "reportPath": "analysis/debtors/JEN001/reports/JEN001_Statement_Account_v5_LPG.md",
+  "periodStart": "2026-01-01",
+  "combinedBf": 9082.81,
+  "bfSourceNote": "JEN001.TXT line 119 — balance before payment 42917 (STAT 122, 07 Jan 2026)",
+  "cylOpeningFinancial": -517.5,
+  "paymentLane": "LPG",
+  "cylOpeningQty": {
+    "14.1": 0,
+    "19.1": 0,
+    "9.1": -1,
+    "D.1": 0,
+    "S.1": 0
+  },
+  "skuRates": {
+    "14.1": 575,
+    "19.1": 690,
+    "9.1": 517.5,
+    "D.1": 1150,
+    "S.1": 1150
+  }
+}
