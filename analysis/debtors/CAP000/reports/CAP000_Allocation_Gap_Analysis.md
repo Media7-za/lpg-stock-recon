@@ -46,11 +46,13 @@ As a result, **8 payment transactions totaling R184,013.63** (`PROVEN` from `dat
 ## Next Steps (Choose One)
 
 ### Option A: Obtain Remittance Advice
-Supply CAP000's remittance advices (payment breakdowns) as PDF or CSV to `analysis/debtors/CAP000/raw/Remittances/`.  
-Once ingested, re-run:
+**Partial progress 2026-10-03:** 3 of 8 remittance Excel files located on Google Drive with exact amount matches (R51,321.29 / 27.9%) — see `raw/Remittances/CAP000_REMITTANCE_MAPPING.md` and `reports/CAP000_Remittance_Discovery_2026-10-03.md`. Files are **not yet downloaded/ingested**; edges remain `UNALLOCATED` (amount match = ASSERTED, not PROVEN allocation).
+
+Next: download the 3 `.xlsx` into `raw/Remittances/`, extract invoice lines, write `REMITTANCE_EXPLICIT` edges, then:
 ```bash
 npm run debtors:reconciliation-status -- --debtor CAP000
 ```
+Still request remittances for the remaining **5 payments (R132,692.34)**.
 
 ### Option B: Manual Allocation Review
 Manually update `analysis/debtors/CAP000/data/allocation_edges.csv`:

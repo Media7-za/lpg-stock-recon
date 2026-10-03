@@ -19,7 +19,7 @@
     "deadlineDate": null,
     "nextAction": null,
     "nextActionDate": null,
-    "notes": "No collection until reconState complete and D17 satisfied. Account balance PROVEN R70,773.28 (2026-09-29 DEBENQ). H-011 is ALLOCATION_PENDING (8 STAT payments R184,013.63 PROVEN from allocation_edges.csv) — not TXT-missing. Side-track OPEN items from Track B harvest (PROPOSED): H-029 custody R8,245.50; H-030 ERP tag INVNO on 17886/18484. See reports/CAP000_Allocation_Gap_Analysis.md and reports/CAP000_Track_B_Harvest_2026-10-03.md."
+    "notes": "No collection until reconState complete and D17 satisfied. Account balance PROVEN R70,773.28. H-011 ALLOCATION_PENDING: 3/8 remittances located on Google Drive (R51,321.29 ASSERTED amount match) — ingest pending before PROVEN edge upgrade; 5/8 still missing (R132,692.34). See reports/CAP000_Remittance_Discovery_2026-10-03.md. Side-tracks PROPOSED: H-029 custody; H-030 ERP tag 17886/18484."
   },
   "history": [
     {
@@ -45,6 +45,10 @@
     {
       "date": "2026-10-03",
       "event": "Arithmetic correction: Turn 003 prose total R182,213.63 for the 8 unallocated STAT payments is SUPERSEDED. PROVEN row-sum of data/allocation_edges.csv is R184,013.63 (delta +R1,800.00). Gap analysis TOTAL, harvest note, HUMAN_TASKS H-011, and collections.notes updated. Prior Turn 003 history text left marked by this supersession — do not re-quote R182,213.63."
+    },
+    {
+      "date": "2026-10-03",
+      "event": "Remittance discovery: Google Drive folder located 3 Excel remittances with exact amount matches to unallocated payments 00038536 (R35,844.65), 00042697 (R8,356.32), 00042043 (R7,120.32) — matched R51,321.29 (27.9% of R184,013.63). Tag ASSERTED (filename/amount match); invoice allocation remains ASSUMED until .xlsx downloaded into raw/Remittances/ and edges written REMITTANCE_EXPLICIT. Remaining 5 payments R132,692.34 (SUPERSEDES prior prose R132,891.34). Mapping: raw/Remittances/CAP000_REMITTANCE_MAPPING.md. Summary: reports/CAP000_Remittance_Discovery_2026-10-03.md. reconState still pending."
     }
   ]
 }
