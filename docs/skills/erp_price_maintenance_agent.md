@@ -1,5 +1,12 @@
 # ERP Price Maintenance Agent Skill
 
+<!-- registry-label -->
+> **Role prompt — not an auto-loadable skill.** A role definition, not a recon skill. Sole occupant of the `docs/skills/` root.
+>
+> No `name:` frontmatter by design (operator decision D3, 2026-09-29), so no agent
+> runtime discovers this file; it is reachable only by explicit path.
+> Registry record: `role.erp.price` in `analysis/debtors/shared/SKILL_REGISTRY.json`.
+
 ## Purpose
 
 The ERP Price Maintenance Agent updates ERP/customer price records after a commercial price has been approved.

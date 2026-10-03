@@ -13,6 +13,8 @@ description: >-
 > This skill is **strictly** for debtor accounts who pay in consolidated monthly batches (e.g., using monthly statement allocations like `STAT196`, `STAT197`, etc.). 
 > Do **NOT** apply this methodology to debtors who pay on a per-delivery/per-invoice basis or make arbitrary payments, as their ledgers require a different chronological allocation model.
 
+> **Invoice-level ERP tags:** This skill reconciles at **monthly LPG pools**. If a **Payment INVNO** or DEBENQ open-invoice row is used to assert a specific invoice is settled, run `.agents/skills/SKILL_ERP_Payment_Tag_Verification.md` first (`INVNO_TAG_CHRONOLOGY` + cent-exact gate).
+
 ## 1. Objective
 This skill defines the strict methodology and layout requirements for generating the annual `[DEBTOR]_[YEAR]_Payment_Pattern_Analysis.md` report. The report isolates LPG gas billing from cylinder deposit noise, tracks actual cash flows, and applies mathematically consistent payment-to-month patterns.
 

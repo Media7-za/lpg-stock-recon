@@ -1,0 +1,181 @@
+{
+  "generated_by": "analysis/debtors/shared/scripts/render_script_registry.mjs",
+  "generated_at": "2026-09-29T13:52:15.577Z",
+  "registry_version": "1.0.0",
+  "registry_status": "RATIFIED",
+  "totals": {
+    "declared": 103,
+    "discovered_on_disk": 103,
+    "reachable_by_import": 12,
+    "reachable_by_invoke": 1,
+    "npm_targets_into_analysis": 27,
+    "permanent": 42,
+    "unclassified": 58
+  },
+  "by_lane": {
+    "creditors": 9,
+    "debtors": 93,
+    "inventory": 1
+  },
+  "by_scope": {
+    "universal": 54,
+    "account:FAM000": 10,
+    "account:JEN001": 9,
+    "account:JIM001": 4,
+    "account:MD0003": 1,
+    "account:MON001": 2,
+    "account:MOZ002": 6,
+    "account:RED001": 3,
+    "account:TWK002": 11,
+    "account:WO0001": 3
+  },
+  "by_kind": {
+    "analysis": 56,
+    "entrypoint": 21,
+    "module": 12,
+    "wrapper": 2,
+    "backup": 1,
+    "test": 9,
+    "query": 2
+  },
+  "by_durability": {
+    "unclassified": 58,
+    "permanent": 42,
+    "deprecated": 2,
+    "superseded": 1
+  },
+  "by_evidence": {
+    "none": 58,
+    "npm-entrypoint": 20,
+    "imported-by-permanent": 12,
+    "docblock-deprecated": 2,
+    "backup-directory": 1,
+    "test-suite": 9,
+    "invoked-by-permanent": 1
+  },
+  "gates": {
+    "PATH_EXISTS": {
+      "failures": 0,
+      "warnings": 0
+    },
+    "NO_ORPHAN_FILES": {
+      "failures": 0,
+      "warnings": 0
+    },
+    "ENTRYPOINT_RESOLVES": {
+      "failures": 0,
+      "warnings": 1
+    },
+    "DOCBLOCK_MATCH": {
+      "failures": 0,
+      "warnings": 0
+    },
+    "SLICE_IDS_VALID": {
+      "failures": 0,
+      "warnings": 0
+    },
+    "REACHABLE_IS_PERMANENT": {
+      "failures": 0,
+      "warnings": 0
+    },
+    "EVIDENCE_REQUIRED": {
+      "failures": 0,
+      "warnings": 1
+    }
+  },
+  "missing_entrypoints": [
+    {
+      "target": "debtors:parse-backlog",
+      "declared_path": "analysis/debtors/shared/scripts/parse_global_aged_debt.mjs",
+      "status": "ABSENT — no such file, and git log shows it has never existed on any branch. The npm target, two skills, the PRD, the roadmap and CHANGELOG all describe it as delivered.",
+      "tag": "PROVEN",
+      "evidence": [
+        "git log --all -- analysis/debtors/shared/scripts/parse_global_aged_debt.mjs (empty)",
+        "CHANGELOG.md:62 announces the script as added",
+        "analysis/debtors/shared/docs/DEBTORS_ORCHESTRATION_PRD.md:147 marks it done",
+        "analysis/debtors/shared/docs/DEBTORS_ORCHESTRATION_ROADMAP.md:29 marks it done",
+        ".agents/skills/SKILL_Debtors_Orchestrator.md:53 instructs running it",
+        ".agents/skills/SKILL_Human_Sources_Agent.md:38 instructs running it",
+        "analysis/debtors/shared/scripts/debtors_dashboard.mjs:296 prompts the operator to run it"
+      ],
+      "consequence": "analysis/debtors/shared/data/portfolio_candidates.csv (68 rows) cannot be refreshed. It was last committed 2026-08-29 and nothing records the ERP date behind it, so portfolio triage runs on a frozen input that reads as current.",
+      "resolution_required": "operator",
+      "resolution_options": [
+        "Write the parser against the global aged-debt TXT and keep the target.",
+        "Retire the target and the four documents that claim it, and record how portfolio_candidates.csv is produced instead."
+      ],
+      "reopens_when": "parse_global_aged_debt.mjs is written, or debtors:parse-backlog is removed from package.json. Either event must also update the PRD, roadmap, both skills, and the dashboard prompt."
+    }
+  ],
+  "unclassified_paths": [
+    "analysis/creditors/shared/scripts/check-may-grv-items-details.mjs",
+    "analysis/creditors/shared/scripts/check-may-grv.mjs",
+    "analysis/debtors/FAM000/scripts/reconcile_csv_ground_truth.py",
+    "analysis/debtors/FAM000/scripts/reconcile_csv_ground_truth_mar_may.py",
+    "analysis/debtors/FAM000/scripts/reconcile_csv_ground_truth_monthly.py",
+    "analysis/debtors/FAM000/scripts/reconcile_csv_ground_truth_monthly_split.py",
+    "analysis/debtors/FAM000/scripts/reconcile_csv_ground_truth_monthly_stripped.py",
+    "analysis/debtors/FAM000/scripts/reconcile_csv_ground_truth_scenario_zero_cyl.py",
+    "analysis/debtors/FAM000/scripts/reconcile_db_only_monthly_stripped.py",
+    "analysis/debtors/FAM000/scripts/reconcile_fam.py",
+    "analysis/debtors/FAM000/scripts/reconcile_fam_v3.py",
+    "analysis/debtors/FAM000/scripts/reconcile_fam_v4_extended.py",
+    "analysis/debtors/JEN001/scripts/allocation_ingest_pilot.mjs",
+    "analysis/debtors/JEN001/scripts/export_to_excel.py",
+    "analysis/debtors/JEN001/scripts/export_to_excel_v2.py",
+    "analysis/debtors/JEN001/scripts/reconcile_jen_db_only_monthly_stripped.py",
+    "analysis/debtors/JEN001/scripts/reconcile_jen_db_only_monthly_stripped_v2.py",
+    "analysis/debtors/JEN001/scripts/reconcile_jen_db_only_monthly_stripped_v3.py",
+    "analysis/debtors/JEN001/scripts/reconcile_jen_v4_extended.mjs",
+    "analysis/debtors/JEN001/scripts/reconcile_jen_v5_from_txt.mjs",
+    "analysis/debtors/JIM001/scripts/analyse_alloc_pairs.py",
+    "analysis/debtors/JIM001/scripts/analyse_blank_refs.py",
+    "analysis/debtors/JIM001/scripts/analyse_payment_patterns.py",
+    "analysis/debtors/JIM001/scripts/build_lpg_reconciliation_v41.py",
+    "analysis/debtors/MD0003/scripts/allocation_ingest.mjs",
+    "analysis/debtors/MON001/scripts/allocation_ingest_pilot.mjs",
+    "analysis/debtors/MON001/scripts/allocation_ingest_stripped_pilot.mjs",
+    "analysis/debtors/MOZ002/scripts/allocation_ingest.mjs",
+    "analysis/debtors/MOZ002/scripts/build_exception_audit.mjs",
+    "analysis/debtors/MOZ002/scripts/build_operator_view.mjs",
+    "analysis/debtors/MOZ002/scripts/build_statement_account.mjs",
+    "analysis/debtors/MOZ002/scripts/turn_7h_decomposition.mjs",
+    "analysis/debtors/MOZ002/scripts/turn_7i_line_partition.mjs",
+    "analysis/debtors/RED001/scripts/allocation_ingest_pilot.mjs",
+    "analysis/debtors/RED001/scripts/allocation_ingest_stripped_pilot.mjs",
+    "analysis/debtors/RED001/scripts/build_event_ledger.mjs",
+    "analysis/debtors/TWK002/scripts/build_balance_bridge.mjs",
+    "analysis/debtors/TWK002/scripts/build_knowledge_prep.mjs",
+    "analysis/debtors/TWK002/scripts/build_recreated_ledger_2024.py",
+    "analysis/debtors/TWK002/scripts/build_remittance_2024.mjs",
+    "analysis/debtors/TWK002/scripts/decompose_balance_gap.mjs",
+    "analysis/debtors/TWK002/scripts/discount_payment_pattern_analysis.py",
+    "analysis/debtors/TWK002/scripts/investigate_balance_bridge_lines.mjs",
+    "analysis/debtors/TWK002/scripts/parse_remittance_pdfs.mjs",
+    "analysis/debtors/WO0001/scripts/cn_dn_gate_rebuild.mjs",
+    "analysis/debtors/WO0001/scripts/other_lane_pass.mjs",
+    "analysis/debtors/WO0001/scripts/turn10_residual_analysis.mjs",
+    "analysis/debtors/shared/scripts/dn_pair_reconcile.mjs",
+    "analysis/debtors/shared/scripts/export_to_html.py",
+    "analysis/debtors/shared/scripts/export_to_pdf.py",
+    "analysis/debtors/shared/scripts/export_workspace_to_sheets.py",
+    "analysis/debtors/shared/scripts/generate_statement_from_workspace.py",
+    "analysis/debtors/shared/scripts/import_human_review_from_sheets.py",
+    "analysis/debtors/shared/scripts/payment_doc_allocation.mjs",
+    "analysis/debtors/shared/scripts/payment_pattern_analysis.py",
+    "analysis/debtors/shared/scripts/pdp31_dedup_transaction_items.sql",
+    "analysis/debtors/shared/scripts/render_slice_registry_html.mjs",
+    "analysis/inventory/scripts/lpg_ac_reclassify.sql"
+  ],
+  "failures": [],
+  "warnings": [
+    {
+      "gate": "ENTRYPOINT_RESOLVES",
+      "detail": "debtors:parse-backlog -> analysis/debtors/shared/scripts/parse_global_aged_debt.mjs is absent; acknowledged: ABSENT — no such file, and git log shows it has never existed on any branch. The npm target, two skills, the PRD, the roadmap and CHANGELOG all describe it as delivered."
+    },
+    {
+      "gate": "EVIDENCE_REQUIRED",
+      "detail": "58 of 103 scripts are unclassified — durability unproven, not assumed dead"
+    }
+  ]
+}

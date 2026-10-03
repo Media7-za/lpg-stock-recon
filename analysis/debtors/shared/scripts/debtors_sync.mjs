@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { spawnSync } from 'child_process';
 import { fileURLToPath } from 'url';
+import { runArtifactIndex } from './portfolio_artifact_index.mjs';
 
 const baseDir = 'analysis/debtors';
 const skipDirs = new Set(['shared', 'Global Reports']);
@@ -202,6 +203,43 @@ export function validateProject(code, data) {
   return { errors, warnings, eligibilityErrors };
 }
 
+/**
+ * Register 2 — per-account artifact index (REGISTERS_PLAN §4, operator decision D4).
+ *
+ * Report-only, and defensively so. The index is an inventory of derived artifacts; it
+ * makes no claim about financial truth, so nothing it finds may take down the portfolio
+ * sync that the whole dashboard depends on. Even an exception inside the indexer is
+ * reported and stepped over — D4 chose report-only precisely to avoid a new failure
+ * mode on the sync path.
+ */
+function refreshArtifactIndex() {
+  const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../../..');
+  try {
+    const { index } = runArtifactIndex(ROOT, { write: true });
+    const { accounts, account_slices, stale_rows, same_session_rows } = index.totals;
+    console.log(
+      `\n📇 Artifact index: ${accounts} accounts × ${account_slices} per-account slices ` +
+        `→ analysis/debtors/shared/PORTFOLIO_ARTIFACT_INDEX.json`,
+    );
+    if (stale_rows > 0) {
+      console.log(`   ${stale_rows} slice(s) committed before a dependency (report-only, D4):`);
+      for (const [code, a] of Object.entries(index.accounts)) {
+        for (const s of a.stale) {
+          console.log(`     ${code}: ${s.slice} is ${Math.round(s.gap_hours / 24)}d older than ${s.stale_against}`);
+        }
+      }
+    } else {
+      console.log('   No stale slices.');
+    }
+    if (same_session_rows > 0) {
+      console.log(`   ${same_session_rows} same-session regeneration(s) excluded — see the index.`);
+    }
+  } catch (err) {
+    console.log(`\n📇 Artifact index skipped — ${err.message}`);
+    console.log('   Report-only under D4: this never fails the sync.');
+  }
+}
+
 function sync() {
   const folders = fs.readdirSync(baseDir).filter(f => {
     try {
@@ -250,6 +288,13 @@ function sync() {
   }
 
   console.log();
+
+  // Refreshed before the hard-failure exit, deliberately. The index inventories derived
+  // artifacts on disk; it reads nothing out of project.json and asserts nothing about
+  // financial truth. Gating it on schema validity would mean that today — with two
+  // accounts carrying a legacy reconState — the register silently never runs, which is
+  // the same coupling the projection/eligibility split below exists to avoid.
+  refreshArtifactIndex();
 
   // Projection validity and collections eligibility are separate concerns:
   //   projection validity     → can we generate and display the account?

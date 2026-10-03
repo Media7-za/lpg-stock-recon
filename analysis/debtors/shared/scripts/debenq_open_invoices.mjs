@@ -381,6 +381,83 @@ export function loadRemittanceInvoiceDocs(debtorDir) {
   return found;
 }
 
+/**
+ * Load the account's ratified payment-tag false leads (doctrine D21).
+ *
+ * A tag proven false must survive regeneration, so it lives in config rather than
+ * in a session. Keyed by the tagged INVNO. Entries marked `superseded: true` are
+ * retained per the amendments-append rule but no longer enforced.
+ */
+export function loadPaymentTagFalseLeads(debtorDir) {
+  const cfgPath = path.join(debtorDir, 'config/payment_tag_false_leads.json');
+  const found = new Map();
+  if (!fs.existsSync(cfgPath)) return found;
+
+  let cfg;
+  try {
+    cfg = JSON.parse(fs.readFileSync(cfgPath, 'utf8'));
+  } catch {
+    // A malformed registry must not silently read as "no false leads" — that
+    // would turn a config defect into a clean gate.
+    return found;
+  }
+
+  for (const e of cfg.entries ?? []) {
+    const key = normDoc(e.invno);
+    if (!key || e.superseded === true) continue;
+    found.set(key, {
+      id: e.id ?? null,
+      invno: key,
+      payment_doc: normDoc(e.payment_doc) || null,
+      classification: e.classification ?? null,
+      reason: e.reason ?? null,
+      evidence_path: e.evidence_path ?? null,
+      ratified_by: e.ratified_by ?? null,
+      ratified_at: e.ratified_at ?? null,
+      tripwire: e.tripwire ?? null,
+    });
+  }
+  return found;
+}
+
+/**
+ * `INVNO_TAG_CHRONOLOGY` (doctrine D21) — derived, not declared.
+ *
+ * A settlement row whose INVNO names an invoice dated *after* the settlement
+ * cannot be paying it: it is a prepay or placeholder pointer. Deriving this from
+ * the TXT rather than only reading the false-leads config is the point — it
+ * catches violations nobody has recorded yet.
+ */
+export function detectTagChronologyViolations(rows) {
+  const invoiceDate = new Map();
+  for (const r of rows) {
+    if (r.entry !== 'Invoice' || !r.cleanDoc) continue;
+    // Earliest posting wins if a doc number somehow repeats.
+    const prev = invoiceDate.get(r.cleanDoc);
+    if (!prev || r.iso < prev) invoiceDate.set(r.cleanDoc, r.iso);
+  }
+
+  const violations = [];
+  for (const r of rows) {
+    if (!r.invno) continue;
+    if (r.entry !== 'Crd Note' && !PAYMENT_TYPES.has(r.entry)) continue;
+    const invIso = invoiceDate.get(r.invno);
+    if (!invIso || !r.iso) continue;
+    if (invIso > r.iso) {
+      violations.push({
+        settlement_doc: r.cleanDoc,
+        settlement_entry: r.entry,
+        settlement_iso: r.iso,
+        tagged_invno: r.invno,
+        invoice_iso: invIso,
+        days_early: daysBetween(r.iso, invIso),
+        amount: r.amount,
+      });
+    }
+  }
+  return violations;
+}
+
 /** @typedef {'LIKELY_PAID' | 'STALE_OPEN' | 'CLEAR'} TagRisk */
 
 /** Default: an open invoice separated from the next by ≥ this many days is anomalous. */
@@ -429,6 +506,7 @@ export function analyseInvoiceTagCoverage({
   excludesAllocationDetail = false,
   closedOverrides = [],
   remittanceDocs = new Map(),
+  falseLeads = new Map(),
   staleGapDays = DEFAULT_STALE_GAP_DAYS,
   toleranceRands = 0.05,
 }) {
@@ -501,18 +579,63 @@ export function analyseInvoiceTagCoverage({
       ? round2(-reconciliationGap)
       : 0;
 
+  // --- Gate 4: payment tag integrity (doctrine D21) ------------------------
+  //
+  // Three distinct findings, deliberately not collapsed into one count:
+  //
+  //  chronology_unrecorded  a tag naming a later-dated invoice that nobody has
+  //                         ruled on yet. Review, not block — an untrustworthy
+  //                         tag does not by itself misstate the balance.
+  //  closed_on_false_tag    a closedInvoiceOverrides entry resting on a doc
+  //                         already ratified as a false lead. Hard block: an
+  //                         invoice is being carried as settled on evidence the
+  //                         operator has already rejected.
+  //  false_lead_contradicted a recorded false lead now appearing on a customer
+  //                         remittance. Hard block and a fired tripwire —
+  //                         remittance outranks tag chronology (Order A), so the
+  //                         ratified entry itself must be reopened.
+  const chronologyViolations = detectTagChronologyViolations(rows);
+  const chronologyUnrecorded = chronologyViolations.filter((v) => !falseLeads.has(v.tagged_invno));
+
+  const closedKeys = new Set((closedOverrides ?? []).map((o) => normDoc(o.doc ?? o.docno ?? o)));
+  const closedOnFalseTag = [...falseLeads.values()].filter((f) => closedKeys.has(f.invno));
+  const falseLeadContradicted = [...falseLeads.values()].filter((f) => remittanceDocs.has(f.invno));
+
+  const paymentTagIntegrity = {
+    rule: 'INVNO_TAG_CHRONOLOGY / false-lead registry (DEBTORS_DOCTRINE.md D21)',
+    false_leads_loaded: falseLeads.size,
+    chronology_violations: chronologyViolations.length,
+    chronology_violations_recorded: chronologyViolations.length - chronologyUnrecorded.length,
+    chronology_violations_unrecorded: chronologyUnrecorded.length,
+    unrecorded: chronologyUnrecorded,
+    closed_on_false_tag: closedOnFalseTag,
+    false_lead_contradicted_by_remittance: falseLeadContradicted,
+    status:
+      falseLeadContradicted.length || closedOnFalseTag.length
+        ? 'BREACHED'
+        : chronologyUnrecorded.length
+          ? 'REVIEW'
+          : 'PASS',
+  };
+
   let gate;
   let blockingReason = null;
   if (noAllocationDetail) {
     gate = 'NOT_DERIVABLE_FROM_TXT';
     blockingReason = 'NO_INVOICE_TAGGING_IN_EXPORT';
+  } else if (falseLeadContradicted.length > 0) {
+    gate = 'BLOCKED';
+    blockingReason = 'FALSE_LEAD_CONTRADICTED_BY_REMITTANCE';
+  } else if (closedOnFalseTag.length > 0) {
+    gate = 'BLOCKED';
+    blockingReason = 'INVOICE_CLOSED_ON_FALSE_TAG';
   } else if (counts.likely_paid > 0) {
     gate = 'BLOCKED';
     blockingReason = 'INVOICE_ON_REMITTANCE_STILL_OPEN';
   } else if (overstatedBy > 0) {
     gate = 'BLOCKED';
     blockingReason = 'OPEN_LIST_OVERSTATES_ACCOUNT';
-  } else if (counts.stale_open > 0) {
+  } else if (counts.stale_open > 0 || chronologyUnrecorded.length > 0) {
     gate = 'REVIEW_REQUIRED';
     blockingReason = null;
   } else {
@@ -529,8 +652,17 @@ export function analyseInvoiceTagCoverage({
   const evidence = {
     basis: remittanceDocs.size ? 'REMITTANCE_BACKED' : 'PATTERN_ONLY',
     remittance_invoice_docs: remittanceDocs.size,
-    checks_run: ['INVARIANT', 'STALENESS_ANOMALY', ...(remittanceDocs.size ? ['REMITTANCE_CONTRADICTION'] : [])],
-    checks_inert: remittanceDocs.size ? [] : ['REMITTANCE_CONTRADICTION'],
+    checks_run: [
+      'INVARIANT',
+      'STALENESS_ANOMALY',
+      'TAG_CHRONOLOGY',
+      ...(remittanceDocs.size ? ['REMITTANCE_CONTRADICTION'] : []),
+      ...(falseLeads.size ? ['FALSE_LEAD_REGISTRY'] : []),
+    ],
+    checks_inert: [
+      ...(remittanceDocs.size ? [] : ['REMITTANCE_CONTRADICTION']),
+      ...(falseLeads.size ? [] : ['FALSE_LEAD_REGISTRY']),
+    ],
     note: remittanceDocs.size
       ? null
       : 'No extracted remittance lines for this account (data/remittance_lines_*.csv), so the remittance-contradiction check could not run. Settlement claims here rest on payment patterns, business rules and operator ratification — see business_rules.md §15, authority order B.',
@@ -541,6 +673,7 @@ export function analyseInvoiceTagCoverage({
     blocking_reason: blockingReason,
     export_quality: noAllocationDetail ? 'NO_ALLOCATION_DETAIL' : 'ALLOCATION_DETAIL_PRESENT',
     evidence,
+    payment_tag_integrity: paymentTagIntegrity,
     tagging,
     counts,
     invariant: {
@@ -573,9 +706,9 @@ export const GATE_MEANING = {
   ALLOWED:
     'No contradiction found: the list ties within the ERP balance and no open invoice is marooned behind a payment gap. This is absence of evidence against the list, not proof it is right — ERP payment tagging is not authoritative (business_rules.md §3). Read it together with evidence.basis: REMITTANCE_BACKED means the customer’s own records were checked too; PATTERN_ONLY means they were not, because none exist, and the claim rests on the payment pattern and business rules instead.',
   REVIEW_REQUIRED:
-    'One or more open invoices are marooned behind a long payment gap and may already be settled by an untagged credit. Verify before sending to a customer — against remittance advices where they exist, otherwise against the account’s established payment pattern (business_rules.md §15, authority order B). Internal use (collections triage, ageing trend) is unaffected — the account total is correct either way.',
+    'One or more open invoices are marooned behind a long payment gap and may already be settled by an untagged credit, and/or a settlement row tags an invoice dated after it (INVNO_TAG_CHRONOLOGY) with no ruling recorded. Verify before sending to a customer — against remittance advices where they exist, otherwise against the account’s established payment pattern (business_rules.md §15, authority order B). Internal use (collections triage, ageing trend) is unaffected — the account total is correct either way.',
   BLOCKED:
-    'The open-invoice list over-states the account, and/or lists an invoice the customer’s remittance advice says is paid. Releasing it would demand payment for settled debt. Resolve via closedInvoiceOverrides before release.',
+    'The open-invoice list over-states the account, and/or lists an invoice the customer’s remittance advice says is paid, and/or an invoice is being carried as settled on a tag already ratified as a false lead. Releasing it would demand payment for settled debt, or rest a closure on rejected evidence. Resolve before release.',
   NOT_DERIVABLE_FROM_TXT:
     'This export carries no invoice tagging, so an open-invoice list cannot be derived from the TXT alone. Usually deliberate rather than a defect — the omitted INVNO column is the untrustworthy one. The CURRENT BALANCE header and ageing remain valid; only the invoice-level breakdown must come from elsewhere.',
 };
@@ -588,4 +721,8 @@ export const REMEDY = {
     'For each flagged invoice, confirm the remittance batch reconciles (remittance cash = ERP payment total for that receipt). Where it does, ratify the invoice into closedInvoiceOverrides in config/statement_of_account.json with the evidence reference, then re-run. The advice outranks ERP tagging.',
   OPEN_LIST_OVERSTATES_ACCOUNT:
     'The itemised list exceeds what the account owes, so settled debt is being carried as open. Identify which invoices the untagged credits cleared and ratify them into closedInvoiceOverrides. Route depends on what the account has: remittance-by-remittance where advices exist, otherwise the pattern route (exact-sum month tests, established payment cadence, operator ratification) per business_rules.md §15 authority order B. Until then the open-invoice list must not go to the customer; the ERP balance total is still safe to quote.',
+  INVOICE_CLOSED_ON_FALSE_TAG:
+    'A closedInvoiceOverrides entry rests on a doc the account has already ratified as a payment-tag false lead (config/payment_tag_false_leads.json) — usually a prepay or placeholder pointer whose invoice postdates the payment. Either withdraw the override, or replace the tag with evidence that outranks it. Where a remittance advice exists it leads; for every other account take the pattern route — an exact-sum test against the account’s established payment cadence and the business rules for that payer type, ratified in config (business_rules.md §15 authority order B). Then supersede the false-lead entry with that basis named. Do not resolve this by deleting the entry — see DEBTORS_DOCTRINE.md D21.',
+  FALSE_LEAD_CONTRADICTED_BY_REMITTANCE:
+    'A doc recorded as a payment-tag false lead now appears on a customer remittance advice. This is a fired tripwire, not a routine failure: under authority order A a remittance outranks tag chronology, so the ratified false-lead entry is what must be reopened. Re-verify the remittance batch reconciles, then mark the false-lead entry superseded: true with the remittance cited — retain it, do not delete it — and re-run.',
 };
