@@ -19,7 +19,7 @@
     "deadlineDate": null,
     "nextAction": null,
     "nextActionDate": null,
-    "notes": "No collection until reconState complete and D17 satisfied. Account balance PROVEN R70,773.28. H-011: 3/8 remittances ingested (R51,321.29) \u2014 7 invoices PROVEN tier 1; 5 payments still UNALLOCATED (R132,692.34), chase starting with 00041466. OPEN review: R113.75 adj; CN 12245 mapping. Side-tracks PROPOSED: H-029 custody; H-030 ERP tag 17886/18484."
+    "notes": "No collection until reconState complete and D17 satisfied. Account balance PROVEN R70,773.28. H-011: 3/8 remittances ingested (R51,321.29) \u2014 7 invoices PROVEN tier 1; 5 payments UNALLOCATED (R132,692.34), chase 00041466 first. OPEN review: R113.75 adj; CN 12245 mapping. Review workbook: https://docs.google.com/spreadsheets/d/1GDnxxxtIGeEa43wsSa0O4rySbz-ZYhqvWgzCb6nlYFU/edit?usp=drivesdk (see reports/CAP000_Reconciliation_Workbook.md). Side-tracks PROPOSED: H-029; H-030."
   },
   "history": [
     {
@@ -57,6 +57,10 @@
     {
       "date": "2026-10-03",
       "event": "Correction: data/invoices.csv wrongly contained the 8 Payment rows (207 rows). Payment doc 00042697 shares a document number with invoice 42697 (R2,415.00, 30/04/2025), so the status script merged them and showed invoice 42697 at -R5,941.32. Payment rows removed (199 rows); invoice 42697 now R2,415.00 and the status sum of open invoices moves from R384,893.21 to R387,308.21 (not meaningful as open debt, see prior entry). Settled 7, orphaned 5 unchanged. Prior text citing 207 rows or R384,893.21 is superseded."
+    },
+    {
+      "date": "2026-10-03",
+      "event": "Google Sheet review surface published: CAP000 Reconciliation Workbook https://docs.google.com/spreadsheets/d/1GDnxxxtIGeEa43wsSa0O4rySbz-ZYhqvWgzCb6nlYFU/edit?usp=drivesdk (single unformatted sheet A1:L429; live formulas over ledger/edges/status). Pointer: reports/CAP000_Reconciliation_Workbook.md. Authoring session ASSERTED formula read-back: balance variance R0.00, 19 monthly diffs 0, 7 PROVEN, unallocated R132,692.34. Multi-tab formatting blocked \u2014 Drive create only, no Sheets editor MCP."
     }
   ]
 }
