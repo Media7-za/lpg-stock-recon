@@ -72,7 +72,7 @@ put(r_oi+2,['H-011a','Payment 38536: remittance lists invoices totalling R35,958
 put(r_oi+3,['H-011b','Remittance "CN 42146" R1,380 mapped to ERP credit note 12245 (inferred from amount and date 9 Apr 2025)',1380,'ASSERTED','Open','Confirm mapping with Capitol'])
 put(r_oi+4,['H-029','Custody variance, financial CYL close vs physical custody valuation (branch cap000-folder-576j34)',8245.5,'ASSERTED','PROPOSED, not ratified','Physical reconciliation before any deposit communication'])
 put(r_oi+5,['H-030','Untagged 2023 payments 17886 and 18484 (STAT:89) equal 7 stale 2022-23 invoices to the cent',26854.98,'ASSERTED','PROPOSED, not ratified','ERP agent to tag invoice numbers on both payments'])
-put(r_oi+6,['Note','Sum of open invoices in RECON STATUS is not open debt: DEBENQ has no credit note or payment tagging for most invoices. Use the ERP balance above.',f'=SUMIFS(D{S1}:D{S2},B{S1}:B{S2},"INVOICE")','n/a','Informational',''])
+put(r_oi+6,['Note','Sum of open invoices in RECON STATUS is not open debt: DEBENQ has no credit note or payment tagging for most invoices. Use the ERP balance above.',f'=SUMIFS(F{S1}:F{S2},B{S1}:B{S2},"INVOICE")','n/a','Informational',''])
 put(r_ed-1,['ALLOCATION EDGES (data/allocation_edges.csv)'])
 put(r_ed,['Allocation ID','Group','Payment doc','Payment date','Payment amount (R)','Target doc','Target date','Allocated (R)','Allocation type','Confidence','Review required','ERP ref'])
 for i,e in enumerate(edges):
