@@ -11,7 +11,7 @@
 
 The DEBENQ account enquiry for CAP000 was exported with **ALLOCATION DETAIL EXCLUDED**, meaning the INVNO (invoice reference) column is omitted. This was a deliberate ERP configuration choice to exclude untrustworthy ERP payment-allocation metadata.
 
-As a result, **8 payment transactions totaling R182,213.63 cannot be automatically matched to open invoices** using heuristic methods (exact-sum, contiguous-run, proximity).
+As a result, **8 payment transactions totaling R184,013.63** (`PROVEN` from `data/allocation_edges.csv` row sum; prior prose total R182,213.63 was an arithmetic error of R1,800.00, corrected 2026-10-03) **cannot be automatically matched to open invoices** using heuristic methods (exact-sum, contiguous-run, proximity).
 
 ---
 
@@ -27,7 +27,7 @@ As a result, **8 payment transactions totaling R182,213.63 cannot be automatical
 | 00043235 | 2026-02-05 | 3,656.43 | TRANSF \| STAT 123 | Unallocated |
 | 00043472 | 2026-02-26 | 8,443.46 | TRANSF \| STAT 123 | Unallocated |
 | 00043872 | 2026-03-31 | 9,908.97 | TRANSF \| STAT 124 | Unallocated |
-| **TOTAL** | — | **182,213.63** | — | — |
+| **TOTAL** | — | **184,013.63** | — | — |
 
 ---
 
@@ -46,11 +46,13 @@ As a result, **8 payment transactions totaling R182,213.63 cannot be automatical
 ## Next Steps (Choose One)
 
 ### Option A: Obtain Remittance Advice
-Supply CAP000's remittance advices (payment breakdowns) as PDF or CSV to `analysis/debtors/CAP000/raw/Remittances/`.  
-Once ingested, re-run:
+**Partial progress 2026-10-03:** 3 of 8 remittance Excel files located on Google Drive with exact amount matches (R51,321.29 / 27.9%) — see `raw/Remittances/CAP000_REMITTANCE_MAPPING.md` and `reports/CAP000_Remittance_Discovery_2026-10-03.md`. Files are **not yet downloaded/ingested**; edges remain `UNALLOCATED` (amount match = ASSERTED, not PROVEN allocation).
+
+Next: download the 3 `.xlsx` into `raw/Remittances/`, extract invoice lines, write `REMITTANCE_EXPLICIT` edges, then:
 ```bash
 npm run debtors:reconciliation-status -- --debtor CAP000
 ```
+Still request remittances for the remaining **5 payments (R132,692.34)**.
 
 ### Option B: Manual Allocation Review
 Manually update `analysis/debtors/CAP000/data/allocation_edges.csv`:
@@ -81,7 +83,7 @@ This reflects the deliberate ERP DEBENQ-only posture: it gives correct **account
 ## Reconciliation Status Current State
 
 - **Open invoices (gross):** 129 invoices, R417,499.21
-- **Unallocated payments:** R182,213.63
+- **Unallocated payments:** R184,013.63 (`PROVEN` — sum of `data/allocation_edges.csv`)
 - **Account balance (verified):** R70,773.28 ✓
 - **Tag-check gate:** SKIPPED (NOT_DERIVABLE_FROM_TXT — expected)
 
