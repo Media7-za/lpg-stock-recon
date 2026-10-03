@@ -89,3 +89,12 @@ This reflects the deliberate ERP DEBENQ-only posture: it gives correct **account
 
 The account's overall balance is reconciled. The open-invoice allocation remains pending customer evidence.
 
+
+---
+
+## Amendment 2026-10-03 (appended; text above is superseded where it conflicts)
+
+- 3 of the 8 payments now carry remittance-linked edges (00038536, 00042043, 00042697; R51,321.29). Source: `config/remittance_allocations.json`; regenerate via `node analysis/debtors/CAP000/scripts/remittance_allocation_ingest.mjs`.
+- 5 payments remain unallocated: R132,692.34 (00041466, 00042518, 00043235, 00043472, 00043872). The "0/8 matched" and R182,213.63 figures above are superseded (the 8-payment total is R184,013.63).
+- Open: R113.75 adjustment on 00038536 absent from the ERP; CN 12245 <-> printout "CN 42146" mapping is inferred.
+- Tripwire: a remittance for any of the 5 remaining payments, or an ERP correction of the R113.75, reopens this ruling.

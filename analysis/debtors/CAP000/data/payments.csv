@@ -1,0 +1,9 @@
+debtor_code,payment_doc,payment_date,batch_ref,stat_no,amount,source_file,split_count,is_split_payment,notes
+CAP000,00038536,2025-05-07,TRANSF,114,-35844.65,CAP000.TXT,1,False,Derived from DEBENQ Payment row
+CAP000,00041466,2025-09-29,TRANSF,118,-97933.00,CAP000.TXT,1,False,Derived from DEBENQ Payment row
+CAP000,00042043,2025-10-31,TRANSF,119,-7120.32,CAP000.TXT,1,False,Derived from DEBENQ Payment row
+CAP000,00042518,2025-12-01,TRANSF,121,-12750.48,CAP000.TXT,1,False,Derived from DEBENQ Payment row
+CAP000,00042697,2025-12-18,TRANSF,121,-8356.32,CAP000.TXT,1,False,Derived from DEBENQ Payment row
+CAP000,00043235,2026-02-05,TRANSF,123,-3656.43,CAP000.TXT,1,False,Derived from DEBENQ Payment row
+CAP000,00043472,2026-02-26,TRANSF,123,-8443.46,CAP000.TXT,1,False,Derived from DEBENQ Payment row
+CAP000,00043872,2026-03-31,TRANSF,124,-9908.97,CAP000.TXT,1,False,Derived from DEBENQ Payment row
