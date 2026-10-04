@@ -104,6 +104,16 @@ each account's `raw/*.TXT`.
 > (an explicit ref with an amount mismatch → unallocated, not proximity)? Keep the
 > 3–14 day proximity window, or allow any invoice dated on or before the payment?
 
+> **RESOLVED 2026-10-04 (operator):** *"agree, keep guard as probable and widen window"*.
+> - **Reference guard kept, softened:** a payment with an explicit invoice ref whose amount
+>   does not match that invoice is **not** confirmed and is **not** silently redirected. It
+>   produces a **probable** tie to the best proximity candidate (appendix, `review_required`,
+>   never auto-locks), recording both the ref'd invoice and the candidate. This amends skill
+>   Tier 4's "→ Unallocated (Tier 5)" outcome for this case.
+> - **Proximity window widened:** any open invoice dated **on or before** the payment date
+>   (was 3–14 days prior). Ordering is by the P4 tie-break; ±R5 tolerance unchanged.
+>   Every proximity tie stays probable.
+
 ## P5 — Lock decisions, re-run the script every session
 
 - Every session re-runs the projection and matching. That is cheap, and it keeps the
@@ -241,7 +251,7 @@ an advice (`CAP000/reports/CAP000_Allocation_Gap_Analysis.md`). CAP000's lane is
 ## Open questions (decisions still needed)
 
 1. ~~Mirror carry vs skill §4.6 (see P4).~~ **Resolved 2026-10-04:** monthly batch payers only (see P4).
-2. Proximity: keep skill Tier 4's explicit-ref guard? Keep the 3–14 day window?
+2. ~~Proximity: keep skill Tier 4's explicit-ref guard? Keep the 3–14 day window?~~ **Resolved 2026-10-04:** guard kept as a probable tie; window widened to any invoice dated on or before the payment (see P4).
 3. In **customer-facing** copies, may probable ties drop out, or only in the internal
    copy? (`business_rules.md` §15 rule 7 requires a recorded basis to retire an
    invoice on a customer document.)
