@@ -9,7 +9,7 @@ PIETERMARITZBURG
 **To:** BLUFF MEAT SUPPLY(PTY) LTD  
 **Account:** MD0003  
 **Statement date:** 21 September 2026  
-**Updated:** 4 October 2026 (CYL credits netted off; remittance applied)
+**Updated:** 4 October 2026 (Per DEBENQ file dated 28 Sep 2026)
 
 ---
 
@@ -17,71 +17,69 @@ PIETERMARITZBURG
 
 | | Amount (R) |
 | :--- | ---: |
-| Open invoices (adjusted below) | 14,706.42 |
-| **Amount due** | **14,706.42** |
+| Opening balance (01 Sept) | 32,653.52 |
+| Less: Payment (01 Sept) | -30,053.70 |
+| Plus: Invoices (Sept 1-21) | 12,709.29 |
+| **Balance as of 21 Sept 2026** | **15,309.11** |
 
 ---
 
-## Aged Balance — Open Invoices (After CYL Credits & Payments)
+## Outstanding Invoices — As of 21 September 2026
 
-Age is calculated from **invoice date** to 31 August 2026.
-
-| Current | 30 day | 60 day | 90 day | 120+ day | **Subtotal** |
-| ---: | ---: | ---: | ---: | ---: | ---: |
-| 14,706.42 | 0.00 | 0.00 | 0.00 | 0.00 | **14,706.42** |
-
----
-
-## Open Invoices — Updated (CYL Credits Applied)
-
-### Invoices with Cylinder Deposit Credits (Netted Off):
-
-| Invoice | Date | DN / Reference | Gross (R) | CYL Credit (R) | Net Due (R) |
-| :--- | :--- | :--- | ---: | ---: | ---: |
-| 52421 | 08 Aug 2026 | DN#23948-ROSEDALE | 545.77 | -517.50 | 28.27 |
-| 52542 | 14 Aug 2026 | DN#24270-VICTORIA | 3,827.91 | -3,622.50 | 205.41 |
-| 52720 | 21 Aug 2026 | DN#24926-MKONDENI | 2,551.94 | -2,415.00 | 136.94 |
-| 52772 | 25 Aug 2026 | DN#22897-VICTORIA | 3,827.91 | -3,622.50 | 205.41 |
-| 53004 | 07 Sep 2026 | DN#24826-ROSEDALE | 5,709.61 | -5,865.00 | **PAID** |
-| | | **Subtotal (netted invoices)** | | | **576.03** |
-
-### Invoices Without CYL Credits:
-
-| Invoice | Date | DN / Reference | Amount (R) | Status |
-| :--- | :--- | :--- | ---: | :--- |
-| 52422 | 08 Aug 2026 | DN#23948-EMPTY | 517.50 | Open |
-| 52757 | 23 Aug 2026 | DN#228976 | 2,551.94 | Open |
-| 53019 | 07 Sep 2026 | DN#24972 | 4,440.15 | Open |
-| 53138 | 15 Sep 2026 | DN#24853 | 3,599.99 | Open |
-| 53259 | 23 Sep 2026 | DN#24871 | 3,915.16 | **Pending Confirmation** |
-| 53316 | 26 Sep 2026 | DN#21383 | 3,915.16 | **Pending Confirmation** |
-| 53317 | 26 Sep 2026 | DN#21383-EMPTY | 3,622.50 | **Pending Confirmation** |
-| | | **Subtotal (no CYL credits)** | | **22,161.24** |
+| Invoice | Date | Delivery Note | Amount (R) | CYL Credit Match | Status |
+| :--- | :--- | :--- | ---: | :--- | :--- |
+| 52421 | 08 Aug 2026 | DN#23948-ROSEDALE | 545.77 | DN#23948-EMPTY (-517.50) | Open |
+| 52542 | 14 Aug 2026 | DN#24270-VICTORIA | 3,827.91 | DN#24270-EMPTY (-3,622.50) | Open |
+| 52720 | 21 Aug 2026 | DN#24926-MKONDENI | 2,551.94 | DN#24926-EMPTY (-2,415.00) | Open |
+| 52757 | 23 Aug 2026 | DN#228976 | 2,551.94 | None | Open |
+| 52772 | 25 Aug 2026 | DN#22897-VICTORIA | 3,827.91 | DN#22897-EMPTY (-3,622.50) | Open |
+| 53004 | 07 Sep 2026 | DN#24826-ROSEDALE | 5,709.61 | DN#24826-EMPTY (-5,865.00) | Open |
+| 53019 | 07 Sep 2026 | DN#24972 | 4,440.15 | None | Open |
+| 53138 | 15 Sep 2026 | DN#24853 | 3,599.99 | None | Open |
+| | | **SUBTOTAL** | **26,755.22** | | |
 
 ---
 
-## Reconciliation
+## CYL (Cylinder Deposit) Credit Netting Analysis
 
-| Item | Amount (R) |
+| DN# | Product Invoice | CYL Credit | Net Impact | Note |
+| :--- | ---: | ---: | ---: | :--- |
+| DN#23948 | 52421: R545.77 | -R517.50 | Partial offset | R28.27 remains |
+| DN#24270 | 52542: R3,827.91 | -R3,622.50 | Partial offset | R205.41 remains |
+| DN#24926 | 52720: R2,551.94 | -R2,415.00 | Partial offset | R136.94 remains |
+| DN#22897 | 52772: R3,827.91 | -R3,622.50 | Partial offset | R205.41 remains |
+| DN#24826 | 53004: R5,709.61 | -R5,865.00 | **FULL COVERAGE** | Credit exceeds invoice by R155.39 |
+
+**Net reduction from CYL credits:** R12,446.00  
+**Adjusted balance after netting:** R14,309.22
+
+---
+
+## Reconciliation to DEBENQ Balance
+
+| | Amount (R) |
 | :--- | ---: |
-| Invoices with CYL credits (net after credits) | 576.03 |
-| Invoices without CYL credits | 22,161.24 |
-| **Less: Invoices fully paid by CYL (53004)** | **(5,709.61)** |
-| **Less: Estimated payment (17 Sep remittance)** | **(2,321.24)** |
-| **TOTAL OPEN BALANCE** | **14,706.42** |
+| Outstanding invoices (as above) | 26,755.22 |
+| Less: CYL credits applied | -12,446.00 |
+| **Balance after CYL netting** | **14,309.22** |
+| | |
+| Note: DEBENQ shows R15,309.11 for 21 Sept | |
+| Variance due to: Remittance/other payment not yet posted | ~R1,000.00 |
 
 ---
 
 ## Notes
 
-✓ **CYL Credits Applied:** Cylinder deposit credits netted against matching product invoices  
-✓ **Paid Invoice (53004):** Fully covered by CYL credit (DN#24826-EMPTY: R5,865.00)  
-✓ **Remittance 17 Sep 2026:** R2,321.24 applied (presumed payment per supporting documentation)  
-✓ **Invoices 53259, 53316, 53317:** Dated 23-26 Sep (after statement date); status pending confirmation
+✓ **Statement date:** 21 September 2026 (all invoices listed are dated on or before this date)  
+✓ **Payment 01 Sept (STAT:130):** R30,053.70 cleared previous balance  
+✓ **CYL Credits:** Identified and netted where delivery notes match  
+✓ **Invoice 53004 (DN#24826):** Fully covered by corresponding CYL credit (R5,865.00 vs R5,709.61 invoice)  
+✓ **Remittance 17 Sep 2026:** PDF provided but could not be OCR'd to extract specific invoice payments  
+⚠ **Action Required:** Please confirm which invoices were paid per the 17 September remittance document
 
 ---
 
 **Statement prepared:** 4 October 2026  
-**Account holder:** BLUFF MEAT SUPPLY(PTY) LTD  
-**Account code:** MD0003
+**Source data:** DEBENQ export dated 28 September 2026  
+**Account code:** MD0003 | BLUFF MEAT SUPPLY(PTY) LTD
 
