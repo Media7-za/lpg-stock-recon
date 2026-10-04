@@ -92,6 +92,14 @@ each account's `raw/*.TXT`.
 > mirror carry override §4.6 everywhere, or only on accounts flagged as monthly
 > batch payers?
 >
+> **RESOLVED 2026-10-04 (operator):** *"mirror carry only for monthly batch payers"*.
+> Mirror carry / surplus (`business_rules.md` §14/§13) applies **only** to accounts
+> flagged as monthly batch payers (proposed config flag: `payerCadence: "monthly_batch"`
+> in `statement_v5.json`; set per account, never inferred). Everywhere else the
+> skill's §4.6 rule "one payment doc = one pass" stands unchanged. The P4 default
+> list therefore becomes credit-note ref pairing, exact / exact-sum and proximity ±R5;
+> mirror carry is opt-in. *(The conflict text above is kept as the record of the question.)*
+>
 > **Also open:** does skill Tier 4's guard still hold under proximity-by-default
 > (an explicit ref with an amount mismatch → unallocated, not proximity)? Keep the
 > 3–14 day proximity window, or allow any invoice dated on or before the payment?
@@ -232,7 +240,7 @@ an advice (`CAP000/reports/CAP000_Allocation_Gap_Analysis.md`). CAP000's lane is
 
 ## Open questions (decisions still needed)
 
-1. Mirror carry vs skill §4.6 (see P4).
+1. ~~Mirror carry vs skill §4.6 (see P4).~~ **Resolved 2026-10-04:** monthly batch payers only (see P4).
 2. Proximity: keep skill Tier 4's explicit-ref guard? Keep the 3–14 day window?
 3. In **customer-facing** copies, may probable ties drop out, or only in the internal
    copy? (`business_rules.md` §15 rule 7 requires a recorded basis to retire an
