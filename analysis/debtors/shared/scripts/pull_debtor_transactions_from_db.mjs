@@ -161,7 +161,13 @@ async function main() {
     const txDate =
       h.tx_date instanceof Date ? h.tx_date.toISOString().slice(0, 10) : String(h.tx_date ?? '').slice(0, 10);
     const key = `${cleanDoc}|${h.entry_type}|${txDate}`;
-    const amt = Math.round((Number(h.amount_excl) + Number(h.tax_amount)) * 100) / 100;
+    // FIX for LANE_2_DATABASE_SCHEMA.md §2.1: Credit Note double-taxation bug
+    // Per doctrine: ERP stores tax-inclusive amount in amount_excl for Credit Notes,
+    // so summing (amount_excl + tax_amount) double-counts VAT.
+    // For Invoices: amount_excl is tax-exclusive, so sum with tax_amount is correct.
+    // For payments, headers only contain consolidated totals (no qty info to identify type),
+    // so use amount_excl which reflects the actual payment amount either way.
+    const amt = Math.round(Number(h.amount_excl) * 100) / 100;
     const existing = paymentGroups.get(key) ?? {
       debtor_code: debtorCode,
       payment_doc: docNo,
