@@ -50,6 +50,14 @@ ERP TXT ──► v5 projection (rows persisted)          ← cleaning happens o
   whether the projection is persisted (`data/v5_projection.json`) or matching runs
   as a stage inside the v5 run.
 
+> **RESOLVED 2026-10-05 (operator, open question 4):** *"I agree"*.
+> - **Grain:** one row **per document per lane** (LPG / CYL / OTHER); each row carries its
+>   own `split_basis` (P10). LPG + OTHER matching selects those rows; CYL pairing uses CYL
+>   rows; the open-items view can retire an invoice's LPG row while its CYL row stays.
+> - **Persisted and stamped:** every v5 run writes `data/v5_projection.json` together with a
+>   fingerprint of the source TXT. Matching runs as a separate step and **refuses to run**
+>   when the stored fingerprint does not match the current TXT.
+
 ## P3 — Target output: the "open items" v5 report
 
 Operator: *"Imagine a v5 report like the one for JEN001, but exclude invoices that
@@ -262,7 +270,7 @@ an advice (`CAP000/reports/CAP000_Allocation_Gap_Analysis.md`). CAP000's lane is
 3. ~~In **customer-facing** copies, may probable ties drop out, or only in the internal
    copy?~~ **Resolved 2026-10-05:** internal copy only; customer copies keep them open (see P3). (`business_rules.md` §15 rule 7 requires a recorded basis to retire an
    invoice on a customer document.)
-4. Projection grain, and persisted file vs inline stage (P2).
+4. ~~Projection grain, and persisted file vs inline stage (P2).~~ **Resolved 2026-10-05:** per document per lane; persisted `data/v5_projection.json` with a TXT fingerprint (see P2).
 5. Build shape: a mode of the v5 generator or a new generator. Pilot account:
    SA0001 (its hand-made monthly matches are an answer key) or JEN001 (the reference
    layout).
