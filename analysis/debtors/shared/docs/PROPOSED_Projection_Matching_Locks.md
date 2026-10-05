@@ -64,6 +64,13 @@ are tied to a payment and or credit note and vice versa."*
 - **Proof identity:** open items + unallocated payments/credits + journals pending
   (P9) + named residuals (P7, P8) = ERP `CURRENT BALANCE`, exactly.
 
+> **RESOLVED 2026-10-05 (operator, open question 3):** option 1, *internal only*.
+> Probable ties drop out of the **internal** open-items view (to the appendix) only.
+> On **customer-facing** copies, invoices whose only tie is probable stay listed as
+> **open** until the tie is confirmed (auto-lock at close, or operator ratification).
+> This keeps `business_rules.md` §15 rule 7 (a recorded basis before retiring an invoice
+> on a customer document) and rule 4 (tag-check gate before release) intact.
+
 ## P4 — Default matching rules (every account) and tie-break
 
 Operator-selected defaults: credit-note `ref_no` pairing (+1 day), exact
@@ -252,8 +259,8 @@ an advice (`CAP000/reports/CAP000_Allocation_Gap_Analysis.md`). CAP000's lane is
 
 1. ~~Mirror carry vs skill §4.6 (see P4).~~ **Resolved 2026-10-04:** monthly batch payers only (see P4).
 2. ~~Proximity: keep skill Tier 4's explicit-ref guard? Keep the 3–14 day window?~~ **Resolved 2026-10-04:** guard kept as a probable tie; window widened to any invoice dated on or before the payment (see P4).
-3. In **customer-facing** copies, may probable ties drop out, or only in the internal
-   copy? (`business_rules.md` §15 rule 7 requires a recorded basis to retire an
+3. ~~In **customer-facing** copies, may probable ties drop out, or only in the internal
+   copy?~~ **Resolved 2026-10-05:** internal copy only; customer copies keep them open (see P3). (`business_rules.md` §15 rule 7 requires a recorded basis to retire an
    invoice on a customer document.)
 4. Projection grain, and persisted file vs inline stage (P2).
 5. Build shape: a mode of the v5 generator or a new generator. Pilot account:
