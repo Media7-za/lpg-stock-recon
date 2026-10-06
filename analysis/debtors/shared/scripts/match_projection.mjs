@@ -17,6 +17,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { fileFingerprint, verifyProjection } from './v5_projection.mjs';
 import { matchProjection } from './projection_matcher.mjs';
+import { buildRemittanceEvidence } from './remittance_evidence.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../../..');
 const i = process.argv.indexOf('--debtor');
@@ -37,7 +38,13 @@ if (!v.ok) {
   process.exit(2);
 }
 
-const result = matchProjection(projection);
+// P11: remittance evidence, when the account has remittance manifests.
+const evidence = buildRemittanceEvidence(acct);
+const hasEvidence = evidence.batches.length > 0 || evidence.skipped.length > 0;
+if (hasEvidence) {
+  fs.writeFileSync(path.join(acct, 'data/remittance_evidence.json'), `${JSON.stringify(evidence, null, 2)}\n`);
+}
+const result = matchProjection(projection, undefined, hasEvidence ? evidence : null);
 const reviewOnlyReasons = [];
 if (!projection.checks.tiesToErpHeader) reviewOnlyReasons.push(`ERP variance R${projection.closings.erpVariance}`);
 if (projection.ingestGate?.ingestCoverage !== 'complete') {
@@ -68,6 +75,12 @@ const s = result.summary;
 const r = result.residual;
 console.log(`[${code}] ties ${s.ties} (confirmed ${s.confirmed}, probable ${s.probable}) ${JSON.stringify(s.byRule)}`);
 console.log(`[${code}] payments ${s.paymentsTotal}, unallocated ${s.paymentsUnallocated}`);
+if (result.remittance) {
+  const rm = result.remittance;
+  console.log(`[${code}] remittance: ${rm.batches} batches, ${rm.applied.length} applied, ${rm.unresolved.length} unresolved, ${rm.skippedSources.length} sources skipped`);
+  for (const u of rm.unresolved) console.log(`  - ${u.batchId} (pay ${u.paymentDoc}): ${u.reason}`);
+  for (const k of rm.skippedSources) console.log(`  - skipped ${k.batchId || k.file}: ${k.reason}`);
+}
 console.log(
   `[${code}] residual: B/F R${r.openingBfUnitemised} + open LPG/OTHER R${r.openInvoicesLpgOther.amount} (${r.openInvoicesLpgOther.count})` +
     ` + open CYL R${r.openInvoicesCyl.amount} (${r.openInvoicesCyl.count}) + unmatched CN R${r.unmatchedCredits.amount} (${r.unmatchedCredits.count})` +

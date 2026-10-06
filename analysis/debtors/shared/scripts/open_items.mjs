@@ -42,13 +42,19 @@ export function buildOpenItems(projection, matches, view = 'internal') {
   };
 
   const laneOf = (r) => (r.lane === 'CYL' ? 'cyl' : 'lpg');
-  // Rounding on matched items: the net of each hidden tie, split by part.
+  // Rounding on matched items: the net of each hidden tie, split by part. Remittance
+  // settlement discounts (P9) are reported separately as journals pending.
   const rounding = { lpg: 0, cyl: 0 };
+  const journalsPending = { lpg: 0, cyl: 0 };
   for (const t of matches.ties) {
     if (view === 'customer' && t.confidence === 'PROBABLE') continue; // shown in full instead
     for (const id of t.members) {
       const r = projection.rows.find((x) => x.row_id === id);
       if (r) rounding[laneOf(r)] = round2(rounding[laneOf(r)] + r.amount);
+    }
+    if (t.discountPending) {
+      journalsPending.lpg = round2(journalsPending.lpg + t.discountPending);
+      rounding.lpg = round2(rounding.lpg - t.discountPending);
     }
   }
 
@@ -74,8 +80,15 @@ export function buildOpenItems(projection, matches, view = 'internal') {
         pendingProbable: Boolean(t && t.confidence === 'PROBABLE'),
       };
     });
-    const closing = round2(run + rounding[part]);
-    parts[part] = { opening: opening[part], lines, openTotal: round2(run - opening[part]), rounding: rounding[part], closing };
+    const closing = round2(run + rounding[part] + journalsPending[part]);
+    parts[part] = {
+      opening: opening[part],
+      lines,
+      openTotal: round2(run - opening[part]),
+      rounding: rounding[part],
+      journalsPending: journalsPending[part],
+      closing,
+    };
   }
 
   const combined = round2(parts.lpg.closing + parts.cyl.closing);
@@ -169,6 +182,9 @@ export function renderOpenItemsMarkdown(model, { cfg, projection, matches, gener
   L.push(row3(internal ? 'Opening B/F (unitemised)' : 'Opening balance', parts.lpg.opening, parts.cyl.opening));
   L.push(row3('Open items listed above', parts.lpg.openTotal, parts.cyl.openTotal));
   L.push(row3(internal ? 'Rounding on matched items (tie nets)' : 'Rounding on settled items', parts.lpg.rounding, parts.cyl.rounding));
+  if (parts.lpg.journalsPending || parts.cyl.journalsPending) {
+    L.push(row3(internal ? 'Settlement discount journals pending (P9)' : 'Settlement discount (journal pending)', parts.lpg.journalsPending, parts.cyl.journalsPending));
+  }
   L.push(row3('**Balance**', parts.lpg.closing, parts.cyl.closing));
   if (internal) {
     L.push(`| ERP \`CURRENT BALANCE\` (TXT header) | | | ${fmt(proof.erp)} |`);
@@ -183,7 +199,16 @@ export function renderOpenItemsMarkdown(model, { cfg, projection, matches, gener
     } else {
       L.push('| Tie | Rule | Documents | Variance (R) | Note |', '| :--- | :--- | :--- | ---: | :--- |');
       for (const t of appendix) {
-        const note = t.lagDays != null ? `CN ${t.lagDays} day(s) after invoice` : t.rule === 'NEAR_SUM' ? 'within R1.00 truncation' : t.rule === 'PROXIMITY' ? 'within ±R5.00' : '';
+        const note =
+          t.rule === 'REMITTANCE'
+            ? `${t.batchId}: ${(t.lineDiscrepancies || []).map((d) => `${d.doc} advice R${fmt(d.advice)} vs ERP R${fmt(d.erp)}`).join('; ')}`
+            : t.lagDays != null
+              ? `CN ${t.lagDays} day(s) after invoice`
+              : t.rule === 'NEAR_SUM'
+                ? 'within R1.00 truncation'
+                : t.rule === 'PROXIMITY'
+                  ? 'within ±R5.00'
+                  : '';
         L.push(`| ${t.tie_id} | ${t.rule} | ${t.docs.join(', ')} | ${t.variance != null ? fmt(t.variance) : '—'} | ${note} |`);
       }
       L.push('');

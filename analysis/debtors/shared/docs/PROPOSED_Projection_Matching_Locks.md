@@ -319,6 +319,16 @@ and `reports/{CODE}_Open_Items_v5_Customer_PREVIEW.md` (draft; not for release; 
 `generate_statement_of_account.mjs` + `debtors:tag-check`). Both refuse mismatched inputs and print the proof bridge.
 SA0001 and MD0003 both tie to the ERP header (variance R0.00).
 
+**Progress (2026-10-06, P11 remittance evidence):** `remittance_evidence.mjs` normalises
+`data/remittance_manifest_*.json` batches. Lines come from the manifest, or are extracted from the batch's
+C O D REMITTANCE ADVICE PDF (`pdftotext`) and accepted only if Σ lines = the advice total = the manifest total.
+Malformed manifests are reported and skipped. `match_projection.mjs` writes `data/remittance_evidence.json` and applies the
+**REMITTANCE** rule before every pattern rule. It requires all named documents present and a reconciling batch,
+is CONFIRMED when lines equal ERP amounts, and PROBABLE with the discrepancies listed otherwise. Discounts are carried
+as `discountPending` (P9). The open-items statement shows "settlement discount journals pending". 8 tests
+(`remittance_evidence.test.mjs`). TWK002's CSV remittance format and CAP000 (no structured remittance file yet) are
+**not yet adapted**.
+
 ## Lessons from `payment_doc_allocation.mjs` (open question 6, read-only, 2026-10-06)
 
 Why the "shared" engine never spread beyond WO0001 (PROVEN from code reading unless tagged):

@@ -8,6 +8,15 @@
  *
  * Rule order (P4 defaults, all accounts):
  *   1. UD_CLEARING      Bank UD (+) and Payment (−) on the same doc, equal and opposite.
+ *   1b. REMITTANCE      (P11; only when remittance evidence is supplied) the advice names
+ *                       the payment doc and every document it settles. Ties the payment and
+ *                       all lanes of every named document (CYL included, because the customer
+ *                       says so). Requires every named document to be in the projection and
+ *                       Σ advice lines = payment within max(R0.05, 0.1%). CONFIRMED when every
+ *                       line also equals the document's ERP amount (±R0.05); PROBABLE with
+ *                       the line discrepancies listed otherwise. Advice discounts are carried
+ *                       as `discountPending` (P9 journals pending), not as rounding.
+ *                       Batches that cannot be applied are reported, never forced.
  *   2. CN_DN_PAIR       credit note ↔ invoice, same lane, same delivery-note number,
  *                       exactly opposite amount; CONFIRMED when CN is 0–1 day after
  *                       the invoice, otherwise PROBABLE. (TXT exports carry no CN→invoice
@@ -35,7 +44,7 @@
  * (P11), payerGroup (P8), pre-window lookback (P7).
  */
 
-export const MATCHER_VERSION = 1;
+export const MATCHER_VERSION = 2;
 
 export const RULES = Object.freeze({
   exactTolerance: 0.05,
@@ -45,6 +54,8 @@ export const RULES = Object.freeze({
   maxSumInvoices: 3,
   combinationPool: 40, // most recent open invoices considered for 2–3 invoice sums
   paymentTargetLanes: ['LPG', 'OTHER'],
+  remittanceLineTolerance: 0.05,
+  remittanceBatchTolerancePct: 0.001,
 });
 
 const round2 = (n) => Math.round(Number(n) * 100) / 100;
@@ -70,7 +81,7 @@ function combos(arr, k, start = 0, acc = [], out = []) {
   return out;
 }
 
-export function matchProjection(projection, rules = RULES) {
+export function matchProjection(projection, rules = RULES, evidence = null) {
   const rows = projection.rows;
   const tiedRow = new Map(); // row_id -> tie_id
   const ties = [];
@@ -107,6 +118,62 @@ export function matchProjection(projection, rules = RULES) {
       const p = group.find((r) => r.entry_type !== 'Bank UD' && free(r) && Math.abs(r.amount + u.amount) < 0.005);
       if (p) addTie('UD_CLEARING', 'CONFIRMED', [u, p]);
     }
+  }
+
+  // 1b. Remittance evidence (P11): runs before any pattern rule.
+  const remittance = { applied: [], unresolved: [] };
+  for (const b of evidence?.batches || []) {
+    const fail = (reason) => remittance.unresolved.push({ batchId: b.batchId, paymentDoc: b.paymentDoc, reason });
+    const pay = rows.find((r) => r.kind === 'payment' && r.entry_type !== 'Bank UD' && r.clean_doc === b.paymentDoc);
+    if (!pay) {
+      fail('payment not in projection window / TXT');
+      continue;
+    }
+    if (!free(pay)) {
+      fail(`payment row already tied (${tiedRow.get(pay.row_id)})`);
+      continue;
+    }
+    const lineRows = [];
+    const missing = [];
+    const discrepancies = [];
+    for (const l of b.lines) {
+      const docRows = rows.filter((r) => r.clean_doc === l.doc && r.entry_type === l.docType);
+      if (!docRows.length) {
+        missing.push(`${l.docType} ${l.doc}`);
+        continue;
+      }
+      const taken = docRows.filter((r) => !free(r));
+      if (taken.length) {
+        missing.push(`${l.docType} ${l.doc} (already tied ${tiedRow.get(taken[0].row_id)})`);
+        continue;
+      }
+      const erpAmount = round2(docRows.reduce((s, r) => s + r.amount, 0));
+      if (Math.abs(erpAmount - l.gross) > rules.remittanceLineTolerance) {
+        discrepancies.push({ doc: `${l.docType} ${l.doc}`, advice: l.gross, erp: erpAmount, diff: round2(l.gross - erpAmount) });
+      }
+      lineRows.push(...docRows);
+    }
+    if (missing.length) {
+      fail(`documents not available: ${missing.join(', ')}`);
+      continue;
+    }
+    const paid = round2(b.lines.reduce((s, l) => s + l.paid, 0));
+    const cash = round2(-pay.amount);
+    const tol = Math.max(rules.exactTolerance, rules.remittanceBatchTolerancePct * cash);
+    if (Math.abs(paid - cash) > tol) {
+      fail(`advice lines R${paid} ≠ payment R${cash}`);
+      continue;
+    }
+    const tie_id = addTie('REMITTANCE', discrepancies.length ? 'PROBABLE' : 'CONFIRMED', [pay, ...lineRows], {
+      batchId: b.batchId,
+      evidence: b.source,
+      payment: { doc: pay.clean_doc, date: pay.date, amount: cash },
+      invoices: b.lines.map((l) => ({ doc: l.doc, docType: l.docType, amount: l.gross })),
+      discountPending: round2(b.lines.reduce((s, l) => s + l.discount, 0)),
+      lineDiscrepancies: discrepancies,
+      variance: round2(paid - cash),
+    });
+    remittance.applied.push({ batchId: b.batchId, tie_id });
   }
 
   // 2. Credit note ↔ invoice by delivery-note number, per lane
@@ -265,6 +332,7 @@ export function matchProjection(projection, rules = RULES) {
     unallocatedPayments: bucket((r) => r.kind === 'payment'),
     otherUntied: bucket((r) => !['invoice', 'credit_note', 'payment'].includes(r.kind)),
     tieNets: round2(ties.reduce((s, t) => s + t.net, 0)),
+    discountJournalsPending: round2(ties.reduce((s, t) => s + (t.discountPending || 0), 0)),
   };
   const rebuilt = round2(
     residual.openingBfUnitemised +
@@ -297,6 +365,9 @@ export function matchProjection(projection, rules = RULES) {
       holds: Math.abs(rebuilt - projection.closings.combined) < 0.005,
     },
     residual,
+    remittance: evidence
+      ? { batches: evidence.batches.length, applied: remittance.applied, unresolved: remittance.unresolved, skippedSources: evidence.skipped || [] }
+      : null,
     ties,
     unallocatedPayments: unallocated,
   };

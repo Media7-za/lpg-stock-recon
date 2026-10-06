@@ -1,0 +1,496 @@
+{
+  "batches": [
+    {
+      "batchId": "RM-2025-11-01",
+      "paymentDoc": "42051",
+      "remittanceDate": "2025-11-01",
+      "cash": 35770.31,
+      "manifest": "data/remittance_manifest_2025.json",
+      "discount": 0,
+      "lines": [
+        {
+          "invoiceDate": "2025-09-30",
+          "docType": "Invoice",
+          "doc": "43721",
+          "gross": 3866.45,
+          "discount": 0,
+          "paid": 3866.45
+        },
+        {
+          "invoiceDate": "2025-09-30",
+          "docType": "Invoice",
+          "doc": "45437",
+          "gross": 4912.25,
+          "discount": 0,
+          "paid": 4912.25
+        },
+        {
+          "invoiceDate": "2025-09-30",
+          "docType": "Invoice",
+          "doc": "45895",
+          "gross": 3598.07,
+          "discount": 0,
+          "paid": 3598.07
+        },
+        {
+          "invoiceDate": "2025-09-09",
+          "docType": "Invoice",
+          "doc": "46055",
+          "gross": 4797.43,
+          "discount": 0,
+          "paid": 4797.43
+        },
+        {
+          "invoiceDate": "2025-09-09",
+          "docType": "Invoice",
+          "doc": "46075",
+          "gross": 3598.07,
+          "discount": 0,
+          "paid": 3598.07
+        },
+        {
+          "invoiceDate": "2025-09-30",
+          "docType": "Invoice",
+          "doc": "46334",
+          "gross": 3432.06,
+          "discount": 0,
+          "paid": 3432.06
+        },
+        {
+          "invoiceDate": "2025-09-30",
+          "docType": "Invoice",
+          "doc": "46444",
+          "gross": 2740.88,
+          "discount": 0,
+          "paid": 2740.88
+        },
+        {
+          "invoiceDate": "2025-09-30",
+          "docType": "Invoice",
+          "doc": "46445",
+          "gross": 3105,
+          "discount": 0,
+          "paid": 3105
+        },
+        {
+          "invoiceDate": "2025-09-09",
+          "docType": "Invoice",
+          "doc": "46724",
+          "gross": 3432.06,
+          "discount": 0,
+          "paid": 3432.06
+        },
+        {
+          "invoiceDate": "2025-09-09",
+          "docType": "Invoice",
+          "doc": "46760",
+          "gross": 2288.04,
+          "discount": 0,
+          "paid": 2288.04
+        }
+      ],
+      "source": {
+        "method": "manifest",
+        "file": "data/remittance_manifest_2025.json"
+      },
+      "checks": {
+        "linesSumToCash": true,
+        "sumPaid": 35770.31
+      }
+    },
+    {
+      "batchId": "RM-2026-01-31",
+      "paymentDoc": "43239",
+      "remittanceDate": "2026-01-31",
+      "cash": 17999.24,
+      "manifest": "data/remittance_manifest_2026.json",
+      "discount": 0,
+      "lines": [
+        {
+          "invoiceDate": "2025-12-09",
+          "docType": "Invoice",
+          "doc": "48019",
+          "gross": 3360.06,
+          "discount": 0,
+          "paid": 3360.06
+        },
+        {
+          "invoiceDate": "2025-12-09",
+          "docType": "Invoice",
+          "doc": "48165",
+          "gross": 3378.27,
+          "discount": 0,
+          "paid": 3378.27
+        },
+        {
+          "invoiceDate": "2025-12-09",
+          "docType": "Invoice",
+          "doc": "48190",
+          "gross": 2252.18,
+          "discount": 0,
+          "paid": 2252.18
+        },
+        {
+          "invoiceDate": "2025-12-09",
+          "docType": "Invoice",
+          "doc": "48372",
+          "gross": 5630.46,
+          "discount": 0,
+          "paid": 5630.46
+        },
+        {
+          "invoiceDate": "2025-12-28",
+          "docType": "Invoice",
+          "doc": "48523",
+          "gross": 3378.27,
+          "discount": 0,
+          "paid": 3378.27
+        }
+      ],
+      "source": {
+        "method": "pdf-extract",
+        "file": "raw/Remittances/31.01.2026.pdf",
+        "sha256": "e2942a4a26fdc47f87f22fabc1e919781cc065f0bcd87ce43c2675ccd1800dd9",
+        "paymentReference": "000000000110925791"
+      },
+      "checks": {
+        "linesSumToCash": true,
+        "sumPaid": 17999.24
+      }
+    },
+    {
+      "batchId": "RM-2026-03-02",
+      "paymentDoc": "43494",
+      "remittanceDate": "2026-03-02",
+      "cash": 13845.67,
+      "manifest": "data/remittance_manifest_2026.json",
+      "discount": 0,
+      "lines": [
+        {
+          "invoiceDate": "2026-01-19",
+          "docType": "Invoice",
+          "doc": "48737",
+          "gross": 3378.27,
+          "discount": 0,
+          "paid": 3378.27
+        },
+        {
+          "invoiceDate": "2026-01-19",
+          "docType": "Invoice",
+          "doc": "48784",
+          "gross": 2252.8,
+          "discount": 0,
+          "paid": 2252.8
+        },
+        {
+          "invoiceDate": "2026-01-19",
+          "docType": "Invoice",
+          "doc": "48906",
+          "gross": 3403.01,
+          "discount": 0,
+          "paid": 3403.01
+        },
+        {
+          "invoiceDate": "2026-01-19",
+          "docType": "Invoice",
+          "doc": "48919",
+          "gross": 4869.09,
+          "discount": 0,
+          "paid": 4869.09
+        },
+        {
+          "invoiceDate": "2026-01-19",
+          "docType": "Invoice",
+          "doc": "48927",
+          "gross": 5462.5,
+          "discount": 0,
+          "paid": 5462.5
+        },
+        {
+          "invoiceDate": "2026-01-19",
+          "docType": "Crd Note",
+          "doc": "14328",
+          "gross": -5520,
+          "discount": 0,
+          "paid": -5520
+        }
+      ],
+      "source": {
+        "method": "pdf-extract",
+        "file": "raw/Remittances/02.03.2026.pdf",
+        "sha256": "ef548435bd9f1b79a9befcad7cfcdba4dc2071f50eb091088352ca869f4630d0",
+        "paymentReference": "000000000020326043"
+      },
+      "checks": {
+        "linesSumToCash": true,
+        "sumPaid": 13845.67
+      }
+    },
+    {
+      "batchId": "RM-2026-04-01",
+      "paymentDoc": "43854",
+      "remittanceDate": "2026-04-01",
+      "cash": 13773.92,
+      "manifest": "data/remittance_manifest_2026.json",
+      "discount": 0,
+      "lines": [
+        {
+          "invoiceDate": "2026-02-09",
+          "docType": "Invoice",
+          "doc": "49128",
+          "gross": 3443.48,
+          "discount": 0,
+          "paid": 3443.48
+        },
+        {
+          "invoiceDate": "2026-02-09",
+          "docType": "Invoice",
+          "doc": "49166",
+          "gross": 2295.65,
+          "discount": 0,
+          "paid": 2295.65
+        },
+        {
+          "invoiceDate": "2026-02-09",
+          "docType": "Invoice",
+          "doc": "49322",
+          "gross": 3443.48,
+          "discount": 0,
+          "paid": 3443.48
+        },
+        {
+          "invoiceDate": "2026-02-09",
+          "docType": "Invoice",
+          "doc": "49443",
+          "gross": 4591.31,
+          "discount": 0,
+          "paid": 4591.31
+        }
+      ],
+      "source": {
+        "method": "pdf-extract",
+        "file": "raw/Remittances/01.04.2026.pdf",
+        "sha256": "d21a76b5b5c5d05363351396953a43f97d75b4eff283911da147d759f9f47502",
+        "paymentReference": "000000000170326074"
+      },
+      "checks": {
+        "linesSumToCash": true,
+        "sumPaid": 13773.92
+      }
+    },
+    {
+      "batchId": "RM-2026-05-01",
+      "paymentDoc": "44231",
+      "remittanceDate": "2026-05-01",
+      "cash": 15017.78,
+      "manifest": "data/remittance_manifest_2026.json",
+      "discount": 0,
+      "lines": [
+        {
+          "invoiceDate": "2026-03-09",
+          "docType": "Invoice",
+          "doc": "49573",
+          "gross": 3443.48,
+          "discount": 0,
+          "paid": 3443.48
+        },
+        {
+          "invoiceDate": "2026-03-09",
+          "docType": "Invoice",
+          "doc": "49796",
+          "gross": 3472.29,
+          "discount": 0,
+          "paid": 3472.29
+        },
+        {
+          "invoiceDate": "2026-03-09",
+          "docType": "Invoice",
+          "doc": "49905",
+          "gross": 1157.43,
+          "discount": 0,
+          "paid": 1157.43
+        },
+        {
+          "invoiceDate": "2026-03-09",
+          "docType": "Invoice",
+          "doc": "50004",
+          "gross": 3472.29,
+          "discount": 0,
+          "paid": 3472.29
+        },
+        {
+          "invoiceDate": "2026-03-09",
+          "docType": "Invoice",
+          "doc": "50013",
+          "gross": 3472.29,
+          "discount": 0,
+          "paid": 3472.29
+        }
+      ],
+      "source": {
+        "method": "pdf-extract",
+        "file": "raw/Remittances/01.05.2026.pdf",
+        "sha256": "a5e1ec227cf180b0f7cac35c0be719fcd1868d401d57469d08f7bc223c025fea",
+        "paymentReference": "000000000170326203"
+      },
+      "checks": {
+        "linesSumToCash": true,
+        "sumPaid": 15017.78
+      }
+    },
+    {
+      "batchId": "RM-2026-06-01",
+      "paymentDoc": "44561",
+      "remittanceDate": "2026-06-01",
+      "cash": 13014.2,
+      "manifest": "data/remittance_manifest_2026.json",
+      "discount": 0,
+      "lines": [
+        {
+          "invoiceDate": "2026-04-07",
+          "docType": "Invoice",
+          "doc": "50100",
+          "gross": 5205.68,
+          "discount": 0,
+          "paid": 5205.68
+        },
+        {
+          "invoiceDate": "2026-04-07",
+          "docType": "Invoice",
+          "doc": "50234",
+          "gross": 3904.26,
+          "discount": 0,
+          "paid": 3904.26
+        },
+        {
+          "invoiceDate": "2026-04-29",
+          "docType": "Invoice",
+          "doc": "50429",
+          "gross": 3904.26,
+          "discount": 0,
+          "paid": 3904.26
+        }
+      ],
+      "source": {
+        "method": "pdf-extract",
+        "file": "raw/Remittances/01.06.2026.pdf",
+        "sha256": "c7fb9161c92d4a459dbeb2fb4d7d3e78bd54ecce1506c61a7d836c230a1cb075",
+        "paymentReference": "000000000190526049"
+      },
+      "checks": {
+        "linesSumToCash": true,
+        "sumPaid": 13014.2
+      }
+    },
+    {
+      "batchId": "RM-2026-07-01",
+      "paymentDoc": "44972",
+      "remittanceDate": "2026-07-01",
+      "cash": 17311.6,
+      "manifest": "data/remittance_manifest_2026.json",
+      "discount": 0,
+      "lines": [
+        {
+          "invoiceDate": "2026-05-05",
+          "docType": "Invoice",
+          "doc": "50524",
+          "gross": 5205.68,
+          "discount": 0,
+          "paid": 5205.68
+        },
+        {
+          "invoiceDate": "2026-05-14",
+          "docType": "Invoice",
+          "doc": "50671",
+          "gross": 4539.72,
+          "discount": 0,
+          "paid": 4539.72
+        },
+        {
+          "invoiceDate": "2026-05-25",
+          "docType": "Invoice",
+          "doc": "50867",
+          "gross": 3026.48,
+          "discount": 0,
+          "paid": 3026.48
+        },
+        {
+          "invoiceDate": "2026-05-27",
+          "docType": "Invoice",
+          "doc": "50886",
+          "gross": 4539.72,
+          "discount": 0,
+          "paid": 4539.72
+        }
+      ],
+      "source": {
+        "method": "pdf-extract",
+        "file": "raw/Remittances/01.07.2026.pdf",
+        "sha256": "fbaa05dc1467ea44d771449c3695295c46d1becbef5ae6485e41b66ebd73fdad",
+        "paymentReference": "000000000170626093"
+      },
+      "checks": {
+        "linesSumToCash": true,
+        "sumPaid": 17311.6
+      }
+    },
+    {
+      "batchId": "RM-2026-08-01",
+      "paymentDoc": "45595",
+      "remittanceDate": "2026-08-01",
+      "cash": 14863.43,
+      "manifest": "data/remittance_manifest_2026.json",
+      "discount": 0,
+      "lines": [
+        {
+          "invoiceDate": "2026-06-08",
+          "docType": "Invoice",
+          "doc": "50996",
+          "gross": 5822.54,
+          "discount": 0,
+          "paid": 5822.54
+        },
+        {
+          "invoiceDate": "2026-06-08",
+          "docType": "Invoice",
+          "doc": "50998",
+          "gross": 349.99,
+          "discount": 0,
+          "paid": 349.99
+        },
+        {
+          "invoiceDate": "2026-06-09",
+          "docType": "Invoice",
+          "doc": "51099",
+          "gross": 4345.45,
+          "discount": 0,
+          "paid": 4345.45
+        },
+        {
+          "invoiceDate": "2026-06-24",
+          "docType": "Invoice",
+          "doc": "51398",
+          "gross": 4345.45,
+          "discount": 0,
+          "paid": 4345.45
+        }
+      ],
+      "source": {
+        "method": "pdf-extract",
+        "file": "raw/Remittances/01.08.2026.pdf",
+        "sha256": "0fb02c70849cac6d5a5e5601aa87c5cbc7d3885dbc6b22aec1f9f24c60dbd07e",
+        "paymentReference": "000000000090726105"
+      },
+      "checks": {
+        "linesSumToCash": true,
+        "sumPaid": 14863.43
+      }
+    }
+  ],
+  "skipped": [
+    {
+      "file": "remittance_manifest_2023.json",
+      "reason": "unreadable JSON: Expected ',' or '}' after property value in JSON at position 283 (line 10 column 3)"
+    }
+  ]
+}

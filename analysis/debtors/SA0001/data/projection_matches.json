@@ -2,7 +2,7 @@
   "status": "PROPOSED — NOT RATIFIED (PROPOSED_Projection_Matching_Locks.md, build step 2)",
   "debtorCode": "SA0001",
   "generatedBy": "match_projection.mjs",
-  "generatedAt": "2026-10-06T19:14:38.518Z",
+  "generatedAt": "2026-10-06T19:41:42.330Z",
   "projection": {
     "path": "analysis/debtors/SA0001/data/v5_projection.json",
     "txtSha256": "dab06b2f0efcb5ebff950cce711fe14749634a4dcc604f093c8b35443f1b039c",
@@ -12,7 +12,7 @@
   "reviewOnly": false,
   "reviewOnlyReasons": [],
   "locksApplied": 0,
-  "matcherVersion": 1,
+  "matcherVersion": 2,
   "rules": {
     "exactTolerance": 0.05,
     "proximityTolerance": 5,
@@ -23,7 +23,9 @@
     "paymentTargetLanes": [
       "LPG",
       "OTHER"
-    ]
+    ],
+    "remittanceLineTolerance": 0.05,
+    "remittanceBatchTolerancePct": 0.001
   },
   "summary": {
     "ties": 136,
@@ -95,8 +97,10 @@
       "amount": 0,
       "rows": []
     },
-    "tieNets": -0.08
+    "tieNets": -0.08,
+    "discountJournalsPending": 0
   },
+  "remittance": null,
   "ties": [
     {
       "tie_id": "T0001",
