@@ -59,6 +59,10 @@
     {
       "date": "2026-08-11",
       "event": "Confirmed MD0004 (BMS FOODS (PTY) LTD) is the same entity as MD0003 and linked. MD0004 has no DEBENQ ledger export; reconstructed 51 historical lines (2016-2024) from global ERP RAW DATA stock-transaction dumps found explicit 2017 credit-note references transferring charges to MD0003. Last known MD0004 balance R4,413.86 (13 Jul 2025, stale/unverified). Combined group exposure estimated at R23,267.22. Recommended pulling a live MD0004 DEBENQ export next."
+    },
+    {
+      "date": "2026-10-06",
+      "event": "v5 projection run on live data, connector-sourced (db_replay): DB rows fetched via the Supabase connector with md5-verified captures (data/db_replay/2026-10-06/), not a direct DATABASE_URL connection; operator-authorised in session. ERP tie PROVEN: Combined 1A + 1B R16,371.56 vs TXT header R16,371.56, variance R0.00 (Part 1A R15,106.56, Part 1B R1,265.00). Projection checks all true; txtSha256 matches raw TXT. splitBasisCounts: DB_LINES 211, PAYMENT_LANE 20 (231 rows; HEADER_FALLBACK 0, REF_EMPTY 0). Ingest gate CURRENT_COMPLETE, 0 gaps. Cylinder position variance (Part 1B vs custody) R115.00, unexplained and open; see reports/MD0003_CYL_Deposit_Posting_Gap.md. Commit 697fb58."
     }
   ]
 }
