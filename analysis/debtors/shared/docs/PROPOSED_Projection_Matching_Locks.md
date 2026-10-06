@@ -291,6 +291,15 @@ an advice (`CAP000/reports/CAP000_Allocation_Gap_Analysis.md`). CAP000's lane is
    P3 proof line.
 4. **Period close** comes later, as its own command, after matching is proven on the pilot.
 
+**Progress (2026-10-06):** Step 1 is implemented. `v5_projection.mjs` (pure builder plus
+`verifyProjection` guard) is wired into `reconcile_debtor_v5_from_txt.mjs`; it writes
+`analysis/debtors/{CODE}/data/v5_projection.json`, and contract tests are in `v5_projection.test.mjs`.
+Regression on SA0001: old and new generator versions were run on identical inputs (stub DB layer,
+two modes: no line detail, and real line detail for six SA0001 documents) and produced a
+**byte-identical statement markdown and fixture** (apart from the `lastGeneratedAt` timestamp).
+**Not yet done:** a real SA0001 run against the live DB (needs `DATABASE_URL`), and committing its
+`data/v5_projection.json`.
+
 **Pilot order:** SA0001 first (full gate pass; its window already starts at its first TXT
 row; its June/July 2026 hand-matching reports are the answer key, and differences from its
 FIFO results are reviewed as tests of the new tie-break), then JEN001 (reference layout;

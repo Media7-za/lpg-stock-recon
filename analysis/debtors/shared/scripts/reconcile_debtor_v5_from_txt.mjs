@@ -11,6 +11,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { pgClientOptions } from './require_database_url.mjs';
+import { buildV5Projection, fileFingerprint, SPLIT_BASIS } from './v5_projection.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '../../../..');
@@ -288,11 +289,20 @@ function parseTxtRows(filePath) {
   return { rows, headerBalance };
 }
 
+// Returns { lpg, cyl, basis, other }. `basis` is the split_basis recorded on the
+// v5 projection row (PROPOSED_Projection_Matching_Locks.md P10); `other` is the
+// OTHER-lane share already included in `lpg` (DB_LINES only). Neither changes
+// the lpg/cyl amounts the statement renders.
 function splitRowAmount(r, docSplit, cfg) {
+  const tag = (res, basis, other = 0) => ({
+    ...res,
+    basis: r.is_ratification ? SPLIT_BASIS.RATIFICATION : basis,
+    other,
+  });
   if (PAYMENT_TYPES.has(r.entry_type)) {
-    if (cfg.paymentLane === 'CYL') return { lpg: 0, cyl: r.amount };
-    if (cfg.paymentLane === 'COMBINED') return { lpg: r.amount, cyl: 0 };
-    return { lpg: r.amount, cyl: 0 };
+    if (cfg.paymentLane === 'CYL') return tag({ lpg: 0, cyl: r.amount }, SPLIT_BASIS.PAYMENT_LANE);
+    if (cfg.paymentLane === 'COMBINED') return tag({ lpg: r.amount, cyl: 0 }, SPLIT_BASIS.PAYMENT_LANE);
+    return tag({ lpg: r.amount, cyl: 0 }, SPLIT_BASIS.PAYMENT_LANE);
   }
 
   const key = `${r.clean_doc}|${r.entry_type}`;
@@ -300,18 +310,22 @@ function splitRowAmount(r, docSplit, cfg) {
   if (split) {
     const dbTotal = round2(split.lpg + split.cyl);
     if (Math.abs(dbTotal - r.amount) < 0.02) {
-      return { lpg: round2(split.lpg), cyl: round2(split.cyl) };
+      return tag(
+        { lpg: round2(split.lpg), cyl: round2(split.cyl) },
+        SPLIT_BASIS.DB_LINES,
+        round2(split.other || 0),
+      );
     }
     // Single-lane line detail — route by TXT header even when ref lacks -EMPTY (e.g. CN 13687)
     if (Math.abs(split.lpg) < 0.01 && Math.abs(split.cyl) >= 0.01) {
-      return { lpg: 0, cyl: r.amount };
+      return tag({ lpg: 0, cyl: r.amount }, SPLIT_BASIS.SINGLE_LANE);
     }
     if (Math.abs(split.cyl) < 0.01 && Math.abs(split.lpg) >= 0.01) {
-      return { lpg: r.amount, cyl: 0 };
+      return tag({ lpg: r.amount, cyl: 0 }, SPLIT_BASIS.SINGLE_LANE);
     }
   }
-  if (r.is_cyl_only) return { lpg: 0, cyl: r.amount };
-  return { lpg: r.amount, cyl: 0 };
+  if (r.is_cyl_only) return tag({ lpg: 0, cyl: r.amount }, SPLIT_BASIS.REF_EMPTY);
+  return tag({ lpg: r.amount, cyl: 0 }, SPLIT_BASIS.HEADER_FALLBACK);
 }
 
 function buildLaneSections(financial, lane, openingBf, amountKey, runningKey) {
@@ -366,7 +380,7 @@ function buildPart1Split(rows, cfg, docSplit) {
 
   for (const r of periodRows) {
     if (Math.abs(r.amount) < 0.01) continue;
-    const { lpg, cyl } = splitRowAmount(r, docSplit, cfg);
+    const { lpg, cyl, basis, other } = splitRowAmount(r, docSplit, cfg);
     if (Math.abs(lpg) < 0.01 && Math.abs(cyl) < 0.01) continue;
 
     runningLpg = round2(runningLpg + lpg);
@@ -378,6 +392,8 @@ function buildPart1Split(rows, cfg, docSplit) {
       date_str: displayDate(r.iso),
       lpg_amount: lpg,
       cyl_amount: cyl,
+      split_basis: basis,
+      db_other: other,
       running_lpg: runningLpg,
       running_cyl: runningCyl,
       running_combined: round2(runningLpg + runningCyl),
@@ -427,10 +443,13 @@ async function fetchDocLineSplit(client, cfg) {
   const map = new Map();
   for (const r of res.rows) {
     const key = `${r.doc_no}|${r.entry_type}`;
-    if (!map.has(key)) map.set(key, { lpg: 0, cyl: 0 });
+    if (!map.has(key)) map.set(key, { lpg: 0, cyl: 0, other: 0 });
     const bucket = map.get(key);
     if (r.debt_group === 'CYL') bucket.cyl = round2(bucket.cyl + Number(r.s));
     else bucket.lpg = round2(bucket.lpg + Number(r.s));
+    // OTHER stays inside `lpg` (statement behaviour unchanged); tracked separately
+    // only so the v5 projection can emit it as its own lane.
+    if (r.debt_group === 'OTHER') bucket.other = round2(bucket.other + Number(r.s));
   }
   return map;
 }
@@ -732,6 +751,24 @@ ${custodyBlockedNote}
   fs.mkdirSync(path.dirname(cfg.fixturePath), { recursive: true });
   fs.writeFileSync(cfg.fixturePath, `${JSON.stringify(fixture, null, 2)}\n`);
 
+  // v5 projection dataset (PROPOSED_Projection_Matching_Locks.md, build step 1).
+  // Additive output only — the statement and fixture above are unchanged.
+  const projectionPath = path.join(ROOT, `analysis/debtors/${cfg.debtorCode}/data/v5_projection.json`);
+  const projection = buildV5Projection({
+    cfg,
+    financial,
+    headerBalance,
+    txtFingerprint: fileFingerprint(cfg.txtPath),
+    configFingerprint: fileFingerprint(
+      path.join(ROOT, 'analysis/debtors', cfg.debtorCode, 'config/statement_v5.json'),
+    ),
+    coverage,
+    finals: { finalLpg, finalCyl, finalCombined },
+    txtRelPath: txtRel,
+  });
+  fs.mkdirSync(path.dirname(projectionPath), { recursive: true });
+  fs.writeFileSync(projectionPath, `${JSON.stringify(projection, null, 2)}\n`);
+
   console.log(`[${cfg.debtorCode}] TXT header: R${fmt(headerBalance)}`);
   console.log(`[${cfg.debtorCode}] Part 1A LPG close: R${fmt(finalLpg)}`);
   console.log(`[${cfg.debtorCode}] Part 1B CYL close: R${fmt(finalCyl)}`);
@@ -741,6 +778,9 @@ ${custodyBlockedNote}
   console.log(`[${cfg.debtorCode}] Sub-ledger tie variance: R${fmt(subLedgerVariance)}`);
   console.log(`[${cfg.debtorCode}] Custody exposure: R${fmt(totalCustodyExposure)}`);
   console.log(`Written ${cfg.reportPath}`);
+  console.log(
+    `Written ${path.relative(ROOT, projectionPath)} (${projection.summary.rowCount} rows; checks ${JSON.stringify(projection.checks)})`,
+  );
 }
 
 main().catch((e) => {
