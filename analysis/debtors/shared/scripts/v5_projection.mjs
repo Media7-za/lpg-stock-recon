@@ -104,6 +104,7 @@ export function buildV5Projection({
   finals,
   generatedAt = new Date().toISOString(),
   txtRelPath,
+  dbChannel = 'direct',
 }) {
   const rows = financial.flatMap(laneRowsFor);
 
@@ -135,6 +136,9 @@ export function buildV5Projection({
       txtSha256: txtFingerprint,
       configSha256: configFingerprint,
       erpCurrentBalance: headerBalance,
+      // How DB line detail reached the generator: 'direct' (pg connection) or
+      // 'supabase-connector-replay' (db_replay/, md5-verified captures).
+      dbChannel,
     },
     window: {
       periodStart: cfg.periodStart,

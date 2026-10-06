@@ -765,6 +765,7 @@ ${custodyBlockedNote}
     coverage,
     finals: { finalLpg, finalCyl, finalCombined },
     txtRelPath: txtRel,
+    dbChannel: process.env.DB_REPLAY_DIR ? 'supabase-connector-replay' : 'direct',
   });
   fs.mkdirSync(path.dirname(projectionPath), { recursive: true });
   fs.writeFileSync(projectionPath, `${JSON.stringify(projection, null, 2)}\n`);
