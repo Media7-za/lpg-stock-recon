@@ -1,0 +1,63 @@
+{
+  "debtorCode": "MD0003",
+  "debtorName": "BLUFF MEAT SUPPLY(PTY) LTD",
+  "period": {
+    "from": "2025-01-01",
+    "to": "2026-07-15"
+  },
+  "version": "v5",
+  "workspaceStatus": "pending_review",
+  "lastGeneratedAt": "2026-10-06T11:28:31.678Z",
+  "source": "analysis/debtors/MD0003/raw/MD0003CURRENT.TXT",
+  "financialPosition": {
+    "lpgGasDebt": 15106.56,
+    "cylinderFinancialBalance": 1265,
+    "totalDebtorBalance": 16371.56,
+    "erpStatedBalance": 16371.56,
+    "erpVariance": 0,
+    "subLedgerVariance": 0
+  },
+  "custodyPosition": {
+    "totalCustodyExposure": 1150,
+    "lines": [
+      {
+        "sku": "14.1",
+        "label": "14kg",
+        "qty": 2,
+        "depositRate": 575,
+        "exposure": 1150
+      },
+      {
+        "sku": "D.1",
+        "label": "D.1",
+        "qty": 3,
+        "depositRate": 1150,
+        "exposure": 3450
+      },
+      {
+        "sku": "S.1",
+        "label": "S.1",
+        "qty": -3,
+        "depositRate": 1150,
+        "exposure": -3450
+      }
+    ]
+  },
+  "reconciliationPosition": {
+    "cylinderVariance": 115,
+    "erpVariance": 0,
+    "subLedgerVariance": 0,
+    "exceptions": [
+      {
+        "type": "CUSTODY",
+        "basis": "ASSERTED",
+        "status": "open",
+        "description": "Part 1B financial vs Part 2 custody — check DB ingest vs TXT"
+      }
+    ]
+  },
+  "artifacts": {
+    "statementMarkdown": "analysis/debtors/MD0003/reports/MD0003_Statement_Account_v5.md",
+    "txtSource": "analysis/debtors/MD0003/raw/MD0003CURRENT.TXT"
+  }
+}
