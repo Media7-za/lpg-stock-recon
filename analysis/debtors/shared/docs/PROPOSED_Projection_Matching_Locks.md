@@ -313,6 +313,12 @@ PROXIMITY (probable), NEAR_SUM (2–3 within R1.00, probable), plus the P10 down
 Not yet implemented: locks / period close, mirror carry, settlement discount, remittance evidence, payerGroup,
 lookback, and the open-items renderer (step 3).
 
+**Progress (2026-10-06, step 3):** the open-items renderer `open_items.mjs` (pure) and the CLI
+`render_open_items.mjs` (4 tests in `open_items.test.mjs`) write `reports/{CODE}_Open_Items_v5.md` (internal)
+and `reports/{CODE}_Open_Items_v5_Customer_PREVIEW.md` (draft; not for release; the official customer path stays
+`generate_statement_of_account.mjs` + `debtors:tag-check`). Both refuse mismatched inputs and print the proof bridge.
+SA0001 and MD0003 both tie to the ERP header (variance R0.00).
+
 ## Lessons from `payment_doc_allocation.mjs` (open question 6, read-only, 2026-10-06)
 
 Why the "shared" engine never spread beyond WO0001 (PROVEN from code reading unless tagged):
