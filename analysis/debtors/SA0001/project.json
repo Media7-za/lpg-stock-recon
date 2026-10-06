@@ -48,6 +48,10 @@
     {
       "date": "2026-08-05",
       "event": "Operator ratified ignore for 5 ingest gaps (44740, 42780, 45114, 45329, 45466) via config/ingest_exceptions.json; ingest CURRENT_COMPLETE; reconState complete."
+    },
+    {
+      "date": "2026-10-06",
+      "event": "Live v5 projection run (build step 1, PROPOSED_Projection_Matching_Locks.md) — CONNECTOR-SOURCED (db_replay, Supabase project oqhpxnaadahohwkslive; 5 md5-verified captures in data/db_replay/2026-10-06/), not a direct DB read. Ingest coverage complete/current, 0 gaps. ERP tie R10,804.97, variance R0.00 (PROVEN vs TXT header). Statement output unchanged except the regeneration date. data/v5_projection.json: 311 rows (DB_LINES 251, PAYMENT_LANE 60, HEADER_FALLBACK 0); checks all true; source.dbChannel=supabase-connector-replay."
     }
   ]
 }

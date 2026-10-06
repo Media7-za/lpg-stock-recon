@@ -3,7 +3,7 @@
 **Combined Opening B/F:** R4,945.93 (ERP verified — source: `analysis/debtors/SA0001/raw/SA0001.TXT` ERP TXT line 14 BALANCE B/F before first period row)
 **LPG Opening B/F (1A):** R4,945.93 &nbsp;|&nbsp; **CYL Opening B/F (1B):** R0.00
 **Payment routing:** LPG lane (payments post to Part 1A unless configured otherwise)
-**Last regenerated:** 2026-08-05 from ERP TXT (`reconcile_debtor_v5_from_txt.mjs`)
+**Last regenerated:** 2026-10-06 from ERP TXT (`reconcile_debtor_v5_from_txt.mjs`)
 
 ---
 
