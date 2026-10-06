@@ -271,11 +271,52 @@ an advice (`CAP000/reports/CAP000_Allocation_Gap_Analysis.md`). CAP000's lane is
    copy?~~ **Resolved 2026-10-05:** internal copy only; customer copies keep them open (see P3). (`business_rules.md` §15 rule 7 requires a recorded basis to retire an
    invoice on a customer document.)
 4. ~~Projection grain, and persisted file vs inline stage (P2).~~ **Resolved 2026-10-05:** per document per lane; persisted `data/v5_projection.json` with a TXT fingerprint (see P2).
-5. Build shape: a mode of the v5 generator or a new generator. Pilot account:
+5. ~~Build shape: a mode of the v5 generator or a new generator. Pilot account:
    SA0001 (its hand-made monthly matches are an answer key) or JEN001 (the reference
-   layout).
-6. Why `payment_doc_allocation.mjs` was never adopted beyond WO0001. Answer this
-   before building another shared engine.
+   layout).~~ **Resolved 2026-10-06** — see "Build plan" below.
+6. ~~Why `payment_doc_allocation.mjs` was never adopted beyond WO0001. Answer this
+   before building another shared engine.~~ **Answered 2026-10-06** — see "Lessons from
+   `payment_doc_allocation.mjs`" below.
+
+## Build plan (operator: "Yes" to build shape and pilot order, 2026-10-06)
+
+1. **Extend `reconcile_debtor_v5_from_txt.mjs`** to also write `data/v5_projection.json`
+   (rows per document per lane, `split_basis` on each row, TXT fingerprint). Existing
+   statement output must stay byte-identical.
+2. **New shared matching script** that reads the projection and locks and writes
+   `allocation_edges.csv` using the P4 rules, tie-break and evidence levels. No account
+   names in code; account differences come from config only (`payerCadence`,
+   `payerGroup`, settlement-discount config).
+3. **New open-items renderer:** internal and customer copies, probable appendix, and the
+   P3 proof line.
+4. **Period close** comes later, as its own command, after matching is proven on the pilot.
+
+**Pilot order:** SA0001 first (full gate pass; its window already starts at its first TXT
+row; its June/July 2026 hand-matching reports are the answer key, and differences from its
+FIFO results are reviewed as tests of the new tie-break), then JEN001 (reference layout;
+payment 45717, R15,000, is the first real pre-window lookback test).
+
+## Lessons from `payment_doc_allocation.mjs` (open question 6, read-only, 2026-10-06)
+
+Why the "shared" engine never spread beyond WO0001 (PROVEN from code reading unless tagged):
+
+| # | Finding | Evidence | Consequence for the new script |
+| :--- | :--- | :--- | :--- |
+| L1 | **Override schema is WO0001-only.** It expects a flat array of `{payment_doc, target_doc, allocated_amount}` and calls `overrides.filter(...)`. Every other account's registry is an object (`{overrides:[{targets:[…]}]}`: JEN001, JIM001, MD0003, MOZ002, RED001, TWK002), so `.filter` throws a TypeError for those accounts. | `payment_doc_allocation.mjs:47–55, 176–191`; `WO0001/config/payment_pattern_overrides.json` (array) vs the others (object) | One versioned lock/override schema with a loader that validates it and fails with a clear message. Migrate WO0001's flat array into it (append; keep the old entries as voided pointers). |
+| L2 | **Database only, no ingest gate, no dedupe.** Reads `transaction_headers` ⨝ `vw_clean_transactions` with no `DISTINCT ON`. `vw_clean_transactions` does not dedupe (PDP-31; `DOCTRINE_Layered_Reconciliation_Architecture_PROPOSED.md` D-NEW.1), so duplicated lines inflate LPG targets. The per-account engines (MON001, RED001) add `DISTINCT ON (doc_no, debt_group, stock_no, category, line_total)` themselves. | lines 59–72, 84–96 | Read the stamped v5 projection, never the raw view. Dedupe happens once, upstream. |
+| L3 | **Labels proximity as `CONFIRMED_*`.** Rules 1 and 3 (±R5 within a 3–15 or 0–90 day lag) emit `CONFIRMED_LAG_PROXIMITY` / `CONFIRMED_EXPANDED_PROXIMITY`. This contradicts skill Tier 4 (proximity = Probable) and P4. | lines ~197–290 | Evidence level comes from the rule and is enforced in one place. Proximity is always probable. |
+| L4 | **Effectively oldest-first.** Candidates are sorted by ascending date and the first hit wins, which contradicts the P4 tie-break. | `candidates.sort((a,b)=>a.date-b.date)` | Implement the P4 tie-break explicitly: exact, then smallest variance, then closest date. |
+| L5 | **Hard-coded windows drifted from docs.** The code uses 3–15 / 0–90 days; the skill says 3–14; CHANGELOG says the CN mapping window is `[-2, 7]` days, but the current CN step has no date window at all. | lines ~200, 263; `CHANGELOG.md:52–59` | Windows and tolerances come from one config block, are echoed in each output's header, and have tests. |
+| L6 | **Pairs only, no exact-sum beyond two invoices**, and no month exact-sum (the strongest rung of `business_rules.md` §15 order B). | Rules 2 and 4 | Combination search covers 2–3 invoices and billing-month sums, as in P4. |
+| L7 | **CN sign handling is unverified (ASSERTED).** Net open = `invoice − cn.amount`. If CN `line_total` is negative (skill Tier 3: "CN amounts are negative"), this *increases* open. Not verified, because this session has no `DATABASE_URL`. | line ~110 | Test fixtures covering both signs; read CN rows from the projection, whose signs come from the TXT. |
+| L8 | **Year-split outputs** (`allocation_edges_{year}.csv`) beside the account's canonical `allocation_edges.csv`; no locks, no fingerprint. | lines 31–36; `WO0001/data/` has 4 edge files | One `allocation_edges.csv` per account, rebuilt from projection + locks. |
+| L9 | **Later accounts copied a different engine.** MON001 and RED001 headers say "MOZ002 engine pattern"; the de facto shared design is a per-account copy of `MOZ002/scripts/allocation_ingest.mjs`. | `MON001/scripts/allocation_ingest_pilot.mjs`, `RED001/scripts/allocation_ingest_pilot.mjs` headers | Review the MOZ002 engine before writing the new script and keep what works (line dedupe, LPG-only targets, prepayment rule). |
+
+**Takeaway:** the engine wasn't rejected on principle. It was WO0001-shaped: its own override
+format, its own windows, its own labels. Each new account found it easier to copy and edit
+than to generalize. The new script must therefore be config-driven from day one, with
+contract tests (in the style of `debenq_open_invoices.test.mjs`) that any account's config
+and lock file must pass.
 
 ## Tripwires (reopen this proposal if…)
 
