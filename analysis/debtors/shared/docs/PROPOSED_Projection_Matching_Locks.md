@@ -305,6 +305,14 @@ row; its June/July 2026 hand-matching reports are the answer key, and difference
 FIFO results are reviewed as tests of the new tie-break), then JEN001 (reference layout;
 payment 45717, R15,000, is the first real pre-window lookback test).
 
+**Progress (2026-10-06, step 2):** the shared matcher `projection_matcher.mjs` (pure) and the CLI
+`match_projection.mjs` are implemented, with 13 contract tests (`projection_matcher.test.mjs`). The CLI writes the **new**
+file `data/projection_matches.json` and never touches `allocation_edges.csv`. Rules implemented:
+UD_CLEARING, CN_DN_PAIR, CN_AMOUNT_DATE (probable fallback), EXACT_SINGLE, EXACT_MONTH_SUM, EXACT_SUM (2–3),
+PROXIMITY (probable), NEAR_SUM (2–3 within R1.00, probable), plus the P10 downgrade and a residual proof.
+Not yet implemented: locks / period close, mirror carry, settlement discount, remittance evidence, payerGroup,
+lookback, and the open-items renderer (step 3).
+
 ## Lessons from `payment_doc_allocation.mjs` (open question 6, read-only, 2026-10-06)
 
 Why the "shared" engine never spread beyond WO0001 (PROVEN from code reading unless tagged):
