@@ -1,5 +1,5 @@
 # Open Items Statement: SAKI - VICTORIA RD (SA0001) — Customer copy (DRAFT PREVIEW)
-**Period:** from 07 Feb 2023 to 31 Jul 2026 &nbsp;|&nbsp; **Balance due:** R10,804.97
+**Period:** from 07 Feb 2023 to 02 Oct 2026 &nbsp;|&nbsp; **Balance due:** R16,002.86
 > **Draft preview, not for release.** This copy lists only items not yet settled. Customer release goes through the official statement generator and `npm run debtors:tag-check` (business_rules.md §15).
 
 ---
@@ -72,12 +72,39 @@
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
 | 02 Mar 2026 | Crd Note | 14516 ¹ | DN#21801 | Gas | -6,836.29 | 3,791.67 |
 
-### July 2026
+### August 2026
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 27 Jul 2026 | Invoice | 52100 | DN#22846 | Gas | 6,699.21 | 10,490.88 |
-| 30 Jul 2026 | Invoice | 52193 | DN#23928 | Gas | 314.03 | 10,804.91 |
+| 07 Aug 2026 | Crd Note | 15556 ¹ | DN#24252 | Gas | -314.03 | 3,477.64 |
+| 07 Aug 2026 | Invoice | 52391 ¹ | DN#24252 | Gas | 314.03 | 3,791.67 |
+| 07 Aug 2026 | Invoice | 52813 | DN#24252 | Gas | 280.39 | 4,072.06 |
+| 12 Aug 2026 | Crd Note | 15557 ¹ | DN#24904 | Gas | -5,981.61 | -1,909.55 |
+| 12 Aug 2026 | Invoice | 52515 ¹ | DN#24904 | Gas | 5,981.61 | 4,072.06 |
+| 12 Aug 2026 | Invoice | 52814 ¹ | DN#24904 | Gas | 5,981.61 | 10,053.67 |
+| 14 Aug 2026 | Invoice | 52547 | DN#24272 | Gas | 280.39 | 10,334.06 |
+| 17 Aug 2026 | Payment | 45782 | TRANSF \| STAT 129 | Gas | -594.42 | 9,739.64 |
+
+### September 2026
+
+| Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
+| 01 Sept 2026 | Invoice | 52893 | DN#24805 | Gas | 6,262.00 | 16,001.64 |
+| 07 Sept 2026 | Invoice | 53011 ¹ | DN#24971 | Gas | 285.84 | 16,287.48 |
+| 08 Sept 2026 | Payment | 46092 ¹ | TRANSF \| STAT 130 | Gas | -6,268.00 | 10,019.48 |
+| 14 Sept 2026 | Payment | 46160 | TRANSF \| STAT 130 | Gas | -285.84 | 9,733.64 |
+| 17 Sept 2026 | Invoice | 53214 | DN#24999 | Gas | 5,520.00 | 15,253.64 |
+| 17 Sept 2026 | Invoice | 53215 | DN-25000 | Gas | 258.75 | 15,512.39 |
+| 21 Sept 2026 | Payment | 46237 | TRANSF \| STAT 130 | Gas | -5,805.84 | 9,706.55 |
+| 25 Sept 2026 | Invoice | 53293 | DN#21379 | Gas | 258.75 | 9,965.30 |
+| 29 Sept 2026 | Invoice | 53355 | DN#23818 | Gas | 258.75 | 10,224.05 |
+
+### October 2026
+
+| Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
+| 02 Oct 2026 | Invoice | 53436 | DN-21397 | Gas | 5,520.00 | 15,744.05 |
+| 02 Oct 2026 | Invoice | 53446 | DN-23836 | Gas | 258.75 | 16,002.80 |
 
 **Cylinder deposit opening balance:** R0.00
 
@@ -157,6 +184,27 @@
 | 01 Jun 2026 | Invoice | 50982 ¹ | DN#22613-EMPTY | Cylinder deposit | 517.50 | 517.50 |
 | 03 Jun 2026 | Crd Note | 15015 ¹ | DN#22613-EMPTY | Cylinder deposit | -517.50 | 0.00 |
 
+### August 2026
+
+| Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
+| 22 Aug 2026 | Invoice | 52739 ¹ | DN#24930-EMPTY | Cylinder deposit | 517.50 | 517.50 |
+| 24 Aug 2026 | Crd Note | 15536 ¹ | DN#24930-EMPTY | Cylinder deposit | -517.50 | 0.00 |
+
+### September 2026
+
+| Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
+| 17 Sept 2026 | Crd Note | 15661 ¹ | 25000 | Cylinder deposit | -517.50 | -517.50 |
+| 17 Sept 2026 | Invoice | 53174 ¹ | 25000 | Cylinder deposit | 517.50 | 0.00 |
+
+### October 2026
+
+| Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
+| 02 Oct 2026 | Crd Note | 15747 ¹ | 21397 | Cylinder deposit | -4,830.00 | -4,830.00 |
+| 02 Oct 2026 | Invoice | 53437 ¹ | 21397 | Cylinder deposit | 4,830.00 | 0.00 |
+
 ¹ Payment received; allocation to this item is being confirmed.
 
 ---
@@ -166,7 +214,7 @@
 | Component | Gas (R) | Cylinder deposit (R) | Total (R) |
 | :--- | ---: | ---: | ---: |
 | Opening balance | 4,945.93 | 0.00 | 4,945.93 |
-| Open items listed above | 5,858.98 | 0.00 | 5,858.98 |
+| Open items listed above | 11,056.87 | 0.00 | 11,056.87 |
 | Rounding on settled items | 0.06 | 0.00 | 0.06 |
-| **Balance** | 10,804.97 | 0.00 | 10,804.97 |
+| **Balance** | 16,002.86 | 0.00 | 16,002.86 |
 

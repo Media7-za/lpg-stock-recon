@@ -52,6 +52,10 @@
     {
       "date": "2026-10-06",
       "event": "Live v5 projection run (build step 1, PROPOSED_Projection_Matching_Locks.md) — CONNECTOR-SOURCED (db_replay, Supabase project oqhpxnaadahohwkslive; 5 md5-verified captures in data/db_replay/2026-10-06/), not a direct DB read. Ingest coverage complete/current, 0 gaps. ERP tie R10,804.97, variance R0.00 (PROVEN vs TXT header). Statement output unchanged except the regeneration date. data/v5_projection.json: 311 rows (DB_LINES 251, PAYMENT_LANE 60, HEADER_FALLBACK 0); checks all true; source.dbChannel=supabase-connector-replay."
+    },
+    {
+      "date": "2026-10-07",
+      "event": "Refresh with ERP TXT as at 2026-10-02 (raw/SA0001_2026-10-07.TXT; same B/F R4,945.93; 310 earlier lines identical, 48 new). CONNECTOR-SOURCED (db_replay, 5 md5-verified captures in data/db_replay/2026-10-07/). ERP tie R16,002.86, variance R0.00 (PROVEN). All 112 locks of close C0001 re-applied, 0 conflicts. Ingest CURRENT_PARTIAL: 10 gaps (correction docs 15556/52813/15557/52814 not in DB; 6 payments without DB headers). Payment 45579 R7,013.24 settles July gas 52100+52193 (EXACT_MONTH_SUM, confirmed). New finding for operator: from Aug 2026 invoices were credited and re-issued at lower prices (e.g. 53173 R285.84 → 53215 R258.75) while payments 46160 R285.84 / 46237 R5,805.84 / 45782 R594.42 match the original amounts — possible overpayments; left unallocated, not forced. Open items 26 rows (internal)."
     }
   ]
 }
