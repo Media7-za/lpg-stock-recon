@@ -59,6 +59,14 @@ test('evidence: PDF lines accepted only when they reconcile; malformed manifests
   assert.match(bad.skipped.find((s) => s.batchId).reason, /do not reconcile/);
 });
 
+test('evidence: batches in an unsupported manifest schema are skipped, never emitted with nulls', () => {
+  const snake = { batch_id: 'BATCH-2024-03-26', erp_payment_doc: '00029684', cash_amount: 73610.18 };
+  const out = buildRemittanceEvidence(tmpAccount({ batches: [snake] }), { extract: () => ADVICE });
+  assert.equal(out.batches.length, 0);
+  const s = out.skipped.find((x) => x.batchId === 'BATCH-2024-03-26');
+  assert.match(s.reason, /unsupported manifest schema/);
+});
+
 let n = 0;
 const row = (o) => ({
   row_id: `${o.doc}|${o.type || 'Invoice'}|${o.lane || 'LPG'}|L${++n}`,

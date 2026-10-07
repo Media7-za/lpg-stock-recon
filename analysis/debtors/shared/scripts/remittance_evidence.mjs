@@ -103,6 +103,17 @@ export function buildRemittanceEvidence(acctDir, { extract = pdfText } = {}) {
     const manifest = readJsonTolerant(mPath, skipped);
     if (!manifest) continue;
     for (const b of manifest.batches || []) {
+      // Only the MD0003-style schema (batchId / erpPaymentDoc / remittanceTotal) is supported.
+      // Other layouts (e.g. TWK002's snake_case batch_id / erp_payment_doc / cash_amount) need
+      // their own adapter; skip them rather than emit batches full of nulls.
+      if (!b.batchId || b.remittanceTotal == null) {
+        skipped.push({
+          file: f,
+          batchId: b.batchId || b.batch_id || null,
+          reason: 'unsupported manifest schema (expected batchId + remittanceTotal); adapter not built',
+        });
+        continue;
+      }
       const base = {
         batchId: b.batchId,
         paymentDoc: b.erpPaymentDoc ? String(b.erpPaymentDoc).replace(/^0+/, '') : null,
