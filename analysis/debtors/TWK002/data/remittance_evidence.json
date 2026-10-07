@@ -1,0 +1,110 @@
+{
+  "batches": [],
+  "skipped": [
+    {
+      "file": "remittance_manifest_2023.json",
+      "batchId": "BATCH-2023-06-26",
+      "reason": "unsupported manifest schema (expected batchId + remittanceTotal); adapter not built"
+    },
+    {
+      "file": "remittance_manifest_2023.json",
+      "batchId": "BATCH-2023-07-26",
+      "reason": "unsupported manifest schema (expected batchId + remittanceTotal); adapter not built"
+    },
+    {
+      "file": "remittance_manifest_2023.json",
+      "batchId": "BATCH-2023-08-28",
+      "reason": "unsupported manifest schema (expected batchId + remittanceTotal); adapter not built"
+    },
+    {
+      "file": "remittance_manifest_2023.json",
+      "batchId": "BATCH-2023-09-26",
+      "reason": "unsupported manifest schema (expected batchId + remittanceTotal); adapter not built"
+    },
+    {
+      "file": "remittance_manifest_2023.json",
+      "batchId": "BATCH-2023-10-26",
+      "reason": "unsupported manifest schema (expected batchId + remittanceTotal); adapter not built"
+    },
+    {
+      "file": "remittance_manifest_2023.json",
+      "batchId": "BATCH-2023-11-27",
+      "reason": "unsupported manifest schema (expected batchId + remittanceTotal); adapter not built"
+    },
+    {
+      "file": "remittance_manifest_2024.json",
+      "batchId": "BATCH-2024-03-26",
+      "reason": "unsupported manifest schema (expected batchId + remittanceTotal); adapter not built"
+    },
+    {
+      "file": "remittance_manifest_2024.json",
+      "batchId": "BATCH-2024-04-26",
+      "reason": "unsupported manifest schema (expected batchId + remittanceTotal); adapter not built"
+    },
+    {
+      "file": "remittance_manifest_2024.json",
+      "batchId": "BATCH-2024-05-27",
+      "reason": "unsupported manifest schema (expected batchId + remittanceTotal); adapter not built"
+    },
+    {
+      "file": "remittance_manifest_2024.json",
+      "batchId": "BATCH-2024-06-26",
+      "reason": "unsupported manifest schema (expected batchId + remittanceTotal); adapter not built"
+    },
+    {
+      "file": "remittance_manifest_2024.json",
+      "batchId": "BATCH-2024-07-26",
+      "reason": "unsupported manifest schema (expected batchId + remittanceTotal); adapter not built"
+    },
+    {
+      "file": "remittance_manifest_2024.json",
+      "batchId": "BATCH-2024-08-26",
+      "reason": "unsupported manifest schema (expected batchId + remittanceTotal); adapter not built"
+    },
+    {
+      "file": "remittance_manifest_2024.json",
+      "batchId": "BATCH-2024-09-26",
+      "reason": "unsupported manifest schema (expected batchId + remittanceTotal); adapter not built"
+    },
+    {
+      "file": "remittance_manifest_2024.json",
+      "batchId": "BATCH-2024-10-26",
+      "reason": "unsupported manifest schema (expected batchId + remittanceTotal); adapter not built"
+    },
+    {
+      "file": "remittance_manifest_2024.json",
+      "batchId": "BATCH-2024-11-26",
+      "reason": "unsupported manifest schema (expected batchId + remittanceTotal); adapter not built"
+    },
+    {
+      "file": "remittance_manifest_2024.json",
+      "batchId": "BATCH-2024-12-27",
+      "reason": "unsupported manifest schema (expected batchId + remittanceTotal); adapter not built"
+    },
+    {
+      "file": "remittance_manifest_2025.json",
+      "batchId": "BATCH-2025-01-31",
+      "reason": "unsupported manifest schema (expected batchId + remittanceTotal); adapter not built"
+    },
+    {
+      "file": "remittance_manifest_2025.json",
+      "batchId": "BATCH-2025-03-31",
+      "reason": "unsupported manifest schema (expected batchId + remittanceTotal); adapter not built"
+    },
+    {
+      "file": "remittance_manifest_2025.json",
+      "batchId": "BATCH-2025-05-31",
+      "reason": "unsupported manifest schema (expected batchId + remittanceTotal); adapter not built"
+    },
+    {
+      "file": "remittance_manifest_2026.json",
+      "batchId": "BATCH-2026-STAT-123",
+      "reason": "unsupported manifest schema (expected batchId + remittanceTotal); adapter not built"
+    },
+    {
+      "file": "remittance_manifest_2026.json",
+      "batchId": "BATCH-2026-STAT-129",
+      "reason": "unsupported manifest schema (expected batchId + remittanceTotal); adapter not built"
+    }
+  ]
+}

@@ -148,6 +148,14 @@
     {
       "date": "2026-08-30",
       "event": "H-027 ratified as current-period BS reclassification (DR AR Historical Reconciliation Suspense / CR AR Control) — not accept-in-header, not P&L write-off. Root cause named as sub-ledger↔GL desync. Sequence: H-022/H-023/H-026 then rebuild then journal. Instruction docs/TWK002_ERP_Agent_Note_H027_BS_Reclassification.md. P12 portfolio playbook staged NOT RATIFIED."
+    },
+    {
+      "date": "2026-10-07",
+      "event": "v5 projection -> matching -> open-items pipeline run, CONNECTOR-SOURCED (db_replay): 5 captures in data/db_replay/2026-10-07/ (md5/length verified by record_capture.mjs, project oqhpxnaadahohwkslive). Authorisation (operator, this session, verbatim): \"I authorise connector replay for JEN001, TWK002 and MD0003.\" TXT raw/DEBENQ_TWK002.TXT (sha256 75317d0c..., as-at 2026-08-09) used as configured. PROVEN: coverage CURRENT_COMPLETE, 99/99 TXT docs healthy, 0 gaps, 52 DB-only docs all dated 2026-08/09 (after TXT as-at) (reports/TWK002_INGEST_COVERAGE_2026-10-07.json). PROVEN: v5 1A R110,311.54 + 1B R7,820.00 = R118,131.54 = ERP CURRENT BALANCE, variance R0.00, self-checks lpgRowsReproduce1A/cylRowsReproduce1B/tiesToErpHeader all true, dbChannel supabase-connector-replay (data/v5_projection.json). Matching (PROPOSED - NOT RATIFIED, data/projection_matches.json): 48 ties (45 confirmed, 3 probable): CN_DN_PAIR 32, EXACT_SINGLE 16; 23 payment rows, 7 unallocated totalling R-96,099.26; proof rebuilt R118,131.54 = ERP, HOLDS. Open items (reports/TWK002_Open_Items_v5.md): internal 74 rows, customer preview 80 rows, both tie to R118,131.54; 24 open invoice lane-rows R268,466.05 (17 LPG R163,586.05 + 7 CYL R104,880.00). Remittance evidence NOT APPLIED: data/remittance_evidence.json has 10 batches (all from remittance_manifest_2024.json, null payment/cash, lines doc 'undefined') + 11 skipped ('no lines in manifest and no PDF reference'); 0 applied. TWK002 manifests (snake_case batches + remittance_lines_YYYY.csv) and TWK 'R E M I T T A N C E   A D V I C E' PDFs are not supported by remittance_evidence.mjs - adapter needed (not written). Note: raw/DEBENQTWK002CURRENT.TXT (as-at 2026-08-26, balance R27,721.81, includes payment 45899 STAT 129) is later than the configured TXT - not switched; operator decision."
+    },
+    {
+      "date": "2026-10-07",
+      "event": "Correction to the preceding entry (appended, not edited): the 10 remittance batches with null payment/cash and doc \"undefined\" were an artefact of remittance_evidence.mjs reading TWK002 snake_case manifests with the MD0003 schema. The builder now skips unsupported-schema batches; data/remittance_evidence.json regenerated with 0 batches, 21 skipped (\"unsupported manifest schema ... adapter not built\"). Ties, open items and ERP tie unchanged (48 ties; R118,131.54, variance R0.00; PROVEN by re-running match_projection.mjs and render_open_items.mjs, no DB access)."
     }
   ]
 }
