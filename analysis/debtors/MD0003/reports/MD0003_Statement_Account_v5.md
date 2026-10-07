@@ -3,7 +3,7 @@
 **Combined Opening B/F:** R52,607.52 (ERP verified — source: `analysis/debtors/MD0003/raw/MD0003CURRENT.TXT` MD0003CURRENT.TXT line 14 — BALANCE B/F before 2025 payment sequence)
 **LPG Opening B/F (1A):** R52,607.52 &nbsp;|&nbsp; **CYL Opening B/F (1B):** R0.00
 **Payment routing:** LPG lane (payments post to Part 1A unless configured otherwise)
-**Last regenerated:** 2026-10-06 from ERP TXT (`reconcile_debtor_v5_from_txt.mjs`)
+**Last regenerated:** 2026-10-07 from ERP TXT (`reconcile_debtor_v5_from_txt.mjs`)
 
 ---
 
