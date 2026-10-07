@@ -154,6 +154,10 @@ export function renderOpenItemsMarkdown(model, { cfg, projection, matches, gener
     L.push(
       `**Sources:** \`${matches.projection.path}\` (TXT sha256 \`${projection.source.txtSha256.slice(0, 12)}…\`, DB channel \`${projection.source.dbChannel}\`) · \`data/projection_matches.json\` (${matches.summary.confirmed} confirmed / ${matches.summary.probable} probable ties)${matches.reviewOnly ? ` · **REVIEW ONLY:** ${matches.reviewOnlyReasons.join('; ')}` : ''}`,
     );
+    L.push(
+      `**Locks:** ${matches.closedThrough ? `closed through ${matches.closedThrough}, ${matches.locksApplied} locks applied` : 'no period closed yet'}` +
+        `${(matches.lockConflicts || []).length ? ` · **${matches.lockConflicts.length} LOCK CONFLICT(S): see Appendix C**` : ''}`,
+    );
   } else {
     L.push(
       '> **Draft preview, not for release.** This copy lists only items not yet settled. Customer release goes through the official statement generator and `npm run debtors:tag-check` (business_rules.md §15).',
@@ -199,7 +203,8 @@ export function renderOpenItemsMarkdown(model, { cfg, projection, matches, gener
     } else {
       L.push('| Tie | Rule | Documents | Variance (R) | Note |', '| :--- | :--- | :--- | ---: | :--- |');
       for (const t of appendix) {
-        const note =
+        const closedNote = t.inClosedPeriod ? ' (closed period: not locked)' : '';
+        const note0 =
           t.rule === 'REMITTANCE'
             ? `${t.batchId}: ${(t.lineDiscrepancies || []).map((d) => `${d.doc} advice R${fmt(d.advice)} vs ERP R${fmt(d.erp)}`).join('; ')}`
             : t.lagDays != null
@@ -209,6 +214,7 @@ export function renderOpenItemsMarkdown(model, { cfg, projection, matches, gener
                 : t.rule === 'PROXIMITY'
                   ? 'within ±R5.00'
                   : '';
+        const note = `${note0}${closedNote}`;
         L.push(`| ${t.tie_id} | ${t.rule} | ${t.docs.join(', ')} | ${t.variance != null ? fmt(t.variance) : '—'} | ${note} |`);
       }
       L.push('');
@@ -218,6 +224,11 @@ export function renderOpenItemsMarkdown(model, { cfg, projection, matches, gener
     for (const t of matches.ties) if (t.confidence === 'CONFIRMED') byRule[t.rule] = (byRule[t.rule] || 0) + 1;
     for (const [r, n] of Object.entries(byRule)) L.push(`| ${r} | ${n} |`);
     L.push('', `Full tie list: \`data/projection_matches.json\`.`, '');
+    if ((matches.lockConflicts || []).length) {
+      L.push('## Appendix C: Lock conflicts (rows left untied; closes blocked until resolved)', '', '| Lock | Close | Problem |', '| :--- | :--- | :--- |');
+      for (const c of matches.lockConflicts) L.push(`| ${c.lock_id} | ${c.close_id} | ${cell(c.problems.join('; '))} |`);
+      L.push('');
+    }
   }
   return `${L.join('\n')}\n`;
 }

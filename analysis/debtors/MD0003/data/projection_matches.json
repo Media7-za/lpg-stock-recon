@@ -2,7 +2,7 @@
   "status": "PROPOSED — NOT RATIFIED (PROPOSED_Projection_Matching_Locks.md, build step 2)",
   "debtorCode": "MD0003",
   "generatedBy": "match_projection.mjs",
-  "generatedAt": "2026-10-06T19:41:42.245Z",
+  "generatedAt": "2026-10-07T15:57:07.559Z",
   "projection": {
     "path": "analysis/debtors/MD0003/data/v5_projection.json",
     "txtSha256": "71d0ea37f7fb2e2b6c094f3330734fe7aac8d05f48d930ba5c26dbcf1494f586",
@@ -11,8 +11,11 @@
   },
   "reviewOnly": false,
   "reviewOnlyReasons": [],
+  "locksRegistry": "config/payment_pattern_overrides.json#projectionLocks",
+  "matcherVersion": 3,
+  "closedThrough": null,
   "locksApplied": 0,
-  "matcherVersion": 2,
+  "lockConflicts": [],
   "rules": {
     "exactTolerance": 0.05,
     "proximityTolerance": 5,

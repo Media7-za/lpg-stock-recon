@@ -1,7 +1,8 @@
 # Open Items Statement: SAKI - VICTORIA RD (SA0001) — Internal
 **Period:** from 07 Feb 2023 to 31 Jul 2026 &nbsp;|&nbsp; **Balance due:** R10,804.97
-**Status:** PROPOSED — NOT RATIFIED (`PROPOSED_Projection_Matching_Locks.md`, build step 3) · generated 2026-10-06 by `render_open_items.mjs`
+**Status:** PROPOSED — NOT RATIFIED (`PROPOSED_Projection_Matching_Locks.md`, build step 3) · generated 2026-10-07 by `render_open_items.mjs`
 **Sources:** `analysis/debtors/SA0001/data/v5_projection.json` (TXT sha256 `dab06b2f0efc…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (123 confirmed / 13 probable ties)
+**Locks:** closed through 2026-06-30, 112 locks applied
 
 ---
 
@@ -95,29 +96,29 @@
 
 | Tie | Rule | Documents | Variance (R) | Note |
 | :--- | :--- | :--- | ---: | :--- |
-| T0008 | CN_DN_PAIR | Invoice 42584, Crd Note 12361 | — | CN 3 day(s) after invoice |
-| T0031 | CN_DN_PAIR | Invoice 46653, Crd Note 13559 | — | CN 4 day(s) after invoice |
-| T0038 | CN_DN_PAIR | Invoice 47451, Crd Note 13805 | — | CN 2 day(s) after invoice |
-| T0049 | CN_DN_PAIR | Invoice 48825, Crd Note 14311 | — | CN 5 day(s) after invoice |
-| T0054 | CN_DN_PAIR | Invoice 49456, Crd Note 14516 | — | CN 4 day(s) after invoice |
-| T0055 | CN_DN_PAIR | Invoice 49457, Crd Note 14517 | — | CN 4 day(s) after invoice |
-| T0063 | CN_DN_PAIR | Invoice 50289, Crd Note 14780 | — | CN 2 day(s) after invoice |
-| T0070 | CN_DN_PAIR | Invoice 50982, Crd Note 15015 | — | CN 2 day(s) after invoice |
-| T0082 | CN_AMOUNT_DATE | Invoice 44988, Crd Note 13028 | — | CN 0 day(s) after invoice |
-| T0083 | CN_AMOUNT_DATE | Invoice 45002, Crd Note 13264 | — | CN 0 day(s) after invoice |
-| T0084 | CN_AMOUNT_DATE | Invoice 49904, Crd Note 14651 | — | CN 0 day(s) after invoice |
-| T0087 | NEAR_SUM | Payment 38531, Invoice 42816, Invoice 42583 | -0.06 | within R1.00 truncation |
-| T0089 | PROXIMITY | Payment 38878, Invoice 43375 | 0.20 | within ±R5.00 |
+| T0113 | CN_DN_PAIR | Invoice 42584, Crd Note 12361 | — | CN 3 day(s) after invoice (closed period: not locked) |
+| T0114 | CN_DN_PAIR | Invoice 46653, Crd Note 13559 | — | CN 4 day(s) after invoice (closed period: not locked) |
+| T0115 | CN_DN_PAIR | Invoice 47451, Crd Note 13805 | — | CN 2 day(s) after invoice (closed period: not locked) |
+| T0116 | CN_DN_PAIR | Invoice 48825, Crd Note 14311 | — | CN 5 day(s) after invoice (closed period: not locked) |
+| T0117 | CN_DN_PAIR | Invoice 49456, Crd Note 14516 | — | CN 4 day(s) after invoice (closed period: not locked) |
+| T0118 | CN_DN_PAIR | Invoice 49457, Crd Note 14517 | — | CN 4 day(s) after invoice (closed period: not locked) |
+| T0119 | CN_DN_PAIR | Invoice 50289, Crd Note 14780 | — | CN 2 day(s) after invoice (closed period: not locked) |
+| T0120 | CN_DN_PAIR | Invoice 50982, Crd Note 15015 | — | CN 2 day(s) after invoice (closed period: not locked) |
+| T0127 | CN_AMOUNT_DATE | Invoice 44988, Crd Note 13028 | — | CN 0 day(s) after invoice (closed period: not locked) |
+| T0128 | CN_AMOUNT_DATE | Invoice 45002, Crd Note 13264 | — | CN 0 day(s) after invoice (closed period: not locked) |
+| T0129 | CN_AMOUNT_DATE | Invoice 49904, Crd Note 14651 | — | CN 0 day(s) after invoice (closed period: not locked) |
+| T0130 | NEAR_SUM | Payment 38531, Invoice 42816, Invoice 42583 | -0.06 | within R1.00 truncation (closed period: not locked) |
+| T0131 | PROXIMITY | Payment 38878, Invoice 43375 | 0.20 | within ±R5.00 (closed period: not locked) |
 
 ## Appendix B: Confirmed ties by rule
 
 | Rule | Ties |
 | :--- | ---: |
-| UD_CLEARING | 2 |
-| CN_DN_PAIR | 71 |
-| EXACT_MONTH_SUM | 11 |
-| EXACT_SUM | 9 |
-| EXACT_SINGLE | 30 |
+| LOCKED | 112 |
+| CN_DN_PAIR | 6 |
+| EXACT_SINGLE | 3 |
+| EXACT_SUM | 1 |
+| EXACT_MONTH_SUM | 1 |
 
 Full tie list: `data/projection_matches.json`.
 

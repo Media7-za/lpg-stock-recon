@@ -15,9 +15,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { fileFingerprint, verifyProjection } from './v5_projection.mjs';
-import { matchProjection } from './projection_matcher.mjs';
-import { buildRemittanceEvidence } from './remittance_evidence.mjs';
+import { matchAccount } from './match_account.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../../..');
 const i = process.argv.indexOf('--debtor');
@@ -26,32 +24,16 @@ if (!code) {
   console.error('Usage: match_projection.mjs --debtor CODE');
   process.exit(1);
 }
-const acct = path.join(ROOT, 'analysis/debtors', code);
-const projPath = path.join(acct, 'data/v5_projection.json');
-const cfg = JSON.parse(fs.readFileSync(path.join(acct, 'config/statement_v5.json'), 'utf8'));
-const projection = JSON.parse(fs.readFileSync(projPath, 'utf8'));
-const txtPath = path.isAbsolute(cfg.txtPath) ? cfg.txtPath : path.join(ROOT, cfg.txtPath);
-
-const v = verifyProjection(projection, { txtFingerprint: fileFingerprint(txtPath) });
-if (!v.ok) {
-  console.error(`[${code}] REFUSED: ${v.reasons.join('; ')}`);
+const run = matchAccount(ROOT, code);
+if (!run.ok) {
+  console.error(`[${code}] REFUSED: ${run.reasons.join('; ')}`);
   process.exit(2);
 }
-
-// P11: remittance evidence, when the account has remittance manifests.
-const evidence = buildRemittanceEvidence(acct);
-const hasEvidence = evidence.batches.length > 0 || evidence.skipped.length > 0;
-if (hasEvidence) {
+const { acct, projection, evidence, reg, result, reviewOnlyReasons } = run;
+const projPath = path.join(acct, 'data/v5_projection.json');
+if (evidence) {
   fs.writeFileSync(path.join(acct, 'data/remittance_evidence.json'), `${JSON.stringify(evidence, null, 2)}\n`);
 }
-const result = matchProjection(projection, undefined, hasEvidence ? evidence : null);
-const reviewOnlyReasons = [];
-if (!projection.checks.tiesToErpHeader) reviewOnlyReasons.push(`ERP variance R${projection.closings.erpVariance}`);
-if (projection.ingestGate?.ingestCoverage !== 'complete') {
-  reviewOnlyReasons.push(`ingestCoverage ${projection.ingestGate?.ingestCoverage ?? 'unknown'}`);
-}
-if (!result.proof.holds) reviewOnlyReasons.push('residual proof does not hold');
-
 const out = {
   status: 'PROPOSED — NOT RATIFIED (PROPOSED_Projection_Matching_Locks.md, build step 2)',
   debtorCode: code,
@@ -65,7 +47,7 @@ const out = {
   },
   reviewOnly: reviewOnlyReasons.length > 0,
   reviewOnlyReasons,
-  locksApplied: 0, // P5 locks not implemented yet
+  locksRegistry: reg.supported ? (reg.exists ? 'config/payment_pattern_overrides.json#projectionLocks' : 'none yet') : reg.note,
   ...result,
 };
 const outPath = path.join(acct, 'data/projection_matches.json');
@@ -89,5 +71,7 @@ console.log(
 console.log(
   `[${code}] proof: rebuilt R${result.proof.rebuiltClosing} vs closing R${result.proof.projectionClosing} (ERP R${result.proof.erpCurrentBalance}) → ${result.proof.holds ? 'HOLDS' : 'FAILS'}`,
 );
+console.log(`[${code}] locks: closedThrough ${result.closedThrough ?? '—'}, applied ${result.locksApplied}, conflicts ${result.lockConflicts.length}`);
+for (const c of result.lockConflicts) console.log(`  - CONFLICT ${c.lock_id}: ${c.problems.join('; ')}`);
 console.log(`[${code}] reviewOnly: ${out.reviewOnly}${out.reviewOnly ? ` (${reviewOnlyReasons.join('; ')})` : ''}`);
 console.log(`Written ${path.relative(ROOT, outPath)}`);

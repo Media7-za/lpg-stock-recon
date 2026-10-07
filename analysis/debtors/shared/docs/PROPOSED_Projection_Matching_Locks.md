@@ -329,6 +329,17 @@ as `discountPending` (P9). The open-items statement shows "settlement discount j
 (`remittance_evidence.test.mjs`). TWK002's CSV remittance format and CAP000 (no structured remittance file yet) are
 **not yet adapted**.
 
+**Progress (2026-10-07, P5–P6 locks & period close):** `locks.mjs` (pure) holds the registry model
+(`config/payment_pattern_overrides.json` → new top-level key `projectionLocks`; existing `overrides` are untouched),
+the split-gate `planClose` and append-only voids. `close_period.mjs` closes or voids. `match_account.mjs` is the shared runner,
+so a close locks exactly what the matcher produces. The matcher (v3) applies locks first; a changed or missing locked member
+becomes a CONFLICT that blocks further closes. Locks are keyed by document, type, lane, date and amount, never by TXT line.
+**Design correction (2026-10-07):** P5's "frontier" means the *unlocked* rows, not rows after the close date. A
+date-based frontier was tried and dropped: it froze closed-period probable ties into open items (16 → 43 rows) and would have
+ignored late remittances for old payments. Non-LOCKED ties inside the closed period are now flagged `inClosedPeriod`.
+SA0001 closed C0001 through 2026-06-30: 112 locks; statement unchanged (16 rows, R0.00 variance). WO0001 is refused
+(flat-array legacy registry). 7 tests (`locks.test.mjs`).
+
 ## Lessons from `payment_doc_allocation.mjs` (open question 6, read-only, 2026-10-06)
 
 Why the "shared" engine never spread beyond WO0001 (PROVEN from code reading unless tagged):

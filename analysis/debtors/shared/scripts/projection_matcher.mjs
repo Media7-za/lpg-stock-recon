@@ -7,6 +7,14 @@
  * so "open items + tie variances + opening B/F = ERP balance" holds by construction.
  *
  * Rule order (P4 defaults, all accounts):
+ *   0. LOCKED           (P5–P6) active locks from the account's projectionLocks registry are
+ *                       applied first as fixed facts. A lock whose members are missing or
+ *                       changed becomes a CONFLICT and its rows stay untied. Every other rule
+ *                       then runs on the unlocked frontier: rows no lock has taken, whatever
+ *                       their date, so late evidence (e.g. a remittance for an old payment) can
+ *                       still resolve closed-period open items. A new tie whose members all
+ *                       fall on/before closedThrough is flagged `inClosedPeriod` for review;
+ *                       the next close locks it if CONFIRMED.
  *   1. UD_CLEARING      Bank UD (+) and Payment (−) on the same doc, equal and opposite.
  *   1b. REMITTANCE      (P11; only when remittance evidence is supplied) the advice names
  *                       the payment doc and every document it settles. Ties the payment and
@@ -44,7 +52,9 @@
  * (P11), payerGroup (P8), pre-window lookback (P7).
  */
 
-export const MATCHER_VERSION = 2;
+import { rowKey } from './locks.mjs';
+
+export const MATCHER_VERSION = 3;
 
 export const RULES = Object.freeze({
   exactTolerance: 0.05,
@@ -81,7 +91,7 @@ function combos(arr, k, start = 0, acc = [], out = []) {
   return out;
 }
 
-export function matchProjection(projection, rules = RULES, evidence = null) {
+export function matchProjection(projection, rules = RULES, evidence = null, locks = null) {
   const rows = projection.rows;
   const tiedRow = new Map(); // row_id -> tie_id
   const ties = [];
@@ -90,6 +100,7 @@ export function matchProjection(projection, rules = RULES, evidence = null) {
     let conf = confidence;
     if (conf === 'CONFIRMED' && members.some((r) => !r.confirmable)) conf = 'PROBABLE';
     const net = round2(members.reduce((s, r) => s + r.amount, 0));
+    const inClosedPeriod = Boolean(closedThrough) && rule !== 'LOCKED' && members.every((r) => r.date <= closedThrough);
     ties.push({
       tie_id,
       rule,
@@ -97,12 +108,41 @@ export function matchProjection(projection, rules = RULES, evidence = null) {
       members: members.map((r) => r.row_id),
       docs: [...new Set(members.map((r) => `${r.entry_type} ${r.clean_doc}`))],
       net,
+      ...(inClosedPeriod ? { inClosedPeriod: true } : {}),
       ...extra,
     });
     for (const r of members) tiedRow.set(r.row_id, tie_id);
     return tie_id;
   };
   const free = (r) => !tiedRow.has(r.row_id);
+  const closedThrough = locks?.closedThrough || null;
+
+  // 0. Locks (P5–P6): fixed facts, matched by stable key, never by TXT line number.
+  const lockConflicts = [];
+  let locksApplied = 0;
+  if (locks?.locks?.length) {
+    const byKey = new Map();
+    for (const r of rows) {
+      const k = rowKey(r);
+      if (!byKey.has(k)) byKey.set(k, []);
+      byKey.get(k).push(r);
+    }
+    for (const lock of locks.locks) {
+      const members = [];
+      const problems = [];
+      for (const m of lock.members) {
+        const cand = (byKey.get(m.key) || []).find((r) => free(r) && !members.includes(r));
+        if (cand) members.push(cand);
+        else problems.push(`${m.entry_type} ${m.doc} ${m.lane} ${m.date} R${m.amount} not found unchanged`);
+      }
+      if (problems.length) {
+        lockConflicts.push({ lock_id: lock.lock_id, close_id: lock.close_id, problems });
+        continue;
+      }
+      addTie('LOCKED', 'CONFIRMED', members, { lock_id: lock.lock_id, close_id: lock.close_id, lockedRule: lock.rule });
+      locksApplied += 1;
+    }
+  }
 
   // 1. UD clearing pairs
   const byDoc = new Map();
@@ -347,6 +387,9 @@ export function matchProjection(projection, rules = RULES, evidence = null) {
   const count = (pred) => ties.filter(pred).length;
   return {
     matcherVersion: MATCHER_VERSION,
+    closedThrough,
+    locksApplied,
+    lockConflicts,
     rules,
     summary: {
       ties: ties.length,
