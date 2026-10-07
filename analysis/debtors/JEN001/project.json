@@ -94,6 +94,10 @@
     {
       "date": "2026-08-29",
       "event": "Session close: project.json financials synced to DEBENQ.TXT; collections blockers for Tier-1 gap + no snapshot; handoff docs/handoffs/2026-08-29.md."
+    },
+    {
+      "date": "2026-10-07",
+      "event": "v5 projection -> matching -> open-items run. CONNECTOR-SOURCED (db_replay, 5 md5-verified captures in data/db_replay/2026-10-07/); source.dbChannel=supabase-connector-replay. Operator authorisation (2026-10-07, verbatim): \"I authorise connector replay for JEN001, TWK002 and MD0003.\" ERP tie PROVEN: DEBENQ.TXT CURRENT BALANCE R22,685.21 = projection closing R22,685.21 (1A LPG R23,202.71 + 1B CYL R-517.50), variance R0.00, self-checks pass (data/v5_projection.json). Coverage CURRENT_COMPLETE: 22/22 TXT docs healthy, 0 gaps; 11 DB-only docs dated 2026-08-19..2026-10-05 not yet in TXT (TXT as-at 2026-08-14) (reports/JEN001_INGEST_COVERAGE_2026-10-07.md). Ties: 8 confirmed (CN_DN_PAIR 8), 0 probable; 1 payment unallocated (45717, R-15,000); no locks (data/projection_matches.json). Open items: 6 rows (5 LPG invoices R15,597.11 + payment R-15,000), proof rebuilds R22,685.21, variance R0.00 (reports/JEN001_Open_Items_v5.md). PROPOSED — NOT RATIFIED pipeline; ratified STAT 129 allocation (2026-08-25) not reflected in projection matching."
     }
   ]
 }

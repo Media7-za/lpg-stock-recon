@@ -3,7 +3,7 @@
 **Combined Opening B/F:** R22,088.10 (ERP verified — source: `analysis/debtors/JEN001/raw/DEBENQ.TXT` DEBENQ.TXT line 14 — BALANCE B/F (post payment 44878, 25 Jun 2026))
 **LPG Opening B/F (1A):** R22,605.60 &nbsp;|&nbsp; **CYL Opening B/F (1B):** R-517.50
 **Payment routing:** LPG lane (payments post to Part 1A unless configured otherwise)
-**Last regenerated:** 2026-08-18 from ERP TXT (`reconcile_debtor_v5_from_txt.mjs`)
+**Last regenerated:** 2026-10-07 from ERP TXT (`reconcile_debtor_v5_from_txt.mjs`)
 
 ---
 
