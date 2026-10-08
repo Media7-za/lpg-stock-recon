@@ -65,6 +65,14 @@
     {
       "date": "2026-08-25",
       "event": "Turn 2 stripped-gas LIFO pilot on MON0012025.TXT: 13 edges (11 LIFO + 2 remainders), gate BLOCKED. 4 decision cards emitted: 33672-REM (R1,543.67 unallocated), 39293 (gross vs net 36720), 35818 (LIFO→39150 vs operator bundle 38044+9078), 36258-REM (R1,110.30 unallocated). Decision-queue mechanism built (md tick → JSON merge)."
+    },
+    {
+      "date": "2026-10-08",
+      "event": "v5 projection → matching → open items run. CONNECTOR-SOURCED (db_replay, 5 md5-verified captures in data/db_replay/2026-10-08/). Authorisation (operator, in-session 2026-10-08): \"I authorize the agent to use database connectors\". TXT raw/MON001CURRENT_FROM202401.TXT (as at 2026-07-22). Coverage CURRENT_PARTIAL: 86 TXT docs, 84 healthy, 2 gaps (pmt 45158 2024-07-11 R-2,628.79 MISSING_HEADER; inv 52130 2026-01-27 R960.00 MISSING_HEADER), 49 DB-only (PROVEN, reports/MON001_INGEST_COVERAGE_2026-10-08.json). ERP CURRENT R2,717.79 = 1A R3,665.79 + 1B R-948.00, variance R0.00; self-checks all true; dbChannel supabase-connector-replay (PROVEN, data/v5_projection.json). Opening B/F R3,049.63 remains a derived plug (ASSUMED, config/statement_v5.json). Ties 31 (29 confirmed / 2 probable): EXACT_SINGLE 15 confirmed, CN_DN_PAIR 13 confirmed + 2 probable, EXACT_MONTH_SUM 1 confirmed; 4 of 20 payments unallocated R-16,364.78; proof rebuilt R2,717.79 HOLDS; reviewOnly (ingestCoverage partial) (data/projection_matches.json). Open items: internal 25 rows, customer preview 29 rows, both tie to ERP R2,717.79 (reports/MON001_Open_Items_v5.md). Matching is PROPOSED — NOT RATIFIED."
+    },
+    {
+      "date": "2026-10-08",
+      "event": "Main session review of the preceding connector-sourced run: the ERP tie (R2,717.79, variance R0.00) is CIRCULAR, not a proof. The configured TXT raw/MON001CURRENT_FROM202401.TXT carries a derived B/F R3,049.63 (config bfSourceNote: ERP CURRENT R2,717.79 minus sum(all rows); Jan-May 2024 from DB headers), so it ties by construction (ASSUMED). The regenerated reports/MON001_Statement_Account_v5.md (last committed 933949a from FROM202406.TXT) and the UI fixture were therefore NOT replaced; kept as review-only evidence: captures, ingest coverage, data/v5_projection.json, data/projection_matches.json, open-items reports. Tripwire / next step: a genuine ERP DEBENQ export from 2024-01-01 (or ratification of the derived B/F against a full ERP 2024 export) before trusting the 1A/1B split, the R-948.00 cylinder close or any period close. Also open: payments 45158/37379 equal DB invoices 34081/40628 that are absent from the TXT; CN 9078 R-1,745.02 vs R-1,543.67 in MON0012025.TXT."
     }
   ]
 }
