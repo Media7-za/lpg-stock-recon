@@ -1,6 +1,6 @@
 # Statement of Account: REDLANDS HOTEL (RED001) - Version 5 (Sub-Ledger Position Statement)
-**Period:** May 2025 → Jul 2026 &nbsp;|&nbsp; **Account:** RED001
-**Combined Opening B/F:** R0.00 (ERP verified — source: `analysis/debtors/RED001/raw/RED001CURRENT.TXT` RED001CURRENT.TXT line 14 — BALANCE B/F R0.00 before first period row (payment 38566, 08 May 2025))
+**Period:** May 2025 → Oct 2026 &nbsp;|&nbsp; **Account:** RED001
+**Combined Opening B/F:** R0.00 (ERP verified — source: `analysis/debtors/RED001/raw/RED001_2026-10-08.TXT` RED001_2026-10-08.TXT line 14 BALANCE B/F R0.00 (fresh ERP export, Linear ADM-78, CURRENT BALANCE R10,183.43; same export window). Switched on operator instruction 2026-10-08 ("switch the other six accounts ... YES"). SUPERSEDED (kept for the record; previous TXT RED001CURRENT.TXT, CURRENT BALANCE R5,559.76): RED001CURRENT.TXT line 14 — BALANCE B/F R0.00 before first period row (payment 38566, 08 May 2025))
 **LPG Opening B/F (1A):** R0.00 &nbsp;|&nbsp; **CYL Opening B/F (1B):** R0.00
 **Payment routing:** LPG lane (payments post to Part 1A unless configured otherwise)
 **Last regenerated:** 2026-10-08 from ERP TXT (`reconcile_debtor_v5_from_txt.mjs`)
@@ -170,6 +170,49 @@
 | 23 Jul 2026 | Invoice | 52042 | 4,434.42 | 10,389.76 |
 | 24 Jul 2026 | Invoice | 52086 | 4,434.42 | 14,824.18 |
 | 25 Jul 2026 | Crd Note | 15325 | -4,434.42 | 10,389.76 |
+| 28 Jul 2026 | Payment | 45465 | -4,434.42 | 5,955.34 |
+| 31 Jul 2026 | Invoice | 52217 | 5,912.56 | 11,867.90 |
+
+---
+
+### August 2026
+
+| Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
+| :--- | :--- | :--- | ---: | ---: |
+| **01 Aug** | **Opening Balance** | — | | **11,867.90** |
+| 04 Aug 2026 | Payment | 45584 | -5,912.56 | 5,955.34 |
+| 07 Aug 2026 | Invoice | 52382 | 5,912.56 | 11,867.90 |
+| 13 Aug 2026 | Payment | 45715 | -5,912.56 | 5,955.34 |
+| 14 Aug 2026 | Invoice | 52545 | 5,194.96 | 11,150.30 |
+| 17 Aug 2026 | Payment | 45780 | -5,194.96 | 5,955.34 |
+| 18 Aug 2026 | Invoice | 52635 | 5,194.96 | 11,150.30 |
+| 21 Aug 2026 | Invoice | 52705 | 3,896.22 | 15,046.52 |
+| 27 Aug 2026 | Payment | 45924 | -3,896.22 | 11,150.30 |
+| 27 Aug 2026 | Invoice | 52842 | 3,896.22 | 15,046.52 |
+| 31 Aug 2026 | Payment | 45996 | -3,896.22 | 11,150.30 |
+
+---
+
+### September 2026
+
+| Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
+| :--- | :--- | :--- | ---: | ---: |
+| **01 Sep** | **Opening Balance** | — | | **11,150.30** |
+| 08 Sept 2026 | Invoice | 53043 | 5,311.25 | 16,461.55 |
+| 11 Sept 2026 | Payment | 46100 | -5,311.25 | 11,150.30 |
+| 17 Sept 2026 | Invoice | 53163 | 5,311.25 | 16,461.55 |
+| 21 Sept 2026 | Payment | 46236 | -5,311.25 | 11,150.30 |
+| 25 Sept 2026 | Invoice | 53283 | 3,983.44 | 15,133.74 |
+| 29 Sept 2026 | Payment | 46332 | -5,311.25 | 9,822.49 |
+
+---
+
+### October 2026
+
+| Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
+| :--- | :--- | :--- | ---: | ---: |
+| **01 Oct** | **Opening Balance** | — | | **9,822.49** |
+| 01 Oct 2026 | Invoice | 53422 | 3,983.44 | 13,805.93 |
 
 ---
 
@@ -336,6 +379,48 @@
 | 17 Jul 2026 | Crd Note | 15274 | -7,245.00 | -4,830.00 |
 | 24 Jul 2026 | Invoice | 52053 | 3,622.50 | -1,207.50 |
 | 25 Jul 2026 | Crd Note | 15327 | -3,622.50 | -4,830.00 |
+| 31 Jul 2026 | Invoice | 52218 | 4,830.00 | 0.00 |
+| 31 Jul 2026 | Crd Note | 15366 | -4,830.00 | -4,830.00 |
+
+---
+
+### August 2026
+
+| Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
+| :--- | :--- | :--- | ---: | ---: |
+| **01 Aug** | **Opening Balance** | — | | **-4,830.00** |
+| 07 Aug 2026 | Invoice | 52383 | 4,830.00 | 0.00 |
+| 07 Aug 2026 | Crd Note | 15418 | -3,622.50 | -3,622.50 |
+| 14 Aug 2026 | Invoice | 52546 | 4,830.00 | 1,207.50 |
+| 14 Aug 2026 | Crd Note | 15462 | -4,830.00 | -3,622.50 |
+| 18 Aug 2026 | Invoice | 52636 | 4,830.00 | 1,207.50 |
+| 18 Aug 2026 | Crd Note | 15493 | -3,622.50 | -2,415.00 |
+| 21 Aug 2026 | Invoice | 52706 | 3,622.50 | 1,207.50 |
+| 21 Aug 2026 | Crd Note | 15519 | -3,622.50 | -2,415.00 |
+| 28 Aug 2026 | Invoice | 52843 | 3,622.50 | 1,207.50 |
+| 28 Aug 2026 | Crd Note | 15570 | -3,622.50 | -2,415.00 |
+
+---
+
+### September 2026
+
+| Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
+| :--- | :--- | :--- | ---: | ---: |
+| **01 Sep** | **Opening Balance** | — | | **-2,415.00** |
+| 08 Sept 2026 | Invoice | 53044 | 4,830.00 | 2,415.00 |
+| 09 Sept 2026 | Crd Note | 15630 | -6,037.50 | -3,622.50 |
+| 17 Sept 2026 | Invoice | 53164 | 4,830.00 | 1,207.50 |
+| 18 Sept 2026 | Crd Note | 15667 | -4,830.00 | -3,622.50 |
+
+---
+
+### October 2026
+
+| Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
+| :--- | :--- | :--- | ---: | ---: |
+| **01 Oct** | **Opening Balance** | — | | **-3,622.50** |
+| 01 Oct 2026 | Invoice | 53423 | 3,622.50 | 0.00 |
+| 02 Oct 2026 | Crd Note | 15742 | -3,622.50 | -3,622.50 |
 
 ---
 
@@ -343,10 +428,10 @@
 
 | Component | Closing (R) |
 | :--- | ---: |
-| Part 1A — LPG Gas | 10,389.76 |
-| Part 1B — CYL Deposits | -4,830.00 |
-| **Combined (1A + 1B)** | **5,559.76** |
-| ERP `CURRENT BALANCE` (TXT header) | 5,559.76 |
+| Part 1A — LPG Gas | 13,805.93 |
+| Part 1B — CYL Deposits | -3,622.50 |
+| **Combined (1A + 1B)** | **10,183.43** |
+| ERP `CURRENT BALANCE` (TXT header) | 10,183.43 |
 | **Variance (Combined − ERP)** | **0.00** |
 
 ---
@@ -360,10 +445,11 @@
 | Custody / Part 2 qty | **BLOCKED** |
 | SKU analysis | **BLOCKED** |
 
-> **Custody conclusions blocked.** DB qty may be incomplete or stale vs statement TXT (`analysis/debtors/RED001/raw/RED001CURRENT.TXT`). See `RED001_INGEST_COVERAGE_*.md`.
+> **Custody conclusions blocked.** DB qty may be incomplete or stale vs statement TXT (`analysis/debtors/RED001/raw/RED001_2026-10-08.TXT`). See `RED001_INGEST_COVERAGE_*.md`.
 
 **INGEST_GAP documents (custody-blocking):**
 - **45328** (Payment, 2026-07-21) — `MISSING_HEADER`
+- **45465** (Payment, 2026-07-28) — `MISSING_HEADER`
 
 ---
 
@@ -530,7 +616,49 @@
 | 17 Jul 2026 | Crd Note | 15274 | 0 | 0 | 0 | 0 | -6 |
 | 24 Jul 2026 | Invoice | 52053 | 0 | 0 | 0 | 0 | +3 |
 | 25 Jul 2026 | Crd Note | 15327 | 0 | 0 | 0 | 0 | -3 |
+| 31 Jul 2026 | Invoice | 52218 | 0 | 0 | 0 | 0 | +4 |
+| 31 Jul 2026 | Crd Note | 15366 | 0 | 0 | 0 | 0 | -4 |
 | **End Jul** | **Closing Balance** | — | **0** | **0** | **0** | **7** | **-11** |
+
+---
+
+### August 2026
+| Date | Entry Type | Doc # | 14kg Qty | 19kg Qty | 9kg Qty | D.1 Qty | S.1 Qty |
+| :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: |
+| **01 Aug** | **Opening Balance** | — | **0** | **0** | **0** | **7** | **-11** |
+| 07 Aug 2026 | Invoice | 52383 | 0 | 0 | 0 | 0 | +4 |
+| 07 Aug 2026 | Crd Note | 15418 | 0 | 0 | 0 | 0 | -3 |
+| 14 Aug 2026 | Invoice | 52546 | 0 | 0 | 0 | 0 | +4 |
+| 14 Aug 2026 | Crd Note | 15462 | 0 | 0 | 0 | 0 | -4 |
+| 18 Aug 2026 | Invoice | 52636 | 0 | 0 | 0 | 0 | +4 |
+| 18 Aug 2026 | Crd Note | 15493 | 0 | 0 | 0 | 0 | -3 |
+| 21 Aug 2026 | Invoice | 52706 | 0 | 0 | 0 | 0 | +3 |
+| 21 Aug 2026 | Crd Note | 15519 | 0 | 0 | 0 | 0 | -3 |
+| 28 Aug 2026 | Invoice | 52843 | 0 | 0 | 0 | 0 | +3 |
+| 28 Aug 2026 | Crd Note | 15570 | 0 | 0 | 0 | 0 | -3 |
+| **End Aug** | **Closing Balance** | — | **0** | **0** | **0** | **7** | **-9** |
+
+---
+
+### September 2026
+| Date | Entry Type | Doc # | 14kg Qty | 19kg Qty | 9kg Qty | D.1 Qty | S.1 Qty |
+| :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: |
+| **01 Sep** | **Opening Balance** | — | **0** | **0** | **0** | **7** | **-9** |
+| 08 Sept 2026 | Invoice | 53044 | 0 | 0 | 0 | 0 | +4 |
+| 09 Sept 2026 | Crd Note | 15630 | 0 | 0 | 0 | 0 | -5 |
+| 17 Sept 2026 | Invoice | 53164 | 0 | 0 | 0 | +4 | 0 |
+| 18 Sept 2026 | Crd Note | 15667 | 0 | 0 | 0 | -4 | 0 |
+| **End Sep** | **Closing Balance** | — | **0** | **0** | **0** | **7** | **-10** |
+
+---
+
+### October 2026
+| Date | Entry Type | Doc # | 14kg Qty | 19kg Qty | 9kg Qty | D.1 Qty | S.1 Qty |
+| :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: |
+| **01 Oct** | **Opening Balance** | — | **0** | **0** | **0** | **7** | **-10** |
+| 01 Oct 2026 | Invoice | 53423 | 0 | 0 | 0 | 0 | +3 |
+| 02 Oct 2026 | Crd Note | 15742 | 0 | 0 | 0 | 0 | -3 |
+| **End Oct** | **Closing Balance** | — | **0** | **0** | **0** | **7** | **-10** |
 
 ---
 
@@ -543,29 +671,29 @@
 
 | Component | Amount |
 |---|---:|
-| LPG Gas Debt (Part 1A close) | R10,389.76 |
-| Cylinder Financial Balance (Part 1B close) | R-4,830.00 |
-| **Total Debtor Balance** | **R5,559.76** |
+| LPG Gas Debt (Part 1A close) | R13,805.93 |
+| Cylinder Financial Balance (Part 1B close) | R-3,622.50 |
+| **Total Debtor Balance** | **R10,183.43** |
 
 ### 2. Custody Position
 
 | SKU | Net Returnable Qty | Deposit Rate | Custody Exposure |
 |---|---:|---:|---:|
 | D.1 | 7 | R1,150.00 | R8,050.00 |
-| S.1 | -11 | R1,150.00 | R-12,650.00 |
-| **Total** | **-4** | — | **R-4,600.00** |
+| S.1 | -10 | R1,150.00 | R-11,500.00 |
+| **Total** | **-3** | — | **R-3,450.00** |
 
 ### 3. Reconciliation Position
 
 | Check | Financial | Custody | Variance |
 |---|---:|---:|---:|
-| Cylinder Position (1B vs custody) | R-4,830.00 | R-4,600.00 | R-230.00 |
-| Sub-ledger tie (1A + 1B vs combined) | R5,559.76 | — | R0.00 |
+| Cylinder Position (1B vs custody) | R-3,622.50 | R-3,450.00 | R-172.50 |
+| Sub-ledger tie (1A + 1B vs combined) | R10,183.43 | — | R0.00 |
 
 > **INGEST_GATE:** Custody variance below is **not signed off** — ingest coverage `CURRENT_PARTIAL`. DB-backed qty may not reflect all TXT documents.
 
-**ERP Combined Balance (TXT header):** R5,559.76  
-**Reconstructed Balance (1A + 1B):** R5,559.76  
+**ERP Combined Balance (TXT header):** R10,183.43  
+**Reconstructed Balance (1A + 1B):** R10,183.43  
 **Variance:** R0.00
 
 <!-- DEBTOR_POSITION_WORKSPACE_END -->

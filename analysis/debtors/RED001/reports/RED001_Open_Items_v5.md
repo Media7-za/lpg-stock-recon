@@ -1,7 +1,7 @@
 # Open Items Statement: REDLANDS HOTEL (RED001) — Internal
-**Period:** from 08 May 2025 to 25 Jul 2026 &nbsp;|&nbsp; **Balance due:** R5,559.76
+**Period:** from 08 May 2025 to 02 Oct 2026 &nbsp;|&nbsp; **Balance due:** R10,183.43
 **Status:** PROPOSED — NOT RATIFIED (`PROPOSED_Projection_Matching_Locks.md`, build step 3) · generated 2026-10-08 by `render_open_items.mjs`
-**Sources:** `analysis/debtors/RED001/data/v5_projection.json` (TXT sha256 `db02584c2453…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (43 confirmed / 2 probable ties) · **REVIEW ONLY:** ingestCoverage partial
+**Sources:** `analysis/debtors/RED001/data/v5_projection.json` (TXT sha256 `57faaf07f287…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (57 confirmed / 2 probable ties) · **REVIEW ONLY:** ingestCoverage partial
 **Locks:** no period closed yet
 
 ---
@@ -32,11 +32,24 @@
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
 | 08 May 2026 | Crd Note | 14885 | CYL RETURN WITH LPG | LPG | -1,289.66 | 5,955.34 |
 
-### July 2026
+### August 2026
 
 | Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 23 Jul 2026 | Invoice | 52042 | DN#22974 | LPG | 4,434.42 | 10,389.76 |
+| 18 Aug 2026 | Invoice | 52635 | DN#24276 | LPG | 5,194.96 | 11,150.30 |
+
+### September 2026
+
+| Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
+| 25 Sept 2026 | Invoice | 53283 | DN#21374 | LPG | 3,983.44 | 15,133.74 |
+| 29 Sept 2026 | Payment | 46332 | TRANSF \| STAT 130 | LPG | -5,311.25 | 9,822.49 |
+
+### October 2026
+
+| Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
+| 01 Oct 2026 | Invoice | 53422 | DN#23832 | LPG | 3,983.44 | 13,805.93 |
 
 **Cylinder deposit opening balance:** R0.00
 
@@ -78,6 +91,22 @@
 | 16 Jul 2026 | Invoice | 51891 | DN#22961- EMPTY | CYL | 6,037.50 | 2,415.00 |
 | 17 Jul 2026 | Crd Note | 15274 | DN#22961- EMPTY | CYL | -7,245.00 | -4,830.00 |
 
+### August 2026
+
+| Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
+| 07 Aug 2026 | Crd Note | 15418 | DN#24250=EMPTY | CYL | -3,622.50 | -8,452.50 |
+| 07 Aug 2026 | Invoice | 52383 | DN#24250=EMPTY | CYL | 4,830.00 | -3,622.50 |
+| 18 Aug 2026 | Crd Note | 15493 | DN#24276-EMPTY | CYL | -3,622.50 | -7,245.00 |
+| 18 Aug 2026 | Invoice | 52636 | DN#24276-EMPTY | CYL | 4,830.00 | -2,415.00 |
+
+### September 2026
+
+| Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
+| 08 Sept 2026 | Invoice | 53044 | DN#24980-EMPTY | CYL | 4,830.00 | 2,415.00 |
+| 09 Sept 2026 | Crd Note | 15630 | DN#24980-EMPTY | CYL | -6,037.50 | -3,622.50 |
+
 ---
 
 ## Proof: open items reconcile to the ERP balance
@@ -85,10 +114,10 @@
 | Component | Gas (R) | Cylinder deposit (R) | Total (R) |
 | :--- | ---: | ---: | ---: |
 | Opening B/F (unitemised) | 0.00 | 0.00 | 0.00 |
-| Open items listed above | 10,389.76 | -4,830.00 | 5,559.76 |
+| Open items listed above | 13,805.93 | -3,622.50 | 10,183.43 |
 | Rounding on matched items (tie nets) | 0.00 | 0.00 | 0.00 |
-| **Balance** | 10,389.76 | -4,830.00 | 5,559.76 |
-| ERP `CURRENT BALANCE` (TXT header) | | | 5,559.76 |
+| **Balance** | 13,805.93 | -3,622.50 | 10,183.43 |
+| ERP `CURRENT BALANCE` (TXT header) | | | 10,183.43 |
 | **Variance** | | | **0.00** |
 
 ---
@@ -105,8 +134,8 @@
 | Rule | Ties |
 | :--- | ---: |
 | LOCKED | 4 |
-| CN_DN_PAIR | 21 |
-| EXACT_SINGLE | 17 |
+| CN_DN_PAIR | 27 |
+| EXACT_SINGLE | 25 |
 | EXACT_MONTH_SUM | 1 |
 
 Full tie list: `data/projection_matches.json`.

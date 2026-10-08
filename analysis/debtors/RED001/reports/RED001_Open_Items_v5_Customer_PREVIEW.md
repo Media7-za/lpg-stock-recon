@@ -1,5 +1,5 @@
 # Open Items Statement: REDLANDS HOTEL (RED001) — Customer copy (DRAFT PREVIEW)
-**Period:** from 08 May 2025 to 25 Jul 2026 &nbsp;|&nbsp; **Balance due:** R5,559.76
+**Period:** from 08 May 2025 to 02 Oct 2026 &nbsp;|&nbsp; **Balance due:** R10,183.43
 > **Draft preview, not for release.** This copy lists only items not yet settled. Customer release goes through the official statement generator and `npm run debtors:tag-check` (business_rules.md §15).
 
 ---
@@ -30,11 +30,24 @@
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
 | 08 May 2026 | Crd Note | 14885 | CYL RETURN WITH LPG | Gas | -1,289.66 | 5,955.34 |
 
-### July 2026
+### August 2026
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 23 Jul 2026 | Invoice | 52042 | DN#22974 | Gas | 4,434.42 | 10,389.76 |
+| 18 Aug 2026 | Invoice | 52635 | DN#24276 | Gas | 5,194.96 | 11,150.30 |
+
+### September 2026
+
+| Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
+| 25 Sept 2026 | Invoice | 53283 | DN#21374 | Gas | 3,983.44 | 15,133.74 |
+| 29 Sept 2026 | Payment | 46332 | TRANSF \| STAT 130 | Gas | -5,311.25 | 9,822.49 |
+
+### October 2026
+
+| Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
+| 01 Oct 2026 | Invoice | 53422 | DN#23832 | Gas | 3,983.44 | 13,805.93 |
 
 **Cylinder deposit opening balance:** R0.00
 
@@ -90,6 +103,22 @@
 | 16 Jul 2026 | Invoice | 51891 | DN#22961- EMPTY | Cylinder deposit | 6,037.50 | 2,415.00 |
 | 17 Jul 2026 | Crd Note | 15274 | DN#22961- EMPTY | Cylinder deposit | -7,245.00 | -4,830.00 |
 
+### August 2026
+
+| Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
+| 07 Aug 2026 | Crd Note | 15418 | DN#24250=EMPTY | Cylinder deposit | -3,622.50 | -8,452.50 |
+| 07 Aug 2026 | Invoice | 52383 | DN#24250=EMPTY | Cylinder deposit | 4,830.00 | -3,622.50 |
+| 18 Aug 2026 | Crd Note | 15493 | DN#24276-EMPTY | Cylinder deposit | -3,622.50 | -7,245.00 |
+| 18 Aug 2026 | Invoice | 52636 | DN#24276-EMPTY | Cylinder deposit | 4,830.00 | -2,415.00 |
+
+### September 2026
+
+| Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
+| 08 Sept 2026 | Invoice | 53044 | DN#24980-EMPTY | Cylinder deposit | 4,830.00 | 2,415.00 |
+| 09 Sept 2026 | Crd Note | 15630 | DN#24980-EMPTY | Cylinder deposit | -6,037.50 | -3,622.50 |
+
 ¹ Payment received; allocation to this item is being confirmed.
 
 ---
@@ -99,7 +128,7 @@
 | Component | Gas (R) | Cylinder deposit (R) | Total (R) |
 | :--- | ---: | ---: | ---: |
 | Opening balance | 0.00 | 0.00 | 0.00 |
-| Open items listed above | 10,389.76 | -4,830.00 | 5,559.76 |
+| Open items listed above | 13,805.93 | -3,622.50 | 10,183.43 |
 | Rounding on settled items | 0.00 | 0.00 | 0.00 |
-| **Balance** | 10,389.76 | -4,830.00 | 5,559.76 |
+| **Balance** | 13,805.93 | -3,622.50 | 10,183.43 |
 

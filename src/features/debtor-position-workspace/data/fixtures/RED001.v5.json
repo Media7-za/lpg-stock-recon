@@ -3,22 +3,22 @@
   "debtorName": "REDLANDS HOTEL",
   "period": {
     "from": "2025-05-08",
-    "to": "2026-07-25"
+    "to": "2026-10-02"
   },
   "version": "v5",
   "workspaceStatus": "pending_review",
-  "lastGeneratedAt": "2026-10-08T12:09:25.867Z",
-  "source": "analysis/debtors/RED001/raw/RED001CURRENT.TXT",
+  "lastGeneratedAt": "2026-10-08T16:29:26.242Z",
+  "source": "analysis/debtors/RED001/raw/RED001_2026-10-08.TXT",
   "financialPosition": {
-    "lpgGasDebt": 10389.76,
-    "cylinderFinancialBalance": -4830,
-    "totalDebtorBalance": 5559.76,
-    "erpStatedBalance": 5559.76,
+    "lpgGasDebt": 13805.93,
+    "cylinderFinancialBalance": -3622.5,
+    "totalDebtorBalance": 10183.43,
+    "erpStatedBalance": 10183.43,
     "erpVariance": 0,
     "subLedgerVariance": 0
   },
   "custodyPosition": {
-    "totalCustodyExposure": -4600,
+    "totalCustodyExposure": -3450,
     "lines": [
       {
         "sku": "D.1",
@@ -30,14 +30,14 @@
       {
         "sku": "S.1",
         "label": "S.1",
-        "qty": -11,
+        "qty": -10,
         "depositRate": 1150,
-        "exposure": -12650
+        "exposure": -11500
       }
     ]
   },
   "reconciliationPosition": {
-    "cylinderVariance": -230,
+    "cylinderVariance": -172.5,
     "erpVariance": 0,
     "subLedgerVariance": 0,
     "exceptions": [
@@ -51,6 +51,6 @@
   },
   "artifacts": {
     "statementMarkdown": "analysis/debtors/RED001/reports/RED001_Statement_Account_v5.md",
-    "txtSource": "analysis/debtors/RED001/raw/RED001CURRENT.TXT"
+    "txtSource": "analysis/debtors/RED001/raw/RED001_2026-10-08.TXT"
   }
 }
