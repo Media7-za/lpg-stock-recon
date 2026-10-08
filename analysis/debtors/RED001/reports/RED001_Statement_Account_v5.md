@@ -3,7 +3,7 @@
 **Combined Opening B/F:** R0.00 (ERP verified — source: `analysis/debtors/RED001/raw/RED001CURRENT.TXT` RED001CURRENT.TXT line 14 — BALANCE B/F R0.00 before first period row (payment 38566, 08 May 2025))
 **LPG Opening B/F (1A):** R0.00 &nbsp;|&nbsp; **CYL Opening B/F (1B):** R0.00
 **Payment routing:** LPG lane (payments post to Part 1A unless configured otherwise)
-**Last regenerated:** 2026-07-29 from ERP TXT (`reconcile_debtor_v5_from_txt.mjs`) · **Ratification scenario active**
+**Last regenerated:** 2026-10-08 from ERP TXT (`reconcile_debtor_v5_from_txt.mjs`) · **Ratification scenario active**
 
 ---
 
@@ -378,9 +378,6 @@
 
 **INGEST_GAP documents (custody-blocking):**
 - **45328** (Payment, 2026-07-21) — `MISSING_HEADER`
-- **52086** (Invoice, 2026-07-24) — `MISSING_LINES`
-- **15325** (Crd Note, 2026-07-25) — `MISSING_LINES`
-- **15327** (Crd Note, 2026-07-25) — `MISSING_LINES`
 
 ---
 

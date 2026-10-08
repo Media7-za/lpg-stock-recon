@@ -90,6 +90,10 @@
     {
       "date": "2026-08-29",
       "event": "Session close: project.json created; reconState validation_pending. v5 with RAT13687 synthetic — combined R12,804.76 (+R7,245 vs ERP until correction posted). Next: operator ratify CN13687 OR ingest gaps + Turn 3 full graph."
+    },
+    {
+      "date": "2026-10-08",
+      "event": "Pipeline run v5 projection → match → open items. CONNECTOR-SOURCED (db_replay, 5 md5-verified captures in data/db_replay/2026-10-08/). Authorisation: operator in-session 2026-10-08: \"I authorize the agent to use database connectors\"; \"Can you choose 5 accounts that have been worked on and run it through the pipeline?. Use sub agents\". Coverage: CURRENT_PARTIAL — 107/108 TXT docs healthy; 1 gap 45328 Payment 2026-07-21 R-7,390.70 MISSING_HEADER (52086/15325/15327 MISSING_LINES now cleared); 30 DB_ONLY docs 2026-07-31→2026-10-02 net R37,979.24 post-date TXT as-at 2026-07-25 — fresh TXT needed (PROVEN reports/RED001_INGEST_COVERAGE_2026-10-08.json). ERP tie: ERP CURRENT BALANCE R5,559.76; projection combined R12,804.76 (1A R10,389.76 + 1B R2,415.00); variance R7,245.00 = unratified synthetic RAT13687 (CN13687-6CYL-NOV2025, ASSUMED); tiesToErpHeader false; lpg/cyl self-checks true; split_basis DB_LINES 84 / PAYMENT_LANE 24 / RATIFICATION 1 (PROVEN data/v5_projection.json). Ties: 41 (39 confirmed, 2 probable) — CN_DN_PAIR 23 (21 conf, 2 prob: T0002 43615/12638, T0003 45541/13187), EXACT_SINGLE 17, EXACT_MONTH_SUM 1; 6 of 24 payments unallocated R-30,294.90; proof rebuilt R12,804.76 = projection HOLDS; reviewOnly true (PROVEN data/projection_matches.json). Open items: internal 26 rows (13 open invoices incl. RAT13687), customer preview 30 rows, balance R12,804.76 DOES NOT TIE ERP by R7,245.00 (reports/RED001_Open_Items_v5.md). Matching is PROPOSED — NOT RATIFIED; no locks, no close. reconState unchanged (validation_pending)."
     }
   ]
 }
