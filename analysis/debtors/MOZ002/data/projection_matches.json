@@ -2,7 +2,7 @@
   "status": "PROPOSED — NOT RATIFIED (PROPOSED_Projection_Matching_Locks.md, build step 2)",
   "debtorCode": "MOZ002",
   "generatedBy": "match_projection.mjs",
-  "generatedAt": "2026-10-08T16:30:10.480Z",
+  "generatedAt": "2026-10-08T17:54:31.117Z",
   "projection": {
     "path": "analysis/debtors/MOZ002/data/v5_projection.json",
     "txtSha256": "4a6e6bbcc72413ddae3f5c4d325d034faf6a648a4d3fd788f846ab5503654044",

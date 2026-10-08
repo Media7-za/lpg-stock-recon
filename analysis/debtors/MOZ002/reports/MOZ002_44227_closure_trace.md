@@ -152,3 +152,7 @@ doc_no,invoice_date,lpg_open_on_2026-05-07,notes
 | `config/payment_pattern_overrides.json` | 44227 UNALLOCATED_NO_TARGET · 50657 outstanding |
 
 *Trace queries: Supabase `transaction_headers` + `vw_clean_transactions` · TXT cross-check `MOZ002CURRENT.TXT`*
+
+---
+
+**Amendment 2026-10-08:** the finding "49143 genuinely open" is RETIRED on operator instruction. Payment 45287 (STAT 123, R3,839.70) settles 49143. See `MOZ002_49143_49550_ruling.md`, amendment 2026-10-08.

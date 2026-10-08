@@ -44,7 +44,7 @@
     "actionType": "customer_statement",
     "dateSent": null,
     "deadlineDate": null,
-    "nextAction": "Confirm ERP TXT post-49143 fix shows balance R4,170.38 (ASSERTED); then send reports/MOZ002_Customer_Statement_Email_2026-07-23.md",
+    "nextAction": "Customer statement from the 2026-10-08 open items (ERP R1,562.67) via generate_statement_of_account + tag-check. SUPERSEDED 2026-10-08 (49143 fix now PROVEN in the TXT; the 2026-07-23 email draft and its R4,170.38 figure are stale): Confirm ERP TXT post-49143 fix shows balance R4,170.38 (ASSERTED); then send reports/MOZ002_Customer_Statement_Email_2026-07-23.md",
     "nextActionDate": null,
     "blockers": [
       {
@@ -57,7 +57,9 @@
         "id": "MOZ002-49143-TXT",
         "summary": "Invoice 49143 cross-account fix (43322 MOZ001) asserted by operator — fresh TXT not yet ingested",
         "tag": "ASSERTED",
-        "basis": "Operator 2026-07-23; kill: P17/CURRENT TXT still shows 49143 open"
+        "basis": "Operator 2026-07-23; kill: P17/CURRENT TXT still shows 49143 open",
+        "status": "RESOLVED 2026-10-08",
+        "resolution": "PROVEN: raw/MOZ002_2026-10-08.TXT line 176 carries payment 45287 (12/02/2026, STAT 123, R-3,839.70), tied EXACT_SINGLE CONFIRMED to invoice 49143 (T0079, data/projection_matches.json). 49143 is no longer open. Retired on operator instruction 2026-10-08: \"Retire the MOZ002 49143 ruling\"."
       }
     ],
     "notes": "Recon complete 2026-07-20. P17 anchor R8,010.08 @ 2026-07-16. Post 49143 ERP fix collectable ASSERTED R4,170.38 (open LPG 50528+51789 R9,149.30 less credit 44227 R4,978.91). Turn 11C: D14/D15 ratified; EX-0038 operator-ratified 2026-07-22."
@@ -154,6 +156,10 @@
     {
       "date": "2026-10-08",
       "event": "TXT switched to raw/MOZ002_2026-10-08.TXT on operator instruction (\"switch the other six accounts ... YES\"); B/F R0.00, periodStart 2025-03-15 unchanged. CONNECTOR-SOURCED refresh (db_replay, 5 md5-verified captures in data/db_replay/2026-10-08b/; authority: \"I authorize the agent to use database connectors\"). Coverage CURRENT_COMPLETE, 253/253, 0 gaps (PROVEN). ERP R1,562.67 = 1A R1,562.67 + 1B R0.00, variance R0.00 (PROVEN, data/v5_projection.json). Invoice 49143 now dated 07/02/2026 in the TXT (raw line 173) — ERP fix reflected; monthly openings from Mar 2026 lower by R3,839.70 (ASSERTED); tripwire on the 44227 closure trace ruling fired — for operator. Matcher v4: 98 ties (94 confirmed / 4 probable; EXACT_RUN 3); 3 payments unallocated (R8,469.29). Open items: 45 internal rows tie R1,562.67. Not review-only. Matching PROPOSED — NOT RATIFIED."
+    },
+    {
+      "date": "2026-10-08",
+      "event": "Operator: \"Retire the MOZ002 49143 ruling\". The Turn 7b outcome \"49143 open\" (MOZ002_49143_49550_ruling.md; 44227 closure trace) is RETIRED: payment 45287 (12/02/2026, STAT 123, R3,839.70, the ERP cross-account fix asserted 2026-07-23) settles 49143 — raw/MOZ002_2026-10-08.TXT line 176, tie T0079 EXACT_SINGLE CONFIRMED (PROVEN). EX-0037 (43640 -> 49550, tie T0081) stands; amendment appended to EX-0037, the ruling report and the closure trace (append-only). Open item MOZ002-49143-TXT resolved; nextAction superseded (2026-07-23 email draft and its R4,170.38 figure are stale). Re-run: 98 ties, ERP R1,562.67 ties, 49143 not in open items. Tripwires: TW-001 (payment citing 49550); a later export reversing 45287 or moving it off MOZ002."
     }
   ]
 }

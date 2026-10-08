@@ -680,7 +680,8 @@
         "raw/MOZ002CURRENT.TXT",
         "MOZ002_49143_49550_ruling.md"
       ],
-      "ratified_by_operator": "2026-07-20"
+      "ratified_by_operator": "2026-07-20",
+      "amendment_2026-10-08": "Clause \"Invoice 49143 ... remains open\" RETIRED on operator instruction (\"Retire the MOZ002 49143 ruling\"): the ERP cross-account fix posted payment 45287 (12/02/2026, STAT 123, R3,839.70) to MOZ002 and it settles 49143 (raw/MOZ002_2026-10-08.TXT line 176; tie T0079 CONFIRMED). The edge 43640 -> 49550 is unaffected and stands (tie T0081). Tripwire TW-001 still applies."
     },
     {
       "id": "EX-0038",
