@@ -1,30 +1,30 @@
 # TAN002 — Ingest Coverage Report
 
-**Generated:** 2026-10-08 · **Display status:** `CURRENT_COMPLETE`
+**Generated:** 2026-10-08 · **Display status:** `CURRENT_PARTIAL`
 
 ## Summary
 
 | Field | Value |
 | :--- | :--- |
-| Statement TXT | `analysis/debtors/TAN002/raw/TAN002CURRENT.TXT` |
-| TXT as-at (last period row) | 2026-08-20 |
-| Header sync as-at | 2026-10-05 |
-| Items sync as-at | 2026-10-05 |
+| Statement TXT | `analysis/debtors/TAN002/raw/TAN002_2026-10-08.TXT` |
+| TXT as-at (last period row) | 2026-10-06 |
+| Header sync as-at | 2026-10-08 |
+| Items sync as-at | 2026-10-08 |
 | ingestFreshness | `current` |
-| ingestCoverage | `complete` |
-| Documents in TXT (period) | 248 |
-| Healthy / expected | 248 |
-| Gaps | 0 |
-| DB-only (not in TXT) | 7 |
+| ingestCoverage | `partial` |
+| Documents in TXT (period) | 255 |
+| Healthy / expected | 254 |
+| Gaps | 1 |
+| DB-only (not in TXT) | 3 |
 
 ## Gate result
 
 | Lane | Status |
 | :--- | :--- |
 | Financial balance from TXT | ALLOWED |
-| Custody / Part 2 qty | ALLOWED |
-| SKU analysis | ALLOWED |
-| Allocation | ALLOWED |
+| Custody / Part 2 qty | BLOCKED |
+| SKU analysis | BLOCKED |
+| Allocation | BLOCKED |
 
 ## Document gaps
 
@@ -33,10 +33,7 @@
 | 11976 | Crd Note | 2025-02-27 | DB_ONLY_DOCUMENT | financial_bridge_from_txt |
 | 41042 | Invoice | 2025-02-27 | DB_ONLY_DOCUMENT | financial_bridge_from_txt |
 | 41043 | Invoice | 2025-02-27 | DB_ONLY_DOCUMENT | financial_bridge_from_txt |
-| 46208 | Payment | 2026-09-23 | DB_ONLY_DOCUMENT | financial_bridge_from_txt |
-| 46208 | Payment | 2026-09-23 | DB_ONLY_DOCUMENT | financial_bridge_from_txt |
-| 53267 | Invoice | 2026-09-23 | DB_ONLY_DOCUMENT | financial_bridge_from_txt |
-| 53368 | Invoice | 2026-09-29 | DB_ONLY_DOCUMENT | financial_bridge_from_txt |
+| 46364 | Ud Paymnt | 2026-10-06 | MISSING_HEADER | custody, sku_analysis, allocation |
 
 ## Doctrine
 

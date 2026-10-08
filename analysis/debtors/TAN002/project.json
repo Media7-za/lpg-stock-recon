@@ -90,6 +90,10 @@
     {
       "date": "2026-10-08",
       "event": "Fresh ERP export filed as raw/TAN002_2026-10-08.TXT (Linear ADM-78, Drive). Running balances verified (255 rows, B/F R16,828.85, closing R5,438.37 = TOTAL TRANSACTIONS). Header CURRENT BALANCE is R7,938.37: the ERP excludes the unallocated UD payment (row 255, Ud Paymnt R-2,500.00; header UD PAY/CHEQUES R-2,500.00) from CURRENT BALANCE but includes it in the running balance. Any switch must tie to R5,438.37 (rows) and treat the R2,500 UD as a known reconciling item - ASSERTED, operator to confirm. Not switched."
+    },
+    {
+      "date": "2026-10-08",
+      "event": "Fresh refresh after the TXT switch to raw/TAN002_2026-10-08.TXT (operator \"Yes\"; B/F R16,828.85, periodStart 2025-02-22). CONNECTOR-SOURCED (db_replay, 5 md5-verified captures in data/db_replay/2026-10-08b/; authority: \"I authorize the agent to use database connectors\"). Coverage CURRENT_PARTIAL: only gap is Ud Paymnt 46364 (-2,500.00, 2026-10-06, no DB header) — review-only; 3 DB-only docs dated 2025-02-27 (CN 11976, inv 41042, 41043). ERP R7,938.37 = 1A R6,040.87 + 1B R1,897.50, variance R0.00 (PROVEN, data/v5_projection.json); udPending 46364 R-2,500 memo, unexplained 0. Statement NOT regenerated (placeholder opening split; regenerated version dropped the placeholder warning and shifted monthly openings +517.50 / -690.00 — unexplained). Matcher v4: 87 ties (67 confirmed / 20 probable); 7 payments unallocated (R78,617.03). Open items: 55 internal rows tie R7,938.37. Matching PROPOSED — NOT RATIFIED."
     }
   ]
 }

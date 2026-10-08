@@ -1,5 +1,5 @@
 # Open Items Statement: MOZAMBIK (MOZ002) — Customer copy (DRAFT PREVIEW)
-**Period:** from 15 Mar 2025 to 13 Jul 2026 &nbsp;|&nbsp; **Balance due:** R13,014.50
+**Period:** from 15 Mar 2025 to 01 Oct 2026 &nbsp;|&nbsp; **Balance due:** R1,562.67
 > **Draft preview, not for release.** This copy lists only items not yet settled. Customer release goes through the official statement generator and `npm run debtors:tag-check` (business_rules.md §15).
 
 ---
@@ -38,25 +38,24 @@
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
 | 07 Oct 2025 | Payment | 41529 | CASH | Gas | -0.01 | -0.01 |
 
-### February 2026
-
-| Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 07 Feb 2026 | Invoice | 49143 | DN-21528 | Gas | 3,839.70 | 3,839.69 |
-
 ### May 2026
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 05 May 2026 | Invoice | 50528 | DN#22222 | Gas | 4,329.29 | 8,168.98 |
-| 07 May 2026 | Payment | 44227 | TRANSF \| STAT 125 | Gas | -4,978.91 | 3,190.07 |
-| 13 May 2026 | Invoice | 50657 | DN#22385 | Gas | 5,004.42 | 8,194.49 |
+| 05 May 2026 | Invoice | 50528 | DN#22222 | Gas | 4,329.29 | 4,329.28 |
+| 07 May 2026 | Payment | 44227 | TRANSF \| STAT 125 | Gas | -4,978.91 | -649.63 |
 
-### July 2026
+### August 2026
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 13 Jul 2026 | Invoice | 51789 | DN#22810 | Gas | 4,820.01 | 13,014.50 |
+| 06 Aug 2026 | Payment | 45590 | TRANSF \| STAT 129 | Gas | -3,490.37 | -4,140.00 |
+
+### October 2026
+
+| Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
+| 01 Oct 2026 | Invoice | 53402 | DN-21393 | Gas | 5,702.67 | 1,562.67 |
 
 **Cylinder deposit opening balance:** R0.00
 
@@ -166,6 +165,15 @@
 | 03 Jul 2026 | Crd Note | 15166 | DN#22538=EMPTY | Cylinder deposit | -2,415.00 | 1,207.50 |
 | 13 Jul 2026 | Crd Note | 15254 | DN#22810=EMPTY | Cylinder deposit | -5,347.50 | -4,140.00 |
 | 13 Jul 2026 | Invoice | 51790 | DN#22810=EMPTY | Cylinder deposit | 4,140.00 | 0.00 |
+| 20 Jul 2026 | Crd Note | 15284 | DN#22695=EMPTY | Cylinder deposit | -2,932.50 | -2,932.50 |
+| 20 Jul 2026 | Invoice | 51955 | DN#22695=EMPTY | Cylinder deposit | 4,140.00 | 1,207.50 |
+
+### October 2026
+
+| Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
+| 01 Oct 2026 | Crd Note | 15738 | DN-21393 | Cylinder deposit | -6,555.00 | -5,347.50 |
+| 01 Oct 2026 | Invoice | 53403 | DN-21393 | Cylinder deposit | 5,347.50 | 0.00 |
 
 ¹ Payment received; allocation to this item is being confirmed.
 
@@ -176,7 +184,7 @@
 | Component | Gas (R) | Cylinder deposit (R) | Total (R) |
 | :--- | ---: | ---: | ---: |
 | Opening balance | 0.00 | 0.00 | 0.00 |
-| Open items listed above | 13,014.50 | 0.00 | 13,014.50 |
+| Open items listed above | 1,562.67 | 0.00 | 1,562.67 |
 | Rounding on settled items | 0.00 | 0.00 | 0.00 |
-| **Balance** | 13,014.50 | 0.00 | 13,014.50 |
+| **Balance** | 1,562.67 | 0.00 | 1,562.67 |
 

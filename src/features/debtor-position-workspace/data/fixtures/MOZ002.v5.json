@@ -3,17 +3,17 @@
   "debtorName": "MOZAMBIK",
   "period": {
     "from": "2025-03-15",
-    "to": "2026-07-13"
+    "to": "2026-10-01"
   },
   "version": "v5",
   "workspaceStatus": "clean",
-  "lastGeneratedAt": "2026-10-08T04:02:21.568Z",
-  "source": "analysis/debtors/MOZ002/raw/MOZ002CURRENT.TXT",
+  "lastGeneratedAt": "2026-10-08T16:29:32.462Z",
+  "source": "analysis/debtors/MOZ002/raw/MOZ002_2026-10-08.TXT",
   "financialPosition": {
-    "lpgGasDebt": 13014.5,
+    "lpgGasDebt": 1562.67,
     "cylinderFinancialBalance": 0,
-    "totalDebtorBalance": 13014.5,
-    "erpStatedBalance": 13014.5,
+    "totalDebtorBalance": 1562.67,
+    "erpStatedBalance": 1562.67,
     "erpVariance": 0,
     "subLedgerVariance": 0
   },
@@ -23,16 +23,16 @@
       {
         "sku": "D.1",
         "label": "D.1",
-        "qty": 2,
+        "qty": 1,
         "depositRate": 1150,
-        "exposure": 2300
+        "exposure": 1150
       },
       {
         "sku": "S.1",
         "label": "S.1",
-        "qty": -2,
+        "qty": -1,
         "depositRate": 1150,
-        "exposure": -2300
+        "exposure": -1150
       }
     ]
   },
@@ -44,6 +44,6 @@
   },
   "artifacts": {
     "statementMarkdown": "analysis/debtors/MOZ002/reports/MOZ002_Statement_Account_v5.md",
-    "txtSource": "analysis/debtors/MOZ002/raw/MOZ002CURRENT.TXT"
+    "txtSource": "analysis/debtors/MOZ002/raw/MOZ002_2026-10-08.TXT"
   }
 }

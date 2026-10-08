@@ -150,6 +150,10 @@
     {
       "date": "2026-10-08",
       "event": "Matcher tie-break changed to FIFO within proximity (operator 2026-10-08, ADM-86: \"Let's do it\"): among equally exact candidates, the oldest invoice within 14 days of the closest one. Re-matched with no DB access: some equal-amount payment/invoice pairings swapped; balance, ERP tie and open totals unchanged (PROVEN, data/projection_matches.json; per-tie diff in commit message). No locks affected."
+    },
+    {
+      "date": "2026-10-08",
+      "event": "TXT switched to raw/MOZ002_2026-10-08.TXT on operator instruction (\"switch the other six accounts ... YES\"); B/F R0.00, periodStart 2025-03-15 unchanged. CONNECTOR-SOURCED refresh (db_replay, 5 md5-verified captures in data/db_replay/2026-10-08b/; authority: \"I authorize the agent to use database connectors\"). Coverage CURRENT_COMPLETE, 253/253, 0 gaps (PROVEN). ERP R1,562.67 = 1A R1,562.67 + 1B R0.00, variance R0.00 (PROVEN, data/v5_projection.json). Invoice 49143 now dated 07/02/2026 in the TXT (raw line 173) — ERP fix reflected; monthly openings from Mar 2026 lower by R3,839.70 (ASSERTED); tripwire on the 44227 closure trace ruling fired — for operator. Matcher v4: 98 ties (94 confirmed / 4 probable; EXACT_RUN 3); 3 payments unallocated (R8,469.29). Open items: 45 internal rows tie R1,562.67. Not review-only. Matching PROPOSED — NOT RATIFIED."
     }
   ]
 }

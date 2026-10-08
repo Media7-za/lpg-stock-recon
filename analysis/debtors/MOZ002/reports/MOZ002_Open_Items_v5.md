@@ -1,7 +1,7 @@
 # Open Items Statement: MOZAMBIK (MOZ002) — Internal
-**Period:** from 15 Mar 2025 to 13 Jul 2026 &nbsp;|&nbsp; **Balance due:** R13,014.50
+**Period:** from 15 Mar 2025 to 01 Oct 2026 &nbsp;|&nbsp; **Balance due:** R1,562.67
 **Status:** PROPOSED — NOT RATIFIED (`PROPOSED_Projection_Matching_Locks.md`, build step 3) · generated 2026-10-08 by `render_open_items.mjs`
-**Sources:** `analysis/debtors/MOZ002/data/v5_projection.json` (TXT sha256 `4ea358fb2504…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (81 confirmed / 4 probable ties)
+**Sources:** `analysis/debtors/MOZ002/data/v5_projection.json` (TXT sha256 `4a6e6bbcc724…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (94 confirmed / 4 probable ties)
 **Locks:** no period closed yet
 
 ---
@@ -18,25 +18,24 @@
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
 | 07 Oct 2025 | Payment | 41529 | CASH | LPG | -0.01 | -0.01 |
 
-### February 2026
-
-| Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 07 Feb 2026 | Invoice | 49143 | DN-21528 | LPG | 3,839.70 | 3,839.69 |
-
 ### May 2026
 
 | Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 05 May 2026 | Invoice | 50528 | DN#22222 | LPG | 4,329.29 | 8,168.98 |
-| 07 May 2026 | Payment | 44227 | TRANSF \| STAT 125 | LPG | -4,978.91 | 3,190.07 |
-| 13 May 2026 | Invoice | 50657 | DN#22385 | LPG | 5,004.42 | 8,194.49 |
+| 05 May 2026 | Invoice | 50528 | DN#22222 | LPG | 4,329.29 | 4,329.28 |
+| 07 May 2026 | Payment | 44227 | TRANSF \| STAT 125 | LPG | -4,978.91 | -649.63 |
 
-### July 2026
+### August 2026
 
 | Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 13 Jul 2026 | Invoice | 51789 | DN#22810 | LPG | 4,820.01 | 13,014.50 |
+| 06 Aug 2026 | Payment | 45590 | TRANSF \| STAT 129 | LPG | -3,490.37 | -4,140.00 |
+
+### October 2026
+
+| Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
+| 01 Oct 2026 | Invoice | 53402 | DN-21393 | LPG | 5,702.67 | 1,562.67 |
 
 **Cylinder deposit opening balance:** R0.00
 
@@ -137,6 +136,15 @@
 | 03 Jul 2026 | Crd Note | 15166 | DN#22538=EMPTY | CYL | -2,415.00 | 1,207.50 |
 | 13 Jul 2026 | Crd Note | 15254 | DN#22810=EMPTY | CYL | -5,347.50 | -4,140.00 |
 | 13 Jul 2026 | Invoice | 51790 | DN#22810=EMPTY | CYL | 4,140.00 | 0.00 |
+| 20 Jul 2026 | Crd Note | 15284 | DN#22695=EMPTY | CYL | -2,932.50 | -2,932.50 |
+| 20 Jul 2026 | Invoice | 51955 | DN#22695=EMPTY | CYL | 4,140.00 | 1,207.50 |
+
+### October 2026
+
+| Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
+| 01 Oct 2026 | Crd Note | 15738 | DN-21393 | CYL | -6,555.00 | -5,347.50 |
+| 01 Oct 2026 | Invoice | 53403 | DN-21393 | CYL | 5,347.50 | 0.00 |
 
 ---
 
@@ -145,10 +153,10 @@
 | Component | Gas (R) | Cylinder deposit (R) | Total (R) |
 | :--- | ---: | ---: | ---: |
 | Opening B/F (unitemised) | 0.00 | 0.00 | 0.00 |
-| Open items listed above | 13,014.50 | 0.00 | 13,014.50 |
+| Open items listed above | 1,562.67 | 0.00 | 1,562.67 |
 | Rounding on matched items (tie nets) | 0.00 | 0.00 | 0.00 |
-| **Balance** | 13,014.50 | 0.00 | 13,014.50 |
-| ERP `CURRENT BALANCE` (TXT header) | | | 13,014.50 |
+| **Balance** | 1,562.67 | 0.00 | 1,562.67 |
+| ERP `CURRENT BALANCE` (TXT header) | | | 1,562.67 |
 | **Variance** | | | **0.00** |
 
 ---
@@ -159,15 +167,15 @@
 | :--- | :--- | :--- | ---: | :--- |
 | T0003 | CN_DN_PAIR | Invoice 41522, Crd Note 12079 | — | CN 2 day(s) after invoice |
 | T0028 | CN_DN_PAIR | Invoice 46826, Crd Note 13602 | — | CN 2 day(s) after invoice |
-| T0046 | CN_AMOUNT_DATE | Invoice 49329, Crd Note 14458 | — | CN 0 day(s) after invoice |
-| T0058 | EXACT_RUN | Payment 40729, Invoice 44949, Invoice 45199, Invoice 45303, Invoice 45488 | 0.00 |  |
+| T0051 | CN_AMOUNT_DATE | Invoice 49329, Crd Note 14458 | — | CN 0 day(s) after invoice |
+| T0063 | EXACT_RUN | Payment 40729, Invoice 44949, Invoice 45199, Invoice 45303, Invoice 45488 | 0.00 |  |
 
 ## Appendix B: Confirmed ties by rule
 
 | Rule | Ties |
 | :--- | ---: |
-| CN_DN_PAIR | 43 |
-| EXACT_SINGLE | 34 |
+| CN_DN_PAIR | 48 |
+| EXACT_SINGLE | 42 |
 | EXACT_SUM | 2 |
 | EXACT_RUN | 2 |
 
