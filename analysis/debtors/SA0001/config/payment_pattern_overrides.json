@@ -3364,6 +3364,254 @@
           }
         ],
         "createdAt": "2026-10-07T15:55:48.145Z"
+      },
+      {
+        "lock_id": "L0113",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "customer_credit",
+          "net": -33.64,
+          "reason": "Operator accepted 2026-10-08 (SA0001 group 2, re-pricing): paid 594.42 = original DN#24252 R314.03 + 52547 R280.39; DN#24252 later credited (15556) and re-issued as 52813 at R280.39; R33.64 overpaid",
+          "approvedBy": "operator",
+          "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx"
+        },
+        "members": [
+          {
+            "key": "45782|Payment|LPG|2026-08-17|-594.42",
+            "doc": "45782",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2026-08-17",
+            "amount": -594.42
+          },
+          {
+            "key": "52813|Invoice|LPG|2026-08-07|280.39",
+            "doc": "52813",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-08-07",
+            "amount": 280.39
+          },
+          {
+            "key": "52547|Invoice|LPG|2026-08-14|280.39",
+            "doc": "52547",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-08-14",
+            "amount": 280.39
+          }
+        ],
+        "createdAt": "2026-10-08T03:30:03.100Z"
+      },
+      {
+        "lock_id": "L0114",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "customer_credit",
+          "net": -27.09,
+          "reason": "Operator accepted 2026-10-08 (SA0001 group 2, re-pricing): paid 5,805.84 = 53214 R5,520.00 + original DN-25000 R285.84; DN-25000 credited (15680) and re-issued as 53215 at R258.75; R27.09 overpaid",
+          "approvedBy": "operator",
+          "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx"
+        },
+        "members": [
+          {
+            "key": "46237|Payment|LPG|2026-09-21|-5805.84",
+            "doc": "46237",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2026-09-21",
+            "amount": -5805.84
+          },
+          {
+            "key": "53214|Invoice|LPG|2026-09-17|5520.00",
+            "doc": "53214",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-09-17",
+            "amount": 5520
+          },
+          {
+            "key": "53215|Invoice|LPG|2026-09-17|258.75",
+            "doc": "53215",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-09-17",
+            "amount": 258.75
+          }
+        ],
+        "createdAt": "2026-10-08T03:30:03.179Z"
+      },
+      {
+        "lock_id": "L0115",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "customer_credit",
+          "net": -6,
+          "reason": "Operator accepted 2026-10-08 (SA0001 group 2, re-pricing): DN#24805 delivered 01 Sep, paid 08 Sep; R6.00 over, unexplained; moderate confidence (alternative 52814+53011 rejected because 46160 pays 53011 exactly); leaves 52814 (DN#24904) open",
+          "approvedBy": "operator",
+          "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx"
+        },
+        "members": [
+          {
+            "key": "46092|Payment|LPG|2026-09-08|-6268.00",
+            "doc": "46092",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2026-09-08",
+            "amount": -6268
+          },
+          {
+            "key": "52893|Invoice|LPG|2026-09-01|6262.00",
+            "doc": "52893",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-09-01",
+            "amount": 6262
+          }
+        ],
+        "createdAt": "2026-10-08T03:30:03.257Z"
+      },
+      {
+        "lock_id": "L0116",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "applied_to_bf",
+          "net": -136.62,
+          "reason": "Operator accepted 2026-10-08 (SA0001 group 3, old balance): paid R6,303.68 per delivery vs R6,235.37 invoiced; R136.62 excess reduced the customer's standing opening balance",
+          "approvedBy": "operator",
+          "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx"
+        },
+        "members": [
+          {
+            "key": "38837|Payment|LPG|2025-05-21|-12607.36",
+            "doc": "38837",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2025-05-21",
+            "amount": -12607.36
+          },
+          {
+            "key": "42123|Invoice|LPG|2025-04-08|6235.37",
+            "doc": "42123",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-04-08",
+            "amount": 6235.37
+          },
+          {
+            "key": "43083|Invoice|LPG|2025-05-15|6235.37",
+            "doc": "43083",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-05-15",
+            "amount": 6235.37
+          }
+        ],
+        "createdAt": "2026-10-08T03:30:03.334Z"
+      },
+      {
+        "lock_id": "L0117",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "applied_to_bf",
+          "net": -251.47,
+          "reason": "Operator accepted 2026-10-08 (SA0001 group 3, old balance): paid 45829 + deposit line 45991 R517.50 (credited by 13334) instead of 45990; R251.47 excess reduced the opening balance",
+          "approvedBy": "operator",
+          "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx"
+        },
+        "members": [
+          {
+            "key": "41012|Payment|LPG|2025-09-01|-6192.66",
+            "doc": "41012",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2025-09-01",
+            "amount": -6192.66
+          },
+          {
+            "key": "45829|Invoice|LPG|2025-08-22|5675.16",
+            "doc": "45829",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-08-22",
+            "amount": 5675.16
+          },
+          {
+            "key": "45990|Invoice|LPG|2025-08-29|266.03",
+            "doc": "45990",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-08-29",
+            "amount": 266.03
+          }
+        ],
+        "createdAt": "2026-10-08T03:30:03.416Z"
+      },
+      {
+        "lock_id": "L0118",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "applied_to_bf",
+          "net": -400,
+          "reason": "Operator accepted 2026-10-08 (SA0001 group 3, old balance): R400.00 over 48695 (round extra payment or keying of 252.29); excess reduced the opening balance",
+          "approvedBy": "operator",
+          "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx"
+        },
+        "members": [
+          {
+            "key": "42986|Payment|LPG|2026-01-12|-652.29",
+            "doc": "42986",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2026-01-12",
+            "amount": -652.29
+          },
+          {
+            "key": "48695|Invoice|LPG|2026-01-09|252.29",
+            "doc": "48695",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-01-09",
+            "amount": 252.29
+          }
+        ],
+        "createdAt": "2026-10-08T03:30:03.494Z"
+      },
+      {
+        "lock_id": "L0119",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "applied_to_bf",
+          "net": -621.68,
+          "reason": "Operator accepted 2026-10-08 (SA0001 group 3, old balance): dated 07/02/2023, before every invoice in the TXT window (doc number fits a 2026 sequence, year likely mis-keyed); applied to the opening B/F",
+          "approvedBy": "operator",
+          "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx"
+        },
+        "members": [
+          {
+            "key": "44740|Payment|LPG|2023-02-07|-621.68",
+            "doc": "44740",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2023-02-07",
+            "amount": -621.68
+          }
+        ],
+        "createdAt": "2026-10-08T03:30:03.572Z"
       }
     ],
     "voids": []

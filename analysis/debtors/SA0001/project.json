@@ -56,6 +56,10 @@
     {
       "date": "2026-10-07",
       "event": "Refresh with ERP TXT as at 2026-10-02 (raw/SA0001_2026-10-07.TXT; same B/F R4,945.93; 310 earlier lines identical, 48 new). CONNECTOR-SOURCED (db_replay, 5 md5-verified captures in data/db_replay/2026-10-07/). ERP tie R16,002.86, variance R0.00 (PROVEN). All 112 locks of close C0001 re-applied, 0 conflicts. Ingest CURRENT_PARTIAL: 10 gaps (correction docs 15556/52813/15557/52814 not in DB; 6 payments without DB headers). Payment 45579 R7,013.24 settles July gas 52100+52193 (EXACT_MONTH_SUM, confirmed). New finding for operator: from Aug 2026 invoices were credited and re-issued at lower prices (e.g. 53173 R285.84 → 53215 R258.75) while payments 46160 R285.84 / 46237 R5,805.84 / 45782 R594.42 match the original amounts — possible overpayments; left unallocated, not forced. Open items 26 rows (internal)."
+    },
+    {
+      "date": "2026-10-08",
+      "event": "Operator accepted the agent recommendations for group 2 (re-pricing) and group 3 (old balance) (session 2026-10-08: \"I agree with the decisions you leaned towards\"). Recorded as 7 approved locks L0113-L0119 via approve_tie.mjs (config/payment_pattern_overrides.json projectionLocks; append-only): customer_credit 45782<->52813+52547 (R33.64), 46237<->53214+53215 (R27.09), 46092<->52893 (R6.00, moderate confidence; leaves 52814 open); applied_to_bf 38837<->42123+43083 (R136.62), 41012<->45829+45990 (R251.47), 42986<->48695 (R400.00), 44740 alone (R621.68). Matcher v4 (exact rules before probable) now ties 46160<->53011 EXACT_SINGLE. Open items (reports/SA0001_Open_Items_v5.md): 6 invoices R12,533.51 (47182, 52814, 53293, 53355, 53436, 53446) + opening B/F R4,945.93 - R1,409.77 applied - R66.73 customer credit - R0.08 rounding = R16,002.86 = ERP (PROVEN, variance R0.00). Still REVIEW ONLY until the catch-up DB sync clears the 10 ingest gaps. Tripwires: any change to a locked document (key doc|type|lane|date|amount) turns its lock into a CONFLICT; a remittance or customer statement contradicting 46092->52893 reopens L0115."
     }
   ]
 }

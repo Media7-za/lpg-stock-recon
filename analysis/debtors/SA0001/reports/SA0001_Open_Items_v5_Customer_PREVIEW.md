@@ -10,101 +10,65 @@
 
 ## Gas: open items
 
-### February 2023
-
-| Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 07 Feb 2023 | Payment | 44740 | TRANSF \| STAT208 | Gas | -621.68 | 4,324.25 |
-
 ### April 2025
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 08 Apr 2025 | Invoice | 42123 | DN#11748 | Gas | 6,235.37 | 10,559.62 |
-| 26 Apr 2025 | Invoice | 42583 ¹ | DN#13102 | Gas | 5,956.17 | 16,515.79 |
+| 26 Apr 2025 | Invoice | 42583 ¹ | DN#13102 | Gas | 5,956.17 | 10,902.10 |
 
 ### May 2025
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 05 May 2025 | Invoice | 42816 ¹ | DN#13046 | Gas | 558.39 | 17,074.18 |
-| 07 May 2025 | Payment | 38531 ¹ | TRANSF \| STAT 114 | Gas | -6,514.50 | 10,559.68 |
-| 15 May 2025 | Invoice | 43083 | DN#13226 | Gas | 6,235.37 | 16,795.05 |
-| 21 May 2025 | Payment | 38837 | TRANSF \| STAT 114 | Gas | -12,607.36 | 4,187.69 |
-| 27 May 2025 | Payment | 38878 ¹ | CASH \| T2000117 | Gas | -283.00 | 3,904.69 |
-| 27 May 2025 | Invoice | 43375 ¹ | DN#12118 | Gas | 282.80 | 4,187.49 |
-
-### August 2025
-
-| Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 22 Aug 2025 | Invoice | 45829 | DN#20535 | Gas | 5,675.16 | 9,862.65 |
-| 29 Aug 2025 | Invoice | 45990 | D/N 20345 | Gas | 266.03 | 10,128.68 |
-
-### September 2025
-
-| Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 01 Sept 2025 | Payment | 41012 | TRANSF \| STAT 118 | Gas | -6,192.66 | 3,936.02 |
+| 05 May 2025 | Invoice | 42816 ¹ | DN#13046 | Gas | 558.39 | 11,460.49 |
+| 07 May 2025 | Payment | 38531 ¹ | TRANSF \| STAT 114 | Gas | -6,514.50 | 4,945.99 |
+| 27 May 2025 | Payment | 38878 ¹ | CASH \| T2000117 | Gas | -283.00 | 4,662.99 |
+| 27 May 2025 | Invoice | 43375 ¹ | DN#12118 | Gas | 282.80 | 4,945.79 |
 
 ### October 2025
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 20 Oct 2025 | Invoice | 47182 | DN#21113 | Gas | 255.65 | 4,191.67 |
-
-### January 2026
-
-| Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 09 Jan 2026 | Invoice | 48695 | DN-21461 PMB | Gas | 252.29 | 4,443.96 |
-| 12 Jan 2026 | Payment | 42986 | TRANSF \| STAT 122 | Gas | -652.29 | 3,791.67 |
+| 20 Oct 2025 | Invoice | 47182 | DN#21113 | Gas | 255.65 | 5,201.44 |
 
 ### February 2026
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 26 Feb 2026 | Invoice | 49456 ¹ | DN#21801 | Gas | 6,836.29 | 10,627.96 |
+| 26 Feb 2026 | Invoice | 49456 ¹ | DN#21801 | Gas | 6,836.29 | 12,037.73 |
 
 ### March 2026
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 02 Mar 2026 | Crd Note | 14516 ¹ | DN#21801 | Gas | -6,836.29 | 3,791.67 |
+| 02 Mar 2026 | Crd Note | 14516 ¹ | DN#21801 | Gas | -6,836.29 | 5,201.44 |
 
 ### August 2026
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 07 Aug 2026 | Crd Note | 15556 ¹ | DN#24252 | Gas | -314.03 | 3,477.64 |
-| 07 Aug 2026 | Invoice | 52391 ¹ | DN#24252 | Gas | 314.03 | 3,791.67 |
-| 07 Aug 2026 | Invoice | 52813 | DN#24252 | Gas | 280.39 | 4,072.06 |
-| 12 Aug 2026 | Crd Note | 15557 ¹ | DN#24904 | Gas | -5,981.61 | -1,909.55 |
-| 12 Aug 2026 | Invoice | 52515 ¹ | DN#24904 | Gas | 5,981.61 | 4,072.06 |
-| 12 Aug 2026 | Invoice | 52814 ¹ | DN#24904 | Gas | 5,981.61 | 10,053.67 |
-| 14 Aug 2026 | Invoice | 52547 | DN#24272 | Gas | 280.39 | 10,334.06 |
-| 17 Aug 2026 | Payment | 45782 | TRANSF \| STAT 129 | Gas | -594.42 | 9,739.64 |
+| 07 Aug 2026 | Crd Note | 15556 ¹ | DN#24252 | Gas | -314.03 | 4,887.41 |
+| 07 Aug 2026 | Invoice | 52391 ¹ | DN#24252 | Gas | 314.03 | 5,201.44 |
+| 07 Aug 2026 | Invoice | 52813 ¹ | DN#24252 | Gas | 280.39 | 5,481.83 |
+| 12 Aug 2026 | Crd Note | 15557 ¹ | DN#24904 | Gas | -5,981.61 | -499.78 |
+| 12 Aug 2026 | Invoice | 52515 ¹ | DN#24904 | Gas | 5,981.61 | 5,481.83 |
+| 12 Aug 2026 | Invoice | 52814 | DN#24904 | Gas | 5,981.61 | 11,463.44 |
+| 14 Aug 2026 | Invoice | 52547 ¹ | DN#24272 | Gas | 280.39 | 11,743.83 |
+| 17 Aug 2026 | Payment | 45782 ¹ | TRANSF \| STAT 129 | Gas | -594.42 | 11,149.41 |
 
 ### September 2026
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 01 Sept 2026 | Invoice | 52893 | DN#24805 | Gas | 6,262.00 | 16,001.64 |
-| 07 Sept 2026 | Invoice | 53011 ¹ | DN#24971 | Gas | 285.84 | 16,287.48 |
-| 08 Sept 2026 | Payment | 46092 ¹ | TRANSF \| STAT 130 | Gas | -6,268.00 | 10,019.48 |
-| 14 Sept 2026 | Payment | 46160 | TRANSF \| STAT 130 | Gas | -285.84 | 9,733.64 |
-| 17 Sept 2026 | Invoice | 53214 | DN#24999 | Gas | 5,520.00 | 15,253.64 |
-| 17 Sept 2026 | Invoice | 53215 | DN-25000 | Gas | 258.75 | 15,512.39 |
-| 21 Sept 2026 | Payment | 46237 | TRANSF \| STAT 130 | Gas | -5,805.84 | 9,706.55 |
-| 25 Sept 2026 | Invoice | 53293 | DN#21379 | Gas | 258.75 | 9,965.30 |
-| 29 Sept 2026 | Invoice | 53355 | DN#23818 | Gas | 258.75 | 10,224.05 |
+| 25 Sept 2026 | Invoice | 53293 | DN#21379 | Gas | 258.75 | 11,408.16 |
+| 29 Sept 2026 | Invoice | 53355 | DN#23818 | Gas | 258.75 | 11,666.91 |
 
 ### October 2026
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 02 Oct 2026 | Invoice | 53436 | DN-21397 | Gas | 5,520.00 | 15,744.05 |
-| 02 Oct 2026 | Invoice | 53446 | DN-23836 | Gas | 258.75 | 16,002.80 |
+| 02 Oct 2026 | Invoice | 53436 | DN-21397 | Gas | 5,520.00 | 17,186.91 |
+| 02 Oct 2026 | Invoice | 53446 | DN-23836 | Gas | 258.75 | 17,445.66 |
 
 **Cylinder deposit opening balance:** R0.00
 
@@ -214,7 +178,9 @@
 | Component | Gas (R) | Cylinder deposit (R) | Total (R) |
 | :--- | ---: | ---: | ---: |
 | Opening balance | 4,945.93 | 0.00 | 4,945.93 |
-| Open items listed above | 11,056.87 | 0.00 | 11,056.87 |
+| Open items listed above | 12,499.73 | 0.00 | 12,499.73 |
 | Rounding on settled items | 0.06 | 0.00 | 0.06 |
+| Payments against opening balance | -1,409.77 | 0.00 | -1,409.77 |
+| Credit in your favour (overpayments) | -33.09 | 0.00 | -33.09 |
 | **Balance** | 16,002.86 | 0.00 | 16,002.86 |
 
