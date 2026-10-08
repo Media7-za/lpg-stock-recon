@@ -77,6 +77,10 @@
     {
       "date": "2026-10-08",
       "event": "Matcher tie-break changed to FIFO within proximity (operator 2026-10-08, ADM-86: \"Let's do it\"): among equally exact candidates, the oldest invoice within 14 days of the closest one. Re-matched with no DB access: some equal-amount payment/invoice pairings swapped; balance, ERP tie and open totals unchanged (PROVEN, data/projection_matches.json; per-tie diff in commit message). No locks affected."
+    },
+    {
+      "date": "2026-10-08",
+      "event": "Genuine ERP exports received (Linear ADM-80, Sharmin, Drive folder \"ADM-80\"); filed as raw/MON001_2024_2026-10-08.TXT, raw/MON001_2025_2026-10-08.TXT, raw/MON001_CURRENT_2026-10-08.TXT. Verified: every running balance holds (+/-0.01), totals agree, and the years chain (2024 close 0.01 = 2025 B/F; 2025 close 162.86 = CURRENT B/F) - PROVEN. Findings vs the configured raw/MON001CURRENT_FROM202401.TXT: (1) the genuine balance at 31/12/2023 is R5,488.87, not the derived R3,049.63 (diff R2,439.24); (2) 38 ERP rows are missing from the configured file (30 from 11/07/2024-11/02/2025); (3) six credit notes are inflated x1.1304 in the configured file (7422, 7736, 7839, 8370, 8743, 9078), so CN 9078 is R-1,543.67, not R-1,745.02; (4) invoices 34081 and 40628 are present in DEBENQ25. ERP current balance is now R2,417.24. Configured TXT not switched: operator decision."
     }
   ]
 }
