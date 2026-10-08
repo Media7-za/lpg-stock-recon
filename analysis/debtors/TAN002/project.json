@@ -86,6 +86,10 @@
     {
       "date": "2026-10-08",
       "event": "Matcher tie-break changed to FIFO within proximity (operator 2026-10-08, ADM-86: \"Let's do it\"): among equally exact candidates, the oldest invoice within 14 days of the closest one. Re-matched with no DB access: some equal-amount payment/invoice pairings swapped; balance, ERP tie and open totals unchanged (PROVEN, data/projection_matches.json; per-tie diff in commit message). No locks affected."
+    },
+    {
+      "date": "2026-10-08",
+      "event": "Fresh ERP export filed as raw/TAN002_2026-10-08.TXT (Linear ADM-78, Drive). Running balances verified (255 rows, B/F R16,828.85, closing R5,438.37 = TOTAL TRANSACTIONS). Header CURRENT BALANCE is R7,938.37: the ERP excludes the unallocated UD payment (row 255, Ud Paymnt R-2,500.00; header UD PAY/CHEQUES R-2,500.00) from CURRENT BALANCE but includes it in the running balance. Any switch must tie to R5,438.37 (rows) and treat the R2,500 UD as a known reconciling item - ASSERTED, operator to confirm. Not switched."
     }
   ]
 }
