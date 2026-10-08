@@ -102,6 +102,10 @@
     {
       "date": "2026-10-08",
       "event": "Operator delegated the 45717 ruling (Linear ADM-83: \"You decide ... she is paying round amounts not what is owed to specific invoices or batches. This is not an uncommon pattern, where payment patterns change\"). Agent decision: round-amount payments on account settle oldest invoices first (FIFO, consistent with the ADM-86 ruling). Approved lock L0001 (part_payment): 45717 R15,000 settles 51564, 51691, 51823, 52044 in full and R4,601.92 of 52305; 52305 R597.11 remains open. The outstanding amount is unchanged (R597.11) but now sits on 52305, not 51564. This supersedes the LIFO pilot allocation (2026-08-25; PDP-33 2026-09-12) for the v5 statement; legacy overrides are left untouched. ERP tie R22,685.21 (PROVEN, data/projection_matches.json). Tripwire: a remittance from the customer naming invoices for 45717 reopens L0001."
+    },
+    {
+      "date": "2026-10-08",
+      "event": "TXT switched to raw/JEN001_2026-10-08.TXT on operator instruction (\"switch the other six accounts ... YES\"); window widened: B/F R9,461.01, periodStart 2025-03-03 (was R22,088.10 from 2026-07-01). CONNECTOR-SOURCED refresh (db_replay, 6 md5-verified captures in data/db_replay/2026-10-08/; authority: \"I authorize the agent to use database connectors\"). Coverage CURRENT_COMPLETE, 0 gaps (PROVEN). ERP R25,332.00 = 1A R25,332.00 + 1B R0.00, variance R0.00 (PROVEN, data/v5_projection.json). Opening split ASSUMED: config cyl opening (-517.50; 9kg qty -1) was set for 2026-07-01 and carried to 2025-03-03 — CYL rows net R0.00 before 2026-07-01 so 1B still reproduces, but the 2025-03-03 cylinder balance is unproven (tripwire: ERP cylinder balance at 2025-03-03). Matcher v4: L0001 part_payment applied, 0 conflicts (R597.11 open on 52305); 44 ties (36 confirmed / 8 probable); 9 payments unallocated (R96,776.51 — pre-July 2026 round-amount payments not yet FIFO-ruled). Open items: 88 internal rows tie R25,332.00. Matching PROPOSED — NOT RATIFIED."
     }
   ]
 }

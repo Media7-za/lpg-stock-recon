@@ -2,32 +2,24 @@
   "debtorCode": "JEN001",
   "debtorName": "Spoon Eatery",
   "period": {
-    "from": "2026-07-01",
-    "to": "2026-08-14"
+    "from": "2025-03-03",
+    "to": "2026-10-06"
   },
   "version": "v5",
   "workspaceStatus": "clean",
-  "lastGeneratedAt": "2026-10-07T20:14:58.655Z",
-  "source": "analysis/debtors/JEN001/raw/DEBENQ.TXT",
+  "lastGeneratedAt": "2026-10-08T16:29:36.723Z",
+  "source": "analysis/debtors/JEN001/raw/JEN001_2026-10-08.TXT",
   "financialPosition": {
-    "lpgGasDebt": 23202.71,
-    "cylinderFinancialBalance": -517.5,
-    "totalDebtorBalance": 22685.21,
-    "erpStatedBalance": 22685.21,
+    "lpgGasDebt": 25332,
+    "cylinderFinancialBalance": 0,
+    "totalDebtorBalance": 25332,
+    "erpStatedBalance": 25332,
     "erpVariance": 0,
     "subLedgerVariance": 0
   },
   "custodyPosition": {
-    "totalCustodyExposure": -517.5,
-    "lines": [
-      {
-        "sku": "9.1",
-        "label": "9kg",
-        "qty": -1,
-        "depositRate": 517.5,
-        "exposure": -517.5
-      }
-    ]
+    "totalCustodyExposure": 0,
+    "lines": []
   },
   "reconciliationPosition": {
     "cylinderVariance": 0,
@@ -37,6 +29,6 @@
   },
   "artifacts": {
     "statementMarkdown": "analysis/debtors/JEN001/reports/JEN001_Statement_Account_v5.md",
-    "txtSource": "analysis/debtors/JEN001/raw/DEBENQ.TXT"
+    "txtSource": "analysis/debtors/JEN001/raw/JEN001_2026-10-08.TXT"
   }
 }
