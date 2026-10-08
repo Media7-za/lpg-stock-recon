@@ -394,3 +394,4 @@ and lock file must pass.
 - **Rule:** among equally exact candidates, take the oldest invoice dated within 14 days (`fifoWindowDays`) of the closest candidate.
 - **Rejected alternative:** unbounded FIFO was tried and dropped. It reached back months (RED001 40727 → 43614) and overturned a ratified ruling (MOZ002 43640 ↔ 49550, 2026-07-20).
 - **Effect on open matches:** re-matching swapped equal-amount pairings in MD0003 (4), MOZ002 (4), TAN002 (8) and MON001 (2). Open totals are unchanged. No locked tie changed.
+- **Operator approval (2026-10-08):** the 14-day `fifoWindowDays` was proposed by the agent. The operator approved it with "Ok", replying to the agent's recommendation to keep 14 days. The rest of the proposal remains NOT RATIFIED (ADM-90). **Tripwire:** reopen the window if a ruling or remittance shows a payment settling an older invoice more than 14 days before the closest one.
