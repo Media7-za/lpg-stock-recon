@@ -1,7 +1,7 @@
 # Open Items Statement: FIRE AND VINE (FIR001) — Internal
 **Period:** from 01 Jul 2026 to 05 Sept 2026 &nbsp;|&nbsp; **Balance due:** R8,721.02
 **Status:** PROPOSED — NOT RATIFIED (`PROPOSED_Projection_Matching_Locks.md`, build step 3) · generated 2026-10-08 by `render_open_items.mjs`
-**Sources:** `analysis/debtors/FIR001/data/v5_projection.json` (TXT sha256 `a6461eb6f27f…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (20 confirmed / 0 probable ties) · **REVIEW ONLY:** ingestCoverage partial
+**Sources:** `analysis/debtors/FIR001/data/v5_projection.json` (TXT sha256 `a6461eb6f27f…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (20 confirmed / 0 probable ties)
 **Locks:** no period closed yet
 
 ---

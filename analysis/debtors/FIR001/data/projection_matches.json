@@ -2,17 +2,15 @@
   "status": "PROPOSED — NOT RATIFIED (PROPOSED_Projection_Matching_Locks.md, build step 2)",
   "debtorCode": "FIR001",
   "generatedBy": "match_projection.mjs",
-  "generatedAt": "2026-10-08T04:03:34.860Z",
+  "generatedAt": "2026-10-08T11:35:52.069Z",
   "projection": {
     "path": "analysis/debtors/FIR001/data/v5_projection.json",
     "txtSha256": "a6461eb6f27fa422dd5f42d3aec55fa5855f4c232ee8073dd6f55e2797d9e508",
     "dbChannel": "supabase-connector-replay",
-    "generatedAt": "2026-10-08T04:03:24.980Z"
+    "generatedAt": "2026-10-08T11:35:42.046Z"
   },
-  "reviewOnly": true,
-  "reviewOnlyReasons": [
-    "ingestCoverage partial"
-  ],
+  "reviewOnly": false,
+  "reviewOnlyReasons": [],
   "locksRegistry": "none yet",
   "matcherVersion": 4,
   "closedThrough": null,
@@ -24,6 +22,7 @@
     "nearSumTolerance": 1,
     "cnConfirmedMaxDays": 1,
     "maxSumInvoices": 3,
+    "maxRunInvoices": 12,
     "combinationPool": 40,
     "paymentTargetLanes": [
       "LPG",

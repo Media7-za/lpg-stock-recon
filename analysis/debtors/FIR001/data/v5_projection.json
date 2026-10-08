@@ -3,7 +3,7 @@
   "status": "PROPOSED — NOT RATIFIED (PROPOSED_Projection_Matching_Locks.md, build step 1)",
   "debtorCode": "FIR001",
   "generatedBy": "reconcile_debtor_v5_from_txt.mjs",
-  "generatedAt": "2026-10-08T04:03:24.980Z",
+  "generatedAt": "2026-10-08T11:35:42.046Z",
   "source": {
     "txtPath": "analysis/debtors/FIR001/raw/FIR001CURRENT.TXT.TXT",
     "txtSha256": "a6461eb6f27fa422dd5f42d3aec55fa5855f4c232ee8073dd6f55e2797d9e508",
@@ -28,9 +28,9 @@
     "erpVariance": 0
   },
   "ingestGate": {
-    "ingestCoverage": "partial",
+    "ingestCoverage": "complete",
     "ingestFreshness": "current",
-    "displayStatus": "CURRENT_PARTIAL"
+    "displayStatus": "CURRENT_COMPLETE"
   },
   "checks": {
     "lpgRowsReproduce1A": true,
@@ -40,9 +40,8 @@
   "summary": {
     "rowCount": 45,
     "splitBasisCounts": {
-      "DB_LINES": 35,
-      "PAYMENT_LANE": 9,
-      "REF_EMPTY": 1
+      "DB_LINES": 36,
+      "PAYMENT_LANE": 9
     }
   },
   "rows": [
@@ -536,7 +535,7 @@
       "ref_no": "DN#24913-EMPTY",
       "txt_line": 34,
       "txt_amount": -6555,
-      "split_basis": "REF_EMPTY",
+      "split_basis": "DB_LINES",
       "confirmable": true,
       "lane": "CYL",
       "amount": -6555

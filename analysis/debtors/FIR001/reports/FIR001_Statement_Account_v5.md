@@ -120,27 +120,20 @@
 
 ---
 
-## Ingest Gate (`ingestFreshness: current` · `ingestCoverage: partial`)
+## Ingest Gate (`ingestFreshness: current` · `ingestCoverage: complete`)
 
 | Check | Status |
 | :--- | :--- |
-| Display status | `CURRENT_PARTIAL` |
+| Display status | `CURRENT_COMPLETE` |
 | Financial balance from TXT | **ALLOWED** |
-| Custody / Part 2 qty | **BLOCKED** |
-| SKU analysis | **BLOCKED** |
-
-> **Custody conclusions blocked.** DB qty may be incomplete or stale vs statement TXT (`analysis/debtors/FIR001/raw/FIR001CURRENT.TXT.TXT`). See `FIR001_INGEST_COVERAGE_*.md`.
-
-**INGEST_GAP documents (custody-blocking):**
-- **15488** (Crd Note, 2026-08-15) — `MISSING_HEADER_AND_LINES`
-- **45779** (Payment, 2026-08-17) — `MISSING_HEADER`
-- **45995** (Payment, 2026-08-31) — `MISSING_HEADER`
+| Custody / Part 2 qty | **ALLOWED** |
+| SKU analysis | **ALLOWED** |
 
 ---
 
 
 ## Part 2: Cylinder (CYL) Ledger (Physical Asset Tracker)
-*Cylinders tracked by physical count. Opening balances per `config/statement_v5.json`. **Gate: custody BLOCKED — see Ingest Gate above.***
+*Cylinders tracked by physical count. Opening balances per `config/statement_v5.json`.*
 
 ### July 2026
 | Date | Entry Type | Doc # | 14kg Qty | 19kg Qty | 9kg Qty | D.1 Qty | S.1 Qty |
@@ -171,21 +164,22 @@
 | 11 Aug 2026 | Invoice | 52464 | 0 | 0 | +1 | 0 | +5 |
 | 11 Aug 2026 | Crd Note | 15439 | 0 | 0 | -1 | 0 | -5 |
 | 14 Aug 2026 | Invoice | 52579 | 0 | 0 | +1 | 0 | +5 |
+| 15 Aug 2026 | Crd Note | 15488 | 0 | 0 | -1 | 0 | -5 |
 | 22 Aug 2026 | Invoice | 52737 | 0 | 0 | +1 | 0 | +5 |
 | 24 Aug 2026 | Crd Note | 15535 | 0 | 0 | 0 | 0 | -5 |
 | 28 Aug 2026 | Invoice | 52845 | 0 | 0 | +1 | 0 | +5 |
 | 28 Aug 2026 | Crd Note | 15569 | 0 | 0 | -1 | 0 | -5 |
-| **End Aug** | **Closing Balance** | — | **0** | **0** | **2** | **0** | **5** |
+| **End Aug** | **Closing Balance** | — | **0** | **0** | **1** | **0** | **0** |
 
 ---
 
 ### September 2026
 | Date | Entry Type | Doc # | 14kg Qty | 19kg Qty | 9kg Qty | D.1 Qty | S.1 Qty |
 | :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: |
-| **01 Sep** | **Opening Balance** | — | **0** | **0** | **2** | **0** | **5** |
+| **01 Sep** | **Opening Balance** | — | **0** | **0** | **1** | **0** | **0** |
 | 05 Sept 2026 | Invoice | 52963 | 0 | 0 | +2 | 0 | +5 |
 | 05 Sept 2026 | Crd Note | 15604 | 0 | 0 | -2 | 0 | -5 |
-| **End Sep** | **Closing Balance** | — | **0** | **0** | **2** | **0** | **5** |
+| **End Sep** | **Closing Balance** | — | **0** | **0** | **1** | **0** | **0** |
 
 ---
 
@@ -206,18 +200,15 @@
 
 | SKU | Net Returnable Qty | Deposit Rate | Custody Exposure |
 |---|---:|---:|---:|
-| 9kg | 2 | R517.50 | R1,035.00 |
-| S.1 | 5 | R1,150.00 | R5,750.00 |
-| **Total** | **7** | — | **R6,785.00** |
+| 9kg | 1 | R517.50 | R517.50 |
+| **Total** | **1** | — | **R517.50** |
 
 ### 3. Reconciliation Position
 
 | Check | Financial | Custody | Variance |
 |---|---:|---:|---:|
-| Cylinder Position (1B vs custody) | R517.50 | R6,785.00 | R-6,267.50 |
+| Cylinder Position (1B vs custody) | R517.50 | R517.50 | R0.00 |
 | Sub-ledger tie (1A + 1B vs combined) | R8,721.02 | — | R0.00 |
-
-> **INGEST_GATE:** Custody variance below is **not signed off** — ingest coverage `CURRENT_PARTIAL`. DB-backed qty may not reflect all TXT documents.
 
 **ERP Combined Balance (TXT header):** R8,721.02  
 **Reconstructed Balance (1A + 1B):** R8,721.02  

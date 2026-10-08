@@ -1,33 +1,29 @@
 {
   "account_no": "FIR001",
-  "generated_at": "2026-10-08T04:02:48.029Z",
+  "generated_at": "2026-10-08T11:34:28.740Z",
   "statement_txt": "analysis/debtors/FIR001/raw/FIR001CURRENT.TXT.TXT",
   "period_start": "2026-07-01",
   "txt_as_at": "2026-09-05",
-  "header_sync_as_at": "2026-10-05",
-  "items_sync_as_at": "2026-10-05",
+  "header_sync_as_at": "2026-10-08",
+  "items_sync_as_at": "2026-10-08",
   "ingestFreshness": "current",
-  "ingestCoverage": "partial",
-  "display_status": "CURRENT_PARTIAL",
+  "ingestCoverage": "complete",
+  "display_status": "CURRENT_COMPLETE",
   "summary": {
     "documents_in_txt": 45,
-    "healthy": 42,
-    "gaps": 3,
-    "db_only": 15
+    "healthy": 45,
+    "gaps": 0,
+    "db_only": 22
   },
   "gates": {
     "financial_balance_from_txt": "ALLOWED",
-    "custody": "BLOCKED",
-    "sku_analysis": "BLOCKED",
-    "allocation": "BLOCKED"
+    "custody": "ALLOWED",
+    "sku_analysis": "ALLOWED",
+    "allocation": "ALLOWED"
   },
   "ingest_gate": {
     "status": "pass",
-    "ingestBlockedScopes": [
-      "custody",
-      "sku_analysis",
-      "allocation"
-    ]
+    "ingestBlockedScopes": []
   },
   "documents": [
     {
@@ -485,15 +481,11 @@
       "ref_no": "DN#24913-EMPTY",
       "amount": -6555,
       "in_txt": true,
-      "header_present": false,
-      "lines_present": false,
+      "header_present": true,
+      "lines_present": true,
       "required_ingest_shape": "header_and_lines",
-      "classification": "MISSING_HEADER_AND_LINES",
-      "blocks": [
-        "custody",
-        "sku_analysis",
-        "allocation"
-      ],
+      "classification": "HEALTHY",
+      "blocks": [],
       "exception": null
     },
     {
@@ -503,15 +495,11 @@
       "ref_no": "TRANSF | STAT 129",
       "amount": -14379.9,
       "in_txt": true,
-      "header_present": false,
+      "header_present": true,
       "lines_present": false,
       "required_ingest_shape": "header_only",
-      "classification": "MISSING_HEADER",
-      "blocks": [
-        "custody",
-        "sku_analysis",
-        "allocation"
-      ],
+      "classification": "EXPECTED_HEADER_ONLY",
+      "blocks": [],
       "exception": null
     },
     {
@@ -619,15 +607,11 @@
       "ref_no": "TRANSF | STAT 129",
       "amount": -7189.95,
       "in_txt": true,
-      "header_present": false,
+      "header_present": true,
       "lines_present": false,
       "required_ingest_shape": "header_only",
-      "classification": "MISSING_HEADER",
-      "blocks": [
-        "custody",
-        "sku_analysis",
-        "allocation"
-      ],
+      "classification": "EXPECTED_HEADER_ONLY",
+      "blocks": [],
       "exception": null
     },
     {
@@ -670,6 +654,23 @@
       "required_ingest_shape": "header_and_lines",
       "classification": "HEALTHY",
       "blocks": [],
+      "exception": null
+    },
+    {
+      "doc_no": "46084",
+      "doc_type": "Payment",
+      "tx_date": "2026-09-07",
+      "ref_no": null,
+      "amount": -7606.09,
+      "in_txt": false,
+      "header_present": true,
+      "lines_present": false,
+      "required_ingest_shape": "header_only",
+      "classification": "DB_ONLY_DOCUMENT",
+      "blocks": [
+        "financial_bridge_from_txt"
+      ],
+      "source_file": "DTRX0710.TXT",
       "exception": null
     },
     {
@@ -721,6 +722,23 @@
         "financial_bridge_from_txt"
       ],
       "source_file": "DTRX1209.TXT",
+      "exception": null
+    },
+    {
+      "doc_no": "46099",
+      "doc_type": "Payment",
+      "tx_date": "2026-09-11",
+      "ref_no": null,
+      "amount": -6809.15,
+      "in_txt": false,
+      "header_present": true,
+      "lines_present": false,
+      "required_ingest_shape": "header_only",
+      "classification": "DB_ONLY_DOCUMENT",
+      "blocks": [
+        "financial_bridge_from_txt"
+      ],
+      "source_file": "DTRX0710.TXT",
       "exception": null
     },
     {
@@ -894,6 +912,40 @@
       "exception": null
     },
     {
+      "doc_no": "46327",
+      "doc_type": "Payment",
+      "tx_date": "2026-09-28",
+      "ref_no": null,
+      "amount": -6536.23,
+      "in_txt": false,
+      "header_present": true,
+      "lines_present": false,
+      "required_ingest_shape": "header_only",
+      "classification": "DB_ONLY_DOCUMENT",
+      "blocks": [
+        "financial_bridge_from_txt"
+      ],
+      "source_file": "DTRX0710.TXT",
+      "exception": null
+    },
+    {
+      "doc_no": "46328",
+      "doc_type": "Payment",
+      "tx_date": "2026-09-28",
+      "ref_no": null,
+      "amount": -6536.23,
+      "in_txt": false,
+      "header_present": true,
+      "lines_present": false,
+      "required_ingest_shape": "header_only",
+      "classification": "DB_ONLY_DOCUMENT",
+      "blocks": [
+        "financial_bridge_from_txt"
+      ],
+      "source_file": "DTRX0710.TXT",
+      "exception": null
+    },
+    {
       "doc_no": "53394",
       "doc_type": "Invoice",
       "tx_date": "2026-09-30",
@@ -925,6 +977,57 @@
         "financial_bridge_from_txt"
       ],
       "source_file": "DTRX0410.TXT",
+      "exception": null
+    },
+    {
+      "doc_no": "53480",
+      "doc_type": "Invoice",
+      "tx_date": "2026-10-06",
+      "ref_no": null,
+      "amount": 6536.23,
+      "in_txt": false,
+      "header_present": true,
+      "lines_present": true,
+      "required_ingest_shape": "header_and_lines",
+      "classification": "DB_ONLY_DOCUMENT",
+      "blocks": [
+        "financial_bridge_from_txt"
+      ],
+      "source_file": "DTRX0710.TXT",
+      "exception": null
+    },
+    {
+      "doc_no": "53481",
+      "doc_type": "Invoice",
+      "tx_date": "2026-10-06",
+      "ref_no": null,
+      "amount": 6555,
+      "in_txt": false,
+      "header_present": true,
+      "lines_present": true,
+      "required_ingest_shape": "header_and_lines",
+      "classification": "DB_ONLY_DOCUMENT",
+      "blocks": [
+        "financial_bridge_from_txt"
+      ],
+      "source_file": "DTRX0710.TXT",
+      "exception": null
+    },
+    {
+      "doc_no": "15770",
+      "doc_type": "Crd Note",
+      "tx_date": "2026-10-07",
+      "ref_no": null,
+      "amount": -6037.5,
+      "in_txt": false,
+      "header_present": true,
+      "lines_present": true,
+      "required_ingest_shape": "header_and_lines",
+      "classification": "DB_ONLY_DOCUMENT",
+      "blocks": [
+        "financial_bridge_from_txt"
+      ],
+      "source_file": "DTRX0710.TXT",
       "exception": null
     }
   ]
