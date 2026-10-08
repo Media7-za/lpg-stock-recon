@@ -97,6 +97,10 @@
     {
       "date": "2026-10-08",
       "event": "Period close C0001 through 2026-08-31 on operator instruction (\"Close both\", 2026-10-08) via close_period.mjs: 19 auto_locked CONFIRMED ties (CN_DN_PAIR 10, EXACT_SINGLE 7, EXACT_MONTH_SUM 2), value R149,496.16; gates passed (coverage CURRENT_COMPLETE, ERP variance R0.00, tag gate NOT_DERIVABLE_FROM_TXT); 0 probable left. Includes the date-order pairing of the two R8,120.59 payments (45474/45591 <-> 52036/52195; ruling ADM-86 still open - void the affected locks if the operator rules otherwise). ERP tie R8,721.02 unchanged (PROVEN). Undo: close_period.mjs --void-close C0001."
+    },
+    {
+      "date": "2026-10-08",
+      "event": "Operator ruling (ADM-86, 2026-10-08): \"In this instance the ruling is 45591 > 52036\". This matches the existing locks from close C0001: L0016 (payment 45591 07 Aug <-> invoice 52036 23 Jul) and, by elimination, L0014 (payment 45474 31 Jul <-> invoice 52195 30 Jul). No lock changed; both are now operator-confirmed. The general tie-break the operator floated for equal-amount pairs (\"fifo within this proximity\") is not yet applied; see ADM-90."
     }
   ]
 }
