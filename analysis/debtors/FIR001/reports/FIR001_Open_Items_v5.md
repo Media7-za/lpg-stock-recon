@@ -2,7 +2,7 @@
 **Period:** from 01 Jul 2026 to 05 Sept 2026 &nbsp;|&nbsp; **Balance due:** R8,721.02
 **Status:** PROPOSED — NOT RATIFIED (`PROPOSED_Projection_Matching_Locks.md`, build step 3) · generated 2026-10-08 by `render_open_items.mjs`
 **Sources:** `analysis/debtors/FIR001/data/v5_projection.json` (TXT sha256 `a6461eb6f27f…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (20 confirmed / 0 probable ties)
-**Locks:** no period closed yet
+**Locks:** closed through 2026-08-31, 19 locks applied
 
 ---
 
@@ -52,9 +52,8 @@ _None._
 
 | Rule | Ties |
 | :--- | ---: |
-| CN_DN_PAIR | 11 |
-| EXACT_SINGLE | 7 |
-| EXACT_MONTH_SUM | 2 |
+| LOCKED | 19 |
+| CN_DN_PAIR | 1 |
 
 Full tie list: `data/projection_matches.json`.
 

@@ -21,6 +21,23 @@
         "locksCreated": 112,
         "value": 413259.49,
         "probableLeftOpen": 13
+      },
+      {
+        "close_id": "C0002",
+        "closedThrough": "2026-09-30",
+        "closedAt": "2026-10-08T11:40:06.858Z",
+        "closedBy": "operator-instructed-agent",
+        "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx",
+        "gates": {
+          "erpVariance": 0,
+          "ingestCoverage": "complete",
+          "tagGate": "NOT_DERIVABLE_FROM_TXT",
+          "txtSha256": "837cff982c0cbc93161e975677eb7fa215dc68b19007c2a1f2864b8ca28642e6",
+          "dbChannel": "supabase-connector-replay"
+        },
+        "locksCreated": 25,
+        "value": 64083.03,
+        "probableLeftOpen": 16
       }
     ],
     "locks": [
@@ -3612,6 +3629,739 @@
           }
         ],
         "createdAt": "2026-10-08T03:30:03.572Z"
+      },
+      {
+        "lock_id": "L0120",
+        "close_id": "C0002",
+        "status": "auto_locked",
+        "rule": "CN_DN_PAIR",
+        "tie_basis": {
+          "tie_id": "T0128"
+        },
+        "members": [
+          {
+            "key": "51595|Invoice|CYL|2026-07-04|517.50",
+            "doc": "51595",
+            "entry_type": "Invoice",
+            "lane": "CYL",
+            "date": "2026-07-04",
+            "amount": 517.5
+          },
+          {
+            "key": "15191|Crd Note|CYL|2026-07-04|-517.50",
+            "doc": "15191",
+            "entry_type": "Crd Note",
+            "lane": "CYL",
+            "date": "2026-07-04",
+            "amount": -517.5
+          }
+        ],
+        "createdAt": "2026-10-08T11:40:06.858Z"
+      },
+      {
+        "lock_id": "L0121",
+        "close_id": "C0002",
+        "status": "auto_locked",
+        "rule": "CN_DN_PAIR",
+        "tie_basis": {
+          "tie_id": "T0129"
+        },
+        "members": [
+          {
+            "key": "51724|Invoice|CYL|2026-07-09|517.50",
+            "doc": "51724",
+            "entry_type": "Invoice",
+            "lane": "CYL",
+            "date": "2026-07-09",
+            "amount": 517.5
+          },
+          {
+            "key": "15228|Crd Note|CYL|2026-07-09|-517.50",
+            "doc": "15228",
+            "entry_type": "Crd Note",
+            "lane": "CYL",
+            "date": "2026-07-09",
+            "amount": -517.5
+          }
+        ],
+        "createdAt": "2026-10-08T11:40:06.858Z"
+      },
+      {
+        "lock_id": "L0122",
+        "close_id": "C0002",
+        "status": "auto_locked",
+        "rule": "CN_DN_PAIR",
+        "tie_basis": {
+          "tie_id": "T0130"
+        },
+        "members": [
+          {
+            "key": "51740|Invoice|CYL|2026-07-10|4830.00",
+            "doc": "51740",
+            "entry_type": "Invoice",
+            "lane": "CYL",
+            "date": "2026-07-10",
+            "amount": 4830
+          },
+          {
+            "key": "15233|Crd Note|CYL|2026-07-10|-4830.00",
+            "doc": "15233",
+            "entry_type": "Crd Note",
+            "lane": "CYL",
+            "date": "2026-07-10",
+            "amount": -4830
+          }
+        ],
+        "createdAt": "2026-10-08T11:40:06.858Z"
+      },
+      {
+        "lock_id": "L0123",
+        "close_id": "C0002",
+        "status": "auto_locked",
+        "rule": "CN_DN_PAIR",
+        "tie_basis": {
+          "tie_id": "T0131"
+        },
+        "members": [
+          {
+            "key": "51867|Invoice|CYL|2026-07-16|517.50",
+            "doc": "51867",
+            "entry_type": "Invoice",
+            "lane": "CYL",
+            "date": "2026-07-16",
+            "amount": 517.5
+          },
+          {
+            "key": "15270|Crd Note|CYL|2026-07-16|-517.50",
+            "doc": "15270",
+            "entry_type": "Crd Note",
+            "lane": "CYL",
+            "date": "2026-07-16",
+            "amount": -517.5
+          }
+        ],
+        "createdAt": "2026-10-08T11:40:06.858Z"
+      },
+      {
+        "lock_id": "L0124",
+        "close_id": "C0002",
+        "status": "auto_locked",
+        "rule": "CN_DN_PAIR",
+        "tie_basis": {
+          "tie_id": "T0132"
+        },
+        "members": [
+          {
+            "key": "52101|Invoice|CYL|2026-07-27|4830.00",
+            "doc": "52101",
+            "entry_type": "Invoice",
+            "lane": "CYL",
+            "date": "2026-07-27",
+            "amount": 4830
+          },
+          {
+            "key": "15347|Crd Note|CYL|2026-07-28|-4830.00",
+            "doc": "15347",
+            "entry_type": "Crd Note",
+            "lane": "CYL",
+            "date": "2026-07-28",
+            "amount": -4830
+          }
+        ],
+        "createdAt": "2026-10-08T11:40:06.858Z"
+      },
+      {
+        "lock_id": "L0125",
+        "close_id": "C0002",
+        "status": "auto_locked",
+        "rule": "CN_DN_PAIR",
+        "tie_basis": {
+          "tie_id": "T0133"
+        },
+        "members": [
+          {
+            "key": "52194|Invoice|CYL|2026-07-30|517.50",
+            "doc": "52194",
+            "entry_type": "Invoice",
+            "lane": "CYL",
+            "date": "2026-07-30",
+            "amount": 517.5
+          },
+          {
+            "key": "15362|Crd Note|CYL|2026-07-31|-517.50",
+            "doc": "15362",
+            "entry_type": "Crd Note",
+            "lane": "CYL",
+            "date": "2026-07-31",
+            "amount": -517.5
+          }
+        ],
+        "createdAt": "2026-10-08T11:40:06.858Z"
+      },
+      {
+        "lock_id": "L0126",
+        "close_id": "C0002",
+        "status": "auto_locked",
+        "rule": "CN_DN_PAIR",
+        "tie_basis": {
+          "tie_id": "T0134"
+        },
+        "members": [
+          {
+            "key": "52391|Invoice|LPG|2026-08-07|314.03",
+            "doc": "52391",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-08-07",
+            "amount": 314.03
+          },
+          {
+            "key": "15556|Crd Note|LPG|2026-08-07|-314.03",
+            "doc": "15556",
+            "entry_type": "Crd Note",
+            "lane": "LPG",
+            "date": "2026-08-07",
+            "amount": -314.03
+          }
+        ],
+        "createdAt": "2026-10-08T11:40:06.858Z"
+      },
+      {
+        "lock_id": "L0127",
+        "close_id": "C0002",
+        "status": "auto_locked",
+        "rule": "CN_DN_PAIR",
+        "tie_basis": {
+          "tie_id": "T0135"
+        },
+        "members": [
+          {
+            "key": "52515|Invoice|LPG|2026-08-12|5981.61",
+            "doc": "52515",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-08-12",
+            "amount": 5981.61
+          },
+          {
+            "key": "15557|Crd Note|LPG|2026-08-12|-5981.61",
+            "doc": "15557",
+            "entry_type": "Crd Note",
+            "lane": "LPG",
+            "date": "2026-08-12",
+            "amount": -5981.61
+          }
+        ],
+        "createdAt": "2026-10-08T11:40:06.858Z"
+      },
+      {
+        "lock_id": "L0128",
+        "close_id": "C0002",
+        "status": "auto_locked",
+        "rule": "CN_DN_PAIR",
+        "tie_basis": {
+          "tie_id": "T0136"
+        },
+        "members": [
+          {
+            "key": "52516|Invoice|CYL|2026-08-12|4830.00",
+            "doc": "52516",
+            "entry_type": "Invoice",
+            "lane": "CYL",
+            "date": "2026-08-12",
+            "amount": 4830
+          },
+          {
+            "key": "15454|Crd Note|CYL|2026-08-13|-4830.00",
+            "doc": "15454",
+            "entry_type": "Crd Note",
+            "lane": "CYL",
+            "date": "2026-08-13",
+            "amount": -4830
+          }
+        ],
+        "createdAt": "2026-10-08T11:40:06.858Z"
+      },
+      {
+        "lock_id": "L0129",
+        "close_id": "C0002",
+        "status": "auto_locked",
+        "rule": "CN_DN_PAIR",
+        "tie_basis": {
+          "tie_id": "T0137"
+        },
+        "members": [
+          {
+            "key": "52548|Invoice|CYL|2026-08-14|517.50",
+            "doc": "52548",
+            "entry_type": "Invoice",
+            "lane": "CYL",
+            "date": "2026-08-14",
+            "amount": 517.5
+          },
+          {
+            "key": "15463|Crd Note|CYL|2026-08-14|-517.50",
+            "doc": "15463",
+            "entry_type": "Crd Note",
+            "lane": "CYL",
+            "date": "2026-08-14",
+            "amount": -517.5
+          }
+        ],
+        "createdAt": "2026-10-08T11:40:06.858Z"
+      },
+      {
+        "lock_id": "L0130",
+        "close_id": "C0002",
+        "status": "auto_locked",
+        "rule": "CN_DN_PAIR",
+        "tie_basis": {
+          "tie_id": "T0139"
+        },
+        "members": [
+          {
+            "key": "52894|Invoice|CYL|2026-09-01|5347.50",
+            "doc": "52894",
+            "entry_type": "Invoice",
+            "lane": "CYL",
+            "date": "2026-09-01",
+            "amount": 5347.5
+          },
+          {
+            "key": "15590|Crd Note|CYL|2026-09-02|-5347.50",
+            "doc": "15590",
+            "entry_type": "Crd Note",
+            "lane": "CYL",
+            "date": "2026-09-02",
+            "amount": -5347.5
+          }
+        ],
+        "createdAt": "2026-10-08T11:40:06.858Z"
+      },
+      {
+        "lock_id": "L0131",
+        "close_id": "C0002",
+        "status": "auto_locked",
+        "rule": "CN_DN_PAIR",
+        "tie_basis": {
+          "tie_id": "T0140"
+        },
+        "members": [
+          {
+            "key": "53012|Invoice|CYL|2026-09-07|517.50",
+            "doc": "53012",
+            "entry_type": "Invoice",
+            "lane": "CYL",
+            "date": "2026-09-07",
+            "amount": 517.5
+          },
+          {
+            "key": "15622|Crd Note|CYL|2026-09-07|-517.50",
+            "doc": "15622",
+            "entry_type": "Crd Note",
+            "lane": "CYL",
+            "date": "2026-09-07",
+            "amount": -517.5
+          }
+        ],
+        "createdAt": "2026-10-08T11:40:06.858Z"
+      },
+      {
+        "lock_id": "L0132",
+        "close_id": "C0002",
+        "status": "auto_locked",
+        "rule": "CN_DN_PAIR",
+        "tie_basis": {
+          "tie_id": "T0141"
+        },
+        "members": [
+          {
+            "key": "53166|Invoice|CYL|2026-09-17|4830.00",
+            "doc": "53166",
+            "entry_type": "Invoice",
+            "lane": "CYL",
+            "date": "2026-09-17",
+            "amount": 4830
+          },
+          {
+            "key": "15660|Crd Note|CYL|2026-09-17|-4830.00",
+            "doc": "15660",
+            "entry_type": "Crd Note",
+            "lane": "CYL",
+            "date": "2026-09-17",
+            "amount": -4830
+          }
+        ],
+        "createdAt": "2026-10-08T11:40:06.858Z"
+      },
+      {
+        "lock_id": "L0133",
+        "close_id": "C0002",
+        "status": "auto_locked",
+        "rule": "CN_DN_PAIR",
+        "tie_basis": {
+          "tie_id": "T0142"
+        },
+        "members": [
+          {
+            "key": "53165|Invoice|LPG|2026-09-17|6097.94",
+            "doc": "53165",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-09-17",
+            "amount": 6097.94
+          },
+          {
+            "key": "15679|Crd Note|LPG|2026-09-17|-6097.94",
+            "doc": "15679",
+            "entry_type": "Crd Note",
+            "lane": "LPG",
+            "date": "2026-09-17",
+            "amount": -6097.94
+          }
+        ],
+        "createdAt": "2026-10-08T11:40:06.858Z"
+      },
+      {
+        "lock_id": "L0134",
+        "close_id": "C0002",
+        "status": "auto_locked",
+        "rule": "CN_DN_PAIR",
+        "tie_basis": {
+          "tie_id": "T0143"
+        },
+        "members": [
+          {
+            "key": "53173|Invoice|LPG|2026-09-17|285.84",
+            "doc": "53173",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-09-17",
+            "amount": 285.84
+          },
+          {
+            "key": "15680|Crd Note|LPG|2026-09-17|-285.84",
+            "doc": "15680",
+            "entry_type": "Crd Note",
+            "lane": "LPG",
+            "date": "2026-09-17",
+            "amount": -285.84
+          }
+        ],
+        "createdAt": "2026-10-08T11:40:06.858Z"
+      },
+      {
+        "lock_id": "L0135",
+        "close_id": "C0002",
+        "status": "auto_locked",
+        "rule": "CN_DN_PAIR",
+        "tie_basis": {
+          "tie_id": "T0144"
+        },
+        "members": [
+          {
+            "key": "53356|Invoice|CYL|2026-09-29|517.50",
+            "doc": "53356",
+            "entry_type": "Invoice",
+            "lane": "CYL",
+            "date": "2026-09-29",
+            "amount": 517.5
+          },
+          {
+            "key": "15716|Crd Note|CYL|2026-09-29|-517.50",
+            "doc": "15716",
+            "entry_type": "Crd Note",
+            "lane": "CYL",
+            "date": "2026-09-29",
+            "amount": -517.5
+          }
+        ],
+        "createdAt": "2026-10-08T11:40:06.858Z"
+      },
+      {
+        "lock_id": "L0136",
+        "close_id": "C0002",
+        "status": "auto_locked",
+        "rule": "EXACT_SINGLE",
+        "tie_basis": {
+          "tie_id": "T0151",
+          "variance": 0
+        },
+        "members": [
+          {
+            "key": "44962|Payment|LPG|2026-07-01|-312.73",
+            "doc": "44962",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2026-07-01",
+            "amount": -312.73
+          },
+          {
+            "key": "51428|Invoice|LPG|2026-06-25|312.73",
+            "doc": "51428",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-06-25",
+            "amount": 312.73
+          }
+        ],
+        "createdAt": "2026-10-08T11:40:06.858Z"
+      },
+      {
+        "lock_id": "L0137",
+        "close_id": "C0002",
+        "status": "auto_locked",
+        "rule": "EXACT_SUM",
+        "tie_basis": {
+          "tie_id": "T0152",
+          "variance": 0
+        },
+        "members": [
+          {
+            "key": "45095|Payment|LPG|2026-07-06|-6985.69",
+            "doc": "45095",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2026-07-06",
+            "amount": -6985.69
+          },
+          {
+            "key": "51594|Invoice|LPG|2026-07-03|314.03",
+            "doc": "51594",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-07-03",
+            "amount": 314.03
+          },
+          {
+            "key": "51472|Invoice|LPG|2026-06-29|6671.66",
+            "doc": "51472",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-06-29",
+            "amount": 6671.66
+          }
+        ],
+        "createdAt": "2026-10-08T11:40:06.858Z"
+      },
+      {
+        "lock_id": "L0138",
+        "close_id": "C0002",
+        "status": "auto_locked",
+        "rule": "EXACT_MONTH_SUM",
+        "tie_basis": {
+          "tie_id": "T0153",
+          "variance": 0
+        },
+        "members": [
+          {
+            "key": "45194|Payment|LPG|2026-07-13|-7013.24",
+            "doc": "45194",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2026-07-13",
+            "amount": -7013.24
+          },
+          {
+            "key": "51723|Invoice|LPG|2026-07-09|314.03",
+            "doc": "51723",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-07-09",
+            "amount": 314.03
+          },
+          {
+            "key": "51739|Invoice|LPG|2026-07-10|6699.21",
+            "doc": "51739",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-07-10",
+            "amount": 6699.21
+          }
+        ],
+        "createdAt": "2026-10-08T11:40:06.858Z"
+      },
+      {
+        "lock_id": "L0139",
+        "close_id": "C0002",
+        "status": "auto_locked",
+        "rule": "EXACT_SINGLE",
+        "tie_basis": {
+          "tie_id": "T0154",
+          "variance": 0
+        },
+        "members": [
+          {
+            "key": "45329|Payment|LPG|2026-07-21|-314.03",
+            "doc": "45329",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2026-07-21",
+            "amount": -314.03
+          },
+          {
+            "key": "51866|Invoice|LPG|2026-07-16|314.03",
+            "doc": "51866",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-07-16",
+            "amount": 314.03
+          }
+        ],
+        "createdAt": "2026-10-08T11:40:06.858Z"
+      },
+      {
+        "lock_id": "L0140",
+        "close_id": "C0002",
+        "status": "auto_locked",
+        "rule": "EXACT_SINGLE",
+        "tie_basis": {
+          "tie_id": "T0155",
+          "variance": 0
+        },
+        "members": [
+          {
+            "key": "45466|Payment|LPG|2026-07-28|-628.06",
+            "doc": "45466",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2026-07-28",
+            "amount": -628.06
+          },
+          {
+            "key": "52077|Invoice|LPG|2026-07-25|628.06",
+            "doc": "52077",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-07-25",
+            "amount": 628.06
+          }
+        ],
+        "createdAt": "2026-10-08T11:40:06.858Z"
+      },
+      {
+        "lock_id": "L0141",
+        "close_id": "C0002",
+        "status": "auto_locked",
+        "rule": "EXACT_MONTH_SUM",
+        "tie_basis": {
+          "tie_id": "T0156",
+          "variance": 0
+        },
+        "members": [
+          {
+            "key": "45579|Payment|LPG|2026-08-03|-7013.24",
+            "doc": "45579",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2026-08-03",
+            "amount": -7013.24
+          },
+          {
+            "key": "52100|Invoice|LPG|2026-07-27|6699.21",
+            "doc": "52100",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-07-27",
+            "amount": 6699.21
+          },
+          {
+            "key": "52193|Invoice|LPG|2026-07-30|314.03",
+            "doc": "52193",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-07-30",
+            "amount": 314.03
+          }
+        ],
+        "createdAt": "2026-10-08T11:40:06.858Z"
+      },
+      {
+        "lock_id": "L0142",
+        "close_id": "C0002",
+        "status": "auto_locked",
+        "rule": "EXACT_SINGLE",
+        "tie_basis": {
+          "tie_id": "T0157",
+          "variance": 0
+        },
+        "members": [
+          {
+            "key": "45888|Payment|LPG|2026-08-24|-280.39",
+            "doc": "45888",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2026-08-24",
+            "amount": -280.39
+          },
+          {
+            "key": "52764|Invoice|LPG|2026-08-24|280.39",
+            "doc": "52764",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-08-24",
+            "amount": 280.39
+          }
+        ],
+        "createdAt": "2026-10-08T11:40:06.858Z"
+      },
+      {
+        "lock_id": "L0143",
+        "close_id": "C0002",
+        "status": "auto_locked",
+        "rule": "EXACT_SINGLE",
+        "tie_basis": {
+          "tie_id": "T0158",
+          "variance": 0
+        },
+        "members": [
+          {
+            "key": "45998|Payment|LPG|2026-08-31|-280.39",
+            "doc": "45998",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2026-08-31",
+            "amount": -280.39
+          },
+          {
+            "key": "52738|Invoice|LPG|2026-08-22|280.39",
+            "doc": "52738",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-08-22",
+            "amount": 280.39
+          }
+        ],
+        "createdAt": "2026-10-08T11:40:06.858Z"
+      },
+      {
+        "lock_id": "L0144",
+        "close_id": "C0002",
+        "status": "auto_locked",
+        "rule": "EXACT_SINGLE",
+        "tie_basis": {
+          "tie_id": "T0159",
+          "variance": 0
+        },
+        "members": [
+          {
+            "key": "46160|Payment|LPG|2026-09-14|-285.84",
+            "doc": "46160",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2026-09-14",
+            "amount": -285.84
+          },
+          {
+            "key": "53011|Invoice|LPG|2026-09-07|285.84",
+            "doc": "53011",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-09-07",
+            "amount": 285.84
+          }
+        ],
+        "createdAt": "2026-10-08T11:40:06.858Z"
       }
     ],
     "voids": []
