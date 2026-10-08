@@ -6,16 +6,16 @@
 
 | Field | Value |
 | :--- | :--- |
-| Statement TXT | `analysis/debtors/MON001/raw/MON001CURRENT_FROM202401.TXT` |
-| TXT as-at (last period row) | 2026-07-22 |
-| Header sync as-at | 2026-10-05 |
-| Items sync as-at | 2026-10-05 |
+| Statement TXT | `analysis/debtors/MON001/raw/MON001_CURRENT_2026-10-08.TXT` |
+| TXT as-at (last period row) | 2026-10-02 |
+| Header sync as-at | 2026-10-08 |
+| Items sync as-at | 2026-10-08 |
 | ingestFreshness | `current` |
 | ingestCoverage | `partial` |
-| Documents in TXT (period) | 86 |
-| Healthy / expected | 84 |
+| Documents in TXT (period) | 69 |
+| Healthy / expected | 67 |
 | Gaps | 2 |
-| DB-only (not in TXT) | 49 |
+| DB-only (not in TXT) | 42 |
 
 ## Gate result
 
@@ -74,13 +74,6 @@
 | 40628 | Invoice | 2025-02-11 | DB_ONLY_DOCUMENT | financial_bridge_from_txt |
 | 40629 | Invoice | 2025-02-11 | DB_ONLY_DOCUMENT | financial_bridge_from_txt |
 | 52130 | Invoice | 2026-01-27 | MISSING_HEADER | custody, sku_analysis, allocation |
-| 45589 | Payment | 2026-08-05 | DB_ONLY_DOCUMENT | financial_bridge_from_txt |
-| 15578 | Crd Note | 2026-08-31 | DB_ONLY_DOCUMENT | financial_bridge_from_txt |
-| 52879 | Invoice | 2026-08-31 | DB_ONLY_DOCUMENT | financial_bridge_from_txt |
-| 52880 | Invoice | 2026-08-31 | DB_ONLY_DOCUMENT | financial_bridge_from_txt |
-| 15750 | Crd Note | 2026-10-02 | DB_ONLY_DOCUMENT | financial_bridge_from_txt |
-| 53432 | Invoice | 2026-10-02 | DB_ONLY_DOCUMENT | financial_bridge_from_txt |
-| 53433 | Invoice | 2026-10-02 | DB_ONLY_DOCUMENT | financial_bridge_from_txt |
 
 ## Doctrine
 

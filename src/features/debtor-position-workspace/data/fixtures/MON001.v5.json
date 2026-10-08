@@ -2,18 +2,18 @@
   "debtorCode": "MON001",
   "debtorName": "SHORTEN INTERNATIONAL 66 ON MONZALI",
   "period": {
-    "from": "2024-01-01",
-    "to": "2026-07-22"
+    "from": "2024-07-11",
+    "to": "2026-10-02"
   },
   "version": "v5",
-  "workspaceStatus": "pending_review",
-  "lastGeneratedAt": "2026-08-04T10:07:08.607Z",
-  "source": "analysis/debtors/MON001/raw/MON001CURRENT_FROM202401.TXT",
+  "workspaceStatus": "clean",
+  "lastGeneratedAt": "2026-10-08T13:30:40.262Z",
+  "source": "analysis/debtors/MON001/raw/MON001_CURRENT_2026-10-08.TXT",
   "financialPosition": {
-    "lpgGasDebt": 3665.79,
-    "cylinderFinancialBalance": -948,
-    "totalDebtorBalance": 2717.79,
-    "erpStatedBalance": 2717.79,
+    "lpgGasDebt": 2417.24,
+    "cylinderFinancialBalance": 0,
+    "totalDebtorBalance": 2417.24,
+    "erpStatedBalance": 2417.24,
     "erpVariance": 0,
     "subLedgerVariance": 0
   },
@@ -22,20 +22,13 @@
     "lines": []
   },
   "reconciliationPosition": {
-    "cylinderVariance": -948,
+    "cylinderVariance": 0,
     "erpVariance": 0,
     "subLedgerVariance": 0,
-    "exceptions": [
-      {
-        "type": "CUSTODY",
-        "basis": "ASSERTED",
-        "status": "open",
-        "description": "Part 1B financial vs Part 2 custody — check DB ingest vs TXT"
-      }
-    ]
+    "exceptions": []
   },
   "artifacts": {
     "statementMarkdown": "analysis/debtors/MON001/reports/MON001_Statement_Account_v5.md",
-    "txtSource": "analysis/debtors/MON001/raw/MON001CURRENT_FROM202401.TXT"
+    "txtSource": "analysis/debtors/MON001/raw/MON001_CURRENT_2026-10-08.TXT"
   }
 }
