@@ -160,6 +160,10 @@
     {
       "date": "2026-10-08",
       "event": "Operator: \"Retire the MOZ002 49143 ruling\". The Turn 7b outcome \"49143 open\" (MOZ002_49143_49550_ruling.md; 44227 closure trace) is RETIRED: payment 45287 (12/02/2026, STAT 123, R3,839.70, the ERP cross-account fix asserted 2026-07-23) settles 49143 — raw/MOZ002_2026-10-08.TXT line 176, tie T0079 EXACT_SINGLE CONFIRMED (PROVEN). EX-0037 (43640 -> 49550, tie T0081) stands; amendment appended to EX-0037, the ruling report and the closure trace (append-only). Open item MOZ002-49143-TXT resolved; nextAction superseded (2026-07-23 email draft and its R4,170.38 figure are stale). Re-run: 98 ties, ERP R1,562.67 ties, 49143 not in open items. Tripwires: TW-001 (payment citing 49550); a later export reversing 45287 or moving it off MOZ002."
+    },
+    {
+      "date": "2026-10-08",
+      "event": "Customer statement DRAFT generated (operator: \"Generate the MOZ002 customer statement\", then \"Option 2\" — build from the v5 reconciliation, not ERP allocation tags). New config/statement_of_account.json: customerLayout lpg_ledger_plus_position (house pattern, FIR001/JAY000), Amount due = ERP header R1,562.67 (PROVEN, raw/MOZ002_2026-10-08.TXT line 4) = LPG R1,562.67 + cylinder deposits R0.00 (fixture MOZ002.v5.json). Default open-invoice layout aborted: export EXCLUDES ALLOCATION DETAIL (tag gate NOT_DERIVABLE_FROM_TXT); a v5-matching open list (50528 + 53402 = R10,031.96) would overstate the balance because 44227 (R4,978.91), 45590 (R3,490.37) and 41529 (R0.01) are not tied to invoices. Outputs reports/MOZ002_Statement_of_Account.md and .pdf (PDF rendered from the md with the shared statement_pdf.css via Playwright; md-to-pdf is not installed in this environment). Live draft only — no --snapshot taken; send only after operator review."
     }
   ]
 }

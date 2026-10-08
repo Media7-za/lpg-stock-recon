@@ -1,0 +1,29 @@
+{
+  "debtorCode": "MOZ002",
+  "customerName": "MOZAMBIK",
+  "referenceLabel": "Reference",
+  "referenceValue": "",
+  "businessHeader": [
+    "BELLA ENERGY SERVICES300 (PTY) LTD T/A GAZ EXPRESS",
+    "50 WINSTON ROAD",
+    "PIETERMARITZBURG",
+    "3201"
+  ],
+  "primaryTxt": "analysis/debtors/MOZ002/raw/MOZ002_2026-10-08.TXT",
+  "_comment_primaryTxt": "ERP export as at 2026-10-08 (Linear ADM-78), CURRENT BALANCE R1,562.67, window from 2025-03-15. EXCLUDE ALLOCATION DETAIL, so the open-invoice model cannot assess any invoice (gate NOT_DERIVABLE_FROM_TXT, 2026-10-08).",
+  "siteTxts": {},
+  "outputDir": "analysis/debtors/MOZ002/reports",
+  "outputBaseName": "MOZ002_Statement_of_Account",
+  "pdfStylesheet": "analysis/debtors/shared/templates/statement_pdf.css",
+  "customerLayout": "lpg_ledger_plus_position",
+  "_comment_customerLayout": "Operator 2026-10-08: \"Option 2\" (build the customer copy from the v5 reconciliation rather than ERP allocation tags). House pattern (FIR001 2026-09-14, JAY000): v5 LPG ledger + account position, Amount due = ERP header. An open-invoice listing from v5 matching was rejected: open LPG 50528 + 53402 = R10,031.96 exceeds the R1,562.67 balance because R8,469.29 of payments (44227, 45590, 41529) are not tied to invoices, so the gate blocks it (OPEN_LIST_OVERSTATES_ACCOUNT). v5 matching is PROPOSED - NOT RATIFIED; this layout does not depend on it.",
+  "lpgLedgerHeading": "LPG account",
+  "lpgLedgerIntro": "Deliveries, payments, and credits.",
+  "financialPositionLabels": {
+    "lpg": "LPG",
+    "cylinder": "Cylinder deposits"
+  },
+  "v5StatementPath": "analysis/debtors/MOZ002/reports/MOZ002_Statement_Account_v5.md",
+  "v5FixturePath": "src/features/debtor-position-workspace/data/fixtures/MOZ002.v5.json",
+  "customerDueBasis": "erp_header"
+}
