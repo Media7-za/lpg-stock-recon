@@ -101,6 +101,10 @@
     {
       "date": "2026-10-08",
       "event": "Operator ruling (ADM-86, 2026-10-08): \"In this instance the ruling is 45591 > 52036\". This matches the existing locks from close C0001: L0016 (payment 45591 07 Aug <-> invoice 52036 23 Jul) and, by elimination, L0014 (payment 45474 31 Jul <-> invoice 52195 30 Jul). No lock changed; both are now operator-confirmed. The general tie-break the operator floated for equal-amount pairs (\"fifo within this proximity\") is not yet applied; see ADM-90."
+    },
+    {
+      "date": "2026-10-08",
+      "event": "Correction to the preceding ADM-86 entry (appended, not edited). Operator: \"45591 should have been 52195\". Voided locks L0014 (45474<->52195) and L0016 (45591<->52036) from close C0001; recorded approved locks L0020 (payment 45474 31 Jul <-> invoice 52036 23 Jul) and L0021 (payment 45591 07 Aug <-> invoice 52195 30 Jul), i.e. oldest-invoice-first (FIFO) pairing. 19 locks applied, 0 conflicts; ERP tie R8,721.02 and open items unchanged (PROVEN, data/projection_matches.json). General tie-break for equal-amount pairs (closest-date vs FIFO) still open on ADM-90."
     }
   ]
 }

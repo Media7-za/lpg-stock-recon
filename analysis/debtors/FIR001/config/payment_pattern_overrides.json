@@ -580,8 +580,87 @@
           }
         ],
         "createdAt": "2026-10-08T11:40:07.025Z"
+      },
+      {
+        "lock_id": "L0020",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "exact",
+          "net": 0,
+          "reason": "Operator correction 2026-10-08 (ADM-86): \"45591 should have been 52195\" (FIFO pairing); replaces closest-date pairing locked at close C0001: 45474 (31 Jul) pays 52036 (23 Jul)",
+          "approvedBy": "operator",
+          "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx"
+        },
+        "members": [
+          {
+            "key": "45474|Payment|LPG|2026-07-31|-8120.59",
+            "doc": "45474",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2026-07-31",
+            "amount": -8120.59
+          },
+          {
+            "key": "52036|Invoice|LPG|2026-07-23|8120.59",
+            "doc": "52036",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-07-23",
+            "amount": 8120.59
+          }
+        ],
+        "createdAt": "2026-10-08T11:56:01.517Z"
+      },
+      {
+        "lock_id": "L0021",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "exact",
+          "net": 0,
+          "reason": "Operator correction 2026-10-08 (ADM-86): \"45591 should have been 52195\" (FIFO pairing); replaces closest-date pairing locked at close C0001: 45591 (07 Aug) pays 52195 (30 Jul)",
+          "approvedBy": "operator",
+          "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx"
+        },
+        "members": [
+          {
+            "key": "45591|Payment|LPG|2026-08-07|-8120.59",
+            "doc": "45591",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2026-08-07",
+            "amount": -8120.59
+          },
+          {
+            "key": "52195|Invoice|LPG|2026-07-30|8120.59",
+            "doc": "52195",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-07-30",
+            "amount": 8120.59
+          }
+        ],
+        "createdAt": "2026-10-08T11:56:01.638Z"
       }
     ],
-    "voids": []
+    "voids": [
+      {
+        "target": "lock",
+        "id": "L0014",
+        "voidedAt": "2026-10-08T11:56:01.285Z",
+        "voidedBy": "operator",
+        "reason": "Operator correction 2026-10-08 (ADM-86): \"45591 should have been 52195\" (FIFO pairing); replaces closest-date pairing locked at close C0001"
+      },
+      {
+        "target": "lock",
+        "id": "L0016",
+        "voidedAt": "2026-10-08T11:56:01.390Z",
+        "voidedBy": "operator",
+        "reason": "Operator correction 2026-10-08 (ADM-86): \"45591 should have been 52195\" (FIFO pairing); replaces closest-date pairing locked at close C0001"
+      }
+    ]
   }
 }

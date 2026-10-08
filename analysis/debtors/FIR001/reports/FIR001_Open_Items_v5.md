@@ -57,3 +57,10 @@ _None._
 
 Full tie list: `data/projection_matches.json`.
 
+## Appendix D: Operator rulings applied (approved locks)
+
+| Lock | Treatment | Documents | Net (R) | Ruling |
+| :--- | :--- | :--- | ---: | :--- |
+| L0020 | exact | Payment 45474, Invoice 52036 | 0.00 | Operator correction 2026-10-08 (ADM-86): "45591 should have been 52195" (FIFO pairing); replaces closest-date pairing locked at close C0001: 45474 (31 Jul) pays 52036 (23 Jul) |
+| L0021 | exact | Payment 45591, Invoice 52195 | 0.00 | Operator correction 2026-10-08 (ADM-86): "45591 should have been 52195" (FIFO pairing); replaces closest-date pairing locked at close C0001: 45591 (07 Aug) pays 52195 (30 Jul) |
+

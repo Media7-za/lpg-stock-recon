@@ -2,7 +2,7 @@
   "status": "PROPOSED — NOT RATIFIED (PROPOSED_Projection_Matching_Locks.md, build step 2)",
   "debtorCode": "FIR001",
   "generatedBy": "match_projection.mjs",
-  "generatedAt": "2026-10-08T11:40:07.351Z",
+  "generatedAt": "2026-10-08T11:56:01.730Z",
   "projection": {
     "path": "analysis/debtors/FIR001/data/v5_projection.json",
     "txtSha256": "a6461eb6f27fa422dd5f42d3aec55fa5855f4c232ee8073dd6f55e2797d9e508",
@@ -314,23 +314,6 @@
       "rule": "LOCKED",
       "confidence": "CONFIRMED",
       "members": [
-        "45474|Payment|LPG|L23",
-        "52195|Invoice|LPG|L20"
-      ],
-      "docs": [
-        "Payment 45474",
-        "Invoice 52195"
-      ],
-      "net": 0,
-      "lock_id": "L0014",
-      "close_id": "C0001",
-      "lockedRule": "EXACT_SINGLE"
-    },
-    {
-      "tie_id": "T0015",
-      "rule": "LOCKED",
-      "confidence": "CONFIRMED",
-      "members": [
         "45586|Payment|LPG|L27",
         "52268|Invoice|LPG|L25"
       ],
@@ -344,24 +327,7 @@
       "lockedRule": "EXACT_SINGLE"
     },
     {
-      "tie_id": "T0016",
-      "rule": "LOCKED",
-      "confidence": "CONFIRMED",
-      "members": [
-        "45591|Payment|LPG|L28",
-        "52036|Invoice|LPG|L17"
-      ],
-      "docs": [
-        "Payment 45591",
-        "Invoice 52036"
-      ],
-      "net": 0,
-      "lock_id": "L0016",
-      "close_id": "C0001",
-      "lockedRule": "EXACT_SINGLE"
-    },
-    {
-      "tie_id": "T0017",
+      "tie_id": "T0015",
       "rule": "LOCKED",
       "confidence": "CONFIRMED",
       "members": [
@@ -380,7 +346,7 @@
       "lockedRule": "EXACT_MONTH_SUM"
     },
     {
-      "tie_id": "T0018",
+      "tie_id": "T0016",
       "rule": "LOCKED",
       "confidence": "CONFIRMED",
       "members": [
@@ -397,7 +363,7 @@
       "lockedRule": "EXACT_SINGLE"
     },
     {
-      "tie_id": "T0019",
+      "tie_id": "T0017",
       "rule": "LOCKED",
       "confidence": "CONFIRMED",
       "members": [
@@ -412,6 +378,54 @@
       "lock_id": "L0019",
       "close_id": "C0001",
       "lockedRule": "EXACT_SINGLE"
+    },
+    {
+      "tie_id": "T0018",
+      "rule": "LOCKED",
+      "confidence": "CONFIRMED",
+      "members": [
+        "45474|Payment|LPG|L23",
+        "52036|Invoice|LPG|L17"
+      ],
+      "docs": [
+        "Payment 45474",
+        "Invoice 52036"
+      ],
+      "net": 0,
+      "lock_id": "L0020",
+      "close_id": null,
+      "lockedRule": "OPERATOR_RULING",
+      "ruling": {
+        "treatment": "exact",
+        "net": 0,
+        "reason": "Operator correction 2026-10-08 (ADM-86): \"45591 should have been 52195\" (FIFO pairing); replaces closest-date pairing locked at close C0001: 45474 (31 Jul) pays 52036 (23 Jul)",
+        "approvedBy": "operator",
+        "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx"
+      }
+    },
+    {
+      "tie_id": "T0019",
+      "rule": "LOCKED",
+      "confidence": "CONFIRMED",
+      "members": [
+        "45591|Payment|LPG|L28",
+        "52195|Invoice|LPG|L20"
+      ],
+      "docs": [
+        "Payment 45591",
+        "Invoice 52195"
+      ],
+      "net": 0,
+      "lock_id": "L0021",
+      "close_id": null,
+      "lockedRule": "OPERATOR_RULING",
+      "ruling": {
+        "treatment": "exact",
+        "net": 0,
+        "reason": "Operator correction 2026-10-08 (ADM-86): \"45591 should have been 52195\" (FIFO pairing); replaces closest-date pairing locked at close C0001: 45591 (07 Aug) pays 52195 (30 Jul)",
+        "approvedBy": "operator",
+        "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx"
+      }
     },
     {
       "tie_id": "T0020",
