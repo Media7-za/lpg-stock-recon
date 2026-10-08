@@ -1,5 +1,8 @@
 {
   "debtorCode": "MOZ002",
+  "status": "SUPERSEDED",
+  "supersededAt": "2026-10-08",
+  "supersededBy": "Operator ruling 2026-10-04: MOZ002 no settlement discount. Draft kept for the record (operator 2026-10-08, Linear ADM-85: may be deleted; marked instead per amendments-append doctrine).",
   "doctrineVersion": "settlement-discount-v1-draft",
   "discountRate": null,
   "tolerancePct": 0.001,

@@ -17,54 +17,26 @@
 | 15 Mar 2025 | Invoice | 41522 ¹ | DN#4438 | Gas | 2,953.12 | 2,953.12 |
 | 17 Mar 2025 | Crd Note | 12079 ¹ | DN#4438 | Gas | -2,953.12 | 0.00 |
 
-### May 2025
-
-| Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 15 May 2025 | Invoice | 43081 | DN#13232 | Gas | 248.70 | 248.70 |
-| 29 May 2025 | Invoice | 43461 | DN#12137 | Gas | 2,691.21 | 2,939.91 |
-
-### June 2025
-
-| Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 05 Jun 2025 | Invoice | 43648 | DN#12149 | Gas | 2,943.51 | 5,883.42 |
-| 12 Jun 2025 | Invoice | 43905 | DN#12560 | Gas | 2,617.29 | 8,500.71 |
-| 19 Jun 2025 | Invoice | 44062 | DN#12412 | Gas | 2,862.66 | 11,363.37 |
-| 26 Jun 2025 | Payment | 39589 | TRANSF \| STAT 115 | Gas | -11,363.37 | 0.00 |
-
 ### July 2025
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 10 Jul 2025 | Invoice | 44742 | DN#12686 | Gas | 2,810.61 | 2,810.61 |
-| 28 Jul 2025 | Invoice | 45199 | DN20020 | Gas | 2,810.61 | 5,621.22 |
+| 10 Jul 2025 | Invoice | 44742 ¹ | DN#12686 | Gas | 2,810.61 | 2,810.61 |
+| 28 Jul 2025 | Invoice | 45199 ¹ | DN20020 | Gas | 2,810.61 | 5,621.22 |
 
 ### August 2025
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 01 Aug 2025 | Invoice | 45303 | DN #20126 | Gas | 1,525.76 | 7,146.98 |
-| 07 Aug 2025 | Invoice | 45488 | DN#20072 | Gas | 2,569.70 | 9,716.68 |
-| 11 Aug 2025 | Invoice | 45577 | DN#20306 | Gas | 2,810.61 | 12,527.29 |
-| 14 Aug 2025 | Payment | 40729 | TRANSF \| STAT 117 | Gas | -9,716.68 | 2,810.61 |
-
-### September 2025
-
-| Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 01 Sept 2025 | Invoice | 46050 | DN#20566 | Gas | 3,768.44 | 6,579.05 |
-| 10 Sept 2025 | Invoice | 46267 | DN#20477 | Gas | 2,626.74 | 9,205.79 |
-| 22 Sept 2025 | Invoice | 46562 | DN#21051 | Gas | 2,626.74 | 11,832.53 |
-| 26 Sept 2025 | Invoice | 46669 | DN#20277 | Gas | 2,626.74 | 14,459.27 |
+| 01 Aug 2025 | Invoice | 45303 ¹ | DN #20126 | Gas | 1,525.76 | 7,146.98 |
+| 07 Aug 2025 | Invoice | 45488 ¹ | DN#20072 | Gas | 2,569.70 | 9,716.68 |
+| 14 Aug 2025 | Payment | 40729 ¹ | TRANSF \| STAT 117 | Gas | -9,716.68 | 0.00 |
 
 ### October 2025
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 01 Oct 2025 | Invoice | 46825 | DN#21092 | Gas | 2,401.59 | 16,860.86 |
-| 07 Oct 2025 | Payment | 41529 | CASH | Gas | -0.01 | 16,860.85 |
-| 09 Oct 2025 | Payment | 41654 | TRANSF \| STAT 119 | Gas | -16,860.86 | -0.01 |
+| 07 Oct 2025 | Payment | 41529 | CASH | Gas | -0.01 | -0.01 |
 
 ### February 2026
 

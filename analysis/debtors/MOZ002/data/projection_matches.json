@@ -2,7 +2,7 @@
   "status": "PROPOSED — NOT RATIFIED (PROPOSED_Projection_Matching_Locks.md, build step 2)",
   "debtorCode": "MOZ002",
   "generatedBy": "match_projection.mjs",
-  "generatedAt": "2026-10-08T04:02:31.685Z",
+  "generatedAt": "2026-10-08T06:43:48.163Z",
   "projection": {
     "path": "analysis/debtors/MOZ002/data/v5_projection.json",
     "txtSha256": "4ea358fb250488f238761528be94eb952dfbe3faa1867467c38176288f086a95",
@@ -22,6 +22,7 @@
     "nearSumTolerance": 1,
     "cnConfirmedMaxDays": 1,
     "maxSumInvoices": 3,
+    "maxRunInvoices": 12,
     "combinationPool": 40,
     "paymentTargetLanes": [
       "LPG",
@@ -31,17 +32,18 @@
     "remittanceBatchTolerancePct": 0.001
   },
   "summary": {
-    "ties": 82,
-    "confirmed": 79,
-    "probable": 3,
+    "ties": 85,
+    "confirmed": 81,
+    "probable": 4,
     "byRule": {
       "CN_DN_PAIR": 45,
       "CN_AMOUNT_DATE": 1,
       "EXACT_SINGLE": 34,
-      "EXACT_SUM": 2
+      "EXACT_SUM": 2,
+      "EXACT_RUN": 3
     },
     "paymentsTotal": 41,
-    "paymentsUnallocated": 5
+    "paymentsUnallocated": 2
   },
   "proof": {
     "rebuiltClosing": 13014.5,
@@ -52,24 +54,9 @@
   "residual": {
     "openingBfUnitemised": 0,
     "openInvoicesLpgOther": {
-      "count": 19,
-      "amount": 55934.33,
+      "count": 4,
+      "amount": 17993.42,
       "rows": [
-        "43081|Invoice|LPG|L111",
-        "43461|Invoice|LPG|L116",
-        "43648|Invoice|LPG|L120",
-        "43905|Invoice|LPG|L127",
-        "44062|Invoice|LPG|L130",
-        "44742|Invoice|LPG|L140",
-        "45199|Invoice|LPG|L147",
-        "45303|Invoice|LPG|L149",
-        "45488|Invoice|LPG|L151",
-        "45577|Invoice|LPG|L153",
-        "46050|Invoice|LPG|L159",
-        "46267|Invoice|LPG|L161",
-        "46562|Invoice|LPG|L163",
-        "46669|Invoice|LPG|L165",
-        "46825|Invoice|LPG|L167",
         "49143|Invoice|LPG|L191",
         "50528|Invoice|LPG|L209",
         "50657|Invoice|LPG|L211",
@@ -125,13 +112,10 @@
       ]
     },
     "unallocatedPayments": {
-      "count": 5,
-      "amount": -42919.83,
+      "count": 2,
+      "amount": -4978.92,
       "rows": [
-        "39589|Payment|LPG|L72",
-        "40729|Payment|LPG|L76",
         "41529|Payment|LPG|L84",
-        "41654|Payment|LPG|L87",
         "44227|Payment|LPG|L135"
       ]
     },
@@ -1078,6 +1062,61 @@
     },
     {
       "tie_id": "T0054",
+      "rule": "EXACT_RUN",
+      "confidence": "CONFIRMED",
+      "members": [
+        "39589|Payment|LPG|L72",
+        "43081|Invoice|LPG|L111",
+        "43461|Invoice|LPG|L116",
+        "43648|Invoice|LPG|L120",
+        "43905|Invoice|LPG|L127",
+        "44062|Invoice|LPG|L130"
+      ],
+      "docs": [
+        "Payment 39589",
+        "Invoice 43081",
+        "Invoice 43461",
+        "Invoice 43648",
+        "Invoice 43905",
+        "Invoice 44062"
+      ],
+      "net": 0,
+      "payment": {
+        "doc": "39589",
+        "date": "2025-06-26",
+        "amount": 11363.37
+      },
+      "invoices": [
+        {
+          "doc": "43081",
+          "date": "2025-05-15",
+          "amount": 248.7
+        },
+        {
+          "doc": "43461",
+          "date": "2025-05-29",
+          "amount": 2691.21
+        },
+        {
+          "doc": "43648",
+          "date": "2025-06-05",
+          "amount": 2943.51
+        },
+        {
+          "doc": "43905",
+          "date": "2025-06-12",
+          "amount": 2617.29
+        },
+        {
+          "doc": "44062",
+          "date": "2025-06-19",
+          "amount": 2862.66
+        }
+      ],
+      "variance": 0
+    },
+    {
+      "tie_id": "T0055",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1104,7 +1143,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0055",
+      "tie_id": "T0056",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1131,7 +1170,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0056",
+      "tie_id": "T0057",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1158,7 +1197,56 @@
       "variance": 0
     },
     {
-      "tie_id": "T0057",
+      "tie_id": "T0058",
+      "rule": "EXACT_RUN",
+      "confidence": "PROBABLE",
+      "members": [
+        "40729|Payment|LPG|L76",
+        "44742|Invoice|LPG|L140",
+        "45199|Invoice|LPG|L147",
+        "45303|Invoice|LPG|L149",
+        "45488|Invoice|LPG|L151"
+      ],
+      "docs": [
+        "Payment 40729",
+        "Invoice 44742",
+        "Invoice 45199",
+        "Invoice 45303",
+        "Invoice 45488"
+      ],
+      "net": 0,
+      "ambiguousAlternatives": 1,
+      "payment": {
+        "doc": "40729",
+        "date": "2025-08-14",
+        "amount": 9716.68
+      },
+      "invoices": [
+        {
+          "doc": "44742",
+          "date": "2025-07-10",
+          "amount": 2810.61
+        },
+        {
+          "doc": "45199",
+          "date": "2025-07-28",
+          "amount": 2810.61
+        },
+        {
+          "doc": "45303",
+          "date": "2025-08-01",
+          "amount": 1525.76
+        },
+        {
+          "doc": "45488",
+          "date": "2025-08-07",
+          "amount": 2569.7
+        }
+      ],
+      "variance": 0
+    },
+    {
+      "tie_id": "T0059",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1185,7 +1273,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0058",
+      "tie_id": "T0060",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1212,7 +1300,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0059",
+      "tie_id": "T0061",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1239,7 +1327,69 @@
       "variance": 0
     },
     {
-      "tie_id": "T0060",
+      "tie_id": "T0062",
+      "rule": "EXACT_RUN",
+      "confidence": "CONFIRMED",
+      "members": [
+        "41654|Payment|LPG|L87",
+        "45577|Invoice|LPG|L153",
+        "46050|Invoice|LPG|L159",
+        "46267|Invoice|LPG|L161",
+        "46562|Invoice|LPG|L163",
+        "46669|Invoice|LPG|L165",
+        "46825|Invoice|LPG|L167"
+      ],
+      "docs": [
+        "Payment 41654",
+        "Invoice 45577",
+        "Invoice 46050",
+        "Invoice 46267",
+        "Invoice 46562",
+        "Invoice 46669",
+        "Invoice 46825"
+      ],
+      "net": 0,
+      "payment": {
+        "doc": "41654",
+        "date": "2025-10-09",
+        "amount": 16860.86
+      },
+      "invoices": [
+        {
+          "doc": "45577",
+          "date": "2025-08-11",
+          "amount": 2810.61
+        },
+        {
+          "doc": "46050",
+          "date": "2025-09-01",
+          "amount": 3768.44
+        },
+        {
+          "doc": "46267",
+          "date": "2025-09-10",
+          "amount": 2626.74
+        },
+        {
+          "doc": "46562",
+          "date": "2025-09-22",
+          "amount": 2626.74
+        },
+        {
+          "doc": "46669",
+          "date": "2025-09-26",
+          "amount": 2626.74
+        },
+        {
+          "doc": "46825",
+          "date": "2025-10-01",
+          "amount": 2401.59
+        }
+      ],
+      "variance": 0
+    },
+    {
+      "tie_id": "T0063",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1266,7 +1416,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0061",
+      "tie_id": "T0064",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1293,7 +1443,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0062",
+      "tie_id": "T0065",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1320,7 +1470,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0063",
+      "tie_id": "T0066",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1347,7 +1497,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0064",
+      "tie_id": "T0067",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1374,7 +1524,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0065",
+      "tie_id": "T0068",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1401,7 +1551,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0066",
+      "tie_id": "T0069",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1428,7 +1578,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0067",
+      "tie_id": "T0070",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1455,7 +1605,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0068",
+      "tie_id": "T0071",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1482,7 +1632,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0069",
+      "tie_id": "T0072",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1509,7 +1659,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0070",
+      "tie_id": "T0073",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1536,7 +1686,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0071",
+      "tie_id": "T0074",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1563,7 +1713,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0072",
+      "tie_id": "T0075",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1590,7 +1740,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0073",
+      "tie_id": "T0076",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1617,7 +1767,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0074",
+      "tie_id": "T0077",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1644,7 +1794,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0075",
+      "tie_id": "T0078",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1671,7 +1821,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0076",
+      "tie_id": "T0079",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1698,7 +1848,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0077",
+      "tie_id": "T0080",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1725,7 +1875,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0078",
+      "tie_id": "T0081",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1752,7 +1902,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0079",
+      "tie_id": "T0082",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1779,7 +1929,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0080",
+      "tie_id": "T0083",
       "rule": "EXACT_SUM",
       "confidence": "CONFIRMED",
       "members": [
@@ -1813,7 +1963,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0081",
+      "tie_id": "T0084",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1840,7 +1990,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0082",
+      "tie_id": "T0085",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1868,10 +2018,7 @@
     }
   ],
   "unallocatedPayments": [
-    "39589|Payment|LPG|L72",
-    "40729|Payment|LPG|L76",
     "41529|Payment|LPG|L84",
-    "41654|Payment|LPG|L87",
     "44227|Payment|LPG|L135"
   ]
 }

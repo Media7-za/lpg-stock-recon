@@ -1,7 +1,7 @@
 # Open Items Statement: MOZAMBIK (MOZ002) — Internal
 **Period:** from 15 Mar 2025 to 13 Jul 2026 &nbsp;|&nbsp; **Balance due:** R13,014.50
 **Status:** PROPOSED — NOT RATIFIED (`PROPOSED_Projection_Matching_Locks.md`, build step 3) · generated 2026-10-08 by `render_open_items.mjs`
-**Sources:** `analysis/debtors/MOZ002/data/v5_projection.json` (TXT sha256 `4ea358fb2504…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (79 confirmed / 3 probable ties)
+**Sources:** `analysis/debtors/MOZ002/data/v5_projection.json` (TXT sha256 `4ea358fb2504…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (81 confirmed / 4 probable ties)
 **Locks:** no period closed yet
 
 ---
@@ -12,54 +12,11 @@
 
 ## Part 1A: LPG + OTHER open items
 
-### May 2025
-
-| Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 15 May 2025 | Invoice | 43081 | DN#13232 | LPG | 248.70 | 248.70 |
-| 29 May 2025 | Invoice | 43461 | DN#12137 | LPG | 2,691.21 | 2,939.91 |
-
-### June 2025
-
-| Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 05 Jun 2025 | Invoice | 43648 | DN#12149 | LPG | 2,943.51 | 5,883.42 |
-| 12 Jun 2025 | Invoice | 43905 | DN#12560 | LPG | 2,617.29 | 8,500.71 |
-| 19 Jun 2025 | Invoice | 44062 | DN#12412 | LPG | 2,862.66 | 11,363.37 |
-| 26 Jun 2025 | Payment | 39589 | TRANSF \| STAT 115 | LPG | -11,363.37 | 0.00 |
-
-### July 2025
-
-| Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 10 Jul 2025 | Invoice | 44742 | DN#12686 | LPG | 2,810.61 | 2,810.61 |
-| 28 Jul 2025 | Invoice | 45199 | DN20020 | LPG | 2,810.61 | 5,621.22 |
-
-### August 2025
-
-| Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 01 Aug 2025 | Invoice | 45303 | DN #20126 | LPG | 1,525.76 | 7,146.98 |
-| 07 Aug 2025 | Invoice | 45488 | DN#20072 | LPG | 2,569.70 | 9,716.68 |
-| 11 Aug 2025 | Invoice | 45577 | DN#20306 | LPG | 2,810.61 | 12,527.29 |
-| 14 Aug 2025 | Payment | 40729 | TRANSF \| STAT 117 | LPG | -9,716.68 | 2,810.61 |
-
-### September 2025
-
-| Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 01 Sept 2025 | Invoice | 46050 | DN#20566 | LPG | 3,768.44 | 6,579.05 |
-| 10 Sept 2025 | Invoice | 46267 | DN#20477 | LPG | 2,626.74 | 9,205.79 |
-| 22 Sept 2025 | Invoice | 46562 | DN#21051 | LPG | 2,626.74 | 11,832.53 |
-| 26 Sept 2025 | Invoice | 46669 | DN#20277 | LPG | 2,626.74 | 14,459.27 |
-
 ### October 2025
 
 | Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 01 Oct 2025 | Invoice | 46825 | DN#21092 | LPG | 2,401.59 | 16,860.86 |
-| 07 Oct 2025 | Payment | 41529 | CASH | LPG | -0.01 | 16,860.85 |
-| 09 Oct 2025 | Payment | 41654 | TRANSF \| STAT 119 | LPG | -16,860.86 | -0.01 |
+| 07 Oct 2025 | Payment | 41529 | CASH | LPG | -0.01 | -0.01 |
 
 ### February 2026
 
@@ -203,6 +160,7 @@
 | T0003 | CN_DN_PAIR | Invoice 41522, Crd Note 12079 | — | CN 2 day(s) after invoice |
 | T0028 | CN_DN_PAIR | Invoice 46826, Crd Note 13602 | — | CN 2 day(s) after invoice |
 | T0046 | CN_AMOUNT_DATE | Invoice 49329, Crd Note 14458 | — | CN 0 day(s) after invoice |
+| T0058 | EXACT_RUN | Payment 40729, Invoice 44742, Invoice 45199, Invoice 45303, Invoice 45488 | 0.00 |  |
 
 ## Appendix B: Confirmed ties by rule
 
@@ -211,6 +169,7 @@
 | CN_DN_PAIR | 43 |
 | EXACT_SINGLE | 34 |
 | EXACT_SUM | 2 |
+| EXACT_RUN | 2 |
 
 Full tie list: `data/projection_matches.json`.
 
