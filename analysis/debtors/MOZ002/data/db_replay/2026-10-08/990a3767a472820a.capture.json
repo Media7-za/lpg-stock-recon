@@ -1,0 +1,15 @@
+{
+  "key": "990a3767a472820a",
+  "channel": "supabase-connector-replay",
+  "supabaseProject": "oqhpxnaadahohwkslive",
+  "capturedAt": "2026-10-08T04:01:34.143Z",
+  "md5": "f9ea6af45ef211e6e6b3382f12f49ff3",
+  "len": 65889,
+  "rowCount": 540,
+  "sql": "\n    SELECT LTRIM(doc_no,'0') AS doc_no, entry_type, tx_date::date AS tx_date,\n           ROUND((amount_excl + tax_amount)::numeric, 2)::float AS amount,\n           source_file\n    FROM transaction_headers\n    WHERE account_no = $1 AND tx_date >= $2::date",
+  "params": [
+    "MOZ002",
+    "2025-03-15"
+  ],
+  "captureSql": "SELECT md5(t) AS md5, length(t) AS len, t AS rows_json\nFROM (SELECT coalesce(jsonb_agg(q)::text, '[]') AS t FROM (\nSELECT LTRIM(doc_no,'0') AS doc_no, entry_type, tx_date::date AS tx_date,\n           ROUND((amount_excl + tax_amount)::numeric, 2)::float AS amount,\n           source_file\n    FROM transaction_headers\n    WHERE account_no = 'MOZ002' AND tx_date >= '2025-03-15'::date\n) q) x"
+}

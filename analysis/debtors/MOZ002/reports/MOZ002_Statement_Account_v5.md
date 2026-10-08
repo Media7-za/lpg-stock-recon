@@ -3,9 +3,11 @@
 **Combined Opening B/F:** R0.00 (ERP verified — source: `analysis/debtors/MOZ002/raw/MOZ002CURRENT.TXT` MOZ002CURRENT.TXT line 14 — BALANCE B/F R0.00 before first row (CN 12074, 15 Mar 2025))
 **LPG Opening B/F (1A):** R0.00 &nbsp;|&nbsp; **CYL Opening B/F (1B):** R0.00
 **Payment routing:** LPG lane (payments post to Part 1A unless configured otherwise)
-**Last regenerated:** 2026-07-28 from ERP TXT (`reconcile_debtor_v5_from_txt.mjs`)
+**Last regenerated:** 2026-10-08 from ERP TXT (`reconcile_debtor_v5_from_txt.mjs`)
 
 ---
+
+
 
 ## Part 1A: LPG Gas Financial Statement
 *Gas fill invoices, credit notes, and payments since Mar 2025. Payments route to this sub-ledger per debtor config (`paymentLane: LPG`).*
@@ -63,9 +65,7 @@
 | **01 Jun** | **Opening Balance** | — | | **5,592.71** |
 | 05 Jun 2025 | Invoice | 43648 | 2,943.51 | 8,536.22 |
 | 12 Jun 2025 | Invoice | 43858 | 1,308.64 | 9,844.86 |
-| 12 Jun 2025 | Invoice | 43859 | 2,415.00 | 12,259.86 |
-| 12 Jun 2025 | Invoice | 43905 | 2,617.29 | 14,877.15 |
-| 12 Jun 2025 | Crd Note | 12710 | -2,415.00 | 12,462.15 |
+| 12 Jun 2025 | Invoice | 43905 | 2,617.29 | 12,462.15 |
 | 12 Jun 2025 | Crd Note | 12717 | -1,308.64 | 11,153.51 |
 | 19 Jun 2025 | Invoice | 44062 | 2,862.66 | 14,016.17 |
 | 24 Jun 2025 | Invoice | 44200 | 2,617.29 | 16,633.46 |
@@ -85,8 +85,6 @@
 | 18 Jul 2025 | Invoice | 44949 | 2,810.61 | 8,274.02 |
 | 24 Jul 2025 | Payment | 40271 | -2,810.61 | 5,463.41 |
 | 28 Jul 2025 | Invoice | 45199 | 2,810.61 | 8,274.02 |
-| 28 Jul 2025 | Invoice | 45200 | 2,932.50 | 11,206.52 |
-| 29 Jul 2025 | Crd Note | 13069 | -2,932.50 | 8,274.02 |
 
 ---
 
@@ -125,8 +123,6 @@
 | :--- | :--- | :--- | ---: | ---: |
 | **01 Oct** | **Opening Balance** | — | | **14,459.27** |
 | 01 Oct 2025 | Invoice | 46825 | 2,401.59 | 16,860.86 |
-| 01 Oct 2025 | Invoice | 46826 | 2,415.00 | 19,275.86 |
-| 03 Oct 2025 | Crd Note | 13602 | -2,415.00 | 16,860.86 |
 | 07 Oct 2025 | Payment | 41529 | -0.01 | 16,860.85 |
 | 09 Oct 2025 | Payment | 41654 | -16,860.86 | -0.01 |
 | 09 Oct 2025 | Invoice | 46980 | 2,626.74 | 2,626.73 |
@@ -320,6 +316,8 @@
 | 06 Jun 2025 | Invoice | 43669 | 2,932.50 | 5,347.50 |
 | 06 Jun 2025 | Crd Note | 12639 | -2,415.00 | 2,932.50 |
 | 06 Jun 2025 | Crd Note | 12640 | -2,932.50 | 0.00 |
+| 12 Jun 2025 | Invoice | 43859 | 2,415.00 | 2,415.00 |
+| 12 Jun 2025 | Crd Note | 12710 | -2,415.00 | 0.00 |
 | 19 Jun 2025 | Invoice | 44063 | 2,932.50 | 2,932.50 |
 | 19 Jun 2025 | Crd Note | 12763 | -2,932.50 | 0.00 |
 | 24 Jun 2025 | Invoice | 44201 | 2,415.00 | 2,415.00 |
@@ -338,6 +336,8 @@
 | 12 Jul 2025 | Crd Note | 12962 | -2,932.50 | 1,207.50 |
 | 18 Jul 2025 | Invoice | 44950 | 2,932.50 | 4,140.00 |
 | 19 Jul 2025 | Crd Note | 13020 | -2,932.50 | 1,207.50 |
+| 28 Jul 2025 | Invoice | 45200 | 2,932.50 | 4,140.00 |
+| 29 Jul 2025 | Crd Note | 13069 | -2,932.50 | 1,207.50 |
 
 ---
 
@@ -380,6 +380,8 @@
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
 | **01 Oct** | **Opening Balance** | — | | **0.00** |
+| 01 Oct 2025 | Invoice | 46826 | 2,415.00 | 2,415.00 |
+| 03 Oct 2025 | Crd Note | 13602 | -2,415.00 | 0.00 |
 | 09 Oct 2025 | Invoice | 46981 | 2,932.50 | 2,932.50 |
 | 09 Oct 2025 | Crd Note | 13651 | -2,932.50 | 0.00 |
 | 18 Oct 2025 | Invoice | 47171 | 4,140.00 | 4,140.00 |
@@ -542,15 +544,15 @@
 | Date | Entry Type | Doc # | 14kg Qty | 19kg Qty | 9kg Qty | D.1 Qty | S.1 Qty |
 | :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: |
 | **01 Mar** | **Opening Balance** | — | **0** | **0** | **0** | **0** | **0** |
-| 15 Mar 2025 | Invoice | 41504 | 0 | +2 | 0 | 0 | +4 |
-| 15 Mar 2025 | Invoice | 41523 | 0 | 0 | +2 | 0 | +4 |
-| 15 Mar 2025 | Crd Note | 12075 | 0 | -2 | 0 | 0 | -4 |
-| 17 Mar 2025 | Invoice | 41535 | 0 | 0 | +2 | 0 | +4 |
-| 17 Mar 2025 | Crd Note | 12080 | 0 | 0 | -2 | 0 | -4 |
-| 17 Mar 2025 | Crd Note | 12081 | 0 | 0 | 0 | 0 | -4 |
-| 17 Mar 2025 | Crd Note | 12082 | 0 | 0 | -2 | 0 | 0 |
-| 25 Mar 2025 | Invoice | 41713 | 0 | 0 | +2 | 0 | +4 |
-| 25 Mar 2025 | Crd Note | 12123 | 0 | 0 | -2 | 0 | -4 |
+| 15 Mar 2025 | Invoice | 41504 | 0 | +1 | 0 | 0 | +2 |
+| 15 Mar 2025 | Invoice | 41523 | 0 | 0 | +1 | 0 | +2 |
+| 15 Mar 2025 | Crd Note | 12075 | 0 | -1 | 0 | 0 | -2 |
+| 17 Mar 2025 | Invoice | 41535 | 0 | 0 | +1 | 0 | +2 |
+| 17 Mar 2025 | Crd Note | 12080 | 0 | 0 | -1 | 0 | -2 |
+| 17 Mar 2025 | Crd Note | 12081 | 0 | 0 | 0 | 0 | -2 |
+| 17 Mar 2025 | Crd Note | 12082 | 0 | 0 | -1 | 0 | 0 |
+| 25 Mar 2025 | Invoice | 41713 | 0 | 0 | +1 | 0 | +2 |
+| 25 Mar 2025 | Crd Note | 12123 | 0 | 0 | -1 | 0 | -2 |
 | **End Mar** | **Closing Balance** | — | **0** | **0** | **0** | **0** | **0** |
 
 ---
@@ -559,12 +561,12 @@
 | Date | Entry Type | Doc # | 14kg Qty | 19kg Qty | 9kg Qty | D.1 Qty | S.1 Qty |
 | :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: |
 | **01 Apr** | **Opening Balance** | — | **0** | **0** | **0** | **0** | **0** |
-| 01 Apr 2025 | Invoice | 41895 | 0 | 0 | 0 | 0 | +4 |
-| 02 Apr 2025 | Crd Note | 12174 | 0 | 0 | 0 | 0 | -4 |
-| 16 Apr 2025 | Invoice | 42307 | 0 | 0 | +2 | 0 | +6 |
-| 17 Apr 2025 | Crd Note | 12296 | 0 | 0 | -2 | 0 | -6 |
-| 29 Apr 2025 | Invoice | 42613 | 0 | 0 | 0 | 0 | +4 |
-| 29 Apr 2025 | Crd Note | 12369 | 0 | 0 | 0 | 0 | -4 |
+| 01 Apr 2025 | Invoice | 41895 | 0 | 0 | 0 | 0 | +2 |
+| 02 Apr 2025 | Crd Note | 12174 | 0 | 0 | 0 | 0 | -2 |
+| 16 Apr 2025 | Invoice | 42307 | 0 | 0 | +1 | 0 | +3 |
+| 17 Apr 2025 | Crd Note | 12296 | 0 | 0 | -1 | 0 | -3 |
+| 29 Apr 2025 | Invoice | 42613 | 0 | 0 | 0 | 0 | +2 |
+| 29 Apr 2025 | Crd Note | 12369 | 0 | 0 | 0 | 0 | -2 |
 | **End Apr** | **Closing Balance** | — | **0** | **0** | **0** | **0** | **0** |
 
 ---
@@ -573,15 +575,15 @@
 | Date | Entry Type | Doc # | 14kg Qty | 19kg Qty | 9kg Qty | D.1 Qty | S.1 Qty |
 | :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: |
 | **01 May** | **Opening Balance** | — | **0** | **0** | **0** | **0** | **0** |
-| 06 May 2025 | Invoice | 42844 | 0 | 0 | +2 | 0 | +4 |
-| 06 May 2025 | Crd Note | 12423 | 0 | 0 | -2 | 0 | -4 |
-| 13 May 2025 | Invoice | 43007 | 0 | 0 | 0 | 0 | +4 |
-| 13 May 2025 | Crd Note | 12468 | 0 | 0 | 0 | 0 | -4 |
-| 15 May 2025 | Invoice | 43082 | 0 | 0 | +2 | 0 | 0 |
-| 21 May 2025 | Invoice | 43246 | 0 | 0 | +2 | 0 | +4 |
-| 22 May 2025 | Crd Note | 12535 | 0 | 0 | 0 | 0 | -4 |
-| 29 May 2025 | Invoice | 43462 | 0 | 0 | 0 | 0 | +4 |
-| 30 May 2025 | Crd Note | 12599 | 0 | 0 | -4 | 0 | -4 |
+| 06 May 2025 | Invoice | 42844 | 0 | 0 | +1 | 0 | +2 |
+| 06 May 2025 | Crd Note | 12423 | 0 | 0 | -1 | 0 | -2 |
+| 13 May 2025 | Invoice | 43007 | 0 | 0 | 0 | 0 | +2 |
+| 13 May 2025 | Crd Note | 12468 | 0 | 0 | 0 | 0 | -2 |
+| 15 May 2025 | Invoice | 43082 | 0 | 0 | +1 | 0 | 0 |
+| 21 May 2025 | Invoice | 43246 | 0 | 0 | +1 | 0 | +2 |
+| 22 May 2025 | Crd Note | 12535 | 0 | 0 | 0 | 0 | -2 |
+| 29 May 2025 | Invoice | 43462 | 0 | 0 | 0 | 0 | +2 |
+| 30 May 2025 | Crd Note | 12599 | 0 | 0 | -2 | 0 | -2 |
 | **End May** | **Closing Balance** | — | **0** | **0** | **0** | **0** | **0** |
 
 ---
@@ -590,16 +592,16 @@
 | Date | Entry Type | Doc # | 14kg Qty | 19kg Qty | 9kg Qty | D.1 Qty | S.1 Qty |
 | :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: |
 | **01 Jun** | **Opening Balance** | — | **0** | **0** | **0** | **0** | **0** |
-| 05 Jun 2025 | Invoice | 43649 | 0 | 0 | 0 | 0 | +4 |
-| 06 Jun 2025 | Invoice | 43669 | 0 | 0 | +2 | 0 | +4 |
-| 06 Jun 2025 | Crd Note | 12639 | 0 | 0 | 0 | 0 | -4 |
-| 06 Jun 2025 | Crd Note | 12640 | 0 | 0 | -2 | 0 | -4 |
-| 12 Jun 2025 | Invoice | 43859 | 0 | 0 | 0 | 0 | +4 |
-| 12 Jun 2025 | Crd Note | 12710 | 0 | 0 | 0 | 0 | -4 |
-| 19 Jun 2025 | Invoice | 44063 | 0 | 0 | +2 | 0 | +4 |
-| 19 Jun 2025 | Crd Note | 12763 | 0 | 0 | -2 | 0 | -4 |
-| 24 Jun 2025 | Invoice | 44201 | 0 | 0 | 0 | 0 | +4 |
-| 25 Jun 2025 | Crd Note | 12812 | 0 | 0 | 0 | 0 | -4 |
+| 05 Jun 2025 | Invoice | 43649 | 0 | 0 | 0 | 0 | +2 |
+| 06 Jun 2025 | Invoice | 43669 | 0 | 0 | +1 | 0 | +2 |
+| 06 Jun 2025 | Crd Note | 12639 | 0 | 0 | 0 | 0 | -2 |
+| 06 Jun 2025 | Crd Note | 12640 | 0 | 0 | -1 | 0 | -2 |
+| 12 Jun 2025 | Invoice | 43859 | 0 | 0 | 0 | 0 | +2 |
+| 12 Jun 2025 | Crd Note | 12710 | 0 | 0 | 0 | 0 | -2 |
+| 19 Jun 2025 | Invoice | 44063 | 0 | 0 | +1 | 0 | +2 |
+| 19 Jun 2025 | Crd Note | 12763 | 0 | 0 | -1 | 0 | -2 |
+| 24 Jun 2025 | Invoice | 44201 | 0 | 0 | 0 | 0 | +2 |
+| 25 Jun 2025 | Crd Note | 12812 | 0 | 0 | 0 | 0 | -2 |
 | **End Jun** | **Closing Balance** | — | **0** | **0** | **0** | **0** | **0** |
 
 ---
@@ -608,187 +610,187 @@
 | Date | Entry Type | Doc # | 14kg Qty | 19kg Qty | 9kg Qty | D.1 Qty | S.1 Qty |
 | :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: |
 | **01 Jul** | **Opening Balance** | — | **0** | **0** | **0** | **0** | **0** |
-| 01 Jul 2025 | Invoice | 44404 | 0 | 0 | 0 | 0 | +6 |
-| 01 Jul 2025 | Crd Note | 12872 | 0 | 0 | 0 | 0 | -4 |
-| 11 Jul 2025 | Invoice | 44743 | 0 | 0 | +2 | 0 | +4 |
-| 12 Jul 2025 | Crd Note | 12962 | 0 | 0 | -2 | 0 | -4 |
-| 18 Jul 2025 | Invoice | 44950 | 0 | 0 | +2 | 0 | +4 |
-| 19 Jul 2025 | Crd Note | 13020 | 0 | 0 | -2 | 0 | -4 |
-| 28 Jul 2025 | Invoice | 45200 | 0 | 0 | +2 | 0 | +4 |
-| 29 Jul 2025 | Crd Note | 13069 | 0 | 0 | -2 | 0 | -4 |
-| **End Jul** | **Closing Balance** | — | **0** | **0** | **0** | **0** | **2** |
+| 01 Jul 2025 | Invoice | 44404 | 0 | 0 | 0 | 0 | +3 |
+| 01 Jul 2025 | Crd Note | 12872 | 0 | 0 | 0 | 0 | -2 |
+| 11 Jul 2025 | Invoice | 44743 | 0 | 0 | +1 | 0 | +2 |
+| 12 Jul 2025 | Crd Note | 12962 | 0 | 0 | -1 | 0 | -2 |
+| 18 Jul 2025 | Invoice | 44950 | 0 | 0 | +1 | 0 | +2 |
+| 19 Jul 2025 | Crd Note | 13020 | 0 | 0 | -1 | 0 | -2 |
+| 28 Jul 2025 | Invoice | 45200 | 0 | 0 | +1 | 0 | +2 |
+| 29 Jul 2025 | Crd Note | 13069 | 0 | 0 | -1 | 0 | -2 |
+| **End Jul** | **Closing Balance** | — | **0** | **0** | **0** | **0** | **1** |
 
 ---
 
 ### August 2025
 | Date | Entry Type | Doc # | 14kg Qty | 19kg Qty | 9kg Qty | D.1 Qty | S.1 Qty |
 | :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: |
-| **01 Aug** | **Opening Balance** | — | **0** | **0** | **0** | **0** | **2** |
-| 01 Aug 2025 | Invoice | 45304 | 0 | 0 | +2 | 0 | +2 |
-| 01 Aug 2025 | Crd Note | 13102 | 0 | 0 | -2 | 0 | -2 |
-| 07 Aug 2025 | Invoice | 45489 | 0 | 0 | 0 | 0 | +4 |
-| 08 Aug 2025 | Crd Note | 13165 | 0 | 0 | 0 | 0 | -4 |
-| 11 Aug 2025 | Invoice | 45578 | 0 | 0 | +2 | +4 | 0 |
-| 11 Aug 2025 | Crd Note | 13194 | 0 | 0 | -2 | 0 | -4 |
-| 18 Aug 2025 | Invoice | 45721 | 0 | 0 | +2 | 0 | +2 |
-| 18 Aug 2025 | Crd Note | 13251 | 0 | 0 | -2 | 0 | -4 |
-| 25 Aug 2025 | Invoice | 45873 | 0 | 0 | +2 | 0 | +4 |
-| 25 Aug 2025 | Crd Note | 13301 | 0 | 0 | -2 | 0 | -4 |
-| **End Aug** | **Closing Balance** | — | **0** | **0** | **0** | **4** | **-4** |
+| **01 Aug** | **Opening Balance** | — | **0** | **0** | **0** | **0** | **1** |
+| 01 Aug 2025 | Invoice | 45304 | 0 | 0 | +1 | 0 | +1 |
+| 01 Aug 2025 | Crd Note | 13102 | 0 | 0 | -1 | 0 | -1 |
+| 07 Aug 2025 | Invoice | 45489 | 0 | 0 | 0 | 0 | +2 |
+| 08 Aug 2025 | Crd Note | 13165 | 0 | 0 | 0 | 0 | -2 |
+| 11 Aug 2025 | Invoice | 45578 | 0 | 0 | +1 | +2 | 0 |
+| 11 Aug 2025 | Crd Note | 13194 | 0 | 0 | -1 | 0 | -2 |
+| 18 Aug 2025 | Invoice | 45721 | 0 | 0 | +1 | 0 | +1 |
+| 18 Aug 2025 | Crd Note | 13251 | 0 | 0 | -1 | 0 | -2 |
+| 25 Aug 2025 | Invoice | 45873 | 0 | 0 | +1 | 0 | +2 |
+| 25 Aug 2025 | Crd Note | 13301 | 0 | 0 | -1 | 0 | -2 |
+| **End Aug** | **Closing Balance** | — | **0** | **0** | **0** | **2** | **-2** |
 
 ---
 
 ### September 2025
 | Date | Entry Type | Doc # | 14kg Qty | 19kg Qty | 9kg Qty | D.1 Qty | S.1 Qty |
 | :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: |
-| **01 Sep** | **Opening Balance** | — | **0** | **0** | **0** | **4** | **-4** |
-| 01 Sept 2025 | Invoice | 46051 | 0 | 0 | 0 | 0 | +6 |
-| 01 Sept 2025 | Crd Note | 13349 | 0 | 0 | 0 | 0 | -6 |
-| 10 Sept 2025 | Invoice | 46268 | 0 | 0 | +2 | 0 | +4 |
-| 10 Sept 2025 | Crd Note | 13434 | 0 | 0 | -2 | 0 | -4 |
-| 22 Sept 2025 | Invoice | 46563 | 0 | 0 | +2 | 0 | +4 |
-| 22 Sept 2025 | Crd Note | 13523 | 0 | 0 | -2 | 0 | -4 |
-| 26 Sept 2025 | Invoice | 46670 | 0 | 0 | +2 | 0 | +4 |
-| 26 Sept 2025 | Crd Note | 13552 | 0 | 0 | -2 | 0 | -4 |
-| **End Sep** | **Closing Balance** | — | **0** | **0** | **0** | **4** | **-4** |
+| **01 Sep** | **Opening Balance** | — | **0** | **0** | **0** | **2** | **-2** |
+| 01 Sept 2025 | Invoice | 46051 | 0 | 0 | 0 | 0 | +3 |
+| 01 Sept 2025 | Crd Note | 13349 | 0 | 0 | 0 | 0 | -3 |
+| 10 Sept 2025 | Invoice | 46268 | 0 | 0 | +1 | 0 | +2 |
+| 10 Sept 2025 | Crd Note | 13434 | 0 | 0 | -1 | 0 | -2 |
+| 22 Sept 2025 | Invoice | 46563 | 0 | 0 | +1 | 0 | +2 |
+| 22 Sept 2025 | Crd Note | 13523 | 0 | 0 | -1 | 0 | -2 |
+| 26 Sept 2025 | Invoice | 46670 | 0 | 0 | +1 | 0 | +2 |
+| 26 Sept 2025 | Crd Note | 13552 | 0 | 0 | -1 | 0 | -2 |
+| **End Sep** | **Closing Balance** | — | **0** | **0** | **0** | **2** | **-2** |
 
 ---
 
 ### October 2025
 | Date | Entry Type | Doc # | 14kg Qty | 19kg Qty | 9kg Qty | D.1 Qty | S.1 Qty |
 | :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: |
-| **01 Oct** | **Opening Balance** | — | **0** | **0** | **0** | **4** | **-4** |
-| 01 Oct 2025 | Invoice | 46826 | 0 | 0 | 0 | 0 | +4 |
-| 03 Oct 2025 | Crd Note | 13602 | 0 | 0 | 0 | 0 | -4 |
-| 09 Oct 2025 | Invoice | 46981 | 0 | 0 | +2 | 0 | +4 |
-| 09 Oct 2025 | Crd Note | 13651 | 0 | 0 | -2 | 0 | -4 |
-| 18 Oct 2025 | Invoice | 47171 | 0 | 0 | +2 | 0 | +6 |
-| 18 Oct 2025 | Crd Note | 13710 | 0 | 0 | -2 | 0 | -6 |
-| 30 Oct 2025 | Invoice | 47402 | 0 | 0 | +4 | 0 | +6 |
-| 30 Oct 2025 | Crd Note | 13771 | 0 | 0 | -4 | 0 | -6 |
-| **End Oct** | **Closing Balance** | — | **0** | **0** | **0** | **4** | **-4** |
+| **01 Oct** | **Opening Balance** | — | **0** | **0** | **0** | **2** | **-2** |
+| 01 Oct 2025 | Invoice | 46826 | 0 | 0 | 0 | 0 | +2 |
+| 03 Oct 2025 | Crd Note | 13602 | 0 | 0 | 0 | 0 | -2 |
+| 09 Oct 2025 | Invoice | 46981 | 0 | 0 | +1 | 0 | +2 |
+| 09 Oct 2025 | Crd Note | 13651 | 0 | 0 | -1 | 0 | -2 |
+| 18 Oct 2025 | Invoice | 47171 | 0 | 0 | +1 | 0 | +3 |
+| 18 Oct 2025 | Crd Note | 13710 | 0 | 0 | -1 | 0 | -3 |
+| 30 Oct 2025 | Invoice | 47402 | 0 | 0 | +2 | 0 | +3 |
+| 30 Oct 2025 | Crd Note | 13771 | 0 | 0 | -2 | 0 | -3 |
+| **End Oct** | **Closing Balance** | — | **0** | **0** | **0** | **2** | **-2** |
 
 ---
 
 ### November 2025
 | Date | Entry Type | Doc # | 14kg Qty | 19kg Qty | 9kg Qty | D.1 Qty | S.1 Qty |
 | :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: |
-| **01 Nov** | **Opening Balance** | — | **0** | **0** | **0** | **4** | **-4** |
-| 10 Nov 2025 | Invoice | 47590 | 0 | 0 | +2 | 0 | +6 |
-| 11 Nov 2025 | Crd Note | 13838 | 0 | 0 | 0 | 0 | -6 |
-| 22 Nov 2025 | Invoice | 47858 | 0 | 0 | 0 | 0 | +4 |
-| 22 Nov 2025 | Crd Note | 13931 | 0 | 0 | 0 | 0 | -4 |
-| 28 Nov 2025 | Invoice | 47980 | 0 | 0 | +2 | 0 | +6 |
-| 28 Nov 2025 | Crd Note | 13974 | 0 | 0 | -2 | 0 | -6 |
-| **End Nov** | **Closing Balance** | — | **0** | **0** | **2** | **4** | **-4** |
+| **01 Nov** | **Opening Balance** | — | **0** | **0** | **0** | **2** | **-2** |
+| 10 Nov 2025 | Invoice | 47590 | 0 | 0 | +1 | 0 | +3 |
+| 11 Nov 2025 | Crd Note | 13838 | 0 | 0 | 0 | 0 | -3 |
+| 22 Nov 2025 | Invoice | 47858 | 0 | 0 | 0 | 0 | +2 |
+| 22 Nov 2025 | Crd Note | 13931 | 0 | 0 | 0 | 0 | -2 |
+| 28 Nov 2025 | Invoice | 47980 | 0 | 0 | +1 | 0 | +3 |
+| 28 Nov 2025 | Crd Note | 13974 | 0 | 0 | -1 | 0 | -3 |
+| **End Nov** | **Closing Balance** | — | **0** | **0** | **1** | **2** | **-2** |
 
 ---
 
 ### December 2025
 | Date | Entry Type | Doc # | 14kg Qty | 19kg Qty | 9kg Qty | D.1 Qty | S.1 Qty |
 | :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: |
-| **01 Dec** | **Opening Balance** | — | **0** | **0** | **2** | **4** | **-4** |
-| 04 Dec 2025 | Invoice | 48096 | 0 | 0 | 0 | 0 | +6 |
-| 04 Dec 2025 | Crd Note | 14007 | 0 | 0 | 0 | 0 | -4 |
-| 18 Dec 2025 | Invoice | 48348 | 0 | 0 | +2 | 0 | +6 |
-| 18 Dec 2025 | Crd Note | 14113 | 0 | 0 | -4 | 0 | -8 |
-| **End Dec** | **Closing Balance** | — | **0** | **0** | **0** | **4** | **-4** |
+| **01 Dec** | **Opening Balance** | — | **0** | **0** | **1** | **2** | **-2** |
+| 04 Dec 2025 | Invoice | 48096 | 0 | 0 | 0 | 0 | +3 |
+| 04 Dec 2025 | Crd Note | 14007 | 0 | 0 | 0 | 0 | -2 |
+| 18 Dec 2025 | Invoice | 48348 | 0 | 0 | +1 | 0 | +3 |
+| 18 Dec 2025 | Crd Note | 14113 | 0 | 0 | -2 | 0 | -4 |
+| **End Dec** | **Closing Balance** | — | **0** | **0** | **0** | **2** | **-2** |
 
 ---
 
 ### January 2026
 | Date | Entry Type | Doc # | 14kg Qty | 19kg Qty | 9kg Qty | D.1 Qty | S.1 Qty |
 | :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: |
-| **01 Jan** | **Opening Balance** | — | **0** | **0** | **0** | **4** | **-4** |
-| 05 Jan 2026 | Invoice | 48614 | 0 | 0 | +2 | 0 | +6 |
-| 05 Jan 2026 | Crd Note | 14210 | 0 | 0 | -2 | 0 | -6 |
-| 15 Jan 2026 | Invoice | 48798 | 0 | 0 | +2 | 0 | +6 |
-| 15 Jan 2026 | Crd Note | 14276 | 0 | 0 | -2 | 0 | -6 |
-| 26 Jan 2026 | Invoice | 48941 | 0 | 0 | +2 | 0 | +6 |
-| 26 Jan 2026 | Crd Note | 14335 | 0 | 0 | -2 | 0 | -6 |
-| **End Jan** | **Closing Balance** | — | **0** | **0** | **0** | **4** | **-4** |
+| **01 Jan** | **Opening Balance** | — | **0** | **0** | **0** | **2** | **-2** |
+| 05 Jan 2026 | Invoice | 48614 | 0 | 0 | +1 | 0 | +3 |
+| 05 Jan 2026 | Crd Note | 14210 | 0 | 0 | -1 | 0 | -3 |
+| 15 Jan 2026 | Invoice | 48798 | 0 | 0 | +1 | 0 | +3 |
+| 15 Jan 2026 | Crd Note | 14276 | 0 | 0 | -1 | 0 | -3 |
+| 26 Jan 2026 | Invoice | 48941 | 0 | 0 | +1 | 0 | +3 |
+| 26 Jan 2026 | Crd Note | 14335 | 0 | 0 | -1 | 0 | -3 |
+| **End Jan** | **Closing Balance** | — | **0** | **0** | **0** | **2** | **-2** |
 
 ---
 
 ### February 2026
 | Date | Entry Type | Doc # | 14kg Qty | 19kg Qty | 9kg Qty | D.1 Qty | S.1 Qty |
 | :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: |
-| **01 Feb** | **Opening Balance** | — | **0** | **0** | **0** | **4** | **-4** |
-| 07 Feb 2026 | Invoice | 49144 | 0 | 0 | +2 | 0 | +6 |
-| 09 Feb 2026 | Crd Note | 14395 | 0 | 0 | 0 | 0 | -6 |
-| 19 Feb 2026 | Invoice | 49329 | 0 | 0 | 0 | 0 | +6 |
-| 19 Feb 2026 | Crd Note | 14458 | 0 | 0 | 0 | 0 | -6 |
-| **End Feb** | **Closing Balance** | — | **0** | **0** | **2** | **4** | **-4** |
+| **01 Feb** | **Opening Balance** | — | **0** | **0** | **0** | **2** | **-2** |
+| 07 Feb 2026 | Invoice | 49144 | 0 | 0 | +1 | 0 | +3 |
+| 09 Feb 2026 | Crd Note | 14395 | 0 | 0 | 0 | 0 | -3 |
+| 19 Feb 2026 | Invoice | 49329 | 0 | 0 | 0 | 0 | +3 |
+| 19 Feb 2026 | Crd Note | 14458 | 0 | 0 | 0 | 0 | -3 |
+| **End Feb** | **Closing Balance** | — | **0** | **0** | **1** | **2** | **-2** |
 
 ---
 
 ### March 2026
 | Date | Entry Type | Doc # | 14kg Qty | 19kg Qty | 9kg Qty | D.1 Qty | S.1 Qty |
 | :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: |
-| **01 Mar** | **Opening Balance** | — | **0** | **0** | **2** | **4** | **-4** |
-| 04 Mar 2026 | Invoice | 49551 | 0 | 0 | +2 | 0 | +6 |
-| 04 Mar 2026 | Crd Note | 14533 | 0 | 0 | -4 | 0 | -6 |
-| 12 Mar 2026 | Invoice | 49711 | 0 | 0 | +2 | 0 | +6 |
-| 13 Mar 2026 | Crd Note | 14587 | 0 | 0 | -2 | 0 | -6 |
-| 26 Mar 2026 | Invoice | 49934 | 0 | 0 | 0 | +4 | 0 |
-| 26 Mar 2026 | Crd Note | 14666 | 0 | 0 | 0 | -4 | 0 |
-| **End Mar** | **Closing Balance** | — | **0** | **0** | **0** | **4** | **-4** |
+| **01 Mar** | **Opening Balance** | — | **0** | **0** | **1** | **2** | **-2** |
+| 04 Mar 2026 | Invoice | 49551 | 0 | 0 | +1 | 0 | +3 |
+| 04 Mar 2026 | Crd Note | 14533 | 0 | 0 | -2 | 0 | -3 |
+| 12 Mar 2026 | Invoice | 49711 | 0 | 0 | +1 | 0 | +3 |
+| 13 Mar 2026 | Crd Note | 14587 | 0 | 0 | -1 | 0 | -3 |
+| 26 Mar 2026 | Invoice | 49934 | 0 | 0 | 0 | +2 | 0 |
+| 26 Mar 2026 | Crd Note | 14666 | 0 | 0 | 0 | -2 | 0 |
+| **End Mar** | **Closing Balance** | — | **0** | **0** | **0** | **2** | **-2** |
 
 ---
 
 ### April 2026
 | Date | Entry Type | Doc # | 14kg Qty | 19kg Qty | 9kg Qty | D.1 Qty | S.1 Qty |
 | :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: |
-| **01 Apr** | **Opening Balance** | — | **0** | **0** | **0** | **4** | **-4** |
-| 02 Apr 2026 | Invoice | 50067 | 0 | 0 | +2 | 0 | +4 |
-| 02 Apr 2026 | Crd Note | 14705 | 0 | 0 | -2 | 0 | -4 |
-| 10 Apr 2026 | Invoice | 50174 | 0 | 0 | +2 | 0 | +4 |
+| **01 Apr** | **Opening Balance** | — | **0** | **0** | **0** | **2** | **-2** |
+| 02 Apr 2026 | Invoice | 50067 | 0 | 0 | +1 | 0 | +2 |
+| 02 Apr 2026 | Crd Note | 14705 | 0 | 0 | -1 | 0 | -2 |
+| 10 Apr 2026 | Invoice | 50174 | 0 | 0 | +1 | 0 | +2 |
 | 10 Apr 2026 | Crd Note | 14741 | 0 | 0 | 0 | 0 | -2 |
-| 20 Apr 2026 | Invoice | 50306 | 0 | 0 | 0 | 0 | +6 |
-| 20 Apr 2026 | Crd Note | 14773 | 0 | 0 | 0 | 0 | -6 |
-| **End Apr** | **Closing Balance** | — | **0** | **0** | **2** | **4** | **-2** |
+| 20 Apr 2026 | Invoice | 50306 | 0 | 0 | 0 | 0 | +3 |
+| 20 Apr 2026 | Crd Note | 14773 | 0 | 0 | 0 | 0 | -3 |
+| **End Apr** | **Closing Balance** | — | **0** | **0** | **1** | **2** | **-2** |
 
 ---
 
 ### May 2026
 | Date | Entry Type | Doc # | 14kg Qty | 19kg Qty | 9kg Qty | D.1 Qty | S.1 Qty |
 | :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: |
-| **01 May** | **Opening Balance** | — | **0** | **0** | **2** | **4** | **-2** |
+| **01 May** | **Opening Balance** | — | **0** | **0** | **1** | **2** | **-2** |
 | 05 May 2026 | Invoice | 50519 | 0 | 0 | +1 | 0 | +2 |
 | 05 May 2026 | Invoice | 50529 | 0 | 0 | +1 | 0 | +3 |
 | 05 May 2026 | Crd Note | 14850 | 0 | 0 | -1 | 0 | -2 |
 | 05 May 2026 | Crd Note | 14856 | 0 | 0 | -3 | 0 | -3 |
-| 13 May 2026 | Invoice | 50658 | 0 | 0 | +2 | 0 | +6 |
-| 14 May 2026 | Crd Note | 14904 | 0 | 0 | 0 | 0 | -6 |
+| 13 May 2026 | Invoice | 50658 | 0 | 0 | +1 | 0 | +3 |
+| 14 May 2026 | Crd Note | 14904 | 0 | 0 | 0 | 0 | -3 |
 | 28 May 2026 | Invoice | 50917 | 0 | 0 | +1 | 0 | 0 |
 | 28 May 2026 | Crd Note | 14981 | 0 | 0 | -1 | 0 | 0 |
-| **End May** | **Closing Balance** | — | **0** | **0** | **2** | **4** | **-2** |
+| **End May** | **Closing Balance** | — | **0** | **0** | **0** | **2** | **-2** |
 
 ---
 
 ### June 2026
 | Date | Entry Type | Doc # | 14kg Qty | 19kg Qty | 9kg Qty | D.1 Qty | S.1 Qty |
 | :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: |
-| **01 Jun** | **Opening Balance** | — | **0** | **0** | **2** | **4** | **-2** |
+| **01 Jun** | **Opening Balance** | — | **0** | **0** | **0** | **2** | **-2** |
 | 06 Jun 2026 | Invoice | 51078 | 0 | 0 | +1 | 0 | +3 |
 | 06 Jun 2026 | Crd Note | 15027 | 0 | 0 | -1 | 0 | -2 |
 | 15 Jun 2026 | Invoice | 51236 | 0 | 0 | +1 | 0 | +3 |
 | 15 Jun 2026 | Crd Note | 15072 | 0 | 0 | -1 | 0 | -3 |
 | 25 Jun 2026 | Invoice | 51432 | 0 | 0 | +1 | 0 | +2 |
 | 26 Jun 2026 | Crd Note | 15128 | 0 | 0 | -1 | 0 | -3 |
-| **End Jun** | **Closing Balance** | — | **0** | **0** | **2** | **4** | **-2** |
+| **End Jun** | **Closing Balance** | — | **0** | **0** | **0** | **2** | **-2** |
 
 ---
 
 ### July 2026
 | Date | Entry Type | Doc # | 14kg Qty | 19kg Qty | 9kg Qty | D.1 Qty | S.1 Qty |
 | :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: |
-| **01 Jul** | **Opening Balance** | — | **0** | **0** | **2** | **4** | **-2** |
+| **01 Jul** | **Opening Balance** | — | **0** | **0** | **0** | **2** | **-2** |
 | 02 Jul 2026 | Invoice | 51527 | 0 | 0 | 0 | 0 | +3 |
 | 03 Jul 2026 | Crd Note | 15166 | 0 | 0 | 0 | 0 | -2 |
 | 13 Jul 2026 | Invoice | 51790 | 0 | 0 | +1 | 0 | +3 |
 | 13 Jul 2026 | Crd Note | 15254 | 0 | 0 | -1 | 0 | -4 |
-| **End Jul** | **Closing Balance** | — | **0** | **0** | **2** | **4** | **-2** |
+| **End Jul** | **Closing Balance** | — | **0** | **0** | **0** | **2** | **-2** |
 
 ---
 
@@ -809,16 +811,15 @@
 
 | SKU | Net Returnable Qty | Deposit Rate | Custody Exposure |
 |---|---:|---:|---:|
-| 9kg | 2 | R517.50 | R1,035.00 |
-| D.1 | 4 | R1,150.00 | R4,600.00 |
+| D.1 | 2 | R1,150.00 | R2,300.00 |
 | S.1 | -2 | R1,150.00 | R-2,300.00 |
-| **Total** | **4** | — | **R3,335.00** |
+| **Total** | **0** | — | **R0.00** |
 
 ### 3. Reconciliation Position
 
 | Check | Financial | Custody | Variance |
 |---|---:|---:|---:|
-| Cylinder Position (1B vs custody) | R0.00 | R3,335.00 | R-3,335.00 |
+| Cylinder Position (1B vs custody) | R0.00 | R0.00 | R0.00 |
 | Sub-ledger tie (1A + 1B vs combined) | R13,014.50 | — | R0.00 |
 
 **ERP Combined Balance (TXT header):** R13,014.50  
