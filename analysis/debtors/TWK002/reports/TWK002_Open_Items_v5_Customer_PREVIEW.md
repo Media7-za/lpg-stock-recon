@@ -1,5 +1,5 @@
 # Open Items Statement: TWK AGRI PTY LTD (TWK002) — Customer copy (DRAFT PREVIEW)
-**Period:** from 01 Mar 2025 to 26 Aug 2026 &nbsp;|&nbsp; **Balance due:** R27,721.81
+**Period:** from 01 Mar 2025 to 08 Oct 2026 &nbsp;|&nbsp; **Balance due:** R54,136.19
 > **Draft preview, not for release.** This copy lists only items not yet settled. Customer release goes through the official statement generator and `npm run debtors:tag-check` (business_rules.md §15).
 
 ---
@@ -144,7 +144,24 @@
 | 09 Aug 2026 | Journal | 508 | — | Gas | -228.93 | 888.66 |
 | 09 Aug 2026 | Journal | 509 | — | Gas | -393.99 | 494.67 |
 | 12 Aug 2026 | Invoice | 52484 | DN#23954 | Gas | 6,926.34 | 7,421.01 |
-| 26 Aug 2026 | Invoice | 52803 | DN#24938 | Gas | 11,142.35 | 18,563.36 |
+| 26 Aug 2026 | Journal | 510 | — | Gas | -1,223.45 | 6,197.56 |
+| 26 Aug 2026 | Invoice | 52803 | DN#24938 | Gas | 11,142.35 | 17,339.91 |
+
+### September 2026
+
+| Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
+| 10 Sept 2026 | Invoice | 53077 | DN#24836 | Gas | 8,448.07 | 25,787.98 |
+| 10 Sept 2026 | Invoice | 53078 ¹ | DN#24985 | Other | 22,000.00 | 47,787.98 |
+| 14 Sept 2026 | Crd Note | 15646 ¹ | DN#24985 | Other | -22,000.00 | 25,787.98 |
+| 29 Sept 2026 | Invoice | 53350 | DN-21388 | Gas | 12,748.90 | 38,536.88 |
+
+### October 2026
+
+| Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
+| 08 Oct 2026 | Crd Note | 15775 | DN#23843 | Gas | -7,935.00 | 30,601.88 |
+| 08 Oct 2026 | Invoice | 53507 | DN#23843 | Gas | 14,375.86 | 44,977.74 |
 
 **Cylinder deposit opening balance:** R0.00
 
@@ -201,6 +218,13 @@
 | 26 Aug 2026 | Crd Note | 15553 | DN#24938 | Cylinder deposit | -17,077.50 | -9,315.00 |
 | 26 Aug 2026 | Invoice | 52803 | DN#24938 | Cylinder deposit | 17,250.00 | 7,935.00 |
 
+### September 2026
+
+| Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
+| 29 Sept 2026 | Crd Note | 15714 ¹ | 21388 | Cylinder deposit | -19,837.50 | -11,902.50 |
+| 29 Sept 2026 | Invoice | 53351 ¹ | 21388 | Cylinder deposit | 19,837.50 | 7,935.00 |
+
 ¹ Payment received; allocation to this item is being confirmed.
 
 ---
@@ -210,8 +234,8 @@
 | Component | Gas (R) | Cylinder deposit (R) | Total (R) |
 | :--- | ---: | ---: | ---: |
 | Opening balance | 38,791.27 | 0.00 | 38,791.27 |
-| Open items listed above | -20,227.91 | 7,935.00 | -12,292.91 |
+| Open items listed above | 6,186.47 | 7,935.00 | 14,121.47 |
 | Rounding on settled items | -230.00 | 230.00 | 0.00 |
 | Settlement discount (journal pending) | 1,223.45 | 0.00 | 1,223.45 |
-| **Balance** | 19,556.81 | 8,165.00 | 27,721.81 |
+| **Balance** | 45,971.19 | 8,165.00 | 54,136.19 |
 

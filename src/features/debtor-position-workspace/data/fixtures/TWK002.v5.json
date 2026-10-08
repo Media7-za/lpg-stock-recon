@@ -3,17 +3,17 @@
   "debtorName": "TWK AGRI PTY LTD",
   "period": {
     "from": "2025-03-01",
-    "to": "2026-08-26"
+    "to": "2026-10-08"
   },
   "version": "v5",
   "workspaceStatus": "pending_review",
-  "lastGeneratedAt": "2026-10-08T03:28:48.129Z",
-  "source": "analysis/debtors/TWK002/raw/DEBENQTWK002CURRENT.TXT",
+  "lastGeneratedAt": "2026-10-08T16:28:56.825Z",
+  "source": "analysis/debtors/TWK002/raw/TWK002_2026-10-08.TXT",
   "financialPosition": {
-    "lpgGasDebt": 19556.81,
+    "lpgGasDebt": 45971.19,
     "cylinderFinancialBalance": 8165,
-    "totalDebtorBalance": 27721.81,
-    "erpStatedBalance": 27721.81,
+    "totalDebtorBalance": 54136.19,
+    "erpStatedBalance": 54136.19,
     "erpVariance": 0,
     "subLedgerVariance": 0
   },
@@ -58,6 +58,6 @@
   },
   "artifacts": {
     "statementMarkdown": "analysis/debtors/TWK002/reports/TWK002_Statement_Account_v5.md",
-    "txtSource": "analysis/debtors/TWK002/raw/DEBENQTWK002CURRENT.TXT"
+    "txtSource": "analysis/debtors/TWK002/raw/TWK002_2026-10-08.TXT"
   }
 }

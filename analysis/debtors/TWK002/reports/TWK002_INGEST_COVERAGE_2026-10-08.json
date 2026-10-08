@@ -1,29 +1,33 @@
 {
   "account_no": "TWK002",
-  "generated_at": "2026-10-08T03:27:05.205Z",
-  "statement_txt": "analysis/debtors/TWK002/raw/DEBENQTWK002CURRENT.TXT",
+  "generated_at": "2026-10-08T16:28:22.180Z",
+  "statement_txt": "analysis/debtors/TWK002/raw/TWK002_2026-10-08.TXT",
   "period_start": "2025-03-01",
-  "txt_as_at": "2026-08-26",
-  "header_sync_as_at": "2026-10-05",
-  "items_sync_as_at": "2026-10-05",
-  "ingestFreshness": "current",
-  "ingestCoverage": "complete",
-  "display_status": "CURRENT_COMPLETE",
+  "txt_as_at": "2026-10-08",
+  "header_sync_as_at": "2026-10-08",
+  "items_sync_as_at": "2026-10-08",
+  "ingestFreshness": "stale",
+  "ingestCoverage": "partial",
+  "display_status": "STALE_PARTIAL",
   "summary": {
-    "documents_in_txt": 104,
-    "healthy": 104,
-    "gaps": 0,
-    "db_only": 47
+    "documents_in_txt": 117,
+    "healthy": 115,
+    "gaps": 2,
+    "db_only": 0
   },
   "gates": {
     "financial_balance_from_txt": "ALLOWED",
-    "custody": "ALLOWED",
-    "sku_analysis": "ALLOWED",
-    "allocation": "ALLOWED"
+    "custody": "BLOCKED",
+    "sku_analysis": "BLOCKED",
+    "allocation": "BLOCKED"
   },
   "ingest_gate": {
     "status": "pass",
-    "ingestBlockedScopes": []
+    "ingestBlockedScopes": [
+      "custody",
+      "sku_analysis",
+      "allocation"
+    ]
   },
   "documents": [
     {
@@ -1469,6 +1473,20 @@
       "exception": null
     },
     {
+      "doc_no": "510",
+      "doc_type": "Journal",
+      "tx_date": "2026-08-26",
+      "ref_no": "",
+      "amount": -1223.45,
+      "in_txt": true,
+      "header_present": true,
+      "lines_present": false,
+      "required_ingest_shape": "header_only",
+      "classification": "EXPECTED_HEADER_ONLY",
+      "blocks": [],
+      "exception": null
+    },
+    {
       "doc_no": "52803",
       "doc_type": "Invoice",
       "tx_date": "2026-08-26",
@@ -1486,799 +1504,176 @@
       "doc_no": "511",
       "doc_type": "Journal",
       "tx_date": "2026-08-31",
-      "ref_no": null,
-      "amount": 15473.25,
-      "in_txt": false,
+      "ref_no": "",
+      "amount": 0,
+      "in_txt": true,
       "header_present": true,
       "lines_present": false,
       "required_ingest_shape": "header_only",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX3108.TXT",
-      "exception": null
-    },
-    {
-      "doc_no": "511",
-      "doc_type": "Journal",
-      "tx_date": "2026-08-31",
-      "ref_no": null,
-      "amount": 10091.25,
-      "in_txt": false,
-      "header_present": true,
-      "lines_present": false,
-      "required_ingest_shape": "header_only",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX3108.TXT",
-      "exception": null
-    },
-    {
-      "doc_no": "511",
-      "doc_type": "Journal",
-      "tx_date": "2026-08-31",
-      "ref_no": null,
-      "amount": 12950.44,
-      "in_txt": false,
-      "header_present": true,
-      "lines_present": false,
-      "required_ingest_shape": "header_only",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX3108.TXT",
-      "exception": null
-    },
-    {
-      "doc_no": "511",
-      "doc_type": "Journal",
-      "tx_date": "2026-08-31",
-      "ref_no": null,
-      "amount": 14968.69,
-      "in_txt": false,
-      "header_present": true,
-      "lines_present": false,
-      "required_ingest_shape": "header_only",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX3108.TXT",
-      "exception": null
-    },
-    {
-      "doc_no": "511",
-      "doc_type": "Journal",
-      "tx_date": "2026-08-31",
-      "ref_no": null,
-      "amount": -26765.92,
-      "in_txt": false,
-      "header_present": true,
-      "lines_present": false,
-      "required_ingest_shape": "header_only",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX3108.TXT",
-      "exception": null
-    },
-    {
-      "doc_no": "511",
-      "doc_type": "Journal",
-      "tx_date": "2026-08-31",
-      "ref_no": null,
-      "amount": -15217.83,
-      "in_txt": false,
-      "header_present": true,
-      "lines_present": false,
-      "required_ingest_shape": "header_only",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX3108.TXT",
-      "exception": null
-    },
-    {
-      "doc_no": "511",
-      "doc_type": "Journal",
-      "tx_date": "2026-08-31",
-      "ref_no": null,
-      "amount": -22372.3,
-      "in_txt": false,
-      "header_present": true,
-      "lines_present": false,
-      "required_ingest_shape": "header_only",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX3108.TXT",
-      "exception": null
-    },
-    {
-      "doc_no": "511",
-      "doc_type": "Journal",
-      "tx_date": "2026-08-31",
-      "ref_no": null,
-      "amount": -24821.42,
-      "in_txt": false,
-      "header_present": true,
-      "lines_present": false,
-      "required_ingest_shape": "header_only",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX3108.TXT",
-      "exception": null
-    },
-    {
-      "doc_no": "511",
-      "doc_type": "Journal",
-      "tx_date": "2026-08-31",
-      "ref_no": null,
-      "amount": 35693.84,
-      "in_txt": false,
-      "header_present": true,
-      "lines_present": false,
-      "required_ingest_shape": "header_only",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX3108.TXT",
+      "classification": "EXPECTED_HEADER_ONLY",
+      "blocks": [],
       "exception": null
     },
     {
       "doc_no": "512",
       "doc_type": "Journal",
       "tx_date": "2026-08-31",
-      "ref_no": null,
-      "amount": 6727.5,
-      "in_txt": false,
+      "ref_no": "",
+      "amount": 0,
+      "in_txt": true,
       "header_present": true,
       "lines_present": false,
       "required_ingest_shape": "header_only",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX3108.TXT",
-      "exception": null
-    },
-    {
-      "doc_no": "512",
-      "doc_type": "Journal",
-      "tx_date": "2026-08-31",
-      "ref_no": null,
-      "amount": 12614.06,
-      "in_txt": false,
-      "header_present": true,
-      "lines_present": false,
-      "required_ingest_shape": "header_only",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX3108.TXT",
-      "exception": null
-    },
-    {
-      "doc_no": "512",
-      "doc_type": "Journal",
-      "tx_date": "2026-08-31",
-      "ref_no": null,
-      "amount": 11773.12,
-      "in_txt": false,
-      "header_present": true,
-      "lines_present": false,
-      "required_ingest_shape": "header_only",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX3108.TXT",
-      "exception": null
-    },
-    {
-      "doc_no": "512",
-      "doc_type": "Journal",
-      "tx_date": "2026-08-31",
-      "ref_no": null,
-      "amount": 1218.53,
-      "in_txt": false,
-      "header_present": true,
-      "lines_present": false,
-      "required_ingest_shape": "header_only",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX3108.TXT",
-      "exception": null
-    },
-    {
-      "doc_no": "512",
-      "doc_type": "Journal",
-      "tx_date": "2026-08-31",
-      "ref_no": null,
-      "amount": -19341.56,
-      "in_txt": false,
-      "header_present": true,
-      "lines_present": false,
-      "required_ingest_shape": "header_only",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX3108.TXT",
-      "exception": null
-    },
-    {
-      "doc_no": "512",
-      "doc_type": "Journal",
-      "tx_date": "2026-08-31",
-      "ref_no": null,
-      "amount": -19630.62,
-      "in_txt": false,
-      "header_present": true,
-      "lines_present": false,
-      "required_ingest_shape": "header_only",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX3108.TXT",
-      "exception": null
-    },
-    {
-      "doc_no": "512",
-      "doc_type": "Journal",
-      "tx_date": "2026-08-31",
-      "ref_no": null,
-      "amount": -7520.74,
-      "in_txt": false,
-      "header_present": true,
-      "lines_present": false,
-      "required_ingest_shape": "header_only",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX3108.TXT",
-      "exception": null
-    },
-    {
-      "doc_no": "512",
-      "doc_type": "Journal",
-      "tx_date": "2026-08-31",
-      "ref_no": null,
-      "amount": -1205.94,
-      "in_txt": false,
-      "header_present": true,
-      "lines_present": false,
-      "required_ingest_shape": "header_only",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX3108.TXT",
-      "exception": null
-    },
-    {
-      "doc_no": "512",
-      "doc_type": "Journal",
-      "tx_date": "2026-08-31",
-      "ref_no": null,
-      "amount": 15365.65,
-      "in_txt": false,
-      "header_present": true,
-      "lines_present": false,
-      "required_ingest_shape": "header_only",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX3108.TXT",
+      "classification": "EXPECTED_HEADER_ONLY",
+      "blocks": [],
       "exception": null
     },
     {
       "doc_no": "513",
       "doc_type": "Journal",
       "tx_date": "2026-08-31",
-      "ref_no": null,
-      "amount": 22195,
-      "in_txt": false,
+      "ref_no": "",
+      "amount": 0,
+      "in_txt": true,
       "header_present": true,
       "lines_present": false,
       "required_ingest_shape": "header_only",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX3108.TXT",
-      "exception": null
-    },
-    {
-      "doc_no": "513",
-      "doc_type": "Journal",
-      "tx_date": "2026-08-31",
-      "ref_no": null,
-      "amount": 15180,
-      "in_txt": false,
-      "header_present": true,
-      "lines_present": false,
-      "required_ingest_shape": "header_only",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX3108.TXT",
-      "exception": null
-    },
-    {
-      "doc_no": "513",
-      "doc_type": "Journal",
-      "tx_date": "2026-08-31",
-      "ref_no": null,
-      "amount": 14490,
-      "in_txt": false,
-      "header_present": true,
-      "lines_present": false,
-      "required_ingest_shape": "header_only",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX3108.TXT",
-      "exception": null
-    },
-    {
-      "doc_no": "513",
-      "doc_type": "Journal",
-      "tx_date": "2026-08-31",
-      "ref_no": null,
-      "amount": 13972.5,
-      "in_txt": false,
-      "header_present": true,
-      "lines_present": false,
-      "required_ingest_shape": "header_only",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX3108.TXT",
-      "exception": null
-    },
-    {
-      "doc_no": "513",
-      "doc_type": "Journal",
-      "tx_date": "2026-08-31",
-      "ref_no": null,
-      "amount": 9142.5,
-      "in_txt": false,
-      "header_present": true,
-      "lines_present": false,
-      "required_ingest_shape": "header_only",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX3108.TXT",
-      "exception": null
-    },
-    {
-      "doc_no": "513",
-      "doc_type": "Journal",
-      "tx_date": "2026-08-31",
-      "ref_no": null,
-      "amount": 11385,
-      "in_txt": false,
-      "header_present": true,
-      "lines_present": false,
-      "required_ingest_shape": "header_only",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX3108.TXT",
-      "exception": null
-    },
-    {
-      "doc_no": "513",
-      "doc_type": "Journal",
-      "tx_date": "2026-08-31",
-      "ref_no": null,
-      "amount": 16818.75,
-      "in_txt": false,
-      "header_present": true,
-      "lines_present": false,
-      "required_ingest_shape": "header_only",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX3108.TXT",
-      "exception": null
-    },
-    {
-      "doc_no": "513",
-      "doc_type": "Journal",
-      "tx_date": "2026-08-31",
-      "ref_no": null,
-      "amount": 19173.37,
-      "in_txt": false,
-      "header_present": true,
-      "lines_present": false,
-      "required_ingest_shape": "header_only",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX3108.TXT",
-      "exception": null
-    },
-    {
-      "doc_no": "513",
-      "doc_type": "Journal",
-      "tx_date": "2026-08-31",
-      "ref_no": null,
-      "amount": 14464.12,
-      "in_txt": false,
-      "header_present": true,
-      "lines_present": false,
-      "required_ingest_shape": "header_only",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX3108.TXT",
-      "exception": null
-    },
-    {
-      "doc_no": "513",
-      "doc_type": "Journal",
-      "tx_date": "2026-08-31",
-      "ref_no": null,
-      "amount": -35663.47,
-      "in_txt": false,
-      "header_present": true,
-      "lines_present": false,
-      "required_ingest_shape": "header_only",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX3108.TXT",
-      "exception": null
-    },
-    {
-      "doc_no": "513",
-      "doc_type": "Journal",
-      "tx_date": "2026-08-31",
-      "ref_no": null,
-      "amount": -23457.21,
-      "in_txt": false,
-      "header_present": true,
-      "lines_present": false,
-      "required_ingest_shape": "header_only",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX3108.TXT",
-      "exception": null
-    },
-    {
-      "doc_no": "513",
-      "doc_type": "Journal",
-      "tx_date": "2026-08-31",
-      "ref_no": null,
-      "amount": -23348.97,
-      "in_txt": false,
-      "header_present": true,
-      "lines_present": false,
-      "required_ingest_shape": "header_only",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX3108.TXT",
-      "exception": null
-    },
-    {
-      "doc_no": "513",
-      "doc_type": "Journal",
-      "tx_date": "2026-08-31",
-      "ref_no": null,
-      "amount": -22982.66,
-      "in_txt": false,
-      "header_present": true,
-      "lines_present": false,
-      "required_ingest_shape": "header_only",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX3108.TXT",
-      "exception": null
-    },
-    {
-      "doc_no": "513",
-      "doc_type": "Journal",
-      "tx_date": "2026-08-31",
-      "ref_no": null,
-      "amount": -5300.12,
-      "in_txt": false,
-      "header_present": true,
-      "lines_present": false,
-      "required_ingest_shape": "header_only",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX3108.TXT",
-      "exception": null
-    },
-    {
-      "doc_no": "513",
-      "doc_type": "Journal",
-      "tx_date": "2026-08-31",
-      "ref_no": null,
-      "amount": -16387.95,
-      "in_txt": false,
-      "header_present": true,
-      "lines_present": false,
-      "required_ingest_shape": "header_only",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX3108.TXT",
-      "exception": null
-    },
-    {
-      "doc_no": "513",
-      "doc_type": "Journal",
-      "tx_date": "2026-08-31",
-      "ref_no": null,
-      "amount": -20332.95,
-      "in_txt": false,
-      "header_present": true,
-      "lines_present": false,
-      "required_ingest_shape": "header_only",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX3108.TXT",
-      "exception": null
-    },
-    {
-      "doc_no": "513",
-      "doc_type": "Journal",
-      "tx_date": "2026-08-31",
-      "ref_no": null,
-      "amount": -12160.18,
-      "in_txt": false,
-      "header_present": true,
-      "lines_present": false,
-      "required_ingest_shape": "header_only",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX3108.TXT",
-      "exception": null
-    },
-    {
-      "doc_no": "513",
-      "doc_type": "Journal",
-      "tx_date": "2026-08-31",
-      "ref_no": null,
-      "amount": -28978.93,
-      "in_txt": false,
-      "header_present": true,
-      "lines_present": false,
-      "required_ingest_shape": "header_only",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX3108.TXT",
-      "exception": null
-    },
-    {
-      "doc_no": "513",
-      "doc_type": "Journal",
-      "tx_date": "2026-08-31",
-      "ref_no": null,
-      "amount": -4036.5,
-      "in_txt": false,
-      "header_present": true,
-      "lines_present": false,
-      "required_ingest_shape": "header_only",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX3108.TXT",
-      "exception": null
-    },
-    {
-      "doc_no": "513",
-      "doc_type": "Journal",
-      "tx_date": "2026-08-31",
-      "ref_no": null,
-      "amount": -19794.93,
-      "in_txt": false,
-      "header_present": true,
-      "lines_present": false,
-      "required_ingest_shape": "header_only",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX3108.TXT",
-      "exception": null
-    },
-    {
-      "doc_no": "513",
-      "doc_type": "Journal",
-      "tx_date": "2026-08-31",
-      "ref_no": null,
-      "amount": -33200.79,
-      "in_txt": false,
-      "header_present": true,
-      "lines_present": false,
-      "required_ingest_shape": "header_only",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX3108.TXT",
-      "exception": null
-    },
-    {
-      "doc_no": "513",
-      "doc_type": "Journal",
-      "tx_date": "2026-08-31",
-      "ref_no": null,
-      "amount": 108823.42,
-      "in_txt": false,
-      "header_present": true,
-      "lines_present": false,
-      "required_ingest_shape": "header_only",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX3108.TXT",
+      "classification": "EXPECTED_HEADER_ONLY",
+      "blocks": [],
       "exception": null
     },
     {
       "doc_no": "53077",
       "doc_type": "Invoice",
       "tx_date": "2026-09-10",
-      "ref_no": null,
+      "ref_no": "DN#24836",
       "amount": 22248.07,
-      "in_txt": false,
+      "in_txt": true,
       "header_present": true,
       "lines_present": true,
       "required_ingest_shape": "header_and_lines",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX1009.TXT",
+      "classification": "HEALTHY",
+      "blocks": [],
       "exception": null
     },
     {
       "doc_no": "53078",
       "doc_type": "Invoice",
       "tx_date": "2026-09-10",
-      "ref_no": null,
+      "ref_no": "DN#24985",
       "amount": 22000,
-      "in_txt": false,
+      "in_txt": true,
       "header_present": true,
       "lines_present": true,
       "required_ingest_shape": "header_and_lines",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX1009.TXT",
+      "classification": "HEALTHY",
+      "blocks": [],
       "exception": null
     },
     {
       "doc_no": "15637",
       "doc_type": "Crd Note",
       "tx_date": "2026-09-11",
-      "ref_no": null,
+      "ref_no": "DN#24836",
       "amount": -13800,
-      "in_txt": false,
+      "in_txt": true,
       "header_present": true,
       "lines_present": true,
       "required_ingest_shape": "header_and_lines",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX1209.TXT",
+      "classification": "HEALTHY",
+      "blocks": [],
       "exception": null
     },
     {
       "doc_no": "15646",
       "doc_type": "Crd Note",
       "tx_date": "2026-09-14",
-      "ref_no": null,
+      "ref_no": "DN#24985",
       "amount": -22000,
-      "in_txt": false,
+      "in_txt": true,
       "header_present": true,
       "lines_present": true,
       "required_ingest_shape": "header_and_lines",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX1409.TXT",
+      "classification": "HEALTHY",
+      "blocks": [],
       "exception": null
     },
     {
       "doc_no": "15714",
       "doc_type": "Crd Note",
       "tx_date": "2026-09-29",
-      "ref_no": null,
+      "ref_no": "21388",
       "amount": -19837.5,
-      "in_txt": false,
+      "in_txt": true,
       "header_present": true,
       "lines_present": true,
       "required_ingest_shape": "header_and_lines",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX3009.TXT",
+      "classification": "HEALTHY",
+      "blocks": [],
       "exception": null
     },
     {
       "doc_no": "53350",
       "doc_type": "Invoice",
       "tx_date": "2026-09-29",
-      "ref_no": null,
+      "ref_no": "DN-21388",
       "amount": 12748.9,
-      "in_txt": false,
+      "in_txt": true,
       "header_present": true,
       "lines_present": true,
       "required_ingest_shape": "header_and_lines",
-      "classification": "DB_ONLY_DOCUMENT",
-      "blocks": [
-        "financial_bridge_from_txt"
-      ],
-      "source_file": "DTRX3009.TXT",
+      "classification": "HEALTHY",
+      "blocks": [],
       "exception": null
     },
     {
       "doc_no": "53351",
       "doc_type": "Invoice",
       "tx_date": "2026-09-29",
-      "ref_no": null,
+      "ref_no": "21388",
       "amount": 19837.5,
-      "in_txt": false,
+      "in_txt": true,
       "header_present": true,
       "lines_present": true,
       "required_ingest_shape": "header_and_lines",
-      "classification": "DB_ONLY_DOCUMENT",
+      "classification": "HEALTHY",
+      "blocks": [],
+      "exception": null
+    },
+    {
+      "doc_no": "15775",
+      "doc_type": "Crd Note",
+      "tx_date": "2026-10-08",
+      "ref_no": "DN#23843",
+      "amount": -7935,
+      "in_txt": true,
+      "header_present": false,
+      "lines_present": false,
+      "required_ingest_shape": "header_and_lines",
+      "classification": "MISSING_HEADER_AND_LINES",
       "blocks": [
-        "financial_bridge_from_txt"
+        "custody",
+        "sku_analysis",
+        "allocation"
       ],
-      "source_file": "DTRX3009.TXT",
+      "exception": null
+    },
+    {
+      "doc_no": "53507",
+      "doc_type": "Invoice",
+      "tx_date": "2026-10-08",
+      "ref_no": "DN#23843",
+      "amount": 14375.86,
+      "in_txt": true,
+      "header_present": false,
+      "lines_present": false,
+      "required_ingest_shape": "header_and_lines",
+      "classification": "MISSING_HEADER_AND_LINES",
+      "blocks": [
+        "custody",
+        "sku_analysis",
+        "allocation"
+      ],
       "exception": null
     }
   ]
