@@ -1,0 +1,526 @@
+{
+  "status": "PROPOSED — NOT RATIFIED (PROPOSED_Projection_Matching_Locks.md, build step 2)",
+  "debtorCode": "FIR001",
+  "generatedBy": "match_projection.mjs",
+  "generatedAt": "2026-10-08T04:03:34.860Z",
+  "projection": {
+    "path": "analysis/debtors/FIR001/data/v5_projection.json",
+    "txtSha256": "a6461eb6f27fa422dd5f42d3aec55fa5855f4c232ee8073dd6f55e2797d9e508",
+    "dbChannel": "supabase-connector-replay",
+    "generatedAt": "2026-10-08T04:03:24.980Z"
+  },
+  "reviewOnly": true,
+  "reviewOnlyReasons": [
+    "ingestCoverage partial"
+  ],
+  "locksRegistry": "none yet",
+  "matcherVersion": 4,
+  "closedThrough": null,
+  "locksApplied": 0,
+  "lockConflicts": [],
+  "rules": {
+    "exactTolerance": 0.05,
+    "proximityTolerance": 5,
+    "nearSumTolerance": 1,
+    "cnConfirmedMaxDays": 1,
+    "maxSumInvoices": 3,
+    "combinationPool": 40,
+    "paymentTargetLanes": [
+      "LPG",
+      "OTHER"
+    ],
+    "remittanceLineTolerance": 0.05,
+    "remittanceBatchTolerancePct": 0.001
+  },
+  "summary": {
+    "ties": 20,
+    "confirmed": 20,
+    "probable": 0,
+    "byRule": {
+      "CN_DN_PAIR": 11,
+      "EXACT_SINGLE": 7,
+      "EXACT_MONTH_SUM": 2
+    },
+    "paymentsTotal": 9,
+    "paymentsUnallocated": 0
+  },
+  "proof": {
+    "rebuiltClosing": 8721.02,
+    "projectionClosing": 8721.02,
+    "erpCurrentBalance": 8721.02,
+    "holds": true
+  },
+  "residual": {
+    "openingBfUnitemised": 597.43,
+    "openInvoicesLpgOther": {
+      "count": 1,
+      "amount": 7606.09,
+      "rows": [
+        "52962|Invoice|LPG|L45"
+      ]
+    },
+    "openInvoicesCyl": {
+      "count": 1,
+      "amount": 6555,
+      "rows": [
+        "52737|Invoice|CYL|L37"
+      ]
+    },
+    "unmatchedCredits": {
+      "count": 1,
+      "amount": -6037.5,
+      "rows": [
+        "15535|Crd Note|CYL|L38"
+      ]
+    },
+    "unallocatedPayments": {
+      "count": 0,
+      "amount": 0,
+      "rows": []
+    },
+    "otherUntied": {
+      "count": 0,
+      "amount": 0,
+      "rows": []
+    },
+    "tieNets": 0,
+    "discountJournalsPending": 0
+  },
+  "remittance": null,
+  "ties": [
+    {
+      "tie_id": "T0001",
+      "rule": "CN_DN_PAIR",
+      "confidence": "CONFIRMED",
+      "members": [
+        "51531|Invoice|CYL|L3",
+        "15165|Crd Note|CYL|L4"
+      ],
+      "docs": [
+        "Invoice 51531",
+        "Crd Note 15165"
+      ],
+      "net": 0,
+      "dn": "22536",
+      "lagDays": 1
+    },
+    {
+      "tie_id": "T0002",
+      "rule": "CN_DN_PAIR",
+      "confidence": "CONFIRMED",
+      "members": [
+        "51629|Invoice|CYL|L8",
+        "15181|Crd Note|CYL|L5"
+      ],
+      "docs": [
+        "Invoice 51629",
+        "Crd Note 15181"
+      ],
+      "net": 0,
+      "dn": "22555",
+      "lagDays": 0
+    },
+    {
+      "tie_id": "T0003",
+      "rule": "CN_DN_PAIR",
+      "confidence": "CONFIRMED",
+      "members": [
+        "51792|Invoice|CYL|L12",
+        "15253|Crd Note|CYL|L10"
+      ],
+      "docs": [
+        "Invoice 51792",
+        "Crd Note 15253"
+      ],
+      "net": 0,
+      "dn": "22809",
+      "lagDays": 0
+    },
+    {
+      "tie_id": "T0004",
+      "rule": "CN_DN_PAIR",
+      "confidence": "CONFIRMED",
+      "members": [
+        "51878|Invoice|CYL|L15",
+        "15269|Crd Note|CYL|L13"
+      ],
+      "docs": [
+        "Invoice 51878",
+        "Crd Note 15269"
+      ],
+      "net": 0,
+      "dn": "22960",
+      "lagDays": 0
+    },
+    {
+      "tie_id": "T0005",
+      "rule": "CN_DN_PAIR",
+      "confidence": "CONFIRMED",
+      "members": [
+        "52037|Invoice|CYL|L18",
+        "15319|Crd Note|CYL|L19"
+      ],
+      "docs": [
+        "Invoice 52037",
+        "Crd Note 15319"
+      ],
+      "net": 0,
+      "dn": "23906",
+      "lagDays": 1
+    },
+    {
+      "tie_id": "T0006",
+      "rule": "CN_DN_PAIR",
+      "confidence": "CONFIRMED",
+      "members": [
+        "52196|Invoice|CYL|L21",
+        "15361|Crd Note|CYL|L22"
+      ],
+      "docs": [
+        "Invoice 52196",
+        "Crd Note 15361"
+      ],
+      "net": 0,
+      "dn": "23927",
+      "lagDays": 1
+    },
+    {
+      "tie_id": "T0007",
+      "rule": "CN_DN_PAIR",
+      "confidence": "CONFIRMED",
+      "members": [
+        "52269|Invoice|CYL|L26",
+        "15379|Crd Note|CYL|L24"
+      ],
+      "docs": [
+        "Invoice 52269",
+        "Crd Note 15379"
+      ],
+      "net": 0,
+      "dn": "24234",
+      "lagDays": 0
+    },
+    {
+      "tie_id": "T0008",
+      "rule": "CN_DN_PAIR",
+      "confidence": "CONFIRMED",
+      "members": [
+        "52464|Invoice|CYL|L31",
+        "15439|Crd Note|CYL|L29"
+      ],
+      "docs": [
+        "Invoice 52464",
+        "Crd Note 15439"
+      ],
+      "net": 0,
+      "dn": "24259",
+      "lagDays": 0
+    },
+    {
+      "tie_id": "T0009",
+      "rule": "CN_DN_PAIR",
+      "confidence": "CONFIRMED",
+      "members": [
+        "52579|Invoice|CYL|L33",
+        "15488|Crd Note|CYL|L34"
+      ],
+      "docs": [
+        "Invoice 52579",
+        "Crd Note 15488"
+      ],
+      "net": 0,
+      "dn": "24913",
+      "lagDays": 1
+    },
+    {
+      "tie_id": "T0010",
+      "rule": "CN_DN_PAIR",
+      "confidence": "CONFIRMED",
+      "members": [
+        "52845|Invoice|CYL|L42",
+        "15569|Crd Note|CYL|L40"
+      ],
+      "docs": [
+        "Invoice 52845",
+        "Crd Note 15569"
+      ],
+      "net": 0,
+      "dn": "23984",
+      "lagDays": 0
+    },
+    {
+      "tie_id": "T0011",
+      "rule": "CN_DN_PAIR",
+      "confidence": "CONFIRMED",
+      "members": [
+        "52963|Invoice|CYL|L46",
+        "15604|Crd Note|CYL|L44"
+      ],
+      "docs": [
+        "Invoice 52963",
+        "Crd Note 15604"
+      ],
+      "net": 0,
+      "dn": "24820",
+      "lagDays": 0
+    },
+    {
+      "tie_id": "T0012",
+      "rule": "EXACT_SINGLE",
+      "confidence": "CONFIRMED",
+      "members": [
+        "45093|Payment|LPG|L6",
+        "51530|Invoice|LPG|L2"
+      ],
+      "docs": [
+        "Payment 45093",
+        "Invoice 51530"
+      ],
+      "net": 0,
+      "payment": {
+        "doc": "45093",
+        "date": "2026-07-06",
+        "amount": 8084.86
+      },
+      "invoices": [
+        {
+          "doc": "51530",
+          "date": "2026-07-02",
+          "amount": 8084.86
+        }
+      ],
+      "variance": 0
+    },
+    {
+      "tie_id": "T0013",
+      "rule": "EXACT_SINGLE",
+      "confidence": "CONFIRMED",
+      "members": [
+        "45103|Payment|LPG|L9",
+        "51628|Invoice|LPG|L7"
+      ],
+      "docs": [
+        "Payment 45103",
+        "Invoice 51628"
+      ],
+      "net": 0,
+      "payment": {
+        "doc": "45103",
+        "date": "2026-07-09",
+        "amount": 7827.07
+      },
+      "invoices": [
+        {
+          "doc": "51628",
+          "date": "2026-07-06",
+          "amount": 7827.07
+        }
+      ],
+      "variance": 0
+    },
+    {
+      "tie_id": "T0014",
+      "rule": "EXACT_MONTH_SUM",
+      "confidence": "CONFIRMED",
+      "members": [
+        "45205|Payment|LPG|L16",
+        "51791|Invoice|LPG|L11",
+        "51877|Invoice|LPG|L14"
+      ],
+      "docs": [
+        "Payment 45205",
+        "Invoice 51791",
+        "Invoice 51877"
+      ],
+      "net": 0,
+      "payment": {
+        "doc": "45205",
+        "date": "2026-07-17",
+        "amount": 16241.18
+      },
+      "invoices": [
+        {
+          "doc": "51791",
+          "date": "2026-07-13",
+          "amount": 8120.59
+        },
+        {
+          "doc": "51877",
+          "date": "2026-07-16",
+          "amount": 8120.59
+        }
+      ],
+      "variance": 0
+    },
+    {
+      "tie_id": "T0015",
+      "rule": "EXACT_SINGLE",
+      "confidence": "CONFIRMED",
+      "members": [
+        "45474|Payment|LPG|L23",
+        "52195|Invoice|LPG|L20"
+      ],
+      "docs": [
+        "Payment 45474",
+        "Invoice 52195"
+      ],
+      "net": 0,
+      "payment": {
+        "doc": "45474",
+        "date": "2026-07-31",
+        "amount": 8120.59
+      },
+      "invoices": [
+        {
+          "doc": "52195",
+          "date": "2026-07-30",
+          "amount": 8120.59
+        }
+      ],
+      "variance": 0
+    },
+    {
+      "tie_id": "T0016",
+      "rule": "EXACT_SINGLE",
+      "confidence": "CONFIRMED",
+      "members": [
+        "45586|Payment|LPG|L27",
+        "52268|Invoice|LPG|L25"
+      ],
+      "docs": [
+        "Payment 45586",
+        "Invoice 52268"
+      ],
+      "net": 0,
+      "payment": {
+        "doc": "45586",
+        "date": "2026-08-05",
+        "amount": 7827.07
+      },
+      "invoices": [
+        {
+          "doc": "52268",
+          "date": "2026-08-03",
+          "amount": 7827.07
+        }
+      ],
+      "variance": 0
+    },
+    {
+      "tie_id": "T0017",
+      "rule": "EXACT_SINGLE",
+      "confidence": "CONFIRMED",
+      "members": [
+        "45591|Payment|LPG|L28",
+        "52036|Invoice|LPG|L17"
+      ],
+      "docs": [
+        "Payment 45591",
+        "Invoice 52036"
+      ],
+      "net": 0,
+      "payment": {
+        "doc": "45591",
+        "date": "2026-08-07",
+        "amount": 8120.59
+      },
+      "invoices": [
+        {
+          "doc": "52036",
+          "date": "2026-07-23",
+          "amount": 8120.59
+        }
+      ],
+      "variance": 0
+    },
+    {
+      "tie_id": "T0018",
+      "rule": "EXACT_MONTH_SUM",
+      "confidence": "CONFIRMED",
+      "members": [
+        "45779|Payment|LPG|L35",
+        "52463|Invoice|LPG|L30",
+        "52578|Invoice|LPG|L32"
+      ],
+      "docs": [
+        "Payment 45779",
+        "Invoice 52463",
+        "Invoice 52578"
+      ],
+      "net": 0,
+      "payment": {
+        "doc": "45779",
+        "date": "2026-08-17",
+        "amount": 14379.9
+      },
+      "invoices": [
+        {
+          "doc": "52463",
+          "date": "2026-08-11",
+          "amount": 7189.95
+        },
+        {
+          "doc": "52578",
+          "date": "2026-08-14",
+          "amount": 7189.95
+        }
+      ],
+      "variance": 0
+    },
+    {
+      "tie_id": "T0019",
+      "rule": "EXACT_SINGLE",
+      "confidence": "CONFIRMED",
+      "members": [
+        "45891|Payment|LPG|L39",
+        "52736|Invoice|LPG|L36"
+      ],
+      "docs": [
+        "Payment 45891",
+        "Invoice 52736"
+      ],
+      "net": 0,
+      "payment": {
+        "doc": "45891",
+        "date": "2026-08-26",
+        "amount": 7189.95
+      },
+      "invoices": [
+        {
+          "doc": "52736",
+          "date": "2026-08-22",
+          "amount": 7189.95
+        }
+      ],
+      "variance": 0
+    },
+    {
+      "tie_id": "T0020",
+      "rule": "EXACT_SINGLE",
+      "confidence": "CONFIRMED",
+      "members": [
+        "45995|Payment|LPG|L43",
+        "52844|Invoice|LPG|L41"
+      ],
+      "docs": [
+        "Payment 45995",
+        "Invoice 52844"
+      ],
+      "net": 0,
+      "payment": {
+        "doc": "45995",
+        "date": "2026-08-31",
+        "amount": 7189.95
+      },
+      "invoices": [
+        {
+          "doc": "52844",
+          "date": "2026-08-28",
+          "amount": 7189.95
+        }
+      ],
+      "variance": 0
+    }
+  ],
+  "unallocatedPayments": []
+}

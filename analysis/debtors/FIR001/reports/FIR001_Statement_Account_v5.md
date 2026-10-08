@@ -3,7 +3,7 @@
 **Combined Opening B/F:** R597.43 (ERP verified — source: `analysis/debtors/FIR001/raw/FIR001CURRENT.TXT.TXT` FIR001CURRENT.TXT.TXT line 14 — BALANCE B/F R597.43 immediately before first CURRENT-year row inv 51530 (02 Jul 2026). TXT window is Jul–Sep 2026 (periods 17–19); not a Jan YTD export.)
 **LPG Opening B/F (1A):** R597.43 &nbsp;|&nbsp; **CYL Opening B/F (1B):** R0.00
 **Payment routing:** LPG lane (payments post to Part 1A unless configured otherwise)
-**Last regenerated:** 2026-09-11 from ERP TXT (`reconcile_debtor_v5_from_txt.mjs`)
+**Last regenerated:** 2026-10-08 from ERP TXT (`reconcile_debtor_v5_from_txt.mjs`)
 
 ---
 

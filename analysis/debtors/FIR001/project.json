@@ -85,6 +85,10 @@
     {
       "date": "2026-09-11",
       "event": "v5 regenerated from FIR001CURRENT.TXT.TXT. PROVEN: combined close R8,721.02; Part 1A R8,203.52; Part 1B R517.50; ERP variance R0.00; sub-ledger tie R0.00. Ingest CURRENT_PARTIAL unchanged (gaps 15488/45779/45995); custody BLOCKED."
+    },
+    {
+      "date": "2026-10-08",
+      "event": "CONNECTOR-SOURCED (db_replay, 5 md5-verified captures in data/db_replay/2026-10-08/). Authorisation (operator, in-session 2026-10-08): \"I authorize the agent to use database connectors\". Read-only SELECT via Supabase connector, project oqhpxnaadahohwkslive. Coverage: CURRENT_PARTIAL, freshness current (sync 2026-10-05); gaps unchanged 15488 CN MISSING_HEADER_AND_LINES, 45779/45995 payments MISSING_HEADER; 15 DB-only docs 2026-09-10..2026-10-01 (net R21,182.72 ASSERTED from capture b94afb57a898cdd3) post-date TXT as-at 2026-09-05 (reports/FIR001_INGEST_COVERAGE_2026-10-08.json). ERP tie PROVEN: combined R8,721.02 = TXT CURRENT BALANCE, variance R0.00; 1A R8,203.52, 1B R517.50; self-checks all true (data/v5_projection.json). split_basis DB_LINES 35 / PAYMENT_LANE 9 / REF_EMPTY 1 (CN 15488). Matching (projection_matcher v4): 20 ties, 20 confirmed / 0 probable (CN_DN_PAIR 11, EXACT_SINGLE 7, EXACT_MONTH_SUM 2); 9 payments, 0 unallocated; proof HOLDS R8,721.02 (data/projection_matches.json); reviewOnly true (ingest partial). Open items: 3 rows (inv 52962 R7,606.09 LPG; inv 52737 R6,555.00 + CN 15535 -R6,037.50 CYL) + B/F R597.43 = R8,721.02, variance R0.00 (reports/FIR001_Open_Items_v5.md). Matching is PROPOSED — NOT RATIFIED; no locks, no period closed."
     }
   ]
 }
