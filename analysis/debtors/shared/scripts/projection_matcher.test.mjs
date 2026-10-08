@@ -177,6 +177,56 @@ test('exact rules run for every payment before any probable rule (SA0001 46092 /
   assert.equal(tieOf(res, '46092'), undefined); // R6.00 off 52893: beyond ±R5, left for the operator
 });
 
+test('a payment equal to a run of 4+ consecutive open invoices ties as EXACT_RUN (MOZ002 39589)', () => {
+  const res = matchProjection(
+    projection([
+      row({ doc: '43081', date: '2025-05-15', amount: 248.7 }),
+      row({ doc: '43461', date: '2025-05-27', amount: 2691.21 }),
+      row({ doc: '43648', date: '2025-06-03', amount: 2943.51 }),
+      row({ doc: '43905', date: '2025-06-12', amount: 2617.29 }),
+      row({ doc: '44062', date: '2025-06-18', amount: 2862.66 }),
+      row({ doc: '39589', type: 'Payment', date: '2025-06-25', amount: -11363.37 }),
+    ]),
+  );
+  const t = tieOf(res, '39589');
+  assert.equal(t.rule, 'EXACT_RUN');
+  assert.equal(t.confidence, 'CONFIRMED');
+  assert.equal(t.invoices.length, 5);
+  assert.equal(res.summary.paymentsUnallocated, 0);
+});
+
+test('EXACT_RUN prefers the oldest run and is PROBABLE when an equal run exists (MOZ002 40729)', () => {
+  const res = matchProjection(
+    projection([
+      row({ doc: '44742', date: '2025-07-10', amount: 2810.61 }),
+      row({ doc: '45199', date: '2025-07-28', amount: 2810.61 }),
+      row({ doc: '45303', date: '2025-08-01', amount: 1525.76 }),
+      row({ doc: '45488', date: '2025-08-07', amount: 2569.7 }),
+      row({ doc: '45577', date: '2025-08-11', amount: 2810.61 }),
+      row({ doc: '40729', type: 'Payment', date: '2025-08-14', amount: -9716.68 }),
+    ]),
+  );
+  const t = tieOf(res, '40729');
+  assert.equal(t.rule, 'EXACT_RUN');
+  assert.deepEqual(t.invoices.map((i) => i.doc), ['44742', '45199', '45303', '45488']);
+  assert.equal(t.confidence, 'PROBABLE');
+  assert.equal(t.ambiguousAlternatives, 1);
+});
+
+test('EXACT_RUN needs consecutive invoices: a 4-invoice sum that skips one stays unallocated', () => {
+  const res = matchProjection(
+    projection([
+      row({ doc: 'A', date: '2025-01-01', amount: 100 }),
+      row({ doc: 'B', date: '2025-01-02', amount: 100 }),
+      row({ doc: 'C', date: '2025-01-03', amount: 999 }),
+      row({ doc: 'D', date: '2025-01-04', amount: 100 }),
+      row({ doc: 'E', date: '2025-01-05', amount: 100 }),
+      row({ doc: 'P', type: 'Payment', date: '2025-01-10', amount: -400 }),
+    ]),
+  );
+  assert.equal(res.ties.length, 0);
+});
+
 test('no prepayment: invoices dated after the payment are not eligible', () => {
   const res = matchProjection(
     projection([

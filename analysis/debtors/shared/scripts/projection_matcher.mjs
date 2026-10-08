@@ -41,6 +41,8 @@
  *        a. EXACT_SINGLE      |payment − invoice| ≤ R0.05                → CONFIRMED
  *        b. EXACT_MONTH_SUM   = all open invoices of one billing month   → CONFIRMED
  *        c. EXACT_SUM         = 2–3 open invoices (≤ R0.05)              → CONFIRMED
+ *        c2. EXACT_RUN        = 4–12 consecutive open invoices (≤ R0.05) → CONFIRMED (ADM-85);
+ *                             oldest run first; PROBABLE if another run fits equally well
  *        d. PROXIMITY         one open invoice within ±R5.00             → PROBABLE
  *        e. NEAR_SUM          2–3 open invoices within ±R1.00 (skill Tier 2
  *                             truncation tolerance)                       → PROBABLE
@@ -66,6 +68,7 @@ export const RULES = Object.freeze({
   nearSumTolerance: 1.0,
   cnConfirmedMaxDays: 1,
   maxSumInvoices: 3,
+  maxRunInvoices: 12, // EXACT_RUN: longest run of consecutive open invoices one payment may settle
   combinationPool: 40, // most recent open invoices considered for 2–3 invoice sums
   paymentTargetLanes: ['LPG', 'OTHER'],
   remittanceLineTolerance: 0.05,
@@ -342,6 +345,31 @@ export function matchProjection(projection, rules = RULES, evidence = null, lock
     // c. exact sum of 2–3 invoices
     best = pick(sumCands(eligible, A, rules.exactTolerance, p.date), A, p.date);
     if (best) return { best, rule: 'EXACT_SUM' };
+    // c2. exact sum of a run of 4+ consecutive open invoices (date order, no gaps among the
+    //     open invoices). Operator ruling 2026-10-08 (ADM-85): customers such as MOZ002 pay a
+    //     batch of consecutive deliveries in one transfer.
+    const byDate = eligible.slice().sort((a, b) => a.date.localeCompare(b.date) || a.doc.localeCompare(b.doc));
+    const runs = [];
+    for (let i = 0; i < byDate.length; i++) {
+      let total = 0;
+      for (let j = i; j < byDate.length && j - i < rules.maxRunInvoices; j++) {
+        total = round2(total + byDate[j].amount);
+        if (j - i + 1 > rules.maxSumInvoices && Math.abs(A - total) <= rules.exactTolerance) {
+          const set = byDate.slice(i, j + 1);
+          runs.push({ set, total, gap: set.reduce((s, t) => s + days(t.date, p.date), 0) });
+        }
+      }
+    }
+    // Tie-break for runs is oldest-first (a batch payer settles its oldest deliveries), not
+    // closest-date. If another run fits equally well (e.g. two invoices of the same amount),
+    // the tie is PROBABLE and lists how many alternatives there were.
+    if (runs.length) {
+      const ranked = runs
+        .map((c) => ({ ...c, variance: round2(A - c.total) }))
+        .sort((a, b) => Math.abs(a.variance) - Math.abs(b.variance) || a.set[0].date.localeCompare(b.set[0].date));
+      const alternatives = ranked.filter((c) => Math.abs(c.variance) === Math.abs(ranked[0].variance)).length - 1;
+      return { best: ranked[0], rule: 'EXACT_RUN', ...(alternatives ? { conf: 'PROBABLE', extra: { ambiguousAlternatives: alternatives } } : {}) };
+    }
     return null;
   };
   const tryProbable = (p, A, eligible) => {
@@ -365,7 +393,8 @@ export function matchProjection(projection, rules = RULES, evidence = null, lock
       const eligible = open().filter((t) => t.date <= p.date);
       const hit = tryRule(p, A, eligible);
       if (!hit) continue;
-      addTie(hit.rule, conf, [p, ...hit.best.set.flatMap((t) => t.rows)], {
+      addTie(hit.rule, hit.conf || conf, [p, ...hit.best.set.flatMap((t) => t.rows)], {
+        ...(hit.extra || {}),
         payment: { doc: p.clean_doc, date: p.date, amount: A },
         invoices: hit.best.set.map((t) => ({ doc: t.doc, date: t.date, amount: t.amount })),
         variance: hit.best.variance,
