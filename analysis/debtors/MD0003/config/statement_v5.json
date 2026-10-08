@@ -1,10 +1,10 @@
 {
   "debtorCode": "MD0003",
   "debtorName": "BLUFF MEAT SUPPLY(PTY) LTD",
-  "txtPath": "analysis/debtors/MD0003/raw/MD0003CURRENT.TXT",
+  "txtPath": "analysis/debtors/MD0003/raw/MD0003_2026-10-08.TXT",
   "periodStart": "2025-01-01",
   "combinedBf": 52607.52,
-  "bfSourceNote": "MD0003CURRENT.TXT line 14 — BALANCE B/F before 2025 payment sequence",
+  "bfSourceNote": "MD0003_2026-10-08.TXT line 14 BALANCE B/F R52607.52 (fresh ERP export, Linear ADM-78, CURRENT BALANCE R16,547.81; same export window). Switched on operator instruction 2026-10-08 (\"switch the other six accounts ... YES\"). SUPERSEDED (kept for the record; previous TXT MD0003CURRENT.TXT, CURRENT BALANCE R16,371.56): MD0003CURRENT.TXT line 14 — BALANCE B/F before 2025 payment sequence",
   "cylOpeningFinancial": 0.0,
   "cylOpeningQty": {
     "14.1": 0,

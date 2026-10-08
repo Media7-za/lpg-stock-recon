@@ -1,10 +1,10 @@
 {
   "debtorCode": "TWK002",
   "debtorName": "TWK AGRI PTY LTD",
-  "txtPath": "analysis/debtors/TWK002/raw/DEBENQTWK002CURRENT.TXT",
+  "txtPath": "analysis/debtors/TWK002/raw/TWK002_2026-10-08.TXT",
   "periodStart": "2025-03-01",
   "combinedBf": 38791.27,
-  "bfSourceNote": "DEBENQTWK002CURRENT.TXT line 14 — BALANCE B/F R38,791.27 before first period row (export window starts Mar 2025; TXT as at 2026-08-26). Switched from DEBENQ_TWK002.TXT (as at 2026-08-09, same B/F at its line 13) on operator decision 2026-10-08.",
+  "bfSourceNote": "TWK002_2026-10-08.TXT line 14 BALANCE B/F R38791.27 (fresh ERP export, Linear ADM-78, CURRENT BALANCE R54,136.19; same export window). Switched on operator instruction 2026-10-08 (\"switch the other six accounts ... YES\"). SUPERSEDED (kept for the record; previous TXT DEBENQTWK002CURRENT.TXT, CURRENT BALANCE R27,721.81): DEBENQTWK002CURRENT.TXT line 14 — BALANCE B/F R38,791.27 before first period row (export window starts Mar 2025; TXT as at 2026-08-26). Switched from DEBENQ_TWK002.TXT (as at 2026-08-09, same B/F at its line 13) on operator decision 2026-10-08.",
   "cylOpeningFinancial": 0.0,
   "paymentLane": "LPG",
   "cylOpeningQty": {

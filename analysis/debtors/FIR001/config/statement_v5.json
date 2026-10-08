@@ -1,10 +1,10 @@
 {
   "debtorCode": "FIR001",
   "debtorName": "FIRE AND VINE",
-  "txtPath": "analysis/debtors/FIR001/raw/FIR001CURRENT.TXT.TXT",
-  "periodStart": "2026-07-01",
-  "combinedBf": 597.43,
-  "bfSourceNote": "FIR001CURRENT.TXT.TXT line 14 — BALANCE B/F R597.43 immediately before first CURRENT-year row inv 51530 (02 Jul 2026). TXT window is Jul–Sep 2026 (periods 17–19); not a Jan YTD export.",
+  "txtPath": "analysis/debtors/FIR001/raw/FIR001_2026-10-08.TXT",
+  "periodStart": "2022-12-29",
+  "combinedBf": 25752.41,
+  "bfSourceNote": "FIR001_2026-10-08.TXT line 14 BALANCE B/F R25752.41 (fresh ERP export, Linear ADM-78, CURRENT BALANCE R9,469.77; window widened, periodStart 2026-07-01 -> 2022-12-29 (first row of the new export)). Switched on operator instruction 2026-10-08 (\"switch the other six accounts ... YES\"). SUPERSEDED (kept for the record; previous TXT FIR001CURRENT.TXT.TXT, CURRENT BALANCE R8,721.02): FIR001CURRENT.TXT.TXT line 14 — BALANCE B/F R597.43 immediately before first CURRENT-year row inv 51530 (02 Jul 2026). TXT window is Jul–Sep 2026 (periods 17–19); not a Jan YTD export.",
   "cylOpeningFinancial": 0.0,
   "paymentLane": "LPG",
   "cylOpeningQty": {

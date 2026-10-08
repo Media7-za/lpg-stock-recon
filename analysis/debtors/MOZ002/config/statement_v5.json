@@ -1,10 +1,10 @@
 {
   "debtorCode": "MOZ002",
   "debtorName": "MOZAMBIK",
-  "txtPath": "analysis/debtors/MOZ002/raw/MOZ002CURRENT.TXT",
+  "txtPath": "analysis/debtors/MOZ002/raw/MOZ002_2026-10-08.TXT",
   "periodStart": "2025-03-15",
-  "combinedBf": 0.0,
-  "bfSourceNote": "MOZ002CURRENT.TXT line 14 — BALANCE B/F R0.00 before first row (CN 12074, 15 Mar 2025)",
+  "combinedBf": 0,
+  "bfSourceNote": "MOZ002_2026-10-08.TXT line 14 BALANCE B/F R0.00 (fresh ERP export, Linear ADM-78, CURRENT BALANCE R1,562.67; same export window). Switched on operator instruction 2026-10-08 (\"switch the other six accounts ... YES\"). SUPERSEDED (kept for the record; previous TXT MOZ002CURRENT.TXT, CURRENT BALANCE R13,014.50): MOZ002CURRENT.TXT line 14 — BALANCE B/F R0.00 before first row (CN 12074, 15 Mar 2025)",
   "cylOpeningFinancial": 0.0,
   "paymentLane": "LPG",
   "cylOpeningQty": {

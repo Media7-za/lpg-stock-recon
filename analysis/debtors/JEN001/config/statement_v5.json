@@ -1,10 +1,10 @@
 {
   "debtorCode": "JEN001",
   "debtorName": "Spoon Eatery",
-  "txtPath": "analysis/debtors/JEN001/raw/DEBENQ.TXT",
-  "periodStart": "2026-07-01",
-  "combinedBf": 22088.1,
-  "bfSourceNote": "DEBENQ.TXT line 14 — BALANCE B/F (post payment 44878, 25 Jun 2026)",
+  "txtPath": "analysis/debtors/JEN001/raw/JEN001_2026-10-08.TXT",
+  "periodStart": "2025-03-03",
+  "combinedBf": 9461.01,
+  "bfSourceNote": "JEN001_2026-10-08.TXT line 14 BALANCE B/F R9461.01 (fresh ERP export, Linear ADM-78, CURRENT BALANCE R25,332.00; window widened, periodStart 2026-07-01 -> 2025-03-03 (first row of the new export)). Switched on operator instruction 2026-10-08 (\"switch the other six accounts ... YES\"). SUPERSEDED (kept for the record; previous TXT DEBENQ.TXT, CURRENT BALANCE R22,685.21): DEBENQ.TXT line 14 — BALANCE B/F (post payment 44878, 25 Jun 2026)",
   "cylOpeningFinancial": -517.5,
   "paymentLane": "LPG",
   "cylOpeningQty": {
