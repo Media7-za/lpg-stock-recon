@@ -2,7 +2,7 @@
   "status": "PROPOSED — NOT RATIFIED (PROPOSED_Projection_Matching_Locks.md, build step 2)",
   "debtorCode": "MOZ002",
   "generatedBy": "match_projection.mjs",
-  "generatedAt": "2026-10-08T06:43:48.163Z",
+  "generatedAt": "2026-10-08T11:58:34.039Z",
   "projection": {
     "path": "analysis/debtors/MOZ002/data/v5_projection.json",
     "txtSha256": "4ea358fb250488f238761528be94eb952dfbe3faa1867467c38176288f086a95",
@@ -23,6 +23,7 @@
     "cnConfirmedMaxDays": 1,
     "maxSumInvoices": 3,
     "maxRunInvoices": 12,
+    "fifoWindowDays": 14,
     "combinationPool": 40,
     "paymentTargetLanes": [
       "LPG",
@@ -985,11 +986,11 @@
       "confidence": "CONFIRMED",
       "members": [
         "38812|Payment|LPG|L69",
-        "43005|Invoice|LPG|L108"
+        "42612|Invoice|LPG|L102"
       ],
       "docs": [
         "Payment 38812",
-        "Invoice 43005"
+        "Invoice 42612"
       ],
       "net": 0,
       "payment": {
@@ -999,8 +1000,8 @@
       },
       "invoices": [
         {
-          "doc": "43005",
-          "date": "2025-05-13",
+          "doc": "42612",
+          "date": "2025-04-29",
           "amount": 2652.8
         }
       ],
@@ -1175,11 +1176,11 @@
       "confidence": "CONFIRMED",
       "members": [
         "40271|Payment|LPG|L75",
-        "44949|Invoice|LPG|L143"
+        "44742|Invoice|LPG|L140"
       ],
       "docs": [
         "Payment 40271",
-        "Invoice 44949"
+        "Invoice 44742"
       ],
       "net": 0,
       "payment": {
@@ -1189,8 +1190,8 @@
       },
       "invoices": [
         {
-          "doc": "44949",
-          "date": "2025-07-18",
+          "doc": "44742",
+          "date": "2025-07-10",
           "amount": 2810.61
         }
       ],
@@ -1202,14 +1203,14 @@
       "confidence": "PROBABLE",
       "members": [
         "40729|Payment|LPG|L76",
-        "44742|Invoice|LPG|L140",
+        "44949|Invoice|LPG|L143",
         "45199|Invoice|LPG|L147",
         "45303|Invoice|LPG|L149",
         "45488|Invoice|LPG|L151"
       ],
       "docs": [
         "Payment 40729",
-        "Invoice 44742",
+        "Invoice 44949",
         "Invoice 45199",
         "Invoice 45303",
         "Invoice 45488"
@@ -1223,8 +1224,8 @@
       },
       "invoices": [
         {
-          "doc": "44742",
-          "date": "2025-07-10",
+          "doc": "44949",
+          "date": "2025-07-18",
           "amount": 2810.61
         },
         {
@@ -1305,11 +1306,11 @@
       "confidence": "CONFIRMED",
       "members": [
         "41441|Payment|LPG|L79",
-        "42612|Invoice|LPG|L102"
+        "43005|Invoice|LPG|L108"
       ],
       "docs": [
         "Payment 41441",
-        "Invoice 42612"
+        "Invoice 43005"
       ],
       "net": 0,
       "payment": {
@@ -1319,8 +1320,8 @@
       },
       "invoices": [
         {
-          "doc": "42612",
-          "date": "2025-04-29",
+          "doc": "43005",
+          "date": "2025-05-13",
           "amount": 2652.8
         }
       ],

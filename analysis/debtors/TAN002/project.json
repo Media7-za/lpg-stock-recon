@@ -82,6 +82,10 @@
     {
       "date": "2026-10-08",
       "event": "Main session review of the preceding connector-sourced run: the regenerated reports/TAN002_Statement_Account_v5.md was NOT kept (reverted to commit 1c8d368) and the UI fixture TAN002.v5.json was not added, because regeneration drops the UNVERIFIED PLACEHOLDER warnings while config cylOpeningFinancial/cylOpeningQty are still unverified placeholders, and would present a custody exposure (R1,840.00) built on all-zero opening counts. Kept: data/v5_projection.json, data/projection_matches.json, open-items reports and ingest coverage (combined tie R2,052.39 is unaffected by the opening split). Tripwire: establish the 1A/1B opening split and opening cylinder counts, then regenerate the statement."
+    },
+    {
+      "date": "2026-10-08",
+      "event": "Matcher tie-break changed to FIFO within proximity (operator 2026-10-08, ADM-86: \"Let's do it\"): among equally exact candidates, the oldest invoice within 14 days of the closest one. Re-matched with no DB access: some equal-amount payment/invoice pairings swapped; balance, ERP tie and open totals unchanged (PROVEN, data/projection_matches.json; per-tie diff in commit message). No locks affected."
     }
   ]
 }

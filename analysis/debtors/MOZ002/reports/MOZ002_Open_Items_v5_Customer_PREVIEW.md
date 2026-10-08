@@ -21,7 +21,7 @@
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 10 Jul 2025 | Invoice | 44742 ¹ | DN#12686 | Gas | 2,810.61 | 2,810.61 |
+| 18 Jul 2025 | Invoice | 44949 ¹ | DN#12649 | Gas | 2,810.61 | 2,810.61 |
 | 28 Jul 2025 | Invoice | 45199 ¹ | DN20020 | Gas | 2,810.61 | 5,621.22 |
 
 ### August 2025

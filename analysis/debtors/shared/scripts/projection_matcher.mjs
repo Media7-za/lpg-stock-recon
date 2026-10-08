@@ -49,7 +49,9 @@
  *        f. otherwise UNALLOCATED
  *      Only invoices dated on or before the payment are eligible (no prepayment).
  *      Tie-break (operator ruling): exact, then smallest variance, then closest to the
- *      payment date.
+ *      payment date. SUPERSEDED 2026-10-08 (operator, ADM-86: "45591 should have been 52195";
+ *      "FIFO within this proximity"; "Let's do it"): exact, then smallest variance, then the
+ *      OLDEST invoice among candidates within fifoWindowDays (14) of the closest one.
  *   A tie touching a row whose split_basis is not confirmable (HEADER_FALLBACK, P10)
  *   is downgraded to PROBABLE.
  *
@@ -68,7 +70,8 @@ export const RULES = Object.freeze({
   nearSumTolerance: 1.0,
   cnConfirmedMaxDays: 1,
   maxSumInvoices: 3,
-  maxRunInvoices: 12, // EXACT_RUN: longest run of consecutive open invoices one payment may settle
+  maxRunInvoices: 12,
+  fifoWindowDays: 14, // FIFO tie-break only among candidates within 14 days of the closest // EXACT_RUN: longest run of consecutive open invoices one payment may settle
   combinationPool: 40, // most recent open invoices considered for 2–3 invoice sums
   paymentTargetLanes: ['LPG', 'OTHER'],
   remittanceLineTolerance: 0.05,
@@ -301,10 +304,19 @@ export function matchProjection(projection, rules = RULES, evidence = null, lock
     .sort((a, b) => a.date.localeCompare(b.date) || a.clean_doc.localeCompare(b.clean_doc));
 
   const unallocated = [];
-  const pick = (cands, A, pDate) =>
-    cands
-      .map((c) => ({ ...c, variance: round2(A - c.total), gap: c.gap }))
-      .sort((a, b) => Math.abs(a.variance) - Math.abs(b.variance) || a.gap - b.gap)[0];
+  // Tie-break: smallest variance; then, among the equally good candidates, the oldest one that
+  // is still within fifoWindowDays of the closest one (FIFO within proximity — operator ruling
+  // 2026-10-08, ADM-86). Unbounded FIFO was tried and rejected: it reached back months and
+  // overturned recorded rulings (e.g. MOZ002 43640 ↔ 49550, ratified 2026-07-20).
+  const pick = (cands, A) => {
+    if (!cands.length) return undefined;
+    const ranked = cands.map((c) => ({ ...c, variance: round2(A - c.total) }));
+    const bestVar = Math.min(...ranked.map((c) => Math.abs(c.variance)));
+    const tied = ranked.filter((c) => Math.abs(c.variance) === bestVar);
+    const nearest = Math.min(...tied.map((c) => c.gap));
+    const window = tied.filter((c) => c.gap <= nearest + rules.fifoWindowDays * c.set.length);
+    return window.sort((a, b) => b.gap - a.gap)[0];
+  };
 
   const sumCands = (eligible, A, tol, pDate) => {
     const pool = eligible.slice().sort((a, b) => b.date.localeCompare(a.date)).slice(0, rules.combinationPool);

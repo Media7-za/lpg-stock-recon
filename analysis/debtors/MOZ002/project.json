@@ -146,6 +146,10 @@
     {
       "date": "2026-10-08",
       "event": "Operator rulings (Linear ADM-85, 2026-10-08): (1) \"Approve matcher change\" -> matcher rule EXACT_RUN (4-12 consecutive open invoices, exact, oldest run first, PROBABLE when an equal run exists). Now ties 39589 = 43081..44062 (CONFIRMED), 41654 = 45577..46825 (CONFIRMED), 40729 = 44742+45199+45303+45488 (PROBABLE: 44742 and 45577 are both R2,810.61, so an equal run exists). Unallocated payments 5 -> 2 (44227 R4,978.91, 41529 R0.01). (2) \"This was fixed on the erp\": the 49143 cross-account transfer (MOZ001 doc 43322) is posted in FINCON per operator (ASSERTED until a fresh MOZ002 TXT shows 49143 cleared; requested in ADM-78). (3) Discount draft config/settlement_discount_overrides.json marked SUPERSEDED (operator allowed deletion; kept and marked per amendments-append doctrine). ERP tie R13,014.50 unchanged (PROVEN, data/projection_matches.json)."
+    },
+    {
+      "date": "2026-10-08",
+      "event": "Matcher tie-break changed to FIFO within proximity (operator 2026-10-08, ADM-86: \"Let's do it\"): among equally exact candidates, the oldest invoice within 14 days of the closest one. Re-matched with no DB access: some equal-amount payment/invoice pairings swapped; balance, ERP tie and open totals unchanged (PROVEN, data/projection_matches.json; per-tie diff in commit message). No locks affected."
     }
   ]
 }

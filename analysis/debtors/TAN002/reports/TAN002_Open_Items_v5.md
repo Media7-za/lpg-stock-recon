@@ -38,8 +38,8 @@
 
 | Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 14 Apr 2025 | Invoice | 42249 | DN#13061 | LPG | 1,306.16 | 2,644.95 |
-| 22 Apr 2025 | Invoice | 42427 | DN#13152 | LPG | 3,129.33 | 5,774.28 |
+| 22 Apr 2025 | Invoice | 42427 | DN#13152 | LPG | 3,129.33 | 4,468.12 |
+| 26 Apr 2025 | Invoice | 42574 | DN#13167 | LPG | 1,306.16 | 5,774.28 |
 
 ### June 2025
 
@@ -91,26 +91,21 @@
 
 | Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 09 Jan 2026 | Invoice | 48693 | DN-21459 - PMB | LPG | 2,325.25 | 5,128.88 |
+| 12 Jan 2026 | Invoice | 48730 | DN-21762 | LPG | 2,325.25 | 5,128.88 |
 | 20 Jan 2026 | Payment | 43067 | TRANSF \| STAT 122 | LPG | -2,286.49 | 2,842.39 |
 | 20 Jan 2026 | Payment | 43067 | TRANSF \| STAT 122 | LPG | -1,162.62 | 1,679.77 |
 | 20 Jan 2026 | Payment | 43067 | TRANSF \| STAT 122 | LPG | -1,207.50 | 472.27 |
 | 20 Jan 2026 | Payment | 43067 | TRANSF \| STAT 122 | LPG | -1,162.63 | -690.36 |
 | 20 Jan 2026 | Payment | 43067 | TRANSF \| STAT 122 | LPG | -454.09 | -1,144.45 |
 
-### February 2026
-
-| Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 21 Feb 2026 | Invoice | 49361 | DN-21922-EMPTY-HIL | LPG | 1,184.37 | 39.92 |
-
 ### March 2026
 
 | Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
+| 05 Mar 2026 | Invoice | 49577 | DN#21814 | LPG | 1,184.37 | 39.92 |
 | 06 Mar 2026 | Payment | 43562 | TRANSF \| STAT 124 | LPG | -454.09 | -414.17 |
 | 06 Mar 2026 | Payment | 43562 | TRANSF \| STAT 124 | LPG | -730.28 | -1,144.45 |
-| 28 Mar 2026 | Invoice | 49971 | DN-22032 | LPG | 1,193.96 | 49.51 |
+| 31 Mar 2026 | Invoice | 50035 | DN-21852 | LPG | 1,193.96 | 49.51 |
 
 ### August 2026
 

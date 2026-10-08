@@ -389,3 +389,8 @@ and lock file must pass.
 - TWK003/TWK004 onboarding shows that site slices do not reconcile per batch.
 - A discount account turns out to have per-invoice eligibility exceptions that the
   formula cannot express.
+
+**Amendment (2026-10-08, operator ruling, ADM-86): tie-break is FIFO within proximity.** This supersedes the P4 tie-break "closest to the payment date".
+- **Rule:** among equally exact candidates, take the oldest invoice dated within 14 days (`fifoWindowDays`) of the closest candidate.
+- **Rejected alternative:** unbounded FIFO was tried and dropped. It reached back months (RED001 40727 → 43614) and overturned a ratified ruling (MOZ002 43640 ↔ 49550, 2026-07-20).
+- **Effect on open matches:** re-matching swapped equal-amount pairings in MD0003 (4), MOZ002 (4), TAN002 (8) and MON001 (2). Open totals are unchanged. No locked tie changed.

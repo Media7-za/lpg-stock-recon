@@ -160,7 +160,7 @@
 | T0003 | CN_DN_PAIR | Invoice 41522, Crd Note 12079 | — | CN 2 day(s) after invoice |
 | T0028 | CN_DN_PAIR | Invoice 46826, Crd Note 13602 | — | CN 2 day(s) after invoice |
 | T0046 | CN_AMOUNT_DATE | Invoice 49329, Crd Note 14458 | — | CN 0 day(s) after invoice |
-| T0058 | EXACT_RUN | Payment 40729, Invoice 44742, Invoice 45199, Invoice 45303, Invoice 45488 | 0.00 |  |
+| T0058 | EXACT_RUN | Payment 40729, Invoice 44949, Invoice 45199, Invoice 45303, Invoice 45488 | 0.00 |  |
 
 ## Appendix B: Confirmed ties by rule
 

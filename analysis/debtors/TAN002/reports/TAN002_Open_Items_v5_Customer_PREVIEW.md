@@ -36,8 +36,8 @@
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 14 Apr 2025 | Invoice | 42249 | DN#13061 | Gas | 1,306.16 | 2,644.95 |
-| 22 Apr 2025 | Invoice | 42427 | DN#13152 | Gas | 3,129.33 | 5,774.28 |
+| 22 Apr 2025 | Invoice | 42427 | DN#13152 | Gas | 3,129.33 | 4,468.12 |
+| 26 Apr 2025 | Invoice | 42574 | DN#13167 | Gas | 1,306.16 | 5,774.28 |
 
 ### June 2025
 
@@ -104,8 +104,8 @@
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
 | 09 Jan 2026 | Crd Note | 14235 ¹ | DN-21459 - PMB | Gas | -1,162.63 | 1,641.36 |
-| 09 Jan 2026 | Invoice | 48693 | DN-21459 - PMB | Gas | 2,325.25 | 3,966.61 |
-| 09 Jan 2026 | Invoice | 48722 ¹ | REV CN#14235 | Gas | 1,162.63 | 5,129.24 |
+| 09 Jan 2026 | Invoice | 48722 ¹ | REV CN#14235 | Gas | 1,162.63 | 2,803.99 |
+| 12 Jan 2026 | Invoice | 48730 | DN-21762 | Gas | 2,325.25 | 5,129.24 |
 | 20 Jan 2026 | Payment | 43067 | TRANSF \| STAT 122 | Gas | -2,286.49 | 2,842.75 |
 | 20 Jan 2026 | Payment | 43067 | TRANSF \| STAT 122 | Gas | -1,162.62 | 1,680.13 |
 | 20 Jan 2026 | Payment | 43067 | TRANSF \| STAT 122 | Gas | -1,207.50 | 472.63 |
@@ -117,16 +117,16 @@
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
 | 21 Feb 2026 | Invoice | 49360 ¹ | DN-21922-HILTON | Gas | 1,184.37 | 40.28 |
-| 21 Feb 2026 | Invoice | 49361 | DN-21922-EMPTY-HIL | Gas | 1,184.37 | 1,224.65 |
-| 23 Feb 2026 | Crd Note | 14472 ¹ | DN-21922-EMPTY-HIL | Gas | -1,184.37 | 40.28 |
+| 23 Feb 2026 | Crd Note | 14472 ¹ | DN-21922-EMPTY-HIL | Gas | -1,184.37 | -1,144.09 |
 
 ### March 2026
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
+| 05 Mar 2026 | Invoice | 49577 | DN#21814 | Gas | 1,184.37 | 40.28 |
 | 06 Mar 2026 | Payment | 43562 | TRANSF \| STAT 124 | Gas | -454.09 | -413.81 |
 | 06 Mar 2026 | Payment | 43562 | TRANSF \| STAT 124 | Gas | -730.28 | -1,144.09 |
-| 28 Mar 2026 | Invoice | 49971 | DN-22032 | Gas | 1,193.96 | 49.87 |
+| 31 Mar 2026 | Invoice | 50035 | DN-21852 | Gas | 1,193.96 | 49.87 |
 
 ### August 2026
 

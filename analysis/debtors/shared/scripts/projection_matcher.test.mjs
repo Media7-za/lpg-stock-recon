@@ -101,7 +101,7 @@ test('partial cylinder returns (amounts differ) stay open', () => {
   assert.equal(res.ties.length, 0);
 });
 
-test('exact single: tie-break is smallest variance, then closest to the payment date', () => {
+test('exact single: tie-break is smallest variance, then oldest invoice first (FIFO, ADM-86)', () => {
   const res = matchProjection(
     projection([
       row({ doc: '51250', date: '2026-06-17', amount: 312.73 }),
@@ -112,7 +112,20 @@ test('exact single: tie-break is smallest variance, then closest to the payment 
   const t = tieOf(res, '44962');
   assert.equal(t.rule, 'EXACT_SINGLE');
   assert.equal(t.confidence, 'CONFIRMED');
-  assert.deepEqual(t.invoices.map((i) => i.doc), ['51428']);
+  assert.deepEqual(t.invoices.map((i) => i.doc), ['51250']);
+});
+
+test('FIFO pairs equal-amount payments with invoices oldest first (FIR001 ADM-86)', () => {
+  const res = matchProjection(
+    projection([
+      row({ doc: '52036', date: '2026-07-23', amount: 8120.59 }),
+      row({ doc: '52195', date: '2026-07-30', amount: 8120.59 }),
+      row({ doc: '45474', type: 'Payment', date: '2026-07-31', amount: -8120.59 }),
+      row({ doc: '45591', type: 'Payment', date: '2026-08-07', amount: -8120.59 }),
+    ]),
+  );
+  assert.deepEqual(tieOf(res, '45474').invoices.map((i) => i.doc), ['52036']);
+  assert.deepEqual(tieOf(res, '45591').invoices.map((i) => i.doc), ['52195']);
 });
 
 test('exact 2-invoice sum (SA0001 payment 45095 = 51472 + 51594)', () => {

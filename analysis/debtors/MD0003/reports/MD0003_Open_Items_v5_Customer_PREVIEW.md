@@ -36,7 +36,7 @@
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 24 May 2025 | Invoice | 43319 | DN#12111-ROSE | Gas | 2,577.63 | -1,903.65 |
+| 27 May 2025 | Invoice | 43387 | DN#12268- MKONDENI | Gas | 2,577.63 | -1,903.65 |
 
 ### June 2025
 
@@ -49,8 +49,7 @@
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 08 Jul 2025 | Invoice | 44634 | DN#12173-MKONDENI | Gas | 2,456.12 | 8,815.40 |
-| 18 Jul 2025 | Invoice | 44937 | 257203- DN#12715 | Gas | 3,684.19 | 12,499.59 |
+| 16 Jul 2025 | Invoice | 44872 | DN#12642-ROSEDALE | Gas | 6,140.31 | 12,499.59 |
 | 26 Jul 2025 | Invoice | 45160 | ON:257219 DN20011 | Gas | 3,684.19 | 16,183.78 |
 
 ### October 2025

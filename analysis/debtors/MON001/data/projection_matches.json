@@ -2,7 +2,7 @@
   "status": "PROPOSED — NOT RATIFIED (PROPOSED_Projection_Matching_Locks.md, build step 2)",
   "debtorCode": "MON001",
   "generatedBy": "match_projection.mjs",
-  "generatedAt": "2026-10-08T04:03:47.344Z",
+  "generatedAt": "2026-10-08T11:58:34.868Z",
   "projection": {
     "path": "analysis/debtors/MON001/data/v5_projection.json",
     "txtSha256": "d32ee1548a1e774aaa6b8380c1786d46bf0a5128272c1d08a85a85ea429786b9",
@@ -24,6 +24,8 @@
     "nearSumTolerance": 1,
     "cnConfirmedMaxDays": 1,
     "maxSumInvoices": 3,
+    "maxRunInvoices": 12,
+    "fifoWindowDays": 14,
     "combinationPool": 40,
     "paymentTargetLanes": [
       "LPG",
@@ -519,11 +521,11 @@
       "confidence": "CONFIRMED",
       "members": [
         "38126|Payment|LPG|L33",
-        "42251|Invoice|LPG|L34"
+        "42053|Invoice|LPG|L30"
       ],
       "docs": [
         "Payment 38126",
-        "Invoice 42251"
+        "Invoice 42053"
       ],
       "net": 0,
       "payment": {
@@ -533,8 +535,8 @@
       },
       "invoices": [
         {
-          "doc": "42251",
-          "date": "2025-04-14",
+          "doc": "42053",
+          "date": "2025-04-07",
           "amount": 2751.58
         }
       ],
@@ -546,11 +548,11 @@
       "confidence": "CONFIRMED",
       "members": [
         "38667|Payment|LPG|L36",
-        "42053|Invoice|LPG|L30"
+        "42251|Invoice|LPG|L34"
       ],
       "docs": [
         "Payment 38667",
-        "Invoice 42053"
+        "Invoice 42251"
       ],
       "net": 0,
       "payment": {
@@ -560,8 +562,8 @@
       },
       "invoices": [
         {
-          "doc": "42053",
-          "date": "2025-04-07",
+          "doc": "42251",
+          "date": "2025-04-14",
           "amount": 2751.58
         }
       ],

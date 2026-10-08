@@ -2,7 +2,7 @@
   "status": "PROPOSED — NOT RATIFIED (PROPOSED_Projection_Matching_Locks.md, build step 2)",
   "debtorCode": "MD0003",
   "generatedBy": "match_projection.mjs",
-  "generatedAt": "2026-10-07T20:15:10.628Z",
+  "generatedAt": "2026-10-08T11:58:33.403Z",
   "projection": {
     "path": "analysis/debtors/MD0003/data/v5_projection.json",
     "txtSha256": "71d0ea37f7fb2e2b6c094f3330734fe7aac8d05f48d930ba5c26dbcf1494f586",
@@ -12,7 +12,7 @@
   "reviewOnly": false,
   "reviewOnlyReasons": [],
   "locksRegistry": "config/payment_pattern_overrides.json#projectionLocks",
-  "matcherVersion": 3,
+  "matcherVersion": 4,
   "closedThrough": null,
   "locksApplied": 0,
   "lockConflicts": [],
@@ -22,6 +22,8 @@
     "nearSumTolerance": 1,
     "cnConfirmedMaxDays": 1,
     "maxSumInvoices": 3,
+    "maxRunInvoices": 12,
+    "fifoWindowDays": 14,
     "combinationPool": 40,
     "paymentTargetLanes": [
       "LPG",
@@ -39,8 +41,8 @@
       "CN_DN_PAIR": 67,
       "CN_AMOUNT_DATE": 1,
       "EXACT_SINGLE": 2,
-      "EXACT_MONTH_SUM": 2,
-      "EXACT_SUM": 2
+      "EXACT_MONTH_SUM": 1,
+      "EXACT_SUM": 3
     },
     "paymentsTotal": 13,
     "paymentsUnallocated": 7
@@ -54,14 +56,13 @@
   "residual": {
     "openingBfUnitemised": 52607.52,
     "openInvoicesLpgOther": {
-      "count": 21,
+      "count": 20,
       "amount": 79876.77,
       "rows": [
-        "43319|Invoice|LPG|L37",
+        "43387|Invoice|LPG|L41",
         "43636|Invoice|LPG|L43",
         "43878|Invoice|LPG|L48",
-        "44634|Invoice|LPG|L58",
-        "44937|Invoice|LPG|L64",
+        "44872|Invoice|LPG|L61",
         "45160|Invoice|LPG|L67",
         "46861|Invoice|LPG|L104",
         "47094|Invoice|LPG|L106",
@@ -1811,13 +1812,13 @@
       "members": [
         "39816|Payment|LPG|L53",
         "43377|Invoice|LPG|L39",
-        "43387|Invoice|LPG|L41",
+        "43319|Invoice|LPG|L37",
         "43062|Invoice|LPG|L31"
       ],
       "docs": [
         "Payment 39816",
         "Invoice 43377",
-        "Invoice 43387",
+        "Invoice 43319",
         "Invoice 43062"
       ],
       "net": 0,
@@ -1833,8 +1834,8 @@
           "amount": 3866.45
         },
         {
-          "doc": "43387",
-          "date": "2025-05-27",
+          "doc": "43319",
+          "date": "2025-05-24",
           "amount": 2577.63
         },
         {
@@ -1851,11 +1852,11 @@
       "confidence": "CONFIRMED",
       "members": [
         "40430|Payment|LPG|L69",
-        "44439|Invoice|LPG|L55"
+        "44136|Invoice|LPG|L51"
       ],
       "docs": [
         "Payment 40430",
-        "Invoice 44439"
+        "Invoice 44136"
       ],
       "net": 0,
       "payment": {
@@ -1865,8 +1866,8 @@
       },
       "invoices": [
         {
-          "doc": "44439",
-          "date": "2025-07-02",
+          "doc": "44136",
+          "date": "2025-06-23",
           "amount": 3755.57
         }
       ],
@@ -1878,13 +1879,15 @@
       "confidence": "CONFIRMED",
       "members": [
         "41044|Payment|LPG|L83",
-        "44872|Invoice|LPG|L61",
-        "44136|Invoice|LPG|L51"
+        "45435|Invoice|LPG|L72",
+        "44634|Invoice|LPG|L58",
+        "44439|Invoice|LPG|L55"
       ],
       "docs": [
         "Payment 41044",
-        "Invoice 44872",
-        "Invoice 44136"
+        "Invoice 45435",
+        "Invoice 44634",
+        "Invoice 44439"
       ],
       "net": 0,
       "payment": {
@@ -1894,13 +1897,18 @@
       },
       "invoices": [
         {
-          "doc": "44872",
-          "date": "2025-07-16",
-          "amount": 6140.31
+          "doc": "45435",
+          "date": "2025-08-06",
+          "amount": 3684.19
         },
         {
-          "doc": "44136",
-          "date": "2025-06-23",
+          "doc": "44634",
+          "date": "2025-07-08",
+          "amount": 2456.12
+        },
+        {
+          "doc": "44439",
+          "date": "2025-07-02",
           "amount": 3755.57
         }
       ],
@@ -1908,19 +1916,19 @@
     },
     {
       "tie_id": "T0081",
-      "rule": "EXACT_MONTH_SUM",
+      "rule": "EXACT_SUM",
       "confidence": "CONFIRMED",
       "members": [
         "41501|Payment|LPG|L102",
-        "45435|Invoice|LPG|L72",
         "45778|Invoice|LPG|L77",
-        "45787|Invoice|LPG|L79"
+        "45787|Invoice|LPG|L79",
+        "44937|Invoice|LPG|L64"
       ],
       "docs": [
         "Payment 41501",
-        "Invoice 45435",
         "Invoice 45778",
-        "Invoice 45787"
+        "Invoice 45787",
+        "Invoice 44937"
       ],
       "net": 0,
       "payment": {
@@ -1930,11 +1938,6 @@
       },
       "invoices": [
         {
-          "doc": "45435",
-          "date": "2025-08-06",
-          "amount": 3684.19
-        },
-        {
           "doc": "45778",
           "date": "2025-08-20",
           "amount": 2398.72
@@ -1943,6 +1946,11 @@
           "doc": "45787",
           "date": "2025-08-20",
           "amount": 150.02
+        },
+        {
+          "doc": "44937",
+          "date": "2025-07-18",
+          "amount": 3684.19
         }
       ],
       "variance": 0

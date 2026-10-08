@@ -1,6 +1,6 @@
 # Open Items Statement: BLUFF MEAT SUPPLY(PTY) LTD (MD0003) — Internal
 **Period:** from 01 Jan 2025 to 15 Jul 2026 &nbsp;|&nbsp; **Balance due:** R16,371.56
-**Status:** PROPOSED — NOT RATIFIED (`PROPOSED_Projection_Matching_Locks.md`, build step 3) · generated 2026-10-07 by `render_open_items.mjs`
+**Status:** PROPOSED — NOT RATIFIED (`PROPOSED_Projection_Matching_Locks.md`, build step 3) · generated 2026-10-08 by `render_open_items.mjs`
 **Sources:** `analysis/debtors/MD0003/data/v5_projection.json` (TXT sha256 `71d0ea37f7fb…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (75 confirmed / 6 probable ties)
 **Locks:** no period closed yet
 
@@ -36,7 +36,7 @@
 
 | Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 24 May 2025 | Invoice | 43319 | DN#12111-ROSE | LPG | 2,577.63 | -1,903.65 |
+| 27 May 2025 | Invoice | 43387 | DN#12268- MKONDENI | LPG | 2,577.63 | -1,903.65 |
 
 ### June 2025
 
@@ -49,8 +49,7 @@
 
 | Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 08 Jul 2025 | Invoice | 44634 | DN#12173-MKONDENI | LPG | 2,456.12 | 8,815.40 |
-| 18 Jul 2025 | Invoice | 44937 | 257203- DN#12715 | LPG | 3,684.19 | 12,499.59 |
+| 16 Jul 2025 | Invoice | 44872 | DN#12642-ROSEDALE | LPG | 6,140.31 | 12,499.59 |
 | 26 Jul 2025 | Invoice | 45160 | ON:257219 DN20011 | LPG | 3,684.19 | 16,183.78 |
 
 ### October 2025
@@ -144,8 +143,8 @@
 | REMITTANCE | 6 |
 | CN_DN_PAIR | 63 |
 | EXACT_SINGLE | 2 |
-| EXACT_MONTH_SUM | 2 |
-| EXACT_SUM | 2 |
+| EXACT_MONTH_SUM | 1 |
+| EXACT_SUM | 3 |
 
 Full tie list: `data/projection_matches.json`.
 

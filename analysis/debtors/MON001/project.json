@@ -73,6 +73,10 @@
     {
       "date": "2026-10-08",
       "event": "Main session review of the preceding connector-sourced run: the ERP tie (R2,717.79, variance R0.00) is CIRCULAR, not a proof. The configured TXT raw/MON001CURRENT_FROM202401.TXT carries a derived B/F R3,049.63 (config bfSourceNote: ERP CURRENT R2,717.79 minus sum(all rows); Jan-May 2024 from DB headers), so it ties by construction (ASSUMED). The regenerated reports/MON001_Statement_Account_v5.md (last committed 933949a from FROM202406.TXT) and the UI fixture were therefore NOT replaced; kept as review-only evidence: captures, ingest coverage, data/v5_projection.json, data/projection_matches.json, open-items reports. Tripwire / next step: a genuine ERP DEBENQ export from 2024-01-01 (or ratification of the derived B/F against a full ERP 2024 export) before trusting the 1A/1B split, the R-948.00 cylinder close or any period close. Also open: payments 45158/37379 equal DB invoices 34081/40628 that are absent from the TXT; CN 9078 R-1,745.02 vs R-1,543.67 in MON0012025.TXT."
+    },
+    {
+      "date": "2026-10-08",
+      "event": "Matcher tie-break changed to FIFO within proximity (operator 2026-10-08, ADM-86: \"Let's do it\"): among equally exact candidates, the oldest invoice within 14 days of the closest one. Re-matched with no DB access: some equal-amount payment/invoice pairings swapped; balance, ERP tie and open totals unchanged (PROVEN, data/projection_matches.json; per-tie diff in commit message). No locks affected."
     }
   ]
 }
