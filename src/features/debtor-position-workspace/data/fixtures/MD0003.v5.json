@@ -3,22 +3,22 @@
   "debtorName": "BLUFF MEAT SUPPLY(PTY) LTD",
   "period": {
     "from": "2025-01-01",
-    "to": "2026-07-15"
+    "to": "2026-10-08"
   },
   "version": "v5",
   "workspaceStatus": "pending_review",
-  "lastGeneratedAt": "2026-10-07T20:15:02.157Z",
-  "source": "analysis/debtors/MD0003/raw/MD0003CURRENT.TXT",
+  "lastGeneratedAt": "2026-10-08T17:36:51.055Z",
+  "source": "analysis/debtors/MD0003/raw/MD0003_2026-10-08.TXT",
   "financialPosition": {
-    "lpgGasDebt": 15106.56,
-    "cylinderFinancialBalance": 1265,
-    "totalDebtorBalance": 16371.56,
-    "erpStatedBalance": 16371.56,
+    "lpgGasDebt": 14765.31,
+    "cylinderFinancialBalance": 1782.5,
+    "totalDebtorBalance": 16547.81,
+    "erpStatedBalance": 16547.81,
     "erpVariance": 0,
     "subLedgerVariance": 0
   },
   "custodyPosition": {
-    "totalCustodyExposure": 1150,
+    "totalCustodyExposure": 1667.5,
     "lines": [
       {
         "sku": "14.1",
@@ -26,6 +26,13 @@
         "qty": 2,
         "depositRate": 575,
         "exposure": 1150
+      },
+      {
+        "sku": "9.1",
+        "label": "9kg",
+        "qty": 1,
+        "depositRate": 517.5,
+        "exposure": 517.5
       },
       {
         "sku": "D.1",
@@ -58,6 +65,6 @@
   },
   "artifacts": {
     "statementMarkdown": "analysis/debtors/MD0003/reports/MD0003_Statement_Account_v5.md",
-    "txtSource": "analysis/debtors/MD0003/raw/MD0003CURRENT.TXT"
+    "txtSource": "analysis/debtors/MD0003/raw/MD0003_2026-10-08.TXT"
   }
 }

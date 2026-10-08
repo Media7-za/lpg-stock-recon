@@ -1,7 +1,7 @@
 # Open Items Statement: BLUFF MEAT SUPPLY(PTY) LTD (MD0003) — Internal
-**Period:** from 01 Jan 2025 to 15 Jul 2026 &nbsp;|&nbsp; **Balance due:** R16,371.56
+**Period:** from 01 Jan 2025 to 08 Oct 2026 &nbsp;|&nbsp; **Balance due:** R16,547.81
 **Status:** PROPOSED — NOT RATIFIED (`PROPOSED_Projection_Matching_Locks.md`, build step 3) · generated 2026-10-08 by `render_open_items.mjs`
-**Sources:** `analysis/debtors/MD0003/data/v5_projection.json` (TXT sha256 `71d0ea37f7fb…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (75 confirmed / 6 probable ties)
+**Sources:** `analysis/debtors/MD0003/data/v5_projection.json` (TXT sha256 `863946cb36f8…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (88 confirmed / 7 probable ties) · **REVIEW ONLY:** ingestCoverage partial
 **Locks:** no period closed yet
 
 ---
@@ -77,22 +77,23 @@
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
 | 31 Dec 2025 | Payment | 42858 | TRANSF \| STAT:122 | LPG | -9,730.26 | -10,481.11 |
 
-### June 2026
+### September 2026
 
 | Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 02 Jun 2026 | Invoice | 50996 | DN#22616-ROSEDALE | LPG | 5,822.54 | -4,658.57 |
-| 02 Jun 2026 | Invoice | 50998 | BMS ROSEDALE 22616 | OTHER | 349.99 | -4,308.58 |
-| 09 Jun 2026 | Invoice | 51099 | DN#22631 | LPG | 4,345.45 | 36.87 |
-| 24 Jun 2026 | Invoice | 51398 | DN#22523 | LPG | 4,345.45 | 4,382.32 |
-| 29 Jun 2026 | Invoice | 51470 | DN#22920=ROSEDALE | LPG | 5,039.52 | 9,421.84 |
+| 07 Sept 2026 | Invoice | 53004 | DN#24826- ROSEDALE | LPG | 5,709.61 | -4,771.50 |
+| 07 Sept 2026 | Invoice | 53019 | DN#24972 | LPG | 3,915.16 | -856.34 |
+| 07 Sept 2026 | Invoice | 53019 | DN#24972 | OTHER | 524.99 | -331.35 |
+| 15 Sept 2026 | Invoice | 53138 | DN#24853 | OTHER | 3,599.99 | 3,268.64 |
+| 23 Sept 2026 | Invoice | 53259 | DN#24871 | LPG | 3,915.16 | 7,183.80 |
+| 26 Sept 2026 | Invoice | 53316 | DN#21383 | LPG | 3,915.16 | 11,098.96 |
 
-### July 2026
+### October 2026
 
 | Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 07 Jul 2026 | Invoice | 51655 | DN#22806 | LPG | 4,366.11 | 13,787.95 |
-| 15 Jul 2026 | Invoice | 51839 | DN#22575=ROSEDALE | LPG | 4,366.11 | 18,154.06 |
+| 01 Oct 2026 | Invoice | 53417 | DN#23831 | LPG | 2,746.04 | 13,845.00 |
+| 08 Oct 2026 | Invoice | 53508 | DN#23844 | LPG | 3,967.81 | 17,812.81 |
 
 **Cylinder deposit opening balance:** R0.00
 
@@ -110,6 +111,13 @@
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
 | 17 Sept 2025 | Crd Note | 13494 | DN#20387-EMPTY- ROS | CYL | -3,047.50 | -1,782.50 |
 
+### August 2026
+
+| Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
+| 08 Aug 2026 | Invoice | 52422 | DN#23948-EMPTY | CYL | 1,035.00 | -747.50 |
+| 09 Aug 2026 | Crd Note | 15422 | DN#23948-EMPTY | CYL | -517.50 | -1,265.00 |
+
 ---
 
 ## Proof: open items reconcile to the ERP balance
@@ -117,10 +125,10 @@
 | Component | Gas (R) | Cylinder deposit (R) | Total (R) |
 | :--- | ---: | ---: | ---: |
 | Opening B/F (unitemised) | 52,607.52 | 0.00 | 52,607.52 |
-| Open items listed above | -34,453.46 | -1,782.50 | -36,235.96 |
+| Open items listed above | -34,794.71 | -1,265.00 | -36,059.71 |
 | Rounding on matched items (tie nets) | -3,047.50 | 3,047.50 | 0.00 |
-| **Balance** | 15,106.56 | 1,265.00 | 16,371.56 |
-| ERP `CURRENT BALANCE` (TXT header) | | | 16,371.56 |
+| **Balance** | 14,765.31 | 1,782.50 | 16,547.81 |
+| ERP `CURRENT BALANCE` (TXT header) | | | 16,547.81 |
 | **Variance** | | | **0.00** |
 
 ---
@@ -130,21 +138,23 @@
 | Tie | Rule | Documents | Variance (R) | Note |
 | :--- | :--- | :--- | ---: | :--- |
 | T0003 | REMITTANCE | Payment 43494, Invoice 48737, Invoice 48784, Invoice 48906, Invoice 48919, Invoice 48927, Crd Note 14328 | 0.00 | RM-2026-03-02: Invoice 48784 advice R2,252.80 vs ERP R2,252.18; Invoice 48906 advice R3,403.01 vs ERP R3,403.63 |
-| T0011 | CN_DN_PAIR | Invoice 42011, Crd Note 12220 | — | CN 3 day(s) after invoice |
-| T0014 | CN_DN_PAIR | Invoice 42677, Crd Note 12386 | — | CN 2 day(s) after invoice |
-| T0042 | CN_DN_PAIR | Invoice 47734, Crd Note 13916 | — | CN 2 day(s) after invoice |
-| T0057 | CN_DN_PAIR | Invoice 49444, Crd Note 14494 | — | CN 2 day(s) after invoice |
-| T0075 | CN_AMOUNT_DATE | Invoice 45161, Crd Note 13062 | — | CN 0 day(s) after invoice |
+| T0012 | CN_DN_PAIR | Invoice 42011, Crd Note 12220 | — | CN 3 day(s) after invoice |
+| T0015 | CN_DN_PAIR | Invoice 42677, Crd Note 12386 | — | CN 2 day(s) after invoice |
+| T0043 | CN_DN_PAIR | Invoice 47734, Crd Note 13916 | — | CN 2 day(s) after invoice |
+| T0058 | CN_DN_PAIR | Invoice 49444, Crd Note 14494 | — | CN 2 day(s) after invoice |
+| T0085 | CN_DN_PAIR | Invoice 53317, Crd Note 15708 | — | CN 2 day(s) after invoice |
+| T0087 | CN_AMOUNT_DATE | Invoice 45161, Crd Note 13062 | — | CN 0 day(s) after invoice |
 
 ## Appendix B: Confirmed ties by rule
 
 | Rule | Ties |
 | :--- | ---: |
-| REMITTANCE | 6 |
-| CN_DN_PAIR | 63 |
+| REMITTANCE | 7 |
+| CN_DN_PAIR | 73 |
 | EXACT_SINGLE | 2 |
-| EXACT_MONTH_SUM | 1 |
+| EXACT_MONTH_SUM | 2 |
 | EXACT_SUM | 3 |
+| EXACT_RUN | 1 |
 
 Full tie list: `data/projection_matches.json`.
 

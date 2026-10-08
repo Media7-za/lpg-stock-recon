@@ -1,0 +1,15 @@
+{
+  "key": "2872abec8e109336",
+  "channel": "supabase-connector-replay",
+  "supabaseProject": "oqhpxnaadahohwkslive",
+  "capturedAt": "2026-10-08T16:29:39.290Z",
+  "md5": "570a7cfbf6289afa5f2368440d403985",
+  "len": 21679,
+  "rowCount": 269,
+  "sql": "\n    WITH deduped AS (\n      SELECT DISTINCT ON (LTRIM(doc_no,'0'), entry_type, debt_group, stock_no, category, line_total)\n        LTRIM(doc_no,'0') AS doc_no, entry_type, debt_group, line_total\n      FROM vw_clean_transactions\n      WHERE account_no = $2 AND tx_date >= $1\n        AND entry_type IN ('Invoice', 'Crd Note')\n      ORDER BY LTRIM(doc_no,'0'), entry_type, debt_group, stock_no, category, line_total, id DESC\n    )\n    SELECT doc_no, entry_type, debt_group,\n      ROUND(SUM(line_total)::numeric, 2)::float AS s\n    FROM deduped\n    GROUP BY doc_no, entry_type, debt_group",
+  "params": [
+    "2025-01-01",
+    "MD0003"
+  ],
+  "captureSql": "SELECT md5(t) AS md5, length(t) AS len, t AS rows_json\nFROM (SELECT coalesce(jsonb_agg(q)::text, '[]') AS t FROM (\nWITH deduped AS (\n      SELECT DISTINCT ON (LTRIM(doc_no,'0'), entry_type, debt_group, stock_no, category, line_total)\n        LTRIM(doc_no,'0') AS doc_no, entry_type, debt_group, line_total\n      FROM vw_clean_transactions\n      WHERE account_no = 'MD0003' AND tx_date >= '2025-01-01'\n        AND entry_type IN ('Invoice', 'Crd Note')\n      ORDER BY LTRIM(doc_no,'0'), entry_type, debt_group, stock_no, category, line_total, id DESC\n    )\n    SELECT doc_no, entry_type, debt_group,\n      ROUND(SUM(line_total)::numeric, 2)::float AS s\n    FROM deduped\n    GROUP BY doc_no, entry_type, debt_group\n) q) x"
+}

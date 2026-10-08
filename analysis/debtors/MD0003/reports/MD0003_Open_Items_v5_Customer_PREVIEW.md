@@ -1,5 +1,5 @@
 # Open Items Statement: BLUFF MEAT SUPPLY(PTY) LTD (MD0003) — Customer copy (DRAFT PREVIEW)
-**Period:** from 01 Jan 2025 to 15 Jul 2026 &nbsp;|&nbsp; **Balance due:** R16,371.56
+**Period:** from 01 Jan 2025 to 08 Oct 2026 &nbsp;|&nbsp; **Balance due:** R16,547.81
 > **Draft preview, not for release.** This copy lists only items not yet settled. Customer release goes through the official statement generator and `npm run debtors:tag-check` (business_rules.md §15).
 
 ---
@@ -94,22 +94,23 @@
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
 | 02 Mar 2026 | Payment | 43494 ¹ | TRANSF \| STAT:124 | Gas | -13,845.67 | -10,423.61 |
 
-### June 2026
+### September 2026
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 02 Jun 2026 | Invoice | 50996 | DN#22616-ROSEDALE | Gas | 5,822.54 | -4,601.07 |
-| 02 Jun 2026 | Invoice | 50998 | BMS ROSEDALE 22616 | Other | 349.99 | -4,251.08 |
-| 09 Jun 2026 | Invoice | 51099 | DN#22631 | Gas | 4,345.45 | 94.37 |
-| 24 Jun 2026 | Invoice | 51398 | DN#22523 | Gas | 4,345.45 | 4,439.82 |
-| 29 Jun 2026 | Invoice | 51470 | DN#22920=ROSEDALE | Gas | 5,039.52 | 9,479.34 |
+| 07 Sept 2026 | Invoice | 53004 | DN#24826- ROSEDALE | Gas | 5,709.61 | -4,714.00 |
+| 07 Sept 2026 | Invoice | 53019 | DN#24972 | Gas | 3,915.16 | -798.84 |
+| 07 Sept 2026 | Invoice | 53019 | DN#24972 | Other | 524.99 | -273.85 |
+| 15 Sept 2026 | Invoice | 53138 | DN#24853 | Other | 3,599.99 | 3,326.14 |
+| 23 Sept 2026 | Invoice | 53259 | DN#24871 | Gas | 3,915.16 | 7,241.30 |
+| 26 Sept 2026 | Invoice | 53316 | DN#21383 | Gas | 3,915.16 | 11,156.46 |
 
-### July 2026
+### October 2026
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 07 Jul 2026 | Invoice | 51655 | DN#22806 | Gas | 4,366.11 | 13,845.45 |
-| 15 Jul 2026 | Invoice | 51839 | DN#22575=ROSEDALE | Gas | 4,366.11 | 18,211.56 |
+| 01 Oct 2026 | Invoice | 53417 | DN#23831 | Gas | 2,746.04 | 13,902.50 |
+| 08 Oct 2026 | Invoice | 53508 | DN#23844 | Gas | 3,967.81 | 17,870.31 |
 
 **Cylinder deposit opening balance:** R0.00
 
@@ -160,6 +161,20 @@
 | 26 Feb 2026 | Invoice | 49444 ¹ | DN#21931-ROSE-EMPTY | Cylinder deposit | 4,830.00 | 2,990.00 |
 | 28 Feb 2026 | Crd Note | 14494 ¹ | DN#21931-ROSE-EMPTY | Cylinder deposit | -4,830.00 | -1,840.00 |
 
+### August 2026
+
+| Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
+| 08 Aug 2026 | Invoice | 52422 | DN#23948-EMPTY | Cylinder deposit | 1,035.00 | -805.00 |
+| 09 Aug 2026 | Crd Note | 15422 | DN#23948-EMPTY | Cylinder deposit | -517.50 | -1,322.50 |
+
+### September 2026
+
+| Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
+| 26 Sept 2026 | Invoice | 53317 ¹ | DN#21383-EMPTY | Cylinder deposit | 3,622.50 | 2,300.00 |
+| 28 Sept 2026 | Crd Note | 15708 ¹ | DN#21383-EMPTY | Cylinder deposit | -3,622.50 | -1,322.50 |
+
 ¹ Payment received; allocation to this item is being confirmed.
 
 ---
@@ -169,7 +184,7 @@
 | Component | Gas (R) | Cylinder deposit (R) | Total (R) |
 | :--- | ---: | ---: | ---: |
 | Opening balance | 52,607.52 | 0.00 | 52,607.52 |
-| Open items listed above | -34,395.96 | -1,840.00 | -36,235.96 |
+| Open items listed above | -34,737.21 | -1,322.50 | -36,059.71 |
 | Rounding on settled items | -3,105.00 | 3,105.00 | 0.00 |
-| **Balance** | 15,106.56 | 1,265.00 | 16,371.56 |
+| **Balance** | 14,765.31 | 1,782.50 | 16,547.81 |
 
