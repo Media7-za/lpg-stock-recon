@@ -21,7 +21,7 @@ The customer's payment history falls into three regimes. The STAT number is the 
 
 | Regime | Payments | What the customer paid | Evidence |
 | :--- | :--- | :--- | :--- |
-| **I. Gas only** (STAT 112–117, Mar–Aug 2025) | 37238, 38808, **38928**, 39619, 40266, 40745 | The month's LPG invoices, cent-exact or within R0.12. Cylinder deposits were left to accumulate. | Matcher ties T0038–T0040 and T0044 already follow this. 38928 is the April 2025 gas total across 5 invoices, which exceeds `maxSumInvoices` 3. |
+| **I. Gas only** (STAT 112–117, Mar–Aug 2025) | 37238, 38808, **38928**, 39619, 40266, 40745 | The month's LPG invoices, cent-exact or within R0.12. Cylinder deposits were left to accumulate. | Matcher ties T0038–T0040 and T0044 already follow this. 38928 is the April 2025 gas total across 5 invoices, ~~which exceeds `maxSumInvoices` 3~~ *(superseded 2026-10-08, see §7.1: missed because R0.12 exceeds EXACT_RUN's ±R0.05)*. |
 | **II. Statement balance** (STAT 118–125, Sep 2025–Apr 2026) | **41247, 41812, 42224, 42597**, 42917, 43367, 43638, **43927** | The full month-end closing balance (gas and cylinders, net of credit notes). | Each amount equals a TXT running balance at month-end (§2.1). The TXT running balance is exactly **R0.00** at line 107, after 42917. |
 | **III. Round amounts** (STAT 127–130, Jun–Sep 2026) | **44878**, 45717 (L0001), **46098** | R10,000 or R15,000 on account | ADM-83 ("she is paying round amounts") |
 
@@ -84,7 +84,7 @@ No exact or near (< R1) running-balance match exists for 37238, 38928, 44878 or 
 ### 2.2 Statement-month gas sum (chosen for 38928)
 
 38928 R15,774.00 equals April 2025's open LPG invoices (41880, 41989, 42165, 42618, 42692 = R15,773.88, Δ R0.12). The matcher missed it for two reasons:
-- five invoices exceed `maxSumInvoices` 3 and EXACT_RUN's R0.05;
+- ~~five invoices exceed `maxSumInvoices` 3 and EXACT_RUN's R0.05;~~ *(superseded 2026-10-08, see §7.1)* the five-invoice run is R0.12 off, outside EXACT_RUN's ±R0.05, and NEAR_SUM (±R1.00) stops at 3 invoices;
 - T0044 had already taken 42618 and 42692.
 
 An exhaustive subset search (≤ 5 open LPG invoices dated before the payment, ±R1.00) finds only this set in its T0044-intact form (41880, 41989, 42165, 43026, 43311). 43026/43311 and 42618/42692 have identical amounts (R3,373.27 each).
@@ -264,3 +264,35 @@ If the operator prefers to keep L0001 as recorded, replace item 3 with **Option 
 4. **Legacy LIFO.** Does ADM-83 supersede the approved LIFO override for 44878 (JEN-STAT127-44878) as well as 45717?
 5. **37238's R1,552.50.** Is a February 2025 statement (STAT 112) or a pre-2025-03-03 TXT available? Without one the surplus stays `unverified`. It is absorbed by the August 2025 statement either way.
 6. **T0044.** Re-point to the May invoices (recommended), or leave it? The amounts are identical.
+
+---
+
+## 7. Amendment (2026-10-08, same session)
+
+### 7.1 Correction — why the matcher missed 38928
+
+The earlier wording (§0 table, §2.2) said 38928 was missed because five invoices exceed `maxSumInvoices` 3. That was wrong; it is superseded but kept above.
+
+The matcher's EXACT_RUN rule (ADM-85) does test runs of 4–12 consecutive open invoices (`analysis/debtors/shared/scripts/projection_matcher.mjs` lines 361–384, `maxRunInvoices` 12). It tested 38928 and found the run 41880 → 42692 (R15,773.88). It rejected that run because the difference, **R0.12**, exceeds the rule's **±R0.05** (`exactTolerance`). The probable pass has no run rule: NEAR_SUM allows ±R1.00 but only 2–3 invoices. So 38928 stayed unallocated.
+
+39619's NEAR_SUM search ran in the same probable pass and could still see the April invoices. It found six equally good combinations of the four R3,373.27 invoices, and the oldest-first tie-break picked 42618/42692. That produced T0044. **PROVEN** by re-running the run search on the committed projection: the five April invoices form the only consecutive run of 4–12 within ±R1.00 of R15,774.00.
+
+**Consequence.** A probable "near run" rule (4–12 consecutive invoices, small rounding allowance) would tie 38928 to the April invoices first, because payments are processed in date order. That would leave 39619 a single combination, 43026 + 43311 + 43488, so T0044 would move to the May invoices without a lock. This is a portfolio-wide matcher change and is **PROPOSED — NOT RATIFIED**:
+- it touches ADM-85;
+- the allowance should scale, e.g. R0.05 per invoice, rather than a flat R1.00;
+- it should be tested first on accounts with many equal-value invoices, MOZ002 first.
+
+### 7.2 Suggested answers to §6 (the analysis session's view; the operator decides)
+
+| # | Question | Suggested answer | Reason |
+| :--- | :--- | :--- | :--- |
+| 1 | Basis for the seven | **Statement settlement.** Keep ADM-83 for 44878, 45717 and 46098. | Four cent-exact statement balances, one R0.66 short, and line 107 at R0.00. ADM-83 rests on "she is paying round amounts", and these seven are not round. Oldest-first would split invoices at cylinder-net amounts the customer never paid (§2.3). |
+| 2 | Cylinder scope and tooling | **Yes, as a narrow exception** for payments that equal a statement balance. "LPG + OTHER" stays the default. Prefer §4.5(b): **one "settled through 2026-03-31" record anchored on TXT line 131.** | When a customer pays the whole statement, its cylinder rows and credit notes are paid too (`ALLOCATION_DOCTRINE.md` §2.1 *Probable*). One record rests on the strongest proven fact, needs no per-document cylinder allocation, and has a single tripwire: any document added or back-dated to on or before 2026-03-31. §1's per-payment table stays as the explanation, not as locks. |
+| 3 | L0001 | **Option A (re-sequence).** Void L0001 with a stated reason; record 44878 → 45717 → 46098 oldest-first in date order. | L0001's basis ("oldest first") now points elsewhere (§4.1). Keeping it leaves July paid while April–June show open. The total is unchanged, the lock is hours old, and no customer statement has been issued on it. |
+| 4 | Legacy LIFO for 44878 | **Yes, superseded.** Mark it superseded; do not delete it. | It comes from the pilot ADM-83 replaced. Leaving it "approved" gives one customer two contradictory methods. |
+| 5 | 37238's R1,552.50 | **Request the Jan–Feb 2025 ERP export or the STAT 112 statement.** Meanwhile it stays `unverified` and blocks nothing. | Only ERP evidence can settle it. It sits inside the block that nets to R0.00 (§3.1), so it does not affect open items or the R25,332.00 tie. If new evidence contradicts it, only 37238 reopens. |
+| 6 | T0044 | **Re-point through the matcher fix in §7.1, not a lock.** If the matcher is not changed now, leave T0044 alone. | With a near-run rule the re-point happens by itself. Under answer 2 the settled-through record covers these invoices anyway, so a separate re-point lock would only change the record. If one is wanted anyway, it needs `--treatment customer_credit` (R0.06), because `exact` allows only ±R0.05 (`locks.mjs:197`). |
+
+**Suggested ruling in one line (PROPOSED — NOT RATIFIED):**
+
+> Statement settlement for 37238, 38928, 41247, 41812, 42224, 42597 and 43927, recorded as one "settled through 2026-03-31" record (TXT line 131); ADM-83 oldest-first for 44878, 45717 and 46098 in date order, with L0001 voided and re-sequenced; legacy LIFO overrides marked superseded; Jan–Feb 2025 ERP export requested for 37238's R1,552.50; T0044 left to a near-run matcher fix.
