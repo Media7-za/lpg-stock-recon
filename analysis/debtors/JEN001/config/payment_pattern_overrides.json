@@ -35,5 +35,69 @@
         { "doc": "51669", "allocated": 26.77, "type": "LIFO_PARTIAL", "edge": "AL-0058", "open_remainder": 4860.33, "note": "PDP-33 fix: target shifted from '51564' (now open, unallocated R623.88) to 51669 because the queue upstream of this payment changed once 51155/45092/50754 (CYL-only docs) were removed from the pool; superseded 2026-09-12" }
       ]
     }
-  ]
+  ],
+  "projectionLocks": {
+    "schema": 1,
+    "closes": [],
+    "locks": [
+      {
+        "lock_id": "L0001",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "part_payment",
+          "partialDoc": "52305",
+          "net": -4601.92,
+          "reason": "Operator delegated (ADM-83, 2026-10-08: \"You decide. ... she is paying round amounts not what is owed to specific invoices or batches\"). Round-amount payment on account settles oldest invoices first (FIFO, consistent with the ADM-86 tie-break ruling): 51564, 51691, 51823, 52044 in full; R4,601.92 part-payment on 52305, leaving R597.11 open on 52305. Supersedes the LIFO pilot allocation (2026-08-25 / PDP-33 2026-09-12) for the v5 statement.",
+          "approvedBy": "operator",
+          "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx"
+        },
+        "members": [
+          {
+            "key": "45717|Payment|LPG|2026-08-14|-15000.00",
+            "doc": "45717",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2026-08-14",
+            "amount": -15000
+          },
+          {
+            "key": "51564|Invoice|LPG|2026-07-03|623.88",
+            "doc": "51564",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-07-03",
+            "amount": 623.88
+          },
+          {
+            "key": "51691|Invoice|LPG|2026-07-08|4887.10",
+            "doc": "51691",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-07-08",
+            "amount": 4887.1
+          },
+          {
+            "key": "51823|Invoice|LPG|2026-07-14|935.81",
+            "doc": "51823",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-07-14",
+            "amount": 935.81
+          },
+          {
+            "key": "52044|Invoice|LPG|2026-07-23|3951.29",
+            "doc": "52044",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-07-23",
+            "amount": 3951.29
+          }
+        ],
+        "createdAt": "2026-10-08T12:08:45.199Z"
+      }
+    ],
+    "voids": []
+  }
 }

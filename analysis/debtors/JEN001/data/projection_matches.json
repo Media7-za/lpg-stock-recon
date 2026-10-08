@@ -2,7 +2,7 @@
   "status": "PROPOSED — NOT RATIFIED (PROPOSED_Projection_Matching_Locks.md, build step 2)",
   "debtorCode": "JEN001",
   "generatedBy": "match_projection.mjs",
-  "generatedAt": "2026-10-07T20:15:11.444Z",
+  "generatedAt": "2026-10-08T12:08:45.397Z",
   "projection": {
     "path": "analysis/debtors/JEN001/data/v5_projection.json",
     "txtSha256": "7743da65f77ebe123805a9103f0f0442d96e7dd5155af46d27c6f32f0deca46a",
@@ -12,9 +12,9 @@
   "reviewOnly": false,
   "reviewOnlyReasons": [],
   "locksRegistry": "config/payment_pattern_overrides.json#projectionLocks",
-  "matcherVersion": 3,
+  "matcherVersion": 4,
   "closedThrough": null,
-  "locksApplied": 0,
+  "locksApplied": 1,
   "lockConflicts": [],
   "rules": {
     "exactTolerance": 0.05,
@@ -22,6 +22,8 @@
     "nearSumTolerance": 1,
     "cnConfirmedMaxDays": 1,
     "maxSumInvoices": 3,
+    "maxRunInvoices": 12,
+    "fifoWindowDays": 14,
     "combinationPool": 40,
     "paymentTargetLanes": [
       "LPG",
@@ -31,14 +33,15 @@
     "remittanceBatchTolerancePct": 0.001
   },
   "summary": {
-    "ties": 8,
-    "confirmed": 8,
+    "ties": 9,
+    "confirmed": 9,
     "probable": 0,
     "byRule": {
+      "LOCKED": 1,
       "CN_DN_PAIR": 8
     },
-    "paymentsTotal": 1,
-    "paymentsUnallocated": 1
+    "paymentsTotal": 0,
+    "paymentsUnallocated": 0
   },
   "proof": {
     "rebuiltClosing": 22685.21,
@@ -49,13 +52,9 @@
   "residual": {
     "openingBfUnitemised": 22088.1,
     "openInvoicesLpgOther": {
-      "count": 5,
-      "amount": 15597.11,
+      "count": 1,
+      "amount": 5199.03,
       "rows": [
-        "51564|Invoice|LPG|L11",
-        "51691|Invoice|LPG|L15",
-        "51823|Invoice|LPG|L17",
-        "52044|Invoice|LPG|L19",
         "52305|Invoice|LPG|L22"
       ]
     },
@@ -70,24 +69,53 @@
       "rows": []
     },
     "unallocatedPayments": {
-      "count": 1,
-      "amount": -15000,
-      "rows": [
-        "45717|Payment|LPG|L10"
-      ]
+      "count": 0,
+      "amount": 0,
+      "rows": []
     },
     "otherUntied": {
       "count": 0,
       "amount": 0,
       "rows": []
     },
-    "tieNets": 0,
+    "tieNets": -4601.92,
     "discountJournalsPending": 0
   },
   "remittance": null,
   "ties": [
     {
       "tie_id": "T0001",
+      "rule": "LOCKED",
+      "confidence": "CONFIRMED",
+      "members": [
+        "45717|Payment|LPG|L10",
+        "51564|Invoice|LPG|L11",
+        "51691|Invoice|LPG|L15",
+        "51823|Invoice|LPG|L17",
+        "52044|Invoice|LPG|L19"
+      ],
+      "docs": [
+        "Payment 45717",
+        "Invoice 51564",
+        "Invoice 51691",
+        "Invoice 51823",
+        "Invoice 52044"
+      ],
+      "net": -4601.92,
+      "lock_id": "L0001",
+      "close_id": null,
+      "lockedRule": "OPERATOR_RULING",
+      "ruling": {
+        "treatment": "part_payment",
+        "partialDoc": "52305",
+        "net": -4601.92,
+        "reason": "Operator delegated (ADM-83, 2026-10-08: \"You decide. ... she is paying round amounts not what is owed to specific invoices or batches\"). Round-amount payment on account settles oldest invoices first (FIFO, consistent with the ADM-86 tie-break ruling): 51564, 51691, 51823, 52044 in full; R4,601.92 part-payment on 52305, leaving R597.11 open on 52305. Supersedes the LIFO pilot allocation (2026-08-25 / PDP-33 2026-09-12) for the v5 statement.",
+        "approvedBy": "operator",
+        "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx"
+      }
+    },
+    {
+      "tie_id": "T0002",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -103,7 +131,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0002",
+      "tie_id": "T0003",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -119,7 +147,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0003",
+      "tie_id": "T0004",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -135,7 +163,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0004",
+      "tie_id": "T0005",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -151,7 +179,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0005",
+      "tie_id": "T0006",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -167,7 +195,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0006",
+      "tie_id": "T0007",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -183,7 +211,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0007",
+      "tie_id": "T0008",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -199,7 +227,7 @@
       "lagDays": 1
     },
     {
-      "tie_id": "T0008",
+      "tie_id": "T0009",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -215,7 +243,5 @@
       "lagDays": 1
     }
   ],
-  "unallocatedPayments": [
-    "45717|Payment|LPG|L10"
-  ]
+  "unallocatedPayments": []
 }

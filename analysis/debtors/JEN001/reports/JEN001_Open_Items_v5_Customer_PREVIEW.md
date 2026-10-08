@@ -10,21 +10,11 @@
 
 ## Gas: open items
 
-### July 2026
-
-| Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 03 Jul 2026 | Invoice | 51564 | DN#22673 | Gas | 623.88 | 23,229.48 |
-| 08 Jul 2026 | Invoice | 51691 | DN#22679 | Gas | 4,887.10 | 28,116.58 |
-| 14 Jul 2026 | Invoice | 51823 | DN#22816 | Gas | 935.81 | 29,052.39 |
-| 23 Jul 2026 | Invoice | 52044 | DN#22976 | Gas | 3,951.29 | 33,003.68 |
-
 ### August 2026
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 04 Aug 2026 | Invoice | 52305 | DN#23940 | Gas | 5,199.03 | 38,202.71 |
-| 14 Aug 2026 | Payment | 45717 | TRANSF \| STAT 129 | Gas | -15,000.00 | 23,202.71 |
+| 04 Aug 2026 | Invoice | 52305 | DN#23940 | Gas | 5,199.03 | 27,804.63 |
 
 **Cylinder deposit opening balance:** R-517.50
 
@@ -39,7 +29,10 @@ _No open items._
 | Component | Gas (R) | Cylinder deposit (R) | Total (R) |
 | :--- | ---: | ---: | ---: |
 | Opening balance | 22,605.60 | -517.50 | 22,088.10 |
-| Open items listed above | 597.11 | 0.00 | 597.11 |
+| Open items listed above | 5,199.03 | 0.00 | 5,199.03 |
 | Rounding on settled items | 0.00 | 0.00 | 0.00 |
+| Part-payments on items listed above | -4,601.92 | 0.00 | -4,601.92 |
 | **Balance** | 23,202.71 | -517.50 | 22,685.21 |
+
+- Invoice 52305 R5,199.03 less part-payment R4,601.92 (payment 45717) = R597.11 outstanding.
 
