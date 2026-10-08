@@ -2,17 +2,15 @@
   "status": "PROPOSED — NOT RATIFIED (PROPOSED_Projection_Matching_Locks.md, build step 2)",
   "debtorCode": "SA0001",
   "generatedBy": "match_projection.mjs",
-  "generatedAt": "2026-10-08T03:35:06.464Z",
+  "generatedAt": "2026-10-08T11:35:10.690Z",
   "projection": {
     "path": "analysis/debtors/SA0001/data/v5_projection.json",
     "txtSha256": "837cff982c0cbc93161e975677eb7fa215dc68b19007c2a1f2864b8ca28642e6",
     "dbChannel": "supabase-connector-replay",
-    "generatedAt": "2026-10-07T17:44:32.567Z"
+    "generatedAt": "2026-10-08T11:35:01.738Z"
   },
-  "reviewOnly": true,
-  "reviewOnlyReasons": [
-    "ingestCoverage partial"
-  ],
+  "reviewOnly": false,
+  "reviewOnlyReasons": [],
   "locksRegistry": "config/payment_pattern_overrides.json#projectionLocks",
   "matcherVersion": 4,
   "closedThrough": "2026-06-30",
@@ -24,6 +22,7 @@
     "nearSumTolerance": 1,
     "cnConfirmedMaxDays": 1,
     "maxSumInvoices": 3,
+    "maxRunInvoices": 12,
     "combinationPool": 40,
     "paymentTargetLanes": [
       "LPG",
@@ -34,8 +33,8 @@
   },
   "summary": {
     "ties": 161,
-    "confirmed": 142,
-    "probable": 19,
+    "confirmed": 145,
+    "probable": 16,
     "byRule": {
       "LOCKED": 119,
       "CN_DN_PAIR": 26,
@@ -2047,7 +2046,7 @@
     {
       "tie_id": "T0113",
       "rule": "LOCKED",
-      "confidence": "PROBABLE",
+      "confidence": "CONFIRMED",
       "members": [
         "45782|Payment|LPG|L323",
         "52813|Invoice|LPG|L314",
@@ -2453,7 +2452,7 @@
     {
       "tie_id": "T0134",
       "rule": "CN_DN_PAIR",
-      "confidence": "PROBABLE",
+      "confidence": "CONFIRMED",
       "members": [
         "52391|Invoice|LPG|L313",
         "15556|Crd Note|LPG|L312"
@@ -2469,7 +2468,7 @@
     {
       "tie_id": "T0135",
       "rule": "CN_DN_PAIR",
-      "confidence": "PROBABLE",
+      "confidence": "CONFIRMED",
       "members": [
         "52515|Invoice|LPG|L316",
         "15557|Crd Note|LPG|L315"

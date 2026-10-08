@@ -3,7 +3,7 @@
 **Combined Opening B/F:** R4,945.93 (ERP verified — source: `analysis/debtors/SA0001/raw/SA0001_2026-10-07.TXT` SA0001_2026-10-07.TXT line 14 BALANCE B/F before first period row (unchanged from raw/SA0001.TXT))
 **LPG Opening B/F (1A):** R4,945.93 &nbsp;|&nbsp; **CYL Opening B/F (1B):** R0.00
 **Payment routing:** LPG lane (payments post to Part 1A unless configured otherwise)
-**Last regenerated:** 2026-10-07 from ERP TXT (`reconcile_debtor_v5_from_txt.mjs`)
+**Last regenerated:** 2026-10-08 from ERP TXT (`reconcile_debtor_v5_from_txt.mjs`)
 
 ---
 
@@ -714,34 +714,20 @@
 
 ---
 
-## Ingest Gate (`ingestFreshness: current` · `ingestCoverage: partial`)
+## Ingest Gate (`ingestFreshness: current` · `ingestCoverage: complete`)
 
 | Check | Status |
 | :--- | :--- |
-| Display status | `CURRENT_PARTIAL` |
+| Display status | `CURRENT_COMPLETE` |
 | Financial balance from TXT | **ALLOWED** |
-| Custody / Part 2 qty | **BLOCKED** |
-| SKU analysis | **BLOCKED** |
-
-> **Custody conclusions blocked.** DB qty may be incomplete or stale vs statement TXT (`analysis/debtors/SA0001/raw/SA0001_2026-10-07.TXT`). See `SA0001_INGEST_COVERAGE_*.md`.
-
-**INGEST_GAP documents (custody-blocking):**
-- **15556** (Crd Note, 2026-08-07) — `MISSING_HEADER_AND_LINES`
-- **52813** (Invoice, 2026-08-07) — `MISSING_HEADER_AND_LINES`
-- **15557** (Crd Note, 2026-08-12) — `MISSING_HEADER_AND_LINES`
-- **52814** (Invoice, 2026-08-12) — `MISSING_HEADER_AND_LINES`
-- **45782** (Payment, 2026-08-17) — `MISSING_HEADER`
-- **45888** (Payment, 2026-08-24) — `MISSING_HEADER`
-- **45998** (Payment, 2026-08-31) — `MISSING_HEADER`
-- **46092** (Payment, 2026-09-08) — `MISSING_HEADER`
-- **46160** (Payment, 2026-09-14) — `MISSING_HEADER`
-- **46237** (Payment, 2026-09-21) — `MISSING_HEADER`
+| Custody / Part 2 qty | **ALLOWED** |
+| SKU analysis | **ALLOWED** |
 
 ---
 
 
 ## Part 2: Cylinder (CYL) Ledger (Physical Asset Tracker)
-*Cylinders tracked by physical count. Opening balances per `config/statement_v5.json`. **Gate: custody BLOCKED — see Ingest Gate above.***
+*Cylinders tracked by physical count. Opening balances per `config/statement_v5.json`.*
 
 ### March 2025
 | Date | Entry Type | Doc # | 14kg Qty | 19kg Qty | 9kg Qty | D.1 Qty | S.1 Qty |
@@ -1107,8 +1093,6 @@
 |---|---:|---:|---:|
 | Cylinder Position (1B vs custody) | R0.00 | R0.00 | R0.00 |
 | Sub-ledger tie (1A + 1B vs combined) | R16,002.86 | — | R0.00 |
-
-> **INGEST_GATE:** Custody variance below is **not signed off** — ingest coverage `CURRENT_PARTIAL`. DB-backed qty may not reflect all TXT documents.
 
 **ERP Combined Balance (TXT header):** R16,002.86  
 **Reconstructed Balance (1A + 1B):** R16,002.86  

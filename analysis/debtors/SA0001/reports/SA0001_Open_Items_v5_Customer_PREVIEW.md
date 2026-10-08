@@ -47,28 +47,21 @@
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 07 Aug 2026 | Crd Note | 15556 ¹ | DN#24252 | Gas | -314.03 | 4,887.41 |
-| 07 Aug 2026 | Invoice | 52391 ¹ | DN#24252 | Gas | 314.03 | 5,201.44 |
-| 07 Aug 2026 | Invoice | 52813 ¹ | DN#24252 | Gas | 280.39 | 5,481.83 |
-| 12 Aug 2026 | Crd Note | 15557 ¹ | DN#24904 | Gas | -5,981.61 | -499.78 |
-| 12 Aug 2026 | Invoice | 52515 ¹ | DN#24904 | Gas | 5,981.61 | 5,481.83 |
-| 12 Aug 2026 | Invoice | 52814 | DN#24904 | Gas | 5,981.61 | 11,463.44 |
-| 14 Aug 2026 | Invoice | 52547 ¹ | DN#24272 | Gas | 280.39 | 11,743.83 |
-| 17 Aug 2026 | Payment | 45782 ¹ | TRANSF \| STAT 129 | Gas | -594.42 | 11,149.41 |
+| 12 Aug 2026 | Invoice | 52814 | DN#24904 | Gas | 5,981.61 | 11,183.05 |
 
 ### September 2026
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 25 Sept 2026 | Invoice | 53293 | DN#21379 | Gas | 258.75 | 11,408.16 |
-| 29 Sept 2026 | Invoice | 53355 | DN#23818 | Gas | 258.75 | 11,666.91 |
+| 25 Sept 2026 | Invoice | 53293 | DN#21379 | Gas | 258.75 | 11,441.80 |
+| 29 Sept 2026 | Invoice | 53355 | DN#23818 | Gas | 258.75 | 11,700.55 |
 
 ### October 2026
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 02 Oct 2026 | Invoice | 53436 | DN-21397 | Gas | 5,520.00 | 17,186.91 |
-| 02 Oct 2026 | Invoice | 53446 | DN-23836 | Gas | 258.75 | 17,445.66 |
+| 02 Oct 2026 | Invoice | 53436 | DN-21397 | Gas | 5,520.00 | 17,220.55 |
+| 02 Oct 2026 | Invoice | 53446 | DN-23836 | Gas | 258.75 | 17,479.30 |
 
 **Cylinder deposit opening balance:** R0.00
 
@@ -178,9 +171,9 @@
 | Component | Gas (R) | Cylinder deposit (R) | Total (R) |
 | :--- | ---: | ---: | ---: |
 | Opening balance | 4,945.93 | 0.00 | 4,945.93 |
-| Open items listed above | 12,499.73 | 0.00 | 12,499.73 |
+| Open items listed above | 12,533.37 | 0.00 | 12,533.37 |
 | Rounding on settled items | 0.06 | 0.00 | 0.06 |
 | Payments against opening balance | -1,409.77 | 0.00 | -1,409.77 |
-| Credit in your favour (overpayments) | -33.09 | 0.00 | -33.09 |
+| Credit in your favour (overpayments) | -66.73 | 0.00 | -66.73 |
 | **Balance** | 16,002.86 | 0.00 | 16,002.86 |
 

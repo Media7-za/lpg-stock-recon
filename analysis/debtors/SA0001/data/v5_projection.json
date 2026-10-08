@@ -3,7 +3,7 @@
   "status": "PROPOSED — NOT RATIFIED (PROPOSED_Projection_Matching_Locks.md, build step 1)",
   "debtorCode": "SA0001",
   "generatedBy": "reconcile_debtor_v5_from_txt.mjs",
-  "generatedAt": "2026-10-07T17:44:32.567Z",
+  "generatedAt": "2026-10-08T11:35:01.738Z",
   "source": {
     "txtPath": "analysis/debtors/SA0001/raw/SA0001_2026-10-07.TXT",
     "txtSha256": "837cff982c0cbc93161e975677eb7fa215dc68b19007c2a1f2864b8ca28642e6",
@@ -28,9 +28,9 @@
     "erpVariance": 0
   },
   "ingestGate": {
-    "ingestCoverage": "partial",
+    "ingestCoverage": "complete",
     "ingestFreshness": "current",
-    "displayStatus": "CURRENT_PARTIAL"
+    "displayStatus": "CURRENT_COMPLETE"
   },
   "checks": {
     "lpgRowsReproduce1A": true,
@@ -41,8 +41,7 @@
     "rowCount": 359,
     "splitBasisCounts": {
       "PAYMENT_LANE": 67,
-      "DB_LINES": 288,
-      "HEADER_FALLBACK": 4
+      "DB_LINES": 292
     }
   },
   "rows": [
@@ -4751,8 +4750,8 @@
       "ref_no": "DN#24252",
       "txt_line": 314,
       "txt_amount": 280.39,
-      "split_basis": "HEADER_FALLBACK",
-      "confirmable": false,
+      "split_basis": "DB_LINES",
+      "confirmable": true,
       "lane": "LPG",
       "amount": 280.39
     },
@@ -4766,8 +4765,8 @@
       "ref_no": "DN#24252",
       "txt_line": 312,
       "txt_amount": -314.03,
-      "split_basis": "HEADER_FALLBACK",
-      "confirmable": false,
+      "split_basis": "DB_LINES",
+      "confirmable": true,
       "lane": "LPG",
       "amount": -314.03
     },
@@ -4811,8 +4810,8 @@
       "ref_no": "DN#24904",
       "txt_line": 318,
       "txt_amount": 5981.61,
-      "split_basis": "HEADER_FALLBACK",
-      "confirmable": false,
+      "split_basis": "DB_LINES",
+      "confirmable": true,
       "lane": "LPG",
       "amount": 5981.61
     },
@@ -4826,8 +4825,8 @@
       "ref_no": "DN#24904",
       "txt_line": 315,
       "txt_amount": -5981.61,
-      "split_basis": "HEADER_FALLBACK",
-      "confirmable": false,
+      "split_basis": "DB_LINES",
+      "confirmable": true,
       "lane": "LPG",
       "amount": -5981.61
     },
