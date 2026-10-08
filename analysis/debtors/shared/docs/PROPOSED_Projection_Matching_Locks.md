@@ -340,6 +340,23 @@ ignored late remittances for old payments. Non-LOCKED ties inside the closed per
 SA0001 closed C0001 through 2026-06-30: 112 locks; statement unchanged (16 rows, R0.00 variance). WO0001 is refused
 (flat-array legacy registry). 7 tests (`locks.test.mjs`).
 
+**Progress (2026-10-08, matcher v4, operator rulings, TWK002 adapter):**
+- **Matcher v4.** Payment rules run in two passes: exact rules (a–c) for every payment first, then probable rules (d–e)
+  on what is left. v3 let SA0001 46092's NEAR_SUM take invoice 53011, which the later payment 46160 matches exactly.
+- **Approved locks (P5 "approved" status).** `approve_tie.mjs` records an operator ruling as a lock with
+  `close_id: null` and a `ruling.treatment` for the tie's net: `exact`, `customer_credit`, `applied_to_bf`,
+  `part_payment` (with `partialDoc`), `short_paid`. The open-items proof shows each treatment on its own line.
+  Part-payments are noted against the open invoice, and Appendix D lists the rulings. `writeRegistry` rewrites only the
+  `projectionLocks` key, so recorded `overrides` keep their text byte for byte. SA0001 carries 7 approved locks (L0113–L0119).
+- **Remittance.**
+  - The builder now also reads TWK002-style snake_case manifests, with lines from `data/remittance_lines_YYYY.csv`.
+    Credit-note discounts are stored as magnitudes, so they are signed on read.
+  - A document listed on several advice lines (for example gas and deposit) is compared and tied once.
+  - A document an advice settles only in part (net ≠ gross − discount) leaves the batch **unresolved**: tying it would
+    hide the remainder. Combined-batch evidence is not built.
+  - TWK002 STAT 129 (45899) applied CONFIRMED. STAT 123 (43500) names TWK003/TWK004 invoices, so it needs P8 `payerGroup`.
+- `debtors:test` 133/133.
+
 ## Lessons from `payment_doc_allocation.mjs` (open question 6, read-only, 2026-10-06)
 
 Why the "shared" engine never spread beyond WO0001 (PROVEN from code reading unless tagged):
