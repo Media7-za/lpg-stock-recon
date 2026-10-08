@@ -59,12 +59,36 @@ test('evidence: PDF lines accepted only when they reconcile; malformed manifests
   assert.match(bad.skipped.find((s) => s.batchId).reason, /do not reconcile/);
 });
 
-test('evidence: batches in an unsupported manifest schema are skipped, never emitted with nulls', () => {
-  const snake = { batch_id: 'BATCH-2024-03-26', erp_payment_doc: '00029684', cash_amount: 73610.18 };
-  const out = buildRemittanceEvidence(tmpAccount({ batches: [snake] }), { extract: () => ADVICE });
-  assert.equal(out.batches.length, 0);
-  const s = out.skipped.find((x) => x.batchId === 'BATCH-2024-03-26');
-  assert.match(s.reason, /unsupported manifest schema/);
+test('evidence: TWK002-style snake_case manifests read lines from the year CSV; CN discounts are signed', () => {
+  const dir = tmpAccount({
+    year: 2026,
+    batches: [
+      { batch_id: 'BATCH-2026-STAT-129', erp_payment_doc: '00045899', cash_amount: 9343.75, discount_amount: 225, advice_date: '2026-08-14', line_count: 2 },
+      { batch_id: 'BATCH-NOLINK', erp_payment_doc: null, cash_amount: 1, erp_link_status: 'UNLINKED' },
+    ],
+  });
+  fs.writeFileSync(
+    path.join(dir, 'data/remittance_lines_2026.csv'),
+    [
+      'batch_id,line_type,doc_no,doc_date,our_ref,original_amount,discount_amount,net_amount,discount_eligible,on_remittance,source_type,notes',
+      'BATCH-2026-STAT-129,Invoice,00051841,15.07.2026,1,26400.0,660.0,25740.0,True,True,remittance_advice,gas, deposit',
+      'BATCH-2026-STAT-129,Crd Note,00015155,01.07.2026,999999,-17250.0,431.25,-16818.75,True,True,remittance_advice,',
+    ].join('\n'),
+  );
+  // 25740 − 16818.75 = 8921.25: cash in the manifest says 9343.75, so first prove a mismatch is refused…
+  const bad = buildRemittanceEvidence(dir, { extract: () => ADVICE });
+  assert.match(bad.skipped.find((x) => x.batchId === 'BATCH-2026-STAT-129').reason, /do not reconcile/);
+  assert.match(bad.skipped.find((x) => x.batchId === 'BATCH-NOLINK').reason, /no ERP payment linked/);
+  // …then a reconciling batch is accepted with the CN discount signed (−431.25), Σ = advice discount.
+  const m = JSON.parse(fs.readFileSync(path.join(dir, 'data/remittance_manifest_2026.json'), 'utf8'));
+  m.batches[0].cash_amount = 8921.25;
+  fs.writeFileSync(path.join(dir, 'data/remittance_manifest_2026.json'), JSON.stringify(m));
+  const ok = buildRemittanceEvidence(dir, { extract: () => ADVICE });
+  const b = ok.batches.find((x) => x.batchId === 'BATCH-2026-STAT-129');
+  assert.equal(b.paymentDoc, '45899');
+  assert.deepEqual(b.lines.map((l) => [l.docType, l.doc, l.discount]), [['Invoice', '51841', 660], ['Crd Note', '15155', -431.25]]);
+  assert.equal(b.discount, 228.75);
+  assert.equal(b.lines.some((l) => l.alreadyPaid), false);
 });
 
 let n = 0;
@@ -119,6 +143,27 @@ test('missing documents or a non-reconciling total leave the batch unresolved (n
   assert.match(b.remittance.unresolved[0].reason, /≠ payment/);
   const c = matchProjection(proj(rows), undefined, ev([L('I1', 100)], 100, 'P404'));
   assert.match(c.remittance.unresolved[0].reason, /not in projection/);
+});
+
+test('a document listed on several advice lines is compared and tied once, against their sum', () => {
+  const rows = [
+    row({ doc: 'I1', amount: 20302.49 }),
+    row({ doc: 'I1', lane: 'CYL', amount: 4140 }),
+    row({ doc: 'P1', type: 'Payment', date: '2026-08-26', amount: -24442.49 }),
+  ];
+  const res = matchProjection(proj(rows), undefined, ev([L('I1', 4140), L('I1', 20302.49)], 24442.49));
+  assert.equal(res.ties[0].confidence, 'CONFIRMED');
+  assert.equal(res.ties[0].members.length, 3);
+  assert.equal(res.ties[0].net, 0);
+  assert.equal(res.proof.holds, true);
+});
+
+test('a document settled over several remittances leaves the batch unresolved', () => {
+  const rows = [row({ doc: 'I1', amount: 32064.13 }), row({ doc: 'P1', type: 'Payment', date: '2026-05-30', amount: -19341.56 })];
+  const line = { doc: 'I1', docType: 'Invoice', gross: 32064.13, discount: 495.94, paid: 19341.56, alreadyPaid: 12226.63 };
+  const res = matchProjection(proj(rows), undefined, ev([line], 19341.56));
+  assert.equal(res.ties.filter((t) => t.rule === 'REMITTANCE').length, 0);
+  assert.match(res.remittance.unresolved[0].reason, /several remittances: Invoice I1 R12226.63/);
 });
 
 test('settlement discounts are carried as discountPending, separate from rounding (P9)', () => {

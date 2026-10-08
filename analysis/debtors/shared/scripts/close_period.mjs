@@ -16,7 +16,7 @@ import fs from 'fs';
 import path from 'path';
 import { execFileSync } from 'child_process';
 import { fileURLToPath } from 'url';
-import { matchAccount, readRegistry, registryPath, earliestIngestGap } from './match_account.mjs';
+import { matchAccount, readRegistry, registryPath, writeRegistry, earliestIngestGap } from './match_account.mjs';
 import { planClose, applyClose, applyVoid } from './locks.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../../..');
@@ -45,7 +45,7 @@ if (!reg.supported) {
 const now = new Date().toISOString();
 const write = (registry) => {
   if (dryRun) return;
-  fs.writeFileSync(registryPath(acct), `${JSON.stringify(registry, null, 2)}\n`);
+  writeRegistry(acct, registry);
 };
 
 if (voidClose || voidLock) {

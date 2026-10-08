@@ -149,6 +149,80 @@ export function applyClose(registry, plan) {
   };
 }
 
+/**
+ * Operator ruling → `approved` lock (no close needed; close_id null keeps it active on its own).
+ *
+ *   payment     payment doc (its Payment row, never the Bank UD leg)
+ *   invoices    invoice docs it settles (their LPG + OTHER rows; CYL is never a payment target)
+ *   treatment   what the tie's net (payment + invoices) means, required when |net| > R0.05:
+ *                 'exact'           net within ±R0.05 (default)
+ *                 'customer_credit' payment exceeds the invoices; the excess is owed to the customer
+ *                 'applied_to_bf'   the excess (or, with no invoices, the whole payment) settles part
+ *                                   of the unitemised opening B/F
+ *                 'part_payment'    the excess is a part-payment on `partialDoc`, which stays open
+ *                 'short_paid'      the invoices exceed the payment; the shortfall is still owed
+ * Members are keyed exactly as period-close locks are, so a changed document turns the ruling
+ * into a CONFLICT in the next run rather than being silently re-applied.
+ */
+export function planApproval({ projection, registry, payment, invoices = [], treatment = 'exact', partialDoc = null, reason, approvedBy, session, now }) {
+  const reasons = [];
+  const TREATMENTS = ['exact', 'customer_credit', 'applied_to_bf', 'part_payment', 'short_paid'];
+  if (!TREATMENTS.includes(treatment)) reasons.push(`unknown treatment ${treatment}`);
+  if (!reason) reasons.push('a reason (the operator ruling) is required');
+  const eff = effectiveLocks(registry);
+  const lockedKeys = new Set(eff.locks.flatMap((l) => l.members.map((m) => m.key)));
+  const rows = projection.rows;
+
+  const payRows = rows.filter((r) => r.kind === 'payment' && r.entry_type !== 'Bank UD' && r.clean_doc === String(payment) && r.amount < 0);
+  if (payRows.length !== 1) reasons.push(`payment ${payment}: expected 1 payment row, found ${payRows.length}`);
+  const members = [...payRows];
+  for (const doc of invoices) {
+    const inv = rows.filter((r) => r.kind === 'invoice' && r.clean_doc === String(doc) && r.lane !== 'CYL');
+    if (!inv.length) reasons.push(`invoice ${doc}: no LPG/OTHER rows in the projection`);
+    members.push(...inv);
+  }
+  for (const r of members) if (lockedKeys.has(rowKey(r))) reasons.push(`${r.entry_type} ${r.clean_doc} ${r.lane} is already locked`);
+  if (treatment === 'applied_to_bf' && !invoices.length && payRows.length) {
+    // whole payment to the opening balance: nothing else to check
+  } else if (!invoices.length) {
+    reasons.push('no invoices given (use treatment applied_to_bf for a payment against the opening balance)');
+  }
+  if (treatment === 'part_payment') {
+    const target = rows.filter((r) => r.kind === 'invoice' && r.clean_doc === String(partialDoc) && r.lane !== 'CYL');
+    if (!partialDoc || !target.length) reasons.push(`part_payment needs partialDoc that is an invoice in the projection (got ${partialDoc})`);
+    if (invoices.map(String).includes(String(partialDoc))) reasons.push('partialDoc must not also be a settled invoice');
+  }
+
+  const net = Math.round(members.reduce((s, r) => s + r.amount, 0) * 100) / 100;
+  const exact = Math.abs(net) <= 0.05;
+  if (!reasons.length) {
+    if (treatment === 'exact' && !exact) reasons.push(`net R${net} is not within ±R0.05; name a treatment`);
+    if (['customer_credit', 'applied_to_bf', 'part_payment'].includes(treatment) && net >= 0) reasons.push(`treatment ${treatment} needs the payment to exceed the invoices (net R${net})`);
+    if (treatment === 'short_paid' && net <= 0) reasons.push(`short_paid needs the invoices to exceed the payment (net R${net})`);
+  }
+  if (reasons.length) return { ok: false, reasons, lock: null };
+
+  const pl = registry?.projectionLocks || emptyLocks();
+  const lock = {
+    lock_id: nextId('L', (pl.locks || []).map((l) => l.lock_id)),
+    close_id: null,
+    status: 'approved',
+    rule: 'OPERATOR_RULING',
+    ruling: { treatment, ...(partialDoc ? { partialDoc: String(partialDoc) } : {}), net, reason, approvedBy, session },
+    members: members.map((r) => ({ key: rowKey(r), doc: r.clean_doc, entry_type: r.entry_type, lane: r.lane, date: r.date, amount: r.amount })),
+    createdAt: now,
+  };
+  return { ok: true, reasons: [], lock };
+}
+
+export function applyApproval(registry, plan) {
+  const pl = registry.projectionLocks || emptyLocks();
+  return {
+    ...registry,
+    projectionLocks: { ...pl, schema: LOCKS_SCHEMA, closes: pl.closes || [], locks: [...(pl.locks || []), plan.lock], voids: pl.voids || [] },
+  };
+}
+
 export function applyVoid(registry, { target, id, voidedBy, reason, now }) {
   const pl = registry.projectionLocks || emptyLocks();
   const exists = target === 'close' ? (pl.closes || []).some((c) => c.close_id === id) : (pl.locks || []).some((l) => l.lock_id === id);

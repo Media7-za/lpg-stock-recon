@@ -4,7 +4,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { matchProjection } from './projection_matcher.mjs';
-import { planClose, applyClose, applyVoid, effectiveLocks, emptyLocks, rowKey } from './locks.mjs';
+import { planClose, applyClose, applyVoid, effectiveLocks, emptyLocks, rowKey, planApproval, applyApproval } from './locks.mjs';
 
 let n = 0;
 const row = (o) => ({
@@ -112,4 +112,56 @@ test('void is append-only and deactivates the close and its locks', () => {
 test('rowKey is stable across row_id changes', () => {
   assert.equal(rowKey({ clean_doc: '1', entry_type: 'Invoice', lane: 'LPG', date: '2026-01-01', amount: 5 }), '1|Invoice|LPG|2026-01-01|5.00');
   assert.deepEqual(emptyLocks().locks, []);
+});
+
+const approve = (proj, registry, o) =>
+  planApproval({ projection: proj, registry, approvedBy: 'operator', session: 't', now: '2026-10-08T00:00:00Z', reason: 'ruling', ...o });
+
+test('approved ruling: payment over invoices as customer credit, applied as a LOCKED tie carrying its ruling', () => {
+  const proj = projection([
+    row({ doc: 'I1', date: '2026-08-07', amount: 280.39 }),
+    row({ doc: 'I2', date: '2026-08-14', amount: 280.39 }),
+    row({ doc: 'P1', type: 'Payment', date: '2026-08-17', amount: -594.42 }),
+  ]);
+  const plan = approve(proj, { overrides: [] }, { payment: 'P1', invoices: ['I1', 'I2'], treatment: 'customer_credit' });
+  assert.equal(plan.ok, true);
+  assert.equal(plan.lock.status, 'approved');
+  assert.equal(plan.lock.close_id, null);
+  assert.equal(plan.lock.ruling.net, -33.64);
+  const reg = applyApproval({ overrides: [] }, plan);
+  const m = matchProjection(proj, undefined, null, effectiveLocks(reg));
+  assert.equal(m.locksApplied, 1);
+  assert.equal(m.ties[0].rule, 'LOCKED');
+  assert.equal(m.ties[0].ruling.treatment, 'customer_credit');
+  assert.equal(m.proof.holds, true);
+});
+
+test('approval refuses: inexact net without a treatment, wrong-sign treatment, re-locking, missing docs or reason', () => {
+  const proj = projection([
+    row({ doc: 'I1', date: '2026-08-07', amount: 280.39 }),
+    row({ doc: 'P1', type: 'Payment', date: '2026-08-17', amount: -300 }),
+    row({ doc: 'P2', type: 'Payment', date: '2026-02-07', amount: -621.68 }),
+  ]);
+  assert.match(approve(proj, {}, { payment: 'P1', invoices: ['I1'] }).reasons.join(), /not within ±R0.05/);
+  assert.match(approve(proj, {}, { payment: 'P1', invoices: ['I1'], treatment: 'short_paid' }).reasons.join(), /short_paid needs/);
+  assert.match(approve(proj, {}, { payment: 'P1', invoices: ['NOPE'], treatment: 'customer_credit' }).reasons.join(), /NOPE/);
+  assert.match(approve(proj, {}, { payment: 'P1', invoices: ['I1'], treatment: 'customer_credit', reason: '' }).reasons.join(), /reason/);
+  const bf = approve(proj, {}, { payment: 'P2', treatment: 'applied_to_bf' });
+  assert.equal(bf.ok, true);
+  assert.equal(bf.lock.members.length, 1);
+  const reg = applyApproval({}, bf);
+  assert.match(approve(proj, reg, { payment: 'P2', treatment: 'applied_to_bf' }).reasons.join(), /already locked/);
+});
+
+test('part_payment needs a separate open partialDoc', () => {
+  const proj = projection([
+    row({ doc: 'I1', date: '2026-07-03', amount: 623.88 }),
+    row({ doc: 'I2', date: '2026-07-08', amount: 14973.23 }),
+    row({ doc: 'P1', type: 'Payment', date: '2026-08-14', amount: -15000 }),
+  ]);
+  assert.equal(approve(proj, {}, { payment: 'P1', invoices: ['I2'], treatment: 'part_payment' }).ok, false);
+  const ok = approve(proj, {}, { payment: 'P1', invoices: ['I2'], treatment: 'part_payment', partialDoc: 'I1' });
+  assert.equal(ok.ok, true);
+  assert.equal(ok.lock.ruling.partialDoc, 'I1');
+  assert.equal(ok.lock.ruling.net, -26.77);
 });

@@ -14,7 +14,9 @@
  *                       their date, so late evidence (e.g. a remittance for an old payment) can
  *                       still resolve closed-period open items. A new tie whose members all
  *                       fall on/before closedThrough is flagged `inClosedPeriod` for review;
- *                       the next close locks it if CONFIRMED.
+ *                       the next close locks it if CONFIRMED. Operator rulings (approve_tie.mjs,
+ *                       status 'approved', no close) are applied the same way and carry their
+ *                       `ruling` (treatment of the tie's net) through to the open-items view.
  *   1. UD_CLEARING      Bank UD (+) and Payment (−) on the same doc, equal and opposite.
  *   1b. REMITTANCE      (P11; only when remittance evidence is supplied) the advice names
  *                       the payment doc and every document it settles. Ties the payment and
@@ -32,8 +34,10 @@
  *                       pairing evidence — same basis as dn_pair_reconcile.mjs.)
  *      CN_AMOUNT_DATE   fallback when no DN number pairs: same lane, exactly opposite
  *                       amount, CN 0–1 day after, and exactly one candidate → PROBABLE.
- *   3. Payments, one payment doc at a time, chronologically, against open invoice
- *      targets (LPG + OTHER lanes of one invoice doc; CYL is never a payment target):
+ *   3. Payments against open invoice targets (LPG + OTHER lanes of one invoice doc; CYL is
+ *      never a payment target), in two passes (v4): every payment, chronologically, tries the
+ *      exact rules a–c first; only then do the remaining payments try the probable rules d–e.
+ *      So a probable guess can never take an invoice that a later payment matches exactly.
  *        a. EXACT_SINGLE      |payment − invoice| ≤ R0.05                → CONFIRMED
  *        b. EXACT_MONTH_SUM   = all open invoices of one billing month   → CONFIRMED
  *        c. EXACT_SUM         = 2–3 open invoices (≤ R0.05)              → CONFIRMED
@@ -54,7 +58,7 @@
 
 import { rowKey } from './locks.mjs';
 
-export const MATCHER_VERSION = 3;
+export const MATCHER_VERSION = 4;
 
 export const RULES = Object.freeze({
   exactTolerance: 0.05,
@@ -139,7 +143,12 @@ export function matchProjection(projection, rules = RULES, evidence = null, lock
         lockConflicts.push({ lock_id: lock.lock_id, close_id: lock.close_id, problems });
         continue;
       }
-      addTie('LOCKED', 'CONFIRMED', members, { lock_id: lock.lock_id, close_id: lock.close_id, lockedRule: lock.rule });
+      addTie('LOCKED', 'CONFIRMED', members, {
+        lock_id: lock.lock_id,
+        close_id: lock.close_id,
+        lockedRule: lock.rule,
+        ...(lock.ruling ? { ruling: lock.ruling } : {}),
+      });
       locksApplied += 1;
     }
   }
@@ -176,7 +185,16 @@ export function matchProjection(projection, rules = RULES, evidence = null, lock
     const lineRows = [];
     const missing = [];
     const discrepancies = [];
+    // An advice may list one document on several lines (e.g. gas and cylinder deposit
+    // separately); compare and tie each document once, against the sum of its lines.
+    const byDocLine = new Map();
     for (const l of b.lines) {
+      const k = `${l.docType}|${l.doc}`;
+      const agg = byDocLine.get(k) || { doc: l.doc, docType: l.docType, gross: 0 };
+      agg.gross = round2(agg.gross + l.gross);
+      byDocLine.set(k, agg);
+    }
+    for (const l of byDocLine.values()) {
       const docRows = rows.filter((r) => r.clean_doc === l.doc && r.entry_type === l.docType);
       if (!docRows.length) {
         missing.push(`${l.docType} ${l.doc}`);
@@ -197,6 +215,14 @@ export function matchProjection(projection, rules = RULES, evidence = null, lock
       fail(`documents not available: ${missing.join(', ')}`);
       continue;
     }
+    // A line this advice settles only in part (paid ≠ gross − discount) means the document is
+    // spread over several remittances. Tying it here would hide the remainder, so leave the
+    // batch unresolved until combined-batch evidence exists.
+    const split = b.lines.filter((l) => l.alreadyPaid);
+    if (split.length) {
+      fail(`documents settled over several remittances: ${split.map((l) => `${l.docType} ${l.doc} R${l.alreadyPaid} not settled by this advice`).join(', ')}`);
+      continue;
+    }
     const paid = round2(b.lines.reduce((s, l) => s + l.paid, 0));
     const cash = round2(-pay.amount);
     const tol = Math.max(rules.exactTolerance, rules.remittanceBatchTolerancePct * cash);
@@ -208,9 +234,10 @@ export function matchProjection(projection, rules = RULES, evidence = null, lock
       batchId: b.batchId,
       evidence: b.source,
       payment: { doc: pay.clean_doc, date: pay.date, amount: cash },
-      invoices: b.lines.map((l) => ({ doc: l.doc, docType: l.docType, amount: l.gross })),
+      invoices: [...byDocLine.values()].map((l) => ({ doc: l.doc, docType: l.docType, amount: l.gross })),
       discountPending: round2(b.lines.reduce((s, l) => s + l.discount, 0)),
       lineDiscrepancies: discrepancies,
+      ...(b.discountJournal ? { discountJournal: b.discountJournal } : {}),
       variance: round2(paid - cash),
     });
     remittance.applied.push({ batchId: b.batchId, tie_id });
@@ -276,86 +303,76 @@ export function matchProjection(projection, rules = RULES, evidence = null, lock
       .map((c) => ({ ...c, variance: round2(A - c.total), gap: c.gap }))
       .sort((a, b) => Math.abs(a.variance) - Math.abs(b.variance) || a.gap - b.gap)[0];
 
-  for (const p of payments) {
-    const A = round2(-p.amount);
-    const eligible = open().filter((t) => t.date <= p.date);
-    const single = eligible.map((t) => ({ set: [t], total: t.amount, gap: days(t.date, p.date) }));
+  const sumCands = (eligible, A, tol, pDate) => {
+    const pool = eligible.slice().sort((a, b) => b.date.localeCompare(a.date)).slice(0, rules.combinationPool);
+    const cands = [];
+    for (let k = 2; k <= rules.maxSumInvoices; k++) {
+      for (const set of combos(pool, k)) {
+        const total = round2(set.reduce((s, t) => s + t.amount, 0));
+        if (Math.abs(A - total) <= tol) cands.push({ set, total, gap: set.reduce((s, t) => s + days(t.date, pDate), 0) });
+      }
+    }
+    return cands;
+  };
 
+  // Exact rules (CONFIRMED) for every payment first, then probable rules on what is left, so a
+  // probable guess for an earlier payment can never consume an invoice a later payment matches exactly.
+  const tryExact = (p, A, eligible) => {
+    const single = eligible.map((t) => ({ set: [t], total: t.amount, gap: days(t.date, p.date) }));
     // a. exact single
     let best = pick(single.filter((c) => Math.abs(A - c.total) <= rules.exactTolerance), A, p.date);
-    let rule = 'EXACT_SINGLE';
-    let conf = 'CONFIRMED';
-
+    if (best) return { best, rule: 'EXACT_SINGLE' };
     // b. exact billing-month sum (≥ 2 invoices; a 1-invoice month is covered by a.)
-    if (!best) {
-      const months = new Map();
-      for (const t of eligible) {
-        const m = t.date.slice(0, 7);
-        if (!months.has(m)) months.set(m, []);
-        months.get(m).push(t);
-      }
-      const monthCands = [...months.values()]
-        .filter((set) => set.length >= 2)
-        .map((set) => ({
-          set,
-          total: round2(set.reduce((s, t) => s + t.amount, 0)),
-          gap: Math.max(...set.map((t) => days(t.date, p.date))),
-        }))
-        .filter((c) => Math.abs(A - c.total) <= rules.exactTolerance);
-      best = pick(monthCands, A, p.date);
-      rule = 'EXACT_MONTH_SUM';
+    const months = new Map();
+    for (const t of eligible) {
+      const m = t.date.slice(0, 7);
+      if (!months.has(m)) months.set(m, []);
+      months.get(m).push(t);
     }
-
+    const monthCands = [...months.values()]
+      .filter((set) => set.length >= 2)
+      .map((set) => ({
+        set,
+        total: round2(set.reduce((s, t) => s + t.amount, 0)),
+        gap: Math.max(...set.map((t) => days(t.date, p.date))),
+      }))
+      .filter((c) => Math.abs(A - c.total) <= rules.exactTolerance);
+    best = pick(monthCands, A, p.date);
+    if (best) return { best, rule: 'EXACT_MONTH_SUM' };
     // c. exact sum of 2–3 invoices
-    if (!best) {
-      const pool = eligible.sort((a, b) => b.date.localeCompare(a.date)).slice(0, rules.combinationPool);
-      const cands = [];
-      for (let k = 2; k <= rules.maxSumInvoices; k++) {
-        for (const set of combos(pool, k)) {
-          const total = round2(set.reduce((s, t) => s + t.amount, 0));
-          if (Math.abs(A - total) <= rules.exactTolerance) {
-            cands.push({ set, total, gap: set.reduce((s, t) => s + days(t.date, p.date), 0) });
-          }
-        }
-      }
-      best = pick(cands, A, p.date);
-      rule = 'EXACT_SUM';
-    }
+    best = pick(sumCands(eligible, A, rules.exactTolerance, p.date), A, p.date);
+    if (best) return { best, rule: 'EXACT_SUM' };
+    return null;
+  };
+  const tryProbable = (p, A, eligible) => {
+    const single = eligible.map((t) => ({ set: [t], total: t.amount, gap: days(t.date, p.date) }));
+    // d. proximity
+    let best = pick(single.filter((c) => Math.abs(A - c.total) <= rules.proximityTolerance), A, p.date);
+    if (best) return { best, rule: 'PROXIMITY' };
+    // e. near sum of 2–3 invoices within truncation tolerance
+    best = pick(sumCands(eligible, A, rules.nearSumTolerance, p.date), A, p.date);
+    if (best) return { best, rule: 'NEAR_SUM' };
+    return null;
+  };
 
-    // d. proximity (probable)
-    if (!best) {
-      best = pick(single.filter((c) => Math.abs(A - c.total) <= rules.proximityTolerance), A, p.date);
-      rule = 'PROXIMITY';
-      conf = 'PROBABLE';
+  for (const [tryRule, conf] of [
+    [tryExact, 'CONFIRMED'],
+    [tryProbable, 'PROBABLE'],
+  ]) {
+    for (const p of payments) {
+      if (!free(p)) continue;
+      const A = round2(-p.amount);
+      const eligible = open().filter((t) => t.date <= p.date);
+      const hit = tryRule(p, A, eligible);
+      if (!hit) continue;
+      addTie(hit.rule, conf, [p, ...hit.best.set.flatMap((t) => t.rows)], {
+        payment: { doc: p.clean_doc, date: p.date, amount: A },
+        invoices: hit.best.set.map((t) => ({ doc: t.doc, date: t.date, amount: t.amount })),
+        variance: hit.best.variance,
+      });
     }
-
-    // e. near sum of 2–3 invoices within truncation tolerance (probable)
-    if (!best) {
-      const pool = eligible.sort((a, b) => b.date.localeCompare(a.date)).slice(0, rules.combinationPool);
-      const cands = [];
-      for (let k = 2; k <= rules.maxSumInvoices; k++) {
-        for (const set of combos(pool, k)) {
-          const total = round2(set.reduce((s, t) => s + t.amount, 0));
-          if (Math.abs(A - total) <= rules.nearSumTolerance) {
-            cands.push({ set, total, gap: set.reduce((s, t) => s + days(t.date, p.date), 0) });
-          }
-        }
-      }
-      best = pick(cands, A, p.date);
-      rule = 'NEAR_SUM';
-      conf = 'PROBABLE';
-    }
-
-    if (!best) {
-      unallocated.push(p.row_id);
-      continue;
-    }
-    addTie(rule, conf, [p, ...best.set.flatMap((t) => t.rows)], {
-      payment: { doc: p.clean_doc, date: p.date, amount: A },
-      invoices: best.set.map((t) => ({ doc: t.doc, date: t.date, amount: t.amount })),
-      variance: best.variance,
-    });
   }
+  for (const p of payments) if (free(p)) unallocated.push(p.row_id);
 
   // Proof: B/F + Σ untied rows + Σ tie nets = closing combined (and the ERP header).
   const untied = rows.filter(free);

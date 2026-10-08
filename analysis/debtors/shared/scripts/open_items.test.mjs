@@ -79,3 +79,37 @@ test('markdown escapes pipes in references and keeps internal detail out of the 
   assert.match(internal, /Appendix A/);
   assert.match(internal, /\*\*Variance\*\* \| \| \| \*\*0\.00\*\*/);
 });
+
+test('operator rulings get their own proof lines and a part-paid note; balance still ties', async () => {
+  const { planApproval, applyApproval, effectiveLocks } = await import('./locks.mjs');
+  const rows = [
+    row({ doc: 'I1', date: '2026-07-03', amount: 623.88 }),
+    row({ doc: 'I2', date: '2026-07-08', amount: 14973.23 }),
+    row({ doc: 'P1', type: 'Payment', date: '2026-08-14', amount: -15000 }),
+    row({ doc: 'P9', type: 'Payment', date: '2026-02-07', amount: -621.68 }),
+  ];
+  const bf = 5000;
+  const closing = Math.round((bf + rows.reduce((s, r) => s + r.amount, 0)) * 100) / 100;
+  const projection = {
+    rows,
+    openings: { combinedBf: bf, lpgOpeningBf: bf, cylOpeningFinancial: 0 },
+    closings: { combined: closing },
+    source: { erpCurrentBalance: closing, txtSha256: 'abc', dbChannel: 'direct' },
+    window: { periodStart: '2026-02-01', lastRowDate: '2026-08-14' },
+  };
+  const a = (reg, o) => applyApproval(reg, planApproval({ projection, registry: reg, approvedBy: 'op', session: 't', now: 'n', reason: 'r', ...o }));
+  let reg = a({}, { payment: 'P1', invoices: ['I2'], treatment: 'part_payment', partialDoc: 'I1' });
+  reg = a(reg, { payment: 'P9', treatment: 'applied_to_bf' });
+  const m = matchProjection(projection, undefined, null, effectiveLocks(reg));
+  const matches = { ...m, projection: { path: 'x', txtSha256: 'abc' }, reviewOnly: false, reviewOnlyReasons: [] };
+  const v = buildOpenItems(projection, matches, 'internal');
+  assert.deepEqual(v.parts.lpg.lines.map((l) => l.doc), ['I1']);
+  assert.equal(v.parts.lpg.rulings.part_payment, -26.77);
+  assert.equal(v.parts.lpg.rulings.applied_to_bf, -621.68);
+  assert.equal(v.parts.lpg.rounding, 0);
+  assert.equal(v.proof.tiesToErp, true);
+  const md = renderOpenItemsMarkdown(v, { cfg: { debtorName: 'X', debtorCode: 'X1' }, projection, matches, generatedOn: 'd' });
+  assert.match(md, /Payments applied to opening B\/F/);
+  assert.match(md, /Invoice I1 R623\.88 less part-payment R26\.77 \(payment P1\) = R597\.11 outstanding/);
+  assert.match(md, /Appendix D/);
+});

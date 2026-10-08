@@ -159,6 +159,24 @@ test('proximity and near-sum ties are PROBABLE; beyond tolerance stays unallocat
   assert.equal(res.summary.paymentsUnallocated, 1);
 });
 
+test('exact rules run for every payment before any probable rule (SA0001 46092 / 46160)', () => {
+  // v3 let 46092's NEAR_SUM (52814 + 53011, R0.55 off) take 53011, which the later
+  // payment 46160 matches exactly. v4 ties 46160 ↔ 53011 first.
+  const res = matchProjection(
+    projection([
+      row({ doc: '52814', date: '2026-08-12', amount: 5981.61 }),
+      row({ doc: '52893', date: '2026-09-01', amount: 6262.0 }),
+      row({ doc: '53011', date: '2026-09-07', amount: 285.84 }),
+      row({ doc: '46092', type: 'Payment', date: '2026-09-08', amount: -6268.0 }),
+      row({ doc: '46160', type: 'Payment', date: '2026-09-14', amount: -285.84 }),
+    ]),
+  );
+  const t = tieOf(res, '46160');
+  assert.equal(t.rule, 'EXACT_SINGLE');
+  assert.deepEqual(t.invoices.map((i) => i.doc), ['53011']);
+  assert.equal(tieOf(res, '46092'), undefined); // R6.00 off 52893: beyond ±R5, left for the operator
+});
+
 test('no prepayment: invoices dated after the payment are not eligible', () => {
   const res = matchProjection(
     projection([

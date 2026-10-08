@@ -23,6 +23,13 @@ const dateLabel = (iso) => {
 };
 const LANE_LABEL = { LPG: 'Gas', OTHER: 'Other', CYL: 'Cylinder deposit' };
 const cell = (v) => String(v ?? '').replace(/\|/g, '\\|'); // keep Markdown table columns intact
+// Operator-ruling treatments with their own proof line: [key, internal label, customer label].
+const RULING_LINES = [
+  ['applied_to_bf', 'Payments applied to opening B/F (operator rulings)', 'Payments against opening balance'],
+  ['part_payment', 'Part-payments on open invoices (operator rulings)', 'Part-payments on items listed above'],
+  ['customer_credit', 'Overpayments held as customer credit (operator rulings)', 'Credit in your favour (overpayments)'],
+  ['short_paid', 'Short payments still owed (operator rulings)', 'Short payments still owed'],
+];
 
 /**
  * @param view 'internal' | 'customer'
@@ -44,13 +51,21 @@ export function buildOpenItems(projection, matches, view = 'internal') {
   const laneOf = (r) => (r.lane === 'CYL' ? 'cyl' : 'lpg');
   // Rounding on matched items: the net of each hidden tie, split by part. Remittance
   // settlement discounts (P9) are reported separately as journals pending.
+  // Operator rulings (approved locks) say what their net is, so it is reported on its own line.
   const rounding = { lpg: 0, cyl: 0 };
   const journalsPending = { lpg: 0, cyl: 0 };
+  const ruled = Object.fromEntries(RULING_LINES.map(([k]) => [k, { lpg: 0, cyl: 0 }]));
+  const partPaid = []; // { doc, amount, payment }
   for (const t of matches.ties) {
     if (view === 'customer' && t.confidence === 'PROBABLE') continue; // shown in full instead
+    const bucket = t.ruling && t.ruling.treatment !== 'exact' ? ruled[t.ruling.treatment] : rounding;
     for (const id of t.members) {
       const r = projection.rows.find((x) => x.row_id === id);
-      if (r) rounding[laneOf(r)] = round2(rounding[laneOf(r)] + r.amount);
+      if (r) bucket[laneOf(r)] = round2(bucket[laneOf(r)] + r.amount);
+    }
+    if (t.ruling?.treatment === 'part_payment') {
+      const pay = t.docs.find((d) => d.startsWith('Payment '))?.slice(8);
+      partPaid.push({ doc: t.ruling.partialDoc, amount: t.net, payment: pay });
     }
     if (t.discountPending) {
       journalsPending.lpg = round2(journalsPending.lpg + t.discountPending);
@@ -78,15 +93,18 @@ export function buildOpenItems(projection, matches, view = 'internal') {
         amount: r.amount,
         running: run,
         pendingProbable: Boolean(t && t.confidence === 'PROBABLE'),
+        partPaid: partPaid.filter((x) => x.doc === r.clean_doc && r.lane !== 'CYL'),
       };
     });
-    const closing = round2(run + rounding[part] + journalsPending[part]);
+    const rulings = Object.fromEntries(RULING_LINES.map(([k]) => [k, ruled[k][part]]));
+    const closing = round2(run + rounding[part] + journalsPending[part] + Object.values(rulings).reduce((a, b) => a + b, 0));
     parts[part] = {
       opening: opening[part],
       lines,
       openTotal: round2(run - opening[part]),
       rounding: rounding[part],
       journalsPending: journalsPending[part],
+      rulings,
       closing,
     };
   }
@@ -96,6 +114,7 @@ export function buildOpenItems(projection, matches, view = 'internal') {
   return {
     view,
     parts,
+    partPaid,
     appendix: matches.ties.filter((t) => t.confidence === 'PROBABLE'),
     proof: {
       combined,
@@ -186,6 +205,11 @@ export function renderOpenItemsMarkdown(model, { cfg, projection, matches, gener
   L.push(row3(internal ? 'Opening B/F (unitemised)' : 'Opening balance', parts.lpg.opening, parts.cyl.opening));
   L.push(row3('Open items listed above', parts.lpg.openTotal, parts.cyl.openTotal));
   L.push(row3(internal ? 'Rounding on matched items (tie nets)' : 'Rounding on settled items', parts.lpg.rounding, parts.cyl.rounding));
+  for (const [k, labelInternal, labelCustomer] of RULING_LINES) {
+    if (parts.lpg.rulings[k] || parts.cyl.rulings[k]) {
+      L.push(row3(internal ? labelInternal : labelCustomer, parts.lpg.rulings[k], parts.cyl.rulings[k]));
+    }
+  }
   if (parts.lpg.journalsPending || parts.cyl.journalsPending) {
     L.push(row3(internal ? 'Settlement discount journals pending (P9)' : 'Settlement discount (journal pending)', parts.lpg.journalsPending, parts.cyl.journalsPending));
   }
@@ -195,6 +219,12 @@ export function renderOpenItemsMarkdown(model, { cfg, projection, matches, gener
     L.push(`| **Variance** | | | **${fmt(round2(proof.combined - proof.erp))}** |`);
   }
   L.push('');
+  for (const pp of model.partPaid || []) {
+    const inv = parts.lpg.lines.find((l) => l.doc === pp.doc);
+    const owed = inv ? ` = R${fmt(round2(inv.amount + pp.amount))} outstanding` : '';
+    L.push(`- Invoice ${pp.doc}${inv ? ` R${fmt(inv.amount)}` : ''} less part-payment R${fmt(-pp.amount)} (payment ${pp.payment})${owed}.`);
+  }
+  if ((model.partPaid || []).length) L.push('');
 
   if (internal) {
     L.push('---', '', '## Appendix A: Probable ties (review required, not locked)', '');
@@ -224,6 +254,15 @@ export function renderOpenItemsMarkdown(model, { cfg, projection, matches, gener
     for (const t of matches.ties) if (t.confidence === 'CONFIRMED') byRule[t.rule] = (byRule[t.rule] || 0) + 1;
     for (const [r, n] of Object.entries(byRule)) L.push(`| ${r} | ${n} |`);
     L.push('', `Full tie list: \`data/projection_matches.json\`.`, '');
+    const rulingTies = matches.ties.filter((t) => t.ruling);
+    if (rulingTies.length) {
+      L.push('## Appendix D: Operator rulings applied (approved locks)', '', '| Lock | Treatment | Documents | Net (R) | Ruling |', '| :--- | :--- | :--- | ---: | :--- |');
+      for (const t of rulingTies) {
+        const tr = t.ruling.partialDoc ? `${t.ruling.treatment} → ${t.ruling.partialDoc}` : t.ruling.treatment;
+        L.push(`| ${t.lock_id} | ${tr} | ${t.docs.join(', ')} | ${fmt(t.net)} | ${cell(t.ruling.reason)} |`);
+      }
+      L.push('');
+    }
     if ((matches.lockConflicts || []).length) {
       L.push('## Appendix C: Lock conflicts (rows left untied; closes blocked until resolved)', '', '| Lock | Close | Problem |', '| :--- | :--- | :--- |');
       for (const c of matches.lockConflicts) L.push(`| ${c.lock_id} | ${c.close_id} | ${cell(c.problems.join('; '))} |`);

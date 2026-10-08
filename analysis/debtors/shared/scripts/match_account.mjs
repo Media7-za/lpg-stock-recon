@@ -27,6 +27,35 @@ export function readRegistry(acct, code) {
   return { registry, supported: true, exists: true };
 }
 
+/**
+ * Write the registry, changing only its `projectionLocks` key. Everything else in the file is
+ * operator-recorded judgement and keeps its original text and formatting byte for byte; the
+ * locks block is (re)written as the file's last key. Falls back to a full rewrite only if the
+ * spliced text would not parse back to exactly the intended registry.
+ */
+export function writeRegistry(acct, registry) {
+  const p = registryPath(acct);
+  const full = `${JSON.stringify(registry, null, 2)}\n`;
+  if (!fs.existsSync(p)) return fs.writeFileSync(p, full);
+  const orig = fs.readFileSync(p, 'utf8');
+  const block = JSON.stringify(registry.projectionLocks, null, 2).replace(/\n/g, '\n  ');
+  const at = orig.lastIndexOf('\n  "projectionLocks":');
+  let text;
+  if (at >= 0) {
+    text = `${orig.slice(0, at)}\n  "projectionLocks": ${block}\n}\n`;
+  } else {
+    const end = orig.lastIndexOf('}');
+    text = `${orig.slice(0, end).replace(/\s*$/, '')},\n  "projectionLocks": ${block}\n}\n`;
+  }
+  let same = false;
+  try {
+    same = JSON.stringify(JSON.parse(text)) === JSON.stringify(registry);
+  } catch {
+    same = false;
+  }
+  fs.writeFileSync(p, same ? text : full);
+}
+
 export function matchAccount(root, code) {
   const acct = path.join(root, 'analysis/debtors', code);
   const read = (p) => JSON.parse(fs.readFileSync(path.join(acct, p), 'utf8'));
