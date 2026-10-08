@@ -113,3 +113,14 @@ test('operator rulings get their own proof lines and a part-paid note; balance s
   assert.match(md, /Invoice I1 R623\.88 less part-payment R26\.77 \(payment P1\) = R597\.11 outstanding/);
   assert.match(md, /Appendix D/);
 });
+
+test('unconfirmed UD payments render as a memo, outside the balance', () => {
+  const { projection, matches } = fixture();
+  projection.udPending = { rows: [{ clean_doc: '46364', iso: '2026-10-06', amount: -2500 }], rowsTotal: -2500, headerTotal: -2500, unexplained: 0 };
+  const v = buildOpenItems(projection, matches, 'internal');
+  assert.equal(v.proof.tiesToErp, true);
+  const md = renderOpenItemsMarkdown(v, { cfg: { debtorName: 'X', debtorCode: 'X1' }, projection, matches, generatedOn: 'd' });
+  assert.match(md, /Memo: unconfirmed UD payments R-2,500\.00/);
+  const cust = renderOpenItemsMarkdown(buildOpenItems(projection, matches, 'customer'), { cfg: { debtorName: 'X', debtorCode: 'X1' }, projection, matches, generatedOn: 'd' });
+  assert.match(cust, /R2,500\.00 received but not yet confirmed/);
+});

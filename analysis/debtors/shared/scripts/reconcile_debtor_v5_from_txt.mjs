@@ -264,7 +264,13 @@ function isCylRef(ref) {
 
 function parseTxtRows(filePath) {
   const txt = fs.readFileSync(filePath, 'utf8');
-  const headerBalance = Number(txt.match(/CURRENT BALANCE:","([0-9.]+)"/)?.[1]);
+  const headerBalance = Number(txt.match(/CURRENT BALANCE:","(-?[0-9.]+)"/)?.[1]);
+  // FINCON's CURRENT BALANCE excludes UD (unconfirmed) payments, which the rows include.
+  // A UD payment is captured but not yet confirmed by the bank reconciliation agent, so it
+  // is not money received (operator ruling 2026-10-08). UD rows are kept out of the
+  // statement rows and reported as a memo; they are never matched against invoices.
+  const udHeader = Number(txt.match(/UD PAY\/CHEQUES:","(-?[0-9.]+)"/)?.[1] ?? 0);
+  const udPending = [];
   const rows = [];
   for (const line of txt.split('\n')) {
     if (!line.startsWith('"') || line.includes('LINE","PERIOD')) continue;
@@ -272,6 +278,10 @@ function parseTxtRows(filePath) {
     if (!p[0] || isNaN(+p[0])) continue;
     if (!p[4] || !p[4].includes('/')) continue;
     const iso = parseTxtDate(p[4]);
+    if (p[3] === 'Ud Paymnt') {
+      udPending.push({ lineNo: +p[0], doc_no: p[2], clean_doc: p[2].replace(/^0+/, '') || p[2], iso, ref_no: (p[6] || '').trim(), amount: round2(Number(p[9])) });
+      continue;
+    }
     rows.push({
       lineNo: +p[0],
       period: p[1],
@@ -286,7 +296,8 @@ function parseTxtRows(filePath) {
         (p[3] === 'Invoice' || p[3] === 'Crd Note') && isCylRef(p[6]),
     });
   }
-  return { rows, headerBalance };
+  const udRowsTotal = round2(udPending.reduce((t, r) => t + r.amount, 0));
+  return { rows, headerBalance, ud: { rows: udPending, rowsTotal: udRowsTotal, headerTotal: round2(udHeader), unexplained: round2(udHeader - udRowsTotal) } };
 }
 
 // Returns { lpg, cyl, basis, other }. `basis` is the split_basis recorded on the
@@ -554,7 +565,8 @@ async function buildPart2(client, cfg) {
 async function main() {
   const debtorCode = parseArgs();
   const cfg = loadConfig(debtorCode);
-  const { rows, headerBalance } = parseTxtRows(cfg.txtPath);
+  const { rows, headerBalance, ud } = parseTxtRows(cfg.txtPath);
+  const udInWindow = ud.rows.filter((r) => r.iso >= cfg.periodStart);
   const allRows = mergeRatificationRows(rows, cfg.ratificationRows);
 
   const client = new pg.Client(pgClientOptions());
@@ -630,7 +642,13 @@ ${part1b.length ? part1b.join('\n\n---\n\n') : '_No CYL deposit activity in peri
 | **Combined (1A + 1B)** | **${fmt(finalLpg + finalCyl)}** |
 | ERP \`CURRENT BALANCE\` (TXT header) | ${fmt(headerBalance)} |
 | **Variance (Combined − ERP)** | **${fmt(erpVariance)}** |
+${ud.rows.length || ud.headerTotal ? `
+**Memo — unconfirmed UD payments (awaiting bank reconciliation; not deducted, not matched):** header \`UD PAY/CHEQUES\` R${fmt(ud.headerTotal)}${ud.unexplained ? ` · **R${fmt(ud.unexplained)} of it is not listed as a UD row in this TXT**` : ''}
 
+| Date | Doc # | Reference | Amount (R) |
+| :--- | :--- | :--- | ---: |
+${ud.rows.map((r) => `| ${displayDate(r.iso)} | ${r.clean_doc} | ${r.ref_no || '—'} | ${fmt(r.amount)} |`).join('\n')}
+${ud.rows.some((r) => r.iso < cfg.periodStart) ? '\n*UD rows dated before the period start sit inside the opening B/F; a non-zero variance above may be that.*\n' : ''}` : ''}
 ---
 
 ${ingestGateSection}
@@ -766,6 +784,7 @@ ${custodyBlockedNote}
     finals: { finalLpg, finalCyl, finalCombined },
     txtRelPath: txtRel,
     dbChannel: process.env.DB_REPLAY_DIR ? 'supabase-connector-replay' : 'direct',
+    udPending: ud.rows.length || ud.headerTotal ? { ...ud, inWindow: udInWindow.length } : null,
   });
   fs.mkdirSync(path.dirname(projectionPath), { recursive: true });
   fs.writeFileSync(projectionPath, `${JSON.stringify(projection, null, 2)}\n`);

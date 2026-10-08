@@ -105,6 +105,7 @@ export function buildV5Projection({
   generatedAt = new Date().toISOString(),
   txtRelPath,
   dbChannel = 'direct',
+  udPending = null,
 }) {
   const rows = financial.flatMap(laneRowsFor);
 
@@ -165,6 +166,8 @@ export function buildV5Projection({
       : null,
     checks,
     summary: { rowCount: rows.length, splitBasisCounts: basisCounts },
+    // UD (unconfirmed) payments: excluded from rows and from the ERP header; memo only.
+    ...(udPending ? { udPending } : {}),
     rows,
   };
 }

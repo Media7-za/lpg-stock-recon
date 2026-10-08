@@ -219,6 +219,15 @@ export function renderOpenItemsMarkdown(model, { cfg, projection, matches, gener
     L.push(`| **Variance** | | | **${fmt(round2(proof.combined - proof.erp))}** |`);
   }
   L.push('');
+  const ud = projection.udPending;
+  if (ud && (ud.rows.length || ud.headerTotal)) {
+    L.push(
+      internal
+        ? `**Memo: unconfirmed UD payments R${fmt(ud.headerTotal)}** (awaiting bank reconciliation; not deducted from the balance and not matched): ${ud.rows.map((r) => `${r.clean_doc} ${r.iso} R${fmt(r.amount)}`).join('; ')}${ud.unexplained ? ` · R${fmt(ud.unexplained)} not listed as UD rows` : ''}.`
+        : `**Note:** payment(s) of R${fmt(-ud.headerTotal)} received but not yet confirmed by our bank reconciliation; they will be credited once confirmed.`,
+      '',
+    );
+  }
   for (const pp of model.partPaid || []) {
     const inv = parts.lpg.lines.find((l) => l.doc === pp.doc);
     const owed = inv ? ` = R${fmt(round2(inv.amount + pp.amount))} outstanding` : '';

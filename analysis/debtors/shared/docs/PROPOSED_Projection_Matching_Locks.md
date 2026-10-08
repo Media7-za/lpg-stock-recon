@@ -395,3 +395,10 @@ and lock file must pass.
 - **Rejected alternative:** unbounded FIFO was tried and dropped. It reached back months (RED001 40727 → 43614) and overturned a ratified ruling (MOZ002 43640 ↔ 49550, 2026-07-20).
 - **Effect on open matches:** re-matching swapped equal-amount pairings in MD0003 (4), MOZ002 (4), TAN002 (8) and MON001 (2). Open totals are unchanged. No locked tie changed.
 - **Operator approval (2026-10-08):** the 14-day `fifoWindowDays` was proposed by the agent. The operator approved it with "Ok", replying to the agent's recommendation to keep 14 days. The rest of the proposal remains NOT RATIFIED (ADM-90). **Tripwire:** reopen the window if a ruling or remittance shows a payment settling an older invoice more than 14 days before the closest one.
+
+**Amendment (2026-10-08, operator rulings): UD payments are unconfirmed.** A FINCON `Ud Paymnt` row is a receipt captured but not yet confirmed by the bank reconciliation agent, so it is not money received. The operator said "No, UD Payments are not yet ratified by bank reconciliation agent…", and answered "Yes" to building the handling.
+- `reconcile_debtor_v5_from_txt.mjs` drops UD rows from the statement and projection rows, so the account ties to the ERP `CURRENT BALANCE`, which already excludes them.
+- The UD rows are reported as a memo (`projection.udPending`; a statement memo; an open-items memo line) and are never matched.
+- When the bank confirms one, FINCON posts it as a payment (or a Bank UD/Payment pair) and it matches normally.
+- Statements without UD rows are byte-identical (SA0001 checked).
+- **Tripwire:** a UD row dated before `periodStart` sits inside the B/F and shows as a variance with a note. Revisit this if any account hits it (GAS004, TAN001, FAM000 and WO0001 TXTs carry old UD rows).
