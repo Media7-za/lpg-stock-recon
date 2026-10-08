@@ -1,110 +1,1984 @@
 {
-  "batches": [],
-  "skipped": [
+  "batches": [
     {
-      "file": "remittance_manifest_2023.json",
       "batchId": "BATCH-2023-06-26",
-      "reason": "unsupported manifest schema (expected batchId + remittanceTotal); adapter not built"
+      "paymentDoc": "22182",
+      "remittanceDate": "2023-06-19",
+      "cash": 45264.25,
+      "manifest": "data/remittance_manifest_2023.json",
+      "discount": 1160.62,
+      "adviceDiscount": 1160.62,
+      "lines": [
+        {
+          "invoiceDate": "2023-04-28",
+          "docType": "Invoice",
+          "doc": "19704",
+          "gross": 9509.1,
+          "discount": 237.73,
+          "paid": 9271.37
+        },
+        {
+          "invoiceDate": "2023-04-28",
+          "docType": "Invoice",
+          "doc": "19706",
+          "gross": 11362,
+          "discount": 284.05,
+          "paid": 11077.95
+        },
+        {
+          "invoiceDate": "2023-04-29",
+          "docType": "Invoice",
+          "doc": "19768",
+          "gross": 10726.82,
+          "discount": 268.17,
+          "paid": 10458.65
+        },
+        {
+          "invoiceDate": "2023-04-29",
+          "docType": "Invoice",
+          "doc": "19769",
+          "gross": 12558,
+          "discount": 313.95,
+          "paid": 12244.05
+        },
+        {
+          "invoiceDate": "2023-05-24",
+          "docType": "Invoice",
+          "doc": "20606",
+          "gross": 2268.95,
+          "discount": 56.72,
+          "paid": 2212.23
+        }
+      ],
+      "source": {
+        "method": "manifest-snake",
+        "file": "data/remittance_lines_2023.csv",
+        "remittanceRef": "B226/KRD4028219",
+        "advice": "raw/Remittances/26.06.2023.pdf"
+      },
+      "checks": {
+        "linesSumToCash": true,
+        "sumPaid": 45264.25
+      }
     },
     {
-      "file": "remittance_manifest_2023.json",
       "batchId": "BATCH-2023-07-26",
-      "reason": "unsupported manifest schema (expected batchId + remittanceTotal); adapter not built"
+      "paymentDoc": "23115",
+      "remittanceDate": "2023-07-17",
+      "cash": 7942.14,
+      "manifest": "data/remittance_manifest_2023.json",
+      "discount": 203.65,
+      "adviceDiscount": 203.65,
+      "lines": [
+        {
+          "invoiceDate": "2023-06-08",
+          "docType": "Invoice",
+          "doc": "21122",
+          "gross": 3491.05,
+          "discount": 87.28,
+          "paid": 3403.77
+        },
+        {
+          "invoiceDate": "2023-06-23",
+          "docType": "Invoice",
+          "doc": "21594",
+          "gross": 4654.74,
+          "discount": 116.37,
+          "paid": 4538.37
+        }
+      ],
+      "source": {
+        "method": "manifest-snake",
+        "file": "data/remittance_lines_2023.csv",
+        "remittanceRef": "B226/KRD4028723",
+        "advice": "raw/Remittances/26.07.2023.pdf"
+      },
+      "checks": {
+        "linesSumToCash": true,
+        "sumPaid": 7942.14
+      }
     },
     {
-      "file": "remittance_manifest_2023.json",
       "batchId": "BATCH-2023-08-28",
-      "reason": "unsupported manifest schema (expected batchId + remittanceTotal); adapter not built"
+      "paymentDoc": "23836",
+      "remittanceDate": "2023-08-17",
+      "cash": 26924.19,
+      "manifest": "data/remittance_manifest_2023.json",
+      "discount": 469.22,
+      "adviceDiscount": 469.22,
+      "lines": [
+        {
+          "invoiceDate": "2023-05-24",
+          "docType": "Invoice",
+          "doc": "20607",
+          "gross": 3450,
+          "discount": 0,
+          "paid": 3450
+        },
+        {
+          "invoiceDate": "2023-06-08",
+          "docType": "Invoice",
+          "doc": "21123",
+          "gross": 5175,
+          "discount": 0,
+          "paid": 5175
+        },
+        {
+          "invoiceDate": "2023-06-23",
+          "docType": "Invoice",
+          "doc": "21597",
+          "gross": 6900,
+          "discount": 172.5,
+          "paid": 6727.5
+        },
+        {
+          "invoiceDate": "2023-07-06",
+          "docType": "Invoice",
+          "doc": "22058",
+          "gross": 7245,
+          "discount": 181.13,
+          "paid": 7063.87
+        },
+        {
+          "invoiceDate": "2023-07-06",
+          "docType": "Invoice",
+          "doc": "22060",
+          "gross": 7059.9,
+          "discount": 176.5,
+          "paid": 6883.4
+        },
+        {
+          "invoiceDate": "2023-07-12",
+          "docType": "Invoice",
+          "doc": "22255",
+          "gross": 5359,
+          "discount": 133.98,
+          "paid": 5225.02
+        },
+        {
+          "invoiceDate": "2023-07-12",
+          "docType": "Invoice",
+          "doc": "22268",
+          "gross": 6900,
+          "discount": 172.5,
+          "paid": 6727.5
+        },
+        {
+          "invoiceDate": "2023-07-20",
+          "docType": "Crd Note",
+          "doc": "5038",
+          "gross": -3105,
+          "discount": -77.63,
+          "paid": -3027.37
+        },
+        {
+          "invoiceDate": "2023-07-20",
+          "docType": "Crd Note",
+          "doc": "5308",
+          "gross": -6555,
+          "discount": -163.88,
+          "paid": -6391.12
+        },
+        {
+          "invoiceDate": "2023-07-20",
+          "docType": "Crd Note",
+          "doc": "5498",
+          "gross": -6900,
+          "discount": -172.5,
+          "paid": -6727.5
+        },
+        {
+          "invoiceDate": "2023-07-21",
+          "docType": "Invoice",
+          "doc": "22626",
+          "gross": 8621.01,
+          "discount": 215.53,
+          "paid": 8405.48
+        },
+        {
+          "invoiceDate": "2023-07-21",
+          "docType": "Invoice",
+          "doc": "22627",
+          "gross": 10350,
+          "discount": 258.75,
+          "paid": 10091.25
+        },
+        {
+          "invoiceDate": "2023-07-24",
+          "docType": "Invoice",
+          "doc": "22702",
+          "gross": 2213.5,
+          "discount": 55.34,
+          "paid": 2158.16
+        },
+        {
+          "invoiceDate": "2023-07-24",
+          "docType": "Invoice",
+          "doc": "22739",
+          "gross": 1725,
+          "discount": 43.13,
+          "paid": 1681.87
+        },
+        {
+          "invoiceDate": "2023-07-26",
+          "docType": "Crd Note",
+          "doc": "5603",
+          "gross": -7590,
+          "discount": -189.75,
+          "paid": -7400.25
+        },
+        {
+          "invoiceDate": "2023-07-31",
+          "docType": "Crd Note",
+          "doc": "5155",
+          "gross": -5175,
+          "discount": -129.38,
+          "paid": -5045.62
+        },
+        {
+          "invoiceDate": "2023-08-02",
+          "docType": "Crd Note",
+          "doc": "5443",
+          "gross": -6210,
+          "discount": -155.25,
+          "paid": -6054.75
+        },
+        {
+          "invoiceDate": "2023-08-04",
+          "docType": "Crd Note",
+          "doc": "5632",
+          "gross": -2070,
+          "discount": -51.75,
+          "paid": -2018.25
+        }
+      ],
+      "source": {
+        "method": "manifest-snake",
+        "file": "data/remittance_lines_2023.csv",
+        "remittanceRef": "B226/KRD4029225",
+        "advice": "raw/Remittances/28.08.2023.pdf"
+      },
+      "checks": {
+        "linesSumToCash": true,
+        "sumPaid": 26924.19
+      }
     },
     {
-      "file": "remittance_manifest_2023.json",
       "batchId": "BATCH-2023-09-26",
-      "reason": "unsupported manifest schema (expected batchId + remittanceTotal); adapter not built"
+      "paymentDoc": "24560",
+      "remittanceDate": "2023-09-19",
+      "cash": 14317.17,
+      "manifest": "data/remittance_manifest_2023.json",
+      "discount": 367.1,
+      "adviceDiscount": 367.1,
+      "lines": [
+        {
+          "invoiceDate": "2023-08-03",
+          "docType": "Invoice",
+          "doc": "23075",
+          "gross": 3943.81,
+          "discount": 89.97,
+          "paid": 3508.84,
+          "alreadyPaid": 345
+        },
+        {
+          "invoiceDate": "2023-08-03",
+          "docType": "Invoice",
+          "doc": "23077",
+          "gross": 6900,
+          "discount": 172.5,
+          "paid": 6727.5
+        },
+        {
+          "invoiceDate": "2023-08-08",
+          "docType": "Crd Note",
+          "doc": "5768",
+          "gross": -4830,
+          "discount": -120.75,
+          "paid": -4709.25
+        },
+        {
+          "invoiceDate": "2023-08-10",
+          "docType": "Invoice",
+          "doc": "23311",
+          "gross": 7142.65,
+          "discount": 178.57,
+          "paid": 6964.08
+        },
+        {
+          "invoiceDate": "2023-08-10",
+          "docType": "Invoice",
+          "doc": "23312",
+          "gross": 7590,
+          "discount": 189.75,
+          "paid": 7400.25
+        },
+        {
+          "invoiceDate": "2023-08-14",
+          "docType": "Crd Note",
+          "doc": "5845",
+          "gross": -5175,
+          "discount": -129.38,
+          "paid": -5045.62
+        },
+        {
+          "invoiceDate": "2023-08-14",
+          "docType": "Crd Note",
+          "doc": "5845/5875",
+          "gross": -197.17,
+          "discount": -4.93,
+          "paid": -192.24
+        },
+        {
+          "invoiceDate": "2023-08-16",
+          "docType": "Crd Note",
+          "doc": "5875",
+          "gross": -345,
+          "discount": -8.63,
+          "paid": -336.37
+        },
+        {
+          "invoiceDate": "2023-08-31",
+          "docType": "Invoice",
+          "doc": "STMT-DIFF-AUG23",
+          "gross": -0.02,
+          "discount": 0,
+          "paid": -0.02
+        }
+      ],
+      "source": {
+        "method": "manifest-snake",
+        "file": "data/remittance_lines_2023.csv",
+        "remittanceRef": "B226/KRD4029717",
+        "advice": "raw/Remittances/26.09.2023.pdf"
+      },
+      "checks": {
+        "linesSumToCash": true,
+        "sumPaid": 14317.17
+      }
     },
     {
-      "file": "remittance_manifest_2023.json",
       "batchId": "BATCH-2023-10-26",
-      "reason": "unsupported manifest schema (expected batchId + remittanceTotal); adapter not built"
+      "paymentDoc": "25906",
+      "remittanceDate": "2023-10-18",
+      "cash": 16637.78,
+      "manifest": "data/remittance_manifest_2023.json",
+      "discount": 426.6,
+      "adviceDiscount": 426.6,
+      "lines": [
+        {
+          "invoiceDate": "2023-09-01",
+          "docType": "Invoice",
+          "doc": "24011",
+          "gross": 8532.19,
+          "discount": 127.05,
+          "paid": 4955.14,
+          "alreadyPaid": 3450
+        },
+        {
+          "invoiceDate": "2023-09-01",
+          "docType": "Invoice",
+          "doc": "24012",
+          "gross": 10350,
+          "discount": 258.75,
+          "paid": 10091.25
+        },
+        {
+          "invoiceDate": "2023-09-06",
+          "docType": "Invoice",
+          "doc": "24201",
+          "gross": 8532.19,
+          "discount": 213.3,
+          "paid": 8318.89
+        },
+        {
+          "invoiceDate": "2023-09-06",
+          "docType": "Invoice",
+          "doc": "24202",
+          "gross": 10350,
+          "discount": 258.75,
+          "paid": 10091.25
+        },
+        {
+          "invoiceDate": "2023-10-02",
+          "docType": "Invoice",
+          "doc": "25043",
+          "gross": 11040,
+          "discount": 276,
+          "paid": 10764
+        },
+        {
+          "invoiceDate": "2023-10-11",
+          "docType": "Crd Note",
+          "doc": "6078",
+          "gross": -10350,
+          "discount": -258.75,
+          "paid": -10091.25
+        },
+        {
+          "invoiceDate": "2023-10-11",
+          "docType": "Crd Note",
+          "doc": "6134",
+          "gross": -6900,
+          "discount": -172.5,
+          "paid": -6727.5
+        },
+        {
+          "invoiceDate": "2023-10-11",
+          "docType": "Crd Note",
+          "doc": "6387",
+          "gross": -11040,
+          "discount": -276,
+          "paid": -10764
+        }
+      ],
+      "source": {
+        "method": "manifest-snake",
+        "file": "data/remittance_lines_2023.csv",
+        "remittanceRef": "B226/KRDJ003560",
+        "advice": "raw/Remittances/26.10.2023.pdf"
+      },
+      "checks": {
+        "linesSumToCash": true,
+        "sumPaid": 16637.78
+      }
     },
     {
-      "file": "remittance_manifest_2023.json",
       "batchId": "BATCH-2023-11-27",
-      "reason": "unsupported manifest schema (expected batchId + remittanceTotal); adapter not built"
+      "paymentDoc": "26681",
+      "remittanceDate": "2023-11-20",
+      "cash": 30825.36,
+      "manifest": "data/remittance_manifest_2023.json",
+      "discount": 701.93,
+      "adviceDiscount": 701.93,
+      "lines": [
+        {
+          "invoiceDate": "2023-09-01",
+          "docType": "Invoice",
+          "doc": "24011",
+          "gross": 8532.19,
+          "discount": 0,
+          "paid": 3450,
+          "alreadyPaid": 5082.19
+        },
+        {
+          "invoiceDate": "2023-10-02",
+          "docType": "Invoice",
+          "doc": "25042",
+          "gross": 8330.42,
+          "discount": 208.26,
+          "paid": 8122.16
+        },
+        {
+          "invoiceDate": "2023-10-09",
+          "docType": "Invoice",
+          "doc": "25293",
+          "gross": 7466.86,
+          "discount": 186.67,
+          "paid": 7280.19
+        },
+        {
+          "invoiceDate": "2023-10-09",
+          "docType": "Invoice",
+          "doc": "25294",
+          "gross": 4140,
+          "discount": 103.5,
+          "paid": 4036.5
+        },
+        {
+          "invoiceDate": "2023-10-25",
+          "docType": "Crd Note",
+          "doc": "6461",
+          "gross": -3450,
+          "discount": -86.25,
+          "paid": -3363.75
+        },
+        {
+          "invoiceDate": "2023-10-25",
+          "docType": "Crd Note",
+          "doc": "6462",
+          "gross": -4485,
+          "discount": -112.13,
+          "paid": -4372.87
+        },
+        {
+          "invoiceDate": "2023-10-31",
+          "docType": "Invoice",
+          "doc": "26027",
+          "gross": 13315.01,
+          "discount": 332.88,
+          "paid": 12982.13
+        },
+        {
+          "invoiceDate": "2023-10-31",
+          "docType": "Invoice",
+          "doc": "26033",
+          "gross": 13800,
+          "discount": 345,
+          "paid": 13455
+        },
+        {
+          "invoiceDate": "2023-11-07",
+          "docType": "Crd Note",
+          "doc": "6667",
+          "gross": -11040,
+          "discount": -276,
+          "paid": -10764
+        }
+      ],
+      "source": {
+        "method": "manifest-snake",
+        "file": "data/remittance_lines_2023.csv",
+        "remittanceRef": "B226/KRDJ004047",
+        "advice": "raw/Remittances/27.11.2023.pdf"
+      },
+      "checks": {
+        "linesSumToCash": true,
+        "sumPaid": 30825.36
+      }
     },
     {
-      "file": "remittance_manifest_2024.json",
       "batchId": "BATCH-2024-03-26",
-      "reason": "unsupported manifest schema (expected batchId + remittanceTotal); adapter not built"
+      "paymentDoc": "29684",
+      "remittanceDate": "2024-03-18",
+      "cash": 73610.18,
+      "manifest": "data/remittance_manifest_2024.json",
+      "discount": 506.36,
+      "adviceDiscount": 506.36,
+      "lines": [
+        {
+          "invoiceDate": "2023-08-03",
+          "docType": "Invoice",
+          "doc": "23075",
+          "gross": 3943.81,
+          "discount": 0,
+          "paid": 345,
+          "alreadyPaid": 3598.81
+        },
+        {
+          "invoiceDate": "2023-11-14",
+          "docType": "Invoice",
+          "doc": "26554",
+          "gross": 10350,
+          "discount": 0,
+          "paid": 10350
+        },
+        {
+          "invoiceDate": "2023-11-14",
+          "docType": "Invoice",
+          "doc": "26577",
+          "gross": 8764.79,
+          "discount": 0,
+          "paid": 8764.79
+        },
+        {
+          "invoiceDate": "2023-11-22",
+          "docType": "Crd Note",
+          "doc": "6810",
+          "gross": -10005,
+          "discount": 0,
+          "paid": -10005
+        },
+        {
+          "invoiceDate": "2023-12-06",
+          "docType": "Invoice",
+          "doc": "27340",
+          "gross": 23007.6,
+          "discount": 0,
+          "paid": 23007.6
+        },
+        {
+          "invoiceDate": "2023-12-06",
+          "docType": "Invoice",
+          "doc": "27341",
+          "gross": 19320,
+          "discount": 0,
+          "paid": 19320
+        },
+        {
+          "invoiceDate": "2023-12-11",
+          "docType": "Crd Note",
+          "doc": "6990",
+          "gross": -16215,
+          "discount": 0,
+          "paid": -16215
+        },
+        {
+          "invoiceDate": "2023-12-19",
+          "docType": "Invoice",
+          "doc": "27764",
+          "gross": 13119.2,
+          "discount": 0,
+          "paid": 13119.2
+        },
+        {
+          "invoiceDate": "2023-12-19",
+          "docType": "Invoice",
+          "doc": "27765",
+          "gross": 13800,
+          "discount": 0,
+          "paid": 13800
+        },
+        {
+          "invoiceDate": "2024-01-09",
+          "docType": "Crd Note",
+          "doc": "7127",
+          "gross": -8625,
+          "discount": 0,
+          "paid": -8625
+        },
+        {
+          "invoiceDate": "2024-01-18",
+          "docType": "Invoice",
+          "doc": "28766",
+          "gross": 8625,
+          "discount": 215.63,
+          "paid": 8409.37
+        },
+        {
+          "invoiceDate": "2024-01-18",
+          "docType": "Invoice",
+          "doc": "28765",
+          "gross": 10732.43,
+          "discount": 268.31,
+          "paid": 10464.12
+        },
+        {
+          "invoiceDate": "2024-01-23",
+          "docType": "Crd Note",
+          "doc": "7332",
+          "gross": -8625,
+          "discount": -215.63,
+          "paid": -8409.37
+        },
+        {
+          "invoiceDate": "2024-01-31",
+          "docType": "Invoice",
+          "doc": "29140",
+          "gross": 14650.14,
+          "discount": 366.25,
+          "paid": 14283.89
+        },
+        {
+          "invoiceDate": "2024-02-06",
+          "docType": "Crd Note",
+          "doc": "7410",
+          "gross": -18285,
+          "discount": -457.13,
+          "paid": -17827.87
+        },
+        {
+          "invoiceDate": "2024-02-26",
+          "docType": "Invoice",
+          "doc": "29889",
+          "gross": 11363.38,
+          "discount": 284.08,
+          "paid": 11079.3
+        },
+        {
+          "invoiceDate": "2024-02-26",
+          "docType": "Invoice",
+          "doc": "29890",
+          "gross": 17940,
+          "discount": 448.5,
+          "paid": 17491.5
+        },
+        {
+          "invoiceDate": "2024-02-28",
+          "docType": "Crd Note",
+          "doc": "7547",
+          "gross": -16146,
+          "discount": -403.65,
+          "paid": -15742.35
+        }
+      ],
+      "source": {
+        "method": "manifest-snake",
+        "file": "data/remittance_manifest_2024.json",
+        "remittanceRef": "B226/KRDF001810",
+        "advice": "raw/Remittances/26.03.2024.pdf"
+      },
+      "checks": {
+        "linesSumToCash": true,
+        "sumPaid": 73610.18
+      }
     },
     {
-      "file": "remittance_manifest_2024.json",
       "batchId": "BATCH-2024-04-26",
-      "reason": "unsupported manifest schema (expected batchId + remittanceTotal); adapter not built"
+      "paymentDoc": "30419",
+      "remittanceDate": "2024-04-16",
+      "cash": 28428.84,
+      "manifest": "data/remittance_manifest_2024.json",
+      "discount": 375.1,
+      "adviceDiscount": 375.1,
+      "lines": [
+        {
+          "invoiceDate": "2024-01-31",
+          "docType": "Invoice",
+          "doc": "29141",
+          "gross": 13800,
+          "discount": 0,
+          "paid": 13800
+        },
+        {
+          "invoiceDate": "2024-03-27",
+          "docType": "Invoice",
+          "doc": "30762",
+          "gross": 15003.94,
+          "discount": 375.1,
+          "paid": 14628.84
+        },
+        {
+          "invoiceDate": "2024-03-27",
+          "docType": "Invoice",
+          "doc": "30763",
+          "gross": 23920,
+          "discount": 598,
+          "paid": 23322
+        },
+        {
+          "invoiceDate": "2024-03-28",
+          "docType": "Crd Note",
+          "doc": "7848",
+          "gross": -23920,
+          "discount": -598,
+          "paid": -23322
+        }
+      ],
+      "source": {
+        "method": "manifest-snake",
+        "file": "data/remittance_manifest_2024.json",
+        "remittanceRef": "B226/KRDF002430",
+        "advice": "raw/Remittances/26.04.2024.pdf"
+      },
+      "checks": {
+        "linesSumToCash": true,
+        "sumPaid": 28428.84
+      }
     },
     {
-      "file": "remittance_manifest_2024.json",
       "batchId": "BATCH-2024-05-27",
-      "reason": "unsupported manifest schema (expected batchId + remittanceTotal); adapter not built"
+      "paymentDoc": "31365",
+      "remittanceDate": "2024-05-16",
+      "cash": 11721.1,
+      "manifest": "data/remittance_manifest_2024.json",
+      "discount": 300.54,
+      "adviceDiscount": 300.54,
+      "lines": [
+        {
+          "invoiceDate": "2024-04-18",
+          "docType": "Invoice",
+          "doc": "31404",
+          "gross": 10825.64,
+          "discount": 270.64,
+          "paid": 10555
+        },
+        {
+          "invoiceDate": "2024-04-18",
+          "docType": "Invoice",
+          "doc": "31405",
+          "gross": 17940,
+          "discount": 448.5,
+          "paid": 17491.5
+        },
+        {
+          "invoiceDate": "2024-04-19",
+          "docType": "Crd Note",
+          "doc": "8120",
+          "gross": -16744,
+          "discount": -418.6,
+          "paid": -16325.4
+        }
+      ],
+      "source": {
+        "method": "manifest-snake",
+        "file": "data/remittance_manifest_2024.json",
+        "remittanceRef": "B226/KRD4030447",
+        "advice": "raw/Remittances/27.05.2024.pdf"
+      },
+      "checks": {
+        "linesSumToCash": true,
+        "sumPaid": 11721.1
+      }
     },
     {
-      "file": "remittance_manifest_2024.json",
       "batchId": "BATCH-2024-06-26",
-      "reason": "unsupported manifest schema (expected batchId + remittanceTotal); adapter not built"
+      "paymentDoc": "31558",
+      "remittanceDate": "2024-06-20",
+      "cash": 37294.98,
+      "manifest": "data/remittance_manifest_2024.json",
+      "discount": 956.28,
+      "adviceDiscount": 956.28,
+      "lines": [
+        {
+          "invoiceDate": "2024-05-06",
+          "docType": "Invoice",
+          "doc": "31907",
+          "gross": 10677.41,
+          "discount": 266.94,
+          "paid": 10410.47
+        },
+        {
+          "invoiceDate": "2024-05-06",
+          "docType": "Invoice",
+          "doc": "31908",
+          "gross": 17940,
+          "discount": 448.5,
+          "paid": 17491.5
+        },
+        {
+          "invoiceDate": "2024-05-07",
+          "docType": "Crd Note",
+          "doc": "8324",
+          "gross": -16744,
+          "discount": -418.6,
+          "paid": -16325.4
+        },
+        {
+          "invoiceDate": "2024-05-24",
+          "docType": "Invoice",
+          "doc": "32419",
+          "gross": 17956.15,
+          "discount": 448.9,
+          "paid": 17507.25
+        },
+        {
+          "invoiceDate": "2024-05-24",
+          "docType": "Invoice",
+          "doc": "32425",
+          "gross": 28106,
+          "discount": 702.65,
+          "paid": 27403.35
+        },
+        {
+          "invoiceDate": "2024-06-06",
+          "docType": "Crd Note",
+          "doc": "8530",
+          "gross": -19136,
+          "discount": -478.4,
+          "paid": -18657.6
+        },
+        {
+          "invoiceDate": "2024-06-07",
+          "docType": "Crd Note",
+          "doc": "8700",
+          "gross": -548.3,
+          "discount": -13.71,
+          "paid": -534.59
+        }
+      ],
+      "source": {
+        "method": "manifest-snake",
+        "file": "data/remittance_manifest_2024.json",
+        "remittanceRef": "B226/KRD4030976",
+        "advice": "raw/Remittances/26.06.2024.pdf"
+      },
+      "checks": {
+        "linesSumToCash": true,
+        "sumPaid": 37294.98
+      }
     },
     {
-      "file": "remittance_manifest_2024.json",
       "batchId": "BATCH-2024-07-26",
-      "reason": "unsupported manifest schema (expected batchId + remittanceTotal); adapter not built"
+      "paymentDoc": "32332",
+      "remittanceDate": "2024-07-16",
+      "cash": 16737.35,
+      "manifest": "data/remittance_manifest_2024.json",
+      "discount": 429.16,
+      "adviceDiscount": 429.16,
+      "lines": [
+        {
+          "invoiceDate": "2024-06-20",
+          "docType": "Crd Note",
+          "doc": "8913",
+          "gross": -25116,
+          "discount": -627.9,
+          "paid": -24488.1
+        },
+        {
+          "invoiceDate": "2024-06-20",
+          "docType": "Invoice",
+          "doc": "33277",
+          "gross": 15372.51,
+          "discount": 384.31,
+          "paid": 14988.2
+        },
+        {
+          "invoiceDate": "2024-06-20",
+          "docType": "Invoice",
+          "doc": "33278",
+          "gross": 26910,
+          "discount": 672.75,
+          "paid": 26237.25
+        }
+      ],
+      "source": {
+        "method": "manifest-snake",
+        "file": "data/remittance_manifest_2024.json",
+        "remittanceRef": "B226/KRD4031508",
+        "advice": "raw/Remittances/26.07.2024.pdf"
+      },
+      "checks": {
+        "linesSumToCash": true,
+        "sumPaid": 16737.35
+      }
     },
     {
-      "file": "remittance_manifest_2024.json",
       "batchId": "BATCH-2024-08-26",
-      "reason": "unsupported manifest schema (expected batchId + remittanceTotal); adapter not built"
+      "paymentDoc": "33224",
+      "remittanceDate": "2024-08-16",
+      "cash": 21197.32,
+      "manifest": "data/remittance_manifest_2024.json",
+      "discount": 543.52,
+      "adviceDiscount": 543.52,
+      "lines": [
+        {
+          "invoiceDate": "2024-07-04",
+          "docType": "Invoice",
+          "doc": "33800",
+          "gross": 8724.99,
+          "discount": 218.12,
+          "paid": 8506.87
+        },
+        {
+          "invoiceDate": "2024-07-18",
+          "docType": "Invoice",
+          "doc": "34342",
+          "gross": 13613.85,
+          "discount": 340.35,
+          "paid": 13273.5
+        },
+        {
+          "invoiceDate": "2024-07-18",
+          "docType": "Invoice",
+          "doc": "34343",
+          "gross": 19136,
+          "discount": 478.4,
+          "paid": 18657.6
+        },
+        {
+          "invoiceDate": "2024-07-30",
+          "docType": "Crd Note",
+          "doc": "9426",
+          "gross": -19734,
+          "discount": -493.35,
+          "paid": -19240.65
+        }
+      ],
+      "source": {
+        "method": "manifest-snake",
+        "file": "data/remittance_manifest_2024.json",
+        "remittanceRef": "B226/KRD4032031",
+        "advice": "raw/Remittances/26.08.2024.pdf"
+      },
+      "checks": {
+        "linesSumToCash": true,
+        "sumPaid": 21197.32
+      }
     },
     {
-      "file": "remittance_manifest_2024.json",
       "batchId": "BATCH-2024-09-26",
-      "reason": "unsupported manifest schema (expected batchId + remittanceTotal); adapter not built"
+      "paymentDoc": "33921",
+      "remittanceDate": "2024-09-17",
+      "cash": 2984.27,
+      "manifest": "data/remittance_manifest_2024.json",
+      "discount": -233.1,
+      "adviceDiscount": -233.1,
+      "lines": [
+        {
+          "invoiceDate": "2024-07-04",
+          "docType": "Invoice",
+          "doc": "33801",
+          "gross": 12075,
+          "discount": 0,
+          "paid": 12075
+        },
+        {
+          "invoiceDate": "2024-07-17",
+          "docType": "Crd Note",
+          "doc": "9393",
+          "gross": -20930,
+          "discount": -523.25,
+          "paid": -20406.75
+        },
+        {
+          "invoiceDate": "2024-08-08",
+          "docType": "Invoice",
+          "doc": "35091",
+          "gross": 11606.17,
+          "discount": 290.15,
+          "paid": 11316.02
+        },
+        {
+          "invoiceDate": "2024-08-08",
+          "docType": "Invoice",
+          "doc": "35092",
+          "gross": 22724,
+          "discount": 568.1,
+          "paid": 22155.9
+        },
+        {
+          "invoiceDate": "2024-08-14",
+          "docType": "Crd Note",
+          "doc": "9769",
+          "gross": -22724,
+          "discount": -568.1,
+          "paid": -22155.9
+        }
+      ],
+      "source": {
+        "method": "manifest-snake",
+        "file": "data/remittance_manifest_2024.json",
+        "remittanceRef": "B226/KRD4032593",
+        "advice": "raw/Remittances/26.09.2024.pdf"
+      },
+      "checks": {
+        "linesSumToCash": true,
+        "sumPaid": 2984.27
+      }
     },
     {
-      "file": "remittance_manifest_2024.json",
       "batchId": "BATCH-2024-10-26",
-      "reason": "unsupported manifest schema (expected batchId + remittanceTotal); adapter not built"
+      "paymentDoc": "34518",
+      "remittanceDate": "2024-10-16",
+      "cash": 38338.45,
+      "manifest": "data/remittance_manifest_2024.json",
+      "discount": 983.04,
+      "adviceDiscount": 983.04,
+      "lines": [
+        {
+          "invoiceDate": "2024-09-06",
+          "docType": "Invoice",
+          "doc": "36005",
+          "gross": 15401.49,
+          "discount": 385.04,
+          "paid": 15016.45
+        },
+        {
+          "invoiceDate": "2024-09-06",
+          "docType": "Invoice",
+          "doc": "36006",
+          "gross": 23920,
+          "discount": 598,
+          "paid": 23322
+        }
+      ],
+      "source": {
+        "method": "manifest-snake",
+        "file": "data/remittance_manifest_2024.json",
+        "remittanceRef": "B226/KRD4033163",
+        "advice": "raw/Remittances/26.10.2024.pdf"
+      },
+      "checks": {
+        "linesSumToCash": true,
+        "sumPaid": 38338.45
+      }
     },
     {
-      "file": "remittance_manifest_2024.json",
       "batchId": "BATCH-2024-11-26",
-      "reason": "unsupported manifest schema (expected batchId + remittanceTotal); adapter not built"
+      "paymentDoc": "35263",
+      "remittanceDate": "2024-11-15",
+      "cash": 21529.67,
+      "manifest": "data/remittance_manifest_2024.json",
+      "discount": 552.04,
+      "adviceDiscount": 552.04,
+      "lines": [
+        {
+          "invoiceDate": "2024-10-03",
+          "docType": "Invoice",
+          "doc": "36926",
+          "gross": 21036.66,
+          "discount": 525.92,
+          "paid": 20510.74
+        },
+        {
+          "invoiceDate": "2024-10-03",
+          "docType": "Invoice",
+          "doc": "37189",
+          "gross": 21045,
+          "discount": 526.13,
+          "paid": 20518.87
+        },
+        {
+          "invoiceDate": "2024-10-23",
+          "docType": "Crd Note",
+          "doc": "10617",
+          "gross": -17100.02,
+          "discount": -427.5,
+          "paid": -16672.52
+        },
+        {
+          "invoiceDate": "2024-10-28",
+          "docType": "Crd Note",
+          "doc": "10189",
+          "gross": -25611.05,
+          "discount": -640.28,
+          "paid": -24970.77
+        },
+        {
+          "invoiceDate": "2024-10-31",
+          "docType": "Invoice",
+          "doc": "37817",
+          "gross": 20296.12,
+          "discount": 507.4,
+          "paid": 19788.72
+        },
+        {
+          "invoiceDate": "2024-10-31",
+          "docType": "Invoice",
+          "doc": "37818",
+          "gross": 20700,
+          "discount": 517.5,
+          "paid": 20182.5
+        },
+        {
+          "invoiceDate": "2024-11-01",
+          "docType": "Crd Note",
+          "doc": "11003",
+          "gross": -18285,
+          "discount": -457.13,
+          "paid": -17827.87
+        }
+      ],
+      "source": {
+        "method": "manifest-snake",
+        "file": "data/remittance_manifest_2024.json",
+        "remittanceRef": "B226/KRD4033731",
+        "advice": "raw/Remittances/26.11.2024.pdf"
+      },
+      "checks": {
+        "linesSumToCash": true,
+        "sumPaid": 21529.67
+      }
     },
     {
-      "file": "remittance_manifest_2024.json",
       "batchId": "BATCH-2024-12-27",
-      "reason": "unsupported manifest schema (expected batchId + remittanceTotal); adapter not built"
+      "paymentDoc": "36195",
+      "remittanceDate": "2024-12-17",
+      "cash": 12104.7,
+      "manifest": "data/remittance_manifest_2024.json",
+      "discount": 310.37,
+      "adviceDiscount": 310.37,
+      "lines": [
+        {
+          "invoiceDate": "2024-11-26",
+          "docType": "Invoice",
+          "doc": "38582",
+          "gross": 34840.07,
+          "discount": 871,
+          "paid": 33969.07
+        },
+        {
+          "invoiceDate": "2024-12-06",
+          "docType": "Crd Note",
+          "doc": "11320",
+          "gross": -22425,
+          "discount": -560.63,
+          "paid": -21864.37
+        }
+      ],
+      "source": {
+        "method": "manifest-snake",
+        "file": "data/remittance_manifest_2024.json",
+        "remittanceRef": "B226/KRD4034322",
+        "advice": "raw/Remittances/27.12.2024.pdf"
+      },
+      "checks": {
+        "linesSumToCash": true,
+        "sumPaid": 12104.7
+      }
     },
     {
-      "file": "remittance_manifest_2025.json",
       "batchId": "BATCH-2025-01-31",
-      "reason": "unsupported manifest schema (expected batchId + remittanceTotal); adapter not built"
+      "paymentDoc": "36467",
+      "remittanceDate": "2025-01-20",
+      "cash": 4398.27,
+      "manifest": "data/remittance_manifest_2025.json",
+      "discount": 112.78,
+      "adviceDiscount": 112.78,
+      "lines": [
+        {
+          "invoiceDate": "2024-12-13",
+          "docType": "Invoice",
+          "doc": "39022",
+          "gross": 20381.05,
+          "discount": 509.53,
+          "paid": 19871.52
+        },
+        {
+          "invoiceDate": "2024-12-20",
+          "docType": "Crd Note",
+          "doc": "11475",
+          "gross": -15870,
+          "discount": -396.75,
+          "paid": -15473.25
+        }
+      ],
+      "source": {
+        "method": "manifest-snake",
+        "file": "data/remittance_lines_2025.csv",
+        "remittanceRef": "B226/KRD4034867",
+        "advice": "raw/Remittances/31.01.2025.pdf"
+      },
+      "checks": {
+        "linesSumToCash": true,
+        "sumPaid": 4398.27
+      }
     },
     {
-      "file": "remittance_manifest_2025.json",
       "batchId": "BATCH-2025-03-31",
-      "reason": "unsupported manifest schema (expected batchId + remittanceTotal); adapter not built"
+      "paymentDoc": "37770",
+      "remittanceDate": "2025-03-19",
+      "cash": 35693.84,
+      "manifest": "data/remittance_manifest_2025.json",
+      "discount": 228.93,
+      "adviceDiscount": 228.93,
+      "lines": [
+        {
+          "invoiceDate": "2025-01-08",
+          "docType": "Invoice",
+          "doc": "39683",
+          "gross": 26765.92,
+          "discount": 0,
+          "paid": 26765.92
+        },
+        {
+          "invoiceDate": "2025-01-22",
+          "docType": "Invoice",
+          "doc": "40081",
+          "gross": 15608.03,
+          "discount": 390.2,
+          "paid": 15217.83
+        },
+        {
+          "invoiceDate": "2025-01-23",
+          "docType": "Crd Note",
+          "doc": "11648",
+          "gross": -15870,
+          "discount": -396.75,
+          "paid": -15473.25
+        },
+        {
+          "invoiceDate": "2025-01-23",
+          "docType": "Crd Note",
+          "doc": "11743",
+          "gross": -10350,
+          "discount": -258.75,
+          "paid": -10091.25
+        },
+        {
+          "invoiceDate": "2025-02-05",
+          "docType": "Invoice",
+          "doc": "40459",
+          "gross": 22945.95,
+          "discount": 573.65,
+          "paid": 22372.3
+        },
+        {
+          "invoiceDate": "2025-02-06",
+          "docType": "Crd Note",
+          "doc": "11821",
+          "gross": -13282.5,
+          "discount": -332.06,
+          "paid": -12950.44
+        },
+        {
+          "invoiceDate": "2025-02-24",
+          "docType": "Invoice",
+          "doc": "40950",
+          "gross": 25457.87,
+          "discount": 636.45,
+          "paid": 24821.42
+        },
+        {
+          "invoiceDate": "2025-02-26",
+          "docType": "Crd Note",
+          "doc": "11953",
+          "gross": -15352.5,
+          "discount": -383.81,
+          "paid": -14968.69
+        }
+      ],
+      "source": {
+        "method": "manifest-snake",
+        "file": "data/remittance_lines_2025.csv",
+        "remittanceRef": "B226/KRD4035899",
+        "advice": "raw/Remittances/31.03.2025(1).pdf"
+      },
+      "checks": {
+        "linesSumToCash": true,
+        "sumPaid": 35693.84
+      }
     },
     {
-      "file": "remittance_manifest_2025.json",
       "batchId": "BATCH-2025-05-31",
-      "reason": "unsupported manifest schema (expected batchId + remittanceTotal); adapter not built"
+      "paymentDoc": "39080",
+      "remittanceDate": "2025-05-19",
+      "cash": 15365.65,
+      "manifest": "data/remittance_manifest_2025.json",
+      "discount": 393.99,
+      "adviceDiscount": 393.99,
+      "lines": [
+        {
+          "invoiceDate": "2025-03-26",
+          "docType": "Invoice",
+          "doc": "41747",
+          "gross": 32064.13,
+          "discount": 495.94,
+          "paid": 19341.56,
+          "alreadyPaid": 12226.63
+        },
+        {
+          "invoiceDate": "2025-04-01",
+          "docType": "Crd Note",
+          "doc": "12131",
+          "gross": -6900,
+          "discount": -172.5,
+          "paid": -6727.5
+        },
+        {
+          "invoiceDate": "2025-04-01",
+          "docType": "Crd Note",
+          "doc": "12131",
+          "gross": -12937.5,
+          "discount": -323.44,
+          "paid": -12614.06
+        },
+        {
+          "invoiceDate": "2025-04-07",
+          "docType": "Invoice",
+          "doc": "42050",
+          "gross": 20133.97,
+          "discount": 503.35,
+          "paid": 19630.62
+        },
+        {
+          "invoiceDate": "2025-04-08",
+          "docType": "Crd Note",
+          "doc": "12214",
+          "gross": -12075,
+          "discount": -301.88,
+          "paid": -11773.12
+        },
+        {
+          "invoiceDate": "2025-04-08",
+          "docType": "Crd Note",
+          "doc": "12215",
+          "gross": -1249.77,
+          "discount": -31.24,
+          "paid": -1218.53
+        },
+        {
+          "invoiceDate": "2025-04-23",
+          "docType": "Invoice",
+          "doc": "42468",
+          "gross": 7713.58,
+          "discount": 192.84,
+          "paid": 7520.74
+        },
+        {
+          "invoiceDate": "2025-04-23",
+          "docType": "Invoice",
+          "doc": "42470",
+          "gross": 1236.86,
+          "discount": 30.92,
+          "paid": 1205.94
+        }
+      ],
+      "source": {
+        "method": "manifest-snake",
+        "file": "data/remittance_lines_2025.csv",
+        "remittanceRef": "B226/KRD4036995",
+        "advice": "raw/Remittances/31.05.2025.pdf"
+      },
+      "checks": {
+        "linesSumToCash": true,
+        "sumPaid": 15365.65
+      }
     },
     {
-      "file": "remittance_manifest_2026.json",
       "batchId": "BATCH-2026-STAT-123",
-      "reason": "unsupported manifest schema (expected batchId + remittanceTotal); adapter not built"
+      "paymentDoc": "43500",
+      "remittanceDate": "2026-02-18",
+      "cash": 240325.86,
+      "manifest": "data/remittance_manifest_2026.json",
+      "discount": 0,
+      "adviceDiscount": 0,
+      "lines": [
+        {
+          "invoiceDate": "2025-03-26",
+          "docType": "Invoice",
+          "doc": "41747",
+          "gross": 32064.13,
+          "discount": 0,
+          "paid": 12226.63,
+          "alreadyPaid": 19837.5
+        },
+        {
+          "invoiceDate": "2025-05-16",
+          "docType": "Crd Note",
+          "doc": "12502",
+          "gross": -17250,
+          "discount": 0,
+          "paid": -17250
+        },
+        {
+          "invoiceDate": "2025-05-16",
+          "docType": "Invoice",
+          "doc": "43112",
+          "gross": 27899.34,
+          "discount": 0,
+          "paid": 27899.34
+        },
+        {
+          "invoiceDate": "2025-05-23",
+          "docType": "Invoice",
+          "doc": "43294",
+          "gross": 24433.21,
+          "discount": 0,
+          "paid": 24433.21
+        },
+        {
+          "invoiceDate": "2025-05-24",
+          "docType": "Crd Note",
+          "doc": "12550",
+          "gross": -14835,
+          "discount": 0,
+          "paid": -14835
+        },
+        {
+          "invoiceDate": "2025-06-13",
+          "docType": "Invoice",
+          "doc": "43909",
+          "gross": 27762.26,
+          "discount": 0,
+          "paid": 27762.26
+        },
+        {
+          "invoiceDate": "2025-06-18",
+          "docType": "Crd Note",
+          "doc": "12724",
+          "gross": -16905,
+          "discount": 0,
+          "paid": -16905
+        },
+        {
+          "invoiceDate": "2025-06-26",
+          "docType": "Invoice",
+          "doc": "44235",
+          "gross": 27762.26,
+          "discount": 0,
+          "paid": 27762.26
+        },
+        {
+          "invoiceDate": "2025-06-30",
+          "docType": "Crd Note",
+          "doc": "12825",
+          "gross": -17250,
+          "discount": 0,
+          "paid": -17250
+        },
+        {
+          "invoiceDate": "2025-07-05",
+          "docType": "Invoice",
+          "doc": "44542",
+          "gross": 27762.26,
+          "discount": 0,
+          "paid": 27762.26
+        },
+        {
+          "invoiceDate": "2025-07-10",
+          "docType": "Invoice",
+          "doc": "44731",
+          "gross": 7687.52,
+          "discount": 0,
+          "paid": 7687.52
+        },
+        {
+          "invoiceDate": "2025-07-14",
+          "docType": "Crd Note",
+          "doc": "12958",
+          "gross": -5175,
+          "discount": 0,
+          "paid": -5175
+        },
+        {
+          "invoiceDate": "2025-07-14",
+          "docType": "Invoice",
+          "doc": "44816",
+          "gross": 7687.52,
+          "discount": 0,
+          "paid": 7687.52
+        },
+        {
+          "invoiceDate": "2025-07-14",
+          "docType": "Crd Note",
+          "doc": "12908",
+          "gross": -17250,
+          "discount": 0,
+          "paid": -17250
+        },
+        {
+          "invoiceDate": "2025-07-16",
+          "docType": "Crd Note",
+          "doc": "12982",
+          "gross": -5175,
+          "discount": 0,
+          "paid": -5175
+        },
+        {
+          "invoiceDate": "2025-07-19",
+          "docType": "Invoice",
+          "doc": "44967",
+          "gross": 22515.01,
+          "discount": 0,
+          "paid": 22515.01
+        },
+        {
+          "invoiceDate": "2025-07-22",
+          "docType": "Crd Note",
+          "doc": "13019",
+          "gross": -13972.5,
+          "discount": 0,
+          "paid": -13972.5
+        },
+        {
+          "invoiceDate": "2025-07-26",
+          "docType": "Invoice",
+          "doc": "45148",
+          "gross": 3768.78,
+          "discount": 0,
+          "paid": 3768.78
+        },
+        {
+          "invoiceDate": "2025-08-01",
+          "docType": "Invoice",
+          "doc": "45302",
+          "gross": 20104.97,
+          "discount": 0,
+          "paid": 20104.97
+        },
+        {
+          "invoiceDate": "2025-08-05",
+          "docType": "Crd Note",
+          "doc": "13101",
+          "gross": -11730,
+          "discount": 0,
+          "paid": -11730
+        },
+        {
+          "invoiceDate": "2025-08-15",
+          "docType": "Invoice",
+          "doc": "45666",
+          "gross": 25831.19,
+          "discount": 0,
+          "paid": 25831.19
+        },
+        {
+          "invoiceDate": "2025-08-29",
+          "docType": "Invoice",
+          "doc": "45986",
+          "gross": 27559.27,
+          "discount": 0,
+          "paid": 27559.27
+        },
+        {
+          "invoiceDate": "2025-09-17",
+          "docType": "Invoice",
+          "doc": "46470",
+          "gross": 32866.71,
+          "discount": 0,
+          "paid": 32866.71
+        },
+        {
+          "invoiceDate": "2025-09-30",
+          "docType": "Invoice",
+          "doc": "46762",
+          "gross": 11091.26,
+          "discount": 0,
+          "paid": 11091.26
+        },
+        {
+          "invoiceDate": "2025-10-03",
+          "docType": "Invoice",
+          "doc": "46857",
+          "gross": 11000.44,
+          "discount": 0,
+          "paid": 11000.44
+        },
+        {
+          "invoiceDate": "2025-10-03",
+          "docType": "Invoice",
+          "doc": "46858",
+          "gross": 9000.36,
+          "discount": 0,
+          "paid": 9000.36
+        },
+        {
+          "invoiceDate": "2025-10-10",
+          "docType": "Crd Note",
+          "doc": "13235",
+          "gross": -16215,
+          "discount": 0,
+          "paid": -16215
+        },
+        {
+          "invoiceDate": "2025-10-10",
+          "docType": "Crd Note",
+          "doc": "13335",
+          "gross": -16905,
+          "discount": 0,
+          "paid": -16905
+        },
+        {
+          "invoiceDate": "2025-10-10",
+          "docType": "Crd Note",
+          "doc": "13500",
+          "gross": -10350,
+          "discount": 0,
+          "paid": -10350
+        },
+        {
+          "invoiceDate": "2025-10-10",
+          "docType": "Crd Note",
+          "doc": "13587",
+          "gross": -7245,
+          "discount": 0,
+          "paid": -7245
+        },
+        {
+          "invoiceDate": "2025-10-10",
+          "docType": "Invoice",
+          "doc": "47076",
+          "gross": 11000.44,
+          "discount": 0,
+          "paid": 11000.44
+        },
+        {
+          "invoiceDate": "2025-10-10",
+          "docType": "Crd Note",
+          "doc": "13500",
+          "gross": -10350,
+          "discount": 0,
+          "paid": -10350
+        },
+        {
+          "invoiceDate": "2025-10-18",
+          "docType": "Invoice",
+          "doc": "47176",
+          "gross": 3000.12,
+          "discount": 0,
+          "paid": 3000.12
+        },
+        {
+          "invoiceDate": "2025-10-20",
+          "docType": "Invoice",
+          "doc": "47196",
+          "gross": 36631.64,
+          "discount": 0,
+          "paid": 36631.64
+        },
+        {
+          "invoiceDate": "2025-10-23",
+          "docType": "Crd Note",
+          "doc": "13716",
+          "gross": -9315,
+          "discount": 0,
+          "paid": -9315
+        },
+        {
+          "invoiceDate": "2025-10-23",
+          "docType": "Crd Note",
+          "doc": "10",
+          "gross": -6900,
+          "discount": 0,
+          "paid": -6900
+        },
+        {
+          "invoiceDate": "2025-10-24",
+          "docType": "Invoice",
+          "doc": "47297",
+          "gross": 7000.28,
+          "discount": 0,
+          "paid": 7000.28
+        },
+        {
+          "invoiceDate": "2025-11-04",
+          "docType": "Invoice",
+          "doc": "47523",
+          "gross": 11000.44,
+          "discount": 0,
+          "paid": 11000.44
+        },
+        {
+          "invoiceDate": "2025-11-10",
+          "docType": "Invoice",
+          "doc": "47584",
+          "gross": 5999.55,
+          "discount": 0,
+          "paid": 5999.55
+        },
+        {
+          "invoiceDate": "2025-11-17",
+          "docType": "Invoice",
+          "doc": "47714",
+          "gross": 24390.86,
+          "discount": 0,
+          "paid": 24390.86
+        },
+        {
+          "invoiceDate": "2025-11-22",
+          "docType": "Invoice",
+          "doc": "47880",
+          "gross": 5499.99,
+          "discount": 0,
+          "paid": 5499.99
+        },
+        {
+          "invoiceDate": "2025-11-24",
+          "docType": "Crd Note",
+          "doc": "13874",
+          "gross": -15870,
+          "discount": 0,
+          "paid": -15870
+        },
+        {
+          "invoiceDate": "2025-12-08",
+          "docType": "Invoice",
+          "doc": "48160",
+          "gross": 24336.02,
+          "discount": 0,
+          "paid": 24336.02
+        },
+        {
+          "invoiceDate": "2026-01-09",
+          "docType": "Invoice",
+          "doc": "48687",
+          "gross": 35150.03,
+          "discount": 0,
+          "paid": 35150.03
+        },
+        {
+          "invoiceDate": "2026-01-26",
+          "docType": "Crd Note",
+          "doc": "14237",
+          "gross": -22770,
+          "discount": 0,
+          "paid": -22770
+        },
+        {
+          "invoiceDate": "2026-02-09",
+          "docType": "Crd Note",
+          "doc": "14034",
+          "gross": -15180,
+          "discount": 0,
+          "paid": -15180
+        }
+      ],
+      "source": {
+        "method": "manifest-snake",
+        "file": "data/remittance_lines_2026.csv",
+        "remittanceRef": "B226/KRD4041771",
+        "advice": "raw/Remittances/18.02.2026.pdf"
+      },
+      "checks": {
+        "linesSumToCash": true,
+        "sumPaid": 240325.86
+      }
     },
     {
-      "file": "remittance_manifest_2026.json",
       "batchId": "BATCH-2026-STAT-129",
-      "reason": "unsupported manifest schema (expected batchId + remittanceTotal); adapter not built"
+      "paymentDoc": "45899",
+      "remittanceDate": "2026-08-14",
+      "cash": 108823.42,
+      "manifest": "data/remittance_manifest_2026.json",
+      "discount": 1223.45,
+      "adviceDiscount": 1223.45,
+      "lines": [
+        {
+          "invoiceDate": "2026-02-12",
+          "docType": "Crd Note",
+          "doc": "14414",
+          "gross": -22195,
+          "discount": 0,
+          "paid": -22195
+        },
+        {
+          "invoiceDate": "2026-03-07",
+          "docType": "Crd Note",
+          "doc": "14554",
+          "gross": -15180,
+          "discount": 0,
+          "paid": -15180
+        },
+        {
+          "invoiceDate": "2026-03-25",
+          "docType": "Crd Note",
+          "doc": "14649",
+          "gross": -14490,
+          "discount": 0,
+          "paid": -14490
+        },
+        {
+          "invoiceDate": "2026-04-07",
+          "docType": "Crd Note",
+          "doc": "14711",
+          "gross": -13972.5,
+          "discount": 0,
+          "paid": -13972.5
+        },
+        {
+          "invoiceDate": "2026-05-15",
+          "docType": "Crd Note",
+          "doc": "14910",
+          "gross": -9142.5,
+          "discount": 0,
+          "paid": -9142.5
+        },
+        {
+          "invoiceDate": "2026-05-28",
+          "docType": "Crd Note",
+          "doc": "14982",
+          "gross": -11385,
+          "discount": 0,
+          "paid": -11385
+        },
+        {
+          "invoiceDate": "2026-07-01",
+          "docType": "Crd Note",
+          "doc": "15155",
+          "gross": -17250,
+          "discount": -431.25,
+          "paid": -16818.75
+        },
+        {
+          "invoiceDate": "2026-08-01",
+          "docType": "Crd Note",
+          "doc": "15370",
+          "gross": -19665,
+          "discount": -491.63,
+          "paid": -19173.37
+        },
+        {
+          "invoiceDate": "2026-07-15",
+          "docType": "Crd Note",
+          "doc": "15262",
+          "gross": -14835,
+          "discount": -370.88,
+          "paid": -14464.12
+        },
+        {
+          "invoiceDate": "2026-02-12",
+          "docType": "Invoice",
+          "doc": "49208",
+          "gross": 35663.47,
+          "discount": 0,
+          "paid": 35663.47
+        },
+        {
+          "invoiceDate": "2026-03-06",
+          "docType": "Invoice",
+          "doc": "49606",
+          "gross": 23457.21,
+          "discount": 0,
+          "paid": 23457.21
+        },
+        {
+          "invoiceDate": "2026-03-24",
+          "docType": "Invoice",
+          "doc": "49882",
+          "gross": 23348.97,
+          "discount": 0,
+          "paid": 23348.97
+        },
+        {
+          "invoiceDate": "2026-04-06",
+          "docType": "Invoice",
+          "doc": "50099",
+          "gross": 22982.66,
+          "discount": 0,
+          "paid": 22982.66
+        },
+        {
+          "invoiceDate": "2026-04-29",
+          "docType": "Invoice",
+          "doc": "50439",
+          "gross": 5300.12,
+          "discount": 0,
+          "paid": 5300.12
+        },
+        {
+          "invoiceDate": "2026-05-14",
+          "docType": "Invoice",
+          "doc": "50680",
+          "gross": 16387.95,
+          "discount": 0,
+          "paid": 16387.95
+        },
+        {
+          "invoiceDate": "2026-05-27",
+          "docType": "Invoice",
+          "doc": "50898",
+          "gross": 20332.95,
+          "discount": 0,
+          "paid": 20332.95
+        },
+        {
+          "invoiceDate": "2026-06-15",
+          "docType": "Invoice",
+          "doc": "51226",
+          "gross": 12471.98,
+          "discount": 311.8,
+          "paid": 12160.18
+        },
+        {
+          "invoiceDate": "2026-07-01",
+          "docType": "Invoice",
+          "doc": "51496",
+          "gross": 29721.98,
+          "discount": 743.05,
+          "paid": 28978.93
+        },
+        {
+          "invoiceDate": "2026-07-15",
+          "docType": "Invoice",
+          "doc": "51841",
+          "gross": 4140,
+          "discount": 103.5,
+          "paid": 4036.5
+        },
+        {
+          "invoiceDate": "2026-07-15",
+          "docType": "Invoice",
+          "doc": "51841",
+          "gross": 20302.49,
+          "discount": 507.56,
+          "paid": 19794.93
+        },
+        {
+          "invoiceDate": "2026-07-31",
+          "docType": "Invoice",
+          "doc": "52241",
+          "gross": 34052.09,
+          "discount": 851.3,
+          "paid": 33200.79
+        }
+      ],
+      "source": {
+        "method": "manifest-snake",
+        "file": "data/remittance_lines_2026.csv",
+        "remittanceRef": "B226/PENDING-KRD",
+        "advice": "raw/Remittances/B226 - REMITTANCE.pdf"
+      },
+      "discountJournal": {
+        "status": "POSTED",
+        "erpDoc": "00000510"
+      },
+      "checks": {
+        "linesSumToCash": true,
+        "sumPaid": 108823.42
+      }
     }
-  ]
+  ],
+  "skipped": []
 }

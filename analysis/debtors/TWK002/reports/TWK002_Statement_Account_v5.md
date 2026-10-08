@@ -1,9 +1,9 @@
 # Statement of Account: TWK AGRI PTY LTD (TWK002) - Version 5 (Sub-Ledger Position Statement)
 **Period:** Mar 2025 → Aug 2026 &nbsp;|&nbsp; **Account:** TWK002
-**Combined Opening B/F:** R38,791.27 (ERP verified — source: `analysis/debtors/TWK002/raw/DEBENQ_TWK002.TXT` DEBENQ_TWK002.TXT line 13 — BALANCE B/F before first period row (export window starts Mar 2025))
+**Combined Opening B/F:** R38,791.27 (ERP verified — source: `analysis/debtors/TWK002/raw/DEBENQTWK002CURRENT.TXT` DEBENQTWK002CURRENT.TXT line 14 — BALANCE B/F R38,791.27 before first period row (export window starts Mar 2025; TXT as at 2026-08-26). Switched from DEBENQ_TWK002.TXT (as at 2026-08-09, same B/F at its line 13) on operator decision 2026-10-08.)
 **LPG Opening B/F (1A):** R38,791.27 &nbsp;|&nbsp; **CYL Opening B/F (1B):** R0.00
 **Payment routing:** LPG lane (payments post to Part 1A unless configured otherwise)
-**Last regenerated:** 2026-10-07 from ERP TXT (`reconcile_debtor_v5_from_txt.mjs`)
+**Last regenerated:** 2026-10-08 from ERP TXT (`reconcile_debtor_v5_from_txt.mjs`)
 
 ---
 
@@ -51,8 +51,7 @@
 | 16 May 2025 | Invoice | 43112 | 10,649.34 | 54,681.78 |
 | 16 May 2025 | Crd Note | 12494 | -10,649.34 | 44,032.44 |
 | 23 May 2025 | Invoice | 43294 | 9,425.71 | 53,458.15 |
-| 30 May 2025 | Payment | 39080 | -7,306.68 | 46,151.47 |
-| 30 May 2025 | Payment | 39080 | -8,058.97 | 38,092.50 |
+| 30 May 2025 | Payment | 39080 | -15,365.65 | 38,092.50 |
 
 ---
 
@@ -144,26 +143,7 @@
 | :--- | :--- | :--- | ---: | ---: |
 | **01 Feb** | **Opening Balance** | — | | **175,025.06** |
 | 12 Feb 2026 | Invoice | 49208 | 13,410.97 | 188,436.03 |
-| 25 Feb 2026 | Payment | 43500 | -1,249.77 | 187,186.26 |
-| 25 Feb 2026 | Payment | 43500 | -10,976.86 | 176,209.40 |
-| 25 Feb 2026 | Payment | 43500 | -10,649.34 | 165,560.06 |
-| 25 Feb 2026 | Payment | 43500 | -9,598.21 | 155,961.85 |
-| 25 Feb 2026 | Payment | 43500 | -10,857.26 | 145,104.59 |
-| 25 Feb 2026 | Payment | 43500 | -10,512.26 | 134,592.33 |
-| 25 Feb 2026 | Payment | 43500 | -10,512.26 | 124,080.07 |
-| 25 Feb 2026 | Payment | 43500 | -2,512.52 | 121,567.55 |
-| 25 Feb 2026 | Payment | 43500 | -2,512.52 | 119,055.03 |
-| 25 Feb 2026 | Payment | 43500 | -8,542.51 | 110,512.52 |
-| 25 Feb 2026 | Payment | 43500 | -3,768.78 | 106,743.74 |
-| 25 Feb 2026 | Payment | 43500 | -8,374.97 | 98,368.77 |
-| 25 Feb 2026 | Payment | 43500 | -9,616.19 | 88,752.58 |
-| 25 Feb 2026 | Payment | 43500 | -10,654.27 | 78,098.31 |
-| 25 Feb 2026 | Payment | 43500 | -12,166.71 | 65,931.60 |
-| 25 Feb 2026 | Payment | 43500 | -3,846.26 | 62,085.34 |
-| 25 Feb 2026 | Payment | 43500 | -20,416.64 | 41,668.70 |
-| 25 Feb 2026 | Payment | 43500 | -8,520.86 | 33,147.84 |
-| 25 Feb 2026 | Payment | 43500 | -9,156.02 | 23,991.82 |
-| 25 Feb 2026 | Payment | 43500 | -12,380.03 | 11,611.79 |
+| 25 Feb 2026 | Payment | 43500 | -176,824.24 | 11,611.79 |
 
 ---
 
@@ -216,12 +196,7 @@
 | :--- | :--- | :--- | ---: | ---: |
 | **01 Jul** | **Opening Balance** | — | | **74,781.62** |
 | 01 Jul 2026 | Invoice | 51496 | 12,471.98 | 87,253.60 |
-| 12 Jul 2026 | Journal | 490 | 1,160.62 | 88,414.22 |
-| 12 Jul 2026 | Journal | 490 | 203.65 | 88,617.87 |
-| 12 Jul 2026 | Journal | 490 | 814.22 | 89,432.09 |
-| 12 Jul 2026 | Journal | 490 | 367.10 | 89,799.19 |
-| 12 Jul 2026 | Journal | 490 | 426.60 | 90,225.79 |
-| 12 Jul 2026 | Journal | 490 | 1,046.93 | 91,272.72 |
+| 12 Jul 2026 | Journal | 490 | 4,019.12 | 91,272.72 |
 | 12 Jul 2026 | Journal | 491 | -203.65 | 91,069.07 |
 | 12 Jul 2026 | Journal | 491 | -367.10 | 90,701.97 |
 | 12 Jul 2026 | Journal | 491 | -426.60 | 90,275.37 |
@@ -229,12 +204,9 @@
 | 12 Jul 2026 | Journal | 491 | -701.93 | 89,104.22 |
 | 12 Jul 2026 | Journal | 491 | -1,160.62 | 87,943.60 |
 | 15 Jul 2026 | Invoice | 51841 | 9,952.49 | 97,896.09 |
-| 23 Jul 2026 | Journal | 499 | -375.10 | 97,520.99 |
-| 23 Jul 2026 | Journal | 499 | -552.04 | 96,968.95 |
-| 23 Jul 2026 | Journal | 499 | 1,052.05 | 98,021.00 |
+| 23 Jul 2026 | Journal | 499 | 124.91 | 98,021.00 |
 | 23 Jul 2026 | Journal | 500 | -300.54 | 97,720.46 |
-| 23 Jul 2026 | Journal | 501 | 233.10 | 97,953.56 |
-| 23 Jul 2026 | Journal | 501 | -983.04 | 96,970.52 |
+| 23 Jul 2026 | Journal | 501 | -749.94 | 96,970.52 |
 | 23 Jul 2026 | Journal | 502 | -310.37 | 96,660.15 |
 | 31 Jul 2026 | Invoice | 52241 | 14,387.09 | 111,047.24 |
 
@@ -245,14 +217,16 @@
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
 | **01 Aug** | **Opening Balance** | — | | **111,047.24** |
-| 09 Aug 2026 | Journal | 503 | -552.04 | 110,495.20 |
-| 09 Aug 2026 | Journal | 503 | 1,052.05 | 111,547.25 |
+| 09 Aug 2026 | Journal | 503 | 500.01 | 111,547.25 |
 | 09 Aug 2026 | Journal | 504 | -375.10 | 111,172.15 |
 | 09 Aug 2026 | Journal | 505 | 108.19 | 111,280.34 |
 | 09 Aug 2026 | Journal | 506 | -233.10 | 111,047.24 |
 | 09 Aug 2026 | Journal | 507 | -112.78 | 110,934.46 |
 | 09 Aug 2026 | Journal | 508 | -228.93 | 110,705.53 |
 | 09 Aug 2026 | Journal | 509 | -393.99 | 110,311.54 |
+| 12 Aug 2026 | Invoice | 52484 | 6,926.34 | 117,237.88 |
+| 26 Aug 2026 | Payment | 45899 | -108,823.42 | 8,414.46 |
+| 26 Aug 2026 | Invoice | 52803 | 11,142.35 | 19,556.81 |
 
 ---
 
@@ -470,6 +444,10 @@
 | :--- | :--- | :--- | ---: | ---: |
 | **01 Aug** | **Opening Balance** | — | | **27,485.00** |
 | 01 Aug 2026 | Crd Note | 15370 | -19,665.00 | 7,820.00 |
+| 12 Aug 2026 | Invoice | 52484 | 11,212.50 | 19,032.50 |
+| 12 Aug 2026 | Crd Note | 15443 | -11,040.00 | 7,992.50 |
+| 26 Aug 2026 | Invoice | 52803 | 17,250.00 | 25,242.50 |
+| 26 Aug 2026 | Crd Note | 15553 | -17,077.50 | 8,165.00 |
 
 ---
 
@@ -477,10 +455,10 @@
 
 | Component | Closing (R) |
 | :--- | ---: |
-| Part 1A — LPG Gas | 110,311.54 |
-| Part 1B — CYL Deposits | 7,820.00 |
-| **Combined (1A + 1B)** | **118,131.54** |
-| ERP `CURRENT BALANCE` (TXT header) | 118,131.54 |
+| Part 1A — LPG Gas | 19,556.81 |
+| Part 1B — CYL Deposits | 8,165.00 |
+| **Combined (1A + 1B)** | **27,721.81** |
+| ERP `CURRENT BALANCE` (TXT header) | 27,721.81 |
 | **Variance (Combined − ERP)** | **0.00** |
 
 ---
@@ -710,7 +688,11 @@
 | :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: |
 | **01 Aug** | **Opening Balance** | — | **-1** | **12** | **36** | **0** | **1** |
 | 01 Aug 2026 | Crd Note | 15370 | 0 | -8 | -25 | 0 | -1 |
-| **End Aug** | **Closing Balance** | — | **-1** | **4** | **11** | **0** | **0** |
+| 12 Aug 2026 | Invoice | 52484 | 0 | +5 | +15 | 0 | 0 |
+| 12 Aug 2026 | Crd Note | 15443 | 0 | -4 | -16 | 0 | 0 |
+| 26 Aug 2026 | Invoice | 52803 | 0 | +10 | +20 | 0 | 0 |
+| 26 Aug 2026 | Crd Note | 15553 | 0 | -9 | -21 | 0 | 0 |
+| **End Aug** | **Closing Balance** | — | **-1** | **6** | **9** | **0** | **0** |
 
 ---
 
@@ -723,28 +705,28 @@
 
 | Component | Amount |
 |---|---:|
-| LPG Gas Debt (Part 1A close) | R110,311.54 |
-| Cylinder Financial Balance (Part 1B close) | R7,820.00 |
-| **Total Debtor Balance** | **R118,131.54** |
+| LPG Gas Debt (Part 1A close) | R19,556.81 |
+| Cylinder Financial Balance (Part 1B close) | R8,165.00 |
+| **Total Debtor Balance** | **R27,721.81** |
 
 ### 2. Custody Position
 
 | SKU | Net Returnable Qty | Deposit Rate | Custody Exposure |
 |---|---:|---:|---:|
 | 14kg | -1 | R575.00 | R-575.00 |
-| 19kg | 4 | R690.00 | R2,760.00 |
-| 9kg | 11 | R517.50 | R5,692.50 |
-| **Total** | **14** | — | **R7,877.50** |
+| 19kg | 6 | R690.00 | R4,140.00 |
+| 9kg | 9 | R517.50 | R4,657.50 |
+| **Total** | **14** | — | **R8,222.50** |
 
 ### 3. Reconciliation Position
 
 | Check | Financial | Custody | Variance |
 |---|---:|---:|---:|
-| Cylinder Position (1B vs custody) | R7,820.00 | R7,877.50 | R-57.50 |
-| Sub-ledger tie (1A + 1B vs combined) | R118,131.54 | — | R0.00 |
+| Cylinder Position (1B vs custody) | R8,165.00 | R8,222.50 | R-57.50 |
+| Sub-ledger tie (1A + 1B vs combined) | R27,721.81 | — | R0.00 |
 
-**ERP Combined Balance (TXT header):** R118,131.54  
-**Reconstructed Balance (1A + 1B):** R118,131.54  
+**ERP Combined Balance (TXT header):** R27,721.81  
+**Reconstructed Balance (1A + 1B):** R27,721.81  
 **Variance:** R0.00
 
 <!-- DEBTOR_POSITION_WORKSPACE_END -->

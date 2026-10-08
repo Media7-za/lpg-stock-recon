@@ -3,22 +3,22 @@
   "debtorName": "TWK AGRI PTY LTD",
   "period": {
     "from": "2025-03-01",
-    "to": "2026-08-09"
+    "to": "2026-08-26"
   },
   "version": "v5",
   "workspaceStatus": "pending_review",
-  "lastGeneratedAt": "2026-10-07T20:14:56.109Z",
-  "source": "analysis/debtors/TWK002/raw/DEBENQ_TWK002.TXT",
+  "lastGeneratedAt": "2026-10-08T03:28:48.129Z",
+  "source": "analysis/debtors/TWK002/raw/DEBENQTWK002CURRENT.TXT",
   "financialPosition": {
-    "lpgGasDebt": 110311.54,
-    "cylinderFinancialBalance": 7820,
-    "totalDebtorBalance": 118131.54,
-    "erpStatedBalance": 118131.54,
+    "lpgGasDebt": 19556.81,
+    "cylinderFinancialBalance": 8165,
+    "totalDebtorBalance": 27721.81,
+    "erpStatedBalance": 27721.81,
     "erpVariance": 0,
     "subLedgerVariance": 0
   },
   "custodyPosition": {
-    "totalCustodyExposure": 7877.5,
+    "totalCustodyExposure": 8222.5,
     "lines": [
       {
         "sku": "14.1",
@@ -30,16 +30,16 @@
       {
         "sku": "19.1",
         "label": "19kg",
-        "qty": 4,
+        "qty": 6,
         "depositRate": 690,
-        "exposure": 2760
+        "exposure": 4140
       },
       {
         "sku": "9.1",
         "label": "9kg",
-        "qty": 11,
+        "qty": 9,
         "depositRate": 517.5,
-        "exposure": 5692.5
+        "exposure": 4657.5
       }
     ]
   },
@@ -58,6 +58,6 @@
   },
   "artifacts": {
     "statementMarkdown": "analysis/debtors/TWK002/reports/TWK002_Statement_Account_v5.md",
-    "txtSource": "analysis/debtors/TWK002/raw/DEBENQ_TWK002.TXT"
+    "txtSource": "analysis/debtors/TWK002/raw/DEBENQTWK002CURRENT.TXT"
   }
 }
