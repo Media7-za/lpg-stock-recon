@@ -2,30 +2,44 @@
   "debtorCode": "FIR001",
   "debtorName": "FIRE AND VINE",
   "period": {
-    "from": "2026-07-01",
-    "to": "2026-09-05"
+    "from": "2022-12-29",
+    "to": "2026-10-07"
   },
   "version": "v5",
   "workspaceStatus": "clean",
-  "lastGeneratedAt": "2026-10-08T11:35:42.045Z",
-  "source": "analysis/debtors/FIR001/raw/FIR001CURRENT.TXT.TXT",
+  "lastGeneratedAt": "2026-10-08T16:29:16.092Z",
+  "source": "analysis/debtors/FIR001/raw/FIR001_2026-10-08.TXT",
   "financialPosition": {
-    "lpgGasDebt": 8203.52,
-    "cylinderFinancialBalance": 517.5,
-    "totalDebtorBalance": 8721.02,
-    "erpStatedBalance": 8721.02,
+    "lpgGasDebt": 7917.27,
+    "cylinderFinancialBalance": 1552.5,
+    "totalDebtorBalance": 9469.77,
+    "erpStatedBalance": 9469.77,
     "erpVariance": 0,
     "subLedgerVariance": 0
   },
   "custodyPosition": {
-    "totalCustodyExposure": 517.5,
+    "totalCustodyExposure": 1552.5,
     "lines": [
       {
         "sku": "9.1",
         "label": "9kg",
-        "qty": 1,
+        "qty": 3,
         "depositRate": 517.5,
-        "exposure": 517.5
+        "exposure": 1552.5
+      },
+      {
+        "sku": "D.1",
+        "label": "D.1",
+        "qty": -5,
+        "depositRate": 1150,
+        "exposure": -5750
+      },
+      {
+        "sku": "S.1",
+        "label": "S.1",
+        "qty": 5,
+        "depositRate": 1150,
+        "exposure": 5750
       }
     ]
   },
@@ -37,6 +51,6 @@
   },
   "artifacts": {
     "statementMarkdown": "analysis/debtors/FIR001/reports/FIR001_Statement_Account_v5.md",
-    "txtSource": "analysis/debtors/FIR001/raw/FIR001CURRENT.TXT.TXT"
+    "txtSource": "analysis/debtors/FIR001/raw/FIR001_2026-10-08.TXT"
   }
 }

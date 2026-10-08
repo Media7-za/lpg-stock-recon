@@ -105,6 +105,10 @@
     {
       "date": "2026-10-08",
       "event": "Correction to the preceding ADM-86 entry (appended, not edited). Operator: \"45591 should have been 52195\". Voided locks L0014 (45474<->52195) and L0016 (45591<->52036) from close C0001; recorded approved locks L0020 (payment 45474 31 Jul <-> invoice 52036 23 Jul) and L0021 (payment 45591 07 Aug <-> invoice 52195 30 Jul), i.e. oldest-invoice-first (FIFO) pairing. 19 locks applied, 0 conflicts; ERP tie R8,721.02 and open items unchanged (PROVEN, data/projection_matches.json). General tie-break for equal-amount pairs (closest-date vs FIFO) still open on ADM-90."
+    },
+    {
+      "date": "2026-10-08",
+      "event": "TXT switched to raw/FIR001_2026-10-08.TXT on operator instruction (\"switch the other six accounts ... YES\"); window widened: B/F R25,752.41, periodStart 2022-12-29 (was R597.43 from 2026-07-01). CONNECTOR-SOURCED refresh (db_replay, 6 md5-verified captures in data/db_replay/2026-10-08c/; authority: \"I authorize the agent to use database connectors\"). Coverage CURRENT_PARTIAL: payments 17570 (-6,316.11, 2022-12-29), 17655 (-6,087.81), 17786 (-6,258.19), 17849 (-6,492.87) have no DB header (PROVEN) — review-only. TXT has no rows 2023-01-24..2025-03-04 (balance R597.43 carried); DB holds 304 docs in that gap netting R-2,572.26 (ASSERTED, needs ERP agent). ERP R9,469.77 = 1A R7,917.27 + 1B R1,552.50, variance R0.00 (PROVEN, data/v5_projection.json); cyl openings unchanged and 1B reproduces. Matcher v4: close C0001 (through 2026-08-31) holds — 19 locks applied, 0 conflicts; 161 ties (151 confirmed / 10 probable); 9 payments unallocated (R50,588.14, includes the 4 pre-gap payments). Open items: 28 internal rows tie R9,469.77. Matching PROPOSED — NOT RATIFIED."
     }
   ]
 }

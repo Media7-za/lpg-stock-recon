@@ -1,26 +1,92 @@
 # Open Items Statement: FIRE AND VINE (FIR001) — Internal
-**Period:** from 01 Jul 2026 to 05 Sept 2026 &nbsp;|&nbsp; **Balance due:** R8,721.02
+**Period:** from 29 Dec 2022 to 07 Oct 2026 &nbsp;|&nbsp; **Balance due:** R9,469.77
 **Status:** PROPOSED — NOT RATIFIED (`PROPOSED_Projection_Matching_Locks.md`, build step 3) · generated 2026-10-08 by `render_open_items.mjs`
-**Sources:** `analysis/debtors/FIR001/data/v5_projection.json` (TXT sha256 `a6461eb6f27f…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (20 confirmed / 0 probable ties)
+**Sources:** `analysis/debtors/FIR001/data/v5_projection.json` (TXT sha256 `1cf1b6f9c63e…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (151 confirmed / 10 probable ties) · **REVIEW ONLY:** ingestCoverage partial
 **Locks:** closed through 2026-08-31, 19 locks applied
 
 ---
 
 *Settled items (invoice ↔ payment / credit note ties) are omitted. Probable ties are also omitted here and listed in Appendix A.*
 
-**Gas (LPG) opening balance:** R597.43
+**Gas (LPG) opening balance:** R25,752.41
 
 ## Part 1A: LPG + OTHER open items
+
+### December 2022
+
+| Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
+| 29 Dec 2022 | Payment | 17570 | TRANSF \| STAT90 | LPG | -6,316.11 | 19,436.30 |
+
+### January 2023
+
+| Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
+| 06 Jan 2023 | Payment | 17655 | TRANSF \| STAT90 | LPG | -6,087.81 | 13,348.49 |
+| 18 Jan 2023 | Payment | 17786 | TRANSF \| STAT90 | LPG | -6,258.19 | 7,090.30 |
+| 24 Jan 2023 | Payment | 17849 | TRANSF \| STAT90 | LPG | -6,492.87 | 597.43 |
+
+### October 2025
+
+| Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
+| 04 Oct 2025 | Payment | 41506 | CASH \| T2000222 | LPG | -0.02 | 597.41 |
+| 18 Oct 2025 | Crd Note | 13709 | DN#21108-EMPTY | LPG | -235.14 | 362.27 |
+| 18 Oct 2025 | Invoice | 47166 | DN#21108 | LPG | 6,505.40 | 6,867.67 |
+| 20 Oct 2025 | Payment | 41939 | TRANSF \| STAT 119 | LPG | -6,270.26 | 597.41 |
+
+### February 2026
+
+| Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
+| 26 Feb 2026 | Invoice | 49458 | DN#21802 | LPG | 6,289.35 | 6,886.76 |
+
+### March 2026
+
+| Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
+| 02 Mar 2026 | Payment | 43546 | TRANSF \| STAT 124 | LPG | -6,525.20 | 361.56 |
+| 12 Mar 2026 | Payment | 43639 | TRANSF \| STAT 124 | LPG | -6,101.45 | -5,739.89 |
+| 25 Mar 2026 | Invoice | 49931 | DN-21984 | LPG | 6,337.30 | 597.41 |
 
 ### September 2026
 
 | Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 05 Sept 2026 | Invoice | 52962 | DN#24820 | LPG | 7,606.09 | 8,203.52 |
+| 18 Sept 2026 | Invoice | 53213 | DN#21366 | LPG | 7,319.84 | 7,917.25 |
+| 28 Sept 2026 | Payment | 46328 | TRANSF \| STAT 130 | LPG | -6,536.23 | 1,381.02 |
+
+### October 2026
+
+| Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
+| 06 Oct 2026 | Invoice | 53480 | DN#24706 | LPG | 6,536.23 | 7,917.25 |
 
 **Cylinder deposit opening balance:** R0.00
 
 ## Part 1B: CYL open items
+
+### August 2025
+
+| Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
+| 04 Aug 2025 | Crd Note | 13123 | DN#20213-EMPTY | CYL | -6,037.50 | -6,037.50 |
+| 04 Aug 2025 | Invoice | 45361 | DN#20213-EMPTY | CYL | 6,555.00 | 517.50 |
+| 11 Aug 2025 | Crd Note | 13195 | DN#20213-DN20307 | CYL | -517.50 | 0.00 |
+
+### March 2026
+
+| Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
+| 20 Mar 2026 | Crd Note | 14632 | DN=00=EMPTY | CYL | -517.50 | -517.50 |
+| 20 Mar 2026 | Invoice | 49848 | DN=00=EMPTY | CYL | 6,555.00 | 6,037.50 |
+
+### June 2026
+
+| Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
+| 22 Jun 2026 | Invoice | 51355 | DN#22519*EMPTY | CYL | 7,072.50 | 13,110.00 |
+| 23 Jun 2026 | Crd Note | 15109 | DN#22519*EMPTY | CYL | -13,110.00 | 0.00 |
 
 ### August 2026
 
@@ -29,31 +95,59 @@
 | 22 Aug 2026 | Invoice | 52737 | DN#24929-EMPTY | CYL | 6,555.00 | 6,555.00 |
 | 24 Aug 2026 | Crd Note | 15535 | DN#24929-EMPTY | CYL | -6,037.50 | 517.50 |
 
+### September 2026
+
+| Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
+| 18 Sept 2026 | Invoice | 53193 | DN#21366-EMPTY | CYL | 7,072.50 | 7,590.00 |
+| 19 Sept 2026 | Crd Note | 15675 | DN#21366-EMPTY | CYL | -6,555.00 | 1,035.00 |
+
+### October 2026
+
+| Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
+| 06 Oct 2026 | Invoice | 53481 | DN#24706-EMPTY | CYL | 6,555.00 | 7,590.00 |
+| 07 Oct 2026 | Crd Note | 15770 | DN#24706-EMPTY | CYL | -6,037.50 | 1,552.50 |
+
 ---
 
 ## Proof: open items reconcile to the ERP balance
 
 | Component | Gas (R) | Cylinder deposit (R) | Total (R) |
 | :--- | ---: | ---: | ---: |
-| Opening B/F (unitemised) | 597.43 | 0.00 | 597.43 |
-| Open items listed above | 7,606.09 | 517.50 | 8,123.59 |
-| Rounding on matched items (tie nets) | 0.00 | 0.00 | 0.00 |
-| **Balance** | 8,203.52 | 517.50 | 8,721.02 |
-| ERP `CURRENT BALANCE` (TXT header) | | | 8,721.02 |
+| Opening B/F (unitemised) | 25,752.41 | 0.00 | 25,752.41 |
+| Open items listed above | -17,835.16 | 1,552.50 | -16,282.66 |
+| Rounding on matched items (tie nets) | 0.02 | 0.00 | 0.02 |
+| **Balance** | 7,917.27 | 1,552.50 | 9,469.77 |
+| ERP `CURRENT BALANCE` (TXT header) | | | 9,469.77 |
 | **Variance** | | | **0.00** |
 
 ---
 
 ## Appendix A: Probable ties (review required, not locked)
 
-_None._
+| Tie | Rule | Documents | Variance (R) | Note |
+| :--- | :--- | :--- | ---: | :--- |
+| T0026 | CN_DN_PAIR | Invoice 42699, Crd Note 12410 | — | CN 5 day(s) after invoice (closed period: not locked) |
+| T0049 | CN_DN_PAIR | Invoice 46902, Crd Note 13638 | — | CN 3 day(s) after invoice (closed period: not locked) |
+| T0068 | CN_DN_PAIR | Invoice 49035, Crd Note 14367 | — | CN 3 day(s) after invoice (closed period: not locked) |
+| T0069 | CN_DN_PAIR | Invoice 49146, Crd Note 14396 | — | CN 2 day(s) after invoice (closed period: not locked) |
+| T0071 | CN_DN_PAIR | Invoice 49459, Crd Note 14521 | — | CN 4 day(s) after invoice (closed period: not locked) |
+| T0088 | CN_AMOUNT_DATE | Invoice 44987, Crd Note 13027 | — | CN 0 day(s) after invoice (closed period: not locked) |
+| T0089 | CN_AMOUNT_DATE | Invoice 47067, Crd Note 13677 | — | CN 1 day(s) after invoice (closed period: not locked) |
+| T0090 | CN_AMOUNT_DATE | Invoice 49348, Crd Note 14465 | — | CN 0 day(s) after invoice (closed period: not locked) |
+| T0091 | CN_AMOUNT_DATE | Invoice 51146, Crd Note 15044 | — | CN 1 day(s) after invoice (closed period: not locked) |
+| T0092 | CN_AMOUNT_DATE | Invoice 53277, Crd Note 15694 | — | CN 1 day(s) after invoice |
 
 ## Appendix B: Confirmed ties by rule
 
 | Rule | Ties |
 | :--- | ---: |
 | LOCKED | 19 |
-| CN_DN_PAIR | 1 |
+| CN_DN_PAIR | 63 |
+| EXACT_SINGLE | 65 |
+| EXACT_SUM | 3 |
+| EXACT_MONTH_SUM | 1 |
 
 Full tie list: `data/projection_matches.json`.
 
