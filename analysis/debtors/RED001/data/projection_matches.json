@@ -2,22 +2,21 @@
   "status": "PROPOSED — NOT RATIFIED (PROPOSED_Projection_Matching_Locks.md, build step 2)",
   "debtorCode": "RED001",
   "generatedBy": "match_projection.mjs",
-  "generatedAt": "2026-10-08T04:03:22.014Z",
+  "generatedAt": "2026-10-08T12:09:31.669Z",
   "projection": {
     "path": "analysis/debtors/RED001/data/v5_projection.json",
     "txtSha256": "db02584c2453ac753790ccd59066cb10f46b9c9aeb57509d81157d7d3f006b65",
     "dbChannel": "supabase-connector-replay",
-    "generatedAt": "2026-10-08T04:03:12.955Z"
+    "generatedAt": "2026-10-08T12:09:25.869Z"
   },
   "reviewOnly": true,
   "reviewOnlyReasons": [
-    "ERP variance R7245",
     "ingestCoverage partial"
   ],
   "locksRegistry": "config/payment_pattern_overrides.json#projectionLocks",
   "matcherVersion": 4,
   "closedThrough": null,
-  "locksApplied": 0,
+  "locksApplied": 4,
   "lockConflicts": [],
   "rules": {
     "exactTolerance": 0.05,
@@ -25,6 +24,8 @@
     "nearSumTolerance": 1,
     "cnConfirmedMaxDays": 1,
     "maxSumInvoices": 3,
+    "maxRunInvoices": 12,
+    "fifoWindowDays": 14,
     "combinationPool": 40,
     "paymentTargetLanes": [
       "LPG",
@@ -34,44 +35,40 @@
     "remittanceBatchTolerancePct": 0.001
   },
   "summary": {
-    "ties": 41,
-    "confirmed": 39,
+    "ties": 45,
+    "confirmed": 43,
     "probable": 2,
     "byRule": {
+      "LOCKED": 4,
       "CN_DN_PAIR": 23,
       "EXACT_SINGLE": 17,
       "EXACT_MONTH_SUM": 1
     },
-    "paymentsTotal": 24,
-    "paymentsUnallocated": 6
+    "paymentsTotal": 20,
+    "paymentsUnallocated": 2
   },
   "proof": {
-    "rebuiltClosing": 12804.76,
-    "projectionClosing": 12804.76,
+    "rebuiltClosing": 5559.76,
+    "projectionClosing": 5559.76,
     "erpCurrentBalance": 5559.76,
     "holds": true
   },
   "residual": {
     "openingBfUnitemised": 0,
     "openInvoicesLpgOther": {
-      "count": 7,
-      "amount": 41974.32,
+      "count": 3,
+      "amount": 17394.38,
       "rows": [
-        "42948|Invoice|LPG|L4",
-        "43614|Invoice|LPG|L7",
-        "48022|Invoice|LPG|L24",
-        "48747|Invoice|LPG|L37",
         "49409|Invoice|LPG|L47",
         "49714|Invoice|LPG|L49",
         "52042|Invoice|LPG|L105"
       ]
     },
     "openInvoicesCyl": {
-      "count": 6,
-      "amount": 36225,
+      "count": 5,
+      "amount": 28980,
       "rows": [
         "44675|Invoice|CYL|L13",
-        "RAT13687|Invoice|CYL",
         "50065|Invoice|CYL|L59",
         "51222|Invoice|CYL|L87",
         "51427|Invoice|CYL|L94",
@@ -92,13 +89,9 @@
       ]
     },
     "unallocatedPayments": {
-      "count": 6,
-      "amount": -30294.9,
+      "count": 2,
+      "amount": -5714.96,
       "rows": [
-        "38566|Payment|LPG|L2",
-        "39087|Payment|LPG|L6",
-        "42420|Payment|LPG|L19",
-        "42984|Payment|LPG|L35",
         "43641|Payment|LPG|L48",
         "43698|Payment|LPG|L52"
       ]
@@ -115,6 +108,102 @@
   "ties": [
     {
       "tie_id": "T0001",
+      "rule": "LOCKED",
+      "confidence": "CONFIRMED",
+      "members": [
+        "38566|Payment|LPG|L2",
+        "42948|Invoice|LPG|L4"
+      ],
+      "docs": [
+        "Payment 38566",
+        "Invoice 42948"
+      ],
+      "net": 0,
+      "lock_id": "L0001",
+      "close_id": null,
+      "lockedRule": "OPERATOR_RULING",
+      "ruling": {
+        "treatment": "exact",
+        "net": 0,
+        "reason": "Operator ruling (Linear ADM-84, 2026-10-08): prepayment - \"this customer terms were payment before delivery, then it changed to payment after delivery\"; payment 38566 settles invoice 42948 delivered after it",
+        "approvedBy": "operator",
+        "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx"
+      }
+    },
+    {
+      "tie_id": "T0002",
+      "rule": "LOCKED",
+      "confidence": "CONFIRMED",
+      "members": [
+        "39087|Payment|LPG|L6",
+        "43614|Invoice|LPG|L7"
+      ],
+      "docs": [
+        "Payment 39087",
+        "Invoice 43614"
+      ],
+      "net": 0,
+      "lock_id": "L0002",
+      "close_id": null,
+      "lockedRule": "OPERATOR_RULING",
+      "ruling": {
+        "treatment": "exact",
+        "net": 0,
+        "reason": "Operator ruling (Linear ADM-84, 2026-10-08): prepayment - \"this customer terms were payment before delivery, then it changed to payment after delivery\"; payment 39087 settles invoice 43614 delivered after it",
+        "approvedBy": "operator",
+        "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx"
+      }
+    },
+    {
+      "tie_id": "T0003",
+      "rule": "LOCKED",
+      "confidence": "CONFIRMED",
+      "members": [
+        "42420|Payment|LPG|L19",
+        "48022|Invoice|LPG|L24"
+      ],
+      "docs": [
+        "Payment 42420",
+        "Invoice 48022"
+      ],
+      "net": 0,
+      "lock_id": "L0003",
+      "close_id": null,
+      "lockedRule": "OPERATOR_RULING",
+      "ruling": {
+        "treatment": "exact",
+        "net": 0,
+        "reason": "Operator ruling (Linear ADM-84, 2026-10-08): prepayment - \"this customer terms were payment before delivery, then it changed to payment after delivery\"; payment 42420 settles invoice 48022 delivered after it",
+        "approvedBy": "operator",
+        "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx"
+      }
+    },
+    {
+      "tie_id": "T0004",
+      "rule": "LOCKED",
+      "confidence": "CONFIRMED",
+      "members": [
+        "42984|Payment|LPG|L35",
+        "48747|Invoice|LPG|L37"
+      ],
+      "docs": [
+        "Payment 42984",
+        "Invoice 48747"
+      ],
+      "net": 0,
+      "lock_id": "L0004",
+      "close_id": null,
+      "lockedRule": "OPERATOR_RULING",
+      "ruling": {
+        "treatment": "exact",
+        "net": 0,
+        "reason": "Operator ruling (Linear ADM-84, 2026-10-08): prepayment - \"this customer terms were payment before delivery, then it changed to payment after delivery\"; payment 42984 settles invoice 48747 delivered after it",
+        "approvedBy": "operator",
+        "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx"
+      }
+    },
+    {
+      "tie_id": "T0005",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -130,7 +219,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0002",
+      "tie_id": "T0006",
       "rule": "CN_DN_PAIR",
       "confidence": "PROBABLE",
       "members": [
@@ -146,7 +235,7 @@
       "lagDays": 2
     },
     {
-      "tie_id": "T0003",
+      "tie_id": "T0007",
       "rule": "CN_DN_PAIR",
       "confidence": "PROBABLE",
       "members": [
@@ -162,7 +251,7 @@
       "lagDays": 2
     },
     {
-      "tie_id": "T0004",
+      "tie_id": "T0008",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -178,7 +267,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0005",
+      "tie_id": "T0009",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -194,7 +283,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0006",
+      "tie_id": "T0010",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -210,7 +299,7 @@
       "lagDays": 1
     },
     {
-      "tie_id": "T0007",
+      "tie_id": "T0011",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -226,7 +315,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0008",
+      "tie_id": "T0012",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -242,7 +331,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0009",
+      "tie_id": "T0013",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -258,7 +347,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0010",
+      "tie_id": "T0014",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -274,7 +363,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0011",
+      "tie_id": "T0015",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -290,7 +379,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0012",
+      "tie_id": "T0016",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -306,7 +395,7 @@
       "lagDays": 1
     },
     {
-      "tie_id": "T0013",
+      "tie_id": "T0017",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -322,7 +411,7 @@
       "lagDays": 1
     },
     {
-      "tie_id": "T0014",
+      "tie_id": "T0018",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -338,7 +427,7 @@
       "lagDays": 1
     },
     {
-      "tie_id": "T0015",
+      "tie_id": "T0019",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -354,7 +443,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0016",
+      "tie_id": "T0020",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -370,7 +459,7 @@
       "lagDays": 1
     },
     {
-      "tie_id": "T0017",
+      "tie_id": "T0021",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -386,7 +475,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0018",
+      "tie_id": "T0022",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -402,7 +491,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0019",
+      "tie_id": "T0023",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -418,7 +507,7 @@
       "lagDays": 1
     },
     {
-      "tie_id": "T0020",
+      "tie_id": "T0024",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -434,7 +523,7 @@
       "lagDays": 1
     },
     {
-      "tie_id": "T0021",
+      "tie_id": "T0025",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -450,7 +539,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0022",
+      "tie_id": "T0026",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -466,7 +555,7 @@
       "lagDays": 1
     },
     {
-      "tie_id": "T0023",
+      "tie_id": "T0027",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -482,7 +571,7 @@
       "lagDays": 1
     },
     {
-      "tie_id": "T0024",
+      "tie_id": "T0028",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -509,7 +598,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0025",
+      "tie_id": "T0029",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -536,7 +625,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0026",
+      "tie_id": "T0030",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -563,7 +652,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0027",
+      "tie_id": "T0031",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -590,7 +679,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0028",
+      "tie_id": "T0032",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -617,7 +706,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0029",
+      "tie_id": "T0033",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -644,7 +733,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0030",
+      "tie_id": "T0034",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -671,7 +760,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0031",
+      "tie_id": "T0035",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -698,7 +787,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0032",
+      "tie_id": "T0036",
       "rule": "EXACT_MONTH_SUM",
       "confidence": "CONFIRMED",
       "members": [
@@ -732,7 +821,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0033",
+      "tie_id": "T0037",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -759,7 +848,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0034",
+      "tie_id": "T0038",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -786,7 +875,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0035",
+      "tie_id": "T0039",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -813,7 +902,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0036",
+      "tie_id": "T0040",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -840,7 +929,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0037",
+      "tie_id": "T0041",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -867,7 +956,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0038",
+      "tie_id": "T0042",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -894,7 +983,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0039",
+      "tie_id": "T0043",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -921,7 +1010,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0040",
+      "tie_id": "T0044",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -948,7 +1037,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0041",
+      "tie_id": "T0045",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -976,10 +1065,6 @@
     }
   ],
   "unallocatedPayments": [
-    "38566|Payment|LPG|L2",
-    "39087|Payment|LPG|L6",
-    "42420|Payment|LPG|L19",
-    "42984|Payment|LPG|L35",
     "43641|Payment|LPG|L48",
     "43698|Payment|LPG|L52"
   ]

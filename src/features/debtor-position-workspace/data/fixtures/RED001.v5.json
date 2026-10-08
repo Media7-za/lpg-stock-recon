@@ -7,18 +7,18 @@
   },
   "version": "v5",
   "workspaceStatus": "pending_review",
-  "lastGeneratedAt": "2026-10-08T04:03:12.954Z",
+  "lastGeneratedAt": "2026-10-08T12:09:25.867Z",
   "source": "analysis/debtors/RED001/raw/RED001CURRENT.TXT",
   "financialPosition": {
     "lpgGasDebt": 10389.76,
-    "cylinderFinancialBalance": 2415,
-    "totalDebtorBalance": 12804.76,
+    "cylinderFinancialBalance": -4830,
+    "totalDebtorBalance": 5559.76,
     "erpStatedBalance": 5559.76,
-    "erpVariance": 7245,
+    "erpVariance": 0,
     "subLedgerVariance": 0
   },
   "custodyPosition": {
-    "totalCustodyExposure": 2300,
+    "totalCustodyExposure": -4600,
     "lines": [
       {
         "sku": "D.1",
@@ -30,23 +30,17 @@
       {
         "sku": "S.1",
         "label": "S.1",
-        "qty": -5,
+        "qty": -11,
         "depositRate": 1150,
-        "exposure": -5750
+        "exposure": -12650
       }
     ]
   },
   "reconciliationPosition": {
-    "cylinderVariance": 115,
-    "erpVariance": 7245,
+    "cylinderVariance": -230,
+    "erpVariance": 0,
     "subLedgerVariance": 0,
     "exceptions": [
-      {
-        "type": "VARIANCE",
-        "basis": "ASSERTED",
-        "status": "open",
-        "description": "Part 1 bridge differs from ERP TXT header"
-      },
       {
         "type": "CUSTODY",
         "basis": "ASSERTED",

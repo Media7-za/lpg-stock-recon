@@ -3,7 +3,7 @@
   "status": "PROPOSED — NOT RATIFIED (PROPOSED_Projection_Matching_Locks.md, build step 1)",
   "debtorCode": "RED001",
   "generatedBy": "reconcile_debtor_v5_from_txt.mjs",
-  "generatedAt": "2026-10-08T04:03:12.955Z",
+  "generatedAt": "2026-10-08T12:09:25.869Z",
   "source": {
     "txtPath": "analysis/debtors/RED001/raw/RED001CURRENT.TXT",
     "txtSha256": "db02584c2453ac753790ccd59066cb10f46b9c9aeb57509d81157d7d3f006b65",
@@ -23,9 +23,9 @@
   },
   "closings": {
     "lpg": 10389.76,
-    "cyl": 2415,
-    "combined": 12804.76,
-    "erpVariance": 7245
+    "cyl": -4830,
+    "combined": 5559.76,
+    "erpVariance": 0
   },
   "ingestGate": {
     "ingestCoverage": "partial",
@@ -35,14 +35,13 @@
   "checks": {
     "lpgRowsReproduce1A": true,
     "cylRowsReproduce1B": true,
-    "tiesToErpHeader": false
+    "tiesToErpHeader": true
   },
   "summary": {
-    "rowCount": 109,
+    "rowCount": 108,
     "splitBasisCounts": {
       "PAYMENT_LANE": 24,
-      "DB_LINES": 84,
-      "RATIFICATION": 1
+      "DB_LINES": 84
     }
   },
   "rows": [
@@ -375,22 +374,6 @@
       "confirmable": true,
       "lane": "CYL",
       "amount": -4830
-    },
-    {
-      "row_id": "RAT13687|Invoice|CYL",
-      "doc_no": "RAT13687",
-      "clean_doc": "RAT13687",
-      "entry_type": "Invoice",
-      "kind": "invoice",
-      "date": "2025-11-30",
-      "ref_no": "DN#20157-CORR",
-      "txt_line": null,
-      "txt_amount": 7245,
-      "split_basis": "RATIFICATION",
-      "confirmable": true,
-      "ratification_id": "CN13687-6CYL-NOV2025",
-      "lane": "CYL",
-      "amount": 7245
     },
     {
       "row_id": "48022|Invoice|LPG|L24",

@@ -1,3 +1,138 @@
 {
-  "overrides": []
+  "overrides": [],
+  "projectionLocks": {
+    "schema": 1,
+    "closes": [],
+    "locks": [
+      {
+        "lock_id": "L0001",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "exact",
+          "net": 0,
+          "reason": "Operator ruling (Linear ADM-84, 2026-10-08): prepayment - \"this customer terms were payment before delivery, then it changed to payment after delivery\"; payment 38566 settles invoice 42948 delivered after it",
+          "approvedBy": "operator",
+          "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx"
+        },
+        "members": [
+          {
+            "key": "38566|Payment|LPG|2025-05-08|-5399.99",
+            "doc": "38566",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2025-05-08",
+            "amount": -5399.99
+          },
+          {
+            "key": "42948|Invoice|LPG|2025-05-09|5399.99",
+            "doc": "42948",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-05-09",
+            "amount": 5399.99
+          }
+        ],
+        "createdAt": "2026-10-08T12:09:31.299Z"
+      },
+      {
+        "lock_id": "L0002",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "exact",
+          "net": 0,
+          "reason": "Operator ruling (Linear ADM-84, 2026-10-08): prepayment - \"this customer terms were payment before delivery, then it changed to payment after delivery\"; payment 39087 settles invoice 43614 delivered after it",
+          "approvedBy": "operator",
+          "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx"
+        },
+        "members": [
+          {
+            "key": "39087|Payment|LPG|2025-06-03|-8639.97",
+            "doc": "39087",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2025-06-03",
+            "amount": -8639.97
+          },
+          {
+            "key": "43614|Invoice|LPG|2025-06-04|8639.97",
+            "doc": "43614",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-06-04",
+            "amount": 8639.97
+          }
+        ],
+        "createdAt": "2026-10-08T12:09:31.395Z"
+      },
+      {
+        "lock_id": "L0003",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "exact",
+          "net": 0,
+          "reason": "Operator ruling (Linear ADM-84, 2026-10-08): prepayment - \"this customer terms were payment before delivery, then it changed to payment after delivery\"; payment 42420 settles invoice 48022 delivered after it",
+          "approvedBy": "operator",
+          "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx"
+        },
+        "members": [
+          {
+            "key": "42420|Payment|LPG|2025-11-25|-4780.00",
+            "doc": "42420",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2025-11-25",
+            "amount": -4780
+          },
+          {
+            "key": "48022|Invoice|LPG|2025-12-01|4780.00",
+            "doc": "48022",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-12-01",
+            "amount": 4780
+          }
+        ],
+        "createdAt": "2026-10-08T12:09:31.478Z"
+      },
+      {
+        "lock_id": "L0004",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "exact",
+          "net": 0,
+          "reason": "Operator ruling (Linear ADM-84, 2026-10-08): prepayment - \"this customer terms were payment before delivery, then it changed to payment after delivery\"; payment 42984 settles invoice 48747 delivered after it",
+          "approvedBy": "operator",
+          "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx"
+        },
+        "members": [
+          {
+            "key": "42984|Payment|LPG|2026-01-12|-5759.98",
+            "doc": "42984",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2026-01-12",
+            "amount": -5759.98
+          },
+          {
+            "key": "48747|Invoice|LPG|2026-01-13|5759.98",
+            "doc": "48747",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-01-13",
+            "amount": 5759.98
+          }
+        ],
+        "createdAt": "2026-10-08T12:09:31.585Z"
+      }
+    ],
+    "voids": []
+  }
 }

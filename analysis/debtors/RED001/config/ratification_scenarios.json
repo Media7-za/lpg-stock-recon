@@ -1,10 +1,13 @@
 {
   "debtorCode": "RED001",
-  "activeScenarioId": "CN13687-6CYL-NOV2025",
+  "activeScenarioId": null,
+  "activeScenarioHistory": "CN13687-6CYL-NOV2025 was active until 2026-10-08; deactivated on operator ruling (Linear ADM-84: \"Remove it from the config\").",
   "scenarios": [
     {
       "id": "CN13687-6CYL-NOV2025",
-      "status": "proposed",
+      "status": "rejected",
+      "rejectedAt": "2026-10-08",
+      "rejectedBy": "Operator ruling, Linear ADM-84: \"Remove it from the config\". Scenario kept for the record (amendments append); no longer applied.",
       "operatorDecisionRequired": "Ratify CN13687-6CYL-NOV2025 — post ERP Invoice +R7,245.00 (not Debit Note) per docs/RED001_ERP_Agent_Note_CN13687.md; then clear activeScenarioId after fresh TXT",
       "epistemicTag": "ASSUMED",
       "assumptionSource": "Operator asserted 2026-07-29: 6 of 7 cylinders on CN 13687 were posting error; Nov 2025 correction never posted",

@@ -1,7 +1,7 @@
 # Open Items Statement: REDLANDS HOTEL (RED001) — Internal
-**Period:** from 08 May 2025 to 25 Jul 2026 &nbsp;|&nbsp; **Balance due:** R12,804.76
+**Period:** from 08 May 2025 to 25 Jul 2026 &nbsp;|&nbsp; **Balance due:** R5,559.76
 **Status:** PROPOSED — NOT RATIFIED (`PROPOSED_Projection_Matching_Locks.md`, build step 3) · generated 2026-10-08 by `render_open_items.mjs`
-**Sources:** `analysis/debtors/RED001/data/v5_projection.json` (TXT sha256 `db02584c2453…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (39 confirmed / 2 probable ties) · **REVIEW ONLY:** ERP variance R7245; ingestCoverage partial
+**Sources:** `analysis/debtors/RED001/data/v5_projection.json` (TXT sha256 `db02584c2453…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (43 confirmed / 2 probable ties) · **REVIEW ONLY:** ingestCoverage partial
 **Locks:** no period closed yet
 
 ---
@@ -11,39 +11,6 @@
 **Gas (LPG) opening balance:** R0.00
 
 ## Part 1A: LPG + OTHER open items
-
-### May 2025
-
-| Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 08 May 2025 | Payment | 38566 | TRANSF \| STAT 114 | LPG | -5,399.99 | -5,399.99 |
-| 09 May 2025 | Invoice | 42948 | DN#13208 | LPG | 5,399.99 | 0.00 |
-
-### June 2025
-
-| Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 03 Jun 2025 | Payment | 39087 | TRANSF \| STAT 115 | LPG | -8,639.97 | -8,639.97 |
-| 04 Jun 2025 | Invoice | 43614 | DN#12492 | LPG | 8,639.97 | 0.00 |
-
-### November 2025
-
-| Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 25 Nov 2025 | Payment | 42420 | TRANSF \| STAT 120 | LPG | -4,780.00 | -4,780.00 |
-
-### December 2025
-
-| Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 01 Dec 2025 | Invoice | 48022 | DN#20694 | LPG | 4,780.00 | 0.00 |
-
-### January 2026
-
-| Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 12 Jan 2026 | Payment | 42984 | TRANSF \| STAT 122 | LPG | -5,759.98 | -5,759.98 |
-| 13 Jan 2026 | Invoice | 48747 | DN#21632 | LPG | 5,759.98 | 0.00 |
 
 ### February 2026
 
@@ -88,34 +55,28 @@
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
 | 15 Oct 2025 | Crd Note | 13687 | DN#20157 | CYL | -8,452.50 | -7,245.00 |
 
-### November 2025
-
-| Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 30 Nov 2025 | Invoice | RAT13687 | DN#20157-CORR | CYL | 7,245.00 | 0.00 |
-
 ### April 2026
 
 | Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 02 Apr 2026 | Crd Note | 14704 | DN-21857-EMPTY | CYL | -4,830.00 | -4,830.00 |
-| 02 Apr 2026 | Invoice | 50065 | DN-21857-EMPTY | CYL | 7,245.00 | 2,415.00 |
+| 02 Apr 2026 | Crd Note | 14704 | DN-21857-EMPTY | CYL | -4,830.00 | -12,075.00 |
+| 02 Apr 2026 | Invoice | 50065 | DN-21857-EMPTY | CYL | 7,245.00 | -4,830.00 |
 
 ### June 2026
 
 | Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 15 Jun 2026 | Crd Note | 15069 | DN#22902-EMPTIES | CYL | -6,037.50 | -3,622.50 |
-| 15 Jun 2026 | Invoice | 51222 | DN#22902-EMPTIES | CYL | 4,830.00 | 1,207.50 |
-| 25 Jun 2026 | Invoice | 51427 | DN#22917_EMPTY | CYL | 6,037.50 | 7,245.00 |
-| 26 Jun 2026 | Crd Note | 15125 | DN#22917_EMPTY | CYL | -3,622.50 | 3,622.50 |
+| 15 Jun 2026 | Crd Note | 15069 | DN#22902-EMPTIES | CYL | -6,037.50 | -10,867.50 |
+| 15 Jun 2026 | Invoice | 51222 | DN#22902-EMPTIES | CYL | 4,830.00 | -6,037.50 |
+| 25 Jun 2026 | Invoice | 51427 | DN#22917_EMPTY | CYL | 6,037.50 | 0.00 |
+| 26 Jun 2026 | Crd Note | 15125 | DN#22917_EMPTY | CYL | -3,622.50 | -3,622.50 |
 
 ### July 2026
 
 | Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 16 Jul 2026 | Invoice | 51891 | DN#22961- EMPTY | CYL | 6,037.50 | 9,660.00 |
-| 17 Jul 2026 | Crd Note | 15274 | DN#22961- EMPTY | CYL | -7,245.00 | 2,415.00 |
+| 16 Jul 2026 | Invoice | 51891 | DN#22961- EMPTY | CYL | 6,037.50 | 2,415.00 |
+| 17 Jul 2026 | Crd Note | 15274 | DN#22961- EMPTY | CYL | -7,245.00 | -4,830.00 |
 
 ---
 
@@ -124,11 +85,11 @@
 | Component | Gas (R) | Cylinder deposit (R) | Total (R) |
 | :--- | ---: | ---: | ---: |
 | Opening B/F (unitemised) | 0.00 | 0.00 | 0.00 |
-| Open items listed above | 10,389.76 | 2,415.00 | 12,804.76 |
+| Open items listed above | 10,389.76 | -4,830.00 | 5,559.76 |
 | Rounding on matched items (tie nets) | 0.00 | 0.00 | 0.00 |
-| **Balance** | 10,389.76 | 2,415.00 | 12,804.76 |
+| **Balance** | 10,389.76 | -4,830.00 | 5,559.76 |
 | ERP `CURRENT BALANCE` (TXT header) | | | 5,559.76 |
-| **Variance** | | | **7,245.00** |
+| **Variance** | | | **0.00** |
 
 ---
 
@@ -136,16 +97,26 @@
 
 | Tie | Rule | Documents | Variance (R) | Note |
 | :--- | :--- | :--- | ---: | :--- |
-| T0002 | CN_DN_PAIR | Invoice 43615, Crd Note 12638 | — | CN 2 day(s) after invoice |
-| T0003 | CN_DN_PAIR | Invoice 45541, Crd Note 13187 | — | CN 2 day(s) after invoice |
+| T0006 | CN_DN_PAIR | Invoice 43615, Crd Note 12638 | — | CN 2 day(s) after invoice |
+| T0007 | CN_DN_PAIR | Invoice 45541, Crd Note 13187 | — | CN 2 day(s) after invoice |
 
 ## Appendix B: Confirmed ties by rule
 
 | Rule | Ties |
 | :--- | ---: |
+| LOCKED | 4 |
 | CN_DN_PAIR | 21 |
 | EXACT_SINGLE | 17 |
 | EXACT_MONTH_SUM | 1 |
 
 Full tie list: `data/projection_matches.json`.
+
+## Appendix D: Operator rulings applied (approved locks)
+
+| Lock | Treatment | Documents | Net (R) | Ruling |
+| :--- | :--- | :--- | ---: | :--- |
+| L0001 | exact | Payment 38566, Invoice 42948 | 0.00 | Operator ruling (Linear ADM-84, 2026-10-08): prepayment - "this customer terms were payment before delivery, then it changed to payment after delivery"; payment 38566 settles invoice 42948 delivered after it |
+| L0002 | exact | Payment 39087, Invoice 43614 | 0.00 | Operator ruling (Linear ADM-84, 2026-10-08): prepayment - "this customer terms were payment before delivery, then it changed to payment after delivery"; payment 39087 settles invoice 43614 delivered after it |
+| L0003 | exact | Payment 42420, Invoice 48022 | 0.00 | Operator ruling (Linear ADM-84, 2026-10-08): prepayment - "this customer terms were payment before delivery, then it changed to payment after delivery"; payment 42420 settles invoice 48022 delivered after it |
+| L0004 | exact | Payment 42984, Invoice 48747 | 0.00 | Operator ruling (Linear ADM-84, 2026-10-08): prepayment - "this customer terms were payment before delivery, then it changed to payment after delivery"; payment 42984 settles invoice 48747 delivered after it |
 
