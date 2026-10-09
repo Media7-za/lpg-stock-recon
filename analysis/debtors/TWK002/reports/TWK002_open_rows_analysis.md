@@ -401,7 +401,7 @@ The other 40 late STAT 123 lines took R0 discount, as the rule says. The registe
 
 **Why it may be unregistered on purpose.** Doctrine v2 is scoped to 2023–2024. `docs/TWK002_Model_B_Position.md` calls 2025+ forward scope, not to be mixed into the 2023–2024 sign-off. Phase 2 posted the 2025 journals (507–509) without extending the register. So this is a scope decision first.
 
-**Sensitivity (ASSUMED reading).** The config literally says month-end + 30 days. Read that way, a further 20 lines (e.g. STAT 110 and most of STAT 129) fall late by one day in 30-day months. The end-of-following-month reading above matches EXC-0001; confirm it. Kill condition: an operator or doctrine statement that the literal +30-day count applies.
+**Sensitivity (ASSUMED reading).** The config literally says month-end + 30 days. Read that way, a further 19 lines (both STAT 110 lines, 4 of STAT 112, 7 of STAT 114, 6 of STAT 129) fall late by one day. The end-of-following-month reading above matches EXC-0001; confirm it. Kill condition: an operator or doctrine statement that the literal +30-day count applies.
 
 * **Q11′:** Extend the discount register to 2025–2026? (yes / no / wait for the 2023–2024 sign-off) If yes, the main session would add: one `CROSS_BATCH_RESIDUAL_NO_DISCOUNT` entry for 41747; one `LATE_CATCHUP_BATCH` entry for STAT 123; and entries for the eight lines above (net R612.43).
 * **Q13:** Is the terms deadline the end of the month after the invoice, as EXC-0001 implies, rather than a literal 30 days after month-end? (yes/no)
