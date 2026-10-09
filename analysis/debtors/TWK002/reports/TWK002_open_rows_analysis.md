@@ -382,6 +382,8 @@ Unchanged: Q1, Q2, Q3, Q5, Q7, Q9, Q10. Withdrawn: Q4. Replaced or new:
 | STAT 129 (45899) | 21 | 14 | 1,223.45 | 911.66 | +311.79 |
 | **Total** | | | | | **+612.43** |
 
+> **SUPERSEDED (§8.13):** this table uses the end-of-following-month reading. The operator ruled the literal month-end + 30 days; see §8.13 for the recomputed figures (+R2,520.77, 27 lines).
+
 PROVEN arithmetic from `data/remittance_evidence.json`. The customer took R612.43 more discount than the strict terms rule gives. The advice is canonical (v2 §2), and journals 507–510 already posted the advice amounts. **No balance, tie or open row changes.** The register is the audit record of the deviations.
 
 **The eight lines that deviate from the terms rule:**
@@ -403,6 +405,84 @@ The other 40 late STAT 123 lines took R0 discount, as the rule says. The registe
 
 **Sensitivity (ASSUMED reading).** The config literally says month-end + 30 days. Read that way, a further 19 lines (both STAT 110 lines, 4 of STAT 112, 7 of STAT 114, 6 of STAT 129) fall late by one day. The end-of-following-month reading above matches EXC-0001; confirm it. Kill condition: an operator or doctrine statement that the literal +30-day count applies.
 
-* **Q11′:** Extend the discount register to 2025–2026? (yes / no / wait for the 2023–2024 sign-off) If yes, the main session would add: one `CROSS_BATCH_RESIDUAL_NO_DISCOUNT` entry for 41747; one `LATE_CATCHUP_BATCH` entry for STAT 123; and entries for the eight lines above (net R612.43).
-* **Q13:** Is the terms deadline the end of the month after the invoice, as EXC-0001 implies, rather than a literal 30 days after month-end? (yes/no)
+* **ANSWERED (§8.13): yes.** **Q11′:** Extend the discount register to 2025–2026? (yes / no / wait for the 2023–2024 sign-off) If yes, the main session would add: one `CROSS_BATCH_RESIDUAL_NO_DISCOUNT` entry for 41747; one `LATE_CATCHUP_BATCH` entry for STAT 123; and entries for the eight lines above (net R612.43).
+* **ANSWERED (§8.13): no — literal month-end + 30 days.** **Q13:** Is the terms deadline the end of the month after the invoice, as EXC-0001 implies, rather than a literal 30 days after month-end? (yes/no)
+
+### 8.13 Operator rulings on Q11′ and Q13 (2026-10-09) and the resulting register draft
+
+**Rulings (verbatim, operator in the analysis session, 2026-10-09):**
+* Q13 → "month-end + 30 days". The terms deadline is the invoice month-end plus 30 calendar days, as `termsBasis: invoice_month_end_plus_30_days` says.
+* Q11 → "yes". The discount register is extended to the 2025–2026 batches.
+
+Recording these rulings in `config/settlement_discount_overrides.json` is for the main recon session (`AGENTS.md`; this session writes only this report). The draft below is what it would append. Everything stays PROPOSED until applied.
+
+**Recomputed under the literal rule** (`data/remittance_evidence.json`; payment date = electronic paid date; PROVEN arithmetic):
+
+| Batch (payment) | Lines | Late | Advice discount (R) | Terms-rule discount (R) | Advice − rule (R) | Deviating lines |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: |
+| STAT 110 (36467) | 2 | 2 | 112.78 | 0.00 | +112.78 | 2 |
+| STAT 112 (37770) | 8 | 8 | 228.93 | 0.00 | +228.93 | 7 |
+| STAT 114 (39080) | 8 | 8 | 393.99 | 0.00 | +393.99 | 8 |
+| STAT 123 (43500, TWK002 slice) | 46 | 43 | 0.00 | −70.00 | +70.00 | 3 |
+| STAT 129 (45899) | 21 | 20 | 1,223.45 | −491.62 | +1,715.07 | 7 |
+| **Total** | | | | | **+2,520.77** | **27** |
+
+* **24 lines were paid late but discounted.** Nineteen of them are late by exactly one day; the other five are 29–32 days late (40081, CN 11648, CN 11743, 41747, 51226). These batches were paid on the last day of a month, one day after "month-end + 30" when the invoice month has 31 days.
+  * STAT 110: 39022, CN 11475.
+  * STAT 112: 40081, CN 11648, CN 11743 (29 days); 40459, CN 11821, 40950, CN 11953 (1 day). Invoice 39683, late, took R0 and conforms.
+  * STAT 114: all 8 lines (41747 31 days; the rest 1 day).
+  * STAT 129: 51226 (32 days); 15155, 15262, 51496, 51841 ×2, 52241 (1 day).
+* **3 lines were paid in terms but given no discount (STAT 123):** 48687 (+878.75), CN 14237 (−569.25), CN 14034 (−379.50); net −70.00.
+* **Rounding:** STAT 129's seven deviating lines sum to R1,715.08 against the R1,715.07 batch difference; R0.01 is rounding on CN 15370 (rule −491.62, advice −491.63).
+* **No balance effect.** The advice discount is canonical (doctrine v2 §2), and journals 507–510 already posted it. The register records why the advice departs from the rule.
+* **2023–2024 register unaffected.** Under the literal reading no 2023–2024 line flips to late-but-discounted, because those batches were paid on the 26th–28th. All 12 existing entries stay valid. PROVEN (checked against `config/payment_pattern_overrides.json` `remittance_paid_date`).
+
+**Type gap (needs Q14).** Doctrine v2 §7 lists exception types only for discounts *below* 2.5% (late, partial, residual and so on). It has no type for a discount granted on a late line, or for an in-terms line taken at R0. Adding a type amends the account doctrine, which a worker session may only propose (`DEBTORS_DOCTRINE.md` §7). The draft therefore uses existing types where they fit and marks two proposed types.
+
+**Draft entries** (field shape copied from existing entries; `approval_status` stays `proposed` until the main session records the rulings):
+
+```json
+[
+  { "override_id": "EXC-2025-0001", "batch_id": "BATCH-2025-01-31", "doc_no": "CONSOLIDATED",
+    "override_type": "DISCOUNT_GRANTED_AFTER_TERMS (PROPOSED TYPE)",
+    "remittance_discount": 112.78, "terms_rule_discount": 0.0, "payment_date": "2025-01-31",
+    "lines": ["00039022", "00011475"], "days_past_terms": 1,
+    "evidence_source": ["remittance_advice", "raw/Remittances/31.01.2025.pdf"],
+    "reason": "Lines past month-end + 30 days (operator ruling 2026-10-09) but discounted on the advice; advice is canonical (v2 §2).",
+    "approval_status": "proposed" },
+  { "override_id": "EXC-2025-0002", "batch_id": "BATCH-2025-03-31", "doc_no": "CONSOLIDATED",
+    "override_type": "DISCOUNT_GRANTED_AFTER_TERMS (PROPOSED TYPE)",
+    "remittance_discount": 228.93, "terms_rule_discount": 0.0, "payment_date": "2025-03-31",
+    "lines": ["00040081", "00011648", "00011743", "00040459", "00011821", "00040950", "00011953"],
+    "notes": "00039683 late at R0 conforms; 40081/11648/11743 29 days late, rest 1 day.",
+    "evidence_source": ["remittance_advice", "raw/Remittances/31.03.2025(1).pdf"], "approval_status": "proposed" },
+  { "override_id": "EXC-2025-0003", "batch_id": "BATCH-2025-05-31", "doc_no": "CONSOLIDATED",
+    "override_type": "DISCOUNT_GRANTED_AFTER_TERMS (PROPOSED TYPE)",
+    "remittance_discount": 393.99, "terms_rule_discount": 0.0, "payment_date": "2025-05-31",
+    "lines": ["00041747", "00012131", "00042050", "00012214", "00012215", "00042468", "00042470"],
+    "notes": "41747 discount on the CYL slice only (R495.94 = 2.5% × 19,837.50); residual R12,226.63 paid on STAT 123 (EXC-2026-0001). 12131 listed on two advice lines.",
+    "evidence_source": ["remittance_advice", "raw/Remittances/31.05.2025.pdf"], "approval_status": "proposed" },
+  { "override_id": "EXC-2026-0001", "batch_id": "BATCH-2026-STAT-123", "doc_no": "00041747",
+    "override_type": "CROSS_BATCH_RESIDUAL_NO_DISCOUNT",
+    "gross_amount": 32064.13, "payable_amount": 12226.63, "remittance_discount": 0.0,
+    "payment_date": "2026-02-28", "invoice_date": "2025-03-26", "terms_deadline": "2025-04-30", "days_past_terms": 304,
+    "evidence_source": ["remittance_advice", "raw/Remittances/18.02.2026.pdf", "data/remittance_lines_2026.csv line 2"],
+    "reason": "Residual after the STAT 114 CYL slice (already_paid_col 19,837.50); precedent EXC-0005.", "approval_status": "proposed" },
+  { "override_id": "EXC-2026-0002", "batch_id": "BATCH-2026-STAT-123", "doc_no": "CATCHUP-2025",
+    "override_type": "LATE_CATCHUP_BATCH",
+    "remittance_discount": 0.0, "terms_rule_discount": -70.0, "payment_date": "2026-02-28",
+    "notes": "TWK002 slice only (R176,824.24 of R240,325.86; TWK003/TWK004 slices out of scope). 43 late lines at R0 conform. 3 in-terms lines also at R0 (00048687 +878.75, 00014237 -569.25, 00014034 -379.50; net -70.00): IN_TERMS_NO_DISCOUNT (PROPOSED TYPE).",
+    "evidence_source": ["remittance_advice", "raw/Remittances/18.02.2026.pdf"], "approval_status": "proposed" },
+  { "override_id": "EXC-2026-0003", "batch_id": "BATCH-2026-STAT-129", "doc_no": "CONSOLIDATED",
+    "override_type": "DISCOUNT_GRANTED_AFTER_TERMS (PROPOSED TYPE)",
+    "remittance_discount": 1223.45, "terms_rule_discount": -491.62, "payment_date": "2026-08-31",
+    "lines": ["00015155", "00015262", "00051226", "00051496", "00051841", "00052241"],
+    "notes": "51226 32 days late; rest 1 day. 51841 on two advice lines. 13 late lines at R0 conform. CN 15370 in terms (R0.01 rounding). Journal 00000510.",
+    "evidence_source": ["remittance_advice", "raw/Remittances/B226 - REMITTANCE.pdf"], "approval_status": "proposed" }
+]
+```
+
+* **Q14:** Add two exception types to doctrine v2 §7 — `DISCOUNT_GRANTED_AFTER_TERMS` (advice discounts a line past month-end + 30) and `IN_TERMS_NO_DISCOUNT` (advice takes an in-terms line at R0)? (yes / no / use other names)
+
+**Tripwires.** A remittance or finance statement that the customer's terms count from statement date, or end of the following month, reopens the Q13 ruling. Any later advice discounting a line more than one day past the deadline should be registered at that batch.
 
