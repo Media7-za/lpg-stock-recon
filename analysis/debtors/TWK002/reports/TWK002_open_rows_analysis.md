@@ -213,7 +213,7 @@ Proof holds on all nine. No lock exists on TWK002, so none was bypassed. Working
 
 ## 7. Questions for the operator (one-line answers)
 
-1. **Q1 (P8):** Adopt `payerGroup` for TWK002 so that sister-site lines on a remittance are out of scope, and tie 43500 on TWK002's R176,824.24 slice alone? (yes/no)
+1. **Q1 (P8):** Adopt `payerGroup` for TWK002 so that sister-site lines on a remittance are out of scope, and tie 43500 on TWK002's R176,824.24 slice alone? (yes/no) — **ANSWERED (§8.15):** no; consolidated parent instead.
 2. **Q2:** Is the STAT 123 advice line "Crd Note 10 −R6,900.00" the second line of CN 13716 (9,315 + 6,900 = 16,215)? (yes/no)
 3. **Q3 (P-b):** Accept lane-aware split remittances, so 41747 is tied CYL to STAT 114 and LPG to STAT 123? (yes/no)
 4. **Q4:** STAT 114 calls R12,226.63 of 41747 "already paid" before 2025-05-19, but only STAT 123 pays it. Do you accept STAT 123 as the sole payment, or should finance check the bank for an earlier R12,226.63? (accept / check) — **WITHDRAWN (§8.3):** answered by doctrine v2 §7.
@@ -504,4 +504,45 @@ Doctrine v2 §7 gains two exception types:
 4. Append the entries to `config/settlement_discount_overrides.json` with `approval_status: approved`, citing the Q11, Q13 and Q14 rulings. Then add a `project.json` history line.
 
 **Tripwire:** an advice discounting a line more than 32 days past the deadline is outside the observed pattern; register it individually and flag it to the operator, not under a batch entry.
+
+### 8.15 Operator ruling on Q1: consolidated parent (2026-10-09)
+
+**Ruling (verbatim, operator in the analysis session, 2026-10-09):**
+* "TWK003 and TWK004 are child accounts of TWK002."
+* Offered (1) child accounts reconciled separately, or (2) a consolidated parent; the operator answered "2".
+
+This replaces the per-account `payerGroup` treatment proposed for Q1 (§5 M2, §4.3). TWK002 is reconciled as the **parent of a three-account family**. This is consistent with doctrine v2 §1 ("one commercial account … ERP debtor split only"). It reverses the TWK002-only posture recorded in `config/statement_of_account.json` (`_comment_siteTxts`: "TWK003/TWK004 temporarily excluded … until site roll-up is revisited").
+
+**What changes:**
+
+| Item | Per-account treatment (superseded) | Consolidated parent (ruled) |
+| :--- | :--- | :--- |
+| STAT 123 (payment 43500) | Tie TWK002's R176,824.24 slice; 8 child lines out of scope | Tie the whole advice, R240,325.86, against the three ERP postings of 43500 (TWK002 R176,824.24, TWK003 R38,501.31, TWK004 R25,000.31) |
+| Family balance | TWK002 R54,136.19 | R54,136.19 + TWK003 R−300.00 + TWK004 R0.00 = **R53,836.19** (ASSERTED: the child TXTs carry no export date) |
+| Open items after all rulings | 10 rows (TWK002) | 10 TWK002 rows + 2 TWK003 rows = **12** (see below) |
+| Q2 ("Crd Note 10" alias) | Needed | Still needed: the advice must reconcile line by line |
+
+**The children, from `raw/DEBENQ_TWK003.TXT` and `raw/DEBENQ_TWK004.TXT`** (ERP allocation detail in `ERP RAW DATA/DETRANS.TXT`; corroboration only):
+* **TWK003:**
+  * The advice paid 46857, 47076, 47523 and 47880. In the ERP, 47880 was credited by CN 13966 and re-issued as 47991 (same DN 21166, R5,499.99), and the payment was allocated to 47991. Net R0.00.
+  * Invoice 47866 (R2,000.00) and CN 13933 (−R2,300.00), both DN 21166, are not on the advice. They net **−R300.00**: a customer credit and the only child item that stays open.
+* **TWK004:**
+  * The advice paid 46858, 47176, 47297 and 47584. 47297 was matched by CN 13744 (DN 20749), with 47303 (DN 20749) carrying the payment allocation; the re-issue nets to R0.00.
+  * Balance R0.00; nothing stays open.
+
+**Proof, consolidated (state after all rulings):** opening residual 8,084.67 + TWK002 open 46,051.52 + TWK003 open −300.00 + TWK004 0.00 = **53,836.19** = Σ of the three ERP `CURRENT BALANCE` headers (54,136.19 − 300.00 + 0.00). Arithmetic PROVEN; child balances ASSERTED until current child TXTs are on file.
+
+**What the main session needs before this can run** (this session writes only the report):
+1. **Current DEBENQ TXTs for TWK003 and TWK004.** The handoff `docs/handoffs/2026-10-08.md` §1, pending item 3, already requests them. The ones in `raw/` are undated and were committed 2026-10-07.
+2. **Child configs:** `statement_v5.json` for TWK003 and TWK004 (B/F R0.00 on both TXTs), a v5 projection each, and DB coverage checks.
+3. **Family relation in config:** fill `siteTxts` in `config/statement_of_account.json`, and add a parent/children (`payerGroup`) entry to `config/statement_v5.json`. Supersede the `_comment_siteTxts` note by marking it, not deleting it.
+4. **Matcher:** a family-level REMITTANCE tie across the three projections. It accepts a line when its document is on any family account and requires Σ of the family's postings of the payment = advice cash. The re-issued documents (47880→47991, 47297→47303) need either a CN-pair step inside the tie or an alias.
+5. **Proof:** the open-items proof sums the three ERP headers.
+
+**Interim, until the child TXTs are current:** run TWK002 alone, with the child slices of 43500 (R63,501.62) shown as a named family line. That is the per-account mechanics of §5 M2, used as a stop-gap and labelled as such. ASSUMED acceptable; kill condition: the operator prefers to wait for the full family build.
+
+**New question:**
+* **Q15:** Should the customer statement also become one consolidated statement for TWK AGRI (TWK002 + TWK003 + TWK004), or stay per account with the parent proof internal only? (consolidated / per account)
+
+**Tripwires:** a current TWK003 or TWK004 TXT whose header differs from the R−300.00 or R0.00 used here reopens the family proof. Any remittance naming a document on none of the three accounts reopens the family membership.
 
