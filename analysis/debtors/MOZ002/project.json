@@ -172,6 +172,10 @@
     {
       "date": "2026-10-09",
       "event": "Operator: \"Notice March 2026 the opening balance is equal to 0?\" -> matcher rule BALANCE_ZERO: ERP running balance last returns to R-0.01 at TXT line 183 (payment 43962, 2026-04-09); everything on or before it settled as one CONFIRMED group (11 rows; 4 probable ties dissolved: 41522/12079, 46826/13602, 49329/14458, 40729 run). BATCH_SUM now only absorbs a rounding cent dated on/after the batch (41529 goes to the cut). Customer statement (open_items): 6 items R1,562.68 + rounding R-0.01 = ERP R1,562.67; 4 items await approval of BATCH_SUM T(44227+45590 = 50528+50529). After approval: 53402 R5,702.67 + CN 15128 R-4,140.00 = R1,562.67."
+    },
+    {
+      "date": "2026-10-09",
+      "event": "Operator hypotheses for the R4,140 credit tested: (1) a delivery's cylinder deposit not invoiced but its empties later credited; (2) a duplicated credit note. Cylinder quantities from DB lines (data/db_replay/2026-10-08b/bbaaec60486c011a.rows.json, PROVEN): window totals invoiced vs credited 9kg 48/48, 19kg 1/1, S.1 148/149, D.1 8/7; S.1 and D.1 carry the same deposit price (R1,207.50), so the +-1 offsets in value; merged 205/205. Either hypothesis would leave more cylinders credited than invoiced; none is. No duplicate cylinder CN by amount and DN/date. Only gas delivery with no cylinder documents: DN#13083 (inv 42434, 2025-04-22), nothing credited against it. Conclusion (ASSERTED): the cylinder side balances in count and value; the R4,140 credit is cash received beyond the invoices (payments 44227 + 45590), not a cylinder invoicing error. Side fix: dnNumber now reads DN_21913 (underscore) refs; 49329/14458 pair by DN."
     }
   ]
 }

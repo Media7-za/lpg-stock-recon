@@ -111,7 +111,7 @@ const days = (a, b) => Math.round((Date.parse(`${b}T00:00:00Z`) - Date.parse(`${
 
 /** Delivery-note number from a TXT reference (DN#22719, DN-22719, D/N20345, MKONDENI DN20430 EMP …). */
 export function dnNumber(ref) {
-  const m = String(ref || '').match(/D\W?N\W*(\d{3,})/i);
+  const m = String(ref || '').match(/D[\W_]?N[\W_]*(\d{3,})/i); // DN_21913 too
   return m ? m[1] : null;
 }
 

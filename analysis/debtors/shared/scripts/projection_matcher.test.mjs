@@ -40,6 +40,7 @@ test('dnNumber reads DN#, DN-, D/N and embedded forms; ignores placeholders', ()
   assert.equal(dnNumber('D/N20345'), '20345');
   assert.equal(dnNumber('MKONDENI DN20430 EMP'), '20430');
   assert.equal(dnNumber('DN#21635MPTY-KONDENI'), '21635');
+  assert.equal(dnNumber('DN_21913-EMPTY'), '21913');
   assert.equal(dnNumber('DN-00-EMPTY'), null);
   assert.equal(dnNumber('ON 257219'), null);
 });
