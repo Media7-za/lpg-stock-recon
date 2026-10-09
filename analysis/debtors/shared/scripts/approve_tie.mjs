@@ -11,6 +11,9 @@
  *     --treatment applied_to_bf --reason "…"
  *   node analysis/debtors/shared/scripts/approve_tie.mjs --debtor CODE --payment P1 \
  *     --invoices I2,I3 --treatment part_payment --partial I1 --reason "…"
+ *   Several payments for one delivery, with its cylinder deposit invoice (BATCH_SUM rulings):
+ *   node analysis/debtors/shared/scripts/approve_tie.mjs --debtor MOZ002 --payment 44227,45590 \
+ *     --invoices 50528 --deposits 50529 --treatment exact --reason "…"
  *
  * Treatments (see locks.mjs planApproval): exact | customer_credit | applied_to_bf |
  * part_payment | short_paid. Re-run match_projection.mjs and render_open_items.mjs afterwards.
@@ -47,8 +50,9 @@ if (!run.ok) {
 const plan = planApproval({
   projection: run.projection,
   registry: reg.registry,
-  payment: String(payment).replace(/^0+/, ''),
+  payment: String(payment),
   invoices: (arg('--invoices') || '').split(',').map((s) => s.trim().replace(/^0+/, '')).filter(Boolean),
+  deposits: (arg('--deposits') || '').split(',').map((s) => s.trim().replace(/^0+/, '')).filter(Boolean),
   treatment: arg('--treatment') || 'exact',
   partialDoc: arg('--partial') ? String(arg('--partial')).replace(/^0+/, '') : null,
   reason: arg('--reason'),

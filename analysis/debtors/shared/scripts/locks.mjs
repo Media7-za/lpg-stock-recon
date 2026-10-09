@@ -164,7 +164,7 @@ export function applyClose(registry, plan) {
  * Members are keyed exactly as period-close locks are, so a changed document turns the ruling
  * into a CONFLICT in the next run rather than being silently re-applied.
  */
-export function planApproval({ projection, registry, payment, invoices = [], treatment = 'exact', partialDoc = null, reason, approvedBy, session, now }) {
+export function planApproval({ projection, registry, payment, invoices = [], deposits = [], treatment = 'exact', partialDoc = null, reason, approvedBy, session, now }) {
   const reasons = [];
   const TREATMENTS = ['exact', 'customer_credit', 'applied_to_bf', 'part_payment', 'short_paid'];
   if (!TREATMENTS.includes(treatment)) reasons.push(`unknown treatment ${treatment}`);
@@ -173,18 +173,31 @@ export function planApproval({ projection, registry, payment, invoices = [], tre
   const lockedKeys = new Set(eff.locks.flatMap((l) => l.members.map((m) => m.key)));
   const rows = projection.rows;
 
-  const payRows = rows.filter((r) => r.kind === 'payment' && r.entry_type !== 'Bank UD' && r.clean_doc === String(payment) && r.amount < 0);
-  if (payRows.length !== 1) reasons.push(`payment ${payment}: expected 1 payment row, found ${payRows.length}`);
+  // `payment` may name several payments ("44227,45590"): a customer paying one delivery in parts.
+  const payDocs = String(payment).split(',').map((s) => s.trim().replace(/^0+/, '')).filter(Boolean);
+  const payRows = [];
+  for (const d of payDocs) {
+    const found = rows.filter((r) => r.kind === 'payment' && r.entry_type !== 'Bank UD' && r.clean_doc === d && r.amount < 0);
+    if (found.length !== 1) reasons.push(`payment ${d}: expected 1 payment row, found ${found.length}`);
+    payRows.push(...found);
+  }
   const members = [...payRows];
+  // `deposits`: invoices whose CYL (cylinder deposit) rows join the tie, e.g. a delivery's deposit
+  // invoice settled by the same cash as its gas invoice.
+  for (const doc of deposits) {
+    const dep = rows.filter((r) => r.kind === 'invoice' && r.clean_doc === String(doc) && r.lane === 'CYL');
+    if (!dep.length) reasons.push(`deposit invoice ${doc}: no CYL rows in the projection`);
+    members.push(...dep);
+  }
   for (const doc of invoices) {
     const inv = rows.filter((r) => r.kind === 'invoice' && r.clean_doc === String(doc) && r.lane !== 'CYL');
     if (!inv.length) reasons.push(`invoice ${doc}: no LPG/OTHER rows in the projection`);
     members.push(...inv);
   }
   for (const r of members) if (lockedKeys.has(rowKey(r))) reasons.push(`${r.entry_type} ${r.clean_doc} ${r.lane} is already locked`);
-  if (treatment === 'applied_to_bf' && !invoices.length && payRows.length) {
+  if (treatment === 'applied_to_bf' && !invoices.length && !deposits.length && payRows.length) {
     // whole payment to the opening balance: nothing else to check
-  } else if (!invoices.length) {
+  } else if (!invoices.length && !deposits.length) {
     reasons.push('no invoices given (use treatment applied_to_bf for a payment against the opening balance)');
   }
   if (treatment === 'part_payment') {

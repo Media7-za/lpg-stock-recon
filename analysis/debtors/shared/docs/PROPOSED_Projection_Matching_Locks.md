@@ -446,3 +446,5 @@ The operator said: "A customer very rarely pays for part of an invoice. The comb
   - The customer copy drops from 18 to 6 items; 4 of the 6 await approval of the `BATCH_SUM` tie.
   - It still ties to R1,562.67 (PROVEN, `analysis/debtors/MOZ002/data/projection_matches.json`).
 - **Tripwire.** A later ERP export changes any row on or before the cut line. The ERP backdating seen on 2026-10-08 is exactly that case: the cut moves and the group re-forms. Once a period close locks it, it becomes a lock conflict.
+
+**Progress (2026-10-09): first `BATCH_SUM` ruling.** `approve_tie.mjs` now takes several payments (`--payment A,B`) and a delivery's deposit invoices (`--deposits N`), so a probable `BATCH_SUM` tie can be approved as a lock. MOZ002 L0001 (provisional, "Yes for now"): payments 44227 + 45590 settle DN#22222 (gas 50528 + deposit 50529). The R4,140.00 credit stays open on the statement as empties credit note 15128. The ruling is reversible with `close_period.mjs --void-lock L0001`. PROPOSED — NOT RATIFIED.

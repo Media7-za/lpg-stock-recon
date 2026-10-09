@@ -165,3 +165,22 @@ test('part_payment needs a separate open partialDoc', () => {
   assert.equal(ok.lock.ruling.partialDoc, 'I1');
   assert.equal(ok.lock.ruling.net, -26.77);
 });
+
+test('planApproval: several payments settle one delivery with its deposit invoice (BATCH_SUM ruling)', async () => {
+  const { planApproval } = await import('./locks.mjs');
+  const row = (doc, type, kind, lane, amount, date) => ({ row_id: `${doc}|${type}|${lane}`, clean_doc: doc, entry_type: type, kind, lane, amount, date, ref_no: '', txt_line: 1 });
+  const projection = {
+    rows: [
+      row('50528', 'Invoice', 'invoice', 'LPG', 4329.29, '2026-05-05'),
+      row('50529', 'Invoice', 'invoice', 'CYL', 4140, '2026-05-05'),
+      row('44227', 'Payment', 'payment', 'LPG', -4978.91, '2026-05-07'),
+      row('45590', 'Payment', 'payment', 'LPG', -3490.37, '2026-08-06'),
+    ],
+  };
+  const plan = planApproval({ projection, registry: {}, payment: '44227,45590', invoices: ['50528'], deposits: ['50529'], treatment: 'exact', reason: 'test', approvedBy: 'operator', session: 's', now: 'n' });
+  assert.equal(plan.ok, true, plan.reasons?.join('; '));
+  assert.equal(plan.lock.members.length, 4);
+  assert.equal(plan.lock.ruling.net, 0.01);
+  const bad = planApproval({ projection, registry: {}, payment: '44227,99999', invoices: ['50528'], deposits: ['50529'], reason: 'x', approvedBy: 'o', session: 's', now: 'n' });
+  assert.equal(bad.ok, false);
+});

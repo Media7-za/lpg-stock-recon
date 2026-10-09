@@ -722,5 +722,60 @@
       "trigger": "Remittance for 44227",
       "action": "Convert VERIFIED_UNALLOCATED to confirmed edge"
     }
-  ]
+  ],
+  "projectionLocks": {
+    "schema": 1,
+    "closes": [],
+    "locks": [
+      {
+        "lock_id": "L0001",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "exact",
+          "net": 0.01,
+          "reason": "Operator 2026-10-09 (\"Yes for now\"; provisional pending the ERP answer on ADM-93): payments 44227 (R4,978.91) + 45590 (R3,490.37) settle MOZ002 delivery DN#22222: gas invoice 50528 (R4,329.29) + cylinder deposit invoice 50529 (R4,140.00), net R0.01 rounding. Deposit 50529 was also credited by returned empties (CN 14856), so the R4,140.00 stays open as a credit owed to the customer (empties credit note 15128 on the statement). Cylinder counts and credit notes checked: no missed deposit invoice, no duplicated credit note. Tripwire: ERP answer on ADM-93 that 44227/45590 belong wholly or partly to MOZ001 (void this lock and re-point the payment).",
+          "approvedBy": "operator",
+          "session": "unrecorded"
+        },
+        "members": [
+          {
+            "key": "44227|Payment|LPG|2026-05-07|-4978.91",
+            "doc": "44227",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2026-05-07",
+            "amount": -4978.91
+          },
+          {
+            "key": "45590|Payment|LPG|2026-08-06|-3490.37",
+            "doc": "45590",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2026-08-06",
+            "amount": -3490.37
+          },
+          {
+            "key": "50529|Invoice|CYL|2026-05-05|4140.00",
+            "doc": "50529",
+            "entry_type": "Invoice",
+            "lane": "CYL",
+            "date": "2026-05-05",
+            "amount": 4140
+          },
+          {
+            "key": "50528|Invoice|LPG|2026-05-05|4329.29",
+            "doc": "50528",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-05-05",
+            "amount": 4329.29
+          }
+        ],
+        "createdAt": "2026-10-09T04:40:29.915Z"
+      }
+    ],
+    "voids": []
+  }
 }

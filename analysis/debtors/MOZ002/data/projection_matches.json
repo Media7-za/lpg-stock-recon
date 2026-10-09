@@ -2,7 +2,7 @@
   "status": "PROPOSED — NOT RATIFIED (PROPOSED_Projection_Matching_Locks.md, build step 2)",
   "debtorCode": "MOZ002",
   "generatedBy": "match_projection.mjs",
-  "generatedAt": "2026-10-09T04:11:11.120Z",
+  "generatedAt": "2026-10-09T04:40:30.002Z",
   "projection": {
     "path": "analysis/debtors/MOZ002/data/v5_projection.json",
     "txtSha256": "4a6e6bbcc72413ddae3f5c4d325d034faf6a648a4d3fd788f846ab5503654044",
@@ -14,7 +14,7 @@
   "locksRegistry": "config/payment_pattern_overrides.json#projectionLocks",
   "matcherVersion": 5,
   "closedThrough": null,
-  "locksApplied": 0,
+  "locksApplied": 1,
   "lockConflicts": [],
   "rules": {
     "exactTolerance": 0.05,
@@ -40,18 +40,18 @@
   },
   "summary": {
     "ties": 105,
-    "confirmed": 104,
-    "probable": 1,
+    "confirmed": 105,
+    "probable": 0,
     "byRule": {
+      "LOCKED": 1,
       "CN_DN_PAIR": 49,
       "EXACT_SINGLE": 42,
       "EXACT_SUM": 2,
       "EXACT_RUN": 2,
-      "BATCH_SUM": 1,
       "CYL_EXCHANGE": 8,
       "BALANCE_ZERO": 1
     },
-    "paymentsTotal": 50,
+    "paymentsTotal": 48,
     "paymentsUnallocated": 0
   },
   "proof": {
@@ -98,6 +98,34 @@
   "ties": [
     {
       "tie_id": "T0001",
+      "rule": "LOCKED",
+      "confidence": "CONFIRMED",
+      "members": [
+        "44227|Payment|LPG|L199",
+        "45590|Payment|LPG|L236",
+        "50529|Invoice|CYL|L198",
+        "50528|Invoice|LPG|L197"
+      ],
+      "docs": [
+        "Payment 44227",
+        "Payment 45590",
+        "Invoice 50529",
+        "Invoice 50528"
+      ],
+      "net": 0.01,
+      "lock_id": "L0001",
+      "close_id": null,
+      "lockedRule": "OPERATOR_RULING",
+      "ruling": {
+        "treatment": "exact",
+        "net": 0.01,
+        "reason": "Operator 2026-10-09 (\"Yes for now\"; provisional pending the ERP answer on ADM-93): payments 44227 (R4,978.91) + 45590 (R3,490.37) settle MOZ002 delivery DN#22222: gas invoice 50528 (R4,329.29) + cylinder deposit invoice 50529 (R4,140.00), net R0.01 rounding. Deposit 50529 was also credited by returned empties (CN 14856), so the R4,140.00 stays open as a credit owed to the customer (empties credit note 15128 on the statement). Cylinder counts and credit notes checked: no missed deposit invoice, no duplicated credit note. Tripwire: ERP answer on ADM-93 that 44227/45590 belong wholly or partly to MOZ001 (void this lock and re-point the payment).",
+        "approvedBy": "operator",
+        "session": "unrecorded"
+      }
+    },
+    {
+      "tie_id": "T0002",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -113,7 +141,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0002",
+      "tie_id": "T0003",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -129,7 +157,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0004",
+      "tie_id": "T0005",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -145,7 +173,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0005",
+      "tie_id": "T0006",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -161,7 +189,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0006",
+      "tie_id": "T0007",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -177,7 +205,7 @@
       "lagDays": 1
     },
     {
-      "tie_id": "T0007",
+      "tie_id": "T0008",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -193,7 +221,7 @@
       "lagDays": 1
     },
     {
-      "tie_id": "T0008",
+      "tie_id": "T0009",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -209,7 +237,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0009",
+      "tie_id": "T0010",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -225,7 +253,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0010",
+      "tie_id": "T0011",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -241,7 +269,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0011",
+      "tie_id": "T0012",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -257,7 +285,7 @@
       "lagDays": 1
     },
     {
-      "tie_id": "T0012",
+      "tie_id": "T0013",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -273,7 +301,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0013",
+      "tie_id": "T0014",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -289,7 +317,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0014",
+      "tie_id": "T0015",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -305,7 +333,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0015",
+      "tie_id": "T0016",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -321,7 +349,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0016",
+      "tie_id": "T0017",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -337,7 +365,7 @@
       "lagDays": 1
     },
     {
-      "tie_id": "T0017",
+      "tie_id": "T0018",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -353,7 +381,7 @@
       "lagDays": 1
     },
     {
-      "tie_id": "T0018",
+      "tie_id": "T0019",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -369,7 +397,7 @@
       "lagDays": 1
     },
     {
-      "tie_id": "T0019",
+      "tie_id": "T0020",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -385,7 +413,7 @@
       "lagDays": 1
     },
     {
-      "tie_id": "T0020",
+      "tie_id": "T0021",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -401,7 +429,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0021",
+      "tie_id": "T0022",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -417,7 +445,7 @@
       "lagDays": 1
     },
     {
-      "tie_id": "T0022",
+      "tie_id": "T0023",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -433,7 +461,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0023",
+      "tie_id": "T0024",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -449,7 +477,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0024",
+      "tie_id": "T0025",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -465,7 +493,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0025",
+      "tie_id": "T0026",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -481,7 +509,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0026",
+      "tie_id": "T0027",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -497,7 +525,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0027",
+      "tie_id": "T0028",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -513,7 +541,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0029",
+      "tie_id": "T0030",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -529,7 +557,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0030",
+      "tie_id": "T0031",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -545,7 +573,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0031",
+      "tie_id": "T0032",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -561,7 +589,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0032",
+      "tie_id": "T0033",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -577,7 +605,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0033",
+      "tie_id": "T0034",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -593,7 +621,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0034",
+      "tie_id": "T0035",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -609,7 +637,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0035",
+      "tie_id": "T0036",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -625,7 +653,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0036",
+      "tie_id": "T0037",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -641,7 +669,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0037",
+      "tie_id": "T0038",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -657,7 +685,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0038",
+      "tie_id": "T0039",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -673,7 +701,7 @@
       "lagDays": 1
     },
     {
-      "tie_id": "T0039",
+      "tie_id": "T0040",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -689,7 +717,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0040",
+      "tie_id": "T0041",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -705,7 +733,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0041",
+      "tie_id": "T0042",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -721,7 +749,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0042",
+      "tie_id": "T0043",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -737,7 +765,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0043",
+      "tie_id": "T0044",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -753,7 +781,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0044",
+      "tie_id": "T0045",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -769,7 +797,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0045",
+      "tie_id": "T0046",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -785,7 +813,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0046",
+      "tie_id": "T0047",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -801,7 +829,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0047",
+      "tie_id": "T0048",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -817,7 +845,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0048",
+      "tie_id": "T0049",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -833,7 +861,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0049",
+      "tie_id": "T0050",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -849,7 +877,7 @@
       "lagDays": 1
     },
     {
-      "tie_id": "T0050",
+      "tie_id": "T0051",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -865,7 +893,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0051",
+      "tie_id": "T0052",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -881,7 +909,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0052",
+      "tie_id": "T0053",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -908,7 +936,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0053",
+      "tie_id": "T0054",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -935,7 +963,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0054",
+      "tie_id": "T0055",
       "rule": "EXACT_SUM",
       "confidence": "CONFIRMED",
       "members": [
@@ -969,7 +997,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0055",
+      "tie_id": "T0056",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -996,7 +1024,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0056",
+      "tie_id": "T0057",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1023,7 +1051,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0057",
+      "tie_id": "T0058",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1050,7 +1078,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0058",
+      "tie_id": "T0059",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1077,7 +1105,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0059",
+      "tie_id": "T0060",
       "rule": "EXACT_RUN",
       "confidence": "CONFIRMED",
       "members": [
@@ -1132,7 +1160,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0060",
+      "tie_id": "T0061",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1159,7 +1187,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0061",
+      "tie_id": "T0062",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1186,7 +1214,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0062",
+      "tie_id": "T0063",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1213,7 +1241,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0064",
+      "tie_id": "T0065",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1240,7 +1268,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0065",
+      "tie_id": "T0066",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1267,7 +1295,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0066",
+      "tie_id": "T0067",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1294,7 +1322,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0067",
+      "tie_id": "T0068",
       "rule": "EXACT_RUN",
       "confidence": "CONFIRMED",
       "members": [
@@ -1356,7 +1384,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0068",
+      "tie_id": "T0069",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1383,7 +1411,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0069",
+      "tie_id": "T0070",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1410,7 +1438,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0070",
+      "tie_id": "T0071",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1437,7 +1465,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0071",
+      "tie_id": "T0072",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1464,7 +1492,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0072",
+      "tie_id": "T0073",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1491,7 +1519,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0073",
+      "tie_id": "T0074",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1518,7 +1546,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0074",
+      "tie_id": "T0075",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1545,7 +1573,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0075",
+      "tie_id": "T0076",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1572,7 +1600,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0076",
+      "tie_id": "T0077",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1599,7 +1627,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0077",
+      "tie_id": "T0078",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1626,7 +1654,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0078",
+      "tie_id": "T0079",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1653,7 +1681,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0079",
+      "tie_id": "T0080",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1680,7 +1708,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0080",
+      "tie_id": "T0081",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1707,7 +1735,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0081",
+      "tie_id": "T0082",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1734,7 +1762,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0082",
+      "tie_id": "T0083",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1761,7 +1789,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0083",
+      "tie_id": "T0084",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1788,7 +1816,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0084",
+      "tie_id": "T0085",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1815,7 +1843,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0085",
+      "tie_id": "T0086",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1842,7 +1870,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0086",
+      "tie_id": "T0087",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1869,7 +1897,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0087",
+      "tie_id": "T0088",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1896,7 +1924,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0088",
+      "tie_id": "T0089",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1923,7 +1951,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0089",
+      "tie_id": "T0090",
       "rule": "EXACT_SUM",
       "confidence": "CONFIRMED",
       "members": [
@@ -1957,7 +1985,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0090",
+      "tie_id": "T0091",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -1984,7 +2012,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0091",
+      "tie_id": "T0092",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -2011,7 +2039,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0092",
+      "tie_id": "T0093",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -2038,7 +2066,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0093",
+      "tie_id": "T0094",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -2065,7 +2093,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0094",
+      "tie_id": "T0095",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -2092,7 +2120,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0095",
+      "tie_id": "T0096",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -2119,7 +2147,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0096",
+      "tie_id": "T0097",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -2146,7 +2174,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0097",
+      "tie_id": "T0098",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -2173,7 +2201,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0098",
+      "tie_id": "T0099",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
       "members": [
@@ -2198,48 +2226,6 @@
         }
       ],
       "variance": 0
-    },
-    {
-      "tie_id": "T0099",
-      "rule": "BATCH_SUM",
-      "confidence": "PROBABLE",
-      "members": [
-        "44227|Payment|LPG|L199",
-        "45590|Payment|LPG|L236",
-        "50528|Invoice|LPG|L197",
-        "50529|Invoice|CYL|L198"
-      ],
-      "docs": [
-        "Payment 44227",
-        "Payment 45590",
-        "Invoice 50528",
-        "Invoice 50529"
-      ],
-      "net": 0.01,
-      "payments": [
-        {
-          "doc": "44227",
-          "date": "2026-05-07",
-          "amount": 4978.91
-        },
-        {
-          "doc": "45590",
-          "date": "2026-08-06",
-          "amount": 3490.37
-        }
-      ],
-      "batches": [
-        {
-          "batch": "DN22222",
-          "date": "2026-05-05",
-          "amount": 8469.29,
-          "docs": [
-            "LPG 50528",
-            "CYL 50529"
-          ]
-        }
-      ],
-      "variance": -0.01
     },
     {
       "tie_id": "T0100",
@@ -2464,7 +2450,7 @@
       "openingSettled": 0,
       "dissolvedProbable": [
         {
-          "tie_id": "T0003",
+          "tie_id": "T0004",
           "rule": "CN_DN_PAIR",
           "docs": [
             "Invoice 41522",
@@ -2472,7 +2458,7 @@
           ]
         },
         {
-          "tie_id": "T0028",
+          "tie_id": "T0029",
           "rule": "CN_DN_PAIR",
           "docs": [
             "Invoice 46826",
@@ -2480,7 +2466,7 @@
           ]
         },
         {
-          "tie_id": "T0063",
+          "tie_id": "T0064",
           "rule": "EXACT_RUN",
           "docs": [
             "Payment 40729",

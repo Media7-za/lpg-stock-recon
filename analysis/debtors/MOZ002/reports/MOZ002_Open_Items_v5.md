@@ -1,7 +1,7 @@
 # Open Items Statement: MOZAMBIK (MOZ002) — Internal
 **Period:** from 15 Mar 2025 to 01 Oct 2026 &nbsp;|&nbsp; **Balance due:** R1,562.67
 **Status:** PROPOSED — NOT RATIFIED (`PROPOSED_Projection_Matching_Locks.md`, build step 3) · generated 2026-10-09 by `render_open_items.mjs`
-**Sources:** `analysis/debtors/MOZ002/data/v5_projection.json` (TXT sha256 `4a6e6bbcc724…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (104 confirmed / 1 probable ties)
+**Sources:** `analysis/debtors/MOZ002/data/v5_projection.json` (TXT sha256 `4a6e6bbcc724…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (105 confirmed / 0 probable ties)
 **Locks:** no period closed yet
 
 ---
@@ -45,14 +45,13 @@
 
 ## Appendix A: Probable ties (review required, not locked)
 
-| Tie | Rule | Documents | Variance (R) | Note |
-| :--- | :--- | :--- | ---: | :--- |
-| T0099 | BATCH_SUM | Payment 44227, Payment 45590, Invoice 50528, Invoice 50529 | -0.01 |  |
+_None._
 
 ## Appendix B: Confirmed ties by rule
 
 | Rule | Ties |
 | :--- | ---: |
+| LOCKED | 1 |
 | CN_DN_PAIR | 49 |
 | EXACT_SINGLE | 42 |
 | EXACT_SUM | 2 |
@@ -61,4 +60,10 @@
 | BALANCE_ZERO | 1 |
 
 Full tie list: `data/projection_matches.json`.
+
+## Appendix D: Operator rulings applied (approved locks)
+
+| Lock | Treatment | Documents | Net (R) | Ruling |
+| :--- | :--- | :--- | ---: | :--- |
+| L0001 | exact | Payment 44227, Payment 45590, Invoice 50529, Invoice 50528 | 0.01 | Operator 2026-10-09 ("Yes for now"; provisional pending the ERP answer on ADM-93): payments 44227 (R4,978.91) + 45590 (R3,490.37) settle MOZ002 delivery DN#22222: gas invoice 50528 (R4,329.29) + cylinder deposit invoice 50529 (R4,140.00), net R0.01 rounding. Deposit 50529 was also credited by returned empties (CN 14856), so the R4,140.00 stays open as a credit owed to the customer (empties credit note 15128 on the statement). Cylinder counts and credit notes checked: no missed deposit invoice, no duplicated credit note. Tripwire: ERP answer on ADM-93 that 44227/45590 belong wholly or partly to MOZ001 (void this lock and re-point the payment). |
 
