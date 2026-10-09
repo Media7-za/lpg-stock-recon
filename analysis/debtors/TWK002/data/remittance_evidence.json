@@ -1689,10 +1689,11 @@
         {
           "invoiceDate": "2025-10-23",
           "docType": "Crd Note",
-          "doc": "10",
+          "doc": "13716",
           "gross": -6900,
           "discount": 0,
-          "paid": -6900
+          "paid": -6900,
+          "aliasOf": "10"
         },
         {
           "invoiceDate": "2025-10-24",
@@ -1980,5 +1981,34 @@
       }
     }
   ],
-  "skipped": []
+  "skipped": [],
+  "family": {
+    "parent": "TWK002",
+    "children": [
+      "TWK003",
+      "TWK004"
+    ],
+    "siteDocs": {
+      "Invoice|46857": "TWK003",
+      "Invoice|47076": "TWK003",
+      "Invoice|47523": "TWK003",
+      "Invoice|47866": "TWK003",
+      "Invoice|47880": "TWK003",
+      "Crd Note|13933": "TWK003",
+      "Crd Note|13966": "TWK003",
+      "Invoice|47991": "TWK003",
+      "Invoice|46858": "TWK004",
+      "Invoice|47176": "TWK004",
+      "Crd Note|13744": "TWK004",
+      "Invoice|47297": "TWK004",
+      "Invoice|47303": "TWK004",
+      "Invoice|47584": "TWK004"
+    },
+    "postings": {
+      "43500": {
+        "TWK003": 38501.31,
+        "TWK004": 25000.31
+      }
+    }
+  }
 }

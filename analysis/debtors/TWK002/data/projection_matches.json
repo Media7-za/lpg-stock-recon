@@ -2,7 +2,7 @@
   "status": "PROPOSED — NOT RATIFIED (PROPOSED_Projection_Matching_Locks.md, build step 2)",
   "debtorCode": "TWK002",
   "generatedBy": "match_projection.mjs",
-  "generatedAt": "2026-10-09T04:50:07.327Z",
+  "generatedAt": "2026-10-09T17:23:54.646Z",
   "projection": {
     "path": "analysis/debtors/TWK002/data/v5_projection.json",
     "txtSha256": "e657e03f68cdb9090cf2ec0e2ccf35fc71550e624de7005a7287142998c55a7d",
@@ -41,17 +41,16 @@
     "remittanceBatchTolerancePct": 0.001
   },
   "summary": {
-    "ties": 31,
-    "confirmed": 26,
-    "probable": 5,
+    "ties": 16,
+    "confirmed": 12,
+    "probable": 4,
     "byRule": {
-      "REMITTANCE": 1,
-      "CN_DN_PAIR": 28,
-      "CN_AMOUNT_DATE": 1,
-      "CYL_EXCHANGE": 1
+      "REMITTANCE": 3,
+      "CN_DN_PAIR": 12,
+      "CN_AMOUNT_DATE": 1
     },
-    "paymentsTotal": 3,
-    "paymentsUnallocated": 3
+    "paymentsTotal": 1,
+    "paymentsUnallocated": 1
   },
   "proof": {
     "rebuiltClosing": 54136.19,
@@ -62,31 +61,9 @@
   "residual": {
     "openingBfUnitemised": 38791.27,
     "openInvoicesLpgOther": {
-      "count": 27,
-      "amount": 239195.17,
+      "count": 5,
+      "amount": 53641.52,
       "rows": [
-        "41747|Invoice|LPG|L8",
-        "42050|Invoice|LPG|L15",
-        "42468|Invoice|LPG|L17",
-        "42470|Invoice|LPG|L19",
-        "43112|Invoice|LPG|L23",
-        "43294|Invoice|LPG|L24",
-        "43909|Invoice|LPG|L28",
-        "44235|Invoice|LPG|L30",
-        "44542|Invoice|LPG|L32",
-        "44731|Invoice|LPG|L33",
-        "44816|Invoice|LPG|L36",
-        "44967|Invoice|LPG|L38",
-        "45148|Invoice|LPG|L40",
-        "45302|Invoice|LPG|L43",
-        "45666|Invoice|LPG|L45",
-        "45986|Invoice|LPG|L47",
-        "46470|Invoice|LPG|L48",
-        "46762|Invoice|LPG|L50",
-        "47196|Invoice|LPG|L53",
-        "47714|Invoice|LPG|L55",
-        "48160|Invoice|LPG|L56",
-        "48687|Invoice|LPG|L61",
         "52484|Invoice|LPG|L110",
         "52803|Invoice|LPG|L114",
         "53077|Invoice|LPG|L118",
@@ -95,41 +72,32 @@
       ]
     },
     "openInvoicesCyl": {
-      "count": 5,
-      "amount": 84007.5,
+      "count": 2,
+      "amount": 28462.5,
       "rows": [
-        "43294|Invoice|CYL|L24",
-        "43909|Invoice|CYL|L28",
-        "47196|Invoice|CYL|L53",
         "52484|Invoice|CYL|L110",
         "52803|Invoice|CYL|L114"
       ]
     },
     "unmatchedCredits": {
-      "count": 7,
-      "amount": -84567.27,
+      "count": 3,
+      "amount": -36052.5,
       "rows": [
-        "12215|Crd Note|LPG|L13",
-        "12550|Crd Note|CYL|L25",
-        "12724|Crd Note|CYL|L27",
-        "13716|Crd Note|CYL|L52",
         "15443|Crd Note|CYL|L109",
         "15553|Crd Note|CYL|L112",
         "15775|Crd Note|LPG|L125"
       ]
     },
     "unallocatedPayments": {
-      "count": 3,
-      "amount": -227883.73,
+      "count": 1,
+      "amount": -35693.84,
       "rows": [
-        "37770|Payment|LPG|L10",
-        "39080|Payment|LPG|L26",
-        "43500|Payment|LPG|L64"
+        "37770|Payment|LPG|L10"
       ]
     },
     "otherUntied": {
-      "count": 27,
-      "amount": 3369.8,
+      "count": 25,
+      "amount": 4987.24,
       "rows": [
         "494|Journal|LPG|L2",
         "494|Journal|LPG|L3",
@@ -155,20 +123,26 @@
         "505|Journal|LPG|L104",
         "506|Journal|LPG|L105",
         "507|Journal|LPG|L106",
-        "508|Journal|LPG|L107",
-        "509|Journal|LPG|L108",
-        "510|Journal|LPG|L111"
+        "508|Journal|LPG|L107"
       ]
     },
-    "tieNets": 1223.45,
-    "discountJournalsPending": 1223.45
+    "tieNets": 0,
+    "discountJournalsPending": 0
   },
   "remittance": {
     "batches": 21,
     "applied": [
       {
-        "batchId": "BATCH-2026-STAT-129",
+        "batchId": "BATCH-2025-05-31",
         "tie_id": "T0001"
+      },
+      {
+        "batchId": "BATCH-2026-STAT-123",
+        "tie_id": "T0002"
+      },
+      {
+        "batchId": "BATCH-2026-STAT-129",
+        "tie_id": "T0003"
       }
     ],
     "unresolved": [
@@ -261,16 +235,6 @@
         "batchId": "BATCH-2025-03-31",
         "paymentDoc": "37770",
         "reason": "documents not available: Invoice 39683, Invoice 40081, Crd Note 11648, Crd Note 11743, Invoice 40459, Crd Note 11821, Invoice 40950, Crd Note 11953"
-      },
-      {
-        "batchId": "BATCH-2025-05-31",
-        "paymentDoc": "39080",
-        "reason": "documents settled over several remittances: Invoice 41747 R12226.63 not settled by this advice"
-      },
-      {
-        "batchId": "BATCH-2026-STAT-123",
-        "paymentDoc": "43500",
-        "reason": "documents not available: Invoice 46857, Invoice 46858, Invoice 47076, Invoice 47176, Crd Note 10, Invoice 47297, Invoice 47523, Invoice 47584, Invoice 47880"
       }
     ],
     "skippedSources": []
@@ -278,6 +242,484 @@
   "ties": [
     {
       "tie_id": "T0001",
+      "rule": "REMITTANCE",
+      "confidence": "CONFIRMED",
+      "members": [
+        "39080|Payment|LPG|L26",
+        "41747|Invoice|CYL|L8",
+        "12131|Crd Note|CYL|L9",
+        "42050|Invoice|LPG|L15",
+        "42050|Invoice|CYL|L15",
+        "12214|Crd Note|CYL|L12",
+        "12215|Crd Note|LPG|L13",
+        "12215|Crd Note|CYL|L13",
+        "42468|Invoice|LPG|L17",
+        "42470|Invoice|LPG|L19",
+        "42470|Invoice|CYL|L19",
+        "509|Journal|LPG|L108"
+      ],
+      "docs": [
+        "Payment 39080",
+        "Invoice 41747",
+        "Crd Note 12131",
+        "Invoice 42050",
+        "Crd Note 12214",
+        "Crd Note 12215",
+        "Invoice 42468",
+        "Invoice 42470",
+        "Journal 509"
+      ],
+      "net": 0,
+      "batchId": "BATCH-2025-05-31",
+      "evidence": {
+        "method": "manifest-snake",
+        "file": "data/remittance_lines_2025.csv",
+        "remittanceRef": "B226/KRD4036995",
+        "advice": "raw/Remittances/31.05.2025.pdf"
+      },
+      "payment": {
+        "doc": "39080",
+        "date": "2025-05-30",
+        "amount": 15365.65
+      },
+      "invoices": [
+        {
+          "doc": "41747",
+          "docType": "Invoice",
+          "amount": 32064.13
+        },
+        {
+          "doc": "12131",
+          "docType": "Crd Note",
+          "amount": -19837.5
+        },
+        {
+          "doc": "42050",
+          "docType": "Invoice",
+          "amount": 20133.97
+        },
+        {
+          "doc": "12214",
+          "docType": "Crd Note",
+          "amount": -12075
+        },
+        {
+          "doc": "12215",
+          "docType": "Crd Note",
+          "amount": -1249.77
+        },
+        {
+          "doc": "42468",
+          "docType": "Invoice",
+          "amount": 7713.58
+        },
+        {
+          "doc": "42470",
+          "docType": "Invoice",
+          "amount": 1236.86
+        }
+      ],
+      "discountPending": 0,
+      "lineDiscrepancies": [],
+      "splitLines": [
+        {
+          "doc": "Invoice 41747",
+          "lanes": [
+            "CYL"
+          ],
+          "share": 19837.5,
+          "gross": 32064.13
+        }
+      ],
+      "discountJournal": {
+        "doc": "509",
+        "date": "2026-08-09",
+        "amount": -393.99
+      },
+      "variance": 0
+    },
+    {
+      "tie_id": "T0002",
+      "rule": "REMITTANCE",
+      "confidence": "CONFIRMED",
+      "members": [
+        "43500|Payment|LPG|L64",
+        "41747|Invoice|LPG|L8",
+        "12502|Crd Note|CYL|L21",
+        "43112|Invoice|LPG|L23",
+        "43112|Invoice|CYL|L23",
+        "43294|Invoice|LPG|L24",
+        "43294|Invoice|CYL|L24",
+        "12550|Crd Note|CYL|L25",
+        "43909|Invoice|LPG|L28",
+        "43909|Invoice|CYL|L28",
+        "12724|Crd Note|CYL|L27",
+        "44235|Invoice|LPG|L30",
+        "44235|Invoice|CYL|L30",
+        "12825|Crd Note|CYL|L29",
+        "44542|Invoice|LPG|L32",
+        "44542|Invoice|CYL|L32",
+        "44731|Invoice|LPG|L33",
+        "44731|Invoice|CYL|L33",
+        "12958|Crd Note|CYL|L34",
+        "44816|Invoice|LPG|L36",
+        "44816|Invoice|CYL|L36",
+        "12908|Crd Note|CYL|L31",
+        "12982|Crd Note|CYL|L35",
+        "44967|Invoice|LPG|L38",
+        "44967|Invoice|CYL|L38",
+        "13019|Crd Note|CYL|L37",
+        "45148|Invoice|LPG|L40",
+        "45302|Invoice|LPG|L43",
+        "45302|Invoice|CYL|L43",
+        "13101|Crd Note|CYL|L42",
+        "45666|Invoice|LPG|L45",
+        "45666|Invoice|CYL|L45",
+        "45986|Invoice|LPG|L47",
+        "45986|Invoice|CYL|L47",
+        "46470|Invoice|LPG|L48",
+        "46470|Invoice|CYL|L48",
+        "46762|Invoice|LPG|L50",
+        "46762|Invoice|CYL|L50",
+        "13235|Crd Note|CYL|L44",
+        "13335|Crd Note|CYL|L46",
+        "13500|Crd Note|CYL|L49",
+        "13587|Crd Note|CYL|L51",
+        "47196|Invoice|LPG|L53",
+        "47196|Invoice|CYL|L53",
+        "13716|Crd Note|CYL|L52",
+        "47714|Invoice|LPG|L55",
+        "47714|Invoice|CYL|L55",
+        "13874|Crd Note|CYL|L54",
+        "48160|Invoice|LPG|L56",
+        "48160|Invoice|CYL|L56",
+        "48687|Invoice|LPG|L61",
+        "48687|Invoice|CYL|L61",
+        "14237|Crd Note|CYL|L59",
+        "14034|Crd Note|CYL|L57"
+      ],
+      "docs": [
+        "Payment 43500",
+        "Invoice 41747",
+        "Crd Note 12502",
+        "Invoice 43112",
+        "Invoice 43294",
+        "Crd Note 12550",
+        "Invoice 43909",
+        "Crd Note 12724",
+        "Invoice 44235",
+        "Crd Note 12825",
+        "Invoice 44542",
+        "Invoice 44731",
+        "Crd Note 12958",
+        "Invoice 44816",
+        "Crd Note 12908",
+        "Crd Note 12982",
+        "Invoice 44967",
+        "Crd Note 13019",
+        "Invoice 45148",
+        "Invoice 45302",
+        "Crd Note 13101",
+        "Invoice 45666",
+        "Invoice 45986",
+        "Invoice 46470",
+        "Invoice 46762",
+        "Crd Note 13235",
+        "Crd Note 13335",
+        "Crd Note 13500",
+        "Crd Note 13587",
+        "Invoice 47196",
+        "Crd Note 13716",
+        "Invoice 47714",
+        "Crd Note 13874",
+        "Invoice 48160",
+        "Invoice 48687",
+        "Crd Note 14237",
+        "Crd Note 14034"
+      ],
+      "net": 0,
+      "batchId": "BATCH-2026-STAT-123",
+      "evidence": {
+        "method": "manifest-snake",
+        "file": "data/remittance_lines_2026.csv",
+        "remittanceRef": "B226/KRD4041771",
+        "advice": "raw/Remittances/18.02.2026.pdf"
+      },
+      "payment": {
+        "doc": "43500",
+        "date": "2026-02-25",
+        "amount": 176824.24
+      },
+      "invoices": [
+        {
+          "doc": "41747",
+          "docType": "Invoice",
+          "amount": 32064.13
+        },
+        {
+          "doc": "12502",
+          "docType": "Crd Note",
+          "amount": -17250
+        },
+        {
+          "doc": "43112",
+          "docType": "Invoice",
+          "amount": 27899.34
+        },
+        {
+          "doc": "43294",
+          "docType": "Invoice",
+          "amount": 24433.21
+        },
+        {
+          "doc": "12550",
+          "docType": "Crd Note",
+          "amount": -14835
+        },
+        {
+          "doc": "43909",
+          "docType": "Invoice",
+          "amount": 27762.26
+        },
+        {
+          "doc": "12724",
+          "docType": "Crd Note",
+          "amount": -16905
+        },
+        {
+          "doc": "44235",
+          "docType": "Invoice",
+          "amount": 27762.26
+        },
+        {
+          "doc": "12825",
+          "docType": "Crd Note",
+          "amount": -17250
+        },
+        {
+          "doc": "44542",
+          "docType": "Invoice",
+          "amount": 27762.26
+        },
+        {
+          "doc": "44731",
+          "docType": "Invoice",
+          "amount": 7687.52
+        },
+        {
+          "doc": "12958",
+          "docType": "Crd Note",
+          "amount": -5175
+        },
+        {
+          "doc": "44816",
+          "docType": "Invoice",
+          "amount": 7687.52
+        },
+        {
+          "doc": "12908",
+          "docType": "Crd Note",
+          "amount": -17250
+        },
+        {
+          "doc": "12982",
+          "docType": "Crd Note",
+          "amount": -5175
+        },
+        {
+          "doc": "44967",
+          "docType": "Invoice",
+          "amount": 22515.01
+        },
+        {
+          "doc": "13019",
+          "docType": "Crd Note",
+          "amount": -13972.5
+        },
+        {
+          "doc": "45148",
+          "docType": "Invoice",
+          "amount": 3768.78
+        },
+        {
+          "doc": "45302",
+          "docType": "Invoice",
+          "amount": 20104.97
+        },
+        {
+          "doc": "13101",
+          "docType": "Crd Note",
+          "amount": -11730
+        },
+        {
+          "doc": "45666",
+          "docType": "Invoice",
+          "amount": 25831.19
+        },
+        {
+          "doc": "45986",
+          "docType": "Invoice",
+          "amount": 27559.27
+        },
+        {
+          "doc": "46470",
+          "docType": "Invoice",
+          "amount": 32866.71
+        },
+        {
+          "doc": "46762",
+          "docType": "Invoice",
+          "amount": 11091.26
+        },
+        {
+          "doc": "13235",
+          "docType": "Crd Note",
+          "amount": -16215
+        },
+        {
+          "doc": "13335",
+          "docType": "Crd Note",
+          "amount": -16905
+        },
+        {
+          "doc": "13500",
+          "docType": "Crd Note",
+          "amount": -20700
+        },
+        {
+          "doc": "13587",
+          "docType": "Crd Note",
+          "amount": -7245
+        },
+        {
+          "doc": "47196",
+          "docType": "Invoice",
+          "amount": 36631.64
+        },
+        {
+          "doc": "13716",
+          "docType": "Crd Note",
+          "amount": -16215
+        },
+        {
+          "doc": "47714",
+          "docType": "Invoice",
+          "amount": 24390.86
+        },
+        {
+          "doc": "13874",
+          "docType": "Crd Note",
+          "amount": -15870
+        },
+        {
+          "doc": "48160",
+          "docType": "Invoice",
+          "amount": 24336.02
+        },
+        {
+          "doc": "48687",
+          "docType": "Invoice",
+          "amount": 35150.03
+        },
+        {
+          "doc": "14237",
+          "docType": "Crd Note",
+          "amount": -22770
+        },
+        {
+          "doc": "14034",
+          "docType": "Crd Note",
+          "amount": -15180
+        }
+      ],
+      "discountPending": 0,
+      "lineDiscrepancies": [],
+      "splitLines": [
+        {
+          "doc": "Invoice 41747",
+          "lanes": [
+            "LPG"
+          ],
+          "share": 12226.63,
+          "gross": 32064.13
+        }
+      ],
+      "siteLines": [
+        {
+          "doc": "46857",
+          "docType": "Invoice",
+          "account": "TWK003",
+          "paid": 11000.44,
+          "discount": 0,
+          "gross": 11000.44
+        },
+        {
+          "doc": "46858",
+          "docType": "Invoice",
+          "account": "TWK004",
+          "paid": 9000.36,
+          "discount": 0,
+          "gross": 9000.36
+        },
+        {
+          "doc": "47076",
+          "docType": "Invoice",
+          "account": "TWK003",
+          "paid": 11000.44,
+          "discount": 0,
+          "gross": 11000.44
+        },
+        {
+          "doc": "47176",
+          "docType": "Invoice",
+          "account": "TWK004",
+          "paid": 3000.12,
+          "discount": 0,
+          "gross": 3000.12
+        },
+        {
+          "doc": "47297",
+          "docType": "Invoice",
+          "account": "TWK004",
+          "paid": 7000.28,
+          "discount": 0,
+          "gross": 7000.28
+        },
+        {
+          "doc": "47523",
+          "docType": "Invoice",
+          "account": "TWK003",
+          "paid": 11000.44,
+          "discount": 0,
+          "gross": 11000.44
+        },
+        {
+          "doc": "47584",
+          "docType": "Invoice",
+          "account": "TWK004",
+          "paid": 5999.55,
+          "discount": 0,
+          "gross": 5999.55
+        },
+        {
+          "doc": "47880",
+          "docType": "Invoice",
+          "account": "TWK003",
+          "paid": 5499.99,
+          "discount": 0,
+          "gross": 5499.99
+        }
+      ],
+      "familyPostings": {
+        "here": 176824.24,
+        "TWK003": 38501.31,
+        "TWK004": 25000.31,
+        "advice": 240325.86
+      },
+      "variance": 0
+    },
+    {
+      "tie_id": "T0003",
       "rule": "REMITTANCE",
       "confidence": "CONFIRMED",
       "members": [
@@ -310,7 +752,8 @@
         "51841|Invoice|LPG|L95",
         "51841|Invoice|CYL|L95",
         "52241|Invoice|LPG|L100",
-        "52241|Invoice|CYL|L100"
+        "52241|Invoice|CYL|L100",
+        "510|Journal|LPG|L111"
       ],
       "docs": [
         "Payment 45899",
@@ -333,9 +776,10 @@
         "Invoice 51226",
         "Invoice 51496",
         "Invoice 51841",
-        "Invoice 52241"
+        "Invoice 52241",
+        "Journal 510"
       ],
-      "net": 1223.45,
+      "net": 0,
       "batchId": "BATCH-2026-STAT-129",
       "evidence": {
         "method": "manifest-snake",
@@ -450,32 +894,17 @@
           "amount": 34052.09
         }
       ],
-      "discountPending": 1223.45,
+      "discountPending": 0,
       "lineDiscrepancies": [],
       "discountJournal": {
-        "status": "POSTED",
-        "erpDoc": "00000510"
+        "doc": "510",
+        "date": "2026-08-26",
+        "amount": -1223.45
       },
       "variance": 0
     },
     {
-      "tie_id": "T0002",
-      "rule": "CN_DN_PAIR",
-      "confidence": "CONFIRMED",
-      "members": [
-        "41747|Invoice|CYL|L8",
-        "12131|Crd Note|CYL|L9"
-      ],
-      "docs": [
-        "Invoice 41747",
-        "Crd Note 12131"
-      ],
-      "net": 0,
-      "dn": "12826",
-      "lagDays": 1
-    },
-    {
-      "tie_id": "T0003",
+      "tie_id": "T0004",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -491,7 +920,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0004",
+      "tie_id": "T0005",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -501,22 +930,6 @@
       "docs": [
         "Invoice 42045",
         "Crd Note 12207"
-      ],
-      "net": 0,
-      "dn": "10546",
-      "lagDays": 0
-    },
-    {
-      "tie_id": "T0005",
-      "rule": "CN_DN_PAIR",
-      "confidence": "CONFIRMED",
-      "members": [
-        "42050|Invoice|CYL|L15",
-        "12214|Crd Note|CYL|L12"
-      ],
-      "docs": [
-        "Invoice 42050",
-        "Crd Note 12214"
       ],
       "net": 0,
       "dn": "10546",
@@ -559,102 +972,6 @@
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
-        "43112|Invoice|CYL|L23",
-        "12502|Crd Note|CYL|L21"
-      ],
-      "docs": [
-        "Invoice 43112",
-        "Crd Note 12502"
-      ],
-      "net": 0,
-      "dn": "13234",
-      "lagDays": 0
-    },
-    {
-      "tie_id": "T0009",
-      "rule": "CN_DN_PAIR",
-      "confidence": "CONFIRMED",
-      "members": [
-        "44235|Invoice|CYL|L30",
-        "12825|Crd Note|CYL|L29"
-      ],
-      "docs": [
-        "Invoice 44235",
-        "Crd Note 12825"
-      ],
-      "net": 0,
-      "dn": "12335",
-      "lagDays": 0
-    },
-    {
-      "tie_id": "T0010",
-      "rule": "CN_DN_PAIR",
-      "confidence": "CONFIRMED",
-      "members": [
-        "44542|Invoice|CYL|L32",
-        "12908|Crd Note|CYL|L31"
-      ],
-      "docs": [
-        "Invoice 44542",
-        "Crd Note 12908"
-      ],
-      "net": 0,
-      "dn": "12620",
-      "lagDays": 0
-    },
-    {
-      "tie_id": "T0011",
-      "rule": "CN_DN_PAIR",
-      "confidence": "PROBABLE",
-      "members": [
-        "44731|Invoice|CYL|L33",
-        "12958|Crd Note|CYL|L34"
-      ],
-      "docs": [
-        "Invoice 44731",
-        "Crd Note 12958"
-      ],
-      "net": 0,
-      "dn": "12191",
-      "lagDays": 2
-    },
-    {
-      "tie_id": "T0012",
-      "rule": "CN_DN_PAIR",
-      "confidence": "CONFIRMED",
-      "members": [
-        "44816|Invoice|CYL|L36",
-        "12982|Crd Note|CYL|L35"
-      ],
-      "docs": [
-        "Invoice 44816",
-        "Crd Note 12982"
-      ],
-      "net": 0,
-      "dn": "12202",
-      "lagDays": 0
-    },
-    {
-      "tie_id": "T0013",
-      "rule": "CN_DN_PAIR",
-      "confidence": "CONFIRMED",
-      "members": [
-        "44967|Invoice|CYL|L38",
-        "13019|Crd Note|CYL|L37"
-      ],
-      "docs": [
-        "Invoice 44967",
-        "Crd Note 13019"
-      ],
-      "net": 0,
-      "dn": "12721",
-      "lagDays": 0
-    },
-    {
-      "tie_id": "T0014",
-      "rule": "CN_DN_PAIR",
-      "confidence": "CONFIRMED",
-      "members": [
         "45149|Invoice|CYL|L41",
         "13057|Crd Note|CYL|L39"
       ],
@@ -667,119 +984,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0015",
-      "rule": "CN_DN_PAIR",
-      "confidence": "CONFIRMED",
-      "members": [
-        "45302|Invoice|CYL|L43",
-        "13101|Crd Note|CYL|L42"
-      ],
-      "docs": [
-        "Invoice 45302",
-        "Crd Note 13101"
-      ],
-      "net": 0,
-      "dn": "20125",
-      "lagDays": 0
-    },
-    {
-      "tie_id": "T0016",
-      "rule": "CN_DN_PAIR",
-      "confidence": "CONFIRMED",
-      "members": [
-        "45666|Invoice|CYL|L45",
-        "13235|Crd Note|CYL|L44"
-      ],
-      "docs": [
-        "Invoice 45666",
-        "Crd Note 13235"
-      ],
-      "net": 0,
-      "dn": "20319",
-      "lagDays": 0
-    },
-    {
-      "tie_id": "T0017",
-      "rule": "CN_DN_PAIR",
-      "confidence": "CONFIRMED",
-      "members": [
-        "45986|Invoice|CYL|L47",
-        "13335|Crd Note|CYL|L46"
-      ],
-      "docs": [
-        "Invoice 45986",
-        "Crd Note 13335"
-      ],
-      "net": 0,
-      "dn": "20560",
-      "lagDays": 0
-    },
-    {
-      "tie_id": "T0018",
-      "rule": "CN_DN_PAIR",
-      "confidence": "CONFIRMED",
-      "members": [
-        "46470|Invoice|CYL|L48",
-        "13500|Crd Note|CYL|L49"
-      ],
-      "docs": [
-        "Invoice 46470",
-        "Crd Note 13500"
-      ],
-      "net": 0,
-      "dn": "21042",
-      "lagDays": 1
-    },
-    {
-      "tie_id": "T0019",
-      "rule": "CN_DN_PAIR",
-      "confidence": "CONFIRMED",
-      "members": [
-        "46762|Invoice|CYL|L50",
-        "13587|Crd Note|CYL|L51"
-      ],
-      "docs": [
-        "Invoice 46762",
-        "Crd Note 13587"
-      ],
-      "net": 0,
-      "dn": "21079",
-      "lagDays": 1
-    },
-    {
-      "tie_id": "T0020",
-      "rule": "CN_DN_PAIR",
-      "confidence": "CONFIRMED",
-      "members": [
-        "47714|Invoice|CYL|L55",
-        "13874|Crd Note|CYL|L54"
-      ],
-      "docs": [
-        "Invoice 47714",
-        "Crd Note 13874"
-      ],
-      "net": 0,
-      "dn": "20798",
-      "lagDays": 0
-    },
-    {
-      "tie_id": "T0021",
-      "rule": "CN_DN_PAIR",
-      "confidence": "CONFIRMED",
-      "members": [
-        "48160|Invoice|CYL|L56",
-        "14034|Crd Note|CYL|L57"
-      ],
-      "docs": [
-        "Invoice 48160",
-        "Crd Note 14034"
-      ],
-      "net": 0,
-      "dn": "20905",
-      "lagDays": 1
-    },
-    {
-      "tie_id": "T0022",
+      "tie_id": "T0009",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -795,23 +1000,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0023",
-      "rule": "CN_DN_PAIR",
-      "confidence": "CONFIRMED",
-      "members": [
-        "48687|Invoice|CYL|L61",
-        "14237|Crd Note|CYL|L59"
-      ],
-      "docs": [
-        "Invoice 48687",
-        "Crd Note 14237"
-      ],
-      "net": 0,
-      "dn": "20975",
-      "lagDays": 0
-    },
-    {
-      "tie_id": "T0024",
+      "tie_id": "T0010",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -827,7 +1016,7 @@
       "lagDays": 1
     },
     {
-      "tie_id": "T0025",
+      "tie_id": "T0011",
       "rule": "CN_DN_PAIR",
       "confidence": "PROBABLE",
       "members": [
@@ -843,7 +1032,7 @@
       "lagDays": 3
     },
     {
-      "tie_id": "T0026",
+      "tie_id": "T0012",
       "rule": "CN_DN_PAIR",
       "confidence": "PROBABLE",
       "members": [
@@ -859,7 +1048,7 @@
       "lagDays": 3
     },
     {
-      "tie_id": "T0027",
+      "tie_id": "T0013",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -875,7 +1064,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0028",
+      "tie_id": "T0014",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -891,7 +1080,7 @@
       "lagDays": 1
     },
     {
-      "tie_id": "T0029",
+      "tie_id": "T0015",
       "rule": "CN_DN_PAIR",
       "confidence": "PROBABLE",
       "members": [
@@ -907,7 +1096,7 @@
       "lagDays": 4
     },
     {
-      "tie_id": "T0030",
+      "tie_id": "T0016",
       "rule": "CN_AMOUNT_DATE",
       "confidence": "PROBABLE",
       "members": [
@@ -920,29 +1109,9 @@
       ],
       "net": 0,
       "lagDays": 0
-    },
-    {
-      "tie_id": "T0031",
-      "rule": "CYL_EXCHANGE",
-      "confidence": "CONFIRMED",
-      "members": [
-        "12215|Crd Note|CYL|L13",
-        "42470|Invoice|CYL|L19"
-      ],
-      "docs": [
-        "Crd Note 12215",
-        "Invoice 42470"
-      ],
-      "net": 0,
-      "from": "2025-04-07",
-      "to": "2025-04-23",
-      "invoices": 1,
-      "creditNotes": 1
     }
   ],
   "unallocatedPayments": [
-    "37770|Payment|LPG|L10",
-    "39080|Payment|LPG|L26",
-    "43500|Payment|LPG|L64"
+    "37770|Payment|LPG|L10"
   ]
 }
