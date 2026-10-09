@@ -381,3 +381,95 @@ test('BALANCE_ZERO: rows up to the ERP balance\'s latest return to zero settle t
   const off = matchProjection(projection(rows), { ...RULES, balanceZeroCut: false });
   assert.equal(off.ties.filter((x) => x.rule === 'BALANCE_ZERO').length, 0);
 });
+
+// v5 remittance changes (operator rulings on TWK002, ADM-94, 2026-10-09)
+const jrow = (o) => ({ ...row({ ...o, type: 'Journal' }), kind: 'journal' });
+const adviceLine = (o) => ({ docType: 'Invoice', discount: 0, ...o });
+const evidenceOf = (...batches) => ({ batches, skipped: [] });
+
+test('M1: a document paid by two advices ties lane by lane, once the advices together cover it', () => {
+  const rows = [
+    row({ doc: 'PA', type: 'Payment', date: '2025-05-30', amount: -19341.56 }),
+    row({ doc: 'PB', type: 'Payment', date: '2026-02-25', amount: -12226.63 }),
+    row({ doc: '41747', date: '2025-03-26', lane: 'LPG', amount: 12226.63 }),
+    row({ doc: '41747', date: '2025-03-26', lane: 'CYL', amount: 19837.5 }),
+    jrow({ doc: '509', date: '2025-06-02', amount: -495.94 }),
+  ];
+  const ev = evidenceOf(
+    { batchId: 'A', paymentDoc: 'PA', cash: 19341.56, lines: [adviceLine({ doc: '41747', gross: 32064.13, discount: 495.94, paid: 19341.56, alreadyPaid: 12226.63 })] },
+    { batchId: 'B', paymentDoc: 'PB', cash: 12226.63, lines: [adviceLine({ doc: '41747', gross: 32064.13, discount: 0, paid: 12226.63, alreadyPaid: 19837.5 })] },
+  );
+  const res = matchProjection(projection(rows), undefined, ev);
+  assert.equal(res.remittance.applied.length, 2, JSON.stringify(res.remittance.unresolved));
+  const a = res.ties.find((t) => t.batchId === 'A');
+  assert.deepEqual(a.splitLines[0].lanes, ['CYL']);
+  assert.equal(a.discountJournal.doc, '509'); // M3: the discount journal joins its tie
+  assert.equal(a.net, 0);
+  const b = res.ties.find((t) => t.batchId === 'B');
+  assert.deepEqual(b.splitLines[0].lanes, ['LPG']);
+  assert.equal(res.residual.openInvoicesLpgOther.count + res.residual.openInvoicesCyl.count, 0);
+  assert.ok(res.proof.holds);
+});
+
+test('M1: without full cover by the advices, or with two equal lane subsets, the batch stays unresolved', () => {
+  const base = () => [
+    row({ doc: 'PA', type: 'Payment', date: '2025-05-30', amount: -19837.5 }),
+    row({ doc: 'X1', date: '2025-03-26', lane: 'LPG', amount: 12226.63 }),
+    row({ doc: 'X1', date: '2025-03-26', lane: 'CYL', amount: 19837.5 }),
+  ];
+  const ev = evidenceOf({ batchId: 'A', paymentDoc: 'PA', cash: 19837.5, lines: [adviceLine({ doc: 'X1', gross: 32064.13, paid: 19837.5 })] });
+  const notCovered = matchProjection(projection(base()), undefined, ev); // only 19,837.50 of 32,064.13 settled by the evidence
+  assert.equal(notCovered.remittance.applied.length, 0);
+  assert.match(notCovered.remittance.unresolved[0].reason, /several remittances/);
+  const twin = [
+    row({ doc: 'PA', type: 'Payment', date: '2025-05-30', amount: -100 }),
+    row({ doc: 'X2', date: '2025-03-26', lane: 'LPG', amount: 100 }),
+    row({ doc: 'X2', date: '2025-03-26', lane: 'CYL', amount: 100 }),
+  ];
+  const ev2 = evidenceOf(
+    { batchId: 'A', paymentDoc: 'PA', cash: 100, lines: [adviceLine({ doc: 'X2', gross: 200, paid: 100 })] },
+    { batchId: 'B', paymentDoc: 'PB', cash: 100, lines: [adviceLine({ doc: 'X2', gross: 200, paid: 100 })] },
+  );
+  const ambiguous = matchProjection(projection(twin), undefined, ev2);
+  assert.equal(ambiguous.remittance.applied.length, 0); // both lanes fit: never guessed
+});
+
+test('family: sister-account documents are out of scope; this posting + sister postings must equal the advice cash', () => {
+  const rows = [
+    row({ doc: 'P1', type: 'Payment', date: '2026-02-25', amount: -300 }),
+    row({ doc: 'I1', date: '2026-01-01', amount: 100 }),
+    row({ doc: 'I2', date: '2026-01-02', amount: 200 }),
+  ];
+  const ev = (cash) => ({
+    ...evidenceOf({ batchId: 'S', paymentDoc: 'P1', cash, lines: [adviceLine({ doc: 'I1', gross: 100, paid: 100 }), adviceLine({ doc: 'I2', gross: 200, paid: 200 }), adviceLine({ doc: 'K9', gross: 50, paid: 50 })] }),
+    family: { siteDocs: { 'Invoice|K9': 'SIS01' }, postings: { P1: { SIS01: 50 } } },
+  });
+  const ok = matchProjection(projection(rows), undefined, ev(350));
+  assert.equal(ok.remittance.applied.length, 1, JSON.stringify(ok.remittance.unresolved));
+  assert.equal(ok.ties[0].familyPostings.SIS01, 50);
+  assert.equal(ok.ties[0].siteLines.length, 1);
+  const bad = matchProjection(projection(rows), undefined, ev(400)); // family postings do not add up to the advice cash
+  assert.equal(bad.remittance.applied.length, 0);
+  assert.match(bad.remittance.unresolved[0].reason, /family postings/);
+  const unknown = matchProjection(projection(rows), undefined, evidenceOf({ batchId: 'S', paymentDoc: 'P1', cash: 350, lines: ev(350).batches[0].lines })); // no family config
+  assert.match(unknown.remittance.unresolved[0].reason, /documents not available: Invoice K9/);
+});
+
+test('M3: a discount journal joins only when it is the unique free journal equal to the tie net', () => {
+  const mk = (extra) => [
+    row({ doc: 'P1', type: 'Payment', date: '2026-08-26', amount: -975 }),
+    row({ doc: 'I1', date: '2026-08-01', amount: 1000 }),
+    jrow({ doc: 'J1', date: '2026-08-26', amount: -25 }),
+    ...extra,
+  ];
+  const ev = evidenceOf({ batchId: 'S', paymentDoc: 'P1', cash: 975, lines: [adviceLine({ doc: 'I1', gross: 1000, discount: 25, paid: 975 })] });
+  const joined = matchProjection(projection(mk([])), undefined, ev);
+  assert.equal(joined.ties[0].discountJournal.doc, 'J1');
+  assert.equal(joined.ties[0].discountPending, 0);
+  assert.equal(joined.ties[0].net, 0);
+  const dup = matchProjection(projection(mk([jrow({ doc: 'J2', date: '2026-08-27', amount: -25 })])), undefined, ev);
+  assert.equal(dup.ties[0].discountPending, 25); // two equal journals: not guessed
+  assert.equal(dup.ties[0].net, 25);
+  const early = matchProjection(projection([row({ doc: 'P1', type: 'Payment', date: '2026-08-26', amount: -975 }), row({ doc: 'I1', date: '2026-08-01', amount: 1000 }), jrow({ doc: 'J0', date: '2026-08-01', amount: -25 })]), undefined, ev);
+  assert.equal(early.ties[0].discountPending, 25); // journal dated before the payment never joins
+});

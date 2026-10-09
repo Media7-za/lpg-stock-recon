@@ -141,7 +141,7 @@ export function matchProjection(projection, rules = RULES, evidence = null, lock
     const tie_id = `T${String(ties.length + 1).padStart(4, '0')}`;
     let conf = confidence;
     if (conf === 'CONFIRMED' && members.some((r) => !r.confirmable)) conf = 'PROBABLE';
-    const net = round2(members.reduce((s, r) => s + r.amount, 0));
+    const net = round2(members.reduce((s, r) => s + r.amount, 0)) || 0; // never -0
     const inClosedPeriod = Boolean(closedThrough) && rule !== 'LOCKED' && members.every((r) => r.date <= closedThrough);
     ties.push({
       tie_id,
@@ -234,7 +234,45 @@ export function matchProjection(projection, rules = RULES, evidence = null, lock
   }
 
   // 1b. Remittance evidence (P11): runs before any pattern rule.
+  //   v5 additions (operator rulings on TWK002, ADM-94, 2026-10-09):
+  //   - M1 lane-aware split: a line whose settled share (paid + discount) is only part of the document,
+  //     or that does not equal the document's ERP rows, ties only the lane rows equal to that share,
+  //     and only if exactly one lane subset fits (±R0.05) AND all advices together settle the whole
+  //     document (Σ shares over the evidence = the advice's document gross, ±R0.05). Else unresolved.
+  //   - Family (payer group): documents listed in `evidence.family.siteDocs` sit on a sister account and
+  //     are out of scope here; the in-scope lines must equal this account's posting of the payment, and
+  //     this posting + the sister postings must equal the advice cash.
+  //   - M3: when the tie's net is a discount, a unique free journal equal to −net, dated on/after the
+  //     payment, joins the tie (the discount journal is no longer 'pending').
   const remittance = { applied: [], unresolved: [] };
+  const lineKey = (l) => `${l.docType}|${l.doc}`;
+  const coverage = new Map(); // docType|doc -> { shares, gross } over every batch of the evidence
+  for (const bb of evidence?.batches || []) {
+    const per = new Map();
+    for (const l of bb.lines) {
+      const k = lineKey(l);
+      const a = per.get(k) || { share: 0, gross: 0 };
+      a.share = round2(a.share + l.paid + l.discount);
+      a.gross = round2(a.gross + l.gross);
+      per.set(k, a);
+    }
+    for (const [k, a] of per) {
+      const c = coverage.get(k) || { share: 0, gross: a.gross };
+      c.share = round2(c.share + a.share);
+      coverage.set(k, c);
+    }
+  }
+  const laneSubset = (free, share) => {
+    const lanes = [...new Set(free.map((r) => r.lane))];
+    const fits = [];
+    for (let m = 1; m < 1 << lanes.length; m++) {
+      const pick = lanes.filter((_, i) => m & (1 << i));
+      const rowsIn = free.filter((r) => pick.includes(r.lane));
+      if (Math.abs(round2(rowsIn.reduce((x, r) => x + r.amount, 0)) - share) <= rules.exactTolerance) fits.push({ lanes: pick, rows: rowsIn });
+    }
+    return fits.length === 1 ? fits[0] : null;
+  };
+  const siteDocs = evidence?.family?.siteDocs || null;
   for (const b of evidence?.batches || []) {
     const fail = (reason) => remittance.unresolved.push({ batchId: b.batchId, paymentDoc: b.paymentDoc, reason });
     const pay = rows.find((r) => r.kind === 'payment' && r.entry_type !== 'Bank UD' && r.clean_doc === b.paymentDoc);
@@ -249,59 +287,115 @@ export function matchProjection(projection, rules = RULES, evidence = null, lock
     const lineRows = [];
     const missing = [];
     const discrepancies = [];
+    const splitLines = [];
+    const siteLines = [];
+    const unsplit = [];
     // An advice may list one document on several lines (e.g. gas and cylinder deposit
     // separately); compare and tie each document once, against the sum of its lines.
     const byDocLine = new Map();
     for (const l of b.lines) {
-      const k = `${l.docType}|${l.doc}`;
-      const agg = byDocLine.get(k) || { doc: l.doc, docType: l.docType, gross: 0 };
+      const k = lineKey(l);
+      const agg = byDocLine.get(k) || { doc: l.doc, docType: l.docType, gross: 0, paid: 0, discount: 0, alreadyPaid: 0 };
       agg.gross = round2(agg.gross + l.gross);
+      agg.paid = round2(agg.paid + l.paid);
+      agg.discount = round2(agg.discount + l.discount);
+      if (l.alreadyPaid) agg.alreadyPaid = round2(agg.alreadyPaid + l.alreadyPaid);
       byDocLine.set(k, agg);
     }
     for (const l of byDocLine.values()) {
+      const key = lineKey(l);
       const docRows = rows.filter((r) => r.clean_doc === l.doc && r.entry_type === l.docType);
       if (!docRows.length) {
+        if (siteDocs?.[key]) {
+          siteLines.push({ doc: l.doc, docType: l.docType, account: siteDocs[key], paid: l.paid, discount: l.discount, gross: l.gross });
+          continue;
+        }
         missing.push(`${l.docType} ${l.doc}`);
         continue;
       }
-      const taken = docRows.filter((r) => !free(r));
-      if (taken.length) {
-        missing.push(`${l.docType} ${l.doc} (already tied ${tiedRow.get(taken[0].row_id)})`);
+      const freeRows = docRows.filter(free);
+      const allFree = freeRows.length === docRows.length;
+      const share = round2(l.paid + l.discount);
+      const erpAmount = round2(docRows.reduce((s, r) => s + r.amount, 0));
+      const cov = coverage.get(key);
+      const covered = cov && Math.abs(cov.share - cov.gross) <= rules.exactTolerance;
+      const partial = Math.abs(share - l.gross) > rules.exactTolerance || l.alreadyPaid > 0;
+      const wholeDoc = allFree && !partial && Math.abs(erpAmount - l.gross) <= rules.remittanceLineTolerance;
+      if (wholeDoc) {
+        lineRows.push(...docRows);
         continue;
       }
-      const erpAmount = round2(docRows.reduce((s, r) => s + r.amount, 0));
-      if (Math.abs(erpAmount - l.gross) > rules.remittanceLineTolerance) {
-        discrepancies.push({ doc: `${l.docType} ${l.doc}`, advice: l.gross, erp: erpAmount, diff: round2(l.gross - erpAmount) });
+      // M1: a unique lane subset of the free rows equal to this advice's share, once the advices cover the document.
+      const sub = freeRows.length && covered ? laneSubset(freeRows, share) : null;
+      if (sub) {
+        splitLines.push({ doc: `${l.docType} ${l.doc}`, lanes: sub.lanes, share, gross: l.gross });
+        lineRows.push(...sub.rows);
+        continue;
       }
+      if (!allFree) {
+        missing.push(`${l.docType} ${l.doc} (already tied ${tiedRow.get(docRows.find((r) => !free(r)).row_id)})`);
+        continue;
+      }
+      if (partial) {
+        unsplit.push(`${l.docType} ${l.doc} R${l.alreadyPaid || round2(l.gross - share)} not settled by this advice`);
+        continue;
+      }
+      // not split, rows differ from the advice's gross: old behaviour (whole document, PROBABLE)
+      discrepancies.push({ doc: `${l.docType} ${l.doc}`, advice: l.gross, erp: erpAmount, diff: round2(l.gross - erpAmount) });
       lineRows.push(...docRows);
     }
     if (missing.length) {
       fail(`documents not available: ${missing.join(', ')}`);
       continue;
     }
-    // A line this advice settles only in part (paid ≠ gross − discount) means the document is
-    // spread over several remittances. Tying it here would hide the remainder, so leave the
-    // batch unresolved until combined-batch evidence exists.
-    const split = b.lines.filter((l) => l.alreadyPaid);
-    if (split.length) {
-      fail(`documents settled over several remittances: ${split.map((l) => `${l.docType} ${l.doc} R${l.alreadyPaid} not settled by this advice`).join(', ')}`);
+    // A line this advice settles only in part with no lane subset that fits (or the advices together do not
+    // cover the document) means it is spread over several remittances. Tying it here would hide the
+    // remainder, so leave the batch unresolved until combined-batch evidence exists.
+    if (unsplit.length) {
+      fail(`documents settled over several remittances: ${unsplit.join(', ')}`);
       continue;
     }
-    const paid = round2(b.lines.reduce((s, l) => s + l.paid, 0));
+    const inScope = b.lines.filter((l) => !siteLines.some((s) => s.doc === l.doc && s.docType === l.docType));
+    const paid = round2(inScope.reduce((s, l) => s + l.paid, 0));
     const cash = round2(-pay.amount);
     const tol = Math.max(rules.exactTolerance, rules.remittanceBatchTolerancePct * cash);
     if (Math.abs(paid - cash) > tol) {
       fail(`advice lines R${paid} ≠ payment R${cash}`);
       continue;
     }
-    const tie_id = addTie('REMITTANCE', discrepancies.length ? 'PROBABLE' : 'CONFIRMED', [pay, ...lineRows], {
+    let familyPostings = null;
+    if (siteLines.length) {
+      const posted = evidence.family.postings?.[b.paymentDoc] || {};
+      const sisterTotal = round2(Object.values(posted).reduce((s, v) => s + v, 0));
+      const famTol = Math.max(rules.exactTolerance, rules.remittanceBatchTolerancePct * b.cash);
+      if (Math.abs(round2(cash + sisterTotal) - b.cash) > famTol) {
+        fail(`family postings R${cash} + R${sisterTotal} ≠ advice cash R${b.cash}`);
+        continue;
+      }
+      familyPostings = { here: cash, ...posted, advice: b.cash };
+    }
+    const members = [pay, ...lineRows];
+    let discountPending = round2(inScope.reduce((s, l) => s + l.discount, 0));
+    let discountJournalRow = null;
+    const netNow = round2(members.reduce((s, r) => s + r.amount, 0));
+    if (Math.abs(netNow) > rules.exactTolerance && discountPending) {
+      const cands = rows.filter((r) => r.kind === 'journal' && free(r) && r.date >= pay.date && Math.abs(r.amount + netNow) <= rules.exactTolerance);
+      if (cands.length === 1) {
+        discountJournalRow = cands[0];
+        members.push(discountJournalRow);
+        discountPending = 0;
+      }
+    }
+    const tie_id = addTie('REMITTANCE', discrepancies.length ? 'PROBABLE' : 'CONFIRMED', members, {
       batchId: b.batchId,
       evidence: b.source,
       payment: { doc: pay.clean_doc, date: pay.date, amount: cash },
-      invoices: [...byDocLine.values()].map((l) => ({ doc: l.doc, docType: l.docType, amount: l.gross })),
-      discountPending: round2(b.lines.reduce((s, l) => s + l.discount, 0)),
+      invoices: [...byDocLine.values()].filter((l) => !siteLines.some((s) => s.doc === l.doc && s.docType === l.docType)).map((l) => ({ doc: l.doc, docType: l.docType, amount: l.gross })),
+      discountPending,
       lineDiscrepancies: discrepancies,
-      ...(b.discountJournal ? { discountJournal: b.discountJournal } : {}),
+      ...(splitLines.length ? { splitLines } : {}),
+      ...(siteLines.length ? { siteLines, familyPostings } : {}),
+      ...(discountJournalRow ? { discountJournal: { doc: discountJournalRow.clean_doc, date: discountJournalRow.date, amount: discountJournalRow.amount } } : b.discountJournal ? { discountJournal: b.discountJournal } : {}),
       variance: round2(paid - cash),
     });
     remittance.applied.push({ batchId: b.batchId, tie_id });

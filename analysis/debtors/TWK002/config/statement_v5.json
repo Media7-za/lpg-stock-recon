@@ -20,5 +20,25 @@
     "9.1": 517.5,
     "D.1": 1150,
     "S.1": 1150
+  },
+  "remittanceDocAliases": {
+    "_comment": "Operator ruling 2026-10-09 (ADM-94 Q2): the STAT 123 advice line 'Crd Note 10, 23.10.2025, -R6,900.00' is the second line of CN 13716 (-R9,315.00 + -R6,900.00 = -R16,215.00). Advice-line identity only: do NOT create a CN 10 in the ERP and do NOT park -R6,900 on another invoice; the cash is already in receipt 43500. Applied when the remittance evidence is built; the generated CSV/JSON are never hand-edited. Tripwire: a document numbered 10 on any family account, or a corrected advice from the customer.",
+    "BATCH-2026-STAT-123": {
+      "Crd Note|10": "13716"
+    }
+  },
+  "payerGroup": {
+    "_comment": "Operator ruling 2026-10-09 (ADM-94 Q1, Q15): TWK003 and TWK004 are CHILD accounts of TWK002, reconciled as a consolidated parent; one consolidated customer statement for TWK AGRI. Supersedes the TWK002-only posture recorded in config/statement_of_account.json _comment_siteTxts (kept, marked superseded). INTERIM: the child TXTs below are undated (committed 2026-10-07), so family figures are ASSERTED until current exports arrive (ADM-93). Until the children have their own projections, only this account's slice of a family payment is tied; the child share is carried on the tie as familyPostings / siteLines.",
+    "parent": "TWK002",
+    "children": [
+      {
+        "code": "TWK003",
+        "txtPath": "analysis/debtors/TWK002/raw/DEBENQ_TWK003.TXT"
+      },
+      {
+        "code": "TWK004",
+        "txtPath": "analysis/debtors/TWK002/raw/DEBENQ_TWK004.TXT"
+      }
+    ]
   }
 }

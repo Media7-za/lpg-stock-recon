@@ -9,9 +9,52 @@ import { fileFingerprint, verifyProjection } from './v5_projection.mjs';
 import { matchProjection } from './projection_matcher.mjs';
 import { buildRemittanceEvidence } from './remittance_evidence.mjs';
 import { effectiveLocks } from './locks.mjs';
+import { parseDebenqWithRunning } from './debenq_open_invoices.mjs';
 
 export function registryPath(acct) {
   return path.join(acct, 'config/payment_pattern_overrides.json');
+}
+
+/**
+ * Config-driven evidence adjustments (operator rulings, TWK002 / ADM-94, 2026-10-09), applied when the
+ * evidence is built so the generated CSV / JSON are never hand-edited (§5 idempotency):
+ *  - `remittanceDocAliases` { batchId: { "Crd Note|10": "13716" } }: an advice line's identity is
+ *    re-pointed to the ERP document it belongs to (a fact about how the customer printed the advice).
+ *  - `payerGroup` { children: [{ code, txtPath }] }: documents in a sister account's TXT are out of scope
+ *    for this account's remittance ties, and the sister accounts' postings of each payment are summed
+ *    so the matcher can check this posting + sister postings = advice cash.
+ */
+export function applyEvidenceConfig(evidence, cfg, root) {
+  const aliases = cfg?.remittanceDocAliases || {};
+  for (const b of evidence.batches) {
+    const al = aliases[b.batchId];
+    if (!al) continue;
+    for (const l of b.lines) {
+      const to = al[`${l.docType}|${l.doc}`];
+      if (to) {
+        l.aliasOf = l.doc;
+        l.doc = String(to);
+      }
+    }
+  }
+  const children = cfg?.payerGroup?.children || [];
+  if (children.length) {
+    const siteDocs = {};
+    const postings = {};
+    for (const c of children) {
+      const abs = path.isAbsolute(c.txtPath) ? c.txtPath : path.join(root, c.txtPath);
+      if (!fs.existsSync(abs)) continue;
+      for (const r of parseDebenqWithRunning(abs).rows) {
+        if (r.entry === 'Invoice' || r.entry === 'Crd Note') siteDocs[`${r.entry}|${r.cleanDoc}`] = c.code;
+        if (r.entry === 'Payment') {
+          postings[r.cleanDoc] = postings[r.cleanDoc] || {};
+          postings[r.cleanDoc][c.code] = Math.round(((postings[r.cleanDoc][c.code] || 0) - r.amount) * 100) / 100;
+        }
+      }
+    }
+    evidence.family = { parent: cfg.payerGroup.parent, children: children.map((c) => c.code), siteDocs, postings };
+  }
+  return evidence;
 }
 
 /** Returns { registry, supported, note }. A flat-array registry (WO0001 style) cannot carry locks. */
@@ -65,7 +108,7 @@ export function matchAccount(root, code) {
   const v = verifyProjection(projection, { txtFingerprint: fileFingerprint(txtPath) });
   if (!v.ok) return { ok: false, reasons: v.reasons };
 
-  const evidence = buildRemittanceEvidence(acct);
+  const evidence = applyEvidenceConfig(buildRemittanceEvidence(acct), cfg, root);
   const hasEvidence = evidence.batches.length > 0 || evidence.skipped.length > 0;
   const reg = readRegistry(acct, code);
   const locks = reg.supported ? effectiveLocks(reg.registry) : null;
