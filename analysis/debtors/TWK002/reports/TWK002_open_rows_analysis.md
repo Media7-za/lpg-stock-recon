@@ -354,7 +354,7 @@ So G4 and G5 need no new line or config list (M5 withdrawn). The v5 open-items v
 
 Unchanged: Q1, Q2, Q3, Q5, Q7, Q9, Q10. Withdrawn: Q4. Replaced or new:
 
-* **Q6′:** Approve 51180 + CN 15063 (both lanes) now, and hold 53078 + CN 15646 and 53351 + CN 15714 until a CN INVNO tag or your recorded judgement exists? (yes / approve all four / other)
+* **ANSWERED (§8.23): approve all four.** **Q6′:** Approve 51180 + CN 15063 (both lanes) now, and hold 53078 + CN 15646 and 53351 + CN 15714 until a CN INVNO tag or your recorded judgement exists? (yes / approve all four / other)
 * **ANSWERED (§8.20): yes.** **Q8′:** Show G4 and G5 in the v5 open-items view under the ratified `balanceBridgeLines` ids, extending the 2026-08-11 bridge ratification to v5? (yes/no)
 * **Q11:** Register 41747 (STAT 123, `CROSS_BATCH_RESIDUAL_NO_DISCOUNT`) and the STAT 123 late lines (`LATE_PAYMENT_NO_DISCOUNT`) in `config/settlement_discount_overrides.json`, as doctrine v2 §7 requires? (yes/no) — **SUPERSEDED (§8.12):** too narrow; restated as Q11′.
 * **Q12:** Were H-014, H-022, H-023 and H-026 done in the ERP (journals 511–513 on 2026-08-31)? If so, may the main session mark them DONE in `shared/HUMAN_TASKS.md`? (done / not done / unknown)
@@ -702,4 +702,28 @@ The ERP tie, the family proof (R53,836.19) and the customer Amount due (R45,751.
 **Observation (ASSERTED; no question raised):** the CYL lane net after this ruling, −R7,590.00, equals the cylinder deposits the customer paid in cash on STAT 123 (43294 +172.50, 43909 +345.00, 47196 +7,072.50; §4.6). Under `ALLOCATION_DOCTRINE.md` §1.3 those cylinders became customer-owned. If CN 15775 credits their physical return, the credit is consistent. If it credits cylinders never delivered or already credited, it would double-credit. The DB lines (SKUs and quantities) will show which. `unverified`.
 
 **Tripwire:** ADM-93 DB lines that put any part of CN 15775 in the LPG lane reopen this ruling.
+
+### 8.23 Operator ruling on Q6′: approve all four probable CN ties (2026-10-09)
+
+**Ruling (verbatim, operator in the analysis session, 2026-10-09):** "Q6′ = yes, approve all".
+
+**Approved ties (the operator chose "approve all four" over the hold recommended in §8.7):**
+
+| Tie (v5 matcher) | Documents | R | Basis recorded |
+| :--- | :--- | ---: | :--- |
+| T0025, T0026 | Invoice 51180 + CN 15063, LPG and CYL lanes (DN#22798) | 29,721.98 | ERP Crd Note tag to 51180 (order A rung 3); same order number 00013935; exact reversal; plus this ruling |
+| T0029 | Invoice 53078 + CN 15646 (DN#24985), 4 days apart | 22,000.00 | Operator judgement (`business_rules.md` §15 rule 7), with same DN and exact amount as supporting evidence |
+| T0030 | Invoice 53351 + CN 15714 (ref 21388), same day | 19,837.50 | Operator judgement (§15 rule 7), with same reference, date and exact amount as supporting evidence |
+
+T0011 (44731 + CN 12958) needs no approval; the STAT 123 remittance confirms it (§8.7).
+
+**Basis, stated plainly (§3 deletion test):** for T0029 and T0030 the deciding evidence is the operator's ruling, not the DN or reference text. The ruling is what lets the pairs retire on the customer copy (P3: probable ties stay open on customer copies until ratified).
+
+**Effect:** the customer-preview count falls by 8 rows. After all rulings the consolidated customer view shows the 10 TWK002 rows plus the 2 TWK003 rows, the same as the internal view. The pairs net to R0.00, so no amount changes.
+
+**Recording (main session):** `approve_tie.mjs` takes only payment ties today (`locks.mjs` `planApproval` requires `--payment`). Recording these four needs a small extension, e.g. `--credit-note 15063 --invoices 51180` with treatment `exact`, or a CN-pair branch in `planApproval`, each with this ruling as `reason`. Until then the ruling stands on this report and ADM-94, and the ties remain PROBABLE in the matcher output.
+
+**Tripwires:**
+* An allocation-detail export showing CN 15646 or CN 15714 tagged to a different invoice reopens T0029 or T0030.
+* A re-issue of 51180, 53078 or 53351 reopens the matching tie.
 
