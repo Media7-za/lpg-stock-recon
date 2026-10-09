@@ -760,3 +760,23 @@ T0011 (44731 + CN 12958) needs no approval; the STAT 123 remittance confirms it 
 
 **Scope note.** This answer records a status fact only. It makes no collections recommendation; the collections gate (D17/D18, `DEBTORS_DOCTRINE.md` §4) applies before any action on these balances. Under that gate the account remains `COLLECTIONS_BLOCKED` until its blockers are assessed.
 
+### 8.26 Operator answer on Q12b: H-022 (2026-10-09)
+
+**Answer (operator, relayed 2026-10-09):**
+* **Settlement is already done.** Do not wait on INVNO for the settlement itself. (Journal 511 settles the eight pre-window documents; §8.18 and §8.24.)
+* **H-022 as written stays OPEN.** Its exit criterion is that 37770 is split or tagged onto the eight documents. Rewriting the criterion to "journal 511 matches AL-0109–0116, net R0.00" is not recommended: it would accept a permanent untagged lump on the payment.
+* **Closing option, if no tagging is wanted:** close H-022 as **WAIVED**, not DONE. Journal 511 is enough for the settlement; INVNO on 37770 stays blank. DONE would imply `debtors:tag-check` is clean for 37770, which it is not.
+* **Tripwire:** a later allocation-detail export that splits 37770 onto the eight documents allows H-022 to be marked DONE. A `debtors:tag-check` that still lists 37770 means H-022 is not done.
+
+**Recorded status for the main session (it writes `shared/HUMAN_TASKS.md`):**
+
+| Task | Status | Basis |
+| :--- | :--- | :--- |
+| H-022 | **OPEN** (recommended) | Exit criterion unmet; payment still untagged |
+| H-022 alternative | **WAIVED** if no tagging is wanted | Journal 511 settles the eight documents; INVNO stays blank by decision |
+| H-022 → DONE | Only on a later split/tag export, or a clean `debtors:tag-check` | Tripwire above |
+
+**Scope.** This session did not touch `shared/HUMAN_TASKS.md`. The operator's choice between OPEN and WAIVED is still needed; the report recommends OPEN.
+
+**Q12b, restated:** H-022 — keep OPEN (recommended) or close as WAIVED?
+
