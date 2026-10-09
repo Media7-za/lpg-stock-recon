@@ -296,3 +296,32 @@ The matcher's EXACT_RUN rule (ADM-85) does test runs of 4–12 consecutive open 
 **Suggested ruling in one line (PROPOSED — NOT RATIFIED):**
 
 > Statement settlement for 37238, 38928, 41247, 41812, 42224, 42597 and 43927, recorded as one "settled through 2026-03-31" record (TXT line 131); ADM-83 oldest-first for 44878, 45717 and 46098 in date order, with L0001 voided and re-sequenced; legacy LIFO overrides marked superseded; Jan–Feb 2025 ERP export requested for 37238's R1,552.50; T0044 left to a near-run matcher fix.
+
+---
+
+## 8. Operator ruling (2026-10-09, ADM-92)
+
+**Recorded from the operator's instruction in session, 2026-10-09: "I agree with your answers, record the ruling."** The answers are those in §7.2. This section records the decision. It does **not** write locks or config: that is for the main recon session (see "Not done yet").
+
+> **ADM-92 ruling — JEN001 unallocated payments.**
+> 1. **Statement settlement.** Payments 37238, 38928, 41247, 41812, 42224, 42597 and 43927 each pay a statement: the month-end closing balance, or for 38928 that month's LPG invoices. They settle every document on that statement, gas, cylinders and credit notes alike. Separate basis from ADM-83.
+> 2. **Recording.** The seven are recorded as **one "settled through 2026-03-31" record**, anchored on TXT line 131 (`raw/JEN001_2026-10-08.TXT`). This is a narrow exception to "LPG + OTHER as default", limited to payments equal to a statement balance. §1's per-payment table is the explanation, not seven locks.
+> 3. **Round amounts.** ADM-83 oldest-first applies to 44878, 45717 and 46098, in payment-date order.
+> 4. **L0001 voided and re-sequenced (Option A).** 44878 settles 50051 and 50146 in full and R1,972.67 of 50318. 45717 settles the rest of 50318, 50536, 50753 and 50970 in full, and R1,196.21 of 51154. 46098 settles the rest of 51154, 51387, 51564, 51691 and 51823 in full, and R947.61 of 52044. Open: 52044 R3,003.68, 52305, 52648, 53029, 53224, 53468 = R25,332.00 (PROVEN, §3.3).
+> 5. **Legacy LIFO overrides** for 44878 and 45717 are marked superseded, never deleted.
+> 6. **37238's R1,552.50** stays `unverified`. The Jan–Feb 2025 ERP export, or the STAT 112 statement, is to be requested.
+> 7. **T0044** (39619) is left as it is. It moves to the May 2025 invoices only if a near-run matcher rule is later approved.
+>
+> **Tripwires (reopen if any occur):**
+> - a customer remittance naming invoices for any of these payments;
+> - a new TXT with a different B/F or window start;
+> - any document added, changed or back-dated to on or before 2026-03-31;
+> - a statement or TXT that explains 37238's R1,552.50.
+
+**Not done yet (for the main recon session):**
+- **Tooling for item 2.** There is no way to record a "settled through" record today. `approve_tie.mjs` refuses CYL rows and credit notes (`locks.mjs:180`). The agreement covers recording it that way; the tool itself has to be built or extended.
+- **Item 4 locks.** Void L0001 (`close_period.mjs --void-lock L0001 --reason …`) and record the three oldest-first locks.
+- **Item 5.** Append a "superseded" note to the two legacy overrides in `config/payment_pattern_overrides.json`.
+- **The near-run matcher rule behind item 7 is not approved.** It still needs its own decision and a test on MOZ002 first.
+
+This section is the record of the operator's decision; the projection, locks and config are unchanged until the main session acts.
