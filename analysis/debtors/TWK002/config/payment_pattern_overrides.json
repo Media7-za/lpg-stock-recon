@@ -340,5 +340,204 @@
         "data/remittance_batches_2024.csv"
       ]
     }
-  ]
+  ],
+  "projectionLocks": {
+    "schema": 1,
+    "closes": [],
+    "locks": [
+      {
+        "lock_id": "L0001",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "applied_to_bf",
+          "net": -35922.77,
+          "reason": "Operator ruling ADM-94 Q7 (2026-10-09, confirmed in the main session): payment 37770 (STAT 112, R35,693.84) and its discount journal 508 (-R228.93) are applied against the opening B/F, settling the eight pre-window documents inside it: invoices 39683, 40081, 40459, 40950 and credit notes 11648, 11743, 11821, 11953 (R35,922.77). Evidence: the STAT 112 advice (BATCH-2025-03-31), data/allocation_edges.csv AL-0109..AL-0116, raw/TWK0022024.TXT lines 19-22 and 49-52, and ERP journal 511. This is the ratified bridge line stat112_untagged. The unitemised B/F falls from R38,791.27 to R2,868.50. Tripwire: a full-history export restating the B/F as named invoices with real INVNOs for these journals reopens the bridge.",
+          "approvedBy": "operator",
+          "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx"
+        },
+        "members": [
+          {
+            "key": "37770|Payment|LPG|2025-03-28|-35693.84",
+            "doc": "37770",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2025-03-28",
+            "amount": -35693.84
+          },
+          {
+            "key": "508|Journal|LPG|2026-08-09|-228.93",
+            "doc": "508",
+            "entry_type": "Journal",
+            "lane": "LPG",
+            "date": "2026-08-09",
+            "amount": -228.93
+          }
+        ],
+        "createdAt": "2026-10-09T17:24:35.835Z"
+      },
+      {
+        "lock_id": "L0002",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "exact",
+          "net": 0,
+          "reason": "Operator ruling ADM-94 Q6 (2026-10-09, \"approve all four\", confirmed in the main session): invoice 51180 + CN 15063 (both lanes, DN#22798; ERP Crd Note tag to 51180, same order 00013935, exact reversal), invoice 53078 + CN 15646 (DN#24985, 4 days apart) and invoice 53351 + CN 15714 (ref 21388, same day). For 53078/15646 and 53351/15714 the deciding evidence is operator judgement (business_rules section 15 rule 7), with same DN or reference and exact amount as supporting evidence. Tripwires: an allocation-detail export tagging CN 15646 or CN 15714 to a different invoice; a re-issue of 51180, 53078 or 53351.",
+          "approvedBy": "operator",
+          "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx",
+          "approvedTie": {
+            "tie_id": "T0012",
+            "rule": "CN_DN_PAIR",
+            "docs": [
+              "Invoice 51180",
+              "Crd Note 15063"
+            ]
+          }
+        },
+        "members": [
+          {
+            "key": "51180|Invoice|LPG|2026-06-12|12471.98",
+            "doc": "51180",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-06-12",
+            "amount": 12471.98
+          },
+          {
+            "key": "15063|Crd Note|LPG|2026-06-15|-12471.98",
+            "doc": "15063",
+            "entry_type": "Crd Note",
+            "lane": "LPG",
+            "date": "2026-06-15",
+            "amount": -12471.98
+          }
+        ],
+        "createdAt": "2026-10-09T17:24:48.447Z"
+      },
+      {
+        "lock_id": "L0003",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "exact",
+          "net": 0,
+          "reason": "Operator ruling ADM-94 Q6 (2026-10-09, \"approve all four\", confirmed in the main session): invoice 51180 + CN 15063 (both lanes, DN#22798; ERP Crd Note tag to 51180, same order 00013935, exact reversal), invoice 53078 + CN 15646 (DN#24985, 4 days apart) and invoice 53351 + CN 15714 (ref 21388, same day). For 53078/15646 and 53351/15714 the deciding evidence is operator judgement (business_rules section 15 rule 7), with same DN or reference and exact amount as supporting evidence. Tripwires: an allocation-detail export tagging CN 15646 or CN 15714 to a different invoice; a re-issue of 51180, 53078 or 53351.",
+          "approvedBy": "operator",
+          "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx",
+          "approvedTie": {
+            "tie_id": "T0013",
+            "rule": "CN_DN_PAIR",
+            "docs": [
+              "Invoice 51180",
+              "Crd Note 15063"
+            ]
+          }
+        },
+        "members": [
+          {
+            "key": "51180|Invoice|CYL|2026-06-12|17250.00",
+            "doc": "51180",
+            "entry_type": "Invoice",
+            "lane": "CYL",
+            "date": "2026-06-12",
+            "amount": 17250
+          },
+          {
+            "key": "15063|Crd Note|CYL|2026-06-15|-17250.00",
+            "doc": "15063",
+            "entry_type": "Crd Note",
+            "lane": "CYL",
+            "date": "2026-06-15",
+            "amount": -17250
+          }
+        ],
+        "createdAt": "2026-10-09T17:24:48.447Z"
+      },
+      {
+        "lock_id": "L0004",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "exact",
+          "net": 0,
+          "reason": "Operator ruling ADM-94 Q6 (2026-10-09, \"approve all four\", confirmed in the main session): invoice 51180 + CN 15063 (both lanes, DN#22798; ERP Crd Note tag to 51180, same order 00013935, exact reversal), invoice 53078 + CN 15646 (DN#24985, 4 days apart) and invoice 53351 + CN 15714 (ref 21388, same day). For 53078/15646 and 53351/15714 the deciding evidence is operator judgement (business_rules section 15 rule 7), with same DN or reference and exact amount as supporting evidence. Tripwires: an allocation-detail export tagging CN 15646 or CN 15714 to a different invoice; a re-issue of 51180, 53078 or 53351.",
+          "approvedBy": "operator",
+          "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx",
+          "approvedTie": {
+            "tie_id": "T0016",
+            "rule": "CN_DN_PAIR",
+            "docs": [
+              "Invoice 53078",
+              "Crd Note 15646"
+            ]
+          }
+        },
+        "members": [
+          {
+            "key": "53078|Invoice|OTHER|2026-09-10|22000.00",
+            "doc": "53078",
+            "entry_type": "Invoice",
+            "lane": "OTHER",
+            "date": "2026-09-10",
+            "amount": 22000
+          },
+          {
+            "key": "15646|Crd Note|OTHER|2026-09-14|-22000.00",
+            "doc": "15646",
+            "entry_type": "Crd Note",
+            "lane": "OTHER",
+            "date": "2026-09-14",
+            "amount": -22000
+          }
+        ],
+        "createdAt": "2026-10-09T17:24:48.447Z"
+      },
+      {
+        "lock_id": "L0005",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "exact",
+          "net": 0,
+          "reason": "Operator ruling ADM-94 Q6 (2026-10-09, \"approve all four\", confirmed in the main session): invoice 51180 + CN 15063 (both lanes, DN#22798; ERP Crd Note tag to 51180, same order 00013935, exact reversal), invoice 53078 + CN 15646 (DN#24985, 4 days apart) and invoice 53351 + CN 15714 (ref 21388, same day). For 53078/15646 and 53351/15714 the deciding evidence is operator judgement (business_rules section 15 rule 7), with same DN or reference and exact amount as supporting evidence. Tripwires: an allocation-detail export tagging CN 15646 or CN 15714 to a different invoice; a re-issue of 51180, 53078 or 53351.",
+          "approvedBy": "operator",
+          "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx",
+          "approvedTie": {
+            "tie_id": "T0017",
+            "rule": "CN_AMOUNT_DATE",
+            "docs": [
+              "Invoice 53351",
+              "Crd Note 15714"
+            ]
+          }
+        },
+        "members": [
+          {
+            "key": "53351|Invoice|CYL|2026-09-29|19837.50",
+            "doc": "53351",
+            "entry_type": "Invoice",
+            "lane": "CYL",
+            "date": "2026-09-29",
+            "amount": 19837.5
+          },
+          {
+            "key": "15714|Crd Note|CYL|2026-09-29|-19837.50",
+            "doc": "15714",
+            "entry_type": "Crd Note",
+            "lane": "CYL",
+            "date": "2026-09-29",
+            "amount": -19837.5
+          }
+        ],
+        "createdAt": "2026-10-09T17:24:48.447Z"
+      }
+    ],
+    "voids": []
+  }
 }

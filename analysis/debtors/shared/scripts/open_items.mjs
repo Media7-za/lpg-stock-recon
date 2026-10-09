@@ -36,15 +36,31 @@ const RULING_LINES = [
  * Returns { parts: {lpg, cyl}, rounding, appendix, proof } where each part lists its
  * open rows (date-ordered) with a running balance from the part's opening B/F.
  */
-export function buildOpenItems(projection, matches, view = 'internal') {
+export function buildOpenItems(projection, matches, view = 'internal', opts = {}) {
+  // Named residuals (operator ruling, TWK002 ADM-94 Q8′): untied rows listed in the account config are not
+  // open items; they are shown as named proof lines under the already-ratified bridge ids, so the
+  // P3 proof identity still adds up. Config: statement_v5.json namedResiduals [{ id, label, entry_type, docs }].
+  const namedDefs = opts.namedResiduals || [];
+  const namedByRow = new Map();
+  for (const r of projection.rows) {
+    const def = namedDefs.find((d) => d.entry_type === r.entry_type && d.docs.includes(r.clean_doc));
+    if (def) namedByRow.set(r.row_id, def);
+  }
   if (matches.projection?.txtSha256 && matches.projection.txtSha256 !== projection.source.txtSha256) {
     throw new Error('projection_matches.json was built from a different projection (TXT fingerprint differs)');
   }
   const tieByRow = new Map();
   for (const t of matches.ties) for (const id of t.members) tieByRow.set(id, t);
+  const named = Object.fromEntries(namedDefs.map((d) => [d.id, { id: d.id, label: d.label, ruling: d.ruling, amount: 0, count: 0 }]));
+  for (const [rowId, def] of namedByRow) {
+    if (tieByRow.has(rowId)) continue;
+    const r = projection.rows.find((x) => x.row_id === rowId);
+    named[def.id].amount = round2(named[def.id].amount + r.amount);
+    named[def.id].count += 1;
+  }
   const visible = (r) => {
     const t = tieByRow.get(r.row_id);
-    if (!t) return true;
+    if (!t) return !namedByRow.has(r.row_id);
     return view === 'customer' && t.confidence === 'PROBABLE';
   };
 
@@ -109,8 +125,9 @@ export function buildOpenItems(projection, matches, view = 'internal') {
       };
     });
     const rulings = Object.fromEntries(RULING_LINES.map(([k]) => [k, ruled[k][part]]));
+    const namedPart = part === 'lpg' ? round2(Object.values(named).reduce((s, n) => s + n.amount, 0)) : 0;
     const closing = round2(
-      run + rounding[part] + journalsPending[part] + openingSettled[part] + Object.values(rulings).reduce((a, b) => a + b, 0),
+      run + rounding[part] + journalsPending[part] + openingSettled[part] + namedPart + Object.values(rulings).reduce((a, b) => a + b, 0),
     );
     parts[part] = {
       opening: opening[part],
@@ -129,6 +146,7 @@ export function buildOpenItems(projection, matches, view = 'internal') {
   return {
     view,
     parts,
+    named: Object.values(named).filter((n) => n.count),
     partPaid,
     appendix: matches.ties.filter((t) => t.confidence === 'PROBABLE'),
     proof: {
@@ -228,6 +246,9 @@ export function renderOpenItemsMarkdown(model, { cfg, projection, matches, gener
       L.push(row3(internal ? labelInternal : labelCustomer, parts.lpg.rulings[k], parts.cyl.rulings[k]));
     }
   }
+  for (const n of model.named || []) {
+    L.push(row3(`${n.label} (${n.count} journal rows)`, n.amount, 0));
+  }
   if (parts.lpg.journalsPending || parts.cyl.journalsPending) {
     L.push(row3(internal ? 'Settlement discount journals pending (P9)' : 'Settlement discount (journal pending)', parts.lpg.journalsPending, parts.cyl.journalsPending));
   }
@@ -252,6 +273,15 @@ export function renderOpenItemsMarkdown(model, { cfg, projection, matches, gener
     L.push(`- Invoice ${pp.doc}${inv ? ` R${fmt(inv.amount)}` : ''} less part-payment R${fmt(-pp.amount)} (payment${pp.payment.includes(',') ? 's' : ''} ${pp.payment})${owed}.`);
   }
   if ((model.partPaid || []).length) L.push('');
+
+  // Operator notes on rows that are still open (config rowNotes: [{ entry_type, doc, note }]).
+  const openLines = [...parts.lpg.lines, ...parts.cyl.lines];
+  const notes = (cfg.rowNotes || []).filter((n) => openLines.some((l) => l.doc === String(n.doc) && l.entry_type === n.entry_type));
+  if (internal && notes.length) {
+    L.push('## Operator notes on open rows', '');
+    for (const n of notes) L.push(`- **${n.entry_type} ${n.doc}:** ${n.note}`);
+    L.push('');
+  }
 
   if (internal) {
     L.push('---', '', '## Appendix A: Probable ties (review required, not locked)', '');

@@ -37,7 +37,7 @@ for (const code of codes) {
   if (!run.ok) { summary.push(`| ${code} | — | — | — | — | — | **REFUSED:** ${run.reasons.join('; ')} |`); continue; }
   const { projection, result } = run;
   const after = { ...result, projection: { txtSha256: projection.source.txtSha256 }, ties: result.ties };
-  const open = (m, view) => { try { const mm = { ...m, projection: { ...(m.projection || {}), txtSha256: projection.source.txtSha256 } }; const o = buildOpenItems(projection, mm, view); return { n: o.parts.lpg.lines.length + o.parts.cyl.lines.length, ties: o.proof.tiesToErp, bal: o.proof.combined }; } catch (e) { return { n: null, err: e.message }; } };
+  const open = (m, view) => { try { const mm = { ...m, projection: { ...(m.projection || {}), txtSha256: projection.source.txtSha256 } }; const o = buildOpenItems(projection, mm, view, { namedResiduals: run.cfg?.namedResiduals }); return { n: o.parts.lpg.lines.length + o.parts.cyl.lines.length, ties: o.proof.tiesToErp, bal: o.proof.combined }; } catch (e) { return { n: null, err: e.message }; } };
   const b = before ? { int: open(before, 'internal'), cus: open(before, 'customer') } : null;
   const a = { int: open(after, 'internal'), cus: open(after, 'customer') };
   const rowStatus = (m) => { const mp = new Map(); for (const t of m.ties) for (const id of t.members) mp.set(id, t); return mp; };

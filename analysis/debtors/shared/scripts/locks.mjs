@@ -175,7 +175,7 @@ export function applyClose(registry, plan) {
  * Members are keyed exactly as period-close locks are, so a changed document turns the ruling
  * into a CONFLICT in the next run rather than being silently re-applied.
  */
-export function planApproval({ projection, registry, payment, invoices = [], deposits = [], treatment = 'exact', partialDoc = null, reason, approvedBy, session, now }) {
+export function planApproval({ projection, registry, payment, invoices = [], deposits = [], journals = [], treatment = 'exact', partialDoc = null, reason, approvedBy, session, now }) {
   const reasons = [];
   const TREATMENTS = ['exact', 'customer_credit', 'applied_to_bf', 'part_payment', 'short_paid'];
   if (!TREATMENTS.includes(treatment)) reasons.push(`unknown treatment ${treatment}`);
@@ -199,6 +199,12 @@ export function planApproval({ projection, registry, payment, invoices = [], dep
     const dep = rows.filter((r) => r.kind === 'invoice' && r.clean_doc === String(doc) && r.lane === 'CYL');
     if (!dep.length) reasons.push(`deposit invoice ${doc}: no CYL rows in the projection`);
     members.push(...dep);
+  }
+  // `journals`: journal documents that belong to the settlement (e.g. the discount journal of a batch).
+  for (const doc of journals) {
+    const j = rows.filter((r) => r.kind === 'journal' && r.clean_doc === String(doc));
+    if (!j.length) reasons.push(`journal ${doc}: no journal rows in the projection`);
+    members.push(...j);
   }
   for (const doc of invoices) {
     const inv = rows.filter((r) => r.kind === 'invoice' && r.clean_doc === String(doc) && r.lane !== 'CYL');
@@ -331,5 +337,55 @@ export function applySettledThrough(registry, plan) {
       settledThrough: [...(pl.settledThrough || []), plan.record],
       voids: pl.voids || [],
     },
+  };
+}
+
+/**
+ * Approve probable ties the matcher already found, by tie id (operator ruling: "approve all").
+ * One approved lock per tie, treatment 'exact' (net within ±R0.05), so a changed document turns the
+ * ruling into a CONFLICT next run. Tie ids are only stable within one matcher run, so the caller passes
+ * the matches it just produced and the plan echoes each tie's documents for the operator to see.
+ */
+export function planApproveTies({ projection, matches, registry, tieIds, reason, approvedBy, session, now }) {
+  const reasons = [];
+  if (!reason) reasons.push('a reason (the operator ruling) is required');
+  const eff = effectiveLocks(registry);
+  const lockedKeys = new Set(eff.locks.flatMap((l) => l.members.map((m) => m.key)));
+  const rowById = new Map(projection.rows.map((r) => [r.row_id, r]));
+  const pl = registry?.projectionLocks || emptyLocks();
+  let seq = (pl.locks || []).map((l) => l.lock_id);
+  const locks = [];
+  for (const id of tieIds) {
+    const t = matches.ties.find((x) => x.tie_id === id);
+    if (!t) {
+      reasons.push(`${id}: no such tie in the current matcher output`);
+      continue;
+    }
+    if (t.confidence !== 'PROBABLE') reasons.push(`${id}: already ${t.confidence} (${t.rule}); only probable ties need approval`);
+    if (t.rule === 'LOCKED') reasons.push(`${id}: already a lock`);
+    const members = t.members.map((m) => rowById.get(m)).filter(Boolean);
+    if (members.some((r) => lockedKeys.has(rowKey(r)))) reasons.push(`${id}: a member is already locked`);
+    if (Math.abs(t.net) > 0.05) reasons.push(`${id}: net R${t.net} is not within ±R0.05; approve it with a treatment through approve_tie`);
+    const lock_id = nextId('L', seq);
+    seq = [...seq, lock_id];
+    locks.push({
+      lock_id,
+      close_id: null,
+      status: 'approved',
+      rule: 'OPERATOR_RULING',
+      ruling: { treatment: 'exact', net: t.net, reason, approvedBy, session, approvedTie: { tie_id: t.tie_id, rule: t.rule, docs: t.docs } },
+      members: members.map((r) => ({ key: rowKey(r), doc: r.clean_doc, entry_type: r.entry_type, lane: r.lane, date: r.date, amount: r.amount })),
+      createdAt: now,
+    });
+  }
+  if (reasons.length) return { ok: false, reasons, locks: [] };
+  return { ok: true, reasons: [], locks };
+}
+
+export function applyApprovals(registry, plan) {
+  const pl = registry.projectionLocks || emptyLocks();
+  return {
+    ...registry,
+    projectionLocks: { ...pl, schema: LOCKS_SCHEMA, closes: pl.closes || [], locks: [...(pl.locks || []), ...plan.locks], voids: pl.voids || [] },
   };
 }

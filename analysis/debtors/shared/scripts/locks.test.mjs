@@ -242,3 +242,36 @@ test('matcher: a settled-through record ties its range first and conflicts when 
   const voided = applyVoid(reg, { target: 'settled', id: 'S0001', voidedBy: 'o', reason: 'r', now: 'n' });
   assert.equal(effectiveLocks(voided).settledThrough.length, 0);
 });
+
+test('planApproval: a journal can join the settlement (applied_to_bf against the opening B/F)', async () => {
+  const { planApproval } = await import('./locks.mjs');
+  const mk = (doc, type, kind, amount) => ({ row_id: `${doc}|${type}|LPG`, clean_doc: doc, entry_type: type, kind, lane: 'LPG', amount, date: '2025-03-28', ref_no: '', txt_line: 1 });
+  const projection = { rows: [mk('37770', 'Payment', 'payment', -35693.84), mk('508', 'Journal', 'journal', -228.93)] };
+  const plan = planApproval({ projection, registry: {}, payment: '37770', journals: ['508'], treatment: 'applied_to_bf', reason: 'r', approvedBy: 'o', session: 's', now: 'n' });
+  assert.equal(plan.ok, true, plan.reasons?.join('; '));
+  assert.equal(plan.lock.members.length, 2);
+  assert.equal(plan.lock.ruling.net, -35922.77);
+  assert.equal(planApproval({ projection, registry: {}, payment: '37770', journals: ['999'], treatment: 'applied_to_bf', reason: 'r', approvedBy: 'o', session: 's', now: 'n' }).ok, false);
+});
+
+test('planApproveTies: approves probable ties by id as locks; refuses confirmed ties, unknown ids and non-zero nets', async () => {
+  const { planApproveTies, applyApprovals, effectiveLocks } = await import('./locks.mjs');
+  const mk = (doc, type, kind, amount, date) => ({ row_id: `${doc}|${type}|LPG`, clean_doc: doc, entry_type: type, kind, lane: 'LPG', amount, date, ref_no: '', txt_line: 1 });
+  const projection = { rows: [mk('I1', 'Invoice', 'invoice', 100, '2026-01-01'), mk('C1', 'Crd Note', 'credit_note', -100, '2026-01-05'), mk('I2', 'Invoice', 'invoice', 50, '2026-01-01'), mk('C2', 'Crd Note', 'credit_note', -49, '2026-01-02')] };
+  const matches = {
+    ties: [
+      { tie_id: 'T0001', rule: 'CN_DN_PAIR', confidence: 'PROBABLE', members: ['I1|Invoice|LPG', 'C1|Crd Note|LPG'], docs: ['Invoice I1', 'Crd Note C1'], net: 0 },
+      { tie_id: 'T0002', rule: 'CN_DN_PAIR', confidence: 'CONFIRMED', members: ['I2|Invoice|LPG', 'C2|Crd Note|LPG'], docs: ['Invoice I2', 'Crd Note C2'], net: 1 },
+    ],
+  };
+  const base = { projection, matches, registry: {}, reason: 'operator: approve all', approvedBy: 'operator', session: 's', now: 'n' };
+  const ok = planApproveTies({ ...base, tieIds: ['T0001'] });
+  assert.equal(ok.ok, true, ok.reasons?.join('; '));
+  assert.equal(ok.locks[0].lock_id, 'L0001');
+  assert.equal(ok.locks[0].ruling.approvedTie.tie_id, 'T0001');
+  assert.equal(effectiveLocks(applyApprovals({}, ok)).locks.length, 1);
+  assert.equal(planApproveTies({ ...base, tieIds: ['T0002'] }).ok, false); // already confirmed
+  assert.equal(planApproveTies({ ...base, tieIds: ['T0099'] }).ok, false); // unknown
+  const nonzero = { ...base, matches: { ties: [{ ...matches.ties[0], net: 2 }] }, tieIds: ['T0001'] };
+  assert.equal(planApproveTies(nonzero).ok, false);
+});

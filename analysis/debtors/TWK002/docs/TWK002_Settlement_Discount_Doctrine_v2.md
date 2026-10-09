@@ -287,3 +287,18 @@ Deposit line cleanup is **recommended** for operational audit but **not required
 | :---: | :--- | :--- |
 | v1 | 2026-07-12 | Model B scaffold; 2023 remittance-batch rules |
 | v2 | 2026-07-13 | 2024 ERP patterns; orphan family; Path B/C catch-up; exception types; already_paid; Sep/Oct specials; GL and validation rules |
+
+---
+
+## Amendment 2026-10-09 (operator rulings, ADM-94): section 7 gains two exception types
+
+Appended, not edited: the section 7 table above stands. Operator rulings 2026-10-09: Q14 "yes" (add the types), Q13 "month-end + 30 days" (the terms deadline is the invoice month-end plus 30 calendar days, as `termsBasis: invoice_month_end_plus_30_days` says), Q11 "yes" (extend the register to the 2025-2026 batches). PROPOSED — NOT RATIFIED for portfolio use; this is the account's own doctrine.
+
+| Type | Meaning | Journal impact |
+| :--- | :--- | :--- |
+| `DISCOUNT_GRANTED_AFTER_TERMS` | The advice discounts a line paid after month-end + 30 days | None. The advice discount stands (section 2) and is posted as advised; the entry records the deviation. |
+| `IN_TERMS_NO_DISCOUNT` | The advice takes an in-terms line at R0 discount | Exclude the line from ref splits (as `LATE_PAYMENT_NO_DISCOUNT`) |
+
+Register entries recorded: `EXC-2025-0001` to `EXC-2025-0003` (STAT 110, 112, 114), `EXC-2026-0001` (invoice 41747 residual), `EXC-2026-0002` (STAT 123 late catch-up), `EXC-2026-0003` (STAT 123 in-terms lines), `EXC-2026-0004` (STAT 129), all in `config/settlement_discount_overrides.json`. The 2023-2024 entries are unaffected (those batches were paid on the 26th-28th, so no line changes status).
+
+**Tripwires:** a remittance or finance statement that the customer's terms count from statement date, or from the end of the following month, reopens Q13. An advice discounting a line more than 32 days past the deadline is outside the observed pattern: register it individually and flag it to the operator.

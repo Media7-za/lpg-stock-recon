@@ -11,6 +11,11 @@
  *     --treatment applied_to_bf --reason "…"
  *   node analysis/debtors/shared/scripts/approve_tie.mjs --debtor CODE --payment P1 \
  *     --invoices I2,I3 --treatment part_payment --partial I1 --reason "…"
+ *   Journals that belong to the settlement (e.g. a batch's discount journal), against the opening B/F:
+ *   node analysis/debtors/shared/scripts/approve_tie.mjs --debtor TWK002 --payment 37770 --journals 508 \
+ *     --treatment applied_to_bf --reason "…"
+ *   Approve probable ties the matcher found, by id (operator: "approve all"); prints each tie's documents:
+ *   node analysis/debtors/shared/scripts/approve_tie.mjs --debtor TWK002 --ties T0011,T0012 --reason "…"
  *   Several payments for one delivery, with its cylinder deposit invoice (BATCH_SUM rulings):
  *   node analysis/debtors/shared/scripts/approve_tie.mjs --debtor MOZ002 --payment 44227,45590 \
  *     --invoices 50528 --deposits 50529 --treatment exact --reason "…"
@@ -21,7 +26,7 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { matchAccount, readRegistry, registryPath, writeRegistry } from './match_account.mjs';
-import { planApproval, applyApproval } from './locks.mjs';
+import { planApproval, applyApproval, planApproveTies, applyApprovals } from './locks.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../../..');
 const arg = (n) => {
@@ -30,8 +35,9 @@ const arg = (n) => {
 };
 const code = String(arg('--debtor') || '').toUpperCase();
 const payment = arg('--payment');
-if (!code || !payment) {
-  console.error('Usage: approve_tie.mjs --debtor CODE --payment DOC [--invoices A,B] [--treatment T] [--partial DOC] --reason TEXT [--dry-run] [--by NAME]');
+const tieIds = (arg('--ties') || '').split(',').map((s) => s.trim()).filter(Boolean);
+if (!code || (!payment && !tieIds.length)) {
+  console.error('Usage: approve_tie.mjs --debtor CODE (--payment DOC [--invoices A,B] [--deposits N] [--journals N] [--treatment T] [--partial DOC] | --ties T0001,T0002) --reason TEXT [--dry-run] [--by NAME]');
   process.exit(1);
 }
 const dryRun = process.argv.includes('--dry-run');
@@ -47,11 +53,38 @@ if (!run.ok) {
   process.exit(2);
 }
 
+if (tieIds.length) {
+  const tplan = planApproveTies({
+    projection: run.projection,
+    matches: { ties: run.result.ties },
+    registry: reg.registry,
+    tieIds,
+    reason: arg('--reason'),
+    approvedBy: arg('--by') || 'operator',
+    session: process.env.CLAUDE_SESSION_URL || arg('--session') || 'unrecorded',
+    now: new Date().toISOString(),
+  });
+  if (!tplan.ok) {
+    console.error(`[${code}] APPROVAL REFUSED:`);
+    for (const r of tplan.reasons) console.error(`  - ${r}`);
+    process.exit(3);
+  }
+  for (const l of tplan.locks) {
+    console.log(`[${code}] ${dryRun ? 'DRY RUN — would record' : 'will record'} ${l.lock_id} (exact, net R${l.ruling.net}) = ${l.ruling.approvedTie.tie_id} ${l.ruling.approvedTie.rule}: ${l.ruling.approvedTie.docs.join(' + ')}`);
+  }
+  if (!dryRun) {
+    writeRegistry(acct, applyApprovals(reg.registry, tplan));
+    console.log(`Written ${path.relative(ROOT, registryPath(acct))} (projectionLocks). Re-run match_projection.mjs and render_open_items.mjs.`);
+  }
+  process.exit(0);
+}
+
 const plan = planApproval({
   projection: run.projection,
   registry: reg.registry,
   payment: String(payment),
   invoices: (arg('--invoices') || '').split(',').map((s) => s.trim().replace(/^0+/, '')).filter(Boolean),
+  journals: (arg('--journals') || '').split(',').map((s) => s.trim().replace(/^0+/, '')).filter(Boolean),
   deposits: (arg('--deposits') || '').split(',').map((s) => s.trim().replace(/^0+/, '')).filter(Boolean),
   treatment: arg('--treatment') || 'exact',
   partialDoc: arg('--partial') ? String(arg('--partial')).replace(/^0+/, '') : null,

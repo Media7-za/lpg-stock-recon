@@ -124,3 +124,25 @@ test('unconfirmed UD payments render as a memo, outside the balance', () => {
   const cust = renderOpenItemsMarkdown(buildOpenItems(projection, matches, 'customer'), { cfg: { debtorName: 'X', debtorCode: 'X1' }, projection, matches, generatedOn: 'd' });
   assert.match(cust, /R2,500\.00 received but not yet confirmed/);
 });
+
+test('named residuals: untied journals listed in config leave the open rows and show as proof lines that still tie', async () => {
+  const { buildOpenItems, renderOpenItemsMarkdown } = await import('./open_items.mjs');
+  const mk = (doc, type, kind, amount, line) => ({ row_id: `${doc}|${type}|LPG`, clean_doc: doc, entry_type: type, kind, lane: 'LPG', amount, date: '2026-07-12', ref_no: '', txt_line: line });
+  const projection = {
+    rows: [mk('490', 'Journal', 'journal', 4019.12, 2), mk('491', 'Journal', 'journal', -203.65, 3), mk('900', 'Invoice', 'invoice', 1000, 4)],
+    openings: { lpgOpeningBf: 100, cylOpeningFinancial: 0, combinedBf: 100 },
+    closings: { combined: 4915.47 },
+    source: { erpCurrentBalance: 4915.47, txtSha256: 'abcdef0123456789abcdef', dbChannel: 'test' },
+    window: { periodStart: '2026-07-01', lastRowDate: '2026-07-12' },
+  };
+  const matches = { ties: [], summary: { confirmed: 0, probable: 0 }, proof: {}, projection: { path: 'x' }, lockConflicts: [] };
+  const named = [{ id: 'phantom_cn_nets', label: 'Path B phantom journal nets', entry_type: 'Journal', docs: ['490'] }, { id: 'pathb', label: 'Path B discount journals', entry_type: 'Journal', docs: ['491'] }];
+  const model = buildOpenItems(projection, matches, 'internal', { namedResiduals: named });
+  assert.equal(model.parts.lpg.lines.length, 1); // only the invoice stays open
+  assert.equal(model.named.length, 2);
+  assert.equal(model.proof.combined, 4915.47);
+  assert.ok(model.proof.tiesToErp);
+  const md = renderOpenItemsMarkdown(model, { cfg: { debtorName: 'X', debtorCode: 'X1', rowNotes: [{ entry_type: 'Invoice', doc: '900', note: 'lane pending' }] }, projection, matches, generatedOn: '2026-10-09' });
+  assert.match(md, /Path B phantom journal nets \(1 journal rows\)/);
+  assert.match(md, /\*\*Invoice 900:\*\* lane pending/);
+});

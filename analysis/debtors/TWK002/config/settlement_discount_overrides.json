@@ -245,6 +245,172 @@
       "evidence_source": [
         "raw/Remittances/26.03.2024.pdf"
       ]
+    },
+    {
+      "approval_status": "approved",
+      "approved_by": "operator",
+      "approved_date": "2026-10-09",
+      "ruling": "Operator rulings 2026-10-09, ADM-94: Q11 yes (extend the register to 2025-2026), Q13 month-end + 30 days, Q14 yes (two new exception types). Analyst draft: analysis/debtors/TWK002/reports/TWK002_open_rows_analysis.md section 8.13.",
+      "override_id": "EXC-2025-0001",
+      "batch_id": "BATCH-2025-01-31",
+      "doc_no": "CONSOLIDATED",
+      "override_type": "DISCOUNT_GRANTED_AFTER_TERMS",
+      "remittance_discount": 112.78,
+      "terms_rule_discount": 0.0,
+      "payment_date": "2025-01-31",
+      "lines": [
+        "00039022",
+        "00011475"
+      ],
+      "days_past_terms": 1,
+      "reason": "Lines past month-end + 30 days but discounted on the advice; the advice is canonical (v2 section 2). No journal impact: journals already posted the advice amount.",
+      "evidence_source": [
+        "remittance_advice",
+        "raw/Remittances/31.01.2025.pdf"
+      ]
+    },
+    {
+      "approval_status": "approved",
+      "approved_by": "operator",
+      "approved_date": "2026-10-09",
+      "ruling": "Operator rulings 2026-10-09, ADM-94: Q11 yes (extend the register to 2025-2026), Q13 month-end + 30 days, Q14 yes (two new exception types). Analyst draft: analysis/debtors/TWK002/reports/TWK002_open_rows_analysis.md section 8.13.",
+      "override_id": "EXC-2025-0002",
+      "batch_id": "BATCH-2025-03-31",
+      "doc_no": "CONSOLIDATED",
+      "override_type": "DISCOUNT_GRANTED_AFTER_TERMS",
+      "remittance_discount": 228.93,
+      "terms_rule_discount": 0.0,
+      "payment_date": "2025-03-31",
+      "lines": [
+        "00040081",
+        "00011648",
+        "00011743",
+        "00040459",
+        "00011821",
+        "00040950",
+        "00011953"
+      ],
+      "reason": "Lines past month-end + 30 days but discounted on the advice. 00039683 late at R0 conforms. 40081, 11648 and 11743 were 29 days late, the rest 1 day. Journal 508.",
+      "evidence_source": [
+        "remittance_advice",
+        "raw/Remittances/31.03.2025(1).pdf"
+      ]
+    },
+    {
+      "approval_status": "approved",
+      "approved_by": "operator",
+      "approved_date": "2026-10-09",
+      "ruling": "Operator rulings 2026-10-09, ADM-94: Q11 yes (extend the register to 2025-2026), Q13 month-end + 30 days, Q14 yes (two new exception types). Analyst draft: analysis/debtors/TWK002/reports/TWK002_open_rows_analysis.md section 8.13.",
+      "override_id": "EXC-2025-0003",
+      "batch_id": "BATCH-2025-05-31",
+      "doc_no": "CONSOLIDATED",
+      "override_type": "DISCOUNT_GRANTED_AFTER_TERMS",
+      "remittance_discount": 393.99,
+      "terms_rule_discount": 0.0,
+      "payment_date": "2025-05-31",
+      "lines": [
+        "00041747",
+        "00012131",
+        "00042050",
+        "00012214",
+        "00012215",
+        "00042468",
+        "00042470"
+      ],
+      "reason": "Lines past month-end + 30 days but discounted on the advice. 41747 took its discount on the CYL slice only (R495.94 = 2.5% x R19,837.50); the R12,226.63 residual was paid on STAT 123 (EXC-2026-0001). 12131 is listed on two advice lines. Journal 509.",
+      "evidence_source": [
+        "remittance_advice",
+        "raw/Remittances/31.05.2025.pdf"
+      ]
+    },
+    {
+      "approval_status": "approved",
+      "approved_by": "operator",
+      "approved_date": "2026-10-09",
+      "ruling": "Operator rulings 2026-10-09, ADM-94: Q11 yes (extend the register to 2025-2026), Q13 month-end + 30 days, Q14 yes (two new exception types). Analyst draft: analysis/debtors/TWK002/reports/TWK002_open_rows_analysis.md section 8.13.",
+      "override_id": "EXC-2026-0001",
+      "batch_id": "BATCH-2026-STAT-123",
+      "doc_no": "00041747",
+      "override_type": "CROSS_BATCH_RESIDUAL_NO_DISCOUNT",
+      "gross_amount": 32064.13,
+      "payable_amount": 12226.63,
+      "remittance_discount": 0.0,
+      "payment_date": "2026-02-28",
+      "invoice_date": "2025-03-26",
+      "terms_deadline": "2025-04-30",
+      "days_past_terms": 304,
+      "reason": "Residual (LPG lane) after the STAT 114 CYL slice; precedent EXC-0005. Ties by lane (matcher v5 M1).",
+      "evidence_source": [
+        "remittance_advice",
+        "raw/Remittances/18.02.2026.pdf",
+        "data/remittance_lines_2026.csv line 2"
+      ]
+    },
+    {
+      "approval_status": "approved",
+      "approved_by": "operator",
+      "approved_date": "2026-10-09",
+      "ruling": "Operator rulings 2026-10-09, ADM-94: Q11 yes (extend the register to 2025-2026), Q13 month-end + 30 days, Q14 yes (two new exception types). Analyst draft: analysis/debtors/TWK002/reports/TWK002_open_rows_analysis.md section 8.13.",
+      "override_id": "EXC-2026-0002",
+      "batch_id": "BATCH-2026-STAT-123",
+      "doc_no": "CATCHUP-2025",
+      "override_type": "LATE_CATCHUP_BATCH",
+      "remittance_discount": 0.0,
+      "payment_date": "2026-02-28",
+      "reason": "43 late lines paid at R0 discount, as the terms rule says. TWK002 slice only (R176,824.24 of the R240,325.86 advice; TWK003 R38,501.31 and TWK004 R25,000.31 are the sister postings of receipt 43500).",
+      "evidence_source": [
+        "remittance_advice",
+        "raw/Remittances/18.02.2026.pdf"
+      ]
+    },
+    {
+      "approval_status": "approved",
+      "approved_by": "operator",
+      "approved_date": "2026-10-09",
+      "ruling": "Operator rulings 2026-10-09, ADM-94: Q11 yes (extend the register to 2025-2026), Q13 month-end + 30 days, Q14 yes (two new exception types). Analyst draft: analysis/debtors/TWK002/reports/TWK002_open_rows_analysis.md section 8.13.",
+      "override_id": "EXC-2026-0003",
+      "batch_id": "BATCH-2026-STAT-123",
+      "doc_no": "CONSOLIDATED",
+      "override_type": "IN_TERMS_NO_DISCOUNT",
+      "remittance_discount": 0.0,
+      "terms_rule_discount": -70.0,
+      "payment_date": "2026-02-28",
+      "lines": [
+        "00048687",
+        "00014237",
+        "00014034"
+      ],
+      "reason": "Three lines paid within terms but taken at R0 discount: 00048687 (+R878.75), CN 00014237 (-R569.25), CN 00014034 (-R379.50); net -R70.00. Excluded from the discount journal's per-document split (as LATE_PAYMENT_NO_DISCOUNT).",
+      "evidence_source": [
+        "remittance_advice",
+        "raw/Remittances/18.02.2026.pdf"
+      ]
+    },
+    {
+      "approval_status": "approved",
+      "approved_by": "operator",
+      "approved_date": "2026-10-09",
+      "ruling": "Operator rulings 2026-10-09, ADM-94: Q11 yes (extend the register to 2025-2026), Q13 month-end + 30 days, Q14 yes (two new exception types). Analyst draft: analysis/debtors/TWK002/reports/TWK002_open_rows_analysis.md section 8.13.",
+      "override_id": "EXC-2026-0004",
+      "batch_id": "BATCH-2026-STAT-129",
+      "doc_no": "CONSOLIDATED",
+      "override_type": "DISCOUNT_GRANTED_AFTER_TERMS",
+      "remittance_discount": 1223.45,
+      "terms_rule_discount": -491.62,
+      "payment_date": "2026-08-31",
+      "lines": [
+        "00015155",
+        "00015262",
+        "00051226",
+        "00051496",
+        "00051841",
+        "00052241"
+      ],
+      "reason": "Lines past month-end + 30 days but discounted on the advice. 51226 was 32 days late, the rest 1 day; 51841 is on two advice lines. 13 late lines at R0 conform; CN 15370 in terms (R0.01 rounding). Journal 510.",
+      "evidence_source": [
+        "remittance_advice",
+        "raw/Remittances/B226 - REMITTANCE.pdf"
+      ]
     }
   ]
 }

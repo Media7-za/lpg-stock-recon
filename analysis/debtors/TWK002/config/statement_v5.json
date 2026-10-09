@@ -40,5 +40,51 @@
         "txtPath": "analysis/debtors/TWK002/raw/DEBENQ_TWK004.TXT"
       }
     ]
-  }
+  },
+  "namedResiduals": [
+    {
+      "id": "phantom_cn_nets",
+      "label": "Path B phantom journal nets (ratified bridge line phantom_cn_nets)",
+      "entry_type": "Journal",
+      "docs": [
+        "490",
+        "492",
+        "493",
+        "494",
+        "495",
+        "496",
+        "503",
+        "504",
+        "505",
+        "506"
+      ],
+      "ruling": "Operator ruling 2026-10-09 (ADM-94 Q8'): show pre-window journals under the ratified balanceBridgeLines ids in the v5 open-items view; no new line, no H-027 posting, no change to the customer bill. 490, 492-496 = R9,894.01 (the ratified line); 503-506 net R0.00."
+    },
+    {
+      "id": "pathb_journals_untagged",
+      "label": "Path B discount journals, blank INVNO (ratified bridge line pathb_journals_untagged)",
+      "entry_type": "Journal",
+      "docs": [
+        "491",
+        "499",
+        "500",
+        "501",
+        "502",
+        "507"
+      ],
+      "ruling": "Same ruling. 491, 499-502, 507 = R-4,677.84; with 508 (R-228.93, applied_to_bf lock) and 509 (R-393.99, in the STAT 114 tie) = the ratified R-5,300.76."
+    }
+  ],
+  "rowNotes": [
+    {
+      "entry_type": "Crd Note",
+      "doc": "15775",
+      "note": "Operator ruling 2026-10-09 (ADM-94 Q5): CN 15775 (-R7,935.00, DN#23843, 2026-10-08) is a CYLINDER credit and belongs in the CYL lane. Shown in the gas (LPG) lane here only because its lines are not yet in the DB (split_basis HEADER_FALLBACK; ADM-93). Amounts are unchanged. The reconcile has no lane override, so the lane moves when the ADM-93 sync brings the DB lines; if any part then lands in the LPG lane, reopen this ruling. Check the DB lines (SKUs, quantities) against the R7,590 of cylinder deposits paid in cash on STAT 123 for a double credit (unverified)."
+    },
+    {
+      "entry_type": "Invoice",
+      "doc": "53507",
+      "note": "Same delivery as CN 15775 (DN#23843), dated 2026-10-08, lines not yet in the DB (HEADER_FALLBACK; ADM-93). May pair with the CYL deposit lane once the lines arrive."
+    }
+  ]
 }

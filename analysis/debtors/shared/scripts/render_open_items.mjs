@@ -31,7 +31,7 @@ const matches = read('data/projection_matches.json');
 const generatedOn = new Date().toISOString().slice(0, 10);
 
 for (const view of ['internal', 'customer']) {
-  const model = buildOpenItems(projection, matches, view);
+  const model = buildOpenItems(projection, matches, view, { namedResiduals: cfg.namedResiduals });
   if (!model.proof.holds) {
     console.error(`[${code}] REFUSED (${view}): open items rebuild R${model.proof.combined} ≠ projection closing R${model.proof.projectionClosing}`);
     process.exit(2);

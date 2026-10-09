@@ -2,7 +2,7 @@
   "status": "PROPOSED — NOT RATIFIED (PROPOSED_Projection_Matching_Locks.md, build step 2)",
   "debtorCode": "TWK002",
   "generatedBy": "match_projection.mjs",
-  "generatedAt": "2026-10-09T17:23:54.646Z",
+  "generatedAt": "2026-10-09T17:26:49.663Z",
   "projection": {
     "path": "analysis/debtors/TWK002/data/v5_projection.json",
     "txtSha256": "e657e03f68cdb9090cf2ec0e2ccf35fc71550e624de7005a7287142998c55a7d",
@@ -16,7 +16,7 @@
   "locksRegistry": "config/payment_pattern_overrides.json#projectionLocks",
   "matcherVersion": 5,
   "closedThrough": null,
-  "locksApplied": 0,
+  "locksApplied": 5,
   "lockConflicts": [],
   "rules": {
     "exactTolerance": 0.05,
@@ -41,16 +41,16 @@
     "remittanceBatchTolerancePct": 0.001
   },
   "summary": {
-    "ties": 16,
-    "confirmed": 12,
-    "probable": 4,
+    "ties": 17,
+    "confirmed": 17,
+    "probable": 0,
     "byRule": {
+      "LOCKED": 5,
       "REMITTANCE": 3,
-      "CN_DN_PAIR": 12,
-      "CN_AMOUNT_DATE": 1
+      "CN_DN_PAIR": 9
     },
-    "paymentsTotal": 1,
-    "paymentsUnallocated": 1
+    "paymentsTotal": 0,
+    "paymentsUnallocated": 0
   },
   "proof": {
     "rebuiltClosing": 54136.19,
@@ -89,15 +89,13 @@
       ]
     },
     "unallocatedPayments": {
-      "count": 1,
-      "amount": -35693.84,
-      "rows": [
-        "37770|Payment|LPG|L10"
-      ]
+      "count": 0,
+      "amount": 0,
+      "rows": []
     },
     "otherUntied": {
-      "count": 25,
-      "amount": 4987.24,
+      "count": 24,
+      "amount": 5216.17,
       "rows": [
         "494|Journal|LPG|L2",
         "494|Journal|LPG|L3",
@@ -122,11 +120,10 @@
         "504|Journal|LPG|L103",
         "505|Journal|LPG|L104",
         "506|Journal|LPG|L105",
-        "507|Journal|LPG|L106",
-        "508|Journal|LPG|L107"
+        "507|Journal|LPG|L106"
       ]
     },
-    "tieNets": 0,
+    "tieNets": -35922.77,
     "discountJournalsPending": 0
   },
   "remittance": {
@@ -134,15 +131,15 @@
     "applied": [
       {
         "batchId": "BATCH-2025-05-31",
-        "tie_id": "T0001"
+        "tie_id": "T0006"
       },
       {
         "batchId": "BATCH-2026-STAT-123",
-        "tie_id": "T0002"
+        "tie_id": "T0007"
       },
       {
         "batchId": "BATCH-2026-STAT-129",
-        "tie_id": "T0003"
+        "tie_id": "T0008"
       }
     ],
     "unresolved": [
@@ -234,7 +231,7 @@
       {
         "batchId": "BATCH-2025-03-31",
         "paymentDoc": "37770",
-        "reason": "documents not available: Invoice 39683, Invoice 40081, Crd Note 11648, Crd Note 11743, Invoice 40459, Crd Note 11821, Invoice 40950, Crd Note 11953"
+        "reason": "payment row already tied (T0001)"
       }
     ],
     "skippedSources": []
@@ -242,6 +239,158 @@
   "ties": [
     {
       "tie_id": "T0001",
+      "rule": "LOCKED",
+      "confidence": "CONFIRMED",
+      "members": [
+        "37770|Payment|LPG|L10",
+        "508|Journal|LPG|L107"
+      ],
+      "docs": [
+        "Payment 37770",
+        "Journal 508"
+      ],
+      "net": -35922.77,
+      "lock_id": "L0001",
+      "close_id": null,
+      "lockedRule": "OPERATOR_RULING",
+      "ruling": {
+        "treatment": "applied_to_bf",
+        "net": -35922.77,
+        "reason": "Operator ruling ADM-94 Q7 (2026-10-09, confirmed in the main session): payment 37770 (STAT 112, R35,693.84) and its discount journal 508 (-R228.93) are applied against the opening B/F, settling the eight pre-window documents inside it: invoices 39683, 40081, 40459, 40950 and credit notes 11648, 11743, 11821, 11953 (R35,922.77). Evidence: the STAT 112 advice (BATCH-2025-03-31), data/allocation_edges.csv AL-0109..AL-0116, raw/TWK0022024.TXT lines 19-22 and 49-52, and ERP journal 511. This is the ratified bridge line stat112_untagged. The unitemised B/F falls from R38,791.27 to R2,868.50. Tripwire: a full-history export restating the B/F as named invoices with real INVNOs for these journals reopens the bridge.",
+        "approvedBy": "operator",
+        "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx"
+      }
+    },
+    {
+      "tie_id": "T0002",
+      "rule": "LOCKED",
+      "confidence": "CONFIRMED",
+      "members": [
+        "51180|Invoice|LPG|L80",
+        "15063|Crd Note|LPG|L81"
+      ],
+      "docs": [
+        "Invoice 51180",
+        "Crd Note 15063"
+      ],
+      "net": 0,
+      "lock_id": "L0002",
+      "close_id": null,
+      "lockedRule": "OPERATOR_RULING",
+      "ruling": {
+        "treatment": "exact",
+        "net": 0,
+        "reason": "Operator ruling ADM-94 Q6 (2026-10-09, \"approve all four\", confirmed in the main session): invoice 51180 + CN 15063 (both lanes, DN#22798; ERP Crd Note tag to 51180, same order 00013935, exact reversal), invoice 53078 + CN 15646 (DN#24985, 4 days apart) and invoice 53351 + CN 15714 (ref 21388, same day). For 53078/15646 and 53351/15714 the deciding evidence is operator judgement (business_rules section 15 rule 7), with same DN or reference and exact amount as supporting evidence. Tripwires: an allocation-detail export tagging CN 15646 or CN 15714 to a different invoice; a re-issue of 51180, 53078 or 53351.",
+        "approvedBy": "operator",
+        "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx",
+        "approvedTie": {
+          "tie_id": "T0012",
+          "rule": "CN_DN_PAIR",
+          "docs": [
+            "Invoice 51180",
+            "Crd Note 15063"
+          ]
+        }
+      }
+    },
+    {
+      "tie_id": "T0003",
+      "rule": "LOCKED",
+      "confidence": "CONFIRMED",
+      "members": [
+        "51180|Invoice|CYL|L80",
+        "15063|Crd Note|CYL|L81"
+      ],
+      "docs": [
+        "Invoice 51180",
+        "Crd Note 15063"
+      ],
+      "net": 0,
+      "lock_id": "L0003",
+      "close_id": null,
+      "lockedRule": "OPERATOR_RULING",
+      "ruling": {
+        "treatment": "exact",
+        "net": 0,
+        "reason": "Operator ruling ADM-94 Q6 (2026-10-09, \"approve all four\", confirmed in the main session): invoice 51180 + CN 15063 (both lanes, DN#22798; ERP Crd Note tag to 51180, same order 00013935, exact reversal), invoice 53078 + CN 15646 (DN#24985, 4 days apart) and invoice 53351 + CN 15714 (ref 21388, same day). For 53078/15646 and 53351/15714 the deciding evidence is operator judgement (business_rules section 15 rule 7), with same DN or reference and exact amount as supporting evidence. Tripwires: an allocation-detail export tagging CN 15646 or CN 15714 to a different invoice; a re-issue of 51180, 53078 or 53351.",
+        "approvedBy": "operator",
+        "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx",
+        "approvedTie": {
+          "tie_id": "T0013",
+          "rule": "CN_DN_PAIR",
+          "docs": [
+            "Invoice 51180",
+            "Crd Note 15063"
+          ]
+        }
+      }
+    },
+    {
+      "tie_id": "T0004",
+      "rule": "LOCKED",
+      "confidence": "CONFIRMED",
+      "members": [
+        "53078|Invoice|OTHER|L119",
+        "15646|Crd Note|OTHER|L121"
+      ],
+      "docs": [
+        "Invoice 53078",
+        "Crd Note 15646"
+      ],
+      "net": 0,
+      "lock_id": "L0004",
+      "close_id": null,
+      "lockedRule": "OPERATOR_RULING",
+      "ruling": {
+        "treatment": "exact",
+        "net": 0,
+        "reason": "Operator ruling ADM-94 Q6 (2026-10-09, \"approve all four\", confirmed in the main session): invoice 51180 + CN 15063 (both lanes, DN#22798; ERP Crd Note tag to 51180, same order 00013935, exact reversal), invoice 53078 + CN 15646 (DN#24985, 4 days apart) and invoice 53351 + CN 15714 (ref 21388, same day). For 53078/15646 and 53351/15714 the deciding evidence is operator judgement (business_rules section 15 rule 7), with same DN or reference and exact amount as supporting evidence. Tripwires: an allocation-detail export tagging CN 15646 or CN 15714 to a different invoice; a re-issue of 51180, 53078 or 53351.",
+        "approvedBy": "operator",
+        "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx",
+        "approvedTie": {
+          "tie_id": "T0016",
+          "rule": "CN_DN_PAIR",
+          "docs": [
+            "Invoice 53078",
+            "Crd Note 15646"
+          ]
+        }
+      }
+    },
+    {
+      "tie_id": "T0005",
+      "rule": "LOCKED",
+      "confidence": "CONFIRMED",
+      "members": [
+        "53351|Invoice|CYL|L124",
+        "15714|Crd Note|CYL|L122"
+      ],
+      "docs": [
+        "Invoice 53351",
+        "Crd Note 15714"
+      ],
+      "net": 0,
+      "lock_id": "L0005",
+      "close_id": null,
+      "lockedRule": "OPERATOR_RULING",
+      "ruling": {
+        "treatment": "exact",
+        "net": 0,
+        "reason": "Operator ruling ADM-94 Q6 (2026-10-09, \"approve all four\", confirmed in the main session): invoice 51180 + CN 15063 (both lanes, DN#22798; ERP Crd Note tag to 51180, same order 00013935, exact reversal), invoice 53078 + CN 15646 (DN#24985, 4 days apart) and invoice 53351 + CN 15714 (ref 21388, same day). For 53078/15646 and 53351/15714 the deciding evidence is operator judgement (business_rules section 15 rule 7), with same DN or reference and exact amount as supporting evidence. Tripwires: an allocation-detail export tagging CN 15646 or CN 15714 to a different invoice; a re-issue of 51180, 53078 or 53351.",
+        "approvedBy": "operator",
+        "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx",
+        "approvedTie": {
+          "tie_id": "T0017",
+          "rule": "CN_AMOUNT_DATE",
+          "docs": [
+            "Invoice 53351",
+            "Crd Note 15714"
+          ]
+        }
+      }
+    },
+    {
+      "tie_id": "T0006",
       "rule": "REMITTANCE",
       "confidence": "CONFIRMED",
       "members": [
@@ -339,7 +488,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0002",
+      "tie_id": "T0007",
       "rule": "REMITTANCE",
       "confidence": "CONFIRMED",
       "members": [
@@ -719,7 +868,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0003",
+      "tie_id": "T0008",
       "rule": "REMITTANCE",
       "confidence": "CONFIRMED",
       "members": [
@@ -904,7 +1053,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0004",
+      "tie_id": "T0009",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -920,7 +1069,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0005",
+      "tie_id": "T0010",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -936,7 +1085,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0006",
+      "tie_id": "T0011",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -952,7 +1101,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0007",
+      "tie_id": "T0012",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -968,7 +1117,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0008",
+      "tie_id": "T0013",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -984,7 +1133,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0009",
+      "tie_id": "T0014",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -1000,7 +1149,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0010",
+      "tie_id": "T0015",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -1016,39 +1165,7 @@
       "lagDays": 1
     },
     {
-      "tie_id": "T0011",
-      "rule": "CN_DN_PAIR",
-      "confidence": "PROBABLE",
-      "members": [
-        "51180|Invoice|LPG|L80",
-        "15063|Crd Note|LPG|L81"
-      ],
-      "docs": [
-        "Invoice 51180",
-        "Crd Note 15063"
-      ],
-      "net": 0,
-      "dn": "22798",
-      "lagDays": 3
-    },
-    {
-      "tie_id": "T0012",
-      "rule": "CN_DN_PAIR",
-      "confidence": "PROBABLE",
-      "members": [
-        "51180|Invoice|CYL|L80",
-        "15063|Crd Note|CYL|L81"
-      ],
-      "docs": [
-        "Invoice 51180",
-        "Crd Note 15063"
-      ],
-      "net": 0,
-      "dn": "22798",
-      "lagDays": 3
-    },
-    {
-      "tie_id": "T0013",
+      "tie_id": "T0016",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -1064,7 +1181,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0014",
+      "tie_id": "T0017",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -1078,40 +1195,7 @@
       "net": 0,
       "dn": "24836",
       "lagDays": 1
-    },
-    {
-      "tie_id": "T0015",
-      "rule": "CN_DN_PAIR",
-      "confidence": "PROBABLE",
-      "members": [
-        "53078|Invoice|OTHER|L119",
-        "15646|Crd Note|OTHER|L121"
-      ],
-      "docs": [
-        "Invoice 53078",
-        "Crd Note 15646"
-      ],
-      "net": 0,
-      "dn": "24985",
-      "lagDays": 4
-    },
-    {
-      "tie_id": "T0016",
-      "rule": "CN_AMOUNT_DATE",
-      "confidence": "PROBABLE",
-      "members": [
-        "53351|Invoice|CYL|L124",
-        "15714|Crd Note|CYL|L122"
-      ],
-      "docs": [
-        "Invoice 53351",
-        "Crd Note 15714"
-      ],
-      "net": 0,
-      "lagDays": 0
     }
   ],
-  "unallocatedPayments": [
-    "37770|Payment|LPG|L10"
-  ]
+  "unallocatedPayments": []
 }
