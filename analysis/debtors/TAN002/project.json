@@ -94,6 +94,10 @@
     {
       "date": "2026-10-08",
       "event": "Fresh refresh after the TXT switch to raw/TAN002_2026-10-08.TXT (operator \"Yes\"; B/F R16,828.85, periodStart 2025-02-22). CONNECTOR-SOURCED (db_replay, 5 md5-verified captures in data/db_replay/2026-10-08b/; authority: \"I authorize the agent to use database connectors\"). Coverage CURRENT_PARTIAL: only gap is Ud Paymnt 46364 (-2,500.00, 2026-10-06, no DB header) — review-only; 3 DB-only docs dated 2025-02-27 (CN 11976, inv 41042, 41043). ERP R7,938.37 = 1A R6,040.87 + 1B R1,897.50, variance R0.00 (PROVEN, data/v5_projection.json); udPending 46364 R-2,500 memo, unexplained 0. Statement NOT regenerated (placeholder opening split; regenerated version dropped the placeholder warning and shifted monthly openings +517.50 / -690.00 — unexplained). Matcher v4: 87 ties (67 confirmed / 20 probable); 7 payments unallocated (R78,617.03). Open items: 55 internal rows tie R7,938.37. Matching PROPOSED — NOT RATIFIED."
+    },
+    {
+      "date": "2026-10-09",
+      "event": "Matcher v5 applied (operator: \"Yes\" to applying the 2026-10-09 preview, docs/previews/2026-10-09_matcher_v5_preview.md): new rules BATCH_SUM, CYL_EXCHANGE, BALANCE_ZERO; DN parser reads DN_nnnnn. Re-run match_projection + render_open_items only; no lock created, no statement released. PROPOSED — NOT RATIFIED. Proof holds, 0 lock conflicts. Ties 87 -> 89 (+2 CYL_EXCHANGE; 69 confirmed / 20 probable); open rows internal 55 -> 41, customer 97 -> 83; ERP R7,938.37 ties. 7 payments unallocated (R78,617.03). Statement still not regenerated (placeholder opening)."
     }
   ]
 }

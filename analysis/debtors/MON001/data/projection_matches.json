@@ -2,7 +2,7 @@
   "status": "PROPOSED — NOT RATIFIED (PROPOSED_Projection_Matching_Locks.md, build step 2)",
   "debtorCode": "MON001",
   "generatedBy": "match_projection.mjs",
-  "generatedAt": "2026-10-08T13:31:56.307Z",
+  "generatedAt": "2026-10-09T04:50:06.254Z",
   "projection": {
     "path": "analysis/debtors/MON001/data/v5_projection.json",
     "txtSha256": "3b289b8d9d7684672e7f844a656c089f24ce8c2483de0de7855a6b3391b8fef2",
@@ -14,7 +14,7 @@
     "ingestCoverage partial"
   ],
   "locksRegistry": "none yet",
-  "matcherVersion": 4,
+  "matcherVersion": 5,
   "closedThrough": null,
   "locksApplied": 0,
   "lockConflicts": [],
@@ -31,21 +31,28 @@
       "LPG",
       "OTHER"
     ],
+    "batchMaxPayments": 3,
+    "batchMaxBatches": 2,
+    "batchWindowDays": 120,
+    "batchPool": 40,
+    "cylExchange": true,
+    "balanceZeroCut": true,
     "remittanceLineTolerance": 0.05,
     "remittanceBatchTolerancePct": 0.001
   },
   "summary": {
-    "ties": 29,
+    "ties": 30,
     "confirmed": 26,
-    "probable": 3,
+    "probable": 4,
     "byRule": {
       "CN_DN_PAIR": 17,
       "EXACT_SINGLE": 10,
       "EXACT_MONTH_SUM": 1,
-      "PROXIMITY": 1
+      "PROXIMITY": 1,
+      "BATCH_SUM": 1
     },
     "paymentsTotal": 15,
-    "paymentsUnallocated": 3
+    "paymentsUnallocated": 2
   },
   "proof": {
     "rebuiltClosing": 2417.24,
@@ -56,23 +63,19 @@
   "residual": {
     "openingBfUnitemised": 162.86,
     "openInvoicesLpgOther": {
-      "count": 6,
-      "amount": 13628.73,
+      "count": 4,
+      "amount": 9405.93,
       "rows": [
         "46978|Invoice|LPG|L28",
         "52130|Invoice|OTHER|L37",
-        "50097|Invoice|LPG|L46",
-        "50363|Invoice|LPG|L50",
         "51952|Invoice|LPG|L60",
         "53432|Invoice|LPG|L69"
       ]
     },
     "openInvoicesCyl": {
-      "count": 1,
-      "amount": 1207.5,
-      "rows": [
-        "50097|Invoice|CYL|L46"
-      ]
+      "count": 0,
+      "amount": 0,
+      "rows": []
     },
     "unmatchedCredits": {
       "count": 2,
@@ -83,12 +86,11 @@
       ]
     },
     "unallocatedPayments": {
-      "count": 3,
-      "amount": -10875.92,
+      "count": 2,
+      "amount": -5445.62,
       "rows": [
         "45158|Payment|LPG|L2",
-        "37379|Payment|LPG|L3",
-        "45216|Payment|LPG|L57"
+        "37379|Payment|LPG|L3"
       ]
     },
     "otherUntied": {
@@ -703,11 +705,54 @@
         }
       ],
       "variance": -0.1
+    },
+    {
+      "tie_id": "T0030",
+      "rule": "BATCH_SUM",
+      "confidence": "PROBABLE",
+      "members": [
+        "45216|Payment|LPG|L57",
+        "50363|Invoice|LPG|L50",
+        "50097|Invoice|LPG|L46",
+        "50097|Invoice|CYL|L46"
+      ],
+      "docs": [
+        "Payment 45216",
+        "Invoice 50363",
+        "Invoice 50097"
+      ],
+      "net": 0,
+      "payments": [
+        {
+          "doc": "45216",
+          "date": "2026-07-15",
+          "amount": 5430.3
+        }
+      ],
+      "batches": [
+        {
+          "batch": "DN22341",
+          "date": "2026-04-24",
+          "amount": 2815.2,
+          "docs": [
+            "LPG 50363"
+          ]
+        },
+        {
+          "batch": "DN21861",
+          "date": "2026-04-02",
+          "amount": 2615.1,
+          "docs": [
+            "LPG 50097",
+            "CYL 50097"
+          ]
+        }
+      ],
+      "variance": 0
     }
   ],
   "unallocatedPayments": [
     "45158|Payment|LPG|L2",
-    "37379|Payment|LPG|L3",
-    "45216|Payment|LPG|L57"
+    "37379|Payment|LPG|L3"
   ]
 }

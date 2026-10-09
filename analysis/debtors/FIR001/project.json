@@ -109,6 +109,10 @@
     {
       "date": "2026-10-08",
       "event": "TXT switched to raw/FIR001_2026-10-08.TXT on operator instruction (\"switch the other six accounts ... YES\"); window widened: B/F R25,752.41, periodStart 2022-12-29 (was R597.43 from 2026-07-01). CONNECTOR-SOURCED refresh (db_replay, 6 md5-verified captures in data/db_replay/2026-10-08c/; authority: \"I authorize the agent to use database connectors\"). Coverage CURRENT_PARTIAL: payments 17570 (-6,316.11, 2022-12-29), 17655 (-6,087.81), 17786 (-6,258.19), 17849 (-6,492.87) have no DB header (PROVEN) — review-only. TXT has no rows 2023-01-24..2025-03-04 (balance R597.43 carried); DB holds 304 docs in that gap netting R-2,572.26 (ASSERTED, needs ERP agent). ERP R9,469.77 = 1A R7,917.27 + 1B R1,552.50, variance R0.00 (PROVEN, data/v5_projection.json); cyl openings unchanged and 1B reproduces. Matcher v4: close C0001 (through 2026-08-31) holds — 19 locks applied, 0 conflicts; 161 ties (151 confirmed / 10 probable); 9 payments unallocated (R50,588.14, includes the 4 pre-gap payments). Open items: 28 internal rows tie R9,469.77. Matching PROPOSED — NOT RATIFIED."
+    },
+    {
+      "date": "2026-10-09",
+      "event": "Matcher v5 applied (operator: \"Yes\" to applying the 2026-10-09 preview, docs/previews/2026-10-09_matcher_v5_preview.md): new rules BATCH_SUM, CYL_EXCHANGE, BALANCE_ZERO; DN parser reads DN_nnnnn. Re-run match_projection + render_open_items only; no lock created, no statement released. PROPOSED — NOT RATIFIED. Proof holds, 0 lock conflicts. Ties 161 -> 163 (154 confirmed / 9 probable; +2 CYL_EXCHANGE); open rows internal 28 -> 21, customer 48 -> 39; ERP R9,469.77 ties; close C0001 (through 2026-08-31, 19 locks) untouched. Review-only (ingest partial, ADM-93)."
     }
   ]
 }

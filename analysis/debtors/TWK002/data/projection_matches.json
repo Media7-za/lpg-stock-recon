@@ -2,7 +2,7 @@
   "status": "PROPOSED — NOT RATIFIED (PROPOSED_Projection_Matching_Locks.md, build step 2)",
   "debtorCode": "TWK002",
   "generatedBy": "match_projection.mjs",
-  "generatedAt": "2026-10-08T16:29:22.232Z",
+  "generatedAt": "2026-10-09T04:50:07.327Z",
   "projection": {
     "path": "analysis/debtors/TWK002/data/v5_projection.json",
     "txtSha256": "e657e03f68cdb9090cf2ec0e2ccf35fc71550e624de7005a7287142998c55a7d",
@@ -14,7 +14,7 @@
     "ingestCoverage partial"
   ],
   "locksRegistry": "config/payment_pattern_overrides.json#projectionLocks",
-  "matcherVersion": 4,
+  "matcherVersion": 5,
   "closedThrough": null,
   "locksApplied": 0,
   "lockConflicts": [],
@@ -31,17 +31,24 @@
       "LPG",
       "OTHER"
     ],
+    "batchMaxPayments": 3,
+    "batchMaxBatches": 2,
+    "batchWindowDays": 120,
+    "batchPool": 40,
+    "cylExchange": true,
+    "balanceZeroCut": true,
     "remittanceLineTolerance": 0.05,
     "remittanceBatchTolerancePct": 0.001
   },
   "summary": {
-    "ties": 30,
-    "confirmed": 25,
+    "ties": 31,
+    "confirmed": 26,
     "probable": 5,
     "byRule": {
       "REMITTANCE": 1,
       "CN_DN_PAIR": 28,
-      "CN_AMOUNT_DATE": 1
+      "CN_AMOUNT_DATE": 1,
+      "CYL_EXCHANGE": 1
     },
     "paymentsTotal": 3,
     "paymentsUnallocated": 3
@@ -88,10 +95,9 @@
       ]
     },
     "openInvoicesCyl": {
-      "count": 6,
-      "amount": 84697.5,
+      "count": 5,
+      "amount": 84007.5,
       "rows": [
-        "42470|Invoice|CYL|L19",
         "43294|Invoice|CYL|L24",
         "43909|Invoice|CYL|L28",
         "47196|Invoice|CYL|L53",
@@ -100,11 +106,10 @@
       ]
     },
     "unmatchedCredits": {
-      "count": 8,
-      "amount": -85257.27,
+      "count": 7,
+      "amount": -84567.27,
       "rows": [
         "12215|Crd Note|LPG|L13",
-        "12215|Crd Note|CYL|L13",
         "12550|Crd Note|CYL|L25",
         "12724|Crd Note|CYL|L27",
         "13716|Crd Note|CYL|L52",
@@ -915,6 +920,24 @@
       ],
       "net": 0,
       "lagDays": 0
+    },
+    {
+      "tie_id": "T0031",
+      "rule": "CYL_EXCHANGE",
+      "confidence": "CONFIRMED",
+      "members": [
+        "12215|Crd Note|CYL|L13",
+        "42470|Invoice|CYL|L19"
+      ],
+      "docs": [
+        "Crd Note 12215",
+        "Invoice 42470"
+      ],
+      "net": 0,
+      "from": "2025-04-07",
+      "to": "2025-04-23",
+      "invoices": 1,
+      "creditNotes": 1
     }
   ],
   "unallocatedPayments": [

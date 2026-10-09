@@ -75,6 +75,10 @@
     {
       "date": "2026-10-08",
       "event": "TXT switched to raw/MD0003_2026-10-08.TXT on operator instruction (\"switch the other six accounts ... YES\"); B/F R52,607.52, periodStart 2025-01-01 unchanged. CONNECTOR-SOURCED refresh (db_replay, 5 md5-verified captures in data/db_replay/2026-10-08/; authority: \"I authorize the agent to use database connectors\"; the subagent stalled on the last capture and the main session recorded it). Coverage STALE_PARTIAL: CN 15774 (-3,622.50), inv 53508 (+3,967.81), inv 53509 (+3,622.50), all 2026-10-08 DN#23844, not yet in DB (PROVEN) — review-only. ERP R16,547.81 = 1A R14,765.31 + 1B R1,782.50, variance R0.00 (PROVEN, data/v5_projection.json). Matcher v4: 95 ties (88 confirmed / 7 probable; 8 remittance batches applied, 0 unresolved); 7 payments unallocated (R114,330.23, ADM-87 still open). Open items: 32 internal rows tie R16,547.81. Matching PROPOSED — NOT RATIFIED."
+    },
+    {
+      "date": "2026-10-09",
+      "event": "Matcher v5 applied (operator: \"Yes\" to applying the 2026-10-09 preview, docs/previews/2026-10-09_matcher_v5_preview.md): new rules BATCH_SUM, CYL_EXCHANGE, BALANCE_ZERO; DN parser reads DN_nnnnn. Re-run match_projection + render_open_items only; no lock created, no statement released. PROPOSED — NOT RATIFIED. Proof holds, 0 lock conflicts. No change: 95 ties, 32 open rows, ERP R16,547.81 ties. Review-only (ingest partial: DN#23844 docs, ADM-93)."
     }
   ]
 }

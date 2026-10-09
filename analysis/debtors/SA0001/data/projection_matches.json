@@ -2,7 +2,7 @@
   "status": "PROPOSED — NOT RATIFIED (PROPOSED_Projection_Matching_Locks.md, build step 2)",
   "debtorCode": "SA0001",
   "generatedBy": "match_projection.mjs",
-  "generatedAt": "2026-10-08T11:40:07.184Z",
+  "generatedAt": "2026-10-09T04:50:06.694Z",
   "projection": {
     "path": "analysis/debtors/SA0001/data/v5_projection.json",
     "txtSha256": "837cff982c0cbc93161e975677eb7fa215dc68b19007c2a1f2864b8ca28642e6",
@@ -12,7 +12,7 @@
   "reviewOnly": false,
   "reviewOnlyReasons": [],
   "locksRegistry": "config/payment_pattern_overrides.json#projectionLocks",
-  "matcherVersion": 4,
+  "matcherVersion": 5,
   "closedThrough": "2026-09-30",
   "locksApplied": 144,
   "lockConflicts": [],
@@ -23,24 +23,32 @@
     "cnConfirmedMaxDays": 1,
     "maxSumInvoices": 3,
     "maxRunInvoices": 12,
+    "fifoWindowDays": 14,
     "combinationPool": 40,
     "paymentTargetLanes": [
       "LPG",
       "OTHER"
     ],
+    "batchMaxPayments": 3,
+    "batchMaxBatches": 2,
+    "batchWindowDays": 120,
+    "batchPool": 40,
+    "cylExchange": true,
+    "balanceZeroCut": true,
     "remittanceLineTolerance": 0.05,
     "remittanceBatchTolerancePct": 0.001
   },
   "summary": {
-    "ties": 161,
-    "confirmed": 145,
+    "ties": 162,
+    "confirmed": 146,
     "probable": 16,
     "byRule": {
       "LOCKED": 144,
       "CN_DN_PAIR": 10,
       "CN_AMOUNT_DATE": 5,
       "NEAR_SUM": 1,
-      "PROXIMITY": 1
+      "PROXIMITY": 1,
+      "CYL_EXCHANGE": 1
     },
     "paymentsTotal": 2,
     "paymentsUnallocated": 0
@@ -66,20 +74,14 @@
       ]
     },
     "openInvoicesCyl": {
-      "count": 2,
-      "amount": 8452.5,
-      "rows": [
-        "46993|Invoice|CYL|L131",
-        "47415|Invoice|CYL|L144"
-      ]
+      "count": 0,
+      "amount": 0,
+      "rows": []
     },
     "unmatchedCredits": {
-      "count": 2,
-      "amount": -8452.5,
-      "rows": [
-        "13648|Crd Note|CYL|L129",
-        "13778|Crd Note|CYL|L140"
-      ]
+      "count": 0,
+      "amount": 0,
+      "rows": []
     },
     "unallocatedPayments": {
       "count": 0,
@@ -2955,6 +2957,29 @@
         }
       ],
       "variance": 0.2
+    },
+    {
+      "tie_id": "T0162",
+      "rule": "CYL_EXCHANGE",
+      "confidence": "CONFIRMED",
+      "members": [
+        "13648|Crd Note|CYL|L129",
+        "46993|Invoice|CYL|L131",
+        "13778|Crd Note|CYL|L140",
+        "47415|Invoice|CYL|L144"
+      ],
+      "docs": [
+        "Crd Note 13648",
+        "Invoice 46993",
+        "Crd Note 13778",
+        "Invoice 47415"
+      ],
+      "net": 0,
+      "inClosedPeriod": true,
+      "from": "2025-10-09",
+      "to": "2025-10-30",
+      "invoices": 2,
+      "creditNotes": 2
     }
   ],
   "unallocatedPayments": []

@@ -68,6 +68,10 @@
     {
       "date": "2026-10-08",
       "event": "Period close C0002 through 2026-09-30 on operator instruction (\"Close both\", 2026-10-08) via close_period.mjs: 25 auto_locked CONFIRMED ties (CN_DN_PAIR 16, EXACT_SINGLE 6, EXACT_SUM 1, EXACT_MONTH_SUM 2), value R64,083.03; gates passed (coverage CURRENT_COMPLETE, ERP variance R0.00, 0 conflicts, tag gate NOT_DERIVABLE_FROM_TXT). Locks now applied 144 (C0001 112 + approved L0113-L0119 + C0002 25), conflicts 0. 16 probable ties left unlocked for review (Appendix A). ERP tie R16,002.86 unchanged (PROVEN, data/projection_matches.json). Undo: close_period.mjs --void-close C0002. Tripwires: any change to a locked document in a fresh TXT/DB capture becomes a CONFLICT."
+    },
+    {
+      "date": "2026-10-09",
+      "event": "Matcher v5 applied (operator: \"Yes\" to applying the 2026-10-09 preview, docs/previews/2026-10-09_matcher_v5_preview.md): new rules BATCH_SUM, CYL_EXCHANGE, BALANCE_ZERO; DN parser reads DN_nnnnn. Re-run match_projection + render_open_items only; no lock created, no statement released. PROPOSED — NOT RATIFIED. Proof holds, 0 lock conflicts. Ties 161 -> 162 (+1 CYL_EXCHANGE); open rows internal 10 -> 6, customer 43 -> 39; ERP R16,002.86 ties; close C0002 (through 2026-09-30, 144 locks) untouched. 16 probable ties await approval."
     }
   ]
 }

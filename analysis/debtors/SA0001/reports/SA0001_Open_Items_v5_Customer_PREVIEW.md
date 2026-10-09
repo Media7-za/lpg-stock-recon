@@ -90,15 +90,6 @@
 | 25 Sept 2025 | Invoice | 46653 ¹ | DN#21064-EMPTY | Cylinder deposit | 5,347.50 | 5,347.50 |
 | 29 Sept 2025 | Crd Note | 13559 ¹ | DN#21064-EMPTY | Cylinder deposit | -5,347.50 | 0.00 |
 
-### October 2025
-
-| Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 09 Oct 2025 | Crd Note | 13648 | DN#20609-EMPTY | Cylinder deposit | -3,622.50 | -3,622.50 |
-| 09 Oct 2025 | Invoice | 46993 | DN#20609-EMPTY | Cylinder deposit | 4,830.00 | 1,207.50 |
-| 30 Oct 2025 | Crd Note | 13778 | DN#21130-EMPTY | Cylinder deposit | -4,830.00 | -3,622.50 |
-| 30 Oct 2025 | Invoice | 47415 | DN#21130-EMPTY | Cylinder deposit | 3,622.50 | 0.00 |
-
 ### November 2025
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |

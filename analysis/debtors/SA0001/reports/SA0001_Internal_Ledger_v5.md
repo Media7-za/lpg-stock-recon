@@ -1,0 +1,549 @@
+# Internal ledger: SAKI - VICTORIA RD (SA0001), matcher review
+**INTERNAL, not for the customer.** Every transaction in ERP order with the ERP running balance and what matcher v5 did with it · generated 2026-10-09 · 146 confirmed / 16 probable ties · 6 rows open · ERP `CURRENT BALANCE` R16,002.86 · PROPOSED — NOT RATIFIED
+
+**Status key:** `OPEN` untied · `T0001 EXACT_SINGLE ✓` confirmed tie · `T0001 BATCH_SUM ?` probable tie (needs approval) · `LOCKED` operator-approved lock · `◀ ZERO` ERP running balance is within R0.05 after this line.
+
+---
+
+### February 2023
+
+Opening balance (ERP running): **R4,945.93**
+
+| Date | Type | Doc # | Reference | Lane | Amount (R) | ERP running (R) | Matcher status |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: | :--- |
+| 07 Feb 2023 | Payment | 44740 | TRANSF \| STAT208 | LPG | -621.68 | 4,324.25 | T0119 LOCKED:OPERATOR_RULING [applied_to_bf] |
+
+### March 2025
+
+Opening balance (ERP running): **R4,324.25**
+
+| Date | Type | Doc # | Reference | Lane | Amount (R) | ERP running (R) | Matcher status |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: | :--- |
+| 10 Mar 2025 | Invoice | 41349 | — | LPG | 6,371.99 | 10,696.24 | T0068 LOCKED:EXACT_MONTH_SUM ↔ Pmt 37783, Inv 41553 |
+| 18 Mar 2025 | Crd Note | 12087 | DN#12929-EMPTY | CYL | -517.50 | 10,178.74 | T0003 LOCKED:CN_DN_PAIR ↔ Inv 41554 |
+| 18 Mar 2025 | Invoice | 41553 | DN#12929 | LPG | 285.31 | 10,464.05 | T0068 LOCKED:EXACT_MONTH_SUM ↔ Pmt 37783, Inv 41349 |
+| 18 Mar 2025 | Invoice | 41554 | DN#12929-EMPTY | CYL | 517.50 | 10,981.55 | T0003 LOCKED:CN_DN_PAIR ↔ Crd Note 12087 |
+| 25 Mar 2025 | Payment | 37783 | TRANSF \| STAT 112 | LPG | -6,657.30 | 4,324.25 | T0068 LOCKED:EXACT_MONTH_SUM ↔ Inv 41349, Inv 41553 |
+| 26 Mar 2025 | Crd Note | 12127 | DN#12937-EMPTY | CYL | -5,347.50 | -1,023.25 | T0004 LOCKED:CN_DN_PAIR ↔ Inv 41733 |
+| 26 Mar 2025 | Invoice | 41732 | DN#12937 | LPG | 6,371.99 | 5,348.74 | T0069 LOCKED:EXACT_MONTH_SUM ↔ Pmt 38063, Inv 41797 |
+| 26 Mar 2025 | Invoice | 41733 | DN#12937-EMPTY | CYL | 5,347.50 | 10,696.24 | T0004 LOCKED:CN_DN_PAIR ↔ Crd Note 12127 |
+| 28 Mar 2025 | Crd Note | 12142 | DN#12985-EMPTY | CYL | -517.50 | 10,178.74 | T0005 LOCKED:CN_DN_PAIR ↔ Inv 41798 |
+| 28 Mar 2025 | Invoice | 41797 | DN#12985 | LPG | 285.31 | 10,464.05 | T0069 LOCKED:EXACT_MONTH_SUM ↔ Pmt 38063, Inv 41732 |
+| 28 Mar 2025 | Invoice | 41798 | DN#12985-EMPTY | CYL | 517.50 | 10,981.55 | T0005 LOCKED:CN_DN_PAIR ↔ Crd Note 12142 |
+
+### April 2025
+
+Opening balance (ERP running): **R10,981.55**
+
+| Date | Type | Doc # | Reference | Lane | Amount (R) | ERP running (R) | Matcher status |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: | :--- |
+| 04 Apr 2025 | Payment | 38063 | TRANSF \| STAT 113 | LPG | -6,657.30 | 4,324.25 | T0069 LOCKED:EXACT_MONTH_SUM ↔ Inv 41732, Inv 41797 |
+| 08 Apr 2025 | Crd Note | 12239 | DN#11748 | CYL | -5,347.50 | -1,023.25 | T0006 LOCKED:CN_DN_PAIR ↔ Inv 42124 |
+| 08 Apr 2025 | Invoice | 42123 | DN#11748 | LPG | 6,235.37 | 5,212.12 | T0116 LOCKED:OPERATOR_RULING [applied_to_bf] ↔ Pmt 38837, Inv 43083 |
+| 08 Apr 2025 | Invoice | 42124 | DN#11748 | CYL | 5,347.50 | 10,559.62 | T0006 LOCKED:CN_DN_PAIR ↔ Crd Note 12239 |
+| 22 Apr 2025 | Crd Note | 12320 | DN#13151-EMPTY | CYL | -517.50 | 10,042.12 | T0007 LOCKED:CN_DN_PAIR ↔ Inv 42430 |
+| 22 Apr 2025 | Invoice | 42429 | DN#13151 | LPG | 279.20 | 10,321.32 | T0070 LOCKED:EXACT_SUM ↔ Pmt 38669, Inv 42717, Inv 42633 |
+| 22 Apr 2025 | Invoice | 42430 | DN#13151-EMPTY | CYL | 517.50 | 10,838.82 | T0007 LOCKED:CN_DN_PAIR ↔ Crd Note 12320 |
+| 26 Apr 2025 | Invoice | 42583 | DN#13102 | LPG | 5,956.17 | 16,794.99 | T0160 NEAR_SUM ? ↔ Pmt 38531, Inv 42816 |
+| 26 Apr 2025 | Invoice | 42584 | DN#13102-EMPTY | CYL | 4,830.00 | 21,624.99 | T0145 CN_DN_PAIR ? ↔ Crd Note 12361 |
+| 29 Apr 2025 | Crd Note | 12361 | DN#13102-EMPTY | CYL | -4,830.00 | 16,794.99 | T0145 CN_DN_PAIR ? ↔ Inv 42584 |
+| 29 Apr 2025 | Crd Note | 12372 | DN#13173-EMPTY | CYL | -517.50 | 16,277.49 | T0008 LOCKED:CN_DN_PAIR ↔ Inv 42634 |
+| 29 Apr 2025 | Invoice | 42633 | DN#13173 | LPG | 279.20 | 16,556.69 | T0070 LOCKED:EXACT_SUM ↔ Pmt 38669, Inv 42717, Inv 42429 |
+| 29 Apr 2025 | Invoice | 42634 | DN#13173-EMPTY | CYL | 517.50 | 17,074.19 | T0008 LOCKED:CN_DN_PAIR ↔ Crd Note 12372 |
+| 29 Apr 2025 | Bank UD | 42780 | TRANSF \| STAT 113 | LPG | 64,736.00 | 81,810.19 | T0001 LOCKED:UD_CLEARING |
+| 29 Apr 2025 | Payment | 42780 | TRANSF \| STAT 113 | LPG | -64,736.00 | 17,074.19 | T0001 LOCKED:UD_CLEARING |
+| 29 Apr 2025 | Bank UD | 45114 | TRANSF \| LIZ | LPG | 64,736.00 | 81,810.19 | T0002 LOCKED:UD_CLEARING |
+| 29 Apr 2025 | Payment | 45114 | TRANSF \| STAT 114 | LPG | -64,736.00 | 17,074.19 | T0002 LOCKED:UD_CLEARING |
+
+### May 2025
+
+Opening balance (ERP running): **R17,074.19**
+
+| Date | Type | Doc # | Reference | Lane | Amount (R) | ERP running (R) | Matcher status |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: | :--- |
+| 02 May 2025 | Invoice | 42717 | — | LPG | 1,489.04 | 18,563.23 | T0070 LOCKED:EXACT_SUM ↔ Pmt 38669, Inv 42633, Inv 42429 |
+| 05 May 2025 | Invoice | 42816 | DN#13046 | LPG | 558.39 | 19,121.62 | T0160 NEAR_SUM ? ↔ Pmt 38531, Inv 42583 |
+| 05 May 2025 | Invoice | 42817 | DN#13046-EMPTY | CYL | 1,035.00 | 20,156.62 | T0009 LOCKED:CN_DN_PAIR ↔ Crd Note 12420 |
+| 06 May 2025 | Crd Note | 12420 | DN#13046-EMPTY | CYL | -1,035.00 | 19,121.62 | T0009 LOCKED:CN_DN_PAIR ↔ Inv 42817 |
+| 07 May 2025 | Payment | 38531 | TRANSF \| STAT 114 | LPG | -6,514.50 | 12,607.12 | T0160 NEAR_SUM ? ↔ Inv 42816, Inv 42583 |
+| 13 May 2025 | Payment | 38669 | TRANSF \| STAT 114 | LPG | -2,047.43 | 10,559.69 | T0070 LOCKED:EXACT_SUM ↔ Inv 42717, Inv 42633, Inv 42429 |
+| 15 May 2025 | Crd Note | 12486 | DN#13226-EMPTY | CYL | -5,347.50 | 5,212.19 | T0010 LOCKED:CN_DN_PAIR ↔ Inv 43084 |
+| 15 May 2025 | Invoice | 43083 | DN#13226 | LPG | 6,235.37 | 11,447.56 | T0116 LOCKED:OPERATOR_RULING [applied_to_bf] ↔ Pmt 38837, Inv 42123 |
+| 15 May 2025 | Invoice | 43084 | DN#13226-EMPTY | CYL | 5,347.50 | 16,795.06 | T0010 LOCKED:CN_DN_PAIR ↔ Crd Note 12486 |
+| 21 May 2025 | Payment | 38837 | TRANSF \| STAT 114 | LPG | -12,607.36 | 4,187.70 | T0116 LOCKED:OPERATOR_RULING [applied_to_bf] ↔ Inv 42123, Inv 43083 |
+| 27 May 2025 | Crd Note | 12573 | DN#12118-EMPTY | CYL | -517.50 | 3,670.20 | T0011 LOCKED:CN_DN_PAIR ↔ Inv 43376 |
+| 27 May 2025 | Payment | 38878 | CASH \| T2000117 | LPG | -283.00 | 3,387.20 | T0161 PROXIMITY ? ↔ Inv 43375 |
+| 27 May 2025 | Invoice | 43375 | DN#12118 | LPG | 282.80 | 3,670.00 | T0161 PROXIMITY ? ↔ Pmt 38878 |
+| 27 May 2025 | Invoice | 43376 | DN#12118-EMPTY | CYL | 517.50 | 4,187.50 | T0011 LOCKED:CN_DN_PAIR ↔ Crd Note 12573 |
+| 28 May 2025 | Invoice | 43420 | DN#12474 | LPG | 1,508.25 | 5,695.75 | T0071 LOCKED:EXACT_SINGLE ↔ Pmt 39134 |
+| 28 May 2025 | Invoice | 43421 | DN#12474-EMPTY | CYL | 1,207.50 | 6,903.25 | T0012 LOCKED:CN_DN_PAIR ↔ Crd Note 12596 |
+| 29 May 2025 | Crd Note | 12596 | DN#12474-EMPTY | CYL | -1,207.50 | 5,695.75 | T0012 LOCKED:CN_DN_PAIR ↔ Inv 43421 |
+
+### June 2025
+
+Opening balance (ERP running): **R5,695.75**
+
+| Date | Type | Doc # | Reference | Lane | Amount (R) | ERP running (R) | Matcher status |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: | :--- |
+| 02 Jun 2025 | Invoice | 43524 | DN#12284 | LPG | 6,032.99 | 11,728.74 | T0072 LOCKED:EXACT_MONTH_SUM ↔ Pmt 39728, Inv 43626 |
+| 02 Jun 2025 | Invoice | 43525 | DN#12284-EMPTY | CYL | 4,830.00 | 16,558.74 | T0013 LOCKED:CN_DN_PAIR ↔ Crd Note 12615 |
+| 03 Jun 2025 | Crd Note | 12615 | DN#12284-EMPTY | CYL | -4,830.00 | 11,728.74 | T0013 LOCKED:CN_DN_PAIR ↔ Inv 43525 |
+| 03 Jun 2025 | Payment | 39134 | TRANSF \| STAT 115 | LPG | -1,508.20 | 10,220.54 | T0071 LOCKED:EXACT_SINGLE ↔ Inv 43420 |
+| 05 Jun 2025 | Crd Note | 12633 | DN#12301-EMPTY | CYL | -517.50 | 9,703.04 | T0014 LOCKED:CN_DN_PAIR ↔ Inv 43627 |
+| 05 Jun 2025 | Invoice | 43626 | DN#12301 | LPG | 282.80 | 9,985.84 | T0072 LOCKED:EXACT_MONTH_SUM ↔ Pmt 39728, Inv 43524 |
+| 05 Jun 2025 | Invoice | 43627 | DN#12301-EMPTY | CYL | 517.50 | 10,503.34 | T0014 LOCKED:CN_DN_PAIR ↔ Crd Note 12633 |
+| 11 Jun 2025 | Payment | 39728 | TRANSF \| STAT 115 | LPG | -6,315.79 | 4,187.55 | T0072 LOCKED:EXACT_MONTH_SUM ↔ Inv 43524, Inv 43626 |
+| 14 Jun 2025 | Crd Note | 12730 | DN#12391-EMPTY | CYL | -1,035.00 | 3,152.55 | T0015 LOCKED:CN_DN_PAIR ↔ Inv 43939 |
+| 14 Jun 2025 | Invoice | 43938 | DN#12391 | LPG | 551.72 | 3,704.27 | T0073 LOCKED:EXACT_MONTH_SUM ↔ Pmt 39747, Inv 44092 |
+| 14 Jun 2025 | Invoice | 43939 | DN#12391-EMPTY | CYL | 1,035.00 | 4,739.27 | T0015 LOCKED:CN_DN_PAIR ↔ Crd Note 12730 |
+| 20 Jun 2025 | Crd Note | 12773 | DN#12580-EMPTY | CYL | -4,830.00 | -90.73 | T0016 LOCKED:CN_DN_PAIR ↔ Inv 44093 |
+| 20 Jun 2025 | Invoice | 44092 | DN#12580 | LPG | 5,885.15 | 5,794.42 | T0073 LOCKED:EXACT_MONTH_SUM ↔ Pmt 39747, Inv 43938 |
+| 20 Jun 2025 | Invoice | 44093 | DN#12580-EMPTY | CYL | 4,830.00 | 10,624.42 | T0016 LOCKED:CN_DN_PAIR ↔ Crd Note 12773 |
+| 23 Jun 2025 | Payment | 39747 | TRANSF \| STAT 115 | LPG | -6,436.87 | 4,187.55 | T0073 LOCKED:EXACT_MONTH_SUM ↔ Inv 43938, Inv 44092 |
+| 26 Jun 2025 | Invoice | 44263 | — | LPG | 275.86 | 4,463.41 | T0074 LOCKED:EXACT_SUM ↔ Pmt 40112, Inv 44513 |
+
+### July 2025
+
+Opening balance (ERP running): **R4,463.41**
+
+| Date | Type | Doc # | Reference | Lane | Amount (R) | ERP running (R) | Matcher status |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: | :--- |
+| 03 Jul 2025 | Invoice | 44513 | DN#12655 | LPG | 275.86 | 4,739.27 | T0074 LOCKED:EXACT_SUM ↔ Pmt 40112, Inv 44263 |
+| 04 Jul 2025 | Invoice | 44515 | DN#12655-EMPTY | CYL | 517.50 | 5,256.77 | T0017 LOCKED:CN_DN_PAIR ↔ Crd Note 12901 |
+| 05 Jul 2025 | Crd Note | 12901 | DN#12655-EMPTY | CYL | -517.50 | 4,739.27 | T0017 LOCKED:CN_DN_PAIR ↔ Inv 44515 |
+| 07 Jul 2025 | Payment | 40112 | TRANSF \| STAT 116 | LPG | -551.72 | 4,187.55 | T0074 LOCKED:EXACT_SUM ↔ Inv 44513, Inv 44263 |
+| 08 Jul 2025 | Crd Note | 12924 | DN#12670-EMPTY | CYL | -4,830.00 | -642.45 | T0018 LOCKED:CN_DN_PAIR ↔ Inv 44620 |
+| 08 Jul 2025 | Invoice | 44619 | DN#12670 | LPG | 5,789.97 | 5,147.52 | T0075 LOCKED:EXACT_SINGLE ↔ Pmt 40005 |
+| 08 Jul 2025 | Invoice | 44620 | DN#12670-EMPTY | CYL | 4,830.00 | 9,977.52 | T0018 LOCKED:CN_DN_PAIR ↔ Crd Note 12924 |
+| 14 Jul 2025 | Crd Note | 12981 | DN#12201-EMPTY | CYL | -517.50 | 9,460.02 | T0019 LOCKED:CN_DN_PAIR ↔ Inv 44815 |
+| 14 Jul 2025 | Payment | 40005 | TRANSF \| STAT 116 | LPG | -5,789.97 | 3,670.05 | T0075 LOCKED:EXACT_SINGLE ↔ Inv 44619 |
+| 14 Jul 2025 | Invoice | 44814 | DN#12201 | LPG | 271.41 | 3,941.46 | T0079 LOCKED:EXACT_SUM ↔ Pmt 40737, Inv 45331 |
+| 14 Jul 2025 | Invoice | 44815 | DN#12201-EMPTY | CYL | 517.50 | 4,458.96 | T0019 LOCKED:CN_DN_PAIR ↔ Crd Note 12981 |
+| 20 Jul 2025 | Invoice | 44985 | D/N 12218 | LPG | 5,789.97 | 10,248.93 | T0077 LOCKED:EXACT_SINGLE ↔ Pmt 40278 |
+| 21 Jul 2025 | Crd Note | 13028 | — | CYL | -4,830.00 | 5,418.93 | T0155 CN_AMOUNT_DATE ? ↔ Inv 44988 |
+| 21 Jul 2025 | Crd Note | 13264 | DN#12224 | CYL | -517.50 | 4,901.43 | T0156 CN_AMOUNT_DATE ? ↔ Inv 45002 |
+| 21 Jul 2025 | Invoice | 44988 | — | CYL | 4,830.00 | 9,731.43 | T0155 CN_AMOUNT_DATE ? ↔ Crd Note 13028 |
+| 21 Jul 2025 | Invoice | 44997 | D/N 12224 | LPG | 271.41 | 10,002.84 | T0076 LOCKED:EXACT_SINGLE ↔ Pmt 40180 |
+| 21 Jul 2025 | Invoice | 45002 | — | CYL | 517.50 | 10,520.34 | T0156 CN_AMOUNT_DATE ? ↔ Crd Note 13264 |
+| 22 Jul 2025 | Payment | 40180 | TRANSF \| STAT 116 | LPG | -271.41 | 10,248.93 | T0076 LOCKED:EXACT_SINGLE ↔ Inv 44997 |
+| 28 Jul 2025 | Payment | 40278 | TRANSF \| STAT 116 | LPG | -5,789.97 | 4,458.96 | T0077 LOCKED:EXACT_SINGLE ↔ Inv 44985 |
+
+### August 2025
+
+Opening balance (ERP running): **R4,458.96**
+
+| Date | Type | Doc # | Reference | Lane | Amount (R) | ERP running (R) | Matcher status |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: | :--- |
+| 02 Aug 2025 | Crd Note | 13104 | DN#20048-EMPTY | CYL | -517.50 | 3,941.46 | T0020 LOCKED:CN_DN_PAIR ↔ Inv 45332 |
+| 02 Aug 2025 | Invoice | 45331 | DN#20048 | LPG | 271.41 | 4,212.87 | T0079 LOCKED:EXACT_SUM ↔ Pmt 40737, Inv 44814 |
+| 02 Aug 2025 | Invoice | 45332 | DN#20048-EMPTY | CYL | 517.50 | 4,730.37 | T0020 LOCKED:CN_DN_PAIR ↔ Crd Note 13104 |
+| 04 Aug 2025 | Invoice | 45384 | DN#20133 | LPG | 5,789.97 | 10,520.34 | T0078 LOCKED:EXACT_SUM ↔ Pmt 40584, Inv 45567 |
+| 04 Aug 2025 | Invoice | 45385 | DN#20133-EMPTY | CYL | 4,830.00 | 15,350.34 | T0021 LOCKED:CN_DN_PAIR ↔ Crd Note 13130 |
+| 05 Aug 2025 | Crd Note | 13130 | DN#20133-EMPTY | CYL | -4,830.00 | 10,520.34 | T0021 LOCKED:CN_DN_PAIR ↔ Inv 45385 |
+| 11 Aug 2025 | Crd Note | 13183 | DN#20305-EMPTY | CYL | -1,035.00 | 9,485.34 | T0022 LOCKED:CN_DN_PAIR ↔ Inv 45568 |
+| 11 Aug 2025 | Payment | 40584 | TRANSF \| STAT 117 | LPG | -6,332.79 | 3,152.55 | T0078 LOCKED:EXACT_SUM ↔ Inv 45567, Inv 45384 |
+| 11 Aug 2025 | Invoice | 45567 | DN#20305 | LPG | 542.82 | 3,695.37 | T0078 LOCKED:EXACT_SUM ↔ Pmt 40584, Inv 45384 |
+| 11 Aug 2025 | Invoice | 45568 | DN#20305-EMPTY | CYL | 1,035.00 | 4,730.37 | T0022 LOCKED:CN_DN_PAIR ↔ Crd Note 13183 |
+| 18 Aug 2025 | Payment | 40737 | TRANSF \| STAT 117 | LPG | -542.82 | 4,187.55 | T0079 LOCKED:EXACT_SUM ↔ Inv 45331, Inv 44814 |
+| 21 Aug 2025 | Crd Note | 13278 | DN#20326-EMPTY | CYL | -517.50 | 3,670.05 | T0023 LOCKED:CN_DN_PAIR ↔ Inv 45797 |
+| 21 Aug 2025 | Invoice | 45796 | DN#20326 | LPG | 266.03 | 3,936.08 | T0080 LOCKED:EXACT_SINGLE ↔ Pmt 40883 |
+| 21 Aug 2025 | Invoice | 45797 | DN#20326-EMPTY | CYL | 517.50 | 4,453.58 | T0023 LOCKED:CN_DN_PAIR ↔ Crd Note 13278 |
+| 22 Aug 2025 | Crd Note | 13287 | DN#20535-EMPTY | CYL | -4,830.00 | -376.42 | T0024 LOCKED:CN_DN_PAIR ↔ Inv 45830 |
+| 22 Aug 2025 | Invoice | 45829 | DN#20535 | LPG | 5,675.16 | 5,298.74 | T0117 LOCKED:OPERATOR_RULING [applied_to_bf] ↔ Pmt 41012, Inv 45990 |
+| 22 Aug 2025 | Invoice | 45830 | DN#20535-EMPTY | CYL | 4,830.00 | 10,128.74 | T0024 LOCKED:CN_DN_PAIR ↔ Crd Note 13287 |
+| 25 Aug 2025 | Payment | 40883 | TRANSF \| STAT 117 | LPG | -266.03 | 9,862.71 | T0080 LOCKED:EXACT_SINGLE ↔ Inv 45796 |
+| 29 Aug 2025 | Crd Note | 13334 | D/N20345 | CYL | -517.50 | 9,345.21 | T0025 LOCKED:CN_DN_PAIR ↔ Inv 45991 |
+| 29 Aug 2025 | Invoice | 45990 | D/N 20345 | LPG | 266.03 | 9,611.24 | T0117 LOCKED:OPERATOR_RULING [applied_to_bf] ↔ Pmt 41012, Inv 45829 |
+| 29 Aug 2025 | Invoice | 45991 | D/N20345 | CYL | 517.50 | 10,128.74 | T0025 LOCKED:CN_DN_PAIR ↔ Crd Note 13334 |
+
+### September 2025
+
+Opening balance (ERP running): **R10,128.74**
+
+| Date | Type | Doc # | Reference | Lane | Amount (R) | ERP running (R) | Matcher status |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: | :--- |
+| 01 Sept 2025 | Payment | 41012 | TRANSF \| STAT 118 | LPG | -6,192.66 | 3,936.08 | T0117 LOCKED:OPERATOR_RULING [applied_to_bf] ↔ Inv 45829, Inv 45990 |
+| 05 Sept 2025 | Crd Note | 13380 | DN-20362 EMPTY | CYL | -517.50 | 3,418.58 | T0026 LOCKED:CN_DN_PAIR ↔ Inv 46155 |
+| 05 Sept 2025 | Invoice | 46154 | DN-20362 | LPG | 255.65 | 3,674.23 | T0081 LOCKED:EXACT_MONTH_SUM ↔ Pmt 41241, Inv 46261 |
+| 05 Sept 2025 | Invoice | 46155 | DN-20362 EMPTY | CYL | 517.50 | 4,191.73 | T0026 LOCKED:CN_DN_PAIR ↔ Crd Note 13380 |
+| 09 Sept 2025 | Crd Note | 13425 | DN21024 - EMPTY | CYL | -4,830.00 | -638.27 | T0027 LOCKED:CN_DN_PAIR ↔ Inv 46255 |
+| 09 Sept 2025 | Crd Note | 13426 | DN21024 | LPG | -2,726.88 | -3,365.15 | T0028 LOCKED:CN_DN_PAIR ↔ Inv 46254 |
+| 09 Sept 2025 | Invoice | 46254 | DN21024 | LPG | 2,726.88 | -638.27 | T0028 LOCKED:CN_DN_PAIR ↔ Crd Note 13426 |
+| 09 Sept 2025 | Invoice | 46255 | DN21024 - EMPTY | CYL | 4,830.00 | 4,191.73 | T0027 LOCKED:CN_DN_PAIR ↔ Crd Note 13425 |
+| 09 Sept 2025 | Invoice | 46261 | DN21024 | LPG | 5,453.76 | 9,645.49 | T0081 LOCKED:EXACT_MONTH_SUM ↔ Pmt 41241, Inv 46154 |
+| 15 Sept 2025 | Payment | 41241 | TRANSF \| STAT 118 | LPG | -5,709.41 | 3,936.08 | T0081 LOCKED:EXACT_MONTH_SUM ↔ Inv 46154, Inv 46261 |
+| 17 Sept 2025 | Crd Note | 13493 | DN#20386-EMPTY | CYL | -517.50 | 3,418.58 | T0029 LOCKED:CN_DN_PAIR ↔ Inv 46443 |
+| 17 Sept 2025 | Invoice | 46442 | DN#20386 | LPG | 255.65 | 3,674.23 | T0082 LOCKED:EXACT_SINGLE ↔ Pmt 41309 |
+| 17 Sept 2025 | Invoice | 46443 | DN#20386-EMPTY | CYL | 517.50 | 4,191.73 | T0029 LOCKED:CN_DN_PAIR ↔ Crd Note 13493 |
+| 22 Sept 2025 | Payment | 41309 | TRANSF \| STAT 118 | LPG | -255.65 | 3,936.08 | T0082 LOCKED:EXACT_SINGLE ↔ Inv 46442 |
+| 25 Sept 2025 | Invoice | 46652 | DN#21064 | LPG | 5,709.40 | 9,645.48 | T0083 LOCKED:EXACT_SINGLE ↔ Pmt 41473 |
+| 25 Sept 2025 | Invoice | 46653 | DN#21064-EMPTY | CYL | 5,347.50 | 14,992.98 | T0146 CN_DN_PAIR ? ↔ Crd Note 13559 |
+| 29 Sept 2025 | Crd Note | 13559 | DN#21064-EMPTY | CYL | -5,347.50 | 9,645.48 | T0146 CN_DN_PAIR ? ↔ Inv 46653 |
+| 30 Sept 2025 | Payment | 41473 | TRANSF \| STAT 118 | LPG | -5,709.40 | 3,936.08 | T0083 LOCKED:EXACT_SINGLE ↔ Inv 46652 |
+
+### October 2025
+
+Opening balance (ERP running): **R3,936.08**
+
+| Date | Type | Doc # | Reference | Lane | Amount (R) | ERP running (R) | Matcher status |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: | :--- |
+| 06 Oct 2025 | Crd Note | 13619 | DN-20100 | LPG | -539.70 | 3,396.38 | T0030 LOCKED:CN_DN_PAIR ↔ Inv 46900 |
+| 06 Oct 2025 | Crd Note | 13620 | DN-20100-EMPTY | CYL | -690.00 | 2,706.38 | T0031 LOCKED:CN_DN_PAIR ↔ Inv 46901 |
+| 06 Oct 2025 | Crd Note | 13627 | DN20171-EMPTY | CYL | -517.50 | 2,188.88 | T0032 LOCKED:CN_DN_PAIR ↔ Inv 46923 |
+| 06 Oct 2025 | Invoice | 46900 | DN-20100 | LPG | 539.70 | 2,728.58 | T0030 LOCKED:CN_DN_PAIR ↔ Crd Note 13619 |
+| 06 Oct 2025 | Invoice | 46901 | DN-20100-EMPTY | CYL | 690.00 | 3,418.58 | T0031 LOCKED:CN_DN_PAIR ↔ Crd Note 13620 |
+| 06 Oct 2025 | Invoice | 46922 | DN20171 | LPG | 255.65 | 3,674.23 | T0084 LOCKED:EXACT_SINGLE ↔ Pmt 41663 |
+| 06 Oct 2025 | Invoice | 46923 | DN20171-EMPTY | CYL | 517.50 | 4,191.73 | T0032 LOCKED:CN_DN_PAIR ↔ Crd Note 13627 |
+| 09 Oct 2025 | Crd Note | 13648 | DN#20609-EMPTY | CYL | -3,622.50 | 569.23 | T0162 CYL_EXCHANGE ✓ ↔ Inv 46993, Crd Note 13778, Inv 47415 |
+| 09 Oct 2025 | Invoice | 46992 | DN#20609 | LPG | 5,453.76 | 6,022.99 | T0085 LOCKED:EXACT_SUM ↔ Pmt 41877, Inv 47057 |
+| 09 Oct 2025 | Invoice | 46993 | DN#20609-EMPTY | CYL | 4,830.00 | 10,852.99 | T0162 CYL_EXCHANGE ✓ ↔ Crd Note 13648, Crd Note 13778, Inv 47415 |
+| 13 Oct 2025 | Payment | 41663 | TRANSF \| STAT 119 | LPG | -255.65 | 10,597.34 | T0084 LOCKED:EXACT_SINGLE ↔ Inv 46922 |
+| 13 Oct 2025 | Invoice | 47057 | DN#20716 | LPG | 511.29 | 11,108.63 | T0085 LOCKED:EXACT_SUM ↔ Pmt 41877, Inv 46992 |
+| 13 Oct 2025 | Invoice | 47058 | DN#20716-EMPTY | CYL | 1,035.00 | 12,143.63 | T0033 LOCKED:CN_DN_PAIR ↔ Crd Note 13673 |
+| 14 Oct 2025 | Crd Note | 13673 | DN#20716-EMPTY | CYL | -1,035.00 | 11,108.63 | T0033 LOCKED:CN_DN_PAIR ↔ Inv 47058 |
+| 20 Oct 2025 | Payment | 41877 | TRANSF \| STAT 119 | LPG | -5,965.05 | 5,143.58 | T0085 LOCKED:EXACT_SUM ↔ Inv 47057, Inv 46992 |
+| 20 Oct 2025 | Invoice | 47182 | DN#21113 | LPG | 255.65 | 5,399.23 | OPEN |
+| 30 Oct 2025 | Crd Note | 13768 | DN#21128 | LPG | -1,079.39 | 4,319.84 | T0034 LOCKED:CN_DN_PAIR ↔ Inv 47410 |
+| 30 Oct 2025 | Crd Note | 13769 | DN#21128-EMPTY | CYL | -1,380.00 | 2,939.84 | T0035 LOCKED:CN_DN_PAIR ↔ Inv 47411 |
+| 30 Oct 2025 | Crd Note | 13778 | DN#21130-EMPTY | CYL | -4,830.00 | -1,890.16 | T0162 CYL_EXCHANGE ✓ ↔ Crd Note 13648, Inv 46993, Inv 47415 |
+| 30 Oct 2025 | Invoice | 47410 | DN#21128 | LPG | 1,079.39 | -810.77 | T0034 LOCKED:CN_DN_PAIR ↔ Crd Note 13768 |
+| 30 Oct 2025 | Invoice | 47411 | DN#21128-EMPTY | CYL | 1,380.00 | 569.23 | T0035 LOCKED:CN_DN_PAIR ↔ Crd Note 13769 |
+| 30 Oct 2025 | Invoice | 47414 | DN#21130 | LPG | 4,090.32 | 4,659.55 | T0088 LOCKED:EXACT_SINGLE ↔ Pmt 42519 |
+| 30 Oct 2025 | Invoice | 47415 | DN#21130-EMPTY | CYL | 3,622.50 | 8,282.05 | T0162 CYL_EXCHANGE ✓ ↔ Crd Note 13648, Inv 46993, Crd Note 13778 |
+
+### November 2025
+
+Opening balance (ERP running): **R8,282.05**
+
+| Date | Type | Doc # | Reference | Lane | Amount (R) | ERP running (R) | Matcher status |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: | :--- |
+| 01 Nov 2025 | Invoice | 47450 | DN#20645 | LPG | 255.65 | 8,537.70 | T0086 LOCKED:EXACT_MONTH_SUM ↔ Pmt 42223, Inv 47573 |
+| 01 Nov 2025 | Invoice | 47451 | DN#20645-EMPTY | CYL | 517.50 | 9,055.20 | T0147 CN_DN_PAIR ? ↔ Crd Note 13805 |
+| 03 Nov 2025 | Crd Note | 13805 | DN#20645-EMPTY | CYL | -517.50 | 8,537.70 | T0147 CN_DN_PAIR ? ↔ Inv 47451 |
+| 08 Nov 2025 | Crd Note | 13826 | DN#21150-EMPTY | CYL | -517.50 | 8,020.20 | T0036 LOCKED:CN_DN_PAIR ↔ Inv 47574 |
+| 08 Nov 2025 | Invoice | 47573 | DN#21150 | LPG | 251.15 | 8,271.35 | T0086 LOCKED:EXACT_MONTH_SUM ↔ Pmt 42223, Inv 47450 |
+| 08 Nov 2025 | Invoice | 47574 | DN#21150-EMPTY | CYL | 517.50 | 8,788.85 | T0036 LOCKED:CN_DN_PAIR ↔ Crd Note 13826 |
+| 11 Nov 2025 | Payment | 42223 | TRANSF \| STAT 120 | LPG | -506.80 | 8,282.05 | T0086 LOCKED:EXACT_MONTH_SUM ↔ Inv 47450, Inv 47573 |
+| 18 Nov 2025 | Crd Note | 13882 | DN#21157-EMPTY | CYL | -5,347.50 | 2,934.55 | T0037 LOCKED:CN_DN_PAIR ↔ Inv 47733 |
+| 18 Nov 2025 | Invoice | 47732 | DN#21157 | LPG | 5,608.95 | 8,543.50 | T0087 LOCKED:EXACT_SINGLE ↔ Pmt 42417 |
+| 18 Nov 2025 | Invoice | 47733 | DN#21157-EMPTY | CYL | 5,347.50 | 13,891.00 | T0037 LOCKED:CN_DN_PAIR ↔ Crd Note 13882 |
+| 24 Nov 2025 | Payment | 42417 | TRANSF \| STAT 120 | LPG | -5,608.95 | 8,282.05 | T0087 LOCKED:EXACT_SINGLE ↔ Inv 47732 |
+| 24 Nov 2025 | Invoice | 47872 | DN#21168 | LPG | 502.30 | 8,784.35 | T0089 LOCKED:EXACT_SINGLE ↔ Pmt 42520 |
+
+### December 2025
+
+Opening balance (ERP running): **R8,784.35**
+
+| Date | Type | Doc # | Reference | Lane | Amount (R) | ERP running (R) | Matcher status |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: | :--- |
+| 01 Dec 2025 | Payment | 42519 | TRANSF \| STAT 121 | LPG | -4,090.32 | 4,694.03 | T0088 LOCKED:EXACT_SINGLE ↔ Inv 47414 |
+| 01 Dec 2025 | Payment | 42520 | TRANSF \| STAT 121 | LPG | -502.30 | 4,191.73 | T0089 LOCKED:EXACT_SINGLE ↔ Inv 47872 |
+| 01 Dec 2025 | Invoice | 48024 | DN#20697 | LPG | 251.15 | 4,442.88 | T0090 LOCKED:EXACT_SINGLE ↔ Pmt 42544 |
+| 01 Dec 2025 | Invoice | 48025 | DN#20697-EMPTY | CYL | 517.50 | 4,960.38 | T0038 LOCKED:CN_DN_PAIR ↔ Crd Note 13984 |
+| 02 Dec 2025 | Crd Note | 13984 | DN#20697-EMPTY | CYL | -517.50 | 4,442.88 | T0038 LOCKED:CN_DN_PAIR ↔ Inv 48025 |
+| 08 Dec 2025 | Crd Note | 14024 | DN#20903-EMPTY | CYL | -5,347.50 | -904.62 | T0039 LOCKED:CN_DN_PAIR ↔ Inv 48152 |
+| 08 Dec 2025 | Payment | 42544 | TRANSF \| STAT 121 | LPG | -251.15 | -1,155.77 | T0090 LOCKED:EXACT_SINGLE ↔ Inv 48024 |
+| 08 Dec 2025 | Invoice | 48151 | DN#20903 | LPG | 5,634.38 | 4,478.61 | T0091 LOCKED:EXACT_SINGLE ↔ Pmt 42694 |
+| 08 Dec 2025 | Invoice | 48152 | DN#20903-EMPTY | CYL | 5,347.50 | 9,826.11 | T0039 LOCKED:CN_DN_PAIR ↔ Crd Note 14024 |
+| 15 Dec 2025 | Crd Note | 14082 | DN#21420-EMPTY | CYL | -517.50 | 9,308.61 | T0040 LOCKED:CN_DN_PAIR ↔ Inv 48288 |
+| 15 Dec 2025 | Invoice | 48287 | DN#21420 | LPG | 252.29 | 9,560.90 | T0092 LOCKED:EXACT_SUM ↔ Pmt 42764, Inv 48370 |
+| 15 Dec 2025 | Invoice | 48288 | DN#21420-EMPTY | CYL | 517.50 | 10,078.40 | T0040 LOCKED:CN_DN_PAIR ↔ Crd Note 14082 |
+| 17 Dec 2025 | Payment | 42694 | TRANSF \| STAT 121 | LPG | -5,634.38 | 4,444.02 | T0091 LOCKED:EXACT_SINGLE ↔ Inv 48151 |
+| 19 Dec 2025 | Crd Note | 14120 | DN#21722-EMPTY | CYL | -517.50 | 3,926.52 | T0041 LOCKED:CN_DN_PAIR ↔ Inv 48371 |
+| 19 Dec 2025 | Invoice | 48370 | DN#21722 | LPG | 252.29 | 4,178.81 | T0092 LOCKED:EXACT_SUM ↔ Pmt 42764, Inv 48287 |
+| 19 Dec 2025 | Invoice | 48371 | DN#21722-EMPTY | CYL | 517.50 | 4,696.31 | T0041 LOCKED:CN_DN_PAIR ↔ Crd Note 14120 |
+| 22 Dec 2025 | Crd Note | 14141 | DN#21433-EMPTY | CYL | -5,347.50 | -651.19 | T0042 LOCKED:CN_DN_PAIR ↔ Inv 48421 |
+| 22 Dec 2025 | Payment | 42764 | TRANSF \| STAT 121 | LPG | -504.58 | -1,155.77 | T0092 LOCKED:EXACT_SUM ↔ Inv 48370, Inv 48287 |
+| 22 Dec 2025 | Invoice | 48420 | DN#21433 | LPG | 5,634.38 | 4,478.61 | T0093 LOCKED:EXACT_SINGLE ↔ Pmt 42853 |
+| 22 Dec 2025 | Invoice | 48421 | DN#21433-EMPTY | CYL | 5,347.50 | 9,826.11 | T0042 LOCKED:CN_DN_PAIR ↔ Crd Note 14141 |
+| 30 Dec 2025 | Crd Note | 14186 | DN#20963-EMPTY | CYL | -517.50 | 9,308.61 | T0043 LOCKED:CN_DN_PAIR ↔ Inv 48545 |
+| 30 Dec 2025 | Invoice | 48544 | DN#20963 | LPG | 252.29 | 9,560.90 | T0094 LOCKED:EXACT_SINGLE ↔ Pmt 42859 |
+| 30 Dec 2025 | Invoice | 48545 | DN#20963-EMPTY | CYL | 517.50 | 10,078.40 | T0043 LOCKED:CN_DN_PAIR ↔ Crd Note 14186 |
+
+### January 2026
+
+Opening balance (ERP running): **R10,078.40**
+
+| Date | Type | Doc # | Reference | Lane | Amount (R) | ERP running (R) | Matcher status |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: | :--- |
+| 02 Jan 2026 | Payment | 42853 | TRANSF \| STAT 122 | LPG | -5,634.38 | 4,444.02 | T0093 LOCKED:EXACT_SINGLE ↔ Inv 48420 |
+| 05 Jan 2026 | Payment | 42859 | TRANSF \| STAT 122 | LPG | -252.29 | 4,191.73 | T0094 LOCKED:EXACT_SINGLE ↔ Inv 48544 |
+| 09 Jan 2026 | Crd Note | 14266 | DN-21461 | CYL | -517.50 | 3,674.23 | T0044 LOCKED:CN_DN_PAIR ↔ Inv 48696 |
+| 09 Jan 2026 | Invoice | 48695 | DN-21461 PMB | LPG | 252.29 | 3,926.52 | T0118 LOCKED:OPERATOR_RULING [applied_to_bf] ↔ Pmt 42986 |
+| 09 Jan 2026 | Invoice | 48696 | DN-21461 | CYL | 517.50 | 4,444.02 | T0044 LOCKED:CN_DN_PAIR ↔ Crd Note 14266 |
+| 12 Jan 2026 | Payment | 42986 | TRANSF \| STAT 122 | LPG | -652.29 | 3,791.73 | T0118 LOCKED:OPERATOR_RULING [applied_to_bf] ↔ Inv 48695 |
+| 17 Jan 2026 | Invoice | 48824 | DN~21643 | LPG | 5,415.90 | 9,207.63 | T0095 LOCKED:EXACT_SINGLE ↔ Pmt 43063 |
+| 17 Jan 2026 | Invoice | 48825 | DN~21643~EMPTY | CYL | 4,830.00 | 14,037.63 | T0148 CN_DN_PAIR ? ↔ Crd Note 14311 |
+| 19 Jan 2026 | Crd Note | 14295 | DN/21654-EMPTY | CYL | -517.50 | 13,520.13 | T0045 LOCKED:CN_DN_PAIR ↔ Inv 48858 |
+| 19 Jan 2026 | Payment | 43063 | TRANSF \| STAT 122 | LPG | -5,415.90 | 8,104.23 | T0095 LOCKED:EXACT_SINGLE ↔ Inv 48824 |
+| 19 Jan 2026 | Invoice | 48857 | DN/21654 | LPG | 253.87 | 8,358.10 | T0096 LOCKED:EXACT_SINGLE ↔ Pmt 43151 |
+| 19 Jan 2026 | Invoice | 48858 | DN/21654-EMPTY | CYL | 517.50 | 8,875.60 | T0045 LOCKED:CN_DN_PAIR ↔ Crd Note 14295 |
+| 22 Jan 2026 | Crd Note | 14311 | DN~21643~EMPTY | CYL | -4,830.00 | 4,045.60 | T0148 CN_DN_PAIR ? ↔ Inv 48825 |
+| 26 Jan 2026 | Crd Note | 14332 | DN/21666-EMPTY | CYL | -1,035.00 | 3,010.60 | T0046 LOCKED:CN_DN_PAIR ↔ Inv 48938 |
+| 26 Jan 2026 | Payment | 43151 | TRANSF \| STAT 122 | LPG | -253.87 | 2,756.73 | T0096 LOCKED:EXACT_SINGLE ↔ Inv 48857 |
+| 26 Jan 2026 | Invoice | 48937 | DN/21666 | LPG | 507.75 | 3,264.48 | T0097 LOCKED:EXACT_SINGLE ↔ Pmt 43230 |
+| 26 Jan 2026 | Invoice | 48938 | DN/21666-EMPTY | CYL | 1,035.00 | 4,299.48 | T0046 LOCKED:CN_DN_PAIR ↔ Crd Note 14332 |
+
+### February 2026
+
+Opening balance (ERP running): **R4,299.48**
+
+| Date | Type | Doc # | Reference | Lane | Amount (R) | ERP running (R) | Matcher status |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: | :--- |
+| 02 Feb 2026 | Payment | 43230 | TRANSF \| STAT 123 | LPG | -507.75 | 3,791.73 | T0097 LOCKED:EXACT_SINGLE ↔ Inv 48937 |
+| 05 Feb 2026 | Crd Note | 14377 | DN#21236EMPTY | CYL | -5,347.50 | -1,555.77 | T0047 LOCKED:CN_DN_PAIR ↔ Inv 49099 |
+| 05 Feb 2026 | Invoice | 49098 | DN#21236 | LPG | 5,722.91 | 4,167.14 | T0098 LOCKED:EXACT_SUM ↔ Pmt 43437, Inv 49399 |
+| 05 Feb 2026 | Invoice | 49099 | DN#21236EMPTY | CYL | 5,347.50 | 9,514.64 | T0047 LOCKED:CN_DN_PAIR ↔ Crd Note 14377 |
+| 18 Feb 2026 | Crd Note | 14441 | DN21907-`EMPTY | CYL | -517.50 | 8,997.14 | T0048 LOCKED:CN_DN_PAIR ↔ Inv 49298 |
+| 18 Feb 2026 | Invoice | 49297 | DN` | LPG | 256.36 | 9,253.50 | T0099 LOCKED:EXACT_SUM ↔ Pmt 43644, Inv 49506 |
+| 18 Feb 2026 | Invoice | 49298 | DN21907-`EMPTY | CYL | 517.50 | 9,771.00 | T0048 LOCKED:CN_DN_PAIR ↔ Crd Note 14441 |
+| 24 Feb 2026 | Payment | 43437 | TRANSF \| STAT 123 | LPG | -5,979.27 | 3,791.73 | T0098 LOCKED:EXACT_SUM ↔ Inv 49399, Inv 49098 |
+| 24 Feb 2026 | Invoice | 49399 | DN#21928 | LPG | 256.36 | 4,048.09 | T0098 LOCKED:EXACT_SUM ↔ Pmt 43437, Inv 49098 |
+| 24 Feb 2026 | Invoice | 49400 | DN#21928-EMPTY | CYL | 517.50 | 4,565.59 | T0049 LOCKED:CN_DN_PAIR ↔ Crd Note 14484 |
+| 25 Feb 2026 | Crd Note | 14484 | DN#21928-EMPTY | CYL | -517.50 | 4,048.09 | T0049 LOCKED:CN_DN_PAIR ↔ Inv 49400 |
+| 26 Feb 2026 | Invoice | 49456 | DN#21801 | LPG | 6,836.29 | 10,884.38 | T0149 CN_DN_PAIR ? ↔ Crd Note 14516 |
+| 26 Feb 2026 | Invoice | 49457 | DN#21801-EMPTY | CYL | 6,037.50 | 16,921.88 | T0150 CN_DN_PAIR ? ↔ Crd Note 14517 |
+
+### March 2026
+
+Opening balance (ERP running): **R16,921.88**
+
+| Date | Type | Doc # | Reference | Lane | Amount (R) | ERP running (R) | Matcher status |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: | :--- |
+| 02 Mar 2026 | Crd Note | 14516 | DN#21801 | LPG | -6,836.29 | 10,085.59 | T0149 CN_DN_PAIR ? ↔ Inv 49456 |
+| 02 Mar 2026 | Crd Note | 14517 | DN#21801-EMPTY | CYL | -6,037.50 | 4,048.09 | T0150 CN_DN_PAIR ? ↔ Inv 49457 |
+| 02 Mar 2026 | Crd Note | 14520 | DN#21946-EMPTY | CYL | -5,347.50 | -1,299.41 | T0050 LOCKED:CN_DN_PAIR ↔ Inv 49507 |
+| 02 Mar 2026 | Invoice | 49506 | DN#21946 | LPG | 5,725.39 | 4,425.98 | T0099 LOCKED:EXACT_SUM ↔ Pmt 43644, Inv 49297 |
+| 02 Mar 2026 | Invoice | 49507 | DN#21946-EMPTY | CYL | 5,347.50 | 9,773.48 | T0050 LOCKED:CN_DN_PAIR ↔ Crd Note 14520 |
+| 09 Mar 2026 | Payment | 43644 | TRANSF \| STAT 124 | LPG | -5,981.75 | 3,791.73 | T0099 LOCKED:EXACT_SUM ↔ Inv 49506, Inv 49297 |
+| 09 Mar 2026 | Invoice | 49642 | DN#21952 | LPG | 258.16 | 4,049.89 | T0100 LOCKED:EXACT_SINGLE ↔ Pmt 43696 |
+| 09 Mar 2026 | Invoice | 49643 | DN#21952-EMPTY | CYL | 517.50 | 4,567.39 | T0051 LOCKED:CN_DN_PAIR ↔ Crd Note 14564 |
+| 10 Mar 2026 | Crd Note | 14564 | DN#21952-EMPTY | CYL | -517.50 | 4,049.89 | T0051 LOCKED:CN_DN_PAIR ↔ Inv 49643 |
+| 16 Mar 2026 | Payment | 43696 | TRANSF \| STAT 124 | LPG | -258.16 | 3,791.73 | T0100 LOCKED:EXACT_SINGLE ↔ Inv 49642 |
+| 18 Mar 2026 | Crd Note | 14611 | DN#22133-EMPTY | CYL | -517.50 | 3,274.23 | T0052 LOCKED:CN_DN_PAIR ↔ Inv 49799 |
+| 18 Mar 2026 | Invoice | 49798 | DN#22133 | LPG | 258.16 | 3,532.39 | T0101 LOCKED:EXACT_MONTH_SUM ↔ Pmt 43751, Inv 49836 |
+| 18 Mar 2026 | Invoice | 49799 | DN#22133-EMPTY | CYL | 517.50 | 4,049.89 | T0052 LOCKED:CN_DN_PAIR ↔ Crd Note 14611 |
+| 19 Mar 2026 | Invoice | 49836 | DN=22140 | LPG | 5,507.44 | 9,557.33 | T0101 LOCKED:EXACT_MONTH_SUM ↔ Pmt 43751, Inv 49798 |
+| 19 Mar 2026 | Invoice | 49837 | DN=22140=EMPTY | CYL | 4,830.00 | 14,387.33 | T0053 LOCKED:CN_DN_PAIR ↔ Crd Note 14629 |
+| 20 Mar 2026 | Crd Note | 14629 | DN=22140=EMPTY | CYL | -4,830.00 | 9,557.33 | T0053 LOCKED:CN_DN_PAIR ↔ Inv 49837 |
+| 23 Mar 2026 | Payment | 43751 | TRANSF \| STAT 124 | LPG | -5,765.60 | 3,791.73 | T0101 LOCKED:EXACT_MONTH_SUM ↔ Inv 49798, Inv 49836 |
+| 25 Mar 2026 | Crd Note | 14651 | DN-00-EMPTY | CYL | -517.50 | 3,274.23 | T0157 CN_AMOUNT_DATE ? ↔ Inv 49904 |
+| 25 Mar 2026 | Invoice | 49903 | DN-21977 | LPG | 258.16 | 3,532.39 | T0102 LOCKED:EXACT_SINGLE ↔ Pmt 43871 |
+| 25 Mar 2026 | Invoice | 49904 | DN-00-EMPTY | CYL | 517.50 | 4,049.89 | T0157 CN_AMOUNT_DATE ? ↔ Crd Note 14651 |
+| 31 Mar 2026 | Payment | 43871 | TRANSF \| STAT 124 | LPG | -258.16 | 3,791.73 | T0102 LOCKED:EXACT_SINGLE ↔ Inv 49903 |
+| 31 Mar 2026 | Invoice | 50011 | DN-21850 | LPG | 516.33 | 4,308.06 | T0103 LOCKED:EXACT_SINGLE ↔ Pmt 43964 |
+| 31 Mar 2026 | Invoice | 50012 | DN-21850-EMPTY | CYL | 1,035.00 | 5,343.06 | T0054 LOCKED:CN_DN_PAIR ↔ Crd Note 14691 |
+
+### April 2026
+
+Opening balance (ERP running): **R5,343.06**
+
+| Date | Type | Doc # | Reference | Lane | Amount (R) | ERP running (R) | Matcher status |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: | :--- |
+| 01 Apr 2026 | Crd Note | 14691 | DN-21850-EMPTY | CYL | -1,035.00 | 4,308.06 | T0054 LOCKED:CN_DN_PAIR ↔ Inv 50012 |
+| 07 Apr 2026 | Crd Note | 14714 | DN-21863-EMPTY | CYL | -517.50 | 3,790.56 | T0055 LOCKED:CN_DN_PAIR ↔ Inv 50108 |
+| 07 Apr 2026 | Invoice | 50107 | DN-21863 | LPG | 285.17 | 4,075.73 | T0104 LOCKED:EXACT_MONTH_SUM ↔ Pmt 44001, Inv 50140 |
+| 07 Apr 2026 | Invoice | 50108 | DN-21863-EMPTY | CYL | 517.50 | 4,593.23 | T0055 LOCKED:CN_DN_PAIR ↔ Crd Note 14714 |
+| 08 Apr 2026 | Invoice | 50140 | DN#22155 | LPG | 6,083.41 | 10,676.64 | T0104 LOCKED:EXACT_MONTH_SUM ↔ Pmt 44001, Inv 50107 |
+| 08 Apr 2026 | Invoice | 50141 | DN#22155- EMPTY | CYL | 4,830.00 | 15,506.64 | T0056 LOCKED:CN_DN_PAIR ↔ Crd Note 14732 |
+| 09 Apr 2026 | Crd Note | 14732 | DN#22155- EMPTY | CYL | -4,830.00 | 10,676.64 | T0056 LOCKED:CN_DN_PAIR ↔ Inv 50141 |
+| 10 Apr 2026 | Payment | 43964 | TRANSF \| STAT 125 | LPG | -516.33 | 10,160.31 | T0103 LOCKED:EXACT_SINGLE ↔ Inv 50011 |
+| 14 Apr 2026 | Payment | 44001 | TRANSF \| STAT 125 | LPG | -6,368.58 | 3,791.73 | T0104 LOCKED:EXACT_MONTH_SUM ↔ Inv 50107, Inv 50140 |
+| 18 Apr 2026 | Invoice | 50288 | DN-21328 | LPG | 285.17 | 4,076.90 | T0105 LOCKED:EXACT_SINGLE ↔ Pmt 44063 |
+| 18 Apr 2026 | Invoice | 50289 | DN-21328-EMPTY | CYL | 517.50 | 4,594.40 | T0151 CN_DN_PAIR ? ↔ Crd Note 14780 |
+| 20 Apr 2026 | Crd Note | 14780 | DN-21328-EMPTY | CYL | -517.50 | 4,076.90 | T0151 CN_DN_PAIR ? ↔ Inv 50289 |
+| 21 Apr 2026 | Payment | 44063 | TRANSF \| STAT 125 | LPG | -285.17 | 3,791.73 | T0105 LOCKED:EXACT_SINGLE ↔ Inv 50288 |
+| 27 Apr 2026 | Invoice | 50390 | DN-22345 | LPG | 570.33 | 4,362.06 | T0106 LOCKED:EXACT_MONTH_SUM ↔ Pmt 44218, Inv 50427 |
+| 27 Apr 2026 | Invoice | 50391 | DN-22345-EMPTY | CYL | 1,035.00 | 5,397.06 | T0057 LOCKED:CN_DN_PAIR ↔ Crd Note 14809 |
+| 28 Apr 2026 | Crd Note | 14809 | DN-22345-EMPTY | CYL | -1,035.00 | 4,362.06 | T0057 LOCKED:CN_DN_PAIR ↔ Inv 50391 |
+| 29 Apr 2026 | Invoice | 50427 | DN-21357 | LPG | 6,083.41 | 10,445.47 | T0106 LOCKED:EXACT_MONTH_SUM ↔ Pmt 44218, Inv 50390 |
+| 29 Apr 2026 | Invoice | 50428 | DN-21357-EMPTY | CYL | 4,830.00 | 15,275.47 | T0058 LOCKED:CN_DN_PAIR ↔ Crd Note 14821 |
+| 30 Apr 2026 | Crd Note | 14821 | DN-21357-EMPTY | CYL | -4,830.00 | 10,445.47 | T0058 LOCKED:CN_DN_PAIR ↔ Inv 50428 |
+
+### May 2026
+
+Opening balance (ERP running): **R10,445.47**
+
+| Date | Type | Doc # | Reference | Lane | Amount (R) | ERP running (R) | Matcher status |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: | :--- |
+| 04 May 2026 | Payment | 44218 | TRANSF \| STAT 125 | LPG | -6,653.74 | 3,791.73 | T0106 LOCKED:EXACT_MONTH_SUM ↔ Inv 50390, Inv 50427 |
+| 05 May 2026 | Crd Note | 14853 | DN#22219-EMPTY | CYL | -517.50 | 3,274.23 | T0059 LOCKED:CN_DN_PAIR ↔ Inv 50512 |
+| 05 May 2026 | Invoice | 50511 | DN#22219 | LPG | 285.17 | 3,559.40 | T0107 LOCKED:EXACT_SINGLE ↔ Pmt 44289 |
+| 05 May 2026 | Invoice | 50512 | DN#22219-EMPTY | CYL | 517.50 | 4,076.90 | T0059 LOCKED:CN_DN_PAIR ↔ Crd Note 14853 |
+| 11 May 2026 | Invoice | 50629 | DN-22382 | LPG | 2,057.53 | 6,134.43 | T0108 LOCKED:EXACT_SINGLE ↔ Pmt 44374 |
+| 12 May 2026 | Payment | 44289 | TRANSF \| STAT 126 | LPG | -285.17 | 5,849.26 | T0107 LOCKED:EXACT_SINGLE ↔ Inv 50511 |
+| 18 May 2026 | Invoice | 50721 | DN#22719 | CYL | 4,830.00 | 10,679.26 | T0061 LOCKED:CN_DN_PAIR ↔ Crd Note 14917 |
+| 18 May 2026 | Invoice | 50721 | DN#22719 | LPG | 324.88 | 11,004.14 | T0060 LOCKED:CN_DN_PAIR ↔ Crd Note 14917 |
+| 18 May 2026 | Invoice | 50722 | DN#22719 | LPG | 7,255.51 | 18,259.65 | T0109 LOCKED:EXACT_SINGLE ↔ Pmt 44456 |
+| 18 May 2026 | Invoice | 50723 | DN-22719 | CYL | 5,347.50 | 23,607.15 | T0062 LOCKED:CN_DN_PAIR ↔ Crd Note 14918 |
+| 19 May 2026 | Crd Note | 14917 | DN#22719 | CYL | -4,830.00 | 18,777.15 | T0061 LOCKED:CN_DN_PAIR ↔ Inv 50721 |
+| 19 May 2026 | Crd Note | 14917 | DN#22719 | LPG | -324.88 | 18,452.27 | T0060 LOCKED:CN_DN_PAIR ↔ Inv 50721 |
+| 19 May 2026 | Crd Note | 14918 | DN-22719 | CYL | -5,347.50 | 13,104.77 | T0062 LOCKED:CN_DN_PAIR ↔ Inv 50723 |
+| 20 May 2026 | Payment | 44374 | TRANSF \| STAT 126 | LPG | -2,057.53 | 11,047.24 | T0108 LOCKED:EXACT_SINGLE ↔ Inv 50629 |
+| 25 May 2026 | Invoice | 50843 | DN#22752 | LPG | 649.75 | 11,696.99 | T0110 LOCKED:EXACT_SINGLE ↔ Pmt 44551 |
+| 26 May 2026 | Payment | 44456 | TRANSF \| STAT 126 | LPG | -7,255.51 | 4,441.48 | T0109 LOCKED:EXACT_SINGLE ↔ Inv 50722 |
+
+### June 2026
+
+Opening balance (ERP running): **R4,441.48**
+
+| Date | Type | Doc # | Reference | Lane | Amount (R) | ERP running (R) | Matcher status |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: | :--- |
+| 01 Jun 2026 | Invoice | 50981 | DN#22613 | LPG | 314.08 | 4,755.56 | T0111 LOCKED:EXACT_SINGLE ↔ Pmt 44654 |
+| 01 Jun 2026 | Invoice | 50982 | DN#22613-EMPTY | CYL | 517.50 | 5,273.06 | T0152 CN_DN_PAIR ? ↔ Crd Note 15015 |
+| 02 Jun 2026 | Payment | 44551 | TRANSF \| STAT 127 | LPG | -649.75 | 4,623.31 | T0110 LOCKED:EXACT_SINGLE ↔ Inv 50843 |
+| 03 Jun 2026 | Crd Note | 15015 | DN#22613-EMPTY | CYL | -517.50 | 4,105.81 | T0152 CN_DN_PAIR ? ↔ Inv 50982 |
+| 09 Jun 2026 | Payment | 44654 | TRANSF \| STAT 127 | LPG | -314.08 | 3,791.73 | T0111 LOCKED:EXACT_SINGLE ↔ Inv 50981 |
+| 10 Jun 2026 | Crd Note | 15043 | DN#22792 | CYL | -5,347.50 | -1,555.77 | T0063 LOCKED:CN_DN_PAIR ↔ Inv 51138 |
+| 10 Jun 2026 | Invoice | 51137 | DN#22792 | LPG | 6,984.39 | 5,428.62 | T0112 LOCKED:EXACT_MONTH_SUM ↔ Pmt 44877, Inv 51250, Inv 51314 |
+| 10 Jun 2026 | Invoice | 51138 | DN#22792 | CYL | 5,347.50 | 10,776.12 | T0063 LOCKED:CN_DN_PAIR ↔ Crd Note 15043 |
+| 17 Jun 2026 | Crd Note | 15076 | DN#22906-EMPTIES | CYL | -517.50 | 10,258.62 | T0064 LOCKED:CN_DN_PAIR ↔ Inv 51251 |
+| 17 Jun 2026 | Invoice | 51250 | DN#22906 | LPG | 312.73 | 10,571.35 | T0112 LOCKED:EXACT_MONTH_SUM ↔ Pmt 44877, Inv 51137, Inv 51314 |
+| 17 Jun 2026 | Invoice | 51251 | DN#22906-EMPTIES | CYL | 517.50 | 11,088.85 | T0064 LOCKED:CN_DN_PAIR ↔ Crd Note 15076 |
+| 20 Jun 2026 | Crd Note | 15094 | DN#22516-EMPTIES | CYL | -517.50 | 10,571.35 | T0065 LOCKED:CN_DN_PAIR ↔ Inv 51315 |
+| 20 Jun 2026 | Invoice | 51314 | DN#22516 | LPG | 312.73 | 10,884.08 | T0112 LOCKED:EXACT_MONTH_SUM ↔ Pmt 44877, Inv 51137, Inv 51250 |
+| 20 Jun 2026 | Invoice | 51315 | DN#22516-EMPTIES | CYL | 517.50 | 11,401.58 | T0065 LOCKED:CN_DN_PAIR ↔ Crd Note 15094 |
+| 24 Jun 2026 | Payment | 44877 | TRANSF \| STAT 127 | LPG | -7,609.85 | 3,791.73 | T0112 LOCKED:EXACT_MONTH_SUM ↔ Inv 51137, Inv 51250, Inv 51314 |
+| 25 Jun 2026 | Invoice | 51428 | DN#22661 | LPG | 312.73 | 4,104.46 | T0136 LOCKED:EXACT_SINGLE ↔ Pmt 44962 |
+| 25 Jun 2026 | Invoice | 51429 | DN#22661=EMPTY | CYL | 517.50 | 4,621.96 | T0066 LOCKED:CN_DN_PAIR ↔ Crd Note 15129 |
+| 26 Jun 2026 | Crd Note | 15129 | DN#22661=EMPTY | CYL | -517.50 | 4,104.46 | T0066 LOCKED:CN_DN_PAIR ↔ Inv 51429 |
+| 29 Jun 2026 | Crd Note | 15146 | DN#22921=EMPTY | CYL | -4,830.00 | -725.54 | T0067 LOCKED:CN_DN_PAIR ↔ Inv 51473 |
+| 29 Jun 2026 | Invoice | 51472 | DN#22921 | LPG | 6,671.66 | 5,946.12 | T0137 LOCKED:EXACT_SUM ↔ Pmt 45095, Inv 51594 |
+| 29 Jun 2026 | Invoice | 51473 | DN#22921=EMPTY | CYL | 4,830.00 | 10,776.12 | T0067 LOCKED:CN_DN_PAIR ↔ Crd Note 15146 |
+
+### July 2026
+
+Opening balance (ERP running): **R10,776.12**
+
+| Date | Type | Doc # | Reference | Lane | Amount (R) | ERP running (R) | Matcher status |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: | :--- |
+| 01 Jul 2026 | Payment | 44962 | TRANSF \| STAT 127 | LPG | -312.73 | 10,463.39 | T0136 LOCKED:EXACT_SINGLE ↔ Inv 51428 |
+| 03 Jul 2026 | Invoice | 51594 | DN#22545 | LPG | 314.03 | 10,777.42 | T0137 LOCKED:EXACT_SUM ↔ Pmt 45095, Inv 51472 |
+| 04 Jul 2026 | Crd Note | 15191 | DN#22545=EMPTY | CYL | -517.50 | 10,259.92 | T0120 LOCKED:CN_DN_PAIR ↔ Inv 51595 |
+| 04 Jul 2026 | Invoice | 51595 | DN#22545=EMPTY | CYL | 517.50 | 10,777.42 | T0120 LOCKED:CN_DN_PAIR ↔ Crd Note 15191 |
+| 06 Jul 2026 | Payment | 45095 | TRANSF \| STAT 128 | LPG | -6,985.69 | 3,791.73 | T0137 LOCKED:EXACT_SUM ↔ Inv 51594, Inv 51472 |
+| 09 Jul 2026 | Crd Note | 15228 | DN#22683=EMPTY | CYL | -517.50 | 3,274.23 | T0121 LOCKED:CN_DN_PAIR ↔ Inv 51724 |
+| 09 Jul 2026 | Invoice | 51723 | DN#22683 | LPG | 314.03 | 3,588.26 | T0138 LOCKED:EXACT_MONTH_SUM ↔ Pmt 45194, Inv 51739 |
+| 09 Jul 2026 | Invoice | 51724 | DN#22683=EMPTY | CYL | 517.50 | 4,105.76 | T0121 LOCKED:CN_DN_PAIR ↔ Crd Note 15228 |
+| 10 Jul 2026 | Crd Note | 15233 | DN#22950=EMPTY | CYL | -4,830.00 | -724.24 | T0122 LOCKED:CN_DN_PAIR ↔ Inv 51740 |
+| 10 Jul 2026 | Invoice | 51739 | DN#22950 | LPG | 6,699.21 | 5,974.97 | T0138 LOCKED:EXACT_MONTH_SUM ↔ Pmt 45194, Inv 51723 |
+| 10 Jul 2026 | Invoice | 51740 | DN#22950=EMPTY | CYL | 4,830.00 | 10,804.97 | T0122 LOCKED:CN_DN_PAIR ↔ Crd Note 15233 |
+| 13 Jul 2026 | Payment | 45194 | TRANSF \| STAT 128 | LPG | -7,013.24 | 3,791.73 | T0138 LOCKED:EXACT_MONTH_SUM ↔ Inv 51723, Inv 51739 |
+| 16 Jul 2026 | Crd Note | 15270 | DN#22959=EMPTY | CYL | -517.50 | 3,274.23 | T0123 LOCKED:CN_DN_PAIR ↔ Inv 51867 |
+| 16 Jul 2026 | Invoice | 51866 | DN#22959 | LPG | 314.03 | 3,588.26 | T0139 LOCKED:EXACT_SINGLE ↔ Pmt 45329 |
+| 16 Jul 2026 | Invoice | 51867 | DN#22959=EMPTY | CYL | 517.50 | 4,105.76 | T0123 LOCKED:CN_DN_PAIR ↔ Crd Note 15270 |
+| 21 Jul 2026 | Payment | 45329 | TRANSF \| STAT 128 | LPG | -314.03 | 3,791.73 | T0139 LOCKED:EXACT_SINGLE ↔ Inv 51866 |
+| 25 Jul 2026 | Invoice | 52077 | DN#23910 | LPG | 628.06 | 4,419.79 | T0140 LOCKED:EXACT_SINGLE ↔ Pmt 45466 |
+| 27 Jul 2026 | Invoice | 52100 | DN#22846 | LPG | 6,699.21 | 11,119.00 | T0141 LOCKED:EXACT_MONTH_SUM ↔ Pmt 45579, Inv 52193 |
+| 27 Jul 2026 | Invoice | 52101 | DN#22846=EMPTY | CYL | 4,830.00 | 15,949.00 | T0124 LOCKED:CN_DN_PAIR ↔ Crd Note 15347 |
+| 28 Jul 2026 | Crd Note | 15347 | DN#22846=EMPTY | CYL | -4,830.00 | 11,119.00 | T0124 LOCKED:CN_DN_PAIR ↔ Inv 52101 |
+| 28 Jul 2026 | Payment | 45466 | TRANSF \| STAT 128 | LPG | -628.06 | 10,490.94 | T0140 LOCKED:EXACT_SINGLE ↔ Inv 52077 |
+| 30 Jul 2026 | Invoice | 52193 | DN#23928 | LPG | 314.03 | 10,804.97 | T0141 LOCKED:EXACT_MONTH_SUM ↔ Pmt 45579, Inv 52100 |
+| 30 Jul 2026 | Invoice | 52194 | DN#23928:EMPTY | CYL | 517.50 | 11,322.47 | T0125 LOCKED:CN_DN_PAIR ↔ Crd Note 15362 |
+| 31 Jul 2026 | Crd Note | 15362 | DN#23928:EMPTY | CYL | -517.50 | 10,804.97 | T0125 LOCKED:CN_DN_PAIR ↔ Inv 52194 |
+
+### August 2026
+
+Opening balance (ERP running): **R10,804.97**
+
+| Date | Type | Doc # | Reference | Lane | Amount (R) | ERP running (R) | Matcher status |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: | :--- |
+| 03 Aug 2026 | Payment | 45579 | TRANSF \| STAT 129 | LPG | -7,013.24 | 3,791.73 | T0141 LOCKED:EXACT_MONTH_SUM ↔ Inv 52100, Inv 52193 |
+| 07 Aug 2026 | Crd Note | 15556 | DN#24252 | LPG | -314.03 | 3,477.70 | T0126 LOCKED:CN_DN_PAIR ↔ Inv 52391 |
+| 07 Aug 2026 | Invoice | 52391 | DN#24252 | LPG | 314.03 | 3,791.73 | T0126 LOCKED:CN_DN_PAIR ↔ Crd Note 15556 |
+| 07 Aug 2026 | Invoice | 52813 | DN#24252 | LPG | 280.39 | 4,072.12 | T0113 LOCKED:OPERATOR_RULING [customer_credit] ↔ Pmt 45782, Inv 52547 |
+| 12 Aug 2026 | Crd Note | 15557 | DN#24904 | LPG | -5,981.61 | -1,909.49 | T0127 LOCKED:CN_DN_PAIR ↔ Inv 52515 |
+| 12 Aug 2026 | Invoice | 52515 | DN#24904 | LPG | 5,981.61 | 4,072.12 | T0127 LOCKED:CN_DN_PAIR ↔ Crd Note 15557 |
+| 12 Aug 2026 | Invoice | 52516 | DN#24904-EMPTY | CYL | 4,830.00 | 8,902.12 | T0128 LOCKED:CN_DN_PAIR ↔ Crd Note 15454 |
+| 12 Aug 2026 | Invoice | 52814 | DN#24904 | LPG | 5,981.61 | 14,883.73 | OPEN |
+| 13 Aug 2026 | Crd Note | 15454 | DN#24904-EMPTY | CYL | -4,830.00 | 10,053.73 | T0128 LOCKED:CN_DN_PAIR ↔ Inv 52516 |
+| 14 Aug 2026 | Crd Note | 15463 | DN#24272-EMPTY | CYL | -517.50 | 9,536.23 | T0129 LOCKED:CN_DN_PAIR ↔ Inv 52548 |
+| 14 Aug 2026 | Invoice | 52547 | DN#24272 | LPG | 280.39 | 9,816.62 | T0113 LOCKED:OPERATOR_RULING [customer_credit] ↔ Pmt 45782, Inv 52813 |
+| 14 Aug 2026 | Invoice | 52548 | DN#24272-EMPTY | CYL | 517.50 | 10,334.12 | T0129 LOCKED:CN_DN_PAIR ↔ Crd Note 15463 |
+| 17 Aug 2026 | Payment | 45782 | TRANSF \| STAT 129 | LPG | -594.42 | 9,739.70 | T0113 LOCKED:OPERATOR_RULING [customer_credit] ↔ Inv 52813, Inv 52547 |
+| 22 Aug 2026 | Invoice | 52738 | DN#24930 | LPG | 280.39 | 10,020.09 | T0143 LOCKED:EXACT_SINGLE ↔ Pmt 45998 |
+| 22 Aug 2026 | Invoice | 52739 | DN#24930-EMPTY | CYL | 517.50 | 10,537.59 | T0153 CN_DN_PAIR ? ↔ Crd Note 15536 |
+| 24 Aug 2026 | Crd Note | 15536 | DN#24930-EMPTY | CYL | -517.50 | 10,020.09 | T0153 CN_DN_PAIR ? ↔ Inv 52739 |
+| 24 Aug 2026 | Payment | 45888 | TRANSF \| STAT 129 | LPG | -280.39 | 9,739.70 | T0142 LOCKED:EXACT_SINGLE ↔ Inv 52764 |
+| 24 Aug 2026 | Invoice | 52764 | DN#24284 | LPG | 280.39 | 10,020.09 | T0142 LOCKED:EXACT_SINGLE ↔ Pmt 45888 |
+| 31 Aug 2026 | Payment | 45998 | TRANSF \| STAT 129 | LPG | -280.39 | 9,739.70 | T0143 LOCKED:EXACT_SINGLE ↔ Inv 52738 |
+
+### September 2026
+
+Opening balance (ERP running): **R9,739.70**
+
+| Date | Type | Doc # | Reference | Lane | Amount (R) | ERP running (R) | Matcher status |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: | :--- |
+| 01 Sept 2026 | Invoice | 52893 | DN#24805 | LPG | 6,262.00 | 16,001.70 | T0115 LOCKED:OPERATOR_RULING [customer_credit] ↔ Pmt 46092 |
+| 01 Sept 2026 | Invoice | 52894 | DN#24805-EMPTY | CYL | 5,347.50 | 21,349.20 | T0130 LOCKED:CN_DN_PAIR ↔ Crd Note 15590 |
+| 02 Sept 2026 | Crd Note | 15590 | DN#24805-EMPTY | CYL | -5,347.50 | 16,001.70 | T0130 LOCKED:CN_DN_PAIR ↔ Inv 52894 |
+| 07 Sept 2026 | Crd Note | 15622 | DN#24971-EMPTY | CYL | -517.50 | 15,484.20 | T0131 LOCKED:CN_DN_PAIR ↔ Inv 53012 |
+| 07 Sept 2026 | Invoice | 53011 | DN#24971 | LPG | 285.84 | 15,770.04 | T0144 LOCKED:EXACT_SINGLE ↔ Pmt 46160 |
+| 07 Sept 2026 | Invoice | 53012 | DN#24971-EMPTY | CYL | 517.50 | 16,287.54 | T0131 LOCKED:CN_DN_PAIR ↔ Crd Note 15622 |
+| 08 Sept 2026 | Payment | 46092 | TRANSF \| STAT 130 | LPG | -6,268.00 | 10,019.54 | T0115 LOCKED:OPERATOR_RULING [customer_credit] ↔ Inv 52893 |
+| 14 Sept 2026 | Payment | 46160 | TRANSF \| STAT 130 | LPG | -285.84 | 9,733.70 | T0144 LOCKED:EXACT_SINGLE ↔ Inv 53011 |
+| 17 Sept 2026 | Crd Note | 15660 | DN#24999-EMMPTY | CYL | -4,830.00 | 4,903.70 | T0132 LOCKED:CN_DN_PAIR ↔ Inv 53166 |
+| 17 Sept 2026 | Crd Note | 15661 | 25000 | CYL | -517.50 | 4,386.20 | T0158 CN_AMOUNT_DATE ? ↔ Inv 53174 |
+| 17 Sept 2026 | Crd Note | 15679 | DN#24999 | LPG | -6,097.94 | -1,711.74 | T0133 LOCKED:CN_DN_PAIR ↔ Inv 53165 |
+| 17 Sept 2026 | Crd Note | 15680 | DN-25000 | LPG | -285.84 | -1,997.58 | T0134 LOCKED:CN_DN_PAIR ↔ Inv 53173 |
+| 17 Sept 2026 | Invoice | 53165 | DN#24999 | LPG | 6,097.94 | 4,100.36 | T0133 LOCKED:CN_DN_PAIR ↔ Crd Note 15679 |
+| 17 Sept 2026 | Invoice | 53166 | DN#24999-EMMPTY | CYL | 4,830.00 | 8,930.36 | T0132 LOCKED:CN_DN_PAIR ↔ Crd Note 15660 |
+| 17 Sept 2026 | Invoice | 53173 | DN-25000 | LPG | 285.84 | 9,216.20 | T0134 LOCKED:CN_DN_PAIR ↔ Crd Note 15680 |
+| 17 Sept 2026 | Invoice | 53174 | 25000 | CYL | 517.50 | 9,733.70 | T0158 CN_AMOUNT_DATE ? ↔ Crd Note 15661 |
+| 17 Sept 2026 | Invoice | 53214 | DN#24999 | LPG | 5,520.00 | 15,253.70 | T0114 LOCKED:OPERATOR_RULING [customer_credit] ↔ Pmt 46237, Inv 53215 |
+| 17 Sept 2026 | Invoice | 53215 | DN-25000 | LPG | 258.75 | 15,512.45 | T0114 LOCKED:OPERATOR_RULING [customer_credit] ↔ Pmt 46237, Inv 53214 |
+| 21 Sept 2026 | Payment | 46237 | TRANSF \| STAT 130 | LPG | -5,805.84 | 9,706.61 | T0114 LOCKED:OPERATOR_RULING [customer_credit] ↔ Inv 53214, Inv 53215 |
+| 25 Sept 2026 | Invoice | 53293 | DN#21379 | LPG | 258.75 | 9,965.36 | OPEN |
+| 29 Sept 2026 | Crd Note | 15716 | DN#23818-EMPTY | CYL | -517.50 | 9,447.86 | T0135 LOCKED:CN_DN_PAIR ↔ Inv 53356 |
+| 29 Sept 2026 | Invoice | 53355 | DN#23818 | LPG | 258.75 | 9,706.61 | OPEN |
+| 29 Sept 2026 | Invoice | 53356 | DN#23818-EMPTY | CYL | 517.50 | 10,224.11 | T0135 LOCKED:CN_DN_PAIR ↔ Crd Note 15716 |
+
+### October 2026
+
+Opening balance (ERP running): **R10,224.11**
+
+| Date | Type | Doc # | Reference | Lane | Amount (R) | ERP running (R) | Matcher status |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: | :--- |
+| 02 Oct 2026 | Crd Note | 15747 | 21397 | CYL | -4,830.00 | 5,394.11 | T0159 CN_AMOUNT_DATE ? ↔ Inv 53437 |
+| 02 Oct 2026 | Crd Note | 15755 | DN-23836 | CYL | -517.50 | 4,876.61 | T0154 CN_DN_PAIR ✓ ↔ Inv 53447 |
+| 02 Oct 2026 | Invoice | 53436 | DN-21397 | LPG | 5,520.00 | 10,396.61 | OPEN |
+| 02 Oct 2026 | Invoice | 53437 | 21397 | CYL | 4,830.00 | 15,226.61 | T0159 CN_AMOUNT_DATE ? ↔ Crd Note 15747 |
+| 02 Oct 2026 | Invoice | 53446 | DN-23836 | LPG | 258.75 | 15,485.36 | OPEN |
+| 02 Oct 2026 | Invoice | 53447 | DN-23836 | CYL | 517.50 | 16,002.86 | T0154 CN_DN_PAIR ✓ ↔ Crd Note 15755 |
+
+---
+
+## Ties by rule
+
+| Rule | Confirmed | Probable |
+| :--- | ---: | ---: |
+| LOCKED | 144 | 0 |
+| CN_DN_PAIR | 1 | 9 |
+| CN_AMOUNT_DATE | 0 | 5 |
+| NEAR_SUM | 0 | 1 |
+| PROXIMITY | 0 | 1 |
+| CYL_EXCHANGE | 1 | 0 |
+
+## Probable ties awaiting approval
+
+| Tie | Rule | Documents | Variance (R) |
+| :--- | :--- | :--- | ---: |
+| T0145 | CN_DN_PAIR | Invoice 42584, Crd Note 12361 | — |
+| T0146 | CN_DN_PAIR | Invoice 46653, Crd Note 13559 | — |
+| T0147 | CN_DN_PAIR | Invoice 47451, Crd Note 13805 | — |
+| T0148 | CN_DN_PAIR | Invoice 48825, Crd Note 14311 | — |
+| T0149 | CN_DN_PAIR | Invoice 49456, Crd Note 14516 | — |
+| T0150 | CN_DN_PAIR | Invoice 49457, Crd Note 14517 | — |
+| T0151 | CN_DN_PAIR | Invoice 50289, Crd Note 14780 | — |
+| T0152 | CN_DN_PAIR | Invoice 50982, Crd Note 15015 | — |
+| T0153 | CN_DN_PAIR | Invoice 52739, Crd Note 15536 | — |
+| T0155 | CN_AMOUNT_DATE | Invoice 44988, Crd Note 13028 | — |
+| T0156 | CN_AMOUNT_DATE | Invoice 45002, Crd Note 13264 | — |
+| T0157 | CN_AMOUNT_DATE | Invoice 49904, Crd Note 14651 | — |
+| T0158 | CN_AMOUNT_DATE | Invoice 53174, Crd Note 15661 | — |
+| T0159 | CN_AMOUNT_DATE | Invoice 53437, Crd Note 15747 | — |
+| T0160 | NEAR_SUM | Payment 38531, Invoice 42816, Invoice 42583 | -0.06 |
+| T0161 | PROXIMITY | Payment 38878, Invoice 43375 | 0.20 |
+
+Proof: holds (rebuilt R16,002.86 vs closing R16,002.86; ERP R16,002.86).
+

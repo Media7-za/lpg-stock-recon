@@ -1,7 +1,7 @@
 # Open Items Statement: SAKI - VICTORIA RD (SA0001) — Internal
 **Period:** from 07 Feb 2023 to 02 Oct 2026 &nbsp;|&nbsp; **Balance due:** R16,002.86
-**Status:** PROPOSED — NOT RATIFIED (`PROPOSED_Projection_Matching_Locks.md`, build step 3) · generated 2026-10-08 by `render_open_items.mjs`
-**Sources:** `analysis/debtors/SA0001/data/v5_projection.json` (TXT sha256 `837cff982c0c…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (145 confirmed / 16 probable ties)
+**Status:** PROPOSED — NOT RATIFIED (`PROPOSED_Projection_Matching_Locks.md`, build step 3) · generated 2026-10-09 by `render_open_items.mjs`
+**Sources:** `analysis/debtors/SA0001/data/v5_projection.json` (TXT sha256 `837cff982c0c…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (146 confirmed / 16 probable ties)
 **Locks:** closed through 2026-09-30, 144 locks applied
 
 ---
@@ -42,14 +42,7 @@
 
 ## Part 1B: CYL open items
 
-### October 2025
-
-| Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 09 Oct 2025 | Crd Note | 13648 | DN#20609-EMPTY | CYL | -3,622.50 | -3,622.50 |
-| 09 Oct 2025 | Invoice | 46993 | DN#20609-EMPTY | CYL | 4,830.00 | 1,207.50 |
-| 30 Oct 2025 | Crd Note | 13778 | DN#21130-EMPTY | CYL | -4,830.00 | -3,622.50 |
-| 30 Oct 2025 | Invoice | 47415 | DN#21130-EMPTY | CYL | 3,622.50 | 0.00 |
+_No open items._
 
 ---
 
@@ -95,6 +88,7 @@
 | :--- | ---: |
 | LOCKED | 144 |
 | CN_DN_PAIR | 1 |
+| CYL_EXCHANGE | 1 |
 
 Full tie list: `data/projection_matches.json`.
 

@@ -1,7 +1,7 @@
 # Open Items Statement: TANDOOR THE CLAY OVEN (TAN002) — Internal
 **Period:** from 22 Feb 2025 to 06 Oct 2026 &nbsp;|&nbsp; **Balance due:** R7,938.37
-**Status:** PROPOSED — NOT RATIFIED (`PROPOSED_Projection_Matching_Locks.md`, build step 3) · generated 2026-10-08 by `render_open_items.mjs`
-**Sources:** `analysis/debtors/TAN002/data/v5_projection.json` (TXT sha256 `51d10507d04c…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (67 confirmed / 20 probable ties) · **REVIEW ONLY:** ingestCoverage partial
+**Status:** PROPOSED — NOT RATIFIED (`PROPOSED_Projection_Matching_Locks.md`, build step 3) · generated 2026-10-09 by `render_open_items.mjs`
+**Sources:** `analysis/debtors/TAN002/data/v5_projection.json` (TXT sha256 `51d10507d04c…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (69 confirmed / 20 probable ties) · **REVIEW ONLY:** ingestCoverage partial
 **Locks:** no period closed yet
 
 ---
@@ -116,40 +116,6 @@
 | 26 May 2025 | Crd Note | 12567 | DN#12263-EMPTY | CYL | -1,725.00 | -1,725.00 |
 | 26 May 2025 | Invoice | 43365 | DN#12263-EMPTY | CYL | 1,897.50 | 172.50 |
 | 29 May 2025 | Invoice | 43468 | DN#12139-EMPTY | CYL | 1,725.00 | 1,897.50 |
-| 30 May 2025 | Crd Note | 12597 | DN#12139-EMPTY | CYL | -1,207.50 | 690.00 |
-
-### July 2025
-
-| Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 02 Jul 2025 | Crd Note | 12883 | DN#12154-EMPTY | CYL | -1,897.50 | -1,207.50 |
-| 02 Jul 2025 | Invoice | 44448 | DN#12154-EMPTY | CYL | 2,415.00 | 1,207.50 |
-| 23 Jul 2025 | Crd Note | 13036 | HILTON - | CYL | -2,415.00 | -1,207.50 |
-| 23 Jul 2025 | Invoice | 45078 | HILTON - | CYL | 1,897.50 | 690.00 |
-
-### October 2025
-
-| Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 20 Oct 2025 | Crd Note | 13713 | DN#21111-EMPTY | CYL | -1,207.50 | -517.50 |
-| 20 Oct 2025 | Invoice | 47179 | DN#21111-EMPTY | CYL | 1,897.50 | 1,380.00 |
-| 30 Oct 2025 | Crd Note | 13781 | DN#21133-EMPTY | CYL | -3,105.00 | -1,725.00 |
-| 30 Oct 2025 | Invoice | 47421 | DN#21133-EMPTY | CYL | 2,415.00 | 690.00 |
-
-### January 2026
-
-| Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 09 Jan 2026 | Crd Note | 14240 | DN 21459 | CYL | -1,207.50 | -517.50 |
-| 09 Jan 2026 | Invoice | 48698 | DN 21459 | CYL | 2,415.00 | 1,897.50 |
-| 28 Jan 2026 | Crd Note | 14347 | DN#21217-EMPTY | CYL | -2,415.00 | -517.50 |
-| 28 Jan 2026 | Invoice | 48980 | DN#21217-EMPTY | CYL | 1,207.50 | 690.00 |
-
-### October 2026
-
-| Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 06 Oct 2026 | Invoice | 53490 | 24896 | CYL | 1,207.50 | 1,897.50 |
 
 ---
 
@@ -202,6 +168,7 @@
 | EXACT_SINGLE | 6 |
 | EXACT_SUM | 7 |
 | EXACT_MONTH_SUM | 3 |
+| CYL_EXCHANGE | 2 |
 
 Full tie list: `data/projection_matches.json`.
 

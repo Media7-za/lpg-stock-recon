@@ -168,6 +168,10 @@
     {
       "date": "2026-10-08",
       "event": "TXT switched to raw/TWK002_2026-10-08.TXT on operator instruction (\"switch the other six accounts ... YES\"); B/F R38,791.27 and periodStart 2025-03-01 unchanged. CONNECTOR-SOURCED refresh (db_replay, 5 md5-verified captures in data/db_replay/2026-10-08b/; authority: \"I authorize the agent to use database connectors\"). Coverage STALE_PARTIAL: Crd Note 15775 (-7,935.00) and Invoice 53507 (+14,375.86), both 2026-10-08, missing header+lines in DB (PROVEN, raw lines 138-139) — custody/SKU gates blocked, review-only. ERP R54,136.19 = 1A R45,971.19 + 1B R8,165.00, variance R0.00 (PROVEN, data/v5_projection.json). Matcher v4: 30 ties (REMITTANCE 1, CN_DN_PAIR 24 confirmed / 4 probable, CN_AMOUNT_DATE 1 probable); 3 payments unallocated; open items 71 internal rows tie R54,136.19. Journal 510 (26 Aug 2026, -1,223.45) is new vs the 26 Aug export — backdated posting (ASSERTED). Matching PROPOSED — NOT RATIFIED."
+    },
+    {
+      "date": "2026-10-09",
+      "event": "Matcher v5 applied (operator: \"Yes\" to applying the 2026-10-09 preview, docs/previews/2026-10-09_matcher_v5_preview.md): new rules BATCH_SUM, CYL_EXCHANGE, BALANCE_ZERO; DN parser reads DN_nnnnn. Re-run match_projection + render_open_items only; no lock created, no statement released. PROPOSED — NOT RATIFIED. Proof holds, 0 lock conflicts. Ties 30 -> 31 (+1 CYL_EXCHANGE; 26 confirmed / 5 probable); open rows internal 71 -> 69, customer 81 -> 79; ERP R54,136.19 ties. Review-only (ingest partial, ADM-93)."
     }
   ]
 }

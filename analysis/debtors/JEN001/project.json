@@ -106,6 +106,10 @@
     {
       "date": "2026-10-08",
       "event": "TXT switched to raw/JEN001_2026-10-08.TXT on operator instruction (\"switch the other six accounts ... YES\"); window widened: B/F R9,461.01, periodStart 2025-03-03 (was R22,088.10 from 2026-07-01). CONNECTOR-SOURCED refresh (db_replay, 6 md5-verified captures in data/db_replay/2026-10-08/; authority: \"I authorize the agent to use database connectors\"). Coverage CURRENT_COMPLETE, 0 gaps (PROVEN). ERP R25,332.00 = 1A R25,332.00 + 1B R0.00, variance R0.00 (PROVEN, data/v5_projection.json). Opening split ASSUMED: config cyl opening (-517.50; 9kg qty -1) was set for 2026-07-01 and carried to 2025-03-03 — CYL rows net R0.00 before 2026-07-01 so 1B still reproduces, but the 2025-03-03 cylinder balance is unproven (tripwire: ERP cylinder balance at 2025-03-03). Matcher v4: L0001 part_payment applied, 0 conflicts (R597.11 open on 52305); 44 ties (36 confirmed / 8 probable); 9 payments unallocated (R96,776.51 — pre-July 2026 round-amount payments not yet FIFO-ruled). Open items: 88 internal rows tie R25,332.00. Matching PROPOSED — NOT RATIFIED."
+    },
+    {
+      "date": "2026-10-09",
+      "event": "Matcher v5 applied (operator: \"Yes\" to applying the 2026-10-09 preview, docs/previews/2026-10-09_matcher_v5_preview.md): new rules BATCH_SUM, CYL_EXCHANGE, BALANCE_ZERO; DN parser reads DN_nnnnn. Re-run match_projection + render_open_items only; no lock created, no statement released. PROPOSED — NOT RATIFIED. Proof holds, 0 lock conflicts. Ties 44 (41 confirmed / 3 probable); BALANCE_ZERO cut at TXT line 107 (2025-12-10): 35 rows incl. opening B/F R9,461.01 settled; 5 probable ties dissolved (CN_DN_PAIR 42166/12259, 42693/12405, 43580/12648, 46627/13541; NEAR_SUM 39619 + 43488/42692/42618); +4 CYL_EXCHANGE. Open rows internal 88 -> 22, customer 106 -> 28; ERP R25,332.00 ties; L0001 holds. Unallocated payments 9 -> 3 (R31,703.96): 43927 R6,703.96, 44878 R10,000.00, 46098 R15,000.00 - the ADM-92 ruling now concerns these three only (the six pre-Dec-2025 payments are settled by the ERP balance returning to zero; ASSERTED pending operator review of the cut)."
     }
   ]
 }

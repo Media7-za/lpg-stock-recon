@@ -1,7 +1,7 @@
 # Open Items Statement: FIRE AND VINE (FIR001) — Internal
 **Period:** from 29 Dec 2022 to 07 Oct 2026 &nbsp;|&nbsp; **Balance due:** R9,469.77
-**Status:** PROPOSED — NOT RATIFIED (`PROPOSED_Projection_Matching_Locks.md`, build step 3) · generated 2026-10-08 by `render_open_items.mjs`
-**Sources:** `analysis/debtors/FIR001/data/v5_projection.json` (TXT sha256 `1cf1b6f9c63e…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (151 confirmed / 10 probable ties) · **REVIEW ONLY:** ingestCoverage partial
+**Status:** PROPOSED — NOT RATIFIED (`PROPOSED_Projection_Matching_Locks.md`, build step 3) · generated 2026-10-09 by `render_open_items.mjs`
+**Sources:** `analysis/debtors/FIR001/data/v5_projection.json` (TXT sha256 `1cf1b6f9c63e…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (154 confirmed / 9 probable ties) · **REVIEW ONLY:** ingestCoverage partial
 **Locks:** closed through 2026-08-31, 19 locks applied
 
 ---
@@ -66,28 +66,6 @@
 
 ## Part 1B: CYL open items
 
-### August 2025
-
-| Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 04 Aug 2025 | Crd Note | 13123 | DN#20213-EMPTY | CYL | -6,037.50 | -6,037.50 |
-| 04 Aug 2025 | Invoice | 45361 | DN#20213-EMPTY | CYL | 6,555.00 | 517.50 |
-| 11 Aug 2025 | Crd Note | 13195 | DN#20213-DN20307 | CYL | -517.50 | 0.00 |
-
-### March 2026
-
-| Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 20 Mar 2026 | Crd Note | 14632 | DN=00=EMPTY | CYL | -517.50 | -517.50 |
-| 20 Mar 2026 | Invoice | 49848 | DN=00=EMPTY | CYL | 6,555.00 | 6,037.50 |
-
-### June 2026
-
-| Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 22 Jun 2026 | Invoice | 51355 | DN#22519*EMPTY | CYL | 7,072.50 | 13,110.00 |
-| 23 Jun 2026 | Crd Note | 15109 | DN#22519*EMPTY | CYL | -13,110.00 | 0.00 |
-
 ### August 2026
 
 | Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
@@ -132,10 +110,9 @@
 | T0049 | CN_DN_PAIR | Invoice 46902, Crd Note 13638 | — | CN 3 day(s) after invoice (closed period: not locked) |
 | T0068 | CN_DN_PAIR | Invoice 49035, Crd Note 14367 | — | CN 3 day(s) after invoice (closed period: not locked) |
 | T0069 | CN_DN_PAIR | Invoice 49146, Crd Note 14396 | — | CN 2 day(s) after invoice (closed period: not locked) |
-| T0071 | CN_DN_PAIR | Invoice 49459, Crd Note 14521 | — | CN 4 day(s) after invoice (closed period: not locked) |
-| T0088 | CN_AMOUNT_DATE | Invoice 44987, Crd Note 13027 | — | CN 0 day(s) after invoice (closed period: not locked) |
-| T0089 | CN_AMOUNT_DATE | Invoice 47067, Crd Note 13677 | — | CN 1 day(s) after invoice (closed period: not locked) |
-| T0090 | CN_AMOUNT_DATE | Invoice 49348, Crd Note 14465 | — | CN 0 day(s) after invoice (closed period: not locked) |
+| T0072 | CN_DN_PAIR | Invoice 49459, Crd Note 14521 | — | CN 4 day(s) after invoice (closed period: not locked) |
+| T0089 | CN_AMOUNT_DATE | Invoice 44987, Crd Note 13027 | — | CN 0 day(s) after invoice (closed period: not locked) |
+| T0090 | CN_AMOUNT_DATE | Invoice 47067, Crd Note 13677 | — | CN 1 day(s) after invoice (closed period: not locked) |
 | T0091 | CN_AMOUNT_DATE | Invoice 51146, Crd Note 15044 | — | CN 1 day(s) after invoice (closed period: not locked) |
 | T0092 | CN_AMOUNT_DATE | Invoice 53277, Crd Note 15694 | — | CN 1 day(s) after invoice |
 
@@ -144,10 +121,11 @@
 | Rule | Ties |
 | :--- | ---: |
 | LOCKED | 19 |
-| CN_DN_PAIR | 63 |
+| CN_DN_PAIR | 64 |
 | EXACT_SINGLE | 65 |
 | EXACT_SUM | 3 |
 | EXACT_MONTH_SUM | 1 |
+| CYL_EXCHANGE | 2 |
 
 Full tie list: `data/projection_matches.json`.
 

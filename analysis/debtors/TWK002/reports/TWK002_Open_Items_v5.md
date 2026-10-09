@@ -1,7 +1,7 @@
 # Open Items Statement: TWK AGRI PTY LTD (TWK002) — Internal
 **Period:** from 01 Mar 2025 to 08 Oct 2026 &nbsp;|&nbsp; **Balance due:** R54,136.19
-**Status:** PROPOSED — NOT RATIFIED (`PROPOSED_Projection_Matching_Locks.md`, build step 3) · generated 2026-10-08 by `render_open_items.mjs`
-**Sources:** `analysis/debtors/TWK002/data/v5_projection.json` (TXT sha256 `e657e03f68cd…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (25 confirmed / 5 probable ties) · **REVIEW ONLY:** ingestCoverage partial
+**Status:** PROPOSED — NOT RATIFIED (`PROPOSED_Projection_Matching_Locks.md`, build step 3) · generated 2026-10-09 by `render_open_items.mjs`
+**Sources:** `analysis/debtors/TWK002/data/v5_projection.json` (TXT sha256 `e657e03f68cd…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (26 confirmed / 5 probable ties) · **REVIEW ONLY:** ingestCoverage partial
 **Locks:** no period closed yet
 
 ---
@@ -160,13 +160,6 @@
 
 ## Part 1B: CYL open items
 
-### April 2025
-
-| Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 07 Apr 2025 | Crd Note | 12215 | DN#12826 | CYL | -690.00 | -690.00 |
-| 23 Apr 2025 | Invoice | 42470 | DN#13030 | CYL | 690.00 | 0.00 |
-
 ### May 2025
 
 | Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
@@ -205,9 +198,9 @@
 | :--- | ---: | ---: | ---: |
 | Opening B/F (unitemised) | 38,791.27 | 0.00 | 38,791.27 |
 | Open items listed above | 6,186.47 | 7,935.00 | 14,121.47 |
-| Rounding on matched items (tie nets) | -230.00 | 230.00 | 0.00 |
+| Rounding on matched items (tie nets) | 0.00 | 0.00 | 0.00 |
 | Settlement discount journals pending (P9) | 1,223.45 | 0.00 | 1,223.45 |
-| **Balance** | 45,971.19 | 8,165.00 | 54,136.19 |
+| **Balance** | 46,201.19 | 7,935.00 | 54,136.19 |
 | ERP `CURRENT BALANCE` (TXT header) | | | 54,136.19 |
 | **Variance** | | | **0.00** |
 
@@ -229,6 +222,7 @@
 | :--- | ---: |
 | REMITTANCE | 1 |
 | CN_DN_PAIR | 24 |
+| CYL_EXCHANGE | 1 |
 
 Full tie list: `data/projection_matches.json`.
 

@@ -85,14 +85,6 @@
 | 21 Jul 2025 | Crd Note | 13027 ¹ | — | Cylinder deposit | -6,555.00 | -6,555.00 |
 | 21 Jul 2025 | Invoice | 44987 ¹ | — | Cylinder deposit | 6,555.00 | 0.00 |
 
-### August 2025
-
-| Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 04 Aug 2025 | Crd Note | 13123 | DN#20213-EMPTY | Cylinder deposit | -6,037.50 | -6,037.50 |
-| 04 Aug 2025 | Invoice | 45361 | DN#20213-EMPTY | Cylinder deposit | 6,555.00 | 517.50 |
-| 11 Aug 2025 | Crd Note | 13195 | DN#20213-DN20307 | Cylinder deposit | -517.50 | 0.00 |
-
 ### October 2025
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
@@ -113,8 +105,6 @@
 | 03 Feb 2026 | Crd Note | 14367 ¹ | DN#21232- EMPTY | Cylinder deposit | -6,555.00 | 0.00 |
 | 07 Feb 2026 | Invoice | 49146 ¹ | DN-21529-EMPTY | Cylinder deposit | 6,037.50 | 6,037.50 |
 | 09 Feb 2026 | Crd Note | 14396 ¹ | DN-21529-EMPTY | Cylinder deposit | -6,037.50 | 0.00 |
-| 20 Feb 2026 | Crd Note | 14465 ¹ | DN_21916-EMPTY | Cylinder deposit | -6,555.00 | -6,555.00 |
-| 20 Feb 2026 | Invoice | 49348 ¹ | DN_21916-EMPTY | Cylinder deposit | 6,555.00 | 0.00 |
 | 26 Feb 2026 | Invoice | 49459 ¹ | DN#21802-EMPTY | Cylinder deposit | 6,037.50 | 6,037.50 |
 
 ### March 2026
@@ -122,17 +112,13 @@
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
 | 02 Mar 2026 | Crd Note | 14521 ¹ | DN#21802-EMPTY | Cylinder deposit | -6,037.50 | 0.00 |
-| 20 Mar 2026 | Crd Note | 14632 | DN=00=EMPTY | Cylinder deposit | -517.50 | -517.50 |
-| 20 Mar 2026 | Invoice | 49848 | DN=00=EMPTY | Cylinder deposit | 6,555.00 | 6,037.50 |
 
 ### June 2026
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 10 Jun 2026 | Invoice | 51146 ¹ | — | Cylinder deposit | 6,555.00 | 12,592.50 |
-| 11 Jun 2026 | Crd Note | 15044 ¹ | DN#22637 EMPTIES | Cylinder deposit | -6,555.00 | 6,037.50 |
-| 22 Jun 2026 | Invoice | 51355 | DN#22519*EMPTY | Cylinder deposit | 7,072.50 | 13,110.00 |
-| 23 Jun 2026 | Crd Note | 15109 | DN#22519*EMPTY | Cylinder deposit | -13,110.00 | 0.00 |
+| 10 Jun 2026 | Invoice | 51146 ¹ | — | Cylinder deposit | 6,555.00 | 6,555.00 |
+| 11 Jun 2026 | Crd Note | 15044 ¹ | DN#22637 EMPTIES | Cylinder deposit | -6,555.00 | 0.00 |
 
 ### August 2026
 

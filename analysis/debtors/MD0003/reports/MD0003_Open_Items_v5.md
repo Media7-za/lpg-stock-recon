@@ -1,6 +1,6 @@
 # Open Items Statement: BLUFF MEAT SUPPLY(PTY) LTD (MD0003) — Internal
 **Period:** from 01 Jan 2025 to 08 Oct 2026 &nbsp;|&nbsp; **Balance due:** R16,547.81
-**Status:** PROPOSED — NOT RATIFIED (`PROPOSED_Projection_Matching_Locks.md`, build step 3) · generated 2026-10-08 by `render_open_items.mjs`
+**Status:** PROPOSED — NOT RATIFIED (`PROPOSED_Projection_Matching_Locks.md`, build step 3) · generated 2026-10-09 by `render_open_items.mjs`
 **Sources:** `analysis/debtors/MD0003/data/v5_projection.json` (TXT sha256 `863946cb36f8…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (88 confirmed / 7 probable ties) · **REVIEW ONLY:** ingestCoverage partial
 **Locks:** no period closed yet
 
@@ -126,8 +126,8 @@
 | :--- | ---: | ---: | ---: |
 | Opening B/F (unitemised) | 52,607.52 | 0.00 | 52,607.52 |
 | Open items listed above | -34,794.71 | -1,265.00 | -36,059.71 |
-| Rounding on matched items (tie nets) | -3,047.50 | 3,047.50 | 0.00 |
-| **Balance** | 14,765.31 | 1,782.50 | 16,547.81 |
+| Rounding on matched items (tie nets) | 0.00 | 0.00 | 0.00 |
+| **Balance** | 17,812.81 | -1,265.00 | 16,547.81 |
 | ERP `CURRENT BALANCE` (TXT header) | | | 16,547.81 |
 | **Variance** | | | **0.00** |
 

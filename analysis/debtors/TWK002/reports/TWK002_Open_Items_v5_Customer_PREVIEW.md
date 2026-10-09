@@ -167,13 +167,6 @@
 
 ## Cylinder deposits: open items
 
-### April 2025
-
-| Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 07 Apr 2025 | Crd Note | 12215 | DN#12826 | Cylinder deposit | -690.00 | -690.00 |
-| 23 Apr 2025 | Invoice | 42470 | DN#13030 | Cylinder deposit | 690.00 | 0.00 |
-
 ### May 2025
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
@@ -235,7 +228,7 @@
 | :--- | ---: | ---: | ---: |
 | Opening balance | 38,791.27 | 0.00 | 38,791.27 |
 | Open items listed above | 6,186.47 | 7,935.00 | 14,121.47 |
-| Rounding on settled items | -230.00 | 230.00 | 0.00 |
+| Rounding on settled items | 0.00 | 0.00 | 0.00 |
 | Settlement discount (journal pending) | 1,223.45 | 0.00 | 1,223.45 |
-| **Balance** | 45,971.19 | 8,165.00 | 54,136.19 |
+| **Balance** | 46,201.19 | 7,935.00 | 54,136.19 |
 

@@ -38,15 +38,15 @@
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 02 Apr 2026 | Invoice | 50097 | DN#21861- EXTRA SV | Gas | 1,407.60 | -414.78 |
+| 02 Apr 2026 | Invoice | 50097 ¹ | DN#21861- EXTRA SV | Gas | 1,407.60 | -414.78 |
 | 16 Apr 2026 | Crd Note | 14792 | FAULTY RETURN | Gas | -498.53 | -913.31 |
-| 24 Apr 2026 | Invoice | 50363 | DN-22341 | Gas | 2,815.20 | 1,901.89 |
+| 24 Apr 2026 | Invoice | 50363 ¹ | DN-22341 | Gas | 2,815.20 | 1,901.89 |
 
 ### July 2026
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 15 Jul 2026 | Payment | 45216 | TRANSF \| STAT 128 | Gas | -5,430.30 | -3,528.41 |
+| 15 Jul 2026 | Payment | 45216 ¹ | TRANSF \| STAT 128 | Gas | -5,430.30 | -3,528.41 |
 | 15 Jul 2026 | Invoice | 51846 ¹ | DN#22820 | Gas | 3,123.10 | -405.31 |
 | 20 Jul 2026 | Invoice | 51952 | DN#22696 | Gas | 3,123.10 | 2,717.79 |
 
@@ -77,7 +77,7 @@
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 02 Apr 2026 | Invoice | 50097 | DN#21861- EXTRA SV | Cylinder deposit | 1,207.50 | 1,207.50 |
+| 02 Apr 2026 | Invoice | 50097 ¹ | DN#21861- EXTRA SV | Cylinder deposit | 1,207.50 | 1,207.50 |
 | 16 Apr 2026 | Crd Note | 14792 | FAULTY RETURN | Cylinder deposit | -1,207.50 | 0.00 |
 
 ### July 2026
