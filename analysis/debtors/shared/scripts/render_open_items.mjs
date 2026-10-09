@@ -5,7 +5,8 @@
  *
  * Reads  data/v5_projection.json + data/projection_matches.json (refuses if they were
  *        built from different TXT fingerprints or if the proof does not hold).
- * Writes reports/{CODE}_Open_Items_v5.md (internal) and
+ * Writes reports/{CODE}_Internal_Ledger_v5.md (every row + ERP running balance + matcher status,
+ *        for matcher review), reports/{CODE}_Open_Items_v5.md (internal) and
  *        reports/{CODE}_Open_Items_v5_Customer_PREVIEW.md (draft; not for release).
  * PROPOSED — NOT RATIFIED (PROPOSED_Projection_Matching_Locks.md, build step 3).
  */
@@ -13,6 +14,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { buildOpenItems, renderOpenItemsMarkdown } from './open_items.mjs';
+import { buildInternalLedger, renderInternalLedgerMarkdown } from './internal_ledger.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../../..');
 const i = process.argv.indexOf('--debtor');
@@ -42,3 +44,7 @@ for (const view of ['internal', 'customer']) {
     `[${code}] ${view}: ${n} open rows; balance R${model.proof.combined} (ERP R${model.proof.erp}, ${model.proof.tiesToErp ? 'ties' : 'DOES NOT TIE'}) → reports/${name}`,
   );
 }
+
+const ledger = renderInternalLedgerMarkdown(buildInternalLedger(projection, matches), { cfg, projection, matches, generatedOn });
+fs.writeFileSync(path.join(acct, 'reports', `${code}_Internal_Ledger_v5.md`), ledger);
+console.log(`[${code}] internal ledger → reports/${code}_Internal_Ledger_v5.md`);
