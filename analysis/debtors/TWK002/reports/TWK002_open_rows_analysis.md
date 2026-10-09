@@ -217,7 +217,7 @@ Proof holds on all nine. No lock exists on TWK002, so none was bypassed. Working
 2. **Q2:** Is the STAT 123 advice line "Crd Note 10 −R6,900.00" the second line of CN 13716 (9,315 + 6,900 = 16,215)? (yes/no) — **ANSWERED (§8.17):** yes; an advice-line identity only.
 3. **Q3 (P-b):** Accept lane-aware split remittances, so 41747 is tied CYL to STAT 114 and LPG to STAT 123? (yes/no) — **FACTS CONFIRMED (§8.19); rule M1 still awaits a yes/no.**
 4. **Q4:** STAT 114 calls R12,226.63 of 41747 "already paid" before 2025-05-19, but only STAT 123 pays it. Do you accept STAT 123 as the sole payment, or should finance check the bank for an earlier R12,226.63? (accept / check) — **WITHDRAWN (§8.3):** answered by doctrine v2 §7.
-5. **Q5:** Is CN 15775 (−R7,935.00, DN#23843, 2026-10-08) a cylinder credit or a gas credit? (cylinder / gas / unknown until ADM-93 syncs)
+5. **Q5:** Is CN 15775 (−R7,935.00, DN#23843, 2026-10-08) a cylinder credit or a gas credit? (cylinder / gas / unknown until ADM-93 syncs) — **ANSWERED (§8.22): cylinder credit.**
 6. **Q6:** Approve the four probable ties (51180 + CN 15063 ×2 lanes, 53078 + CN 15646, 53351 + CN 15714)? (all four / list the exceptions) — **AMENDED (§8.7):** now Q6′ in §8.10.
 7. **Q7 (P7):** Rule payment 37770 and journal 508 as `applied_to_bf` against the eight itemised B/F documents (R35,922.77)? (yes/no) — **ANSWERED (§8.18): yes.**
 8. **Q8:** Report journals 490–507 (R+5,216.17) as one named opening-adjustment line, not 24 open rows, until H-027 is decided? (yes/no) — **AMENDED (§8.9):** now Q8′ in §8.10.
@@ -677,4 +677,29 @@ Otherwise the batch stays unresolved, as today. The lane grain itself was alread
 * An advice whose share fits two lane subsets equally stops the tie (it is never guessed).
 * Any other account whose rows change under M1 in the preview stops the build for review.
 * A corrected advice for STAT 114 or STAT 123 reopens the 41747 split.
+
+### 8.22 Operator ruling on Q5: CN 15775 is a cylinder credit (2026-10-09)
+
+**Ruling (verbatim, operator in the analysis session, 2026-10-09):** "Q5 = Cylinder crrdit" [sic], i.e. a cylinder credit.
+
+**Recorded:** CN 15775 (−R7,935.00, DN#23843, 2026-10-08) belongs to the **CYL lane**. Today the projection puts it in LPG with `split_basis: HEADER_FALLBACK`, because its lines are not yet in the DB (ADM-93). Invoice 53507 (R14,375.86, same DN#23843) is in the same position.
+
+**Effect on G6 (amounts unchanged, lanes corrected):**
+
+| Lane | Rows | R |
+| :--- | :--- | ---: |
+| LPG | 52484, 52803, 53077, 53350, 53507 (whole header until its lines arrive) | 53,641.52 |
+| CYL | 52484 / CN 15443 (+172.50), 52803 / CN 15553 (+172.50), CN 15775 (−7,935.00) | −7,590.00 |
+| **G6 total** | 10 rows | **46,051.52** (unchanged) |
+
+The ERP tie, the family proof (R53,836.19) and the customer Amount due (R45,751.52) are unchanged. Only the lane split changes.
+
+**How it is applied (main session):**
+* **Preferred:** let the ADM-93 sync bring CN 15775's DB lines. With `DB_LINES` the lane follows from the SKUs, and the ruling becomes a check.
+* **Until then:** if the reconcile supports an operator lane override for a `HEADER_FALLBACK` row, record this ruling there in config; otherwise carry it as a note on the open-items view. Either way the row stays probable-only (P10) until line detail arrives.
+* **Pairing:** with DB lines, CN 15775 may pair with a CYL deposit lane on invoice 53507 (same DN#23843, the usual delivery pattern). If it does, CN_DN_PAIR ties them. If not, it stays an open CYL credit.
+
+**Observation (ASSERTED; no question raised):** the CYL lane net after this ruling, −R7,590.00, equals the cylinder deposits the customer paid in cash on STAT 123 (43294 +172.50, 43909 +345.00, 47196 +7,072.50; §4.6). Under `ALLOCATION_DOCTRINE.md` §1.3 those cylinders became customer-owned. If CN 15775 credits their physical return, the credit is consistent. If it credits cylinders never delivered or already credited, it would double-credit. The DB lines (SKUs and quantities) will show which. `unverified`.
+
+**Tripwire:** ADM-93 DB lines that put any part of CN 15775 in the LPG lane reopen this ruling.
 
