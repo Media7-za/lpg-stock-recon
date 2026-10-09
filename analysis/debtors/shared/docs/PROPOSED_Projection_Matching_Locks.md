@@ -430,3 +430,19 @@ The operator said: "A customer very rarely pays for part of an invoice. The comb
   - A remittance or an operator ruling contradicts a `BATCH_SUM` tie.
   - A `CYL_EXCHANGE` group spans a cylinder count the custody (SKU) gate disputes.
   - Running v5 across other accounts overturns an approved lock or a period close. Any lock conflict counts.
+
+**Amendment (2026-10-09, operator observation): rule 6, `BALANCE_ZERO`.** PROPOSED — NOT RATIFIED. The operator asked: "Notice March 2026 the opening balance is equal to 0?"
+
+- **The rule.**
+  - The ERP running balance is the opening B/F plus every row in TXT line order.
+  - Find its **latest** return to R0.00 (within R0.05). Every row on or before that line is settled in aggregate.
+  - Untied rows close as one CONFIRMED group.
+  - PROBABLE ties lying wholly before that line are dissolved into the group: settlement is proven even where the pairing is not.
+  - Confirmed ties and locks are kept.
+  - The group also settles the opening B/F. The open-items view shows this on an "Opening B/F settled" line.
+- **Related tightening of `BATCH_SUM`.** A rounding cent is absorbed only if it is dated on or after the batch.
+- **MOZ002.** The ERP balance returns to R−0.01 at TXT line 183 (payment 43962, 9 Apr 2026).
+  - 11 rows close, and 4 probable ties dissolve: 41522/12079, 46826/13602, 49329/14458, and the 40729 run.
+  - The customer copy drops from 18 to 6 items; 4 of the 6 await approval of the `BATCH_SUM` tie.
+  - It still ties to R1,562.67 (PROVEN, `analysis/debtors/MOZ002/data/projection_matches.json`).
+- **Tripwire.** A later ERP export changes any row on or before the cut line. The ERP backdating seen on 2026-10-08 is exactly that case: the cut moves and the group re-forms. Once a period close locks it, it becomes a lock conflict.

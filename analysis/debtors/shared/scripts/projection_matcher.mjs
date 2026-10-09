@@ -59,13 +59,20 @@
  *                       gas AND cylinder deposit lanes; at least one gas/other row, so a deposit
  *                       alone is never a target) within ±R0.05. Payments must fall on or
  *                       after the batch and within batchWindowDays of it. A payment of
- *                       ≤ R0.05 that exactly removes the remaining variance is absorbed as the
- *                       rounding cent. Always PROBABLE (operator approves via approve_tie).
+ *                       ≤ R0.05, dated on/after the batch, that exactly removes the remaining
+ *                       variance is absorbed as the rounding cent. Always PROBABLE (operator approves via approve_tie).
  *   5. CYL_EXCHANGE     (v5) cylinder deposit invoices and empties credit notes left unpaired
  *                       (counts differ, so amounts differ) are a custody exchange chain. In date
  *                       order, every stretch whose running total returns to R0.00 is closed as
  *                       one CONFIRMED group (net R0.00); the same is done from the latest row
  *                       backwards, so only the genuinely outstanding middle stays open.
+ *   6. BALANCE_ZERO     (v5, operator 2026-10-09: "Notice March 2026 the opening balance is equal
+ *                       to 0?") The ERP running balance (opening B/F + every row in TXT line
+ *                       order) is found at its LATEST return to R0.00 (± exactTolerance). Every
+ *                       row on or before that line is settled in aggregate, whatever the pairing:
+ *                       untied rows close as one CONFIRMED group, and PROBABLE (non-lock) ties
+ *                       lying wholly before it are dissolved into that group (settlement is
+ *                       proven even where the pairing is not). Confirmed ties and locks are kept.
  *   A tie touching a row whose split_basis is not confirmable (HEADER_FALLBACK, P10)
  *   is downgraded to PROBABLE.
  *
@@ -93,6 +100,7 @@ export const RULES = Object.freeze({
   batchWindowDays: 120, // last payment no later than this after the batch
   batchPool: 40, // most recent open batches considered
   cylExchange: true,
+  balanceZeroCut: true,
   remittanceLineTolerance: 0.05,
   remittanceBatchTolerancePct: 0.001,
 });
@@ -482,7 +490,10 @@ export function matchProjection(projection, rules = RULES, evidence = null, lock
       ).length;
       const members = rowsOf.slice();
       let variance = c.variance;
-      const cent = variance ? tiny.find((t) => free(t) && !used.has(t.row_id) && round2(-t.amount) === round2(-variance)) : null;
+      // The rounding cent must belong to this settlement: dated on or after the batch.
+      const cent = variance
+        ? tiny.find((t) => free(t) && !used.has(t.row_id) && t.date >= c.bset[0].date && round2(-t.amount) === round2(-variance))
+        : null;
       if (cent) {
         members.push(cent);
         variance = 0;
@@ -527,6 +538,46 @@ export function matchProjection(projection, rules = RULES, evidence = null, lock
         invoices: seg.filter((r) => r.kind === 'invoice').length,
         creditNotes: seg.filter((r) => r.kind === 'credit_note').length,
       });
+    }
+  }
+
+  // 6. BALANCE_ZERO: everything up to the ERP balance's latest return to zero is settled.
+  if (rules.balanceZeroCut) {
+    const lineNet = new Map();
+    for (const r of rows) if (Number.isFinite(r.txt_line)) lineNet.set(r.txt_line, round2((lineNet.get(r.txt_line) || 0) + r.amount));
+    let bal = projection.openings.combinedBf || 0;
+    let cut = null;
+    let cutBal = null;
+    for (const [line, amt] of [...lineNet].sort((a, b) => a[0] - b[0])) {
+      bal = round2(bal + amt);
+      if (Math.abs(bal) <= rules.exactTolerance) {
+        cut = line;
+        cutBal = bal;
+      }
+    }
+    if (cut != null) {
+      const before = (r) => Boolean(r) && Number.isFinite(r.txt_line) && r.txt_line <= cut;
+      const rowById = new Map(rows.map((r) => [r.row_id, r]));
+      const dissolved = [];
+      for (let i = ties.length - 1; i >= 0; i--) {
+        const t = ties[i];
+        if (t.confidence !== 'PROBABLE' || t.rule === 'LOCKED') continue;
+        if (!t.members.every((id) => before(rowById.get(id)))) continue;
+        for (const id of t.members) tiedRow.delete(id);
+        dissolved.push({ tie_id: t.tie_id, rule: t.rule, docs: t.docs });
+        ties.splice(i, 1);
+      }
+      const members = rows.filter((r) => free(r) && before(r));
+      if (members.length) {
+        const last = members.reduce((a, r) => (r.date > a ? r.date : a), members[0].date);
+        addTie('BALANCE_ZERO', 'CONFIRMED', members, {
+          throughLine: cut,
+          throughDate: last,
+          erpBalanceAtCut: cutBal,
+          openingSettled: projection.openings.combinedBf || 0,
+          dissolvedProbable: dissolved.reverse(),
+        });
+      }
     }
   }
 

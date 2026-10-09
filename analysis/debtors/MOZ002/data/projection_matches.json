@@ -2,7 +2,7 @@
   "status": "PROPOSED — NOT RATIFIED (PROPOSED_Projection_Matching_Locks.md, build step 2)",
   "debtorCode": "MOZ002",
   "generatedBy": "match_projection.mjs",
-  "generatedAt": "2026-10-09T03:51:12.243Z",
+  "generatedAt": "2026-10-09T04:01:31.498Z",
   "projection": {
     "path": "analysis/debtors/MOZ002/data/v5_projection.json",
     "txtSha256": "4a6e6bbcc72413ddae3f5c4d325d034faf6a648a4d3fd788f846ab5503654044",
@@ -34,21 +34,22 @@
     "batchWindowDays": 120,
     "batchPool": 40,
     "cylExchange": true,
+    "balanceZeroCut": true,
     "remittanceLineTolerance": 0.05,
     "remittanceBatchTolerancePct": 0.001
   },
   "summary": {
-    "ties": 107,
-    "confirmed": 102,
-    "probable": 5,
+    "ties": 104,
+    "confirmed": 103,
+    "probable": 1,
     "byRule": {
-      "CN_DN_PAIR": 50,
-      "CN_AMOUNT_DATE": 1,
+      "CN_DN_PAIR": 48,
       "EXACT_SINGLE": 42,
       "EXACT_SUM": 2,
-      "EXACT_RUN": 3,
+      "EXACT_RUN": 2,
       "BATCH_SUM": 1,
-      "CYL_EXCHANGE": 8
+      "CYL_EXCHANGE": 8,
+      "BALANCE_ZERO": 1
     },
     "paymentsTotal": 50,
     "paymentsUnallocated": 0
@@ -126,22 +127,6 @@
       "net": 0,
       "dn": "4438",
       "lagDays": 0
-    },
-    {
-      "tie_id": "T0003",
-      "rule": "CN_DN_PAIR",
-      "confidence": "PROBABLE",
-      "members": [
-        "41522|Invoice|LPG|L6",
-        "12079|Crd Note|LPG|L8"
-      ],
-      "docs": [
-        "Invoice 41522",
-        "Crd Note 12079"
-      ],
-      "net": 0,
-      "dn": "4438",
-      "lagDays": 2
     },
     {
       "tie_id": "T0004",
@@ -528,22 +513,6 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0028",
-      "rule": "CN_DN_PAIR",
-      "confidence": "PROBABLE",
-      "members": [
-        "46826|Invoice|CYL|L112",
-        "13602|Crd Note|CYL|L113"
-      ],
-      "docs": [
-        "Invoice 46826",
-        "Crd Note 13602"
-      ],
-      "net": 0,
-      "dn": "21092",
-      "lagDays": 2
-    },
-    {
       "tie_id": "T0029",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
@@ -896,21 +865,6 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0051",
-      "rule": "CN_AMOUNT_DATE",
-      "confidence": "PROBABLE",
-      "members": [
-        "49329|Invoice|CYL|L166",
-        "14458|Crd Note|CYL|L164"
-      ],
-      "docs": [
-        "Invoice 49329",
-        "Crd Note 14458"
-      ],
-      "net": 0,
-      "lagDays": 0
-    },
-    {
       "tie_id": "T0052",
       "rule": "EXACT_SINGLE",
       "confidence": "CONFIRMED",
@@ -1238,55 +1192,6 @@
           "doc": "44742",
           "date": "2025-07-10",
           "amount": 2810.61
-        }
-      ],
-      "variance": 0
-    },
-    {
-      "tie_id": "T0063",
-      "rule": "EXACT_RUN",
-      "confidence": "PROBABLE",
-      "members": [
-        "40729|Payment|LPG|L89",
-        "44949|Invoice|LPG|L73",
-        "45199|Invoice|LPG|L77",
-        "45303|Invoice|LPG|L81",
-        "45488|Invoice|LPG|L83"
-      ],
-      "docs": [
-        "Payment 40729",
-        "Invoice 44949",
-        "Invoice 45199",
-        "Invoice 45303",
-        "Invoice 45488"
-      ],
-      "net": 0,
-      "ambiguousAlternatives": 1,
-      "payment": {
-        "doc": "40729",
-        "date": "2025-08-14",
-        "amount": 9716.68
-      },
-      "invoices": [
-        {
-          "doc": "44949",
-          "date": "2025-07-18",
-          "amount": 2810.61
-        },
-        {
-          "doc": "45199",
-          "date": "2025-07-28",
-          "amount": 2810.61
-        },
-        {
-          "doc": "45303",
-          "date": "2025-08-01",
-          "amount": 1525.76
-        },
-        {
-          "doc": "45488",
-          "date": "2025-08-07",
-          "amount": 2569.7
         }
       ],
       "variance": 0
@@ -2286,17 +2191,15 @@
         "44227|Payment|LPG|L199",
         "45590|Payment|LPG|L236",
         "50528|Invoice|LPG|L197",
-        "50529|Invoice|CYL|L198",
-        "41529|Payment|LPG|L114"
+        "50529|Invoice|CYL|L198"
       ],
       "docs": [
         "Payment 44227",
         "Payment 45590",
         "Invoice 50528",
-        "Invoice 50529",
-        "Payment 41529"
+        "Invoice 50529"
       ],
-      "net": 0,
+      "net": 0.01,
       "payments": [
         {
           "doc": "44227",
@@ -2320,12 +2223,7 @@
           ]
         }
       ],
-      "roundingCent": {
-        "doc": "41529",
-        "date": "2025-10-07",
-        "amount": 0.01
-      },
-      "variance": 0
+      "variance": -0.01
     },
     {
       "tie_id": "T0100",
@@ -2514,6 +2412,81 @@
       "to": "2026-07-13",
       "invoices": 2,
       "creditNotes": 2
+    },
+    {
+      "tie_id": "T0104",
+      "rule": "BALANCE_ZERO",
+      "confidence": "CONFIRMED",
+      "members": [
+        "41522|Invoice|LPG|L6",
+        "12079|Crd Note|LPG|L8",
+        "44949|Invoice|LPG|L73",
+        "45199|Invoice|LPG|L77",
+        "45303|Invoice|LPG|L81",
+        "45488|Invoice|LPG|L83",
+        "40729|Payment|LPG|L89",
+        "46826|Invoice|CYL|L112",
+        "13602|Crd Note|CYL|L113",
+        "41529|Payment|LPG|L114",
+        "49329|Invoice|CYL|L166",
+        "14458|Crd Note|CYL|L164"
+      ],
+      "docs": [
+        "Invoice 41522",
+        "Crd Note 12079",
+        "Invoice 44949",
+        "Invoice 45199",
+        "Invoice 45303",
+        "Invoice 45488",
+        "Payment 40729",
+        "Invoice 46826",
+        "Crd Note 13602",
+        "Payment 41529",
+        "Invoice 49329",
+        "Crd Note 14458"
+      ],
+      "net": -0.01,
+      "throughLine": 183,
+      "throughDate": "2026-02-19",
+      "erpBalanceAtCut": -0.01,
+      "openingSettled": 0,
+      "dissolvedProbable": [
+        {
+          "tie_id": "T0003",
+          "rule": "CN_DN_PAIR",
+          "docs": [
+            "Invoice 41522",
+            "Crd Note 12079"
+          ]
+        },
+        {
+          "tie_id": "T0028",
+          "rule": "CN_DN_PAIR",
+          "docs": [
+            "Invoice 46826",
+            "Crd Note 13602"
+          ]
+        },
+        {
+          "tie_id": "T0051",
+          "rule": "CN_AMOUNT_DATE",
+          "docs": [
+            "Invoice 49329",
+            "Crd Note 14458"
+          ]
+        },
+        {
+          "tie_id": "T0063",
+          "rule": "EXACT_RUN",
+          "docs": [
+            "Payment 40729",
+            "Invoice 44949",
+            "Invoice 45199",
+            "Invoice 45303",
+            "Invoice 45488"
+          ]
+        }
+      ]
     }
   ],
   "unallocatedPayments": []

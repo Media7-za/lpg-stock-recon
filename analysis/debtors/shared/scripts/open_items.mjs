@@ -55,12 +55,20 @@ export function buildOpenItems(projection, matches, view = 'internal') {
   const rounding = { lpg: 0, cyl: 0 };
   const journalsPending = { lpg: 0, cyl: 0 };
   const ruled = Object.fromEntries(RULING_LINES.map(([k]) => [k, { lpg: 0, cyl: 0 }]));
+  const openingSettled = { lpg: 0, cyl: 0 };
   const partPaid = []; // { doc, amount, payment }
   for (const t of matches.ties) {
     if (view === 'customer' && t.confidence === 'PROBABLE') continue; // shown in full instead
     const bucket = t.ruling && t.ruling.treatment !== 'exact' ? ruled[t.ruling.treatment] : rounding;
     const memberRows = t.members.map((id) => projection.rows.find((x) => x.row_id === id)).filter(Boolean);
-    if (new Set(memberRows.map(laneOf)).size > 1) {
+    if (t.rule === 'BALANCE_ZERO') {
+      // Rows up to the ERP balance's return to zero also settle the opening B/F.
+      const lpgBf = projection.openings.lpgOpeningBf || 0;
+      const cylBf = projection.openings.cylOpeningFinancial || 0;
+      openingSettled.lpg = round2(openingSettled.lpg - lpgBf);
+      openingSettled.cyl = round2(openingSettled.cyl - cylBf);
+      rounding.lpg = round2(rounding.lpg + t.net + lpgBf + cylBf);
+    } else if (new Set(memberRows.map(laneOf)).size > 1) {
       // A tie spanning gas and cylinder lanes (e.g. BATCH_SUM: payments settling a delivery's
       // gas and deposit invoices) has no per-lane net of its own; carry its net on the gas side.
       bucket.lpg = round2(bucket.lpg + t.net);
@@ -101,12 +109,15 @@ export function buildOpenItems(projection, matches, view = 'internal') {
       };
     });
     const rulings = Object.fromEntries(RULING_LINES.map(([k]) => [k, ruled[k][part]]));
-    const closing = round2(run + rounding[part] + journalsPending[part] + Object.values(rulings).reduce((a, b) => a + b, 0));
+    const closing = round2(
+      run + rounding[part] + journalsPending[part] + openingSettled[part] + Object.values(rulings).reduce((a, b) => a + b, 0),
+    );
     parts[part] = {
       opening: opening[part],
       lines,
       openTotal: round2(run - opening[part]),
       rounding: rounding[part],
+      openingSettled: openingSettled[part],
       journalsPending: journalsPending[part],
       rulings,
       closing,
@@ -208,6 +219,9 @@ export function renderOpenItemsMarkdown(model, { cfg, projection, matches, gener
   const row3 = (label, a, b) => `| ${label} | ${fmt(a)} | ${fmt(b)} | ${fmt(round2(a + b))} |`;
   L.push(row3(internal ? 'Opening B/F (unitemised)' : 'Opening balance', parts.lpg.opening, parts.cyl.opening));
   L.push(row3('Open items listed above', parts.lpg.openTotal, parts.cyl.openTotal));
+  if (parts.lpg.openingSettled || parts.cyl.openingSettled) {
+    L.push(row3(internal ? 'Opening B/F settled (ERP balance returned to zero)' : 'Opening balance settled', parts.lpg.openingSettled, parts.cyl.openingSettled));
+  }
   L.push(row3(internal ? 'Rounding on matched items (tie nets)' : 'Rounding on settled items', parts.lpg.rounding, parts.cyl.rounding));
   for (const [k, labelInternal, labelCustomer] of RULING_LINES) {
     if (parts.lpg.rulings[k] || parts.cyl.rulings[k]) {

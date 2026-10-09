@@ -1,7 +1,7 @@
 # Open Items Statement: MOZAMBIK (MOZ002) — Internal
 **Period:** from 15 Mar 2025 to 01 Oct 2026 &nbsp;|&nbsp; **Balance due:** R1,562.67
 **Status:** PROPOSED — NOT RATIFIED (`PROPOSED_Projection_Matching_Locks.md`, build step 3) · generated 2026-10-09 by `render_open_items.mjs`
-**Sources:** `analysis/debtors/MOZ002/data/v5_projection.json` (TXT sha256 `4a6e6bbcc724…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (102 confirmed / 5 probable ties)
+**Sources:** `analysis/debtors/MOZ002/data/v5_projection.json` (TXT sha256 `4a6e6bbcc724…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (103 confirmed / 1 probable ties)
 **Locks:** no period closed yet
 
 ---
@@ -47,11 +47,7 @@
 
 | Tie | Rule | Documents | Variance (R) | Note |
 | :--- | :--- | :--- | ---: | :--- |
-| T0003 | CN_DN_PAIR | Invoice 41522, Crd Note 12079 | — | CN 2 day(s) after invoice |
-| T0028 | CN_DN_PAIR | Invoice 46826, Crd Note 13602 | — | CN 2 day(s) after invoice |
-| T0051 | CN_AMOUNT_DATE | Invoice 49329, Crd Note 14458 | — | CN 0 day(s) after invoice |
-| T0063 | EXACT_RUN | Payment 40729, Invoice 44949, Invoice 45199, Invoice 45303, Invoice 45488 | 0.00 |  |
-| T0099 | BATCH_SUM | Payment 44227, Payment 45590, Invoice 50528, Invoice 50529, Payment 41529 | 0.00 |  |
+| T0099 | BATCH_SUM | Payment 44227, Payment 45590, Invoice 50528, Invoice 50529 | -0.01 |  |
 
 ## Appendix B: Confirmed ties by rule
 
@@ -62,6 +58,7 @@
 | EXACT_SUM | 2 |
 | EXACT_RUN | 2 |
 | CYL_EXCHANGE | 8 |
+| BALANCE_ZERO | 1 |
 
 Full tie list: `data/projection_matches.json`.
 

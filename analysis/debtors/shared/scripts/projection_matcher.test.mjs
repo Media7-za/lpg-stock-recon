@@ -296,8 +296,9 @@ test('residual proof rebuilds the closing balance exactly', () => {
 test('BATCH_SUM: several payments settle one delivery batch (gas + deposit); the rounding cent is absorbed', () => {
   const res = matchProjection(
     projection([
-      row({ doc: '41529', type: 'Payment', date: '2025-10-07', amount: -0.01 }),
+      row({ doc: '41529', type: 'Payment', date: '2025-10-07', amount: -0.01 }), // before the batch: not its cent
       row({ doc: '50528', date: '2026-05-05', ref: 'DN#22222', amount: 4329.29 }),
+      row({ doc: '9001', type: 'Payment', date: '2026-08-07', amount: -0.01 }),
       row({ doc: '50529', date: '2026-05-05', ref: 'DN#22222-EMPTY', lane: 'CYL', amount: 4140 }),
       row({ doc: '44227', type: 'Payment', date: '2026-05-07', amount: -4978.91 }),
       row({ doc: '45590', type: 'Payment', date: '2026-08-06', amount: -3490.37 }),
@@ -307,9 +308,9 @@ test('BATCH_SUM: several payments settle one delivery batch (gas + deposit); the
   assert.equal(t.rule, 'BATCH_SUM');
   assert.equal(t.confidence, 'PROBABLE');
   assert.equal(t.variance, 0);
-  assert.equal(t.roundingCent.doc, '41529');
+  assert.equal(t.roundingCent.doc, '9001');
   assert.deepEqual(t.payments.map((p) => p.doc), ['44227', '45590']);
-  assert.equal(res.unallocatedPayments.length, 0);
+  assert.equal(res.unallocatedPayments.length, 1); // 41529 stays out of this batch
   assert.equal(res.residual.openInvoicesCyl.count, 0);
 });
 
@@ -357,4 +358,25 @@ test('CYL_EXCHANGE: unequal deposit/empties stretches that return to R0.00 close
   assert.equal(res.residual.unmatchedCredits.count, 1);
   assert.equal(res.residual.unmatchedCredits.amount, -4140);
   assert.ok(res.proof.holds);
+});
+
+test('BALANCE_ZERO: rows up to the ERP balance\'s latest return to zero settle together; probable ties before it dissolve', () => {
+  const rows = [
+    row({ doc: 'I1', date: '2026-01-01', amount: 100 }),
+    row({ doc: 'I2', date: '2026-01-02', amount: 200 }),
+    row({ doc: 'P1', type: 'Payment', date: '2026-01-10', amount: -150 }),
+    row({ doc: 'P2', type: 'Payment', date: '2026-01-11', amount: -150.01 }),
+    row({ doc: 'I3', date: '2026-02-01', amount: 500 }),
+  ];
+  rows.forEach((r, i) => (r.txt_line = i + 2));
+  const res = matchProjection(projection(rows));
+  const t = res.ties.find((x) => x.rule === 'BALANCE_ZERO');
+  assert.equal(t.confidence, 'CONFIRMED');
+  assert.equal(t.throughLine, 5);
+  assert.equal(t.erpBalanceAtCut, -0.01);
+  assert.equal(res.residual.openInvoicesLpgOther.count, 1); // I3 only
+  assert.equal(res.unallocatedPayments.length, 0);
+  assert.ok(res.proof.holds);
+  const off = matchProjection(projection(rows), { ...RULES, balanceZeroCut: false });
+  assert.equal(off.ties.filter((x) => x.rule === 'BALANCE_ZERO').length, 0);
 });

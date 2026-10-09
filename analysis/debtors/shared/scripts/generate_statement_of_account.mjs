@@ -335,7 +335,7 @@ function buildOpenItemsCustomerLines({ cfg, debtorCode, asAtLabel, totalDue, mod
   const items = [...parts.lpg.lines, ...parts.cyl.lines].sort(
     (a, b) => a.date.localeCompare(b.date) || String(a.doc).localeCompare(String(b.doc)),
   );
-  const openingTotal = round2(parts.lpg.opening + parts.cyl.opening);
+  const openingTotal = round2(parts.lpg.opening + parts.cyl.opening + parts.lpg.openingSettled + parts.cyl.openingSettled);
   const itemsTotal = round2(items.reduce((s, l) => s + l.amount, 0));
   const named = [];
   if (openingTotal) named.push(['Opening balance brought forward', openingTotal]);
