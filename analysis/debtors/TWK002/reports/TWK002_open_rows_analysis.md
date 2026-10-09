@@ -542,7 +542,34 @@ This replaces the per-account `payerGroup` treatment proposed for Q1 (§5 M2, §
 **Interim, until the child TXTs are current:** run TWK002 alone, with the child slices of 43500 (R63,501.62) shown as a named family line. That is the per-account mechanics of §5 M2, used as a stop-gap and labelled as such. ASSUMED acceptable; kill condition: the operator prefers to wait for the full family build.
 
 **New question:**
-* **Q15:** Should the customer statement also become one consolidated statement for TWK AGRI (TWK002 + TWK003 + TWK004), or stay per account with the parent proof internal only? (consolidated / per account)
+* **ANSWERED (§8.16): yes, consolidated.** **Q15:** Should the customer statement also become one consolidated statement for TWK AGRI (TWK002 + TWK003 + TWK004), or stay per account with the parent proof internal only? (consolidated / per account)
 
 **Tripwires:** a current TWK003 or TWK004 TXT whose header differs from the R−300.00 or R0.00 used here reopens the family proof. Any remittance naming a document on none of the three accounts reopens the family membership.
+
+### 8.16 Operator ruling on Q15: one consolidated customer statement (2026-10-09)
+
+**Ruling (verbatim, operator in the analysis session, 2026-10-09):** Q15 → "Yes", read as "one consolidated statement for TWK AGRI (TWK002 + TWK003 + TWK004)".
+
+This supersedes the TWK002-only customer statement posture of 2026-08-29 (`docs/TWK002_Model_B_Position.md`; `config/statement_of_account.json` `_comment_siteTxts`). Those texts are to be marked superseded, not deleted.
+
+**What stays as ratified:**
+* `customerDueBasis: open_invoices` (2026-08-30): Amount due = open documents only; the R8,084.67 account-level residual stays internal (`hideAccountLevelSection: true`).
+* The release gate: `npm run debtors:tag-check` before any customer copy (`business_rules.md` §15 rule 4). It now has to pass for all three codes.
+
+**What the consolidated statement would show (state after all rulings; ASSERTED for the children until current TXTs are on file):**
+
+| Source | Open documents | R |
+| :--- | :--- | ---: |
+| TWK002 | 52484, CN 15443, 52803, CN 15553, 53077, 53350, 53507, CN 15775 (the 10 rows of G6) | 46,051.52 |
+| TWK003 | 47866 (R2,000.00) and CN 13933 (−R2,300.00), DN 21166 | −300.00 |
+| TWK004 | none | 0.00 |
+| **Amount due (open documents)** | | **45,751.52** |
+
+Internal proof: 45,751.52 + 8,084.67 (residual, internal) = 53,836.19 = Σ of the three ERP headers.
+
+**Implementation note for the main session:** `generate_statement_of_account.mjs` already reads `siteTxts` (lines 161 and 549–558). It rolls the child accounts up as **header balances** only, not as open documents. Under `customerDueBasis: open_invoices`, the child open documents (47866, CN 13933) must be listed and included in Amount due. Check that the generator does this before the first consolidated release, or extend it. Each child line on the statement should carry its account code.
+
+**Customer-facing caution:** the consolidated copy would show the customer a R300.00 credit on TWK003. That is correct per the ERP header, but nothing has investigated whether CN 13933 over-credits invoice 47866 by error. Check before the first consolidated release. `unverified`.
+
+**Tripwire:** a child TXT whose open documents differ from the above reopens the consolidated Amount due.
 
