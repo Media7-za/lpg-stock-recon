@@ -215,7 +215,7 @@ Proof holds on all nine. No lock exists on TWK002, so none was bypassed. Working
 
 1. **Q1 (P8):** Adopt `payerGroup` for TWK002 so that sister-site lines on a remittance are out of scope, and tie 43500 on TWK002's R176,824.24 slice alone? (yes/no) — **ANSWERED (§8.15):** no; consolidated parent instead.
 2. **Q2:** Is the STAT 123 advice line "Crd Note 10 −R6,900.00" the second line of CN 13716 (9,315 + 6,900 = 16,215)? (yes/no) — **ANSWERED (§8.17):** yes; an advice-line identity only.
-3. **Q3 (P-b):** Accept lane-aware split remittances, so 41747 is tied CYL to STAT 114 and LPG to STAT 123? (yes/no)
+3. **Q3 (P-b):** Accept lane-aware split remittances, so 41747 is tied CYL to STAT 114 and LPG to STAT 123? (yes/no) — **FACTS CONFIRMED (§8.19); rule M1 still awaits a yes/no.**
 4. **Q4:** STAT 114 calls R12,226.63 of 41747 "already paid" before 2025-05-19, but only STAT 123 pays it. Do you accept STAT 123 as the sole payment, or should finance check the bank for an earlier R12,226.63? (accept / check) — **WITHDRAWN (§8.3):** answered by doctrine v2 §7.
 5. **Q5:** Is CN 15775 (−R7,935.00, DN#23843, 2026-10-08) a cylinder credit or a gas credit? (cylinder / gas / unknown until ADM-93 syncs)
 6. **Q6:** Approve the four probable ties (51180 + CN 15063 ×2 lanes, 53078 + CN 15646, 53351 + CN 15714)? (all four / list the exceptions) — **AMENDED (§8.7):** now Q6′ in §8.10.
@@ -355,7 +355,7 @@ So G4 and G5 need no new line or config list (M5 withdrawn). The v5 open-items v
 Unchanged: Q1, Q2, Q3, Q5, Q7, Q9, Q10. Withdrawn: Q4. Replaced or new:
 
 * **Q6′:** Approve 51180 + CN 15063 (both lanes) now, and hold 53078 + CN 15646 and 53351 + CN 15714 until a CN INVNO tag or your recorded judgement exists? (yes / approve all four / other)
-* **Q8′:** Show G4 and G5 in the v5 open-items view under the ratified `balanceBridgeLines` ids, extending the 2026-08-11 bridge ratification to v5? (yes/no)
+* **ANSWERED (§8.20): yes.** **Q8′:** Show G4 and G5 in the v5 open-items view under the ratified `balanceBridgeLines` ids, extending the 2026-08-11 bridge ratification to v5? (yes/no)
 * **Q11:** Register 41747 (STAT 123, `CROSS_BATCH_RESIDUAL_NO_DISCOUNT`) and the STAT 123 late lines (`LATE_PAYMENT_NO_DISCOUNT`) in `config/settlement_discount_overrides.json`, as doctrine v2 §7 requires? (yes/no) — **SUPERSEDED (§8.12):** too narrow; restated as Q11′.
 * **Q12:** Were H-014, H-022, H-023 and H-026 done in the ERP (journals 511–513 on 2026-08-31)? If so, may the main session mark them DONE in `shared/HUMAN_TASKS.md`? (done / not done / unknown)
 
@@ -610,4 +610,49 @@ Internal proof: 45,751.52 + 8,084.67 (residual, internal) = 53,836.19 = Σ of th
 * TWK002's proof still ties to R54,136.19, or the family's to R53,836.19 once the children are in.
 
 **Tripwire:** the preview showing any row change on another account stops the build for review.
+
+### 8.19 Q3 confirmation: the 41747 split (2026-10-09)
+
+**Status:** the facts are confirmed; the rule is **not** ratified. The confirmation (relayed by the operator, written by another analysis pass) ends: "Q3 is finished as confirmation. Implementation waits on your yes/no." So M1 (tie only the lane whose amount equals what an advice paid, and only when the advices together cover the invoice) stays **PROPOSED — NOT RATIFIED** and must not be built under Q10 until the operator rules.
+
+**Confirmed facts (re-checked by this session):**
+
+| Lane | Lines (`data/invoices.csv`, unique SKUs) | Amount (R) | Paid by |
+| :--- | :--- | ---: | :--- |
+| LPG gas | 1901 R5,597.74 + 9.4 R6,628.89 | 12,226.63 | STAT 123 / 43500, net R12,226.63 (`already_paid_col=19837.50`); edge AL-0125 |
+| CYL deposit | 19.1 R6,900.00 + 9.1 R12,937.50 | 19,837.50 | STAT 114 / 39080, payable R19,341.56 + discount R495.94; edge AL-0117 |
+| **Invoice 41747** | | **32,064.13** | header PROVEN: `raw/TWK002_FULL_HISTORY.TXT` line 164 (on branch `debtors-recon-session-2026-09-08`, commit `2a30315`; not on this branch) and `raw/TWK002_2026-10-08.TXT` LINE 8 |
+
+* **On STAT 114** the CYL deposit and CN 12131 (−R19,837.50) net to R0.00 cash. That advice listed the deposit with its matching CN; it did not send cash for the deposit. The gas is what STAT 123 actually paid.
+* **The G2 identity holds only with 41747's gas off STAT 114:** 42050 LPG 8,058.97 + 42468 LPG 7,713.58 + 42470 LPG 546.86 + CN 12215 LPG −559.77 = 15,759.64 = payment 39080 15,365.65 + journal 509 393.99. Variance R0.00.
+  * With 41747's gas left on STAT 114, the variance is +R12,226.63 and STAT 123's gas line has nowhere to land.
+  * CN 12215 must be its gas row (−R559.77), not its header (−R1,249.77). Using the header breaks the identity by R690.00.
+* **ERP payment tagging (corroboration only)** reaches the same R12,226.63: −R10,976.86 tagged to 41747 plus untagged −R1,249.77 on 43500.
+* **Grain:** the ratified lane grain (P2; v5 Part 1A vs 1B) already lets one lane retire while the other stays. Only the rule that drives a remittance tie by lane is new.
+
+**Q3′ (restated):** Ratify M1 — lane-aware split remittance ties — for the matcher build under Q10? (yes/no)
+**Effect of yes:** G2 (6 rows) ties, and the STAT 123 family tie can complete. **Effect of no:** both batches stay unresolved and the 41747 rows stay open, although their settlement is recorded in `closedInvoiceOverrides`.
+
+### 8.20 Operator ruling on Q8′: show G4/G5 under the ratified bridge ids (2026-10-09)
+
+**Ruling (operator, 2026-10-09):** "Yes. Put G4 and G5 on the v5 open-items view as the existing `balanceBridgeLines` ids. Do not add a new opening-adjustment line. The R8,084.67 residual does not move and stays with H-027." It is "a reporting extension of the 2026-08-11 bridge into matcher v5", "not a new residual, not a matcher heuristic, and not a customer-bill change".
+
+**Mapping (as ruled):**
+
+| Open-row group | Rows | R | `balanceBridgeLines` id |
+| :--- | ---: | ---: | :--- |
+| G4 payment 37770 | 1 | −35,693.84 | `stat112_untagged` |
+| G4 journal 508 | 1 | −228.93 | `pathb_journals_untagged` (STAT 112 discount) |
+| G5 journals 490–507 | 24 | +5,216.17 | `phantom_cn_nets` + the rest of `pathb_journals_untagged` |
+
+Identity: 38,791.27 − 35,693.84 − 228.93 + 5,216.17 = **8,084.67**, the same residual as the 7-line bridge. PROVEN.
+
+**For the main session:**
+* **Internal v5 open items:** drop the 26 rows from the unmatched list and show them under the ids above (P3 proof identity).
+* **Customer Amount due:** unchanged (`customerDueBasis: open_invoices`, `hideAccountLevelSection: true`).
+* **No new line:** M5 stays withdrawn; M5′ (reuse the ratified ids) is what is ruled.
+* **No ERP posting:** H-027 is not posted; the residual stays in AR Control and is not billable.
+* **Relation to Q7:** Q7 (`applied_to_bf` for 37770) is a separate matcher treatment. Q8′ is display mapping only, and G4 sits under `stat112_untagged` either way.
+
+**Tripwire (as ruled):** a fresh full-history export that restates the B/F as named invoices **and** gives these journals real invoice INVNOs reopens the bridge. Rebuild before the v5 view changes.
 
