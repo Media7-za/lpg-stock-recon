@@ -748,3 +748,15 @@ T0011 (44731 + CN 12958) needs no approval; the STAT 123 remittance confirms it 
 
 **What this session did not do:** it did not edit `shared/HUMAN_TASKS.md`. The main session writes the register entries, per the brief.
 
+### 8.25 Operator answer on Q9: the September remittance has not been received (2026-10-09)
+
+**Answer (operator, 2026-10-09):** no September 2026 remittance advice for 52484 and 52803 has been received.
+
+**Consequences, as recorded:**
+* **Open items unchanged.** 52484, 52803 (with their CYL rows and CNs 15443 and 15553) and the other G6 documents stay open. The internal view and the customer Amount due are unaffected (projected R45,751.52 consolidated, §8.16).
+* **Discount.** The August invoices are past their terms (month-end + 30 days, Q13), so any advice paying them should carry R0.00 discount under §8.13. The expected cash is the net R18,413.69 at 100% (ASSUMED, §8.5; kill condition: an advice showing a discount on those lines).
+* **Q9 is answered, but the remittance itself is outstanding.** This report does not treat the absence as a payment. Under the doctrine, unconfirmed money is not a payment (UD rule, §8.1 of the amendment), and nothing in the ERP export shows a receipt after 2026-08-26 (TXT header `UD PAY/CHEQUES 0.00`).
+* **Tripwire:** any advice or bank receipt for 52484, 52803 or the other G6 documents, received later, reopens this status. Any TWK003 or TWK004 receipt would also be checked against the family proof (§8.15).
+
+**Scope note.** This answer records a status fact only. It makes no collections recommendation; the collections gate (D17/D18, `DEBTORS_DOCTRINE.md` §4) applies before any action on these balances. Under that gate the account remains `COLLECTIONS_BLOCKED` until its blockers are assessed.
+
