@@ -4,12 +4,13 @@
 **Generated:** 2026-10-09 · **Brief:** Linear ADM-94 (parent ADM-82). The Linear connector worked; ADM-94 had no comments. `docs/handoffs/2026-10-08.md` ends at §9; there is no §10, so §8–§9 and the ADM-94 text were used.
 **Inputs (all committed, read-only):** `raw/TWK002_2026-10-08.TXT` (ERP R54,136.19), `data/v5_projection.json`, `data/projection_matches.json`, `data/remittance_evidence.json`, `data/remittance_lines_2026.csv`, `data/allocation_edges.csv`, `raw/DEBENQ.TXT` (2026-08-31 export *with* allocation detail), `raw/DEBENQ_TWK003.TXT`, `raw/DEBENQ_TWK004.TXT`, `raw/TWK0022024.TXT`, `ERP RAW DATA/DETRANS.TXT`, `config/statement_of_account.json`, `reports/TWK002_Pre_Mar2025_BF_Bridge_2026-08-11.md`, `reports/TWK002_STAT123_Remittance_2026-02-18.md`, `reports/TWK002_H027_Collectibility_Challenge_2026-09-07.md`.
 **Tags (doctrine §6):** PROVEN = reproduced from a cited artifact. ASSERTED = stated by a report or inferred, not independently reproduced. ASSUMED = working assumption. `unverified` = no anchor.
+**Amended 2026-10-09 after a doctrine review — see §8.** The first version did not read `DEBTORS_DOCTRINE.md`, `ALLOCATION_DOCTRINE.md` or the TWK002 doctrine in `docs/`. Superseded passages are marked in place and kept.
 
 ---
 
 ## 1. Bottom line
 
-* **69 open rows can fall to 10 internal rows** (18 on the customer preview, 10 once the four remaining probable ties are approved). The 10 are the documents dated after STAT 129 (2026-08-12 to 2026-10-08), R46,051.52, which no payment has yet reached.
+* **69 open rows can fall to 10 internal rows** (18 on the customer preview, 10 once the four remaining probable ties are approved). The 10 are the documents dated after STAT 129 (2026-08-12 to 2026-10-08), R46,051.52, which no payment has yet reached. **AMENDED (§8.7):** the customer preview stays at 14 until two of the four probable ties have Crd Note tag evidence.
 * **The ERP tie is kept in every step:** R38,791.27 B/F + open rows + tie nets = **R54,136.19** (arithmetic in §3).
 * **Evidence-backed, no pattern-guessing.** Three remittance batches (STAT 114 / payment 39080, STAT 123 / payment 43500, STAT 129 journal 510) settle 33 of the 69 rows with R0.00 net. Every document is settled whole, not in part. The matcher stops short only because of three gaps (split lines, sister-site lines, discount journal not paired). In a scratch copy of the matcher those three fixes take TWK002 from 69 open rows to 36 and change **no row on the other eight projected accounts** (§5).
 * **The remaining 26 rows are all pre-window.** Payment 37770 (R35,693.84) plus journal 508 (R-228.93) settle eight documents that sit in the B/F (R35,922.77, PROVEN). The 24 other journals (490–507, net R+5,216.17) are Path B corrections to pre-window payments; they pair with no invoice or credit note. They need an operator ruling, not a matcher rule.
@@ -30,6 +31,8 @@
 | | **Total** | **69** | **14,121.47** | | `data/projection_matches.json` (69 open, R14,121.47) | PROVEN | |
 
 Check: 26 + 6 + 1 + 2 + 24 + 10 = 69 rows; 0.00 + 0.00 − 1,223.45 − 35,922.77 + 5,216.17 + 46,051.52 = 14,121.47. ✔
+
+> **AMENDED (§8.2):** per D15 the §6 tags above describe the sums and identities only. The ties themselves are edges (Confirmed / Probable), not PROVEN facts. ERP *payment* tagging cited above (`raw/DEBENQ.TXT` LINE 26–27, 65–84; journal 511) is corroboration only (`business_rules.md` §15 rule 3). G1–G4 rest on the remittance (order A rung 1) and `allocation_edges.csv` (rung 2). Evidence basis for G1–G4: `REMITTANCE_BACKED`.
 
 **Ties already in place (not in the 69):** four probable ties remain after the changes — 51180 + CN 15063 (LPG and CYL, 2 ties), 53078 + CN 15646, 53351 + CN 15714 (8 rows). Recommendation in §4.6.
 
@@ -96,6 +99,7 @@ Cross-checks that make this more than a rearrangement:
 * The two advices are mirror images: 19,837.50 + 12,226.63 = 32,064.13. ERP agrees: 43500 was allocated 10,976.86 to 41747 and R1,249.77 unreferenced (= CN 12215), together R12,226.63 (`raw/DEBENQ.TXT` LINE 65–66). PROVEN.
 * **Proposal:** a lane-aware split. Tie 41747 CYL (and CN 12131 CYL) into the 39080 batch, and 41747 LPG into the 43500 batch. Require that all batches together settle the document and that exactly one lane subset equals the advice's share.
 * **Loose end (ASSERTED):** STAT 114 (advice dated 2025-05-19) calls R12,226.63 "already paid", yet the only cash that pays it is STAT 123 (Feb 2026). ERP first allocated R12,226.63 of 37770 to 41747 on 28/03/2025 and then reversed it (`ERP RAW DATA/DETRANS.TXT`). No other receipt of R12,226.63 exists in `ERP RAW DATA/DETRANS.TXT`, `CURRENT.TXT` or `2024.TXT` (searched; the only hits are the two 37770 allocation/reversal rows). 37770's cash is fully used by its eight documents, so no cash trace supports a second payment. Question Q4.
+  > **SUPERSEDED (§8.3):** doctrine v2 §7 already rules that an advice's "already paid" amount is informational and never new settlement. `TASK-PH2-GAP-01` (`data/finance_posting_checklist_2025_phase2.csv`) closed STAT 111/113/115–122 as "not separate batches until evidence". Q4 is withdrawn: STAT 123 is the sole payment of 41747's LPG row.
 
 ### 4.3 Payer group STAT 123 (TWK002 / TWK003 / TWK004)
 
@@ -105,6 +109,7 @@ Cross-checks that make this more than a rearrangement:
   * TWK004 holds 46858, 47176, 47297, 47584 = 9,000.36 + 3,000.12 + 7,000.28 + 5,999.55 = R25,000.31 (the whole TWK004 slice).
   * All other advice lines are TWK002 documents; each equals the whole-document ERP amount (LPG + CYL) to the cent, except CN 13716 (below). Their paid total is **R176,824.24 = payment 43500 on TWK002**.
 * **Nothing must move in the ERP.** The ERP already splits the receipt by account. TWK002 already shows only its own slice. The gap is in the matcher, which refuses a batch when any line is not in this account's projection.
+  > **AMENDED (§8.4):** not a new finding. Doctrine v2 §1 already rules that TWK002/TWK003/TWK004 are posting buckets for one remittance ("Σ cash slices = remittance cash; not three separate batches"). `TASK-2026-0001` (DONE 2026-08-10) records the R176,824.24 slice. `shared/HUMAN_TASKS.md` H-014 ("resolve STAT 123 … R63,501.62 shortfall") is still listed OPEN although this answers it.
 * **CN 13716:** the advice lists it as −9,315.00 and as "Crd Note 10" −6,900.00 (same date 23.10.2025). ERP CN 13716 is −16,215.00 = 9,315 + 6,900. The ERP allocation of 47196 (R20,416.64 = 36,631.64 − 16,215) confirms the full CN was applied (`raw/DEBENQ.TXT` LINE 81). The doc number "10" is a truncated parse of the second line. PROVEN for arithmetic; ASSERTED for the identity. Needs an alias (Q2).
 * **TWK003 R−300.00** is a site-ledger difference (47866, CN 13933/13966, 47991), not a TWK002 item (`TWK002_STAT123_Remittance_2026-02-18.md`).
 
@@ -114,6 +119,7 @@ Cross-checks that make this more than a rearrangement:
 * Of the 25 open rows dated 2026-07 to 2026-08, **19 are journals** (490–491 dated 07-12, 499–502 dated 07-23, 503–509 dated 08-09, 510 dated 08-26) and 6 are the CYL/CN rows of 52484 and 52803. Only the August documents 52484 and 52803, and the September/October documents, are genuinely unpaid.
 * No payment exists after 2026-08-26 and the TXT header shows `UD PAY/CHEQUES 0.00`, so no unconfirmed receipt is hiding. PROVEN.
 * **Pattern:** the customer pays in lumps: monthly to May 2025, then STAT 123 (Feb 2026, for May 2025–Jan 2026) and STAT 129 (Aug 2026, for Feb–Jul 2026). The expected next advice for the August documents is about R18,413.69 gross (52484 + 52803 less CNs 15443 and 15553), about R17,953 cash at the 2.5% discount STAT 129 applied to documents from June. ASSUMED; the discount rate is read from `remittance_evidence.json` lines 51226 onwards.
+  > **SUPERSEDED (§8.5):** doctrine v2 §2 grants the 2.5% only if paid within 30 days of the invoice month-end. The August documents' deadline was 2026-09-30 and has passed, so the next advice should pay them at 100%: about **R18,413.69** cash (ASSUMED), not R17,953.
 
 ### 4.5 The 27 open journals (R3,369.80)
 
@@ -133,6 +139,8 @@ Cross-checks that make this more than a rearrangement:
 * They are settlement-discount and Path B correction journals, not pending invoices. Journals 508–510 clear against their batches. Journals 490–507 relate only to pre-window payments.
 * **Caution (ASSERTED, unverified):** −375.10, −552.04 and +1,052.05 appear in both journal 499 and journals 503/504 (net +124.91 twice); the block total still equals the bridge identity because a −124.91 offset sits in 501/505/506. So the block ties only in aggregate. Do not lock per batch. This echoes the H-027 challenge (`TWK002_H027_Collectibility_Challenge_2026-09-07.md` §3).
 
+> **SUPERSEDED (§8.6):** the finance checklists explain this. Journals 490–509 total exactly what `data/finance_posting_checklist.csv` and `…_2025_phase2.csv` expect (2023 R690.00 + 2024 R4,638.95 − 2025 R735.70 = R4,593.25). Journals 499 (+124.91), 505 (+108.19) and 506 (−233.10) are not on the checklist and net R0.00. The Oct-24 partial (journal 334 and the ghost line on 34518, −R385.04 each, inside the B/F) has not been reversed as doctrine v2 §8 requires. That is the known "Sep/Oct" line-level gap in `docs/TWK002_Model_B_Position.md`.
+
 ### 4.6 Probable ties and cylinder netting
 
 * **Probable ties.** After M1–M3, four remain:
@@ -141,14 +149,18 @@ Cross-checks that make this more than a rearrangement:
 | :--- | :--- | ---: | :--- | :--- |
 | 44731 + CN 12958 | DN#12191 | 2 days | Both listed on STAT 123; ERP INVNO tag on CN (`raw/DEBENQ.TXT` LINE 34–35) | Becomes CONFIRMED by the STAT 123 tie; no approval needed |
 | 51180 + CN 15063 (LPG and CYL, 2 ties) | DN#22798, order 00013935 | 3 days | Same order number; ERP INVNO tag on CN (`raw/DEBENQ.TXT` LINE 100–101); exact reversal of R29,721.98 | Approve |
-| 53078 + CN 15646 | DN#24985, R22,000.00 | 4 days | Same DN, exact amount; no tag evidence (after 2026-08-31) | Approve (weakest; Q6) |
+| 53078 + CN 15646 | DN#24985, R22,000.00 | 4 days | Same DN, exact amount; no tag evidence (after 2026-08-31) | Approve (weakest; Q6) — **SUPERSEDED (§8.7):** hold |
 | 53351 + CN 15714 | ref "21388", R19,837.50 | 0 days | Identical bare reference and amount; matcher requires "DN" in the ref, so it fell to CN_AMOUNT_DATE | Approve |
+
+> **AMENDED (§8.7):** `DEBTORS_DOCTRINE.md` §4 ranks DN references as structural ("groups; never settles") and `ref_no` as advisory. `business_rules.md` §15 makes ERP Crd Note tagging usable evidence (order A rung 3). So only 51180 + CN 15063 (CN tagged to 51180) is recommended for approval now. For 53078 + CN 15646 and 53351 + CN 15714, first obtain an allocation-detail export showing the CN's INVNO, or record operator judgement with its basis (§15 rule 7).
 
 * **Cylinder netting.** The five open CYL invoices (R84,007.50) against five CYL credit notes (−R76,072.50) net **R7,935.00** (PROVEN, `projection_matches.json` `residual`). It decomposes as:
   * 43294 / CN 12550: +172.50; 43909 / CN 12724: +345.00; 47196 / CN 13716: +7,072.50. Total **R7,590.00**, all settled **in cash** by STAT 123 (the advice pays the invoices gross and the credit notes at face; PROVEN, §4.3). Not an open item.
   * 52484 / CN 15443: +172.50; 52803 / CN 15553: +172.50. Total **R345.00**, genuinely open (in G6).
   * 7,590.00 + 345.00 = 7,935.00. ✔
 * **Today's documents.** CN 15775 is −R7,935.00, equal to the gross CYL net above. Both 53507 and CN 15775 have no DB lines yet (HEADER_FALLBACK, ADM-93). If CN 15775 is a cylinder credit it may be an ERP-agent clean-up of that net rather than a delivery-specific credit. ASSUMED; Q5.
+
+> **AMENDED (§8.8):** under `ALLOCATION_DOCTRINE.md` §1.3, deposits the customer paid in cash convert those cylinders to customer-owned. The R7,590.00 paid on STAT 123 is therefore a custody conclusion, and D19 blocks it until the custody scope of `ingestGate` clears. `DEBTORS_DOCTRINE.md` §4 also requires CYL residuals to decompose to whole cylinders at a dated price. That check was not run: `unverified`.
 
 ### 4.7 Matcher gaps
 
@@ -167,6 +179,7 @@ All PROPOSED — NOT RATIFIED. I prototyped M1–M3 in a scratch copy of the sha
 | M3 | **Discount journal clears pending discount** (P9) | Evidence | For a REMITTANCE tie with net ≠ 0 and a unique free Journal with amount = −net (±R0.05), dated on or after the payment date: add it to the tie. | Journals 509 and 510 join their ties. Journal 508 joins 37770 once G4 is ruled. | Needs a unique exact amount; no other account's open rows changed. Never matches a tie with net 0. |
 | M4 | **Pre-window batch tie** (P7 lookback) | Ruling now, rule later | If a payment's batch names documents outside the projection that a prior TXT (chain-verified to the B/F) lists as open at the B/F, and Σ lines = payment, tie as `applied_to_bf` with the documents itemised. | G4 (2 rows, R35,922.77). | Needs a chain-verified older TXT; no-op elsewhere. Use `approve_tie.mjs --payment 37770 --treatment applied_to_bf`; the discount journal 508 needs `approve_tie` to accept journals (small tool change). |
 | M5 | **Named opening adjustment for pre-window journals** | Ruling | Config list of journal documents (490–507) reported as one line next to the B/F, not as open rows. Not a heuristic. | G5 (24 rows). | None; explicit list. |
+| M5′ | *(Amended, §8.9 — replaces M5)* **Reuse the ratified bridge lines** | Ruling | Do not create a new line. In the v5 open-items view, show G4/G5 under the ids already ratified in `config/statement_of_account.json` `balanceBridgeLines` (`bf_carry`, `stat112_untagged`, `phantom_cn_nets`, `pathb_journals_untagged`) as P7/P8 named residuals (P3 proof identity). | Same 26 rows. | None. |
 | — | Widen `cnConfirmedMaxDays` from 1 to 5 | **Not recommended** | — | Would confirm T0011–T0016 type pairs | 45 probable CN pairs on seven accounts sit at 2–5 days (FIR001 5, JEN001 3, MD0003 5, MON001 2, SA0001 9, TAN002 17, TWK002 4). A blanket change confirms them all on a lag alone. Approve by evidence instead. |
 
 **Prototype result (scratch, read-only):**
@@ -203,11 +216,11 @@ Proof holds on all nine. No lock exists on TWK002, so none was bypassed. Working
 1. **Q1 (P8):** Adopt `payerGroup` for TWK002 so that sister-site lines on a remittance are out of scope, and tie 43500 on TWK002's R176,824.24 slice alone? (yes/no)
 2. **Q2:** Is the STAT 123 advice line "Crd Note 10 −R6,900.00" the second line of CN 13716 (9,315 + 6,900 = 16,215)? (yes/no)
 3. **Q3 (P-b):** Accept lane-aware split remittances, so 41747 is tied CYL to STAT 114 and LPG to STAT 123? (yes/no)
-4. **Q4:** STAT 114 calls R12,226.63 of 41747 "already paid" before 2025-05-19, but only STAT 123 pays it. Do you accept STAT 123 as the sole payment, or should finance check the bank for an earlier R12,226.63? (accept / check)
+4. **Q4:** STAT 114 calls R12,226.63 of 41747 "already paid" before 2025-05-19, but only STAT 123 pays it. Do you accept STAT 123 as the sole payment, or should finance check the bank for an earlier R12,226.63? (accept / check) — **WITHDRAWN (§8.3):** answered by doctrine v2 §7.
 5. **Q5:** Is CN 15775 (−R7,935.00, DN#23843, 2026-10-08) a cylinder credit or a gas credit? (cylinder / gas / unknown until ADM-93 syncs)
-6. **Q6:** Approve the four probable ties (51180 + CN 15063 ×2 lanes, 53078 + CN 15646, 53351 + CN 15714)? (all four / list the exceptions)
+6. **Q6:** Approve the four probable ties (51180 + CN 15063 ×2 lanes, 53078 + CN 15646, 53351 + CN 15714)? (all four / list the exceptions) — **AMENDED (§8.7):** now Q6′ in §8.10.
 7. **Q7 (P7):** Rule payment 37770 and journal 508 as `applied_to_bf` against the eight itemised B/F documents (R35,922.77)? (yes/no)
-8. **Q8:** Report journals 490–507 (R+5,216.17) as one named opening-adjustment line, not 24 open rows, until H-027 is decided? (yes/no)
+8. **Q8:** Report journals 490–507 (R+5,216.17) as one named opening-adjustment line, not 24 open rows, until H-027 is decided? (yes/no) — **AMENDED (§8.9):** now Q8′ in §8.10.
 9. **Q9:** Is a September 2026 remittance advice for 52484 and 52803 (about R18,413.69 gross) on file or expected? (on file / expected on date / none)
 10. **Q10:** Should the main session build M1–M3 into `projection_matcher.mjs` and rerun TWK002 only, after you rule on Q1–Q3? (yes/no)
 
@@ -237,3 +250,117 @@ All figures from `data/remittance_evidence.json` BATCH-2026-STAT-123 and `data/v
 
 * No script wrote to the repository; the prototype ran from a scratch copy and its outputs were discarded. No `approve_tie`, `close_period` or reconcile was run. `config/`, `data/`, `project.json`, locks, doctrine and handoffs are untouched.
 * Not verified: the composition of the R2,868.50 B/F residual at document level; whether journals 499/503/504 repeat amounts by error or design; whether TWK003/TWK004 TXTs are current (they carry no export date).
+
+---
+
+## 8. Amendment — doctrine review (2026-10-09)
+
+The operator asked whether earlier doctrine on TWK002 had been read. It had not been, in full. These sources were read for this amendment:
+
+* `analysis/debtors/shared/DEBTORS_DOCTRINE.md` (constitutional, ratified 2026-07-20; D14–D19);
+* `analysis/debtors/shared/docs/ALLOCATION_DOCTRINE.md`;
+* `analysis/debtors/shared/docs/business_rules.md` §15;
+* `PROPOSED_Projection_Matching_Locks.md` P1–P3, P5–P6 (the first pass read P4, P7–P11);
+* `docs/TWK002_Settlement_Discount_Doctrine_v2.md`, `docs/TWK002_Model_B_Position.md`, `docs/TWK002_ERP_Opening_Balance_Fix_Plan.md` (ratified 2026-08-29/30);
+* `data/finance_posting_checklist.csv`, `data/finance_posting_checklist_2025_phase2.csv`;
+* `reports/TWK002_Phantom_CN_Nets_Breakdown_2026-08-11.md` (summary), `reports/TWK002_Overpost_Investigation_2024.md` (summary);
+* `shared/HUMAN_TASKS.md` H-013, H-014, H-022–H-027;
+* `analysis/skills/lpg-payment-pattern-analysis/SKILL.md` (scope only).
+
+Not read: `TWK002_Settlement_Discount_Doctrine_v1.md` (superseded by v2), `docs/TWK002_ERP_Agent_Note_H027_BS_Reclassification.md` beyond its headings, and `SKILL_Payment_To_Invoice_Allocation.md`, which doctrine v2 §13 rules "not applicable" to TWK002.
+
+The headline does not change: 69 → 36 open rows on evidence, 10 after rulings, ERP tie R0.00. What changes is how it is framed, which rulings are new, and three of the questions.
+
+### 8.1 What the doctrine already decides (the proposal must align with it)
+
+| Topic | Already ruled | Source | Effect on this report |
+| :--- | :--- | :--- | :--- |
+| Multi-site remittance | One remittance across TWK002/3/4 reconciles as Σ cash slices = remittance cash | Doctrine v2 §1; `TASK-2026-0001` DONE | P8/M2 implements an existing account rule; it is not a new policy |
+| "Already paid" on an advice | Informational; never new settlement | Doctrine v2 §7 | Q4 withdrawn |
+| Remittance outranks ERP tagging | Advice plus a reconciling batch total wins; an advice naming an invoice still shown open reopens it | `DEBTORS_DOCTRINE.md` §5; `business_rules.md` §15 rule 6 | G1/G2 are mandatory under existing doctrine, not discretionary |
+| Retiring paid invoices | Through `closedInvoiceOverrides` with the evidence reference | `business_rules.md` §15 rule 5 | All G1/G2 documents are already retired there (ratified 2026-08-30). v5 is the surface out of step. |
+| Projection grain | Per document per lane; the LPG row may be retired while the CYL row stays | P2 (resolved 2026-10-05) | Lane-aware split (M1) is within the ratified grain |
+| Proof identity | Open items + unallocated + journals pending + **named residuals** = ERP balance | P3 | G4/G5 belong in named residuals |
+| B/F and residual | B/F R38,791.27 accepted as historical carry; R8,084.67 is not billable; lever is H-027 BS reclass (challenged 2026-09-07) | Fix Plan (ratified 2026-08-29/30); Model B Position | The residual is not new and not collectable; customer statement bills open invoices only |
+| Discount eligibility | 2.5% only within 30 days of invoice month-end; late documents pay 100% | Doctrine v2 §2 | §4.4 expected-cash estimate corrected (§8.5) |
+| CYL deposits paid in cash | Settle the deposit and convert custody | `ALLOCATION_DOCTRINE.md` §1.3 | §4.6 cylinder statement is a custody conclusion (§8.8) |
+| 2025 scope | Phase 2 is forward scope; do not mix into the 2023–2024 sign-off | Model B Position | This report proposes v5 view changes only; no ERP posting |
+
+### 8.2 Epistemic labels (D15) and evidence basis (§5)
+
+Section 2 used PROVEN on groups that are ties. Corrected reading:
+* the **sums** (each group's net, the batch totals, the ERP tie) are PROVEN;
+* the **ties** are edges: Confirmed (G1–G3 by remittance) or a ruling (G4, G5);
+* ERP payment tagging (the `raw/DEBENQ.TXT` allocation lines and journal 511) is corroboration only;
+* every group carries evidence basis `REMITTANCE_BACKED` except G5 and G6, which are not settlements.
+
+### 8.3 41747 "already paid"
+
+Withdrawn as a question. Doctrine v2 §7 classes it as informational. The matching exception type is `CROSS_BATCH_RESIDUAL_NO_DISCOUNT` ("residual after prior batch slice → R0 discount"), which fits the STAT 123 line (paid R12,226.63, discount R0.00). **New finding:** `config/settlement_discount_overrides.json` has no entry for 41747 or for any 2025/2026 batch line, although v2 §7 says deviations are registered there. See Q11.
+
+### 8.4 Payer group: status of the task register
+
+The STAT 123 split is recorded as DONE in the Phase 2 checklist, yet H-014 in `shared/HUMAN_TASKS.md` is still OPEN. ASSERTED: journals 511–513 (R0.00, 2026-08-31, TXT LINE 115–117), and journal 511's allocation of 37770 in `raw/DEBENQ.TXT`, suggest H-022 tagging was carried out in the ERP on 2026-08-31. The register still shows H-022, H-023 and H-026 as OPEN. The contents of 512 and 513 are `unverified`, because no allocation-detail export after 2026-08-31 exists. See Q12.
+
+### 8.5 Expected next remittance
+
+Under doctrine v2 §2 the August documents (52484, 52803) were discount-eligible only if paid by 2026-09-30, and no payment has posted. Expected settlement is R18,413.69 at 100%, net of CNs 15443 and 15553 (ASSUMED; kill condition: an advice showing a discount on those lines).
+
+### 8.6 The 24 pre-window journals reconcile to the finance checklist
+
+| Source | Expected net (R) | Posted journals | Posted net (R) |
+| :--- | ---: | :--- | ---: |
+| 2023 (6 batches, Path C) | +690.00 | 490, 491 | +690.00 |
+| 2024 over-posts (orphans 3,575.49 + 806.27 + 895.13 + 598.00 + 500.01) | +6,374.90 | 492–496, 503 | |
+| 2024 cash-only discounts (30419, 31365, 33921, 34518, 36195) | −1,735.95 | 500, 501, 502, 504 | |
+| 2024 subtotal | **+4,638.95** | 492–506 | **+4,638.95** |
+| Unplanned (not on checklist) | 0.00 | 499 +124.91, 505 +108.19, 506 −233.10 | 0.00 |
+| 2025 Phase 2 (STAT 110/112/114) | −735.70 | 507, 508, 509 | −735.70 |
+| **Total 490–509** | **+4,593.25** | | **+4,593.25** |
+
+PROVEN: checklist columns `orphan_strip` and `journal_amount`, against TXT LINE 2–7, 65–66, 87–93, 96–108. G5 (490–507) = 4,593.25 + 228.93 (508) + 393.99 (509) = **5,216.17**. ✔
+The open gap the doctrine names is the Oct-24 partial journal (R385.04 ×2 inside the B/F, doctrine v2 §8). It has not been reversed. It sits inside the R8,084.67, not in the open rows.
+
+### 8.7 Probable ties under the evidence hierarchy
+
+| Tie | Evidence ranks available | Recommendation |
+| :--- | :--- | :--- |
+| 44731 + CN 12958 | Remittance (rank 1) via STAT 123 | Confirmed by G1; no approval |
+| 51180 + CN 15063 (2 lanes) | ERP Crd Note tag to 51180 (order A rung 3); same order number; exact reversal | Approve |
+| 53078 + CN 15646 | DN only (structural) + amount | Hold: get the CN's INVNO from an allocation-detail export, or record operator judgement |
+| 53351 + CN 15714 | Bare ref "21388" (advisory) + amount + same date | Hold, as above. Deletion test (§3): with the ref deleted, only amount and date remain. |
+
+Effect: the customer-preview count after rulings is 10 + 4 = **14** (the two held ties keep 4 rows open), not 10, until they are evidenced.
+
+### 8.8 Cylinders
+
+The R7,590.00 of CYL net paid by STAT 123 is, under `ALLOCATION_DOCTRINE.md` §1.3, a settlement of deposits: the customer now owns those cylinders. That is a custody conclusion. Under D19 it stays ASSERTED while `ingestGate` blocks custody. `DEBTORS_DOCTRINE.md` §4 requires residuals to decompose to whole cylinders at a dated price. The R172.50 / R345.00 / R7,072.50 nets were not decomposed by SKU from DB lines: `unverified`.
+
+### 8.9 Named residual lines: reuse what is ratified
+
+Crosswalk between the ratified 7-line bridge (`config/statement_of_account.json` `balanceBridgeLines`, 2026-08-11) and this report:
+
+| Ratified line | R | This report |
+| :--- | ---: | :--- |
+| `bf_carry` | +38,791.27 | B/F |
+| `stat112_untagged` | −35,693.84 | G4 (payment 37770) |
+| `phantom_cn_nets` + `pathb_journals_untagged` | +9,894.01 − 5,300.76 = +4,593.25 | Journals 490–509: G5 (+5,216.17), J508 in G4 (−228.93), J509 in G2 (−393.99) |
+| `override_42468_42470` + `stat114_untagged` + `stat123_orphan` | +8,950.44 − 7,306.68 − 1,249.77 = +393.99 | Inside the G1/G2 remittance ties; offsets J509 → R0.00 |
+| **Total** | **8,084.67** | **8,084.67** ✔ |
+
+So G4 and G5 need no new line or config list (M5 withdrawn). The v5 open-items view should show them under the ratified ids. That is a reporting change for the main session, plus a ruling that the 2026-08-11 bridge ratification extends to the v5 view.
+
+### 8.10 Questions — amended set
+
+Unchanged: Q1, Q2, Q3, Q5, Q7, Q9, Q10. Withdrawn: Q4. Replaced or new:
+
+* **Q6′:** Approve 51180 + CN 15063 (both lanes) now, and hold 53078 + CN 15646 and 53351 + CN 15714 until a CN INVNO tag or your recorded judgement exists? (yes / approve all four / other)
+* **Q8′:** Show G4 and G5 in the v5 open-items view under the ratified `balanceBridgeLines` ids, extending the 2026-08-11 bridge ratification to v5? (yes/no)
+* **Q11:** Register 41747 (STAT 123, `CROSS_BATCH_RESIDUAL_NO_DISCOUNT`) and the STAT 123 late lines (`LATE_PAYMENT_NO_DISCOUNT`) in `config/settlement_discount_overrides.json`, as doctrine v2 §7 requires? (yes/no)
+* **Q12:** Were H-014, H-022, H-023 and H-026 done in the ERP (journals 511–513 on 2026-08-31)? If so, may the main session mark them DONE in `shared/HUMAN_TASKS.md`? (done / not done / unknown)
+
+### 8.11 Tripwires added
+
+* An allocation-detail export after 2026-08-31 showing journals 512/513 with allocations other than 39080/45899 reopens §8.4.
+* Any advice paying 52484/52803 with a discount reopens §8.5.
+* A decision on the H-027 challenge that splits `phantom_cn_nets` reopens §8.9 (the crosswalk would need the split lines).
