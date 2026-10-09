@@ -214,7 +214,7 @@ Proof holds on all nine. No lock exists on TWK002, so none was bypassed. Working
 ## 7. Questions for the operator (one-line answers)
 
 1. **Q1 (P8):** Adopt `payerGroup` for TWK002 so that sister-site lines on a remittance are out of scope, and tie 43500 on TWK002's R176,824.24 slice alone? (yes/no) — **ANSWERED (§8.15):** no; consolidated parent instead.
-2. **Q2:** Is the STAT 123 advice line "Crd Note 10 −R6,900.00" the second line of CN 13716 (9,315 + 6,900 = 16,215)? (yes/no)
+2. **Q2:** Is the STAT 123 advice line "Crd Note 10 −R6,900.00" the second line of CN 13716 (9,315 + 6,900 = 16,215)? (yes/no) — **ANSWERED (§8.17):** yes; an advice-line identity only.
 3. **Q3 (P-b):** Accept lane-aware split remittances, so 41747 is tied CYL to STAT 114 and LPG to STAT 123? (yes/no)
 4. **Q4:** STAT 114 calls R12,226.63 of 41747 "already paid" before 2025-05-19, but only STAT 123 pays it. Do you accept STAT 123 as the sole payment, or should finance check the bank for an earlier R12,226.63? (accept / check) — **WITHDRAWN (§8.3):** answered by doctrine v2 §7.
 5. **Q5:** Is CN 15775 (−R7,935.00, DN#23843, 2026-10-08) a cylinder credit or a gas credit? (cylinder / gas / unknown until ADM-93 syncs)
@@ -572,4 +572,16 @@ Internal proof: 45,751.52 + 8,084.67 (residual, internal) = 53,836.19 = Σ of th
 **Customer-facing caution:** the consolidated copy would show the customer a R300.00 credit on TWK003. That is correct per the ERP header, but nothing has investigated whether CN 13933 over-credits invoice 47866 by error. Check before the first consolidated release. `unverified`.
 
 **Tripwire:** a child TXT whose open documents differ from the above reopens the consolidated Amount due.
+
+### 8.17 Operator ruling on Q2: the "Crd Note 10" line (2026-10-09)
+
+**Ruling (verbatim, operator in the analysis session, 2026-10-09):** "Do not invent a CN 10 in ERP. Do not park −R6,900 on another invoice. The cash is already in receipt 00043500; this is an advice-line identity, not a missing credit."
+
+**Meaning, as recorded:**
+* The STAT 123 advice line "Crd Note 10, 23.10.2025, −R6,900.00" (`data/remittance_lines_2026.csv` line 37) is the second line of **CN 00013716** (−R9,315.00 + −R6,900.00 = −R16,215.00 = the ERP CN). It is a fact about how the customer printed the advice, not a document.
+* **ERP:** no posting of any kind. No CN 10 is created. The −R6,900.00 is not allocated or parked on any invoice (47196 or another). Receipt 00043500 already carries the cash.
+* **Evidence layer only:** the line is resolved where the advice is read, as an alias from advice line to ERP document. The main session records it in config, e.g. a `remittanceDocAliases` entry `{ "BATCH-2026-STAT-123": { "Crd Note|10": "13716" } }`, with this ruling as its `reason`. The generated `remittance_lines_2026.csv` and `remittance_evidence.json` are never hand-edited (§5 idempotency); the alias is applied when evidence is built.
+* **Matcher:** the remittance tie aggregates both advice lines onto CN 13716 (it already sums several lines per document). The advice then reconciles line by line and the STAT 123 family tie closes at R0.00.
+
+**Tripwire:** a document numbered 10 appearing on any family account, or a corrected advice from the customer, reopens this ruling.
 
