@@ -599,7 +599,7 @@ Internal proof: 45,751.52 + 8,084.67 (residual, internal) = 53,836.19 = Σ of th
 
 | Change | Status after rulings | Notes |
 | :--- | :--- | :--- |
-| M1 lane-aware split remittance lines | **Waits on Q3** | Needed for 41747; without it both STAT 114 and STAT 123 stay unresolved |
+| M1 lane-aware split remittance lines | **Waits on Q3** — **SUPERSEDED (§8.21): approved** | Needed for 41747; without it both STAT 114 and STAT 123 stay unresolved |
 | M2 payer group → **family remittance tie** (Q1 consolidated parent) | Approved | The full family tie needs current TWK003/TWK004 TXTs and projections (§8.15). Interim: TWK002-only tie of its R176,824.24 slice, with the child slice shown as a named family line. |
 | Remittance doc alias (Q2) | Approved | Config `remittanceDocAliases`, applied when evidence is built (§8.17) |
 | M3 discount journal joins its remittance tie | Approved | Journals 509 and 510; 508 once Q7 is recorded |
@@ -630,7 +630,7 @@ Internal proof: 45,751.52 + 8,084.67 (residual, internal) = 53,836.19 = Σ of th
 * **ERP payment tagging (corroboration only)** reaches the same R12,226.63: −R10,976.86 tagged to 41747 plus untagged −R1,249.77 on 43500.
 * **Grain:** the ratified lane grain (P2; v5 Part 1A vs 1B) already lets one lane retire while the other stays. Only the rule that drives a remittance tie by lane is new.
 
-**Q3′ (restated):** Ratify M1 — lane-aware split remittance ties — for the matcher build under Q10? (yes/no)
+**Q3′ (restated):** Ratify M1 — lane-aware split remittance ties — for the matcher build under Q10? (yes/no) — **ANSWERED (§8.21): yes.**
 **Effect of yes:** G2 (6 rows) ties, and the STAT 123 family tie can complete. **Effect of no:** both batches stay unresolved and the 41747 rows stay open, although their settlement is recorded in `closedInvoiceOverrides`.
 
 ### 8.20 Operator ruling on Q8′: show G4/G5 under the ratified bridge ids (2026-10-09)
@@ -655,4 +655,26 @@ Identity: 38,791.27 − 35,693.84 − 228.93 + 5,216.17 = **8,084.67**, the same
 * **Relation to Q7:** Q7 (`applied_to_bf` for 37770) is a separate matcher treatment. Q8′ is display mapping only, and G4 sits under `stat112_untagged` either way.
 
 **Tripwire (as ruled):** a fresh full-history export that restates the B/F as named invoices **and** gives these journals real invoice INVNOs reopens the bridge. Rebuild before the v5 view changes.
+
+### 8.21 Operator ruling on Q3′: M1 ratified (2026-10-09)
+
+**Ruling (verbatim, operator in the analysis session, 2026-10-09):** "Q3′ = YES".
+
+**M1 (lane-aware split remittance ties) is ratified for the matcher build under Q10.** As ruled, a remittance ties only the lane rows whose sum equals that advice's share (paid + discount), and only when:
+1. exactly one lane subset of the document's free rows fits (±R0.05), and
+2. all remittances together settle the whole document (Σ paid + discount over the advices = document gross, ±R0.05).
+
+Otherwise the batch stays unresolved, as today. The lane grain itself was already ratified (P2).
+
+**Effect on TWK002:**
+* G2 ties at R0.00: payment 39080, journal 509, and the gas rows of 42050, 42468, 42470 and CN 12215, with 41747's deposit lane and CN 12131.
+* 41747's gas row joins the STAT 123 tie.
+* With Q1/Q2 (family tie, "Crd Note 10" alias) and M3 (discount journals), the STAT 114, STAT 123 and STAT 129 ties all close at R0.00.
+
+**The Q10 build scope is now fully ruled:** M1, the family remittance tie (interim: TWK002 slice), the remittance doc alias, and M3. Done criteria as in §8.18: tests pass, `matcher_preview.mjs` shows no row change on the other eight accounts, and the proof ties.
+
+**Tripwires:**
+* An advice whose share fits two lane subsets equally stops the tie (it is never guessed).
+* Any other account whose rows change under M1 in the preview stops the build for review.
+* A corrected advice for STAT 114 or STAT 123 reopens the 41747 split.
 
