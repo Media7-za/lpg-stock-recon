@@ -357,7 +357,7 @@ Unchanged: Q1, Q2, Q3, Q5, Q7, Q9, Q10. Withdrawn: Q4. Replaced or new:
 * **ANSWERED (§8.23): approve all four.** **Q6′:** Approve 51180 + CN 15063 (both lanes) now, and hold 53078 + CN 15646 and 53351 + CN 15714 until a CN INVNO tag or your recorded judgement exists? (yes / approve all four / other)
 * **ANSWERED (§8.20): yes.** **Q8′:** Show G4 and G5 in the v5 open-items view under the ratified `balanceBridgeLines` ids, extending the 2026-08-11 bridge ratification to v5? (yes/no)
 * **Q11:** Register 41747 (STAT 123, `CROSS_BATCH_RESIDUAL_NO_DISCOUNT`) and the STAT 123 late lines (`LATE_PAYMENT_NO_DISCOUNT`) in `config/settlement_discount_overrides.json`, as doctrine v2 §7 requires? (yes/no) — **SUPERSEDED (§8.12):** too narrow; restated as Q11′.
-* **Q12:** Were H-014, H-022, H-023 and H-026 done in the ERP (journals 511–513 on 2026-08-31)? If so, may the main session mark them DONE in `shared/HUMAN_TASKS.md`? (done / not done / unknown)
+* **ANSWERED IN PART (§8.24):** **Q12:** Were H-014, H-022, H-023 and H-026 done in the ERP (journals 511–513 on 2026-08-31)? If so, may the main session mark them DONE in `shared/HUMAN_TASKS.md`? (done / not done / unknown)
 
 ### 8.11 Tripwires added
 
@@ -726,4 +726,25 @@ T0011 (44731 + CN 12958) needs no approval; the STAT 123 remittance confirms it 
 **Tripwires:**
 * An allocation-detail export showing CN 15646 or CN 15714 tagged to a different invoice reopens T0029 or T0030.
 * A re-issue of 51180, 53078 or 53351 reopens the matching tie.
+
+### 8.24 Operator answer on Q12: status of H-014, H-022, H-023, H-026 (2026-10-09)
+
+**Answer (operator, relayed 2026-10-09; figures re-derived by this session from `DEBENQ.TXT` and `TWK002_2026-10-08.TXT`, and the register is `shared/HUMAN_TASKS.md`):** do not mark all four DONE. Only H-014 is finished.
+
+| Task | Status for the main session | Reason (PROVEN unless stated) |
+| :--- | :--- | :--- |
+| H-014 (STAT 123 shortfall R63,501.62) | **DONE** | The gap is the child slices (TWK003 R38,501.31 + TWK004 R25,000.31). The three slices sum to advice cash R240,325.86. TASK-2026-0001 DONE; Q1 ruling (§8.15). Cite both. **This does not close the untagged −R1,249.77 slice of 43500.** |
+| H-022 (tag 37770) | **OPEN, or DONE with a note; decision needed (Q12b)** | Journal 511 (31/08/2026, net R0.00) allocates 37770 to the eight B/F documents in AL-0109…AL-0116 (ERP lines 39683 −26,765.92, 40081 −15,217.83, CN 11648 +15,473.25, CN 11743 +10,091.25, 40459 −22,372.30, CN 11821 +12,950.44, 40950 −24,821.42, CN 11953 +14,968.69, plus the receipt +35,693.84). The payment row itself is still blank-INVNO. H-022 asks for tagging **on the receipt**, which journal 511 did not do. |
+| H-023 (tag 39080's −R7,306.68 slice to 42468/42470) | **OPEN** | Latest allocation-detail file: 39080 is −R7,306.68 blank plus −R8,058.97 tagged to 42050. Nothing is tagged to 42468 or 42470. |
+| H-026 (tag 45899 to 21 targets) | **OPEN** | Latest allocation-detail file: 45899 is one blank-INVNO line of −R108,823.42. |
+| Journals 512 and 513 (31/08/2026, R0.00) | **Unverified** | They appear in the 2026-10-08 export (`EXCLUDE: ALLOCATION DETAIL`) but not in `DEBENQ.TXT` or the full-history export. Their INVNO splits are not known. Their zero net is consistent with allocation journals but is not proof they hit 39080 or 45899. **Do not infer 512 = STAT 114 or 513 = STAT 129.** |
+| H-027 (BS reclassification) | Status as recorded in `shared/HUMAN_TASKS.md`; not changed here | This session did not verify the register's wording for H-027. |
+
+**Q12b (new, one line):** H-022 — does journal allocation of 37770 count as done, or must the payment itself carry INVNO before it is marked DONE? (done with note / keep open)
+
+**Needed to close H-023 and H-026:** an allocation-detail export taken after 2026-08-31 (`INCLUDE: ALLOCATION DETAIL`). It shows whether 512 and 513 touch 39080 and 45899.
+
+**Tripwire:** a post-31/08/2026 allocation-detail export whose 512 or 513 lines are not against 39080 and 45899 (and their remittance targets) reopens H-023 and H-026. It also reopens §8.4, which assumed 512 and 513 were the same allocation.
+
+**What this session did not do:** it did not edit `shared/HUMAN_TASKS.md`. The main session writes the register entries, per the brief.
 
