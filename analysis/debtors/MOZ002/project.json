@@ -164,6 +164,10 @@
     {
       "date": "2026-10-08",
       "event": "Customer statement DRAFT generated (operator: \"Generate the MOZ002 customer statement\", then \"Option 2\" — build from the v5 reconciliation, not ERP allocation tags). New config/statement_of_account.json: customerLayout lpg_ledger_plus_position (house pattern, FIR001/JAY000), Amount due = ERP header R1,562.67 (PROVEN, raw/MOZ002_2026-10-08.TXT line 4) = LPG R1,562.67 + cylinder deposits R0.00 (fixture MOZ002.v5.json). Default open-invoice layout aborted: export EXCLUDES ALLOCATION DETAIL (tag gate NOT_DERIVABLE_FROM_TXT); a v5-matching open list (50528 + 53402 = R10,031.96) would overstate the balance because 44227 (R4,978.91), 45590 (R3,490.37) and 41529 (R0.01) are not tied to invoices. Outputs reports/MOZ002_Statement_of_Account.md and .pdf (PDF rendered from the md with the shared statement_pdf.css via Playwright; md-to-pdf is not installed in this environment). Live draft only — no --snapshot taken; send only after operator review."
+    },
+    {
+      "date": "2026-10-09",
+      "event": "Matcher v5 pilot (operator: \"The combination of batches probably need to be reviewed\" / \"Shall I build them? Yes\"; \"Let the customer facing statement show only open items tying up to the erp balance\"). BATCH_SUM T0099 (PROBABLE): payments 44227 R4,978.91 + 45590 R3,490.37 + rounding cent 41529 R0.01 = DN#22222 batch 50528 gas R4,329.29 + 50529 deposit R4,140.00 = R8,469.29, variance R0.00. CYL_EXCHANGE: 8 zero-sum groups (CONFIRMED). Internal open items: 53402 R5,702.67 + empties CN 15128 R-4,140.00 = ERP R1,562.67 (PROVEN, data/projection_matches.json). Customer statement switched to layout open_items (config/statement_of_account.json; ledger layout marked SUPERSEDED): ties R1,562.67; 16 of 18 listed items belong to 5 PROBABLE ties awaiting approval. Open for operator: treat the R4,140 (cash-paid deposit 50529, also credited by empties) as credit owed to the customer?"
     }
   ]
 }

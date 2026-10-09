@@ -402,3 +402,31 @@ and lock file must pass.
 - When the bank confirms one, FINCON posts it as a payment (or a Bank UD/Payment pair) and it matches normally.
 - Statements without UD rows are byte-identical (SA0001 checked).
 - **Tripwire:** a UD row dated before `periodStart` sits inside the B/F and shows as a variance with a note. Revisit this if any account hits it (GAS004, TAN001, FAM000 and WO0001 TXTs carry old UD rows).
+
+**Amendment (2026-10-09, operator instruction): matcher v5, batch sums and cylinder exchange netting.** PROPOSED — NOT RATIFIED.
+
+The operator said: "A customer very rarely pays for part of an invoice. The combination of batches probably need to be reviewed." Asked "Shall I build them?", the operator answered "Yes".
+
+- **Rule 4, `BATCH_SUM` (always PROBABLE).**
+  - Scope: payments still unallocated after rule 3.
+  - Match: 1–3 payments together settle 1–2 whole delivery batches within ±R0.05. A batch is every open invoice row sharing a DN number, gas and cylinder-deposit lanes together.
+  - A batch set needs at least one gas/other row. A deposit invoice alone is never a payment target, because deposit amounts recur and coincidences are common.
+  - Timing: payments fall on or after the batch, and within `batchWindowDays` (120) of it.
+  - Rounding: a payment of ≤ R0.05 that exactly removes the remaining variance is absorbed as the rounding cent.
+  - A part-payment is no longer inferred. It needs an operator ruling (`approve_tie --treatment part_payment`).
+- **Rule 5, `CYL_EXCHANGE` (CONFIRMED, net R0.00).**
+  - Scope: cylinder-deposit invoices and empties credit notes left unpaired because the counts differ, so the amounts differ.
+  - These rows form a custody chain. In date order, every stretch whose running total returns to R0.00 closes as one group. The same pass then runs from the latest row backwards.
+  - What stays open is the genuinely outstanding middle.
+- **Open-items view.** A tie spanning the gas and cylinder lanes carries its net on the gas side.
+- **Customer layout `open_items` (`generate_statement_of_account.mjs`).** Operator: "Let the customer facing statement show only open items tying up to the erp balance".
+  - Content: the customer view of the open items, with settled items omitted and PROBABLE-tie rows footnoted until approved.
+  - Gate: open items + named lines must equal the ERP header, the projection must not be stale, and no lock may be in conflict. Otherwise the statement is not written.
+  - The TXT invoice-tag gate does not apply to this layout, because the open list does not come from TXT tags.
+- **Pilot: MOZ002 only.** Not yet run across other accounts, by operator instruction ("Before you run this across every account…").
+  - Payments 44227 + 45590 (+ 41529, R0.01) settle the DN#22222 batch: 50528 gas + 50529 deposit = R8,469.29 (PROBABLE).
+  - 8 exchange groups close. Internal open items: invoice 53402 R5,702.67 and empties CN 15128 R−4,140.00 = ERP R1,562.67, variance R0.00 (PROVEN, `analysis/debtors/MOZ002/data/projection_matches.json`).
+- **Tripwires:**
+  - A remittance or an operator ruling contradicts a `BATCH_SUM` tie.
+  - A `CYL_EXCHANGE` group spans a cylinder count the custody (SKU) gate disputes.
+  - Running v5 across other accounts overturns an approved lock or a period close. Any lock conflict counts.

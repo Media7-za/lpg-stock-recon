@@ -4,7 +4,7 @@
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { dnNumber, matchProjection } from './projection_matcher.mjs';
+import { RULES, dnNumber, matchProjection } from './projection_matcher.mjs';
 
 let line = 0;
 const row = (o) => {
@@ -87,6 +87,7 @@ test('CN fallback pairs on exact amount + date only when unambiguous, and only a
       row({ doc: 'B', date: '2025-07-21', lane: 'CYL', amount: 4830 }),
       row({ doc: 'C', type: 'Crd Note', date: '2025-07-21', lane: 'CYL', amount: -4830 }),
     ]),
+    { ...RULES, cylExchange: false }, // rule 5 would net B+C as a custody stretch; test rule 2 alone
   );
   assert.equal(two.ties.length, 0, 'ambiguous fallback must leave rows open');
 });
@@ -289,4 +290,71 @@ test('residual proof rebuilds the closing balance exactly', () => {
   );
   assert.equal(res.proof.holds, true);
   assert.equal(res.residual.tieNets, -0.03);
+});
+
+// v5 rules (operator 2026-10-09). Amounts mirror MOZ002 DN#22222 (May 2026).
+test('BATCH_SUM: several payments settle one delivery batch (gas + deposit); the rounding cent is absorbed', () => {
+  const res = matchProjection(
+    projection([
+      row({ doc: '41529', type: 'Payment', date: '2025-10-07', amount: -0.01 }),
+      row({ doc: '50528', date: '2026-05-05', ref: 'DN#22222', amount: 4329.29 }),
+      row({ doc: '50529', date: '2026-05-05', ref: 'DN#22222-EMPTY', lane: 'CYL', amount: 4140 }),
+      row({ doc: '44227', type: 'Payment', date: '2026-05-07', amount: -4978.91 }),
+      row({ doc: '45590', type: 'Payment', date: '2026-08-06', amount: -3490.37 }),
+    ]),
+  );
+  const t = tieOf(res, '44227');
+  assert.equal(t.rule, 'BATCH_SUM');
+  assert.equal(t.confidence, 'PROBABLE');
+  assert.equal(t.variance, 0);
+  assert.equal(t.roundingCent.doc, '41529');
+  assert.deepEqual(t.payments.map((p) => p.doc), ['44227', '45590']);
+  assert.equal(res.unallocatedPayments.length, 0);
+  assert.equal(res.residual.openInvoicesCyl.count, 0);
+});
+
+test('BATCH_SUM: a deposit invoice alone is never a payment target', () => {
+  const res = matchProjection(
+    projection([
+      row({ doc: 'D1', date: '2026-01-01', ref: 'DN#100-EMPTY', lane: 'CYL', amount: 4140 }),
+      row({ doc: 'P1', type: 'Payment', date: '2026-01-05', amount: -2070 }),
+      row({ doc: 'P2', type: 'Payment', date: '2026-01-06', amount: -2070 }),
+    ]),
+    { ...RULES, cylExchange: false },
+  );
+  assert.equal(res.ties.length, 0);
+});
+
+test('BATCH_SUM: payments before the batch or beyond batchWindowDays are not used', () => {
+  const res = matchProjection(
+    projection([
+      row({ doc: 'P0', type: 'Payment', date: '2025-12-30', amount: -100 }),
+      row({ doc: 'I1', date: '2026-01-01', ref: 'DN#200', amount: 150 }),
+      row({ doc: 'C1', date: '2026-01-01', ref: 'DN#200-EMPTY', lane: 'CYL', amount: 100 }),
+      row({ doc: 'P1', type: 'Payment', date: '2026-01-10', amount: -150 }),
+      row({ doc: 'P2', type: 'Payment', date: '2026-06-30', amount: -100 }),
+    ]),
+    { ...RULES, cylExchange: false },
+  );
+  assert.equal(res.ties.filter((t) => t.rule === 'BATCH_SUM').length, 0);
+});
+
+test('CYL_EXCHANGE: unequal deposit/empties stretches that return to R0.00 close; the outstanding middle stays open', () => {
+  const res = matchProjection(
+    projection([
+      row({ doc: '41523', date: '2025-03-15', lane: 'CYL', amount: 2932.5 }),
+      row({ doc: '12081', type: 'Crd Note', date: '2025-03-17', lane: 'CYL', amount: -2415 }),
+      row({ doc: '12082', type: 'Crd Note', date: '2025-03-17', lane: 'CYL', amount: -517.5 }),
+      row({ doc: '15128', type: 'Crd Note', date: '2026-06-26', lane: 'CYL', amount: -4140 }),
+      row({ doc: '51527', date: '2026-07-02', lane: 'CYL', amount: 3622.5 }),
+      row({ doc: '15166', type: 'Crd Note', date: '2026-07-03', lane: 'CYL', amount: -2415 }),
+      row({ doc: '15254', type: 'Crd Note', date: '2026-07-13', lane: 'CYL', amount: -1207.5 }),
+    ]),
+  );
+  const ex = res.ties.filter((t) => t.rule === 'CYL_EXCHANGE');
+  assert.equal(ex.length, 2);
+  assert.ok(ex.every((t) => t.confidence === 'CONFIRMED' && t.net === 0));
+  assert.equal(res.residual.unmatchedCredits.count, 1);
+  assert.equal(res.residual.unmatchedCredits.amount, -4140);
+  assert.ok(res.proof.holds);
 });

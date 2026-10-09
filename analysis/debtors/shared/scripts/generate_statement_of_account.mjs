@@ -50,6 +50,7 @@ import {
   GATE_MEANING,
   REMEDY,
 } from './debenq_open_invoices.mjs';
+import { buildOpenItems } from './open_items.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '../../../..');
@@ -312,6 +313,82 @@ function buildLpgLedgerPlusPositionLines({
   return lines;
 }
 
+/**
+ * customerLayout 'open_items' (operator 2026-10-09: "Let the customer facing statement show only
+ * open items tying up to the erp balance"). Reads the v5 reconciliation (data/v5_projection.json +
+ * data/projection_matches.json) through the open-items model's customer view: settled items are
+ * omitted, PROBABLE ties stay listed (footnoted) until the operator confirms them, and the listed
+ * items plus any named lines must equal the ERP balance or the statement is not written.
+ */
+function loadOpenItemsCustomer(debtorCode) {
+  const acct = path.join(ROOT, 'analysis/debtors', debtorCode);
+  const read = (rel) => JSON.parse(fs.readFileSync(path.join(acct, rel), 'utf8'));
+  const projection = read('data/v5_projection.json');
+  const matches = read('data/projection_matches.json');
+  const model = buildOpenItems(projection, matches, 'customer');
+  return { projection, matches, model };
+}
+
+function buildOpenItemsCustomerLines({ cfg, debtorCode, asAtLabel, totalDue, model, projection }) {
+  const { parts } = model;
+  const label = { LPG: 'Gas', OTHER: 'Other', CYL: 'Cylinder deposit' };
+  const items = [...parts.lpg.lines, ...parts.cyl.lines].sort(
+    (a, b) => a.date.localeCompare(b.date) || String(a.doc).localeCompare(String(b.doc)),
+  );
+  const openingTotal = round2(parts.lpg.opening + parts.cyl.opening);
+  const itemsTotal = round2(items.reduce((s, l) => s + l.amount, 0));
+  const named = [];
+  if (openingTotal) named.push(['Opening balance brought forward', openingTotal]);
+  const rounding = round2(parts.lpg.rounding + parts.cyl.rounding);
+  if (rounding) named.push(['Rounding on settled items', rounding]);
+  for (const [k, text] of [
+    ['applied_to_bf', 'Payments against opening balance'],
+    ['part_payment', 'Part-payments on items listed above'],
+    ['customer_credit', 'Credit in your favour'],
+    ['short_paid', 'Short payments still owed'],
+  ]) {
+    const v = round2((parts.lpg.rulings[k] || 0) + (parts.cyl.rulings[k] || 0));
+    if (v) named.push([text, v]);
+  }
+  const journals = round2(parts.lpg.journalsPending + parts.cyl.journalsPending);
+  if (journals) named.push(['Settlement discount (journal pending)', journals]);
+  const statementTotal = round2(itemsTotal + named.reduce((s, [, v]) => s + v, 0));
+
+  const lines = [];
+  lines.push('# Statement of Account', '');
+  cfg.businessHeader.forEach((h, i) => lines.push(i === 0 ? `**${h}**  ` : `${h}  `));
+  lines.push('', '---', '');
+  lines.push(`**To:** ${cfg.customerName}  `);
+  lines.push(`**Account:** ${debtorCode}  `);
+  if (cfg.referenceValue) lines.push(`**${cfg.referenceLabel}:** ${cfg.referenceValue}  `);
+  lines.push(`**Statement date:** ${asAtLabel}  `);
+  lines.push('', '---', '', '## Amount due', '', `**R${fmtAmount(totalDue)}**`, '', '---', '');
+  lines.push('## Open items', '', '*Items already settled are not listed.*', '');
+  lines.push('| Date | Type | Doc # | Reference | Item | Amount (R) |', '| :--- | :--- | :--- | :--- | :--- | ---: |');
+  for (const l of items) {
+    const ref = String(l.ref || '—').replace(/\|/g, '\\|');
+    lines.push(
+      `| ${displayDate(l.date)} | ${l.entry_type} | ${l.doc}${l.pendingProbable ? ' ¹' : ''} | ${ref} | ${label[l.lane] || l.lane} | ${fmtAmount(l.amount)} |`,
+    );
+  }
+  lines.push(`| | | | | **Total open items** | **${fmtAmount(itemsTotal)}** |`, '');
+  if (items.some((l) => l.pendingProbable)) {
+    lines.push('¹ Payment received; allocation to this item is being confirmed.', '');
+  }
+  lines.push('---', '', '## Summary', '', '| | Amount (R) |', '| :--- | ---: |');
+  lines.push(`| Open items listed above | ${fmtAmount(itemsTotal)} |`);
+  for (const [t, v] of named) lines.push(`| ${t} | ${fmtAmount(v)} |`);
+  lines.push(`| **Amount due** | **${fmtAmount(statementTotal)}** |`, '');
+  const ud = projection.udPending;
+  if (ud && ud.headerTotal) {
+    lines.push(
+      `**Note:** payment(s) of R${fmtAmount(-ud.headerTotal)} received but not yet confirmed by our bank reconciliation; they will be credited once confirmed.`,
+      '',
+    );
+  }
+  return { lines, statementTotal, itemsTotal, pending: items.filter((l) => l.pendingProbable).length, count: items.length };
+}
+
 function reportTagCoverage(debtorCode, cov) {
   if (cov.gate === 'ALLOWED') {
     console.log(
@@ -366,6 +443,14 @@ function main() {
   const debtorCode = args.debtor || 'TWK002';
   const cfgPath = path.join(ROOT, 'analysis/debtors', debtorCode, 'config/statement_of_account.json');
   const cfg = loadConfig(debtorCode);
+  if (!args.asAt && cfg.customerLayout === 'open_items') {
+    try {
+      const { projection } = loadOpenItemsCustomer(debtorCode);
+      if (projection?.window?.lastRowDate) args.asAt = projection.window.lastRowDate;
+    } catch {
+      // The layout branch reports the missing inputs.
+    }
+  }
   if (!args.asAt && cfg.customerLayout === 'lpg_ledger_plus_position') {
     try {
       const { fixture } = loadV5CustomerSources(cfg, debtorCode);
@@ -440,11 +525,12 @@ function main() {
         remittanceDocs: loadRemittanceInvoiceDocs(path.join(ROOT, 'analysis/debtors', debtorCode)),
       });
   reportTagCoverage(debtorCode, tagCoverage);
-  const skipOpenInvoiceGateAbort =
-    (cfgForRun.customerLayout || cfg.customerLayout) === 'lpg_ledger_plus_position';
+  const skipOpenInvoiceGateAbort = ['lpg_ledger_plus_position', 'open_items'].includes(
+    cfgForRun.customerLayout || cfg.customerLayout,
+  );
   if (skipOpenInvoiceGateAbort && (tagCoverage.gate === 'BLOCKED' || tagCoverage.gate === 'NOT_DERIVABLE_FROM_TXT')) {
     console.warn(
-      `[${debtorCode}] Open-invoice tag gate ${tagCoverage.gate} is not applied to customerLayout lpg_ledger_plus_position (customer document does not list open invoices). Amount due remains the ERP header.`,
+      `[${debtorCode}] Open-invoice tag gate ${tagCoverage.gate} is not applied to customerLayout ${cfgForRun.customerLayout || cfg.customerLayout} (open list comes from the v5 reconciliation, not TXT invoice tags). Amount due remains the ERP header.`,
     );
   }
   if (
@@ -548,7 +634,25 @@ function main() {
     customerDueBasis === 'open_invoices' ? sumOpenInvoices : totalDue;
 
   let lines = [];
-  if (customerLayout === 'lpg_ledger_plus_position') {
+  if (customerLayout === 'open_items') {
+    const { projection, matches, model } = loadOpenItemsCustomer(debtorCode);
+    const problems = [];
+    if (!model.proof.holds) problems.push(`open items rebuild R${fmt(model.proof.combined)} ≠ projection closing R${fmt(model.proof.projectionClosing)}`);
+    if (Math.abs(projection.source.erpCurrentBalance - totalDue) > 0.005) problems.push(`v5 projection was built for ERP R${fmt(projection.source.erpCurrentBalance)}, statement TXT says R${fmt(totalDue)} (stale projection)`);
+    if ((matches.lockConflicts || []).length) problems.push(`${matches.lockConflicts.length} lock conflict(s) unresolved`);
+    const built = buildOpenItemsCustomerLines({ cfg: cfgForRun, debtorCode, asAtLabel, totalDue, model, projection });
+    if (Math.abs(built.statementTotal - totalDue) > 0.005) problems.push(`open items + named lines R${fmt(built.statementTotal)} ≠ ERP balance R${fmt(totalDue)}`);
+    if (problems.length && !args.force) {
+      console.error(`[${debtorCode}] ABORTED — open-items statement does not tie: ${problems.join('; ')}`);
+      process.exitCode = 1;
+      return;
+    }
+    if (built.pending) {
+      console.warn(`[${debtorCode}] NOTE: ${built.pending} listed item(s) belong to PROBABLE ties (footnoted ¹) — confirm or approve them to drop them from the customer copy.`);
+    }
+    lines = built.lines;
+    console.log(`[${debtorCode}] Customer layout open_items: ${built.count} open item(s) R${fmt(built.itemsTotal)} → amount due R${fmt(built.statementTotal)} = ERP R${fmt(totalDue)}`);
+  } else if (customerLayout === 'lpg_ledger_plus_position') {
     const { v5Md, fixture, v5MdRel } = loadV5CustomerSources(cfgForRun, debtorCode);
     const fp = fixture.financialPosition;
     const lpgClose = round2(fp.lpgGasDebt);

@@ -52,6 +52,20 @@
  *      payment date. SUPERSEDED 2026-10-08 (operator, ADM-86: "45591 should have been 52195";
  *      "FIFO within this proximity"; "Let's do it"): exact, then smallest variance, then the
  *      OLDEST invoice among candidates within fifoWindowDays (14) of the closest one.
+ *   4. BATCH_SUM        (v5, operator 2026-10-09: "A customer very rarely pays for part of an
+ *                       invoice. The combination of batches probably need to be reviewed.")
+ *                       Payments still unallocated after rule 3: 1–3 of them together settle
+ *                       1–2 whole delivery batches (every open invoice row sharing a DN number,
+ *                       gas AND cylinder deposit lanes; at least one gas/other row, so a deposit
+ *                       alone is never a target) within ±R0.05. Payments must fall on or
+ *                       after the batch and within batchWindowDays of it. A payment of
+ *                       ≤ R0.05 that exactly removes the remaining variance is absorbed as the
+ *                       rounding cent. Always PROBABLE (operator approves via approve_tie).
+ *   5. CYL_EXCHANGE     (v5) cylinder deposit invoices and empties credit notes left unpaired
+ *                       (counts differ, so amounts differ) are a custody exchange chain. In date
+ *                       order, every stretch whose running total returns to R0.00 is closed as
+ *                       one CONFIRMED group (net R0.00); the same is done from the latest row
+ *                       backwards, so only the genuinely outstanding middle stays open.
  *   A tie touching a row whose split_basis is not confirmable (HEADER_FALLBACK, P10)
  *   is downgraded to PROBABLE.
  *
@@ -62,7 +76,7 @@
 
 import { rowKey } from './locks.mjs';
 
-export const MATCHER_VERSION = 4;
+export const MATCHER_VERSION = 5;
 
 export const RULES = Object.freeze({
   exactTolerance: 0.05,
@@ -74,6 +88,11 @@ export const RULES = Object.freeze({
   fifoWindowDays: 14, // FIFO tie-break only among candidates within 14 days of the closest // EXACT_RUN: longest run of consecutive open invoices one payment may settle
   combinationPool: 40, // most recent open invoices considered for 2–3 invoice sums
   paymentTargetLanes: ['LPG', 'OTHER'],
+  batchMaxPayments: 3, // BATCH_SUM: payments combined against delivery batches
+  batchMaxBatches: 2,
+  batchWindowDays: 120, // last payment no later than this after the batch
+  batchPool: 40, // most recent open batches considered
+  cylExchange: true,
   remittanceLineTolerance: 0.05,
   remittanceBatchTolerancePct: 0.001,
 });
@@ -413,6 +432,104 @@ export function matchProjection(projection, rules = RULES, evidence = null, lock
       });
     }
   }
+  // 4. BATCH_SUM: combinations of unallocated payments against whole delivery batches.
+  const batchSum = () => {
+    const batches = new Map();
+    for (const r of invoiceRows) {
+      if (!free(r) || r.amount <= 0) continue;
+      const k = dnNumber(r.ref_no) ? `DN${dnNumber(r.ref_no)}` : `DOC${r.clean_doc}`;
+      if (!batches.has(k)) batches.set(k, { key: k, rows: [], date: r.date, amount: 0 });
+      const b = batches.get(k);
+      b.rows.push(r);
+      if (r.date < b.date) b.date = r.date;
+      b.amount = round2(b.amount + r.amount);
+    }
+    const pool = [...batches.values()].sort((a, b) => b.date.localeCompare(a.date)).slice(0, rules.batchPool);
+    const pays = payments.filter((p) => free(p) && -p.amount > rules.exactTolerance);
+    const tiny = payments.filter((p) => free(p) && -p.amount <= rules.exactTolerance);
+    const cands = [];
+    for (let nb = 1; nb <= rules.batchMaxBatches; nb++) {
+      for (const bset of combos(pool, nb)) {
+        // A deposit-only set is never a payment target (deposit amounts recur, so coincidences are
+        // common); a cylinder deposit is only settled by cash together with its delivery's gas.
+        if (!bset.some((b) => b.rows.some((r) => rules.paymentTargetLanes.includes(r.lane)))) continue;
+        const total = round2(bset.reduce((s, b) => s + b.amount, 0));
+        const first = bset.reduce((d, b) => (b.date < d ? b.date : d), bset[0].date);
+        const last = bset.reduce((d, b) => (b.date > d ? b.date : d), bset[0].date);
+        const eligible = pays.filter((p) => p.date >= last && days(first, p.date) <= rules.batchWindowDays);
+        for (let np = 1; np <= rules.batchMaxPayments; np++) {
+          if (np === 1 && nb === 1 && bset[0].rows.every((r) => r.lane !== 'CYL')) continue; // rule 3's ground
+          for (const pset of combos(eligible, np)) {
+            const A = round2(pset.reduce((s, p) => s - p.amount, 0));
+            if (Math.abs(A - total) > rules.exactTolerance) continue;
+            cands.push({ bset, pset, total, A, variance: round2(A - total) });
+          }
+        }
+      }
+    }
+    cands.sort(
+      (a, b) =>
+        Math.abs(a.variance) - Math.abs(b.variance) ||
+        a.pset.length + a.bset.length - (b.pset.length + b.bset.length) ||
+        a.bset[0].date.localeCompare(b.bset[0].date),
+    );
+    const used = new Set();
+    for (const c of cands) {
+      const rowsOf = [...c.pset, ...c.bset.flatMap((b) => b.rows)];
+      if (rowsOf.some((r) => used.has(r.row_id) || !free(r))) continue;
+      const alternatives = cands.filter(
+        (o) => o !== c && Math.abs(o.variance) === Math.abs(c.variance) && o.pset.some((p) => c.pset.includes(p)),
+      ).length;
+      const members = rowsOf.slice();
+      let variance = c.variance;
+      const cent = variance ? tiny.find((t) => free(t) && !used.has(t.row_id) && round2(-t.amount) === round2(-variance)) : null;
+      if (cent) {
+        members.push(cent);
+        variance = 0;
+      }
+      for (const r of members) used.add(r.row_id);
+      addTie('BATCH_SUM', 'PROBABLE', members, {
+        payments: c.pset.map((p) => ({ doc: p.clean_doc, date: p.date, amount: round2(-p.amount) })),
+        batches: c.bset.map((b) => ({ batch: b.key, date: b.date, amount: b.amount, docs: [...new Set(b.rows.map((r) => `${r.lane} ${r.clean_doc}`))] })),
+        ...(cent ? { roundingCent: { doc: cent.clean_doc, date: cent.date, amount: round2(-cent.amount) } } : {}),
+        ...(alternatives ? { ambiguousAlternatives: alternatives } : {}),
+        variance,
+      });
+    }
+  };
+  batchSum();
+
+  // 5. CYL_EXCHANGE: zero-sum stretches of the unpaired cylinder deposit chain.
+  if (rules.cylExchange) {
+    const chain = rows
+      .filter((r) => r.lane === 'CYL' && (r.kind === 'invoice' || r.kind === 'credit_note') && free(r))
+      .sort((a, b) => a.date.localeCompare(b.date) || (a.txt_line ?? 0) - (b.txt_line ?? 0));
+    const segment = (list) => {
+      const segs = [];
+      let run = 0;
+      let start = 0;
+      list.forEach((r, i) => {
+        run = round2(run + r.amount);
+        if (Math.abs(run) < 0.005) {
+          if (i - start >= 1) segs.push(list.slice(start, i + 1));
+          start = i + 1;
+          run = 0;
+        }
+      });
+      return { segs, rest: list.slice(start) };
+    };
+    const fwd = segment(chain);
+    const back = segment(fwd.rest.slice().reverse());
+    for (const seg of [...fwd.segs, ...back.segs.map((s) => s.slice().reverse())]) {
+      addTie('CYL_EXCHANGE', 'CONFIRMED', seg, {
+        from: seg[0].date,
+        to: seg[seg.length - 1].date,
+        invoices: seg.filter((r) => r.kind === 'invoice').length,
+        creditNotes: seg.filter((r) => r.kind === 'credit_note').length,
+      });
+    }
+  }
+
   for (const p of payments) if (free(p)) unallocated.push(p.row_id);
 
   // Proof: B/F + Σ untied rows + Σ tie nets = closing combined (and the ERP header).

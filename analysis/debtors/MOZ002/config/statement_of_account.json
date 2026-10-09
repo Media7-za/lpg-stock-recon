@@ -15,8 +15,9 @@
   "outputDir": "analysis/debtors/MOZ002/reports",
   "outputBaseName": "MOZ002_Statement_of_Account",
   "pdfStylesheet": "analysis/debtors/shared/templates/statement_pdf.css",
-  "customerLayout": "lpg_ledger_plus_position",
-  "_comment_customerLayout": "Operator 2026-10-08: \"Option 2\" (build the customer copy from the v5 reconciliation rather than ERP allocation tags). House pattern (FIR001 2026-09-14, JAY000): v5 LPG ledger + account position, Amount due = ERP header. An open-invoice listing from v5 matching was rejected: open LPG 50528 + 53402 = R10,031.96 exceeds the R1,562.67 balance because R8,469.29 of payments (44227, 45590, 41529) are not tied to invoices, so the gate blocks it (OPEN_LIST_OVERSTATES_ACCOUNT). v5 matching is PROPOSED - NOT RATIFIED; this layout does not depend on it.",
+  "customerLayout": "open_items",
+  "_comment_customerLayout_2026-10-09": "Operator 2026-10-09: \"Let the customer facing statement show only open items tying up to the erp balance\". Layout open_items: settled items omitted; open items from the v5 reconciliation (matcher v5: BATCH_SUM + CYL_EXCHANGE); open items + named lines must equal the ERP header or the generator aborts. PROBABLE ties stay listed (footnoted) until approved.",
+  "_comment_customerLayout": "SUPERSEDED 2026-10-09 (was lpg_ledger_plus_position): Operator 2026-10-08: \"Option 2\" (build the customer copy from the v5 reconciliation rather than ERP allocation tags). House pattern (FIR001 2026-09-14, JAY000): v5 LPG ledger + account position, Amount due = ERP header. An open-invoice listing from v5 matching was rejected: open LPG 50528 + 53402 = R10,031.96 exceeds the R1,562.67 balance because R8,469.29 of payments (44227, 45590, 41529) are not tied to invoices, so the gate blocks it (OPEN_LIST_OVERSTATES_ACCOUNT). v5 matching is PROPOSED - NOT RATIFIED; this layout does not depend on it.",
   "lpgLedgerHeading": "LPG account",
   "lpgLedgerIntro": "Deliveries, payments, and credits.",
   "financialPositionLabels": {

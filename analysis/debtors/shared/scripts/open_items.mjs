@@ -59,9 +59,13 @@ export function buildOpenItems(projection, matches, view = 'internal') {
   for (const t of matches.ties) {
     if (view === 'customer' && t.confidence === 'PROBABLE') continue; // shown in full instead
     const bucket = t.ruling && t.ruling.treatment !== 'exact' ? ruled[t.ruling.treatment] : rounding;
-    for (const id of t.members) {
-      const r = projection.rows.find((x) => x.row_id === id);
-      if (r) bucket[laneOf(r)] = round2(bucket[laneOf(r)] + r.amount);
+    const memberRows = t.members.map((id) => projection.rows.find((x) => x.row_id === id)).filter(Boolean);
+    if (new Set(memberRows.map(laneOf)).size > 1) {
+      // A tie spanning gas and cylinder lanes (e.g. BATCH_SUM: payments settling a delivery's
+      // gas and deposit invoices) has no per-lane net of its own; carry its net on the gas side.
+      bucket.lpg = round2(bucket.lpg + t.net);
+    } else {
+      for (const r of memberRows) bucket[laneOf(r)] = round2(bucket[laneOf(r)] + r.amount);
     }
     if (t.ruling?.treatment === 'part_payment') {
       const pay = t.docs.find((d) => d.startsWith('Payment '))?.slice(8);
