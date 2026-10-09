@@ -780,3 +780,11 @@ T0011 (44731 + CN 12958) needs no approval; the STAT 123 remittance confirms it 
 
 **Q12b, restated:** H-022 — keep OPEN (recommended) or close as WAIVED?
 
+### 8.27 Operator ruling on H-022 (2026-10-09)
+
+**Ruling (operator, 2026-10-09):** "H-022 OPEN". This follows the recommendation in §8.26. H-022 stays OPEN as written: it closes only when payment 37770 is split or tagged onto the eight pre-window documents, or when `debtors:tag-check` no longer lists 37770. It is not WAIVED and not DONE.
+
+**Recorded for the main session (it writes `shared/HUMAN_TASKS.md`):** H-022 — OPEN. Settlement is already recorded by journal 511 (§8.18), so the open item is hygiene only.
+
+**Open questions for this report:** none. Every question in the ADM-94 set (Q1–Q15, Q3′, Q6′, Q8′, Q12, Q12b) is now answered or withdrawn. What remains are the main session's build and register steps listed in §8.15, §8.17, §8.18, §8.21, §8.23 and §8.14.
+
