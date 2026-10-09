@@ -356,7 +356,7 @@ Unchanged: Q1, Q2, Q3, Q5, Q7, Q9, Q10. Withdrawn: Q4. Replaced or new:
 
 * **Q6′:** Approve 51180 + CN 15063 (both lanes) now, and hold 53078 + CN 15646 and 53351 + CN 15714 until a CN INVNO tag or your recorded judgement exists? (yes / approve all four / other)
 * **Q8′:** Show G4 and G5 in the v5 open-items view under the ratified `balanceBridgeLines` ids, extending the 2026-08-11 bridge ratification to v5? (yes/no)
-* **Q11:** Register 41747 (STAT 123, `CROSS_BATCH_RESIDUAL_NO_DISCOUNT`) and the STAT 123 late lines (`LATE_PAYMENT_NO_DISCOUNT`) in `config/settlement_discount_overrides.json`, as doctrine v2 §7 requires? (yes/no)
+* **Q11:** Register 41747 (STAT 123, `CROSS_BATCH_RESIDUAL_NO_DISCOUNT`) and the STAT 123 late lines (`LATE_PAYMENT_NO_DISCOUNT`) in `config/settlement_discount_overrides.json`, as doctrine v2 §7 requires? (yes/no) — **SUPERSEDED (§8.12):** too narrow; restated as Q11′.
 * **Q12:** Were H-014, H-022, H-023 and H-026 done in the ERP (journals 511–513 on 2026-08-31)? If so, may the main session mark them DONE in `shared/HUMAN_TASKS.md`? (done / not done / unknown)
 
 ### 8.11 Tripwires added
@@ -364,3 +364,45 @@ Unchanged: Q1, Q2, Q3, Q5, Q7, Q9, Q10. Withdrawn: Q4. Replaced or new:
 * An allocation-detail export after 2026-08-31 showing journals 512/513 with allocations other than 39080/45899 reopens §8.4.
 * Any advice paying 52484/52803 with a discount reopens §8.5.
 * A decision on the H-027 challenge that splits `phantom_cn_nets` reopens §8.9 (the crosswalk would need the split lines).
+
+### 8.12 Q11 in detail: discount register for 2025–2026 batches (added 2026-10-09 at the operator's request)
+
+**The register.** `config/settlement_discount_overrides.json` (doctrine `settlement-discount-v2`, `termsBasis: invoice_month_end_plus_30_days`) is where doctrine v2 §7 says each deviation from "2.5% × gross" is recorded. It holds 12 approved entries, all from 2023–2024 batches (EXC-0001…0007, EXC-2024-0001…0005). It has **no entry for STAT 110, 112, 114, 123 or 129**. PROVEN (file read).
+
+**Precedent for 41747.** EXC-0005 records invoice 24011 as `CROSS_BATCH_RESIDUAL_NO_DISCOUNT` (BATCH-2023-11-27): a residual paid in a later batch at R0 discount. 41747 is the same pattern. STAT 114 paid the CYL slice with R495.94 discount; STAT 123 paid the R12,226.63 residual at R0.00.
+
+**Terms rule vs advice, per batch.** The deadline is read as the end of the month after the invoice, as in EXC-0001 (May invoice → 2023-06-30). Payment date = electronic paid date.
+
+| Batch (payment) | Lines | Late | Advice discount (R) | Terms-rule discount (R) | Advice − rule (R) |
+| :--- | ---: | ---: | ---: | ---: | ---: |
+| STAT 110 (36467) | 2 | 0 | 112.78 | 112.78 | 0.00 |
+| STAT 112 (37770) | 8 | 4 | 228.93 | 494.23 | −265.30 |
+| STAT 114 (39080) | 8 | 1 | 393.99 | −101.95 | +495.94 |
+| STAT 123 (43500, TWK002 slice) | 46 | 43 | 0.00 | −70.00 | +70.00 |
+| STAT 129 (45899) | 21 | 14 | 1,223.45 | 911.66 | +311.79 |
+| **Total** | | | | | **+612.43** |
+
+PROVEN arithmetic from `data/remittance_evidence.json`. The customer took R612.43 more discount than the strict terms rule gives. The advice is canonical (v2 §2), and journals 507–510 already posted the advice amounts. **No balance, tie or open row changes.** The register is the audit record of the deviations.
+
+**The eight lines that deviate from the terms rule:**
+
+| Batch | Document | Date | Terms | Advice discount (R) | Rule (R) |
+| :--- | :--- | :--- | :--- | ---: | ---: |
+| STAT 112 | Invoice 40081 | 2025-01-22 | late | 390.20 | 0.00 |
+| STAT 112 | CN 11648 | 2025-01-23 | late | −396.75 | 0.00 |
+| STAT 112 | CN 11743 | 2025-01-23 | late | −258.75 | 0.00 |
+| STAT 114 | Invoice 41747 (CYL slice) | 2025-03-26 | late | 495.94 | 0.00 (offset by CN 12131 −495.94, in terms; pair nets 0) |
+| STAT 123 | Invoice 48687 | 2026-01-09 | in terms | 0.00 | 878.75 |
+| STAT 123 | CN 14237 | 2026-01-26 | in terms | 0.00 | −569.25 |
+| STAT 123 | CN 14034 | 2026-02-09 | in terms | 0.00 | −379.50 |
+| STAT 129 | Invoice 51226 | 2026-06-15 | late | 311.80 | 0.00 |
+
+The other 40 late STAT 123 lines took R0 discount, as the rule says. The register's precedent for such a batch is one batch-level entry (EXC-2024-0005 `LATE_CATCHUP_BATCH`), not one entry per line.
+
+**Why it may be unregistered on purpose.** Doctrine v2 is scoped to 2023–2024. `docs/TWK002_Model_B_Position.md` calls 2025+ forward scope, not to be mixed into the 2023–2024 sign-off. Phase 2 posted the 2025 journals (507–509) without extending the register. So this is a scope decision first.
+
+**Sensitivity (ASSUMED reading).** The config literally says month-end + 30 days. Read that way, a further 20 lines (e.g. STAT 110 and most of STAT 129) fall late by one day in 30-day months. The end-of-following-month reading above matches EXC-0001; confirm it. Kill condition: an operator or doctrine statement that the literal +30-day count applies.
+
+* **Q11′:** Extend the discount register to 2025–2026? (yes / no / wait for the 2023–2024 sign-off) If yes, the main session would add: one `CROSS_BATCH_RESIDUAL_NO_DISCOUNT` entry for 41747; one `LATE_CATCHUP_BATCH` entry for STAT 123; and entries for the eight lines above (net R612.43).
+* **Q13:** Is the terms deadline the end of the month after the invoice, as EXC-0001 implies, rather than a literal 30 days after month-end? (yes/no)
+
