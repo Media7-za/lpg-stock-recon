@@ -219,10 +219,10 @@ Proof holds on all nine. No lock exists on TWK002, so none was bypassed. Working
 4. **Q4:** STAT 114 calls R12,226.63 of 41747 "already paid" before 2025-05-19, but only STAT 123 pays it. Do you accept STAT 123 as the sole payment, or should finance check the bank for an earlier R12,226.63? (accept / check) — **WITHDRAWN (§8.3):** answered by doctrine v2 §7.
 5. **Q5:** Is CN 15775 (−R7,935.00, DN#23843, 2026-10-08) a cylinder credit or a gas credit? (cylinder / gas / unknown until ADM-93 syncs)
 6. **Q6:** Approve the four probable ties (51180 + CN 15063 ×2 lanes, 53078 + CN 15646, 53351 + CN 15714)? (all four / list the exceptions) — **AMENDED (§8.7):** now Q6′ in §8.10.
-7. **Q7 (P7):** Rule payment 37770 and journal 508 as `applied_to_bf` against the eight itemised B/F documents (R35,922.77)? (yes/no)
+7. **Q7 (P7):** Rule payment 37770 and journal 508 as `applied_to_bf` against the eight itemised B/F documents (R35,922.77)? (yes/no) — **ANSWERED (§8.18): yes.**
 8. **Q8:** Report journals 490–507 (R+5,216.17) as one named opening-adjustment line, not 24 open rows, until H-027 is decided? (yes/no) — **AMENDED (§8.9):** now Q8′ in §8.10.
 9. **Q9:** Is a September 2026 remittance advice for 52484 and 52803 (about R18,413.69 gross) on file or expected? (on file / expected on date / none)
-10. **Q10:** Should the main session build M1–M3 into `projection_matcher.mjs` and rerun TWK002 only, after you rule on Q1–Q3? (yes/no)
+10. **Q10:** Should the main session build M1–M3 into `projection_matcher.mjs` and rerun TWK002 only, after you rule on Q1–Q3? (yes/no) — **ANSWERED (§8.18): yes.**
 
 ---
 
@@ -584,4 +584,30 @@ Internal proof: 45,751.52 + 8,084.67 (residual, internal) = 53,836.19 = Σ of th
 * **Matcher:** the remittance tie aggregates both advice lines onto CN 13716 (it already sums several lines per document). The advice then reconciles line by line and the STAT 123 family tie closes at R0.00.
 
 **Tripwire:** a document numbered 10 appearing on any family account, or a corrected advice from the customer, reopens this ruling.
+
+### 8.18 Operator rulings on Q7 and Q10 (2026-10-09)
+
+**Rulings (verbatim, operator in the analysis session, 2026-10-09):** "Q10 = YES", "Q7 = YES".
+
+**Q7: payment 37770 against the B/F.**
+* Payment 37770 (STAT 112, R35,693.84) and its discount journal 508 (−R228.93) are ruled `applied_to_bf`. Together they settle the eight pre-window documents inside the B/F: invoices 39683, 40081, 40459, 40950 and CNs 11648, 11743, 11821, 11953 (R35,922.77).
+* Evidence: the STAT 112 advice, `data/allocation_edges.csv` AL-0109…AL-0116, and `raw/TWK0022024.TXT` LINE 19–22 and 49–52. This is the ratified bridge line `stat112_untagged`.
+* **Recording (main session):** `node analysis/debtors/shared/scripts/approve_tie.mjs --debtor TWK002 --payment 37770 --treatment applied_to_bf --reason "<this ruling; documents and evidence above>"`. `approve_tie` cannot yet take a journal, so journal 508 needs either the small tool change (accept `--journals 508`) or M3 (discount journal clears pending discount, §5). Run `--dry-run` first.
+* Effect: 2 open rows leave; the unitemised B/F falls from R38,791.27 to R2,868.50 (PROVEN arithmetic).
+
+**Q10: build the matcher changes.** The main session builds into `analysis/debtors/shared/scripts/projection_matcher.mjs`, with tests, then reruns TWK002. Scope as now ruled:
+
+| Change | Status after rulings | Notes |
+| :--- | :--- | :--- |
+| M1 lane-aware split remittance lines | **Waits on Q3** | Needed for 41747; without it both STAT 114 and STAT 123 stay unresolved |
+| M2 payer group → **family remittance tie** (Q1 consolidated parent) | Approved | The full family tie needs current TWK003/TWK004 TXTs and projections (§8.15). Interim: TWK002-only tie of its R176,824.24 slice, with the child slice shown as a named family line. |
+| Remittance doc alias (Q2) | Approved | Config `remittanceDocAliases`, applied when evidence is built (§8.17) |
+| M3 discount journal joins its remittance tie | Approved | Journals 509 and 510; 508 once Q7 is recorded |
+
+**Done means:**
+* existing matcher tests still pass, plus new tests for each change;
+* `matcher_preview.mjs` shows no row change on the other eight projected accounts (the scratch prototype showed none, §5);
+* TWK002's proof still ties to R54,136.19, or the family's to R53,836.19 once the children are in.
+
+**Tripwire:** the preview showing any row change on another account stops the build for review.
 
