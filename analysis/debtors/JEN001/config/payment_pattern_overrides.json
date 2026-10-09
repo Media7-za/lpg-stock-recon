@@ -7,6 +7,8 @@
   "overrides": [
     {
       "id": "JEN-STAT127-44878",
+      "superseded": "SUPERSEDED 2026-10-09 by operator ruling ADM-92 (v5 lock L0002, one oldest-first chain for 44878, 45717 and 46098 under ADM-83). Kept for the record, never deleted; the LIFO pilot allocation below no longer applies to the v5 statement.",
+      "superseded_by": "projectionLocks L0002 (ADM-92)",
       "payment_doc": "44878",
       "payment_date": "2026-06-25",
       "stat": "STAT 127",
@@ -21,6 +23,8 @@
     },
     {
       "id": "JEN-STAT129-45717",
+      "superseded": "SUPERSEDED 2026-10-09 by operator ruling ADM-92 (v5 lock L0002, one oldest-first chain for 44878, 45717 and 46098 under ADM-83). Kept for the record, never deleted; the LIFO pilot allocation below no longer applies to the v5 statement.",
+      "superseded_by": "projectionLocks L0002 (ADM-92)",
       "payment_doc": "45717",
       "payment_date": "2026-08-14",
       "stat": "STAT 129",
@@ -96,8 +100,182 @@
           }
         ],
         "createdAt": "2026-10-08T12:08:45.199Z"
+      },
+      {
+        "lock_id": "L0002",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "part_payment",
+          "partialDoc": "52044",
+          "net": -947.61,
+          "reason": "Operator ruling ADM-92 items 3-4 (2026-10-09): ADM-83 round-amount payments settle oldest first, in payment-date order. Recorded as ONE lock because a part-payment chain across payments cannot be split into separate locks. Sequence: 44878 (R10,000.00) settles 50051 and 50146 in full and R1,972.67 of 50318. 45717 (R15,000.00) settles the rest of 50318 (R1,476.16), 50536, 50753 and 50970 in full, and R1,196.21 of 51154. 46098 (R15,000.00) settles the rest of 51154 (R3,670.67), 51387, 51564, 51691 and 51823 in full, and R947.61 of 52044. 52044 stays open for R3,003.68. Supersedes L0001 (voided) and the legacy LIFO overrides for 44878 and 45717.",
+          "approvedBy": "operator",
+          "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx"
+        },
+        "members": [
+          {
+            "key": "44878|Payment|LPG|2026-06-25|-10000.00",
+            "doc": "44878",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2026-06-25",
+            "amount": -10000
+          },
+          {
+            "key": "45717|Payment|LPG|2026-08-14|-15000.00",
+            "doc": "45717",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2026-08-14",
+            "amount": -15000
+          },
+          {
+            "key": "46098|Payment|LPG|2026-09-11|-15000.00",
+            "doc": "46098",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2026-09-11",
+            "amount": -15000
+          },
+          {
+            "key": "50051|Invoice|LPG|2026-04-02|4578.50",
+            "doc": "50051",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-04-02",
+            "amount": 4578.5
+          },
+          {
+            "key": "50146|Invoice|LPG|2026-04-09|3448.83",
+            "doc": "50146",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-04-09",
+            "amount": 3448.83
+          },
+          {
+            "key": "50318|Invoice|LPG|2026-04-20|3448.83",
+            "doc": "50318",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-04-20",
+            "amount": 3448.83
+          },
+          {
+            "key": "50536|Invoice|LPG|2026-05-05|5082.47",
+            "doc": "50536",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-05-05",
+            "amount": 5082.47
+          },
+          {
+            "key": "50753|Invoice|LPG|2026-05-18|3951.91",
+            "doc": "50753",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-05-18",
+            "amount": 3951.91
+          },
+          {
+            "key": "50970|Invoice|LPG|2026-06-01|3293.25",
+            "doc": "50970",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-06-01",
+            "amount": 3293.25
+          },
+          {
+            "key": "51154|Invoice|LPG|2026-06-11|4866.88",
+            "doc": "51154",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-06-11",
+            "amount": 4866.88
+          },
+          {
+            "key": "51387|Invoice|LPG|2026-06-23|3934.93",
+            "doc": "51387",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-06-23",
+            "amount": 3934.93
+          },
+          {
+            "key": "51564|Invoice|LPG|2026-07-03|623.88",
+            "doc": "51564",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-07-03",
+            "amount": 623.88
+          },
+          {
+            "key": "51691|Invoice|LPG|2026-07-08|4887.10",
+            "doc": "51691",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-07-08",
+            "amount": 4887.1
+          },
+          {
+            "key": "51823|Invoice|LPG|2026-07-14|935.81",
+            "doc": "51823",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-07-14",
+            "amount": 935.81
+          }
+        ],
+        "createdAt": "2026-10-09T17:18:32.398Z"
       }
     ],
-    "voids": []
+    "voids": [
+      {
+        "target": "lock",
+        "id": "L0001",
+        "voidedAt": "2026-10-09T17:18:18.880Z",
+        "voidedBy": "operator",
+        "reason": "Operator ruling ADM-92 item 4 (2026-10-09): L0001 (45717 part-payment on 52305, decided on the old DEBENQ.TXT whose B/F R22,088.10 hid April-June 2026) is voided and re-sequenced strictly oldest-first for 44878, 45717 and 46098 in payment-date order (lock below)."
+      }
+    ],
+    "settledThrough": [
+      {
+        "record_id": "S0001",
+        "status": "approved",
+        "rule": "SETTLED_THROUGH",
+        "through": "2026-03-31",
+        "anchor": {
+          "txt_line": 131,
+          "key": "43927|Payment|LPG|2026-04-08|-6703.96",
+          "doc": "43927",
+          "entry_type": "Payment",
+          "date": "2026-04-08",
+          "amount": -6703.96
+        },
+        "includes": [
+          {
+            "key": "43927|Payment|LPG|2026-04-08|-6703.96",
+            "doc": "43927",
+            "entry_type": "Payment",
+            "date": "2026-04-08",
+            "amount": -6703.96
+          }
+        ],
+        "memberCount": 127,
+        "memberDigest": "c19df978119c9658b18d654d9881a3ad80bbe30606292542e5d55832996f11c7",
+        "openingBf": 9461.01,
+        "rowsNet": -9461.01,
+        "closing": 0,
+        "ruling": {
+          "treatment": "settled_through",
+          "reason": "Operator ruling ADM-92 (2026-10-09, confirmed in the main session): payments 37238, 38928, 41247, 41812, 42224, 42597 and 43927 each paid a statement (month-end closing balance; for 38928 that months LPG invoices) and settle every document on it, gas, cylinders and credit notes alike. Separate basis from ADM-83. B/F R9,461.01 + every row dated up to 2026-03-31 + payment 43927 (8 Apr 2026, paying the March statement) = R0.00, anchored on TXT line 131 of raw/JEN001_2026-10-08.TXT. Tripwires: a remittance naming invoices for any of these payments; a new TXT with a different B/F or window start; any document added, changed or back-dated to on or before 2026-03-31 (the record then becomes a lock CONFLICT); a statement or TXT explaining 37238s R1,552.50.",
+          "approvedBy": "operator",
+          "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx"
+        },
+        "createdAt": "2026-10-09T17:18:18.817Z"
+      }
+    ]
   }
 }

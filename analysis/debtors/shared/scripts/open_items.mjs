@@ -61,7 +61,7 @@ export function buildOpenItems(projection, matches, view = 'internal') {
     if (view === 'customer' && t.confidence === 'PROBABLE') continue; // shown in full instead
     const bucket = t.ruling && t.ruling.treatment !== 'exact' ? ruled[t.ruling.treatment] : rounding;
     const memberRows = t.members.map((id) => projection.rows.find((x) => x.row_id === id)).filter(Boolean);
-    if (t.rule === 'BALANCE_ZERO') {
+    if (t.rule === 'BALANCE_ZERO' || t.rule === 'SETTLED_THROUGH') {
       // Rows up to the ERP balance's return to zero also settle the opening B/F.
       const lpgBf = projection.openings.lpgOpeningBf || 0;
       const cylBf = projection.openings.cylOpeningFinancial || 0;
@@ -76,7 +76,7 @@ export function buildOpenItems(projection, matches, view = 'internal') {
       for (const r of memberRows) bucket[laneOf(r)] = round2(bucket[laneOf(r)] + r.amount);
     }
     if (t.ruling?.treatment === 'part_payment') {
-      const pay = t.docs.find((d) => d.startsWith('Payment '))?.slice(8);
+      const pay = t.docs.filter((d) => d.startsWith('Payment ')).map((d) => d.slice(8)).join(', ');
       partPaid.push({ doc: t.ruling.partialDoc, amount: t.net, payment: pay });
     }
     if (t.discountPending) {
@@ -249,7 +249,7 @@ export function renderOpenItemsMarkdown(model, { cfg, projection, matches, gener
   for (const pp of model.partPaid || []) {
     const inv = parts.lpg.lines.find((l) => l.doc === pp.doc);
     const owed = inv ? ` = R${fmt(round2(inv.amount + pp.amount))} outstanding` : '';
-    L.push(`- Invoice ${pp.doc}${inv ? ` R${fmt(inv.amount)}` : ''} less part-payment R${fmt(-pp.amount)} (payment ${pp.payment})${owed}.`);
+    L.push(`- Invoice ${pp.doc}${inv ? ` R${fmt(inv.amount)}` : ''} less part-payment R${fmt(-pp.amount)} (payment${pp.payment.includes(',') ? 's' : ''} ${pp.payment})${owed}.`);
   }
   if ((model.partPaid || []).length) L.push('');
 
@@ -281,7 +281,7 @@ export function renderOpenItemsMarkdown(model, { cfg, projection, matches, gener
     for (const t of matches.ties) if (t.confidence === 'CONFIRMED') byRule[t.rule] = (byRule[t.rule] || 0) + 1;
     for (const [r, n] of Object.entries(byRule)) L.push(`| ${r} | ${n} |`);
     L.push('', `Full tie list: \`data/projection_matches.json\`.`, '');
-    const rulingTies = matches.ties.filter((t) => t.ruling);
+    const rulingTies = matches.ties.filter((t) => t.ruling || t.settledRuling).map((t) => (t.settledRuling ? { ...t, lock_id: t.record_id, ruling: { treatment: `settled through ${t.through}`, reason: t.settledRuling.reason } } : t));
     if (rulingTies.length) {
       L.push('## Appendix D: Operator rulings applied (approved locks)', '', '| Lock | Treatment | Documents | Net (R) | Ruling |', '| :--- | :--- | :--- | ---: | :--- |');
       for (const t of rulingTies) {

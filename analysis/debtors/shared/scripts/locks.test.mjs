@@ -184,3 +184,61 @@ test('planApproval: several payments settle one delivery with its deposit invoic
   const bad = planApproval({ projection, registry: {}, payment: '44227,99999', invoices: ['50528'], deposits: ['50529'], reason: 'x', approvedBy: 'o', session: 's', now: 'n' });
   assert.equal(bad.ok, false);
 });
+
+// 'Settled through' records (operator ruling ADM-92, 2026-10-09)
+const R = (doc, type, kind, amount, date, line, lane = 'LPG') => ({ row_id: `${doc}|${type}|${lane}|L${line}`, clean_doc: doc, entry_type: type, kind, lane, amount, date, ref_no: '', txt_line: line, confirmable: true, split_basis: 'DB_LINES' });
+const stProjection = () => ({
+  rows: [
+    R('I1', 'Invoice', 'invoice', 100, '2026-01-05', 2),
+    R('C1', 'Crd Note', 'credit_note', -40, '2026-01-06', 3, 'CYL'),
+    R('I2', 'Invoice', 'invoice', 40, '2026-01-06', 4, 'CYL'),
+    R('P1', 'Payment', 'payment', -100, '2026-04-08', 5), // pays the January statement; dated after `through`
+    R('I3', 'Invoice', 'invoice', 500, '2026-04-02', 6),
+  ],
+  openings: { combinedBf: 0 },
+  closings: { combined: 500 },
+  source: { erpCurrentBalance: 500 },
+});
+
+test('planSettledThrough: needs the included payment, refuses a range that is not at R0.00, records count + digest', async () => {
+  const { planSettledThrough, applySettledThrough, effectiveLocks, memberDigest } = await import('./locks.mjs');
+  const proj = stProjection();
+  const common = { projection: proj, registry: {}, through: '2026-03-31', reason: 'r', approvedBy: 'operator', session: 's', now: 'n' };
+  const bad = planSettledThrough(common);
+  assert.equal(bad.ok, false);
+  assert.match(bad.reasons.join(';'), /not R0\.00/);
+  const ok = planSettledThrough({ ...common, anchorLine: 5, includePayments: ['P1'] });
+  assert.equal(ok.ok, true, ok.reasons?.join('; '));
+  assert.equal(ok.record.memberCount, 4);
+  assert.equal(ok.record.record_id, 'S0001');
+  assert.equal(ok.record.memberDigest, memberDigest(proj.rows.filter((r) => r.row_id !== 'I3|Invoice|LPG|L6')));
+  assert.equal(planSettledThrough({ ...common, anchorLine: 6, includePayments: ['P1'] }).ok, false); // anchor must be the last covered line
+  const reg = applySettledThrough({}, ok);
+  assert.equal(effectiveLocks(reg).settledThrough.length, 1);
+  assert.equal(planSettledThrough({ ...common, registry: reg, includePayments: ['P1'] }).ok, false); // already settled
+});
+
+test('matcher: a settled-through record ties its range first and conflicts when a covered row changes or appears', async () => {
+  const { planSettledThrough, applySettledThrough, effectiveLocks, applyVoid } = await import('./locks.mjs');
+  const proj = stProjection();
+  const plan = planSettledThrough({ projection: proj, registry: {}, through: '2026-03-31', includePayments: ['P1'], reason: 'r', approvedBy: 'o', session: 's', now: 'n' });
+  const reg = applySettledThrough({}, plan);
+  const res = matchProjection(proj, undefined, null, effectiveLocks(reg));
+  const t = res.ties.find((x) => x.rule === 'SETTLED_THROUGH');
+  assert.equal(t.confidence, 'CONFIRMED');
+  assert.equal(t.members.length, 4);
+  assert.equal(res.lockConflicts.length, 0);
+  assert.equal(res.residual.openInvoicesLpgOther.count, 1); // I3 only
+  assert.ok(res.proof.holds);
+  // a back-dated document inside the range is the tripwire
+  const changed = stProjection();
+  changed.rows.push(R('I9', 'Invoice', 'invoice', 10, '2026-02-01', 7));
+  changed.closings.combined = 510;
+  const conflict = matchProjection(changed, undefined, null, effectiveLocks(reg));
+  assert.equal(conflict.lockConflicts.length, 1);
+  assert.equal(conflict.lockConflicts[0].lock_id, 'S0001');
+  assert.equal(conflict.ties.filter((x) => x.rule === 'SETTLED_THROUGH').length, 0);
+  // a void switches it off
+  const voided = applyVoid(reg, { target: 'settled', id: 'S0001', voidedBy: 'o', reason: 'r', now: 'n' });
+  assert.equal(effectiveLocks(voided).settledThrough.length, 0);
+});

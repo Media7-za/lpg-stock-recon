@@ -17,6 +17,11 @@
  *                       the next close locks it if CONFIRMED. Operator rulings (approve_tie.mjs,
  *                       status 'approved', no close) are applied the same way and carry their
  *                       `ruling` (treatment of the tie's net) through to the open-items view.
+ *   0b. SETTLED_THROUGH (v5, operator ruling ADM-92, 2026-10-09) approved 'settled through' records:
+ *                       every row dated on/before the record's date is settled in aggregate (the
+ *                       ERP balance returned to R0.00 there). One CONFIRMED group, applied before
+ *                       every other rule. Its tripwire: the covered row set or its sum changed
+ *                       (a document added, changed or back-dated into the range) → CONFLICT.
  *   1. UD_CLEARING      Bank UD (+) and Payment (−) on the same doc, equal and opposite.
  *   1b. REMITTANCE      (P11; only when remittance evidence is supplied) the advice names
  *                       the payment doc and every document it settles. Ties the payment and
@@ -81,7 +86,7 @@
  * (P11), payerGroup (P8), pre-window lookback (P7).
  */
 
-import { rowKey } from './locks.mjs';
+import { rowKey, memberDigest } from './locks.mjs';
 
 export const MATCHER_VERSION = 5;
 
@@ -184,6 +189,32 @@ export function matchProjection(projection, rules = RULES, evidence = null, lock
       });
       locksApplied += 1;
     }
+  }
+
+  // 0b. Settled-through records (ADM-92): applied first, over every row dated on/before `through`.
+  for (const rec of locks?.settledThrough || []) {
+    const inclKeys = new Set((rec.includes || []).map((x) => x.key));
+    const covered = rows.filter((r) => r.date <= rec.through || inclKeys.has(rowKey(r)));
+    const problems = [];
+    if (covered.length !== rec.memberCount) problems.push(`${covered.length} rows dated on/before ${rec.through}, record covered ${rec.memberCount}`);
+    else if (memberDigest(covered) !== rec.memberDigest) problems.push(`a row dated on/before ${rec.through} changed (digest differs)`);
+    const bf = projection.openings.combinedBf || 0;
+    const close = round2(bf + covered.reduce((s, r) => s + r.amount, 0));
+    if (Math.abs(close) > rules.exactTolerance) problems.push(`opening B/F R${bf} + covered rows = R${close}, no longer R0.00`);
+    const taken = covered.filter((r) => !free(r));
+    if (taken.length) problems.push(`${taken.length} covered row(s) already tied`);
+    if (problems.length) {
+      lockConflicts.push({ lock_id: rec.record_id, close_id: null, problems });
+      continue;
+    }
+    addTie('SETTLED_THROUGH', 'CONFIRMED', covered, {
+      record_id: rec.record_id,
+      through: rec.through,
+      anchorLine: rec.anchor?.txt_line,
+      openingSettled: bf,
+      settledRuling: rec.ruling,
+    });
+    locksApplied += 1;
   }
 
   // 1. UD clearing pairs

@@ -23,12 +23,20 @@
  * are left untied and further closes are blocked until it is voided or resolved.
  */
 
+import { createHash } from 'crypto';
+
 export const LOCKS_SCHEMA = 1;
 
 export const rowKey = (r) => `${r.clean_doc}|${r.entry_type}|${r.lane}|${r.date}|${Number(r.amount).toFixed(2)}`;
 
 export function emptyLocks() {
   return { schema: LOCKS_SCHEMA, closes: [], locks: [], voids: [] };
+}
+
+/** Order-independent fingerprint of the rows a settled-through record covers. */
+export function memberDigest(rows) {
+  const keys = rows.map(rowKey).sort().join('\n');
+  return createHash('sha256').update(keys).digest('hex');
 }
 
 /** Active closes / locks after applying voids, plus the effective closedThrough. */
@@ -41,7 +49,10 @@ export function effectiveLocks(registry) {
     (l) => !voided.has(`lock:${l.lock_id}`) && (!l.close_id || activeCloseIds.has(l.close_id)),
   );
   const closedThrough = closes.reduce((m, c) => (c.closedThrough > m ? c.closedThrough : m), '');
-  return { closes, locks, closedThrough: closedThrough || null };
+  // 'Settled through' records (operator ruling, ADM-92): everything dated on/before a date is settled
+  // in aggregate because the ERP balance returned to R0.00 there. Voidable like a lock (target 'settled').
+  const settledThrough = (pl.settledThrough || []).filter((s) => !voided.has(`settled:${s.record_id}`));
+  return { closes, locks, closedThrough: closedThrough || null, settledThrough };
 }
 
 function nextId(prefix, existing) {
@@ -86,7 +97,7 @@ export function planClose({ projection, matches, registry, through, ingestGapEar
   const candidates = matches.ties.filter(
     (t) =>
       t.confidence === 'CONFIRMED' &&
-      t.rule !== 'LOCKED' &&
+      !['LOCKED', 'SETTLED_THROUGH'].includes(t.rule) &&
       t.members.every((id) => rowById.get(id)?.date <= through) &&
       t.members.every((id) => !lockedKeys.has(rowKey(rowById.get(id)))),
   );
@@ -238,11 +249,87 @@ export function applyApproval(registry, plan) {
 
 export function applyVoid(registry, { target, id, voidedBy, reason, now }) {
   const pl = registry.projectionLocks || emptyLocks();
-  const exists = target === 'close' ? (pl.closes || []).some((c) => c.close_id === id) : (pl.locks || []).some((l) => l.lock_id === id);
+  const exists =
+    target === 'close'
+      ? (pl.closes || []).some((c) => c.close_id === id)
+      : target === 'settled'
+        ? (pl.settledThrough || []).some((s) => s.record_id === id)
+        : (pl.locks || []).some((l) => l.lock_id === id);
   if (!exists) throw new Error(`no ${target} ${id}`);
   if ((pl.voids || []).some((v) => v.target === target && v.id === id)) throw new Error(`${target} ${id} already voided`);
   return {
     ...registry,
     projectionLocks: { ...pl, voids: [...(pl.voids || []), { target, id, voidedAt: now, voidedBy, reason }] },
+  };
+}
+
+/**
+ * Plan a 'settled through' record (operator ruling ADM-92, 2026-10-09).
+ *
+ * Every row dated on/before `through` is settled in aggregate, whatever the pairing: the payments up
+ * to then each paid a statement balance (gas, cylinders and credit notes alike). Proof required: opening
+ * B/F + Σ those rows = R0.00 (±R0.05). The record keeps the row count and a digest of the covered row
+ * keys, so a document added, changed or back-dated into the range turns it into a CONFLICT next run
+ * (its tripwire) instead of being silently re-applied. `anchorLine` must be the last covered TXT line.
+ */
+export function planSettledThrough({ projection, registry, through, anchorLine, includePayments = [], reason, approvedBy, session, now }) {
+  const reasons = [];
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(String(through))) reasons.push(`invalid --through ${through}`);
+  if (!reason) reasons.push('a reason (the operator ruling) is required');
+  // `includePayments`: payment docs dated AFTER `through` that pay the last statement in the range
+  // (e.g. a payment on 8 April paying the March statement). Each must be a single payment row.
+  const incl = [];
+  for (const d of includePayments.map((x) => String(x).replace(/^0+/, ''))) {
+    const f = projection.rows.filter((r) => r.kind === 'payment' && r.entry_type !== 'Bank UD' && r.clean_doc === d && r.date > through);
+    if (f.length !== 1) reasons.push(`included payment ${d}: expected 1 payment row dated after ${through}, found ${f.length}`);
+    incl.push(...f);
+  }
+  const inclKeys = new Set(incl.map(rowKey));
+  const rows = projection.rows.filter((r) => r.date <= through || inclKeys.has(rowKey(r)));
+  if (!rows.length) reasons.push(`no rows dated on/before ${through}`);
+  const bf = projection.openings.combinedBf || 0;
+  const net = Math.round(rows.reduce((s, r) => s + r.amount, 0) * 100) / 100;
+  const closing = Math.round((bf + net) * 100) / 100;
+  if (Math.abs(closing) > 0.05) reasons.push(`opening B/F R${bf} + rows through ${through} = R${closing}, not R0.00 (±R0.05): the range is not settled`);
+  const lastLine = rows.reduce((m, r) => (Number.isFinite(r.txt_line) && r.txt_line > m ? r.txt_line : m), 0);
+  if (anchorLine != null && Number(anchorLine) !== lastLine) reasons.push(`anchor line ${anchorLine} is not the last covered TXT line (${lastLine})`);
+  const eff = effectiveLocks(registry);
+  const lockedKeys = new Set(eff.locks.flatMap((l) => l.members.map((m) => m.key)));
+  const clash = rows.filter((r) => lockedKeys.has(rowKey(r)));
+  if (clash.length) reasons.push(`${clash.length} covered row(s) are already locked (e.g. ${clash[0].entry_type} ${clash[0].clean_doc})`);
+  if (eff.settledThrough.some((s) => s.through >= through)) reasons.push('already settled through this date or later');
+  if (reasons.length) return { ok: false, reasons, record: null };
+  const pl = registry?.projectionLocks || emptyLocks();
+  const last = rows.find((r) => r.txt_line === lastLine);
+  const record = {
+    record_id: nextId('S', (pl.settledThrough || []).map((s) => s.record_id)),
+    status: 'approved',
+    rule: 'SETTLED_THROUGH',
+    through,
+    anchor: { txt_line: lastLine, key: rowKey(last), doc: last.clean_doc, entry_type: last.entry_type, date: last.date, amount: last.amount },
+    ...(incl.length ? { includes: incl.map((r) => ({ key: rowKey(r), doc: r.clean_doc, entry_type: r.entry_type, date: r.date, amount: r.amount })) } : {}),
+    memberCount: rows.length,
+    memberDigest: memberDigest(rows),
+    openingBf: bf,
+    rowsNet: net,
+    closing,
+    ruling: { treatment: 'settled_through', reason, approvedBy, session },
+    createdAt: now,
+  };
+  return { ok: true, reasons: [], record };
+}
+
+export function applySettledThrough(registry, plan) {
+  const pl = registry.projectionLocks || emptyLocks();
+  return {
+    ...registry,
+    projectionLocks: {
+      ...pl,
+      schema: LOCKS_SCHEMA,
+      closes: pl.closes || [],
+      locks: pl.locks || [],
+      settledThrough: [...(pl.settledThrough || []), plan.record],
+      voids: pl.voids || [],
+    },
   };
 }

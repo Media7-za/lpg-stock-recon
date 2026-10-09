@@ -448,3 +448,15 @@ The operator said: "A customer very rarely pays for part of an invoice. The comb
 - **Tripwire.** A later ERP export changes any row on or before the cut line. The ERP backdating seen on 2026-10-08 is exactly that case: the cut moves and the group re-forms. Once a period close locks it, it becomes a lock conflict.
 
 **Progress (2026-10-09): first `BATCH_SUM` ruling.** `approve_tie.mjs` now takes several payments (`--payment A,B`) and a delivery's deposit invoices (`--deposits N`), so a probable `BATCH_SUM` tie can be approved as a lock. MOZ002 L0001 (provisional, "Yes for now"): payments 44227 + 45590 settle DN#22222 (gas 50528 + deposit 50529). The R4,140.00 credit stays open on the statement as empties credit note 15128. The ruling is reversible with `close_period.mjs --void-lock L0001`. PROPOSED — NOT RATIFIED.
+
+**Amendment (2026-10-09, operator ruling ADM-92): "settled through" records.** PROPOSED — NOT RATIFIED.
+
+The operator confirmed the JEN001 ruling: payments that each paid a statement balance settle every document on that statement, gas, cylinders and credit notes alike, recorded as one record rather than one lock per payment.
+
+- **Registry.** `projectionLocks.settledThrough` is a new append-only list. Each record holds: `through`, the anchor TXT line, `memberCount`, a SHA-256 `memberDigest` of the covered row keys, the opening B/F, an optional `includes` list (a payment dated after `through` that pays the last statement in the range), and the `ruling`. A void uses `target: 'settled'`.
+- **Tool.** `settle_through.mjs`. It refuses unless opening B/F + the covered rows = R0.00 (±R0.05), the anchor is the last covered TXT line, and no covered row is already locked.
+- **Matcher rule 0b, `SETTLED_THROUGH`.** Applied before every other rule, as one CONFIRMED group. The tripwire is enforced: if the covered row count or digest changes (a document added, changed or back-dated into the range) or the proof no longer holds, the record becomes a lock CONFLICT and its rows stay untied.
+- **Period close.** A `SETTLED_THROUGH` tie is never locked by `close_period.mjs`; the record is its own lock.
+- **Chained part-payments.** One oldest-first chain across several payments is recorded as a single `part_payment` lock (`approve_tie.mjs --payment A,B,C --invoices … --partial P`), because the approval model carries one `partialDoc`.
+- **Pilot:** JEN001 S0001 + L0002. Open items 52044 (R3,003.68 after part-payment), 52305, 52648, 53029, 53224, 53468 = ERP R25,332.00 (PROVEN, `analysis/debtors/JEN001/data/projection_matches.json`).
+- **Tripwires:** a remittance naming invoices for the covered payments; a new TXT with a different B/F or window start; any document added or back-dated into the range.

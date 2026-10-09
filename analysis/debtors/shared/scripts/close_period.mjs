@@ -28,12 +28,13 @@ const code = String(arg('--debtor') || '').toUpperCase();
 const through = arg('--through');
 const voidClose = arg('--void-close');
 const voidLock = arg('--void-lock');
+const voidSettled = arg('--void-settled');
 const reason = arg('--reason');
 const dryRun = process.argv.includes('--dry-run');
 const closedBy = arg('--by') || 'agent';
 const session = process.env.CLAUDE_SESSION_URL || arg('--session') || 'unrecorded';
-if (!code || (!through && !voidClose && !voidLock)) {
-  console.error('Usage: close_period.mjs --debtor CODE (--through YYYY-MM-DD [--dry-run] | --void-close ID | --void-lock ID) [--reason TEXT]');
+if (!code || (!through && !voidClose && !voidLock && !voidSettled)) {
+  console.error('Usage: close_period.mjs --debtor CODE (--through YYYY-MM-DD [--dry-run] | --void-close ID | --void-lock ID | --void-settled ID) [--reason TEXT]');
   process.exit(1);
 }
 const acct = path.join(ROOT, 'analysis/debtors', code);
@@ -48,14 +49,14 @@ const write = (registry) => {
   writeRegistry(acct, registry);
 };
 
-if (voidClose || voidLock) {
+if (voidClose || voidLock || voidSettled) {
   if (!reason) {
     console.error('A --reason is required to void.');
     process.exit(1);
   }
-  const next = applyVoid(reg.registry, { target: voidClose ? 'close' : 'lock', id: voidClose || voidLock, voidedBy: closedBy, reason, now });
+  const next = applyVoid(reg.registry, { target: voidClose ? 'close' : voidSettled ? 'settled' : 'lock', id: voidClose || voidLock || voidSettled, voidedBy: closedBy, reason, now });
   write(next);
-  console.log(`[${code}] voided ${voidClose ? 'close' : 'lock'} ${voidClose || voidLock}${dryRun ? ' (dry run)' : ''}`);
+  console.log(`[${code}] voided ${voidClose ? 'close' : voidSettled ? 'settled-through record' : 'lock'} ${voidClose || voidLock || voidSettled}${dryRun ? ' (dry run)' : ''}`);
   process.exit(0);
 }
 
