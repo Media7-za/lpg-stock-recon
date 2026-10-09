@@ -482,7 +482,26 @@ Recording these rulings in `config/settlement_discount_overrides.json` is for th
 ]
 ```
 
-* **Q14:** Add two exception types to doctrine v2 §7 — `DISCOUNT_GRANTED_AFTER_TERMS` (advice discounts a line past month-end + 30) and `IN_TERMS_NO_DISCOUNT` (advice takes an in-terms line at R0)? (yes / no / use other names)
+* **ANSWERED (§8.14): yes.** **Q14:** Add two exception types to doctrine v2 §7 — `DISCOUNT_GRANTED_AFTER_TERMS` (advice discounts a line past month-end + 30) and `IN_TERMS_NO_DISCOUNT` (advice takes an in-terms line at R0)? (yes / no / use other names)
 
 **Tripwires.** A remittance or finance statement that the customer's terms count from statement date, or end of the following month, reopens the Q13 ruling. Any later advice discounting a line more than one day past the deadline should be registered at that batch.
+
+### 8.14 Operator ruling on Q14 (2026-10-09)
+
+**Ruling (verbatim, operator in the analysis session, 2026-10-09):** Q14 → "yes".
+
+Doctrine v2 §7 gains two exception types:
+
+| Type | Meaning | Journal impact |
+| :--- | :--- | :--- |
+| `DISCOUNT_GRANTED_AFTER_TERMS` | The advice discounts a line paid after month-end + 30 days | None. The advice discount stands (v2 §2) and is posted as advised; the entry records the deviation. |
+| `IN_TERMS_NO_DISCOUNT` | The advice takes an in-terms line at R0 discount | Exclude the line from ref splits (as `LATE_PAYMENT_NO_DISCOUNT`) |
+
+**Applying it (main recon session, by turn brief, not this session):**
+1. Append both rows to the §7 table of `docs/TWK002_Settlement_Discount_Doctrine_v2.md`, as an amendment dated 2026-10-09 that cites this ruling. The existing text stays (amendments append).
+2. In the §8.13 draft entries, drop the "(PROPOSED TYPE)" suffix.
+3. Give the three STAT 123 in-terms lines their own `IN_TERMS_NO_DISCOUNT` entry (00048687, 00014237, 00014034; net −R70.00) instead of a note in EXC-2026-0002.
+4. Append the entries to `config/settlement_discount_overrides.json` with `approval_status: approved`, citing the Q11, Q13 and Q14 rulings. Then add a `project.json` history line.
+
+**Tripwire:** an advice discounting a line more than 32 days past the deadline is outside the observed pattern; register it individually and flag it to the operator, not under a batch entry.
 
