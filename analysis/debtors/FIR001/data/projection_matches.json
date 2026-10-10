@@ -1,8 +1,8 @@
 {
-  "status": "PROPOSED — NOT RATIFIED (PROPOSED_Projection_Matching_Locks.md, build step 2)",
+  "status": "matcher v5 RATIFIED 2026-10-10 (PROPOSED_Projection_Matching_Locks.md); probable ties stay proposals until approved",
   "debtorCode": "FIR001",
   "generatedBy": "match_projection.mjs",
-  "generatedAt": "2026-10-10T05:06:10.907Z",
+  "generatedAt": "2026-10-10T05:07:51.375Z",
   "projection": {
     "path": "analysis/debtors/FIR001/data/v5_projection.json",
     "txtSha256": "1cf1b6f9c63e31e15ed44832d6961d6f2dec9f75fc471991ca3e75857aa16bfa",

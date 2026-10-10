@@ -1,5 +1,5 @@
 # Internal ledger: SAKI - VICTORIA RD (SA0001), matcher review
-**INTERNAL, not for the customer.** Every transaction in ERP order with the ERP running balance and what matcher v5 did with it · generated 2026-10-10 · 160 confirmed / 2 probable ties · 6 rows open · ERP `CURRENT BALANCE` R16,002.86 · PROPOSED — NOT RATIFIED
+**INTERNAL, not for the customer.** Every transaction in ERP order with the ERP running balance and what matcher v5 did with it · generated 2026-10-10 · 160 confirmed / 2 probable ties · 6 rows open · ERP `CURRENT BALANCE` R16,002.86 · matcher v5 ratified 2026-10-10; probable ties are proposals until approved
 
 **Status key:** `OPEN` untied · `T0001 EXACT_SINGLE ✓` confirmed tie · `T0001 BATCH_SUM ?` probable tie (needs approval) · `LOCKED` operator-approved lock · `◀ ZERO` ERP running balance is within R0.05 after this line.
 

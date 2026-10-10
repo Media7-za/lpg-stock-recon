@@ -1,5 +1,5 @@
 # Internal ledger: TWK AGRI PTY LTD (TWK002), matcher review
-**INTERNAL, not for the customer.** Every transaction in ERP order with the ERP running balance and what matcher v5 did with it · generated 2026-10-09 · 17 confirmed / 0 probable ties · 34 rows open · ERP `CURRENT BALANCE` R54,136.19 · PROPOSED — NOT RATIFIED · **REVIEW ONLY:** ingestCoverage partial
+**INTERNAL, not for the customer.** Every transaction in ERP order with the ERP running balance and what matcher v5 did with it · generated 2026-10-10 · 17 confirmed / 0 probable ties · 34 rows open · ERP `CURRENT BALANCE` R54,136.19 · matcher v5 ratified 2026-10-10; probable ties are proposals until approved · **REVIEW ONLY:** ingestCoverage partial
 
 **Status key:** `OPEN` untied · `T0001 EXACT_SINGLE ✓` confirmed tie · `T0001 BATCH_SUM ?` probable tie (needs approval) · `LOCKED` operator-approved lock · `◀ ZERO` ERP running balance is within R0.05 after this line.
 

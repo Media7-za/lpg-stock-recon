@@ -1,8 +1,8 @@
 {
-  "status": "PROPOSED — NOT RATIFIED (PROPOSED_Projection_Matching_Locks.md, build step 2)",
+  "status": "matcher v5 RATIFIED 2026-10-10 (PROPOSED_Projection_Matching_Locks.md); probable ties stay proposals until approved",
   "debtorCode": "JEN001",
   "generatedBy": "match_projection.mjs",
-  "generatedAt": "2026-10-10T05:06:11.233Z",
+  "generatedAt": "2026-10-10T05:07:51.620Z",
   "projection": {
     "path": "analysis/debtors/JEN001/data/v5_projection.json",
     "txtSha256": "5f6c5151b1a6a3ed136a6b6b6a28b27fc82baf31ae61947246499c6d318c9cfc",

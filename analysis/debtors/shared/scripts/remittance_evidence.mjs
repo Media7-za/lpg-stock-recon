@@ -1,6 +1,6 @@
 /**
  * Remittance evidence — proposal P11 (PROPOSED_Projection_Matching_Locks.md,
- * PROPOSED — NOT RATIFIED). business_rules.md §15 order A, rank 1: the customer's
+ * ratified 2026-10-10). business_rules.md §15 order A, rank 1: the customer's
  * remittance advice with a reconciling batch total outranks every pattern rule.
  *
  * This module normalises an account's remittance sources into one evidence shape:

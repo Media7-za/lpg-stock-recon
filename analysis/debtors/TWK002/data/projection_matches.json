@@ -1,8 +1,8 @@
 {
-  "status": "PROPOSED — NOT RATIFIED (PROPOSED_Projection_Matching_Locks.md, build step 2)",
+  "status": "matcher v5 RATIFIED 2026-10-10 (PROPOSED_Projection_Matching_Locks.md); probable ties stay proposals until approved",
   "debtorCode": "TWK002",
   "generatedBy": "match_projection.mjs",
-  "generatedAt": "2026-10-09T17:26:49.663Z",
+  "generatedAt": "2026-10-10T05:07:53.230Z",
   "projection": {
     "path": "analysis/debtors/TWK002/data/v5_projection.json",
     "txtSha256": "e657e03f68cdb9090cf2ec0e2ccf35fc71550e624de7005a7287142998c55a7d",

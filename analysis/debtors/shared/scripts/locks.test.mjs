@@ -1,5 +1,5 @@
 /**
- * Contract tests for locks & period close (P5–P6, PROPOSED — NOT RATIFIED).
+ * Contract tests for locks & period close (P5–P6, ratified 2026-10-10).
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';

@@ -1,5 +1,5 @@
 /**
- * Contract tests for open_items.mjs (build step 3, PROPOSED — NOT RATIFIED).
+ * Contract tests for open_items.mjs (build step 3, ratified 2026-10-10).
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';

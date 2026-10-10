@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Record a 'settled through' operator ruling (ADM-92, 2026-10-09; PROPOSED — NOT RATIFIED).
+ * Record a 'settled through' operator ruling (ADM-92, 2026-10-09; ratified 2026-10-10).
  * Everything dated on/before --through is settled in aggregate: the ERP balance returns to R0.00
  * there, so the payments up to it each paid a statement balance (gas, cylinders, credit notes).
  * Appends one record to config/payment_pattern_overrides.json → projectionLocks.settledThrough;

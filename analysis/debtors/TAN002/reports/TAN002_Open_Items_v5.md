@@ -1,6 +1,6 @@
 # Open Items Statement: TANDOOR THE CLAY OVEN (TAN002) — Internal
 **Period:** from 22 Feb 2025 to 06 Oct 2026 &nbsp;|&nbsp; **Balance due:** R7,938.37
-**Status:** PROPOSED — NOT RATIFIED (`PROPOSED_Projection_Matching_Locks.md`, build step 3) · generated 2026-10-10 by `render_open_items.mjs`
+**Status:** matcher v5 RATIFIED 2026-10-10 (`PROPOSED_Projection_Matching_Locks.md`); probable ties are proposals until approved · generated 2026-10-10 by `render_open_items.mjs`
 **Sources:** `analysis/debtors/TAN002/data/v5_projection.json` (TXT sha256 `51d10507d04c…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (86 confirmed / 3 probable ties) · **REVIEW ONLY:** ingestCoverage partial
 **Locks:** no period closed yet
 

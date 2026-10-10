@@ -8,7 +8,7 @@
  * Per account: tie counts by rule (before/after), open rows (internal + customer views) before/after,
  * proof / lock conflicts, probable ties that would override a locked or confirmed tie's rows
  * (none can: locks run first), rows that change status, and the BALANCE_ZERO cut.
- * PROPOSED — NOT RATIFIED.
+ * Matcher v5 ratified 2026-10-10.
  */
 import fs from 'fs';
 import path from 'path';
@@ -26,7 +26,7 @@ const codes = fs.readdirSync(base).filter((c) => fs.existsSync(path.join(base, c
 
 const byRule = (ties) => { const o = {}; for (const t of ties) { o[t.rule] = o[t.rule] || { c: 0, p: 0 }; o[t.rule][t.confidence === 'CONFIRMED' ? 'c' : 'p'] += 1; } return o; };
 const ruleStr = (o) => Object.entries(o).map(([k, v]) => `${k} ${v.c}${v.p ? `+${v.p}?` : ''}`).join(', ');
-const L = ['# Matcher preview', '', `Generated ${new Date().toISOString().slice(0, 10)} by \`matcher_preview.mjs\`. Compares the current matcher with each account's committed \`projection_matches.json\`. **Nothing was written to any account.** PROPOSED — NOT RATIFIED.`, ''];
+const L = ['# Matcher preview', '', `Generated ${new Date().toISOString().slice(0, 10)} by \`matcher_preview.mjs\`. Compares the current matcher with each account's committed \`projection_matches.json\`. **Nothing was written to any account.** Matcher v5 ratified 2026-10-10; a preview result is not a decision.`, ''];
 const summary = [];
 const detail = [];
 for (const code of codes) {

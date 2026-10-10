@@ -1,8 +1,8 @@
 {
-  "status": "PROPOSED — NOT RATIFIED (PROPOSED_Projection_Matching_Locks.md, build step 2)",
+  "status": "matcher v5 RATIFIED 2026-10-10 (PROPOSED_Projection_Matching_Locks.md); probable ties stay proposals until approved",
   "debtorCode": "TAN002",
   "generatedBy": "match_projection.mjs",
-  "generatedAt": "2026-10-10T05:06:12.226Z",
+  "generatedAt": "2026-10-10T05:07:52.991Z",
   "projection": {
     "path": "analysis/debtors/TAN002/data/v5_projection.json",
     "txtSha256": "51d10507d04c7c4f1a7a23e2c53be111d93bb9d13a8b3a55d5ba3ea0866df502",

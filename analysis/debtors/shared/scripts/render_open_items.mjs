@@ -8,7 +8,7 @@
  * Writes reports/{CODE}_Internal_Ledger_v5.md (every row + ERP running balance + matcher status,
  *        for matcher review), reports/{CODE}_Open_Items_v5.md (internal) and
  *        reports/{CODE}_Open_Items_v5_Customer_PREVIEW.md (draft; not for release).
- * PROPOSED — NOT RATIFIED (PROPOSED_Projection_Matching_Locks.md, build step 3).
+ * ratified 2026-10-10 (PROPOSED_Projection_Matching_Locks.md).
  */
 import fs from 'fs';
 import path from 'path';

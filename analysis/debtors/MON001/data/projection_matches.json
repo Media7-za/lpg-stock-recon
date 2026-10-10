@@ -1,8 +1,8 @@
 {
-  "status": "PROPOSED — NOT RATIFIED (PROPOSED_Projection_Matching_Locks.md, build step 2)",
+  "status": "matcher v5 RATIFIED 2026-10-10 (PROPOSED_Projection_Matching_Locks.md); probable ties stay proposals until approved",
   "debtorCode": "MON001",
   "generatedBy": "match_projection.mjs",
-  "generatedAt": "2026-10-10T05:06:11.768Z",
+  "generatedAt": "2026-10-10T05:07:52.162Z",
   "projection": {
     "path": "analysis/debtors/MON001/data/v5_projection.json",
     "txtSha256": "3b289b8d9d7684672e7f844a656c089f24ce8c2483de0de7855a6b3391b8fef2",

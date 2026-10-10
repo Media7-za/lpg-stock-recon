@@ -1,6 +1,6 @@
 # Open Items Statement: SAKI - VICTORIA RD (SA0001) — Internal
 **Period:** from 07 Feb 2023 to 02 Oct 2026 &nbsp;|&nbsp; **Balance due:** R16,002.86
-**Status:** PROPOSED — NOT RATIFIED (`PROPOSED_Projection_Matching_Locks.md`, build step 3) · generated 2026-10-10 by `render_open_items.mjs`
+**Status:** matcher v5 RATIFIED 2026-10-10 (`PROPOSED_Projection_Matching_Locks.md`); probable ties are proposals until approved · generated 2026-10-10 by `render_open_items.mjs`
 **Sources:** `analysis/debtors/SA0001/data/v5_projection.json` (TXT sha256 `837cff982c0c…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (160 confirmed / 2 probable ties)
 **Locks:** closed through 2026-09-30, 158 locks applied
 

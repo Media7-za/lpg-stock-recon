@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Period close / void for one account (P5–P6, PROPOSED — NOT RATIFIED).
+ * Period close / void for one account (P5–P6, ratified 2026-10-10).
  *
  *   node analysis/debtors/shared/scripts/close_period.mjs --debtor SA0001 --through 2026-06-30 [--dry-run]
  *   node analysis/debtors/shared/scripts/close_period.mjs --debtor SA0001 --void-close C0001 --reason "…"

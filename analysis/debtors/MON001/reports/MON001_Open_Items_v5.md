@@ -1,6 +1,6 @@
 # Open Items Statement: SHORTEN INTERNATIONAL 66 ON MONZALI (MON001) — Internal
 **Period:** from 11 Jul 2024 to 02 Oct 2026 &nbsp;|&nbsp; **Balance due:** R2,417.24
-**Status:** PROPOSED — NOT RATIFIED (`PROPOSED_Projection_Matching_Locks.md`, build step 3) · generated 2026-10-10 by `render_open_items.mjs`
+**Status:** matcher v5 RATIFIED 2026-10-10 (`PROPOSED_Projection_Matching_Locks.md`); probable ties are proposals until approved · generated 2026-10-10 by `render_open_items.mjs`
 **Sources:** `analysis/debtors/MON001/data/v5_projection.json` (TXT sha256 `3b289b8d9d76…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (28 confirmed / 2 probable ties) · **REVIEW ONLY:** ingestCoverage partial
 **Locks:** no period closed yet
 

@@ -4,7 +4,7 @@
  * raw TXT / DB per account.
  *
  * Status: build step 1 of analysis/debtors/shared/docs/PROPOSED_Projection_Matching_Locks.md
- * (PROPOSED — NOT RATIFIED). P2: rows are per document per lane, persisted to
+ * (ratified 2026-10-10). P2: rows are per document per lane, persisted to
  * data/v5_projection.json and stamped with a fingerprint of the source TXT so a
  * matcher can refuse to run against a stale projection. P10: every row carries
  * the basis of its LPG/CYL split.
@@ -128,7 +128,7 @@ export function buildV5Projection({
 
   return {
     schemaVersion: PROJECTION_SCHEMA_VERSION,
-    status: 'PROPOSED — NOT RATIFIED (PROPOSED_Projection_Matching_Locks.md, build step 1)',
+    status: 'RATIFIED 2026-10-10 (PROPOSED_Projection_Matching_Locks.md, projection builder)',
     debtorCode: cfg.debtorCode,
     generatedBy: 'reconcile_debtor_v5_from_txt.mjs',
     generatedAt,

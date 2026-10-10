@@ -1,6 +1,6 @@
 /**
  * Shared projection matcher — build step 2 of
- * analysis/debtors/shared/docs/PROPOSED_Projection_Matching_Locks.md (PROPOSED — NOT RATIFIED).
+ * analysis/debtors/shared/docs/PROPOSED_Projection_Matching_Locks.md (ratified 2026-10-10).
  *
  * Pure module: takes a verified v5 projection (data/v5_projection.json) and returns
  * ties between its rows. It only ever *ties* existing rows; it never creates a row,

@@ -1,7 +1,7 @@
 /**
  * Shared "match one account" runner used by match_projection.mjs and close_period.mjs,
  * so a period close always locks exactly what the matcher would produce right now.
- * PROPOSED — NOT RATIFIED (PROPOSED_Projection_Matching_Locks.md).
+ * ratified 2026-10-10 (PROPOSED_Projection_Matching_Locks.md).
  */
 import fs from 'fs';
 import path from 'path';

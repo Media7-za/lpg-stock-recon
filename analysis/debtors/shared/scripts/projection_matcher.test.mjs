@@ -1,5 +1,5 @@
 /**
- * Contract tests for projection_matcher.mjs (build step 2, PROPOSED — NOT RATIFIED).
+ * Contract tests for projection_matcher.mjs (build step 2, ratified 2026-10-10).
  * Amounts mirror real SA0001 July 2026 documents where noted.
  */
 import { test } from 'node:test';

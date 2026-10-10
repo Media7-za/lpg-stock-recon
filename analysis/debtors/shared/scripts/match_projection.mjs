@@ -10,7 +10,7 @@
  *
  * Split gate (proposal P6): matching always runs, but when the projection does not tie
  * to the ERP header or ingest is not complete, the output is marked reviewOnly.
- * PROPOSED — NOT RATIFIED (PROPOSED_Projection_Matching_Locks.md, build step 2).
+ * matcher v5 RATIFIED 2026-10-10 (PROPOSED_Projection_Matching_Locks.md); probable ties stay proposals until approved.
  */
 import fs from 'fs';
 import path from 'path';
@@ -35,7 +35,7 @@ if (evidence) {
   fs.writeFileSync(path.join(acct, 'data/remittance_evidence.json'), `${JSON.stringify(evidence, null, 2)}\n`);
 }
 const out = {
-  status: 'PROPOSED — NOT RATIFIED (PROPOSED_Projection_Matching_Locks.md, build step 2)',
+  status: 'matcher v5 RATIFIED 2026-10-10 (PROPOSED_Projection_Matching_Locks.md); probable ties stay proposals until approved',
   debtorCode: code,
   generatedBy: 'match_projection.mjs',
   generatedAt: new Date().toISOString(),

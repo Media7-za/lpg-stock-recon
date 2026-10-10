@@ -1,6 +1,6 @@
 # Open Items Statement: MOZAMBIK (MOZ002) — Internal
 **Period:** from 15 Mar 2025 to 01 Oct 2026 &nbsp;|&nbsp; **Balance due:** R1,562.67
-**Status:** PROPOSED — NOT RATIFIED (`PROPOSED_Projection_Matching_Locks.md`, build step 3) · generated 2026-10-09 by `render_open_items.mjs`
+**Status:** matcher v5 RATIFIED 2026-10-10 (`PROPOSED_Projection_Matching_Locks.md`); probable ties are proposals until approved · generated 2026-10-10 by `render_open_items.mjs`
 **Sources:** `analysis/debtors/MOZ002/data/v5_projection.json` (TXT sha256 `4a6e6bbcc724…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (105 confirmed / 0 probable ties)
 **Locks:** no period closed yet
 

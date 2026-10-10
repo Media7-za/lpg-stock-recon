@@ -1,6 +1,6 @@
-# DOCTRINE (PROPOSED — NOT RATIFIED) — Projection-First Matching, Locks & Period Close
+# DOCTRINE (RATIFIED 2026-10-10 for the scope in "Ratification 2026-10-10" at the end; was: PROPOSED — NOT RATIFIED) — Projection-First Matching, Locks & Period Close
 
-**Status:** PROPOSED — NOT RATIFIED. Staged by a worker session on 2026-10-04
+**Status:** ~~PROPOSED — NOT RATIFIED.~~ **SUPERSEDED 2026-10-10: RATIFIED by the operator for the scope listed in "Ratification 2026-10-10" (end of this file).** Original staging text follows, kept as written. Staged by a worker session on 2026-10-04
 (branch `claude/payment-matching-mechanisms-4h34be`). Under `DEBTORS_DOCTRINE.md`
 §7, worker sessions do not author constitutional changes. Every operator decision
 quoted below was stated explicitly in that session. **None of them has been applied
@@ -473,3 +473,47 @@ Operator rulings: Q3′ ratified M1 (lane-aware split remittances); Q1 and Q15 m
 - **Display.** Config `namedResiduals` shows listed untied journals under ratified bridge ids as proof lines instead of open rows; `rowNotes` carries an operator note on a still-open row.
 - **Preview gate (the build's done criterion):** `matcher_preview.mjs` showed NO row change on the other eight projected accounts, including MD0003, the only other account with remittance evidence. TWK002: 69 → 36 on evidence, → 34 with the recorded locks, → 10 with the named residuals.
 - **Tripwires:** a preview showing any row change on another account; an advice share that fits two lane subsets equally; a child TXT whose open documents differ from those used.
+
+---
+
+## Ratification 2026-10-10
+
+**Operator decision (main recon session, 2026-10-10), verbatim:** "Ratify !" — in answer to: "Ratifying matcher v5 as doctrine." Under `DEBTORS_DOCTRINE.md` §7 the operator is the ratifying authority; this note records the decision, it does not extend it. The header status above is marked superseded in place; nothing was deleted.
+
+### Ratified: matcher v5 as built
+
+The behaviour implemented in `analysis/debtors/shared/scripts/` at commit `f34f0de`, with the amendments recorded above (2026-10-04 to 2026-10-10):
+
+| Area | What is ratified |
+| :--- | :--- |
+| One shared engine | `projection_matcher.mjs` (pure) reads the persisted v5 projection (P2) and the account's locks and evidence. **No account names in code**; account differences come from config and evidence only (build plan item 2). |
+| Rules, in order | 0 `LOCKED`, 0b `SETTLED_THROUGH`, 1 `UD_CLEARING`, 1b `REMITTANCE` (incl. M1 lane-aware split, family/payer-group tie, advice-line aliases, M3 discount journals), 2 `CN_DN_PAIR` / `CN_AMOUNT_DATE`, 3 payments (exact pass: single, month sum, 2–3 sum, 4–12 run; probable pass: proximity ±R5, near sum ±R1), 4 `BATCH_SUM`, 5 `CYL_EXCHANGE`, 6 `BALANCE_ZERO`; tie-break = smallest variance then FIFO within 14 days; P10 downgrade for non-confirmable splits. |
+| Tie confidence | CONFIRMED / PROBABLE as defined by each rule. `BATCH_SUM` and `CN_AMOUNT_DATE` are always PROBABLE. |
+| Locks and decisions | Locks keyed by document, type, lane, date and amount (never TXT line); append-only closes, locks and voids; period close (P6) with its split gate; operator rulings as approved locks (`approve_tie.mjs`: treatments, several payments, deposits, journals, approval of probable ties by id); `settle_through.mjs` records; changed or missing members become CONFLICTs that block closes. |
+| Views | The open-items statement (internal and customer preview), the internal ledger, proof lines (rulings, named residuals, row notes, opening settled), the proof identity "open items + named lines = ERP `CURRENT BALANCE`". |
+| Customer copy | The `open_items` layout of `generate_statement_of_account.mjs`, which refuses to write unless open items + named lines equal the ERP header, the projection is current and no lock conflicts. The release path stays `generate_statement_of_account.mjs` + `debtors:tag-check`; nothing in this ratification releases a statement. |
+| Change control | A matcher change needs tests, a `matcher_preview.mjs` run showing no unintended row change on any other account, and (for a new or changed rule) an operator decision recorded here as an amendment. Group approval of probable ties (`probable_ties_review.mjs`) is allowed and is recorded as a group-level judgement. |
+
+### Not ratified (still proposals, each needs its own decision)
+
+- **Widening `cnConfirmedMaxDays`** (blanket confirmation of credit-note pairs by date lag). The 2026-10-10 group approvals are recorded as locks per account, not as a rule change. A rule "confirm a same-DN pair up to 5 days when no rival exists" is a possible next proposal.
+- **The near-run rule** (allowing a small per-invoice tolerance on 4–12 invoice runs, ADM-92).
+- **Mirror carry** for monthly batch payers (P4 opt-in) and the `payerCadence` config: not built.
+- **P7 pre-window lookback as a general rule:** applied only through operator rulings per account (`settled through`, `applied_to_bf`).
+- **P8 payer group beyond TWK002:** built for TWK002's interim slice only; the full family tie (child projections, consolidated customer statement) is not built.
+- **P9 creating settlement-discount journals:** the matcher only tracks "journals pending" and joins a posted journal (M3).
+- **Per-account matcher profiles** (turning rules on or off by payer type): not built; none is needed today (the preview shows no unintended change). If one is ever needed it is a config entry, not a forked matcher.
+- **Any individual probable tie.** Ratifying the matcher does not approve its probable results; each stays a proposal until approved as a lock.
+- **`BALANCE_ZERO` per-account outcomes** (cuts on JEN001, RED001, MOZ002) are ratified as a rule; their tripwire stays: a later export that changes any row on or before a cut re-forms the group.
+
+### Not changed by this ratification
+
+`DEBTORS_DOCTRINE.md`, `business_rules.md`, the skills and `AGENTS.md` are **not edited** here. The note at the top of this file says each decision is applied to them by a turn brief; that integration is a separate step for the operator to call.
+
+### Tripwires (reopen this ratification if)
+
+- a matcher change shows an unintended row change on another account in `matcher_preview.mjs`;
+- an ERP allocation export or a customer remittance contradicts a group-approved pair or a `BALANCE_ZERO` / `SETTLED_THROUGH` group;
+- a lock conflict appears on an account after a routine re-run without a changed document;
+- a rule is found to be correct only for one payer type and wrong for another (then add a config profile).
+

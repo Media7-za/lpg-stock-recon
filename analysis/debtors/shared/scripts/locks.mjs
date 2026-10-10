@@ -1,6 +1,6 @@
 /**
  * Locks & period close — proposals P5–P6 of PROPOSED_Projection_Matching_Locks.md
- * (PROPOSED — NOT RATIFIED). Pure: no file I/O.
+ * (ratified 2026-10-10). Pure: no file I/O.
  *
  * Registry home (P5): the account's config/payment_pattern_overrides.json, under a
  * new top-level key `projectionLocks`. Existing `overrides` entries are never touched,

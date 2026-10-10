@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Record an operator ruling as an `approved` lock (PROPOSED — NOT RATIFIED,
+ * Record an operator ruling as an `approved` lock (ratified 2026-10-10,
  * PROPOSED_Projection_Matching_Locks.md P5). Appends to config/payment_pattern_overrides.json →
  * projectionLocks.locks; never edits or removes anything. Undo with
  * `close_period.mjs --debtor CODE --void-lock L0123 --reason "…"`.

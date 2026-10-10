@@ -1,6 +1,6 @@
 /**
  * Open-items view — build step 3 of PROPOSED_Projection_Matching_Locks.md
- * (PROPOSED — NOT RATIFIED). Pure: projection + matcher output → open-items model
+ * (ratified 2026-10-10). Pure: projection + matcher output → open-items model
  * and Markdown. No DB, no writes.
  *
  * P3 rulings applied:
@@ -201,7 +201,7 @@ export function renderOpenItemsMarkdown(model, { cfg, projection, matches, gener
   );
   if (internal) {
     L.push(
-      `**Status:** PROPOSED — NOT RATIFIED (\`PROPOSED_Projection_Matching_Locks.md\`, build step 3) · generated ${generatedOn} by \`render_open_items.mjs\``,
+      `**Status:** matcher v5 RATIFIED 2026-10-10 (\`PROPOSED_Projection_Matching_Locks.md\`); probable ties are proposals until approved · generated ${generatedOn} by \`render_open_items.mjs\``,
     );
     L.push(
       `**Sources:** \`${matches.projection.path}\` (TXT sha256 \`${projection.source.txtSha256.slice(0, 12)}…\`, DB channel \`${projection.source.dbChannel}\`) · \`data/projection_matches.json\` (${matches.summary.confirmed} confirmed / ${matches.summary.probable} probable ties)${matches.reviewOnly ? ` · **REVIEW ONLY:** ${matches.reviewOnlyReasons.join('; ')}` : ''}`,

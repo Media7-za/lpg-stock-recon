@@ -48,7 +48,7 @@ export function renderInternalLedgerMarkdown(model, { cfg, projection, matches, 
   L.push(
     `**INTERNAL, not for the customer.** Every transaction in ERP order with the ERP running balance and what matcher v${matches.matcherVersion} did with it · generated ${generatedOn} · ` +
       `${matches.summary.confirmed} confirmed / ${matches.summary.probable} probable ties · ${open.length} rows open · ` +
-      `ERP \`CURRENT BALANCE\` R${fmt(projection.source.erpCurrentBalance)} · PROPOSED — NOT RATIFIED${matches.reviewOnly ? ` · **REVIEW ONLY:** ${matches.reviewOnlyReasons.join('; ')}` : ''}`,
+      `ERP \`CURRENT BALANCE\` R${fmt(projection.source.erpCurrentBalance)} · matcher v5 ratified 2026-10-10; probable ties are proposals until approved${matches.reviewOnly ? ` · **REVIEW ONLY:** ${matches.reviewOnlyReasons.join('; ')}` : ''}`,
   );
   L.push('', '**Status key:** `OPEN` untied · `T0001 EXACT_SINGLE ✓` confirmed tie · `T0001 BATCH_SUM ?` probable tie (needs approval) · `LOCKED` operator-approved lock · `◀ ZERO` ERP running balance is within R0.05 after this line.', '');
   if (zeros.length) {
