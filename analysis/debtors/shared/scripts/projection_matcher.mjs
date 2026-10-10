@@ -45,6 +45,7 @@
  *      So a probable guess can never take an invoice that a later payment matches exactly.
  *        a. EXACT_SINGLE      |payment − invoice| ≤ R0.05                → CONFIRMED
  *        b. EXACT_MONTH_SUM   = all open invoices of one billing month   → CONFIRMED
+ *                             (PROBABLE when rules.monthSumConfidence is PROBABLE: config payerCadence monthly_batch)
  *        c. EXACT_SUM         = 2–3 open invoices (≤ R0.05)              → CONFIRMED
  *        c2. EXACT_RUN        = 4–12 consecutive open invoices (≤ R0.05) → CONFIRMED (ADM-85);
  *                             oldest run first; PROBABLE if another run fits equally well
@@ -95,6 +96,7 @@ export const RULES = Object.freeze({
   proximityTolerance: 5.0,
   nearSumTolerance: 1.0,
   cnConfirmedMaxDays: 1,
+  monthSumConfidence: 'CONFIRMED', // 'PROBABLE' for a monthly batch payer without remittances (config payerCadence: monthly_batch; operator ruling ADM-89 JIM001 Q2, 2026-10-10)
   cnRivalFreeMaxDays: 0, // PROPOSED rule R1 (off): confirm a same-DN pair up to this many days when no rival exists
   maxSumInvoices: 3,
   maxRunInvoices: 12,
@@ -567,7 +569,7 @@ export function matchProjection(projection, rules = RULES, evidence = null, lock
       const eligible = open().filter((t) => t.date <= p.date);
       const hit = tryRule(p, A, eligible);
       if (!hit) continue;
-      addTie(hit.rule, hit.conf || conf, [p, ...hit.best.set.flatMap((t) => t.rows)], {
+      addTie(hit.rule, hit.conf || (hit.rule === 'EXACT_MONTH_SUM' && rules.monthSumConfidence === 'PROBABLE' ? 'PROBABLE' : conf), [p, ...hit.best.set.flatMap((t) => t.rows)], {
         ...(hit.extra || {}),
         payment: { doc: p.clean_doc, date: p.date, amount: A },
         invoices: hit.best.set.map((t) => ({ doc: t.doc, date: t.date, amount: t.amount })),

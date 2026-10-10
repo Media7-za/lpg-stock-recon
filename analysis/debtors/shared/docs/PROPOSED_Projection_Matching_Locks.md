@@ -531,3 +531,12 @@ Drafted at the operator's request ("Yes, draft the rule with a preview"), after 
 
 **A related refinement seen in the eight remaining ties (not drafted):** when a credit note could pair with twin invoices, prefer the twin whose reference carries the same marker (for example "EMPTY") as the credit note. TAN002 T0059 is the case.
 
+
+---
+
+### Amendment 2026-10-10 (c): `payerCadence: monthly_batch` — PROPOSED, account-level operator ruling only
+
+- **What was built:** `RULES.monthSumConfidence` (default `CONFIRMED`, unchanged for every account). When an account's `config/statement_v5.json` sets `payerCadence: "monthly_batch"`, `match_account.mjs` passes `monthSumConfidence: 'PROBABLE'`, so EXACT_MONTH_SUM ties are PROBABLE until approved. No account name appears in code.
+- **Authority:** the operator ruled this for JIM001 only (ADM-89 JIM001 Q2, 2026-10-10: "Yes, then approved as one group"). Applying the flag to any other account, or making it a portfolio default, is **NOT RATIFIED** and needs a separate operator decision.
+- **JIM001 outcome (PROVEN, `config/payment_pattern_overrides.json` projectionLocks):** seven month-sum ties approved as one group (L0002–L0008); L0001 applies payments 44686, 38481, 38846, 39812 (net R-58,653.77) to the opening B/F R60,183.98 (`applied_to_bf`; R1,530.21 of B/F stays open). Proof HOLDS at ERP R122,884.84; 0 lock conflicts; 0 unallocated payments. The 36 legacy `overrides[]` stay as history, not locks.
+- **Tripwires:** reopen L0002–L0008 if a remittance advice or the ERP allocation contradicts a month sum, or JIM001 stops paying by whole billing month. Reopen L0001 if a different JIM001 export changes the B/F, or the ERP shows those payments allocated elsewhere.

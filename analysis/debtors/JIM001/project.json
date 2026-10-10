@@ -90,6 +90,10 @@
     {
       "date": "2026-10-10",
       "event": "First v5 projection built from raw/JIM001_2026-10-10.TXT (ERP export 2026-10-10, ADM-79/ADM-96). Connector-sourced (db_replay, Supabase connector, SELECT only, data/db_replay/2026-10-10/). Variance R0.00; ingest coverage partial so matcher output is reviewOnly. No locks recorded; ADM-89 rulings pending. See docs/previews/2026-10-10_JIM001_onboarding.md."
+    },
+    {
+      "date": "2026-10-10",
+      "event": "Operator rulings ADM-89 JIM001 Q1-Q3 recorded. Q1: the 36 legacy overrides stay as history, not locks. Q2: payerCadence monthly_batch; seven EXACT_MONTH_SUM ties approved as one group (L0002-L0008). Q3: payments 44686, 38481, 38846, 39812 applied to opening B/F (L0001, net R-58,653.77; R1,530.21 B/F open). Proof HOLDS at ERP R122,884.84, 0 conflicts. Connector-sourced inputs (db_replay 2026-10-10). See docs/previews/2026-10-10_JIM001_ruling_pack.md."
     }
   ]
 }

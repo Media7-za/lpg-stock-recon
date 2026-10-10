@@ -156,6 +156,20 @@ test('billing-month exact sum is CONFIRMED', () => {
   assert.equal(t.confidence, 'CONFIRMED');
 });
 
+test('monthSumConfidence PROBABLE (monthly batch payer) makes the month sum probable; default unchanged', () => {
+  const rows = () =>
+    projection([
+      row({ doc: '51723', date: '2026-07-09', amount: 314.03 }),
+      row({ doc: '51739', date: '2026-07-10', amount: 6699.21 }),
+      row({ doc: '45194', type: 'Payment', date: '2026-07-13', amount: -7013.24 }),
+    ]);
+  assert.equal(RULES.monthSumConfidence, 'CONFIRMED');
+  const t = tieOf(matchProjection(rows(), { ...RULES, monthSumConfidence: 'PROBABLE' }), '45194');
+  assert.equal(t.rule, 'EXACT_MONTH_SUM');
+  assert.equal(t.confidence, 'PROBABLE');
+  assert.equal(tieOf(matchProjection(rows()), '45194').confidence, 'CONFIRMED');
+});
+
 test('proximity and near-sum ties are PROBABLE; beyond tolerance stays unallocated', () => {
   const res = matchProjection(
     projection([

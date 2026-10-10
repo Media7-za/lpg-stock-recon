@@ -68,3 +68,7 @@ Seven EXACT_MONTH_SUM ties are CONFIRMED today. Each is one payment equal to the
 ## Question 3: a pattern worth ruling on (ASSUMED, not tested as a lock)
 
 The matcher leaves four payments unallocated: 44686 (R14,941.48, 16 May 2022), 38481 (R15,816.63, 5 May 2025), 38846 (R7,337.97) and 39812 (R20,557.69), netting R58,653.77. Their dates and the override for 38481 (type BOUNDARY_PAYMENT, billing month 2024-12) say they pay invoices that are inside the B/F. The B/F is R60,183.98, so applying them to the B/F would leave R1,530.21 of B/F open. This is the same treatment used for TWK002 L0001 (`applied_to_bf`). It needs your ruling and a proof run before any lock is recorded.
+
+## Outcome (operator rulings 2026-10-10)
+
+1. No: all 36 overrides stay as history. 2. Yes: `payerCadence: monthly_batch`, seven month sums approved as one group (L0002-L0008). 3. Yes: four payments applied to the opening B/F (L0001). Result: proof HOLDS at ERP R122,884.84, 0 lock conflicts, 0 unallocated payments, 52 internal / 64 customer open rows. Six other probable ties (5 CN_DN_PAIR, 1 CN_AMOUNT_DATE) are still unapproved and not part of this ruling. Note: legacy override #36 (payment 38481, BOUNDARY_PAYMENT) is the same payment as part of L0001; it is consistent with, not a duplicate of, the lock.

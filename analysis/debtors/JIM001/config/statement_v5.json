@@ -5,7 +5,7 @@
   "periodStart": "2022-05-16",
   "combinedBf": 60183.98,
   "bfSourceNote": "JIM001_2026-10-10.TXT line 2 (LINE 1) BALANCE B/F R60183.98 (ERP export dated 2026-10-10, CURRENT BALANCE R122,884.84, 213 rows, last row 5 Jun 2026). periodStart 2022-05-16 = date of first transaction row (LINE 2) so every row after B/F is in the period.",
-  "cylOpeningFinancial": 0.0,
+  "cylOpeningFinancial": 0,
   "cylOpeningQty": {
     "14.1": 0,
     "19.1": 0,
@@ -20,5 +20,7 @@
     "D.1": 1150,
     "S.1": 1150
   },
-  "paymentLane": "LPG"
+  "paymentLane": "LPG",
+  "payerCadence": "monthly_batch",
+  "payerCadenceNote": "Operator ruling 2026-10-10 (ADM-89 JIM001 Q2): monthly batch payer with no remittances; EXACT_MONTH_SUM ties are PROBABLE until approved as a group."
 }

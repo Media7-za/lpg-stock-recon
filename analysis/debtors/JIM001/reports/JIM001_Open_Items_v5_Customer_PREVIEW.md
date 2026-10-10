@@ -10,96 +10,87 @@
 
 ## Gas: open items
 
-### May 2022
-
-| Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 16 May 2022 | Payment | 44686 | TRANSF \| STAT199 | Gas | -14,941.48 | 45,242.50 |
-
 ### July 2024
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 04 Jul 2024 | Crd Note | 12313 | INTEREST- JUNE 2024 | Other | -1,051.83 | 44,190.67 |
+| 04 Jul 2024 | Crd Note | 12313 | INTEREST- JUNE 2024 | Other | -1,051.83 | 59,132.15 |
 
 ### April 2025
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 02 Apr 2025 | Invoice | 41926 | DN#4464 | Gas | 4,423.21 | 48,613.88 |
-| 10 Apr 2025 | Invoice | 42181 | DN#13012 | Gas | 4,325.33 | 52,939.21 |
-| 17 Apr 2025 | Invoice | 42357 | DN#4494 | Gas | 4,325.33 | 57,264.54 |
-| 25 Apr 2025 | Invoice | 42565 | DN#13165 | Gas | 4,325.33 | 61,589.87 |
-| 30 Apr 2025 | Invoice | 42704 ¹ | DN#13120 | Gas | 4,325.33 | 65,915.20 |
+| 02 Apr 2025 | Invoice | 41926 | DN#4464 | Gas | 4,423.21 | 63,555.36 |
+| 10 Apr 2025 | Invoice | 42181 | DN#13012 | Gas | 4,325.33 | 67,880.69 |
+| 17 Apr 2025 | Invoice | 42357 | DN#4494 | Gas | 4,325.33 | 72,206.02 |
+| 25 Apr 2025 | Invoice | 42565 | DN#13165 | Gas | 4,325.33 | 76,531.35 |
+| 30 Apr 2025 | Invoice | 42704 ¹ | DN#13120 | Gas | 4,325.33 | 80,856.68 |
 
 ### May 2025
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 03 May 2025 | Crd Note | 12390 ¹ | DN#13120 | Gas | -4,325.33 | 61,589.87 |
-| 03 May 2025 | Invoice | 42755 | DN#13120 | Gas | 3,153.89 | 64,743.76 |
-| 05 May 2025 | Payment | 38481 | TRANSF \| STAT:115 | Gas | -15,816.63 | 48,927.13 |
-| 09 May 2025 | Invoice | 42949 | DN#13209 | Gas | 4,325.33 | 53,252.46 |
-| 15 May 2025 | Invoice | 43089 | DN#13229 | Gas | 2,883.56 | 56,136.02 |
-| 21 May 2025 | Invoice | 43271 | DN#12254 | Gas | 4,382.95 | 60,518.97 |
-| 22 May 2025 | Payment | 38846 | TRANSF \| STAT:115 | Gas | -7,337.97 | 53,181.00 |
-| 29 May 2025 | Invoice | 43451 | DN#12133 | Gas | 2,921.97 | 56,102.97 |
+| 03 May 2025 | Crd Note | 12390 ¹ | DN#13120 | Gas | -4,325.33 | 76,531.35 |
+| 03 May 2025 | Invoice | 42755 | DN#13120 | Gas | 3,153.89 | 79,685.24 |
+| 09 May 2025 | Invoice | 42949 | DN#13209 | Gas | 4,325.33 | 84,010.57 |
+| 15 May 2025 | Invoice | 43089 | DN#13229 | Gas | 2,883.56 | 86,894.13 |
+| 21 May 2025 | Invoice | 43271 | DN#12254 | Gas | 4,382.95 | 91,277.08 |
+| 29 May 2025 | Invoice | 43451 | DN#12133 | Gas | 2,921.97 | 94,199.05 |
 
 ### June 2025
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 05 Jun 2025 | Invoice | 43628 | DN#12300 | Gas | 4,382.95 | 60,485.92 |
-| 12 Jun 2025 | Payment | 39812 | TRANSF \| STAT:116 | Gas | -20,557.69 | 39,928.23 |
-| 13 Jun 2025 | Invoice | 43910 | DN#12517 | Gas | 3,115.05 | 43,043.28 |
-| 20 Jun 2025 | Invoice | 44097 | DN#12582 | Gas | 4,272.07 | 47,315.35 |
-| 26 Jun 2025 | Invoice | 44241 | DN#12429 | Gas | 2,848.04 | 50,163.39 |
+| 05 Jun 2025 | Invoice | 43628 | DN#12300 | Gas | 4,382.95 | 98,582.00 |
+| 13 Jun 2025 | Invoice | 43910 | DN#12517 | Gas | 3,115.05 | 101,697.05 |
+| 20 Jun 2025 | Invoice | 44097 | DN#12582 | Gas | 4,272.07 | 105,969.12 |
+| 26 Jun 2025 | Invoice | 44241 | DN#12429 | Gas | 2,848.04 | 108,817.16 |
 
 ### January 2026
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 01 Jan 2026 | Invoice | 48599 | DN#21443 | Gas | 3,894.77 | 54,058.16 |
-| 03 Jan 2026 | Crd Note | 14201 ¹ | DN#21443 | Gas | -2,596.52 | 51,461.64 |
-| 03 Jan 2026 | Invoice | 48776 ¹ | REV CN#14201 | Gas | 2,596.52 | 54,058.16 |
-| 09 Jan 2026 | Invoice | 48701 | DN-21626 | Gas | 3,894.77 | 57,952.93 |
-| 17 Jan 2026 | Invoice | 48828 | DN~21645 | Gas | 3,920.13 | 61,873.06 |
-| 28 Jan 2026 | Invoice | 48994 | DN#21220 | Gas | 2,613.42 | 64,486.48 |
+| 01 Jan 2026 | Invoice | 48599 | DN#21443 | Gas | 3,894.77 | 112,711.93 |
+| 03 Jan 2026 | Crd Note | 14201 ¹ | DN#21443 | Gas | -2,596.52 | 110,115.41 |
+| 03 Jan 2026 | Invoice | 48776 ¹ | REV CN#14201 | Gas | 2,596.52 | 112,711.93 |
+| 09 Jan 2026 | Invoice | 48701 | DN-21626 | Gas | 3,894.77 | 116,606.70 |
+| 17 Jan 2026 | Invoice | 48828 | DN~21645 | Gas | 3,920.13 | 120,526.83 |
+| 28 Jan 2026 | Invoice | 48994 | DN#21220 | Gas | 2,613.42 | 123,140.25 |
 
 ### February 2026
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 06 Feb 2026 | Invoice | 49126 | DN#21526 | Gas | 3,959.98 | 68,446.46 |
-| 13 Feb 2026 | Invoice | 49242 | DN#21254 | Gas | 2,639.99 | 71,086.45 |
-| 18 Feb 2026 | Invoice | 49315 | DN/21261 | Gas | 3,959.98 | 75,046.43 |
+| 06 Feb 2026 | Invoice | 49126 | DN#21526 | Gas | 3,959.98 | 127,100.23 |
+| 13 Feb 2026 | Invoice | 49242 | DN#21254 | Gas | 2,639.99 | 129,740.22 |
+| 18 Feb 2026 | Invoice | 49315 | DN/21261 | Gas | 3,959.98 | 133,700.20 |
 
 ### March 2026
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 04 Mar 2026 | Invoice | 49540 | DN#22016 | Gas | 3,959.98 | 79,006.41 |
-| 13 Mar 2026 | Invoice | 49727 | DN#21964 | Gas | 3,988.79 | 82,995.20 |
-| 20 Mar 2026 | Invoice | 49842 | DN-21838 | Gas | 3,988.79 | 86,983.99 |
+| 04 Mar 2026 | Invoice | 49540 | DN#22016 | Gas | 3,959.98 | 137,660.18 |
+| 13 Mar 2026 | Invoice | 49727 | DN#21964 | Gas | 3,988.79 | 141,648.97 |
+| 20 Mar 2026 | Invoice | 49842 | DN-21838 | Gas | 3,988.79 | 145,637.76 |
 
 ### April 2026
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 01 Apr 2026 | Invoice | 50042 | DN-21855 | Gas | 3,988.79 | 90,972.78 |
-| 09 Apr 2026 | Invoice | 50161 | DN-22157 | Gas | 4,420.80 | 95,393.58 |
-| 18 Apr 2026 | Invoice | 50290 | DN-21329 | Gas | 2,947.20 | 98,340.78 |
-| 24 Apr 2026 | Invoice | 50371 | DN-21348 | Gas | 2,947.20 | 101,287.98 |
-| 30 Apr 2026 | Invoice | 50468 | DN-22213 | Gas | 4,420.80 | 105,708.78 |
+| 01 Apr 2026 | Invoice | 50042 | DN-21855 | Gas | 3,988.79 | 149,626.55 |
+| 09 Apr 2026 | Invoice | 50161 | DN-22157 | Gas | 4,420.80 | 154,047.35 |
+| 18 Apr 2026 | Invoice | 50290 | DN-21329 | Gas | 2,947.20 | 156,994.55 |
+| 24 Apr 2026 | Invoice | 50371 | DN-21348 | Gas | 2,947.20 | 159,941.75 |
+| 30 Apr 2026 | Invoice | 50468 | DN-22213 | Gas | 4,420.80 | 164,362.55 |
 
 ### May 2026
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 08 May 2026 | Invoice | 50594 | DN#22378 | Gas | 3,370.81 | 109,079.59 |
-| 16 May 2026 | Invoice | 50712 | DN#22718 | Gas | 3,370.81 | 112,450.40 |
-| 21 May 2026 | Invoice | 50810 | DN#22394 | Gas | 5,056.22 | 117,506.62 |
-| 28 May 2026 | Invoice | 50920 | DN#22763 | Gas | 5,056.22 | 122,562.84 |
+| 08 May 2026 | Invoice | 50594 | DN#22378 | Gas | 3,370.81 | 167,733.36 |
+| 16 May 2026 | Invoice | 50712 | DN#22718 | Gas | 3,370.81 | 171,104.17 |
+| 21 May 2026 | Invoice | 50810 | DN#22394 | Gas | 5,056.22 | 176,160.39 |
+| 28 May 2026 | Invoice | 50920 | DN#22763 | Gas | 5,056.22 | 181,216.61 |
 
 **Cylinder deposit opening balance:** R0.00
 
@@ -196,7 +187,8 @@
 | Component | Gas (R) | Cylinder deposit (R) | Total (R) |
 | :--- | ---: | ---: | ---: |
 | Opening balance | 60,183.98 | 0.00 | 60,183.98 |
-| Open items listed above | 62,378.86 | 322.00 | 62,700.86 |
+| Open items listed above | 121,032.63 | 322.00 | 121,354.63 |
 | Rounding on settled items | 0.00 | 0.00 | 0.00 |
+| Payments against opening balance | -58,653.77 | 0.00 | -58,653.77 |
 | **Balance** | 122,562.84 | 322.00 | 122,884.84 |
 
