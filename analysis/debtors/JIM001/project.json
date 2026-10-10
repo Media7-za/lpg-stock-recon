@@ -90,6 +90,10 @@
     {
       "date": "2026-10-10",
       "event": "First v5 projection built from raw/JIM001_2026-10-10.TXT (ERP export 2026-10-10, ADM-79/ADM-96). Connector-sourced (db_replay, Supabase connector, SELECT only, data/db_replay/2026-10-10/). Variance R0.00; ingest coverage partial so matcher output is reviewOnly. No locks recorded; ADM-89 rulings pending. See docs/previews/2026-10-10_JIM001_onboarding.md."
+    },
+    {
+      "date": "2026-10-10",
+      "event": "ADM-89 rulings (operator session Jim001 ruling pack decisions): (Q1) 36 legacy overrides stay history \u2014 not converted to projectionLocks (only 38481 exists in current TXT; converting the rest would be inert). (Q2) payerCadence monthly_batch set; EXACT_MONTH_SUM is PROBABLE under that flag (P-c, PROPOSED \u2014 NOT RATIFIED portfolio-wide); seven month-sum ties approved as L0001\u2013L0007 (exact) with tripwire on remittance/TXT re-itemisation. (Q3) unallocated 44686+38481+38846+39812 = R58,653.77 vs B/F R60,183.98 \u2192 remaining R1,530.21 if applied_to_bf; dry-run accepted, NO lock recorded pending ruling. Proof HOLDS ERP R122,884.84; reviewOnly (ingestCoverage partial, gap 44686). Artifacts: docs/previews/2026-10-10_JIM001_ruling_pack.md; config/payment_pattern_overrides.json#projectionLocks."
     }
   ]
 }
