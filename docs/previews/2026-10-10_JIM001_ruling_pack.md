@@ -1,6 +1,6 @@
 # JIM001 ruling pack for ADM-89 (2026-10-10)
 
-Status: REVIEW ONLY. Nothing approved, locked or closed. Source: `config/payment_pattern_overrides.json` (36 legacy overrides, registry from June 2026), `data/projection_matches.json` and `data/v5_projection.json` (matcher v5, built from `raw/JIM001_2026-10-10.TXT`, connector-sourced db_replay).
+Status: RULED 2026-10-10 (see Outcome at the end). Locks L0001-L0008 recorded; the matcher run itself is still review-only (ingest coverage partial). The tables below show the evidence as it stood before the rulings. Source: `config/payment_pattern_overrides.json` (36 legacy overrides, registry from June 2026), `data/projection_matches.json` and `data/v5_projection.json` (matcher v5, built from `raw/JIM001_2026-10-10.TXT`, connector-sourced db_replay).
 
 ## Question 1: do the 36 legacy overrides become approved locks?
 
