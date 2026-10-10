@@ -7,7 +7,7 @@
     "totalOutstanding": 140297.23,
     "lastInvoiceDate": "2026-05-28",
     "lastPaymentDate": "2026-06-05",
-    "agedDebt180Plus": 73007.40
+    "agedDebt180Plus": 73007.4
   },
   "collections": {
     "actionRequired": false,
@@ -86,6 +86,10 @@
     {
       "date": "2026-09-13",
       "event": "Extended the local reports/JIM001_LPG_Reconciliation_v4.xlsx (matches the Google Sheet's structure -- 'LPG only Invoices', 'Payment unallocated (actual)', 'Monthly Matches' sheets) by one row per sheet to cover doc 44555, per the user's request to expand its date range. Added: Payment ledger row (2026-06-05, 00044555, STAT 127, -R11,666.12) and Monthly Matches row (2025 December, R11,666.11, 00044555, R11,666.12), both with cell comments citing the aggregate exact-sum reasoning and flagging ASSERTED-not-PROVEN. IMPORTANT: this is NOT new independent evidence -- it is this review's own aggregate exact-sum reasoning re-expressed in the workbook's format, at the user's request. Unlike the 40746 resolution (which had a genuinely independent, separately-built source converging on the same answer), this does not change doc 44555's status in monthly_lpg_insights.csv or the bridge review, which remains UNRESOLVED pending real remittance advice or another independent source. LibreOffice recalculation could not be verified in this session's sandbox (confirmed environment-wide failure, reproduced on a blank test file, not specific to this workbook) -- formulas are plain SUM() ranges, manually verified arithmetically correct in Python instead."
+    },
+    {
+      "date": "2026-10-10",
+      "event": "First v5 projection built from raw/JIM001_2026-10-10.TXT (ERP export 2026-10-10, ADM-79/ADM-96). Connector-sourced (db_replay, Supabase connector, SELECT only, data/db_replay/2026-10-10/). Variance R0.00; ingest coverage partial so matcher output is reviewOnly. No locks recorded; ADM-89 rulings pending. See docs/previews/2026-10-10_JIM001_onboarding.md."
     }
   ]
 }

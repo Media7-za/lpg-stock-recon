@@ -1,0 +1,24 @@
+{
+  "debtorCode": "JIM001",
+  "debtorName": "JIMMY'S / INVESCO",
+  "txtPath": "analysis/debtors/JIM001/raw/JIM001_2026-10-10.TXT",
+  "periodStart": "2022-05-16",
+  "combinedBf": 60183.98,
+  "bfSourceNote": "JIM001_2026-10-10.TXT line 2 (LINE 1) BALANCE B/F R60183.98 (ERP export dated 2026-10-10, CURRENT BALANCE R122,884.84, 213 rows, last row 5 Jun 2026). periodStart 2022-05-16 = date of first transaction row (LINE 2) so every row after B/F is in the period.",
+  "cylOpeningFinancial": 0.0,
+  "cylOpeningQty": {
+    "14.1": 0,
+    "19.1": 0,
+    "9.1": 0,
+    "D.1": 0,
+    "S.1": 0
+  },
+  "skuRates": {
+    "14.1": 575,
+    "19.1": 690,
+    "9.1": 517.5,
+    "D.1": 1150,
+    "S.1": 1150
+  },
+  "paymentLane": "LPG"
+}

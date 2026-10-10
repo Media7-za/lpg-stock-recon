@@ -1,0 +1,15 @@
+{
+  "key": "dadb61f7d6c6dd3f",
+  "channel": "supabase-connector-replay",
+  "supabaseProject": "oqhpxnaadahohwkslive",
+  "capturedAt": "2026-10-10T11:31:10.465Z",
+  "md5": "7eed4936c045433f4be3f953e1cc33a9",
+  "len": 40727,
+  "rowCount": 404,
+  "sql": "\n    WITH deduped AS (\n      SELECT DISTINCT ON (LTRIM(doc_no,'0'), entry_type, stock_no, debt_group, line_total, qty)\n        tx_date::text AS tx_date, LTRIM(doc_no,'0') AS doc_no, entry_type, stock_no, qty\n      FROM vw_clean_transactions\n      WHERE account_no = $2 AND debt_group = 'CYL' AND tx_date >= $1\n      ORDER BY LTRIM(doc_no,'0'), entry_type, stock_no, debt_group, line_total, qty, id DESC\n    )\n    SELECT tx_date, doc_no, entry_type, stock_no, SUM(qty)::int AS qty\n    FROM deduped\n    GROUP BY tx_date, doc_no, entry_type, stock_no\n    ORDER BY tx_date, doc_no",
+  "params": [
+    "2022-05-16",
+    "JIM001"
+  ],
+  "captureSql": "SELECT md5(t) AS md5, length(t) AS len, t AS rows_json\nFROM (SELECT coalesce(jsonb_agg(q)::text, '[]') AS t FROM (\nWITH deduped AS (\n      SELECT DISTINCT ON (LTRIM(doc_no,'0'), entry_type, stock_no, debt_group, line_total, qty)\n        tx_date::text AS tx_date, LTRIM(doc_no,'0') AS doc_no, entry_type, stock_no, qty\n      FROM vw_clean_transactions\n      WHERE account_no = 'JIM001' AND debt_group = 'CYL' AND tx_date >= '2022-05-16'\n      ORDER BY LTRIM(doc_no,'0'), entry_type, stock_no, debt_group, line_total, qty, id DESC\n    )\n    SELECT tx_date, doc_no, entry_type, stock_no, SUM(qty)::int AS qty\n    FROM deduped\n    GROUP BY tx_date, doc_no, entry_type, stock_no\n    ORDER BY tx_date, doc_no\n) q) x"
+}

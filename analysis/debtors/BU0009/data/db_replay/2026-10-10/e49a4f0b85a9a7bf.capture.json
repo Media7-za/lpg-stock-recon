@@ -1,0 +1,15 @@
+{
+  "key": "e49a4f0b85a9a7bf",
+  "channel": "supabase-connector-replay",
+  "supabaseProject": "oqhpxnaadahohwkslive",
+  "capturedAt": "2026-10-10T11:30:56.892Z",
+  "md5": "826d4dd7012c3bc02557a4097739fc09",
+  "len": 9316,
+  "rowCount": 147,
+  "sql": "\n    SELECT LTRIM(doc_no,'0') AS doc_no, entry_type, COUNT(*)::int AS line_count\n    FROM vw_clean_transactions\n    WHERE account_no = $1 AND tx_date >= $2::date\n    GROUP BY doc_no, entry_type",
+  "params": [
+    "BU0009",
+    "2024-12-21"
+  ],
+  "captureSql": "SELECT md5(t) AS md5, length(t) AS len, t AS rows_json\nFROM (SELECT coalesce(jsonb_agg(q)::text, '[]') AS t FROM (\nSELECT LTRIM(doc_no,'0') AS doc_no, entry_type, COUNT(*)::int AS line_count\n    FROM vw_clean_transactions\n    WHERE account_no = 'BU0009' AND tx_date >= '2024-12-21'::date\n    GROUP BY doc_no, entry_type\n) q) x"
+}

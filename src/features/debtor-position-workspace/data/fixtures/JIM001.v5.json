@@ -1,0 +1,63 @@
+{
+  "debtorCode": "JIM001",
+  "debtorName": "JIMMY'S / INVESCO",
+  "period": {
+    "from": "2022-05-16",
+    "to": "2026-06-05"
+  },
+  "version": "v5",
+  "workspaceStatus": "pending_review",
+  "lastGeneratedAt": "2026-10-10T11:31:10.959Z",
+  "source": "analysis/debtors/JIM001/raw/JIM001_2026-10-10.TXT",
+  "financialPosition": {
+    "lpgGasDebt": 122562.84,
+    "cylinderFinancialBalance": 322,
+    "totalDebtorBalance": 122884.84,
+    "erpStatedBalance": 122884.84,
+    "erpVariance": 0,
+    "subLedgerVariance": 0
+  },
+  "custodyPosition": {
+    "totalCustodyExposure": -632.5,
+    "lines": [
+      {
+        "sku": "9.1",
+        "label": "9kg",
+        "qty": 1,
+        "depositRate": 517.5,
+        "exposure": 517.5
+      },
+      {
+        "sku": "D.1",
+        "label": "D.1",
+        "qty": 1,
+        "depositRate": 1150,
+        "exposure": 1150
+      },
+      {
+        "sku": "S.1",
+        "label": "S.1",
+        "qty": -2,
+        "depositRate": 1150,
+        "exposure": -2300
+      }
+    ]
+  },
+  "reconciliationPosition": {
+    "cylinderVariance": 954.5,
+    "erpVariance": 0,
+    "subLedgerVariance": 0,
+    "exceptions": [
+      {
+        "type": "CUSTODY",
+        "basis": "ASSERTED",
+        "status": "open",
+        "description": "Part 1B financial vs Part 2 custody — check DB ingest vs TXT"
+      }
+    ]
+  },
+  "artifacts": {
+    "statementMarkdown": "analysis/debtors/JIM001/reports/JIM001_Statement_Account_v5.md",
+    "txtSource": "analysis/debtors/JIM001/raw/JIM001_2026-10-10.TXT"
+  }
+}

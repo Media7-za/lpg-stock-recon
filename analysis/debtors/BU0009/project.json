@@ -20,6 +20,10 @@
     {
       "date": "2026-06-15",
       "event": "Initialized micro-project tracking."
+    },
+    {
+      "date": "2026-10-10",
+      "event": "First v5 projection built from raw/BU0009_2026-10-10.TXT (ERP export 2026-10-10, ADM-79/ADM-96). Connector-sourced (db_replay, Supabase connector, SELECT only, data/db_replay/2026-10-10/). Variance R0.00; ingest coverage partial so matcher output is reviewOnly. No locks recorded; ADM-89 rulings pending. See docs/previews/2026-10-10_BU0009_onboarding.md."
     }
   ]
 }

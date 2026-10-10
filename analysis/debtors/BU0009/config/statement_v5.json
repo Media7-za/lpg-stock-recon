@@ -1,0 +1,24 @@
+{
+  "debtorCode": "BU0009",
+  "debtorName": "IMPENDLE WHOLESALE 2025",
+  "txtPath": "analysis/debtors/BU0009/raw/BU0009_2026-10-10.TXT",
+  "periodStart": "2024-12-21",
+  "combinedBf": 1035.15,
+  "bfSourceNote": "BU0009_2026-10-10.TXT line 14 (LINE 1) BALANCE B/F R1035.15 (ERP export dated 2026-10-10, CURRENT BALANCE R17,118.47, 168 rows, last row 22 Sep 2026). periodStart 2024-12-21 = date of first transaction row (LINE 2, Payment 44848) so every row after B/F is in the period.",
+  "cylOpeningFinancial": 0.0,
+  "paymentLane": "LPG",
+  "cylOpeningQty": {
+    "14.1": 0,
+    "19.1": 0,
+    "9.1": 0,
+    "D.1": 0,
+    "S.1": 0
+  },
+  "skuRates": {
+    "14.1": 575,
+    "19.1": 690,
+    "9.1": 517.5,
+    "D.1": 1150,
+    "S.1": 1150
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "debtorCode": "BU0009",
+  "debtorName": "IMPENDLE WHOLESALE 2025",
+  "period": {
+    "from": "2024-12-21",
+    "to": "2026-09-22"
+  },
+  "version": "v5",
+  "workspaceStatus": "pending_review",
+  "lastGeneratedAt": "2026-10-10T11:31:51.721Z",
+  "source": "analysis/debtors/BU0009/raw/BU0009_2026-10-10.TXT",
+  "financialPosition": {
+    "lpgGasDebt": 14358.47,
+    "cylinderFinancialBalance": 2760,
+    "totalDebtorBalance": 17118.47,
+    "erpStatedBalance": 17118.47,
+    "erpVariance": 0,
+    "subLedgerVariance": 0
+  },
+  "custodyPosition": {
+    "totalCustodyExposure": 1610,
+    "lines": [
+      {
+        "sku": "14.1",
+        "label": "14kg",
+        "qty": 21,
+        "depositRate": 575,
+        "exposure": 12075
+      },
+      {
+        "sku": "19.1",
+        "label": "19kg",
+        "qty": -15,
+        "depositRate": 690,
+        "exposure": -10350
+      },
+      {
+        "sku": "9.1",
+        "label": "9kg",
+        "qty": 2,
+        "depositRate": 517.5,
+        "exposure": 1035
+      },
+      {
+        "sku": "D.1",
+        "label": "D.1",
+        "qty": -1,
+        "depositRate": 1150,
+        "exposure": -1150
+      }
+    ]
+  },
+  "reconciliationPosition": {
+    "cylinderVariance": 1150,
+    "erpVariance": 0,
+    "subLedgerVariance": 0,
+    "exceptions": [
+      {
+        "type": "CUSTODY",
+        "basis": "ASSERTED",
+        "status": "open",
+        "description": "Part 1B financial vs Part 2 custody — check DB ingest vs TXT"
+      }
+    ]
+  },
+  "artifacts": {
+    "statementMarkdown": "analysis/debtors/BU0009/reports/BU0009_Statement_Account_v5.md",
+    "txtSource": "analysis/debtors/BU0009/raw/BU0009_2026-10-10.TXT"
+  }
+}
