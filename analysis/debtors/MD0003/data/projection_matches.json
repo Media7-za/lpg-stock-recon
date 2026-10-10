@@ -2,7 +2,7 @@
   "status": "matcher v5 RATIFIED 2026-10-10 (PROPOSED_Projection_Matching_Locks.md); probable ties stay proposals until approved",
   "debtorCode": "MD0003",
   "generatedBy": "match_projection.mjs",
-  "generatedAt": "2026-10-10T05:07:51.871Z",
+  "generatedAt": "2026-10-10T08:26:32.436Z",
   "projection": {
     "path": "analysis/debtors/MD0003/data/v5_projection.json",
     "txtSha256": "863946cb36f81446ca087e1fa2bb972293147ab0cdd4a663e039682dc516a985",
@@ -16,13 +16,14 @@
   "locksRegistry": "config/payment_pattern_overrides.json#projectionLocks",
   "matcherVersion": 5,
   "closedThrough": null,
-  "locksApplied": 6,
+  "locksApplied": 7,
   "lockConflicts": [],
   "rules": {
     "exactTolerance": 0.05,
     "proximityTolerance": 5,
     "nearSumTolerance": 1,
     "cnConfirmedMaxDays": 1,
+    "cnRivalFreeMaxDays": 0,
     "maxSumInvoices": 3,
     "maxRunInvoices": 12,
     "fifoWindowDays": 14,
@@ -42,11 +43,11 @@
   },
   "summary": {
     "ties": 95,
-    "confirmed": 94,
-    "probable": 1,
+    "confirmed": 95,
+    "probable": 0,
     "byRule": {
-      "LOCKED": 6,
-      "REMITTANCE": 8,
+      "LOCKED": 7,
+      "REMITTANCE": 7,
       "CN_DN_PAIR": 73,
       "EXACT_SINGLE": 2,
       "EXACT_MONTH_SUM": 2,
@@ -133,14 +134,10 @@
     "applied": [
       {
         "batchId": "RM-2025-11-01",
-        "tie_id": "T0007"
-      },
-      {
-        "batchId": "RM-2026-01-31",
         "tie_id": "T0008"
       },
       {
-        "batchId": "RM-2026-03-02",
+        "batchId": "RM-2026-01-31",
         "tie_id": "T0009"
       },
       {
@@ -164,7 +161,13 @@
         "tie_id": "T0014"
       }
     ],
-    "unresolved": [],
+    "unresolved": [
+      {
+        "batchId": "RM-2026-03-02",
+        "paymentDoc": "43494",
+        "reason": "payment row already tied (T0007)"
+      }
+    ],
     "skippedSources": [
       {
         "file": "remittance_manifest_2023.json",
@@ -367,6 +370,53 @@
     },
     {
       "tie_id": "T0007",
+      "rule": "LOCKED",
+      "confidence": "CONFIRMED",
+      "members": [
+        "43494|Payment|LPG|L176",
+        "48737|Invoice|LPG|L148",
+        "48784|Invoice|LPG|L150",
+        "48906|Invoice|LPG|L153",
+        "48919|Invoice|LPG|L158",
+        "48927|Invoice|CYL|L155",
+        "14328|Crd Note|CYL|L160"
+      ],
+      "docs": [
+        "Payment 43494",
+        "Invoice 48737",
+        "Invoice 48784",
+        "Invoice 48906",
+        "Invoice 48919",
+        "Invoice 48927",
+        "Crd Note 14328"
+      ],
+      "net": 0,
+      "lock_id": "L0007",
+      "close_id": null,
+      "lockedRule": "OPERATOR_RULING",
+      "ruling": {
+        "treatment": "exact",
+        "net": 0,
+        "reason": "Operator decision 2026-10-10 (main session, \"Yes, go ahead\" on the recommendations in docs/previews/2026-10-10_remaining_probable_ties_recommendations.md). Tie 8: remittance advice RM-2026-03-02 (payment 43494, R13,845.67, STAT:124) names every document of the tie and reconciles to the cent (net R0.00). The two line differences are +R0.62 on invoice 48784 (advice R2,252.80 vs ERP R2,252.18) and -R0.62 on invoice 48906 (advice R3,403.01 vs ERP R3,403.63): offsetting, read as a typo in the advice; the ERP amounts stand. Tripwire: a corrected advice or an allocation export naming other documents for 43494.",
+        "approvedBy": "operator",
+        "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx",
+        "approvedTie": {
+          "tie_id": "T0009",
+          "rule": "REMITTANCE",
+          "docs": [
+            "Payment 43494",
+            "Invoice 48737",
+            "Invoice 48784",
+            "Invoice 48906",
+            "Invoice 48919",
+            "Invoice 48927",
+            "Crd Note 14328"
+          ]
+        }
+      }
+    },
+    {
+      "tie_id": "T0008",
       "rule": "REMITTANCE",
       "confidence": "CONFIRMED",
       "members": [
@@ -463,7 +513,7 @@
       "variance": 0
     },
     {
-      "tie_id": "T0008",
+      "tie_id": "T0009",
       "rule": "REMITTANCE",
       "confidence": "CONFIRMED",
       "members": [
@@ -524,90 +574,6 @@
       ],
       "discountPending": 0,
       "lineDiscrepancies": [],
-      "variance": 0
-    },
-    {
-      "tie_id": "T0009",
-      "rule": "REMITTANCE",
-      "confidence": "PROBABLE",
-      "members": [
-        "43494|Payment|LPG|L176",
-        "48737|Invoice|LPG|L148",
-        "48784|Invoice|LPG|L150",
-        "48906|Invoice|LPG|L153",
-        "48919|Invoice|LPG|L158",
-        "48927|Invoice|CYL|L155",
-        "14328|Crd Note|CYL|L160"
-      ],
-      "docs": [
-        "Payment 43494",
-        "Invoice 48737",
-        "Invoice 48784",
-        "Invoice 48906",
-        "Invoice 48919",
-        "Invoice 48927",
-        "Crd Note 14328"
-      ],
-      "net": 0,
-      "batchId": "RM-2026-03-02",
-      "evidence": {
-        "method": "pdf-extract",
-        "file": "raw/Remittances/02.03.2026.pdf",
-        "sha256": "ef548435bd9f1b79a9befcad7cfcdba4dc2071f50eb091088352ca869f4630d0",
-        "paymentReference": "000000000020326043"
-      },
-      "payment": {
-        "doc": "43494",
-        "date": "2026-03-02",
-        "amount": 13845.67
-      },
-      "invoices": [
-        {
-          "doc": "48737",
-          "docType": "Invoice",
-          "amount": 3378.27
-        },
-        {
-          "doc": "48784",
-          "docType": "Invoice",
-          "amount": 2252.8
-        },
-        {
-          "doc": "48906",
-          "docType": "Invoice",
-          "amount": 3403.01
-        },
-        {
-          "doc": "48919",
-          "docType": "Invoice",
-          "amount": 4869.09
-        },
-        {
-          "doc": "48927",
-          "docType": "Invoice",
-          "amount": 5462.5
-        },
-        {
-          "doc": "14328",
-          "docType": "Crd Note",
-          "amount": -5520
-        }
-      ],
-      "discountPending": 0,
-      "lineDiscrepancies": [
-        {
-          "doc": "Invoice 48784",
-          "advice": 2252.8,
-          "erp": 2252.18,
-          "diff": 0.62
-        },
-        {
-          "doc": "Invoice 48906",
-          "advice": 3403.01,
-          "erp": 3403.63,
-          "diff": -0.62
-        }
-      ],
       "variance": 0
     },
     {

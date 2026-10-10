@@ -76,6 +76,10 @@
     {
       "date": "2026-10-10",
       "event": "Operator (main session, 2026-10-10): \"We can approve them in groups\". Probable credit-note pairs approved as groups CN-DN-1 (same delivery-note number and lane, exact opposite amount, credit note 2-5 days after the invoice) and CN-AD (exact amount and lane, 0-1 day, single candidate), only where no rival invoice or credit note of the same lane, amount and DN exists (docs/previews/2026-10-10_probable_ties_by_group.md). Group-level judgement, not a document-by-document review. Recorded as approved locks (approve_tie.mjs --ties), reversible with close_period.mjs --void-lock. SA0001: 14 pairs approved (inside closed period C0002; approved locks, the close is untouched); customer preview 39 -> 11 rows; ERP R16,002.86 ties, 0 conflicts. Still probable: NEAR_SUM (payment 38531, R0.06) and PROXIMITY (payment 38878, -R0.20), both need a treatment."
+    },
+    {
+      "date": "2026-10-10",
+      "event": "Operator (main session, 2026-10-10): \"Yes, go ahead\" on the recommendations in docs/previews/2026-10-10_remaining_probable_ties_recommendations.md for the eight remaining probable ties. SA0001: L0159 payment 38531 vs invoices 42816 + 42583 (short R0.06) and L0160 cash payment 38878 vs invoice 43375 (R0.20 over, same day), both carried as rounding on matched items, inside closed period C0002 (approved locks; the close is untouched). 0 probable ties left; customer preview 11 -> 6 rows; ERP R16,002.86 ties, 0 conflicts."
     }
   ]
 }

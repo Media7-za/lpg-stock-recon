@@ -85,6 +85,105 @@
           }
         ],
         "createdAt": "2026-10-10T05:06:10.621Z"
+      },
+      {
+        "lock_id": "L0003",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "exact",
+          "net": 0.1,
+          "roundingAccepted": true,
+          "maxNet": 1,
+          "reason": "Operator decision 2026-10-10 (main session, \"Yes, go ahead\" on the recommendations in docs/previews/2026-10-10_remaining_probable_ties_recommendations.md). Tie 6: payment 45589 (R3,123.00, STAT 129) vs invoice 51846 (R3,123.10), short R0.10; a twin, 51952 (R3,123.10), is equally close and the oldest-first pick of 51846 is the ratified tie-break, so 51952 stays open unless another payment covers it. Tie 7 (medium confidence): payment 45216 (R5,430.30, STAT 128) = invoice 50363 (R2,815.20) + invoice 50097 (R1,407.60 gas + R1,207.50 deposit lane, 'EXTRA SV'), exact to the cent across two deliveries (DN 22341 and DN 21861), no alternative combination; invoices dated April, payment July. Tripwires: a remittance or allocation export naming different invoices for 45216 or 45589.",
+          "approvedBy": "operator",
+          "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx",
+          "approvedTie": {
+            "tie_id": "T0029",
+            "rule": "PROXIMITY",
+            "docs": [
+              "Payment 45589",
+              "Invoice 51846"
+            ]
+          }
+        },
+        "members": [
+          {
+            "key": "45589|Payment|LPG|2026-08-05|-3123.00",
+            "doc": "45589",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2026-08-05",
+            "amount": -3123
+          },
+          {
+            "key": "51846|Invoice|LPG|2026-07-15|3123.10",
+            "doc": "51846",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-07-15",
+            "amount": 3123.1
+          }
+        ],
+        "createdAt": "2026-10-10T08:26:31.193Z"
+      },
+      {
+        "lock_id": "L0004",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "exact",
+          "net": 0,
+          "reason": "Operator decision 2026-10-10 (main session, \"Yes, go ahead\" on the recommendations in docs/previews/2026-10-10_remaining_probable_ties_recommendations.md). Tie 6: payment 45589 (R3,123.00, STAT 129) vs invoice 51846 (R3,123.10), short R0.10; a twin, 51952 (R3,123.10), is equally close and the oldest-first pick of 51846 is the ratified tie-break, so 51952 stays open unless another payment covers it. Tie 7 (medium confidence): payment 45216 (R5,430.30, STAT 128) = invoice 50363 (R2,815.20) + invoice 50097 (R1,407.60 gas + R1,207.50 deposit lane, 'EXTRA SV'), exact to the cent across two deliveries (DN 22341 and DN 21861), no alternative combination; invoices dated April, payment July. Tripwires: a remittance or allocation export naming different invoices for 45216 or 45589.",
+          "approvedBy": "operator",
+          "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx",
+          "approvedTie": {
+            "tie_id": "T0030",
+            "rule": "BATCH_SUM",
+            "docs": [
+              "Payment 45216",
+              "Invoice 50363",
+              "Invoice 50097"
+            ]
+          }
+        },
+        "members": [
+          {
+            "key": "45216|Payment|LPG|2026-07-15|-5430.30",
+            "doc": "45216",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2026-07-15",
+            "amount": -5430.3
+          },
+          {
+            "key": "50363|Invoice|LPG|2026-04-24|2815.20",
+            "doc": "50363",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-04-24",
+            "amount": 2815.2
+          },
+          {
+            "key": "50097|Invoice|LPG|2026-04-02|1407.60",
+            "doc": "50097",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-04-02",
+            "amount": 1407.6
+          },
+          {
+            "key": "50097|Invoice|CYL|2026-04-02|1207.50",
+            "doc": "50097",
+            "entry_type": "Invoice",
+            "lane": "CYL",
+            "date": "2026-04-02",
+            "amount": 1207.5
+          }
+        ],
+        "createdAt": "2026-10-10T08:26:31.193Z"
       }
     ],
     "voids": []

@@ -1,5 +1,5 @@
 # Internal ledger: SAKI - VICTORIA RD (SA0001), matcher review
-**INTERNAL, not for the customer.** Every transaction in ERP order with the ERP running balance and what matcher v5 did with it · generated 2026-10-10 · 160 confirmed / 2 probable ties · 6 rows open · ERP `CURRENT BALANCE` R16,002.86 · matcher v5 ratified 2026-10-10; probable ties are proposals until approved
+**INTERNAL, not for the customer.** Every transaction in ERP order with the ERP running balance and what matcher v5 did with it · generated 2026-10-10 · 162 confirmed / 0 probable ties · 6 rows open · ERP `CURRENT BALANCE` R16,002.86 · matcher v5 ratified 2026-10-10; probable ties are proposals until approved
 
 **Status key:** `OPEN` untied · `T0001 EXACT_SINGLE ✓` confirmed tie · `T0001 BATCH_SUM ?` probable tie (needs approval) · `LOCKED` operator-approved lock · `◀ ZERO` ERP running balance is within R0.05 after this line.
 
@@ -44,7 +44,7 @@ Opening balance (ERP running): **R10,981.55**
 | 22 Apr 2025 | Crd Note | 12320 | DN#13151-EMPTY | CYL | -517.50 | 10,042.12 | T0007 LOCKED:CN_DN_PAIR ↔ Inv 42430 |
 | 22 Apr 2025 | Invoice | 42429 | DN#13151 | LPG | 279.20 | 10,321.32 | T0070 LOCKED:EXACT_SUM ↔ Pmt 38669, Inv 42717, Inv 42633 |
 | 22 Apr 2025 | Invoice | 42430 | DN#13151-EMPTY | CYL | 517.50 | 10,838.82 | T0007 LOCKED:CN_DN_PAIR ↔ Crd Note 12320 |
-| 26 Apr 2025 | Invoice | 42583 | DN#13102 | LPG | 5,956.17 | 16,794.99 | T0160 NEAR_SUM ? ↔ Pmt 38531, Inv 42816 |
+| 26 Apr 2025 | Invoice | 42583 | DN#13102 | LPG | 5,956.17 | 16,794.99 | T0159 LOCKED:OPERATOR_RULING [exact] ↔ Pmt 38531, Inv 42816 |
 | 26 Apr 2025 | Invoice | 42584 | DN#13102-EMPTY | CYL | 4,830.00 | 21,624.99 | T0145 LOCKED:OPERATOR_RULING [exact] ↔ Crd Note 12361 |
 | 29 Apr 2025 | Crd Note | 12361 | DN#13102-EMPTY | CYL | -4,830.00 | 16,794.99 | T0145 LOCKED:OPERATOR_RULING [exact] ↔ Inv 42584 |
 | 29 Apr 2025 | Crd Note | 12372 | DN#13173-EMPTY | CYL | -517.50 | 16,277.49 | T0008 LOCKED:CN_DN_PAIR ↔ Inv 42634 |
@@ -62,18 +62,18 @@ Opening balance (ERP running): **R17,074.19**
 | Date | Type | Doc # | Reference | Lane | Amount (R) | ERP running (R) | Matcher status |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: | :--- |
 | 02 May 2025 | Invoice | 42717 | — | LPG | 1,489.04 | 18,563.23 | T0070 LOCKED:EXACT_SUM ↔ Pmt 38669, Inv 42633, Inv 42429 |
-| 05 May 2025 | Invoice | 42816 | DN#13046 | LPG | 558.39 | 19,121.62 | T0160 NEAR_SUM ? ↔ Pmt 38531, Inv 42583 |
+| 05 May 2025 | Invoice | 42816 | DN#13046 | LPG | 558.39 | 19,121.62 | T0159 LOCKED:OPERATOR_RULING [exact] ↔ Pmt 38531, Inv 42583 |
 | 05 May 2025 | Invoice | 42817 | DN#13046-EMPTY | CYL | 1,035.00 | 20,156.62 | T0009 LOCKED:CN_DN_PAIR ↔ Crd Note 12420 |
 | 06 May 2025 | Crd Note | 12420 | DN#13046-EMPTY | CYL | -1,035.00 | 19,121.62 | T0009 LOCKED:CN_DN_PAIR ↔ Inv 42817 |
-| 07 May 2025 | Payment | 38531 | TRANSF \| STAT 114 | LPG | -6,514.50 | 12,607.12 | T0160 NEAR_SUM ? ↔ Inv 42816, Inv 42583 |
+| 07 May 2025 | Payment | 38531 | TRANSF \| STAT 114 | LPG | -6,514.50 | 12,607.12 | T0159 LOCKED:OPERATOR_RULING [exact] ↔ Inv 42816, Inv 42583 |
 | 13 May 2025 | Payment | 38669 | TRANSF \| STAT 114 | LPG | -2,047.43 | 10,559.69 | T0070 LOCKED:EXACT_SUM ↔ Inv 42717, Inv 42633, Inv 42429 |
 | 15 May 2025 | Crd Note | 12486 | DN#13226-EMPTY | CYL | -5,347.50 | 5,212.19 | T0010 LOCKED:CN_DN_PAIR ↔ Inv 43084 |
 | 15 May 2025 | Invoice | 43083 | DN#13226 | LPG | 6,235.37 | 11,447.56 | T0116 LOCKED:OPERATOR_RULING [applied_to_bf] ↔ Pmt 38837, Inv 42123 |
 | 15 May 2025 | Invoice | 43084 | DN#13226-EMPTY | CYL | 5,347.50 | 16,795.06 | T0010 LOCKED:CN_DN_PAIR ↔ Crd Note 12486 |
 | 21 May 2025 | Payment | 38837 | TRANSF \| STAT 114 | LPG | -12,607.36 | 4,187.70 | T0116 LOCKED:OPERATOR_RULING [applied_to_bf] ↔ Inv 42123, Inv 43083 |
 | 27 May 2025 | Crd Note | 12573 | DN#12118-EMPTY | CYL | -517.50 | 3,670.20 | T0011 LOCKED:CN_DN_PAIR ↔ Inv 43376 |
-| 27 May 2025 | Payment | 38878 | CASH \| T2000117 | LPG | -283.00 | 3,387.20 | T0161 PROXIMITY ? ↔ Inv 43375 |
-| 27 May 2025 | Invoice | 43375 | DN#12118 | LPG | 282.80 | 3,670.00 | T0161 PROXIMITY ? ↔ Pmt 38878 |
+| 27 May 2025 | Payment | 38878 | CASH \| T2000117 | LPG | -283.00 | 3,387.20 | T0160 LOCKED:OPERATOR_RULING [exact] ↔ Inv 43375 |
+| 27 May 2025 | Invoice | 43375 | DN#12118 | LPG | 282.80 | 3,670.00 | T0160 LOCKED:OPERATOR_RULING [exact] ↔ Pmt 38878 |
 | 27 May 2025 | Invoice | 43376 | DN#12118-EMPTY | CYL | 517.50 | 4,187.50 | T0011 LOCKED:CN_DN_PAIR ↔ Crd Note 12573 |
 | 28 May 2025 | Invoice | 43420 | DN#12474 | LPG | 1,508.25 | 5,695.75 | T0071 LOCKED:EXACT_SINGLE ↔ Pmt 39134 |
 | 28 May 2025 | Invoice | 43421 | DN#12474-EMPTY | CYL | 1,207.50 | 6,903.25 | T0012 LOCKED:CN_DN_PAIR ↔ Crd Note 12596 |
@@ -505,11 +505,11 @@ Opening balance (ERP running): **R10,224.11**
 | Date | Type | Doc # | Reference | Lane | Amount (R) | ERP running (R) | Matcher status |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: | :--- |
 | 02 Oct 2026 | Crd Note | 15747 | 21397 | CYL | -4,830.00 | 5,394.11 | T0158 LOCKED:OPERATOR_RULING [exact] ↔ Inv 53437 |
-| 02 Oct 2026 | Crd Note | 15755 | DN-23836 | CYL | -517.50 | 4,876.61 | T0159 CN_DN_PAIR ✓ ↔ Inv 53447 |
+| 02 Oct 2026 | Crd Note | 15755 | DN-23836 | CYL | -517.50 | 4,876.61 | T0161 CN_DN_PAIR ✓ ↔ Inv 53447 |
 | 02 Oct 2026 | Invoice | 53436 | DN-21397 | LPG | 5,520.00 | 10,396.61 | OPEN |
 | 02 Oct 2026 | Invoice | 53437 | 21397 | CYL | 4,830.00 | 15,226.61 | T0158 LOCKED:OPERATOR_RULING [exact] ↔ Crd Note 15747 |
 | 02 Oct 2026 | Invoice | 53446 | DN-23836 | LPG | 258.75 | 15,485.36 | OPEN |
-| 02 Oct 2026 | Invoice | 53447 | DN-23836 | CYL | 517.50 | 16,002.86 | T0159 CN_DN_PAIR ✓ ↔ Crd Note 15755 |
+| 02 Oct 2026 | Invoice | 53447 | DN-23836 | CYL | 517.50 | 16,002.86 | T0161 CN_DN_PAIR ✓ ↔ Crd Note 15755 |
 
 ---
 
@@ -517,18 +517,9 @@ Opening balance (ERP running): **R10,224.11**
 
 | Rule | Confirmed | Probable |
 | :--- | ---: | ---: |
-| LOCKED | 158 | 0 |
+| LOCKED | 160 | 0 |
 | CN_DN_PAIR | 1 | 0 |
-| NEAR_SUM | 0 | 1 |
-| PROXIMITY | 0 | 1 |
 | CYL_EXCHANGE | 1 | 0 |
-
-## Probable ties awaiting approval
-
-| Tie | Rule | Documents | Variance (R) |
-| :--- | :--- | :--- | ---: |
-| T0160 | NEAR_SUM | Payment 38531, Invoice 42816, Invoice 42583 | -0.06 |
-| T0161 | PROXIMITY | Payment 38878, Invoice 43375 | 0.20 |
 
 Proof: holds (rebuilt R16,002.86 vs closing R16,002.86; ERP R16,002.86).
 

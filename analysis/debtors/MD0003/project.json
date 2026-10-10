@@ -83,6 +83,10 @@
     {
       "date": "2026-10-10",
       "event": "Operator (main session, 2026-10-10): \"We can approve them in groups\". Probable credit-note pairs approved as groups CN-DN-1 (same delivery-note number and lane, exact opposite amount, credit note 2-5 days after the invoice) and CN-AD (exact amount and lane, 0-1 day, single candidate), only where no rival invoice or credit note of the same lane, amount and DN exists (docs/previews/2026-10-10_probable_ties_by_group.md). Group-level judgement, not a document-by-document review. Recorded as approved locks (approve_tie.mjs --ties), reversible with close_period.mjs --void-lock. MD0003: 6 pairs approved; customer preview 51 -> 39 rows; ERP R16,547.81 ties, 0 conflicts. Still probable: the remittance tie T0003 (payment 43494, line discrepancies) for operator review."
+    },
+    {
+      "date": "2026-10-10",
+      "event": "Operator (main session, 2026-10-10): \"Yes, go ahead\" on the recommendations in docs/previews/2026-10-10_remaining_probable_ties_recommendations.md for the eight remaining probable ties. MD0003: L0007 remittance advice RM-2026-03-02 (payment 43494) approved with its documents; the two line differences (+R0.62 on invoice 48784, -R0.62 on 48906) offset and are read as an advice typo, ERP amounts stand. 0 probable ties left; customer preview 39 -> 32 rows; ERP R16,547.81 ties, 0 conflicts. Review-only (ADM-93 gaps) unchanged."
     }
   ]
 }

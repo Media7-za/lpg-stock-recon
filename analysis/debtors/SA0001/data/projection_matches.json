@@ -2,7 +2,7 @@
   "status": "matcher v5 RATIFIED 2026-10-10 (PROPOSED_Projection_Matching_Locks.md); probable ties stay proposals until approved",
   "debtorCode": "SA0001",
   "generatedBy": "match_projection.mjs",
-  "generatedAt": "2026-10-10T05:07:52.678Z",
+  "generatedAt": "2026-10-10T08:26:31.822Z",
   "projection": {
     "path": "analysis/debtors/SA0001/data/v5_projection.json",
     "txtSha256": "837cff982c0cbc93161e975677eb7fa215dc68b19007c2a1f2864b8ca28642e6",
@@ -14,13 +14,14 @@
   "locksRegistry": "config/payment_pattern_overrides.json#projectionLocks",
   "matcherVersion": 5,
   "closedThrough": "2026-09-30",
-  "locksApplied": 158,
+  "locksApplied": 160,
   "lockConflicts": [],
   "rules": {
     "exactTolerance": 0.05,
     "proximityTolerance": 5,
     "nearSumTolerance": 1,
     "cnConfirmedMaxDays": 1,
+    "cnRivalFreeMaxDays": 0,
     "maxSumInvoices": 3,
     "maxRunInvoices": 12,
     "fifoWindowDays": 14,
@@ -40,16 +41,14 @@
   },
   "summary": {
     "ties": 162,
-    "confirmed": 160,
-    "probable": 2,
+    "confirmed": 162,
+    "probable": 0,
     "byRule": {
-      "LOCKED": 158,
+      "LOCKED": 160,
       "CN_DN_PAIR": 1,
-      "NEAR_SUM": 1,
-      "PROXIMITY": 1,
       "CYL_EXCHANGE": 1
     },
-    "paymentsTotal": 2,
+    "paymentsTotal": 0,
     "paymentsUnallocated": 0
   },
   "proof": {
@@ -3096,6 +3095,77 @@
     },
     {
       "tie_id": "T0159",
+      "rule": "LOCKED",
+      "confidence": "CONFIRMED",
+      "members": [
+        "38531|Payment|LPG|L35",
+        "42816|Invoice|LPG|L32",
+        "42583|Invoice|LPG|L21"
+      ],
+      "docs": [
+        "Payment 38531",
+        "Invoice 42816",
+        "Invoice 42583"
+      ],
+      "net": 0.06,
+      "lock_id": "L0159",
+      "close_id": null,
+      "lockedRule": "OPERATOR_RULING",
+      "ruling": {
+        "treatment": "exact",
+        "net": 0.06,
+        "roundingAccepted": true,
+        "maxNet": 1,
+        "reason": "Operator decision 2026-10-10 (main session, \"Yes, go ahead\" on the recommendations in docs/previews/2026-10-10_remaining_probable_ties_recommendations.md). Tie 4: payment 38531 (R6,514.50, STAT 114) vs invoices 42816 + 42583 (R6,514.56), the only combination, short R0.06. Tie 5: cash payment 38878 (R283.00) vs invoice 43375 (R282.80), same day, R0.20 over; the other candidates within R5 are older and further away. Both inside closed period C0002; approved locks, the close is untouched. The differences are carried as rounding on matched items. Tripwires: a remittance or allocation export naming other invoices for these payments.",
+        "approvedBy": "operator",
+        "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx",
+        "approvedTie": {
+          "tie_id": "T0160",
+          "rule": "NEAR_SUM",
+          "docs": [
+            "Payment 38531",
+            "Invoice 42816",
+            "Invoice 42583"
+          ]
+        }
+      }
+    },
+    {
+      "tie_id": "T0160",
+      "rule": "LOCKED",
+      "confidence": "CONFIRMED",
+      "members": [
+        "38878|Payment|LPG|L42",
+        "43375|Invoice|LPG|L43"
+      ],
+      "docs": [
+        "Payment 38878",
+        "Invoice 43375"
+      ],
+      "net": -0.2,
+      "lock_id": "L0160",
+      "close_id": null,
+      "lockedRule": "OPERATOR_RULING",
+      "ruling": {
+        "treatment": "exact",
+        "net": -0.2,
+        "roundingAccepted": true,
+        "maxNet": 1,
+        "reason": "Operator decision 2026-10-10 (main session, \"Yes, go ahead\" on the recommendations in docs/previews/2026-10-10_remaining_probable_ties_recommendations.md). Tie 4: payment 38531 (R6,514.50, STAT 114) vs invoices 42816 + 42583 (R6,514.56), the only combination, short R0.06. Tie 5: cash payment 38878 (R283.00) vs invoice 43375 (R282.80), same day, R0.20 over; the other candidates within R5 are older and further away. Both inside closed period C0002; approved locks, the close is untouched. The differences are carried as rounding on matched items. Tripwires: a remittance or allocation export naming other invoices for these payments.",
+        "approvedBy": "operator",
+        "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx",
+        "approvedTie": {
+          "tie_id": "T0161",
+          "rule": "PROXIMITY",
+          "docs": [
+            "Payment 38878",
+            "Invoice 43375"
+          ]
+        }
+      }
+    },
+    {
+      "tie_id": "T0161",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -3109,69 +3179,6 @@
       "net": 0,
       "dn": "23836",
       "lagDays": 0
-    },
-    {
-      "tie_id": "T0160",
-      "rule": "NEAR_SUM",
-      "confidence": "PROBABLE",
-      "members": [
-        "38531|Payment|LPG|L35",
-        "42816|Invoice|LPG|L32",
-        "42583|Invoice|LPG|L21"
-      ],
-      "docs": [
-        "Payment 38531",
-        "Invoice 42816",
-        "Invoice 42583"
-      ],
-      "net": 0.06,
-      "inClosedPeriod": true,
-      "payment": {
-        "doc": "38531",
-        "date": "2025-05-07",
-        "amount": 6514.5
-      },
-      "invoices": [
-        {
-          "doc": "42816",
-          "date": "2025-05-05",
-          "amount": 558.39
-        },
-        {
-          "doc": "42583",
-          "date": "2025-04-26",
-          "amount": 5956.17
-        }
-      ],
-      "variance": -0.06
-    },
-    {
-      "tie_id": "T0161",
-      "rule": "PROXIMITY",
-      "confidence": "PROBABLE",
-      "members": [
-        "38878|Payment|LPG|L42",
-        "43375|Invoice|LPG|L43"
-      ],
-      "docs": [
-        "Payment 38878",
-        "Invoice 43375"
-      ],
-      "net": -0.2,
-      "inClosedPeriod": true,
-      "payment": {
-        "doc": "38878",
-        "date": "2025-05-27",
-        "amount": 283
-      },
-      "invoices": [
-        {
-          "doc": "43375",
-          "date": "2025-05-27",
-          "amount": 282.8
-        }
-      ],
-      "variance": 0.2
     },
     {
       "tie_id": "T0162",

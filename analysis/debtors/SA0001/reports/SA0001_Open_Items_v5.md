@@ -1,8 +1,8 @@
 # Open Items Statement: SAKI - VICTORIA RD (SA0001) — Internal
 **Period:** from 07 Feb 2023 to 02 Oct 2026 &nbsp;|&nbsp; **Balance due:** R16,002.86
 **Status:** matcher v5 RATIFIED 2026-10-10 (`PROPOSED_Projection_Matching_Locks.md`); probable ties are proposals until approved · generated 2026-10-10 by `render_open_items.mjs`
-**Sources:** `analysis/debtors/SA0001/data/v5_projection.json` (TXT sha256 `837cff982c0c…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (160 confirmed / 2 probable ties)
-**Locks:** closed through 2026-09-30, 158 locks applied
+**Sources:** `analysis/debtors/SA0001/data/v5_projection.json` (TXT sha256 `837cff982c0c…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (162 confirmed / 0 probable ties)
+**Locks:** closed through 2026-09-30, 160 locks applied
 
 ---
 
@@ -63,16 +63,13 @@ _No open items._
 
 ## Appendix A: Probable ties (review required, not locked)
 
-| Tie | Rule | Documents | Variance (R) | Note |
-| :--- | :--- | :--- | ---: | :--- |
-| T0160 | NEAR_SUM | Payment 38531, Invoice 42816, Invoice 42583 | -0.06 | within R1.00 truncation (closed period: not locked) |
-| T0161 | PROXIMITY | Payment 38878, Invoice 43375 | 0.20 | within ±R5.00 (closed period: not locked) |
+_None._
 
 ## Appendix B: Confirmed ties by rule
 
 | Rule | Ties |
 | :--- | ---: |
-| LOCKED | 158 |
+| LOCKED | 160 |
 | CN_DN_PAIR | 1 |
 | CYL_EXCHANGE | 1 |
 
@@ -103,4 +100,6 @@ Full tie list: `data/projection_matches.json`.
 | L0156 | exact | Invoice 49904, Crd Note 14651 | 0.00 | Operator ruling 2026-10-10 (main session, "We can approve them in groups"): approved as groups CN-DN-1 and CN-AD of docs/previews/2026-10-10_probable_ties_by_group.md. CN-DN-1 = credit note and invoice of the same delivery-note number and lane, exact opposite amount, credit note 2-5 days after the invoice. CN-AD = exact opposite amount and lane, credit note 0-1 day after the invoice, a single candidate. In both groups no other invoice or credit note of the same lane, amount and delivery note exists (a rival would make the pairing arbitrary). Group-level judgement, not a document-by-document review. Tripwires: an allocation-detail export tagging a credit note of this group to a different invoice; a re-issue of either document. |
 | L0157 | exact | Invoice 53174, Crd Note 15661 | 0.00 | Operator ruling 2026-10-10 (main session, "We can approve them in groups"): approved as groups CN-DN-1 and CN-AD of docs/previews/2026-10-10_probable_ties_by_group.md. CN-DN-1 = credit note and invoice of the same delivery-note number and lane, exact opposite amount, credit note 2-5 days after the invoice. CN-AD = exact opposite amount and lane, credit note 0-1 day after the invoice, a single candidate. In both groups no other invoice or credit note of the same lane, amount and delivery note exists (a rival would make the pairing arbitrary). Group-level judgement, not a document-by-document review. Tripwires: an allocation-detail export tagging a credit note of this group to a different invoice; a re-issue of either document. |
 | L0158 | exact | Invoice 53437, Crd Note 15747 | 0.00 | Operator ruling 2026-10-10 (main session, "We can approve them in groups"): approved as groups CN-DN-1 and CN-AD of docs/previews/2026-10-10_probable_ties_by_group.md. CN-DN-1 = credit note and invoice of the same delivery-note number and lane, exact opposite amount, credit note 2-5 days after the invoice. CN-AD = exact opposite amount and lane, credit note 0-1 day after the invoice, a single candidate. In both groups no other invoice or credit note of the same lane, amount and delivery note exists (a rival would make the pairing arbitrary). Group-level judgement, not a document-by-document review. Tripwires: an allocation-detail export tagging a credit note of this group to a different invoice; a re-issue of either document. |
+| L0159 | exact | Payment 38531, Invoice 42816, Invoice 42583 | 0.06 | Operator decision 2026-10-10 (main session, "Yes, go ahead" on the recommendations in docs/previews/2026-10-10_remaining_probable_ties_recommendations.md). Tie 4: payment 38531 (R6,514.50, STAT 114) vs invoices 42816 + 42583 (R6,514.56), the only combination, short R0.06. Tie 5: cash payment 38878 (R283.00) vs invoice 43375 (R282.80), same day, R0.20 over; the other candidates within R5 are older and further away. Both inside closed period C0002; approved locks, the close is untouched. The differences are carried as rounding on matched items. Tripwires: a remittance or allocation export naming other invoices for these payments. |
+| L0160 | exact | Payment 38878, Invoice 43375 | -0.20 | Operator decision 2026-10-10 (main session, "Yes, go ahead" on the recommendations in docs/previews/2026-10-10_remaining_probable_ties_recommendations.md). Tie 4: payment 38531 (R6,514.50, STAT 114) vs invoices 42816 + 42583 (R6,514.56), the only combination, short R0.06. Tie 5: cash payment 38878 (R283.00) vs invoice 43375 (R282.80), same day, R0.20 over; the other candidates within R5 are older and further away. Both inside closed period C0002; approved locks, the close is untouched. The differences are carried as rounding on matched items. Tripwires: a remittance or allocation export naming other invoices for these payments. |
 

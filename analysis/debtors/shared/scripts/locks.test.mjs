@@ -275,3 +275,29 @@ test('planApproveTies: approves probable ties by id as locks; refuses confirmed 
   const nonzero = { ...base, matches: { ties: [{ ...matches.ties[0], net: 2 }] }, tieIds: ['T0001'] };
   assert.equal(planApproveTies(nonzero).ok, false);
 });
+
+test('planApproveTies: a rounding net needs --max-net and is recorded as roundingAccepted', async () => {
+  const { planApproveTies } = await import('./locks.mjs');
+  const mk = (doc, type, kind, amount) => ({ row_id: `${doc}|${type}|LPG`, clean_doc: doc, entry_type: type, kind, lane: 'LPG', amount, date: '2026-01-01', ref_no: '', txt_line: 1 });
+  const projection = { rows: [mk('P1', 'Payment', 'payment', -100), mk('I1', 'Invoice', 'invoice', 100.36)] };
+  const matches = { ties: [{ tie_id: 'T0001', rule: 'NEAR_SUM', confidence: 'PROBABLE', members: ['P1|Payment|LPG', 'I1|Invoice|LPG'], docs: ['Payment P1', 'Invoice I1'], net: 0.36 }] };
+  const base = { projection, matches, registry: {}, tieIds: ['T0001'], reason: 'r', approvedBy: 'o', session: 's', now: 'n' };
+  assert.equal(planApproveTies(base).ok, false); // default tolerance R0.05
+  assert.equal(planApproveTies({ ...base, maxNet: 0.2 }).ok, false);
+  const ok = planApproveTies({ ...base, maxNet: 1 });
+  assert.equal(ok.ok, true, ok.reasons?.join('; '));
+  assert.equal(ok.locks[0].ruling.roundingAccepted, true);
+  assert.equal(ok.locks[0].ruling.net, 0.36);
+});
+
+test('planApproval: a credit note pairs with an invoice without a payment (operator pairing)', async () => {
+  const { planApproval } = await import('./locks.mjs');
+  const mk = (doc, type, kind, amount) => ({ row_id: `${doc}|${type}|LPG`, clean_doc: doc, entry_type: type, kind, lane: 'LPG', amount, date: '2026-02-21', ref_no: '', txt_line: 1 });
+  const projection = { rows: [mk('49361', 'Invoice', 'invoice', 1184.37), mk('14472', 'Crd Note', 'credit_note', -1184.37)] };
+  const plan = planApproval({ projection, registry: {}, invoices: ['49361'], creditNotes: ['14472'], reason: 'r', approvedBy: 'o', session: 's', now: 'n' });
+  assert.equal(plan.ok, true, plan.reasons?.join('; '));
+  assert.equal(plan.lock.members.length, 2);
+  assert.equal(plan.lock.ruling.net, 0);
+  assert.equal(planApproval({ projection, registry: {}, invoices: ['49361'], reason: 'r', approvedBy: 'o', session: 's', now: 'n' }).ok, false); // neither payment nor credit note
+  assert.equal(planApproval({ projection, registry: {}, invoices: ['49361'], creditNotes: ['99999'], reason: 'r', approvedBy: 'o', session: 's', now: 'n' }).ok, false);
+});

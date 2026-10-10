@@ -1,5 +1,5 @@
 # Internal ledger: BLUFF MEAT SUPPLY(PTY) LTD (MD0003), matcher review
-**INTERNAL, not for the customer.** Every transaction in ERP order with the ERP running balance and what matcher v5 did with it · generated 2026-10-10 · 94 confirmed / 1 probable ties · 32 rows open · ERP `CURRENT BALANCE` R16,547.81 · matcher v5 ratified 2026-10-10; probable ties are proposals until approved · **REVIEW ONLY:** ingestCoverage partial
+**INTERNAL, not for the customer.** Every transaction in ERP order with the ERP running balance and what matcher v5 did with it · generated 2026-10-10 · 95 confirmed / 0 probable ties · 32 rows open · ERP `CURRENT BALANCE` R16,547.81 · matcher v5 ratified 2026-10-10; probable ties are proposals until approved · **REVIEW ONLY:** ingestCoverage partial
 
 **Status key:** `OPEN` untied · `T0001 EXACT_SINGLE ✓` confirmed tie · `T0001 BATCH_SUM ?` probable tie (needs approval) · `LOCKED` operator-approved lock · `◀ ZERO` ERP running balance is within R0.05 after this line.
 
@@ -81,7 +81,7 @@ Opening balance (ERP running): **R32,471.86**
 | 05 Jun 2025 | Invoice | 43636 | ROSEDALE- DN#12297 | CYL | 1,265.00 | 9,614.26 | OPEN |
 | 05 Jun 2025 | Invoice | 43636 | ROSEDALE- DN#12297 | LPG | 751.80 | 10,366.06 | OPEN |
 | 09 Jun 2025 | Crd Note | 12664 | DN#12361-EMPTY | CYL | -3,622.50 | 6,743.56 | T0024 CN_DN_PAIR ✓ ↔ Inv 43722 |
-| 09 Jun 2025 | Invoice | 43721 | DN#12361 | LPG | 3,866.45 | 10,610.01 | T0007 REMITTANCE ✓ ↔ Pmt 42051, Inv 45437, Inv 45895, Inv 46055 +6 |
+| 09 Jun 2025 | Invoice | 43721 | DN#12361 | LPG | 3,866.45 | 10,610.01 | T0008 REMITTANCE ✓ ↔ Pmt 42051, Inv 45437, Inv 45895, Inv 46055 +6 |
 | 09 Jun 2025 | Invoice | 43722 | DN#12361-EMPTY | CYL | 3,622.50 | 14,232.51 | T0024 CN_DN_PAIR ✓ ↔ Crd Note 12664 |
 | 12 Jun 2025 | Crd Note | 12714 | DN#12385-EMPTY | CYL | -7,245.00 | 6,987.51 | T0025 CN_DN_PAIR ✓ ↔ Inv 43879 |
 | 12 Jun 2025 | Invoice | 43878 | DN#12385 | LPG | 7,511.13 | 14,498.64 | OPEN |
@@ -124,14 +124,14 @@ Opening balance (ERP running): **R34,966.68**
 | 06 Aug 2025 | Crd Note | 13152 | DN#20139-EMPTY-ROSE | CYL | -4,830.00 | 22,758.61 | T0032 CN_DN_PAIR ✓ ↔ Inv 45438 |
 | 06 Aug 2025 | Invoice | 45435 | DN#20138- VICTORIA | LPG | 3,684.19 | 26,442.80 | T0092 EXACT_SUM ✓ ↔ Pmt 41044, Inv 44634, Inv 44439 |
 | 06 Aug 2025 | Invoice | 45436 | DN#20138-EMPTY VICT | CYL | 3,622.50 | 30,065.30 | T0031 CN_DN_PAIR ✓ ↔ Crd Note 13151 |
-| 06 Aug 2025 | Invoice | 45437 | DN#20139 | LPG | 4,912.25 | 34,977.55 | T0007 REMITTANCE ✓ ↔ Pmt 42051, Inv 43721, Inv 45895, Inv 46055 +6 |
+| 06 Aug 2025 | Invoice | 45437 | DN#20139 | LPG | 4,912.25 | 34,977.55 | T0008 REMITTANCE ✓ ↔ Pmt 42051, Inv 43721, Inv 45895, Inv 46055 +6 |
 | 06 Aug 2025 | Invoice | 45438 | DN#20139-EMPTY-ROSE | CYL | 4,830.00 | 39,807.55 | T0032 CN_DN_PAIR ✓ ↔ Crd Note 13152 |
 | 20 Aug 2025 | Crd Note | 13275 | MKONDENI DN20430 EMP | CYL | -2,415.00 | 37,392.55 | T0033 CN_DN_PAIR ✓ ↔ Inv 45779 |
 | 20 Aug 2025 | Invoice | 45778 | MKONDENI- DN20430 | LPG | 2,398.72 | 39,791.27 | T0093 EXACT_SUM ✓ ↔ Pmt 41501, Inv 45787, Inv 44937 |
 | 20 Aug 2025 | Invoice | 45779 | MKONDENI DN20430 EMP | CYL | 2,415.00 | 42,206.27 | T0033 CN_DN_PAIR ✓ ↔ Crd Note 13275 |
 | 20 Aug 2025 | Invoice | 45787 | DN#20430 MKONDENI | LPG | 150.02 | 42,356.29 | T0093 EXACT_SUM ✓ ↔ Pmt 41501, Inv 45778, Inv 44937 |
 | 26 Aug 2025 | Crd Note | 13311 | DN#20443- EMPTY | CYL | -3,622.50 | 38,733.79 | T0034 CN_DN_PAIR ✓ ↔ Inv 45896 |
-| 26 Aug 2025 | Invoice | 45895 | 257284- DN20443 VICT | LPG | 3,598.07 | 42,331.86 | T0007 REMITTANCE ✓ ↔ Pmt 42051, Inv 43721, Inv 45437, Inv 46055 +6 |
+| 26 Aug 2025 | Invoice | 45895 | 257284- DN20443 VICT | LPG | 3,598.07 | 42,331.86 | T0008 REMITTANCE ✓ ↔ Pmt 42051, Inv 43721, Inv 45437, Inv 46055 +6 |
 | 26 Aug 2025 | Invoice | 45896 | DN#20443- EMPTY | CYL | 3,622.50 | 45,954.36 | T0034 CN_DN_PAIR ✓ ↔ Crd Note 13311 |
 
 ### September 2025
@@ -141,22 +141,22 @@ Opening balance (ERP running): **R45,954.36**
 | Date | Type | Doc # | Reference | Lane | Amount (R) | ERP running (R) | Matcher status |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: | :--- |
 | 01 Sept 2025 | Payment | 41044 | TRANSF \| STAT:119 | LPG | -9,895.88 | 36,058.48 | T0092 EXACT_SUM ✓ ↔ Inv 45435, Inv 44634, Inv 44439 |
-| 01 Sept 2025 | Invoice | 46055 | DN#20353 | LPG | 4,797.43 | 40,855.91 | T0007 REMITTANCE ✓ ↔ Pmt 42051, Inv 43721, Inv 45437, Inv 45895 +6 |
+| 01 Sept 2025 | Invoice | 46055 | DN#20353 | LPG | 4,797.43 | 40,855.91 | T0008 REMITTANCE ✓ ↔ Pmt 42051, Inv 43721, Inv 45437, Inv 45895 +6 |
 | 01 Sept 2025 | Invoice | 46056 | DN#20353-EMPTY ROSE | CYL | 4,830.00 | 45,685.91 | T0035 CN_DN_PAIR ✓ ↔ Crd Note 13353 |
 | 02 Sept 2025 | Crd Note | 13353 | DN#20353-EMPTY ROSE | CYL | -4,830.00 | 40,855.91 | T0035 CN_DN_PAIR ✓ ↔ Inv 46056 |
-| 02 Sept 2025 | Invoice | 46075 | DN#20569- VICTORIA | LPG | 3,598.07 | 44,453.98 | T0007 REMITTANCE ✓ ↔ Pmt 42051, Inv 43721, Inv 45437, Inv 45895 +6 |
+| 02 Sept 2025 | Invoice | 46075 | DN#20569- VICTORIA | LPG | 3,598.07 | 44,453.98 | T0008 REMITTANCE ✓ ↔ Pmt 42051, Inv 43721, Inv 45437, Inv 45895 +6 |
 | 02 Sept 2025 | Invoice | 46076 | DN#20569-EMPTY | CYL | 3,622.50 | 48,076.48 | T0036 CN_DN_PAIR ✓ ↔ Crd Note 13365 |
 | 03 Sept 2025 | Crd Note | 13365 | DN#20569-EMPTY | CYL | -3,622.50 | 44,453.98 | T0036 CN_DN_PAIR ✓ ↔ Inv 46076 |
 | 12 Sept 2025 | Crd Note | 13458 | DN#20483-EMPTY | CYL | -3,622.50 | 40,831.48 | T0037 CN_DN_PAIR ✓ ↔ Inv 46335 |
-| 12 Sept 2025 | Invoice | 46334 | DN#20483- VICTORIA | LPG | 3,432.06 | 44,263.54 | T0007 REMITTANCE ✓ ↔ Pmt 42051, Inv 43721, Inv 45437, Inv 45895 +6 |
+| 12 Sept 2025 | Invoice | 46334 | DN#20483- VICTORIA | LPG | 3,432.06 | 44,263.54 | T0008 REMITTANCE ✓ ↔ Pmt 42051, Inv 43721, Inv 45437, Inv 45895 +6 |
 | 12 Sept 2025 | Invoice | 46335 | DN#20483-EMPTY | CYL | 3,622.50 | 47,886.04 | T0037 CN_DN_PAIR ✓ ↔ Crd Note 13458 |
 | 17 Sept 2025 | Crd Note | 13494 | DN#20387-EMPTY- ROS | CYL | -3,047.50 | 44,838.54 | OPEN |
-| 17 Sept 2025 | Invoice | 46444 | DN#20387- ROSEDALE | LPG | 2,740.88 | 47,579.42 | T0007 REMITTANCE ✓ ↔ Pmt 42051, Inv 43721, Inv 45437, Inv 45895 +6 |
-| 17 Sept 2025 | Invoice | 46445 | DN#20387-EMPTY- ROS | CYL | 3,105.00 | 50,684.42 | T0007 REMITTANCE ✓ ↔ Pmt 42051, Inv 43721, Inv 45437, Inv 45895 +6 |
+| 17 Sept 2025 | Invoice | 46444 | DN#20387- ROSEDALE | LPG | 2,740.88 | 47,579.42 | T0008 REMITTANCE ✓ ↔ Pmt 42051, Inv 43721, Inv 45437, Inv 45895 +6 |
+| 17 Sept 2025 | Invoice | 46445 | DN#20387-EMPTY- ROS | CYL | 3,105.00 | 50,684.42 | T0008 REMITTANCE ✓ ↔ Pmt 42051, Inv 43721, Inv 45437, Inv 45895 +6 |
 | 29 Sept 2025 | Crd Note | 13569 | DN#20085-EMPTY-VICTO | CYL | -3,622.50 | 47,061.92 | T0038 CN_DN_PAIR ✓ ↔ Inv 46725 |
-| 29 Sept 2025 | Invoice | 46724 | DN#20085-VICTORIA | LPG | 3,432.06 | 50,493.98 | T0007 REMITTANCE ✓ ↔ Pmt 42051, Inv 43721, Inv 45437, Inv 45895 +6 |
+| 29 Sept 2025 | Invoice | 46724 | DN#20085-VICTORIA | LPG | 3,432.06 | 50,493.98 | T0008 REMITTANCE ✓ ↔ Pmt 42051, Inv 43721, Inv 45437, Inv 45895 +6 |
 | 29 Sept 2025 | Invoice | 46725 | DN#20085-EMPTY-VICTO | CYL | 3,622.50 | 54,116.48 | T0038 CN_DN_PAIR ✓ ↔ Crd Note 13569 |
-| 30 Sept 2025 | Invoice | 46760 | DN#21078-MKONDENI | LPG | 2,288.04 | 56,404.52 | T0007 REMITTANCE ✓ ↔ Pmt 42051, Inv 43721, Inv 45437, Inv 45895 +6 |
+| 30 Sept 2025 | Invoice | 46760 | DN#21078-MKONDENI | LPG | 2,288.04 | 56,404.52 | T0008 REMITTANCE ✓ ↔ Pmt 42051, Inv 43721, Inv 45437, Inv 45895 +6 |
 | 30 Sept 2025 | Invoice | 46761 | DN#21078-EMPTY MKOND | CYL | 2,415.00 | 58,819.52 | T0039 CN_DN_PAIR ✓ ↔ Crd Note 13586 |
 
 ### October 2025
@@ -186,7 +186,7 @@ Opening balance (ERP running): **R66,187.87**
 
 | Date | Type | Doc # | Reference | Lane | Amount (R) | ERP running (R) | Matcher status |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: | :--- |
-| 01 Nov 2025 | Payment | 42051 | TRANSF \| STAT:121 | LPG | -35,770.31 | 30,417.56 | T0007 REMITTANCE ✓ ↔ Inv 43721, Inv 45437, Inv 45895, Inv 46055 +6 |
+| 01 Nov 2025 | Payment | 42051 | TRANSF \| STAT:121 | LPG | -35,770.31 | 30,417.56 | T0008 REMITTANCE ✓ ↔ Inv 43721, Inv 45437, Inv 45895, Inv 46055 +6 |
 | 08 Nov 2025 | Invoice | 47558 | DN#20807- VICTORIA | LPG | 3,360.06 | 33,777.62 | OPEN |
 | 12 Nov 2025 | Invoice | 47622 | DN#20787-MKONDENI | LPG | 2,240.04 | 36,017.66 | OPEN |
 | 12 Nov 2025 | Invoice | 47623 | DN#20787-EMPTY | CYL | 2,415.00 | 38,432.66 | T0044 CN_DN_PAIR ✓ ↔ Crd Note 13846 |
@@ -209,20 +209,20 @@ Opening balance (ERP running): **R-2,533.35**
 
 | Date | Type | Doc # | Reference | Lane | Amount (R) | ERP running (R) | Matcher status |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: | :--- |
-| 01 Dec 2025 | Invoice | 48019 | DN#20695- 260974 VIC | LPG | 3,360.06 | 826.71 | T0008 REMITTANCE ✓ ↔ Pmt 43239, Inv 48165, Inv 48190, Inv 48372 +1 |
+| 01 Dec 2025 | Invoice | 48019 | DN#20695- 260974 VIC | LPG | 3,360.06 | 826.71 | T0009 REMITTANCE ✓ ↔ Pmt 43239, Inv 48165, Inv 48190, Inv 48372 +1 |
 | 01 Dec 2025 | Invoice | 48021 | DN#20695-EMPTY | CYL | 3,622.50 | 4,449.21 | T0048 CN_DN_PAIR ✓ ↔ Crd Note 13986 |
 | 02 Dec 2025 | Crd Note | 13986 | DN#20695-EMPTY | CYL | -3,622.50 | 826.71 | T0048 CN_DN_PAIR ✓ ↔ Inv 48021 |
 | 09 Dec 2025 | Crd Note | 14036 | DN#20907-EMPTY | CYL | -3,622.50 | -2,795.79 | T0049 CN_DN_PAIR ✓ ↔ Inv 48166 |
-| 09 Dec 2025 | Invoice | 48165 | DN#20907 | LPG | 3,378.27 | 582.48 | T0008 REMITTANCE ✓ ↔ Pmt 43239, Inv 48019, Inv 48190, Inv 48372 +1 |
+| 09 Dec 2025 | Invoice | 48165 | DN#20907 | LPG | 3,378.27 | 582.48 | T0009 REMITTANCE ✓ ↔ Pmt 43239, Inv 48019, Inv 48190, Inv 48372 +1 |
 | 09 Dec 2025 | Invoice | 48166 | DN#20907-EMPTY | CYL | 3,622.50 | 4,204.98 | T0049 CN_DN_PAIR ✓ ↔ Crd Note 14036 |
 | 10 Dec 2025 | Crd Note | 14042 | DN#20913- EMPTY | CYL | -2,415.00 | 1,789.98 | T0050 CN_DN_PAIR ✓ ↔ Inv 48191 |
-| 10 Dec 2025 | Invoice | 48190 | DN#20913- MKONDENI | LPG | 2,252.18 | 4,042.16 | T0008 REMITTANCE ✓ ↔ Pmt 43239, Inv 48019, Inv 48165, Inv 48372 +1 |
+| 10 Dec 2025 | Invoice | 48190 | DN#20913- MKONDENI | LPG | 2,252.18 | 4,042.16 | T0009 REMITTANCE ✓ ↔ Pmt 43239, Inv 48019, Inv 48165, Inv 48372 +1 |
 | 10 Dec 2025 | Invoice | 48191 | DN#20913- EMPTY | CYL | 2,415.00 | 6,457.16 | T0050 CN_DN_PAIR ✓ ↔ Crd Note 14042 |
 | 19 Dec 2025 | Crd Note | 14121 | DN#21721-EMPTY | CYL | -6,037.50 | 419.66 | T0051 CN_DN_PAIR ✓ ↔ Inv 48373 |
-| 19 Dec 2025 | Invoice | 48372 | DN#21721 | LPG | 5,630.46 | 6,050.12 | T0008 REMITTANCE ✓ ↔ Pmt 43239, Inv 48019, Inv 48165, Inv 48190 +1 |
+| 19 Dec 2025 | Invoice | 48372 | DN#21721 | LPG | 5,630.46 | 6,050.12 | T0009 REMITTANCE ✓ ↔ Pmt 43239, Inv 48019, Inv 48165, Inv 48190 +1 |
 | 19 Dec 2025 | Invoice | 48373 | DN#21721-EMPTY | CYL | 6,037.50 | 12,087.62 | T0051 CN_DN_PAIR ✓ ↔ Crd Note 14121 |
 | 29 Dec 2025 | Crd Note | 14172 | DN#21744-EMPTY | CYL | -3,622.50 | 8,465.12 | T0052 CN_DN_PAIR ✓ ↔ Inv 48524 |
-| 29 Dec 2025 | Invoice | 48523 | DN#21744- VICTORIA | LPG | 3,378.27 | 11,843.39 | T0008 REMITTANCE ✓ ↔ Pmt 43239, Inv 48019, Inv 48165, Inv 48190 +1 |
+| 29 Dec 2025 | Invoice | 48523 | DN#21744- VICTORIA | LPG | 3,378.27 | 11,843.39 | T0009 REMITTANCE ✓ ↔ Pmt 43239, Inv 48019, Inv 48165, Inv 48190 +1 |
 | 29 Dec 2025 | Invoice | 48524 | DN#21744-EMPTY | CYL | 3,622.50 | 15,465.89 | T0052 CN_DN_PAIR ✓ ↔ Crd Note 14172 |
 | 31 Dec 2025 | Payment | 42858 | TRANSF \| STAT:122 | LPG | -9,730.26 | 5,735.63 | OPEN |
 
@@ -233,19 +233,19 @@ Opening balance (ERP running): **R5,735.63**
 | Date | Type | Doc # | Reference | Lane | Amount (R) | ERP running (R) | Matcher status |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: | :--- |
 | 12 Jan 2026 | Crd Note | 14251 | DN-21630-EMPTY | CYL | -3,622.50 | 2,113.13 | T0053 CN_DN_PAIR ✓ ↔ Inv 48738 |
-| 12 Jan 2026 | Invoice | 48737 | DN-21630 | LPG | 3,378.27 | 5,491.40 | T0009 REMITTANCE ? ↔ Pmt 43494, Inv 48784, Inv 48906, Inv 48919 +2 |
+| 12 Jan 2026 | Invoice | 48737 | DN-21630 | LPG | 3,378.27 | 5,491.40 | T0007 LOCKED:OPERATOR_RULING [exact] ↔ Pmt 43494, Inv 48784, Inv 48906, Inv 48919 +2 |
 | 12 Jan 2026 | Invoice | 48738 | DN-21630-EMPTY | CYL | 3,622.50 | 9,113.90 | T0053 CN_DN_PAIR ✓ ↔ Crd Note 14251 |
-| 14 Jan 2026 | Invoice | 48784 | DN#21635-KONDENI | LPG | 2,252.18 | 11,366.08 | T0009 REMITTANCE ? ↔ Pmt 43494, Inv 48737, Inv 48906, Inv 48919 +2 |
+| 14 Jan 2026 | Invoice | 48784 | DN#21635-KONDENI | LPG | 2,252.18 | 11,366.08 | T0007 LOCKED:OPERATOR_RULING [exact] ↔ Pmt 43494, Inv 48737, Inv 48906, Inv 48919 +2 |
 | 14 Jan 2026 | Invoice | 48785 | DN#21635MPTY-KONDENI | CYL | 2,415.00 | 13,781.08 | T0054 CN_DN_PAIR ✓ ↔ Crd Note 14269 |
 | 15 Jan 2026 | Crd Note | 14269 | DN#21635MPTY-KONDENI | CYL | -2,415.00 | 11,366.08 | T0054 CN_DN_PAIR ✓ ↔ Inv 48785 |
-| 22 Jan 2026 | Invoice | 48906 | DN#21659 | LPG | 3,403.63 | 14,769.71 | T0009 REMITTANCE ? ↔ Pmt 43494, Inv 48737, Inv 48784, Inv 48919 +2 |
+| 22 Jan 2026 | Invoice | 48906 | DN#21659 | LPG | 3,403.63 | 14,769.71 | T0007 LOCKED:OPERATOR_RULING [exact] ↔ Pmt 43494, Inv 48737, Inv 48784, Inv 48919 +2 |
 | 22 Jan 2026 | Invoice | 48907 | DN-21659EMPTY | CYL | 3,622.50 | 18,392.21 | T0055 CN_DN_PAIR ✓ ↔ Crd Note 14322 |
-| 22 Jan 2026 | Invoice | 48927 | DN#21502- EMPTY | CYL | 5,462.50 | 23,854.71 | T0009 REMITTANCE ? ↔ Pmt 43494, Inv 48737, Inv 48784, Inv 48906 +2 |
+| 22 Jan 2026 | Invoice | 48927 | DN#21502- EMPTY | CYL | 5,462.50 | 23,854.71 | T0007 LOCKED:OPERATOR_RULING [exact] ↔ Pmt 43494, Inv 48737, Inv 48784, Inv 48906 +2 |
 | 23 Jan 2026 | Crd Note | 14322 | DN-21659EMPTY | CYL | -3,622.50 | 20,232.21 | T0055 CN_DN_PAIR ✓ ↔ Inv 48907 |
 | 23 Jan 2026 | Crd Note | 14325 | DN#21502EMPTY | CYL | -5,462.50 | 14,769.71 | T0056 CN_DN_PAIR ✓ ↔ Inv 48920 |
-| 23 Jan 2026 | Invoice | 48919 | DN#21502ROSEDALE | LPG | 4,869.09 | 19,638.80 | T0009 REMITTANCE ? ↔ Pmt 43494, Inv 48737, Inv 48784, Inv 48906 +2 |
+| 23 Jan 2026 | Invoice | 48919 | DN#21502ROSEDALE | LPG | 4,869.09 | 19,638.80 | T0007 LOCKED:OPERATOR_RULING [exact] ↔ Pmt 43494, Inv 48737, Inv 48784, Inv 48906 +2 |
 | 23 Jan 2026 | Invoice | 48920 | DN#21502EMPTY | CYL | 5,462.50 | 25,101.30 | T0056 CN_DN_PAIR ✓ ↔ Crd Note 14325 |
-| 24 Jan 2026 | Crd Note | 14328 | DN#21502- EMPTY | CYL | -5,520.00 | 19,581.30 | T0009 REMITTANCE ? ↔ Pmt 43494, Inv 48737, Inv 48784, Inv 48906 +2 |
+| 24 Jan 2026 | Crd Note | 14328 | DN#21502- EMPTY | CYL | -5,520.00 | 19,581.30 | T0007 LOCKED:OPERATOR_RULING [exact] ↔ Pmt 43494, Inv 48737, Inv 48784, Inv 48906 +2 |
 
 ### February 2026
 
@@ -253,7 +253,7 @@ Opening balance (ERP running): **R19,581.30**
 
 | Date | Type | Doc # | Reference | Lane | Amount (R) | ERP running (R) | Matcher status |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: | :--- |
-| 02 Feb 2026 | Payment | 43239 | TRANSF \| STAT:123 | LPG | -17,999.24 | 1,582.06 | T0008 REMITTANCE ✓ ↔ Inv 48019, Inv 48165, Inv 48190, Inv 48372 +1 |
+| 02 Feb 2026 | Payment | 43239 | TRANSF \| STAT:123 | LPG | -17,999.24 | 1,582.06 | T0009 REMITTANCE ✓ ↔ Inv 48019, Inv 48165, Inv 48190, Inv 48372 +1 |
 | 06 Feb 2026 | Crd Note | 14385 | DN#21680 | LPG | -3,443.48 | -1,861.42 | T0057 CN_DN_PAIR ✓ ↔ Inv 49119 |
 | 06 Feb 2026 | Crd Note | 14386 | DN#21680-EMPTY | CYL | -3,622.50 | -5,483.92 | T0058 CN_DN_PAIR ✓ ↔ Inv 49120 |
 | 06 Feb 2026 | Invoice | 49119 | DN#21680 | LPG | 3,443.48 | -2,040.44 | T0057 CN_DN_PAIR ✓ ↔ Crd Note 14385 |
@@ -275,7 +275,7 @@ Opening balance (ERP running): **R15,355.98**
 
 | Date | Type | Doc # | Reference | Lane | Amount (R) | ERP running (R) | Matcher status |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: | :--- |
-| 02 Mar 2026 | Payment | 43494 | TRANSF \| STAT:124 | LPG | -13,845.67 | 1,510.31 | T0009 REMITTANCE ? ↔ Inv 48737, Inv 48784, Inv 48906, Inv 48919 +2 |
+| 02 Mar 2026 | Payment | 43494 | TRANSF \| STAT:124 | LPG | -13,845.67 | 1,510.31 | T0007 LOCKED:OPERATOR_RULING [exact] ↔ Inv 48737, Inv 48784, Inv 48906, Inv 48919 +2 |
 | 04 Mar 2026 | Invoice | 49573 | DN#22113 | LPG | 3,443.48 | 4,953.79 | T0011 REMITTANCE ✓ ↔ Pmt 44231, Inv 49796, Inv 49905, Inv 50004 +1 |
 | 04 Mar 2026 | Invoice | 49574 | DN#22113-EMPTY | CYL | 3,622.50 | 8,576.29 | T0061 CN_DN_PAIR ✓ ↔ Crd Note 14535 |
 | 05 Mar 2026 | Crd Note | 14535 | DN#22113-EMPTY | CYL | -3,622.50 | 4,953.79 | T0061 CN_DN_PAIR ✓ ↔ Inv 49574 |
@@ -433,19 +433,13 @@ Opening balance (ERP running): **R23,139.43**
 
 | Rule | Confirmed | Probable |
 | :--- | ---: | ---: |
-| LOCKED | 6 | 0 |
-| REMITTANCE | 7 | 1 |
+| LOCKED | 7 | 0 |
+| REMITTANCE | 7 | 0 |
 | CN_DN_PAIR | 73 | 0 |
 | EXACT_SINGLE | 2 | 0 |
 | EXACT_MONTH_SUM | 2 | 0 |
 | EXACT_SUM | 3 | 0 |
 | EXACT_RUN | 1 | 0 |
-
-## Probable ties awaiting approval
-
-| Tie | Rule | Documents | Variance (R) |
-| :--- | :--- | :--- | ---: |
-| T0009 | REMITTANCE | Payment 43494, Invoice 48737, Invoice 48784, Invoice 48906, Invoice 48919, Invoice 48927, Crd Note 14328 | 0.00 |
 
 Proof: holds (rebuilt R16,547.81 vs closing R16,547.81; ERP R16,547.81).
 

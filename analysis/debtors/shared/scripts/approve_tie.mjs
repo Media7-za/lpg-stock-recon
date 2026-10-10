@@ -14,8 +14,11 @@
  *   Journals that belong to the settlement (e.g. a batch's discount journal), against the opening B/F:
  *   node analysis/debtors/shared/scripts/approve_tie.mjs --debtor TWK002 --payment 37770 --journals 508 \
  *     --treatment applied_to_bf --reason "…"
+ *   A credit note paired with an invoice the matcher did not choose (operator pairing, no payment):
+ *   node analysis/debtors/shared/scripts/approve_tie.mjs --debtor TAN002 --credit-notes 14472 --invoices 49361 --reason "…"
  *   Approve probable ties the matcher found, by id (operator: "approve all"); prints each tie's documents:
  *   node analysis/debtors/shared/scripts/approve_tie.mjs --debtor TWK002 --ties T0011,T0012 --reason "…"
+ *   (--max-net 1.00 also accepts a rounding net up to R1.00, the matcher's near-sum tolerance; recorded as roundingAccepted)
  *   Several payments for one delivery, with its cylinder deposit invoice (BATCH_SUM rulings):
  *   node analysis/debtors/shared/scripts/approve_tie.mjs --debtor MOZ002 --payment 44227,45590 \
  *     --invoices 50528 --deposits 50529 --treatment exact --reason "…"
@@ -36,8 +39,9 @@ const arg = (n) => {
 const code = String(arg('--debtor') || '').toUpperCase();
 const payment = arg('--payment');
 const tieIds = (arg('--ties') || '').split(',').map((s) => s.trim()).filter(Boolean);
-if (!code || (!payment && !tieIds.length)) {
-  console.error('Usage: approve_tie.mjs --debtor CODE (--payment DOC [--invoices A,B] [--deposits N] [--journals N] [--treatment T] [--partial DOC] | --ties T0001,T0002) --reason TEXT [--dry-run] [--by NAME]');
+const creditNotes = (arg('--credit-notes') || '').split(',').map((s) => s.trim().replace(/^0+/, '')).filter(Boolean);
+if (!code || (!payment && !tieIds.length && !creditNotes.length)) {
+  console.error('Usage: approve_tie.mjs --debtor CODE (--payment DOC [--invoices A,B] [--deposits N] [--journals N] [--credit-notes N] [--treatment T] [--partial DOC] | --credit-notes N --invoices A | --ties T0001,T0002 [--max-net 1.00]) --reason TEXT [--dry-run] [--by NAME]');
   process.exit(1);
 }
 const dryRun = process.argv.includes('--dry-run');
@@ -59,6 +63,7 @@ if (tieIds.length) {
     matches: { ties: run.result.ties },
     registry: reg.registry,
     tieIds,
+    maxNet: arg('--max-net') ? Number(arg('--max-net')) : 0.05,
     reason: arg('--reason'),
     approvedBy: arg('--by') || 'operator',
     session: process.env.CLAUDE_SESSION_URL || arg('--session') || 'unrecorded',
@@ -82,8 +87,9 @@ if (tieIds.length) {
 const plan = planApproval({
   projection: run.projection,
   registry: reg.registry,
-  payment: String(payment),
+  payment: payment || '',
   invoices: (arg('--invoices') || '').split(',').map((s) => s.trim().replace(/^0+/, '')).filter(Boolean),
+  creditNotes,
   journals: (arg('--journals') || '').split(',').map((s) => s.trim().replace(/^0+/, '')).filter(Boolean),
   deposits: (arg('--deposits') || '').split(',').map((s) => s.trim().replace(/^0+/, '')).filter(Boolean),
   treatment: arg('--treatment') || 'exact',

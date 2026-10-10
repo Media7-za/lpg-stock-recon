@@ -87,44 +87,21 @@
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
 | 04 Oct 2025 | Invoice | 46882 | DN#20293- HILTON | Gas | 1,180.56 | -894.81 |
 | 20 Oct 2025 | Invoice | 47178 | DN#21111- HILTON | Gas | 1,647.86 | 753.05 |
-| 24 Oct 2025 | Invoice | 47285 ¹ | DN#20754 | Gas | 2,361.11 | 3,114.16 |
-| 27 Oct 2025 | Payment | 41964 | TRANSF \| STAT 119 | Gas | -4,258.61 | -1,144.45 |
-| 30 Oct 2025 | Invoice | 47420 | DN#21133 | Gas | 2,361.11 | 1,216.66 |
-
-### November 2025
-
-| Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 14 Nov 2025 | Invoice | 47662 ¹ | DN#20831-PMB | Gas | 2,770.91 | 3,987.57 |
-| 14 Nov 2025 | Invoice | 47666 ¹ | DN#20829 | Gas | 1,614.36 | 5,601.93 |
-| 18 Nov 2025 | Payment | 42300 ¹ | TRANSF \| STAT 120 | Gas | -6,746.02 | -1,144.09 |
-
-### January 2026
-
-| Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 09 Jan 2026 | Crd Note | 14235 ¹ | DN-21459 - PMB | Gas | -1,162.63 | -2,306.72 |
-| 09 Jan 2026 | Invoice | 48722 ¹ | REV CN#14235 | Gas | 1,162.63 | -1,144.09 |
-
-### February 2026
-
-| Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 21 Feb 2026 | Invoice | 49360 ¹ | DN-21922-HILTON | Gas | 1,184.37 | 40.28 |
-| 23 Feb 2026 | Crd Note | 14472 ¹ | DN-21922-EMPTY-HIL | Gas | -1,184.37 | -1,144.09 |
+| 27 Oct 2025 | Payment | 41964 | TRANSF \| STAT 119 | Gas | -4,258.61 | -3,505.56 |
+| 30 Oct 2025 | Invoice | 47420 | DN#21133 | Gas | 2,361.11 | -1,144.45 |
 
 ### March 2026
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 31 Mar 2026 | Invoice | 50035 | DN-21852 | Gas | 1,193.96 | 49.87 |
+| 31 Mar 2026 | Invoice | 50035 | DN-21852 | Gas | 1,193.96 | 49.51 |
 
 ### October 2026
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 05 Oct 2026 | Invoice | 53505 | — | Gas | 3,490.00 | 3,539.87 |
-| 06 Oct 2026 | Invoice | 53490 | 24896 | Gas | 2,501.00 | 6,040.87 |
+| 05 Oct 2026 | Invoice | 53505 | — | Gas | 3,490.00 | 3,539.51 |
+| 06 Oct 2026 | Invoice | 53490 | 24896 | Gas | 2,501.00 | 6,040.51 |
 
 **Cylinder deposit opening balance:** R0.00
 
@@ -138,8 +115,6 @@
 | 26 May 2025 | Invoice | 43365 | DN#12263-EMPTY | Cylinder deposit | 1,897.50 | 172.50 |
 | 29 May 2025 | Invoice | 43468 | DN#12139-EMPTY | Cylinder deposit | 1,725.00 | 1,897.50 |
 
-¹ Payment received; allocation to this item is being confirmed.
-
 ---
 
 ## Balance summary
@@ -147,8 +122,8 @@
 | Component | Gas (R) | Cylinder deposit (R) | Total (R) |
 | :--- | ---: | ---: | ---: |
 | Opening balance | 16,828.85 | 0.00 | 16,828.85 |
-| Open items listed above | -10,787.98 | 1,897.50 | -8,890.48 |
-| Rounding on settled items | 0.00 | 0.00 | 0.00 |
+| Open items listed above | -10,788.34 | 1,897.50 | -8,890.84 |
+| Rounding on settled items | 0.36 | 0.00 | 0.36 |
 | **Balance** | 6,040.87 | 1,897.50 | 7,938.37 |
 
 **Note:** payment(s) of R2,500.00 received but not yet confirmed by our bank reconciliation; they will be credited once confirmed.

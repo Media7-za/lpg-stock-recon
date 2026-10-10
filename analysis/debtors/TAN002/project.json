@@ -102,6 +102,10 @@
     {
       "date": "2026-10-10",
       "event": "Operator (main session, 2026-10-10): \"We can approve them in groups\". Probable credit-note pairs approved as groups CN-DN-1 (same delivery-note number and lane, exact opposite amount, credit note 2-5 days after the invoice) and CN-AD (exact amount and lane, 0-1 day, single candidate), only where no rival invoice or credit note of the same lane, amount and DN exists (docs/previews/2026-10-10_probable_ties_by_group.md). Group-level judgement, not a document-by-document review. Recorded as approved locks (approve_tie.mjs --ties), reversible with close_period.mjs --void-lock. TAN002: 17 pairs approved; customer preview 83 -> 49 rows; ERP R7,938.37 ties, 0 conflicts. Held back: T0057 (invoice 49360 + CN 14472) and T0068 (invoice 48722 + CN 14235), each with a twin invoice of the same lane, amount and DN, so the pairing is arbitrary; and NEAR_SUM payment 42300 (R0.36, needs a treatment). Statement still not regenerated (placeholder opening)."
+    },
+    {
+      "date": "2026-10-10",
+      "event": "Operator (main session, 2026-10-10): \"Yes, go ahead\" on the recommendations in docs/previews/2026-10-10_remaining_probable_ties_recommendations.md for the eight remaining probable ties. TAN002: (tie 1) manual lock L0018 pairs CN 14472 with invoice 49361 (both reference DN-21922-EMPTY-HIL) instead of 49360 that the matcher chose by date; three invoices of R1,184.37 exist (49360, 49361, 49577), so payment 43562 now pays the gas invoices 49577 + 49397 + 49360 and the credit note credits the deposit invoice 49361, the reverse of the default; balance unaffected. (tie 2) L0019: invoice 48722 (ref 'REV CN#14235') + CN 14235. (tie 3) L0020: payment 42300 vs invoices 47662 + 47666 + 47285, short R0.36 carried as rounding. 0 probable ties left; customer preview 49 -> 41 rows; ERP R7,938.37 ties, 0 conflicts. Tools: approve_tie --credit-notes (operator pairing), --max-net."
     }
   ]
 }

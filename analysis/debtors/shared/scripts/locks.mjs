@@ -175,7 +175,7 @@ export function applyClose(registry, plan) {
  * Members are keyed exactly as period-close locks are, so a changed document turns the ruling
  * into a CONFLICT in the next run rather than being silently re-applied.
  */
-export function planApproval({ projection, registry, payment, invoices = [], deposits = [], journals = [], treatment = 'exact', partialDoc = null, reason, approvedBy, session, now }) {
+export function planApproval({ projection, registry, payment, invoices = [], deposits = [], journals = [], creditNotes = [], treatment = 'exact', partialDoc = null, reason, approvedBy, session, now }) {
   const reasons = [];
   const TREATMENTS = ['exact', 'customer_credit', 'applied_to_bf', 'part_payment', 'short_paid'];
   if (!TREATMENTS.includes(treatment)) reasons.push(`unknown treatment ${treatment}`);
@@ -185,7 +185,8 @@ export function planApproval({ projection, registry, payment, invoices = [], dep
   const rows = projection.rows;
 
   // `payment` may name several payments ("44227,45590"): a customer paying one delivery in parts.
-  const payDocs = String(payment).split(',').map((s) => s.trim().replace(/^0+/, '')).filter(Boolean);
+  const payDocs = payment ? String(payment).split(',').map((s) => s.trim().replace(/^0+/, '')).filter(Boolean) : [];
+  if (!payDocs.length && !creditNotes.length) reasons.push('a payment or credit notes are required');
   const payRows = [];
   for (const d of payDocs) {
     const found = rows.filter((r) => r.kind === 'payment' && r.entry_type !== 'Bank UD' && r.clean_doc === d && r.amount < 0);
@@ -199,6 +200,13 @@ export function planApproval({ projection, registry, payment, invoices = [], dep
     const dep = rows.filter((r) => r.kind === 'invoice' && r.clean_doc === String(doc) && r.lane === 'CYL');
     if (!dep.length) reasons.push(`deposit invoice ${doc}: no CYL rows in the projection`);
     members.push(...dep);
+  }
+  // `creditNotes`: credit-note documents (every lane) that pair with the invoices, with or without a payment
+  // (an operator-chosen pairing the matcher did not make, e.g. a credit note whose reference matches a twin invoice).
+  for (const doc of creditNotes.map((x) => String(x).replace(/^0+/, ''))) {
+    const cn = rows.filter((r) => r.kind === 'credit_note' && r.clean_doc === doc);
+    if (!cn.length) reasons.push(`credit note ${doc}: not in the projection`);
+    members.push(...cn);
   }
   // `journals`: journal documents that belong to the settlement (e.g. the discount journal of a batch).
   for (const doc of journals) {
@@ -346,7 +354,7 @@ export function applySettledThrough(registry, plan) {
  * ruling into a CONFLICT next run. Tie ids are only stable within one matcher run, so the caller passes
  * the matches it just produced and the plan echoes each tie's documents for the operator to see.
  */
-export function planApproveTies({ projection, matches, registry, tieIds, reason, approvedBy, session, now }) {
+export function planApproveTies({ projection, matches, registry, tieIds, reason, approvedBy, session, now, maxNet = 0.05 }) {
   const reasons = [];
   if (!reason) reasons.push('a reason (the operator ruling) is required');
   const eff = effectiveLocks(registry);
@@ -365,7 +373,7 @@ export function planApproveTies({ projection, matches, registry, tieIds, reason,
     if (t.rule === 'LOCKED') reasons.push(`${id}: already a lock`);
     const members = t.members.map((m) => rowById.get(m)).filter(Boolean);
     if (members.some((r) => lockedKeys.has(rowKey(r)))) reasons.push(`${id}: a member is already locked`);
-    if (Math.abs(t.net) > 0.05) reasons.push(`${id}: net R${t.net} is not within ±R0.05; approve it with a treatment through approve_tie`);
+    if (Math.abs(t.net) > maxNet) reasons.push(`${id}: net R${t.net} is not within ±R${maxNet.toFixed(2)}; raise --max-net (rounding, up to R1.00) or approve it with a treatment through approve_tie`);
     const lock_id = nextId('L', seq);
     seq = [...seq, lock_id];
     locks.push({
@@ -373,7 +381,7 @@ export function planApproveTies({ projection, matches, registry, tieIds, reason,
       close_id: null,
       status: 'approved',
       rule: 'OPERATOR_RULING',
-      ruling: { treatment: 'exact', net: t.net, reason, approvedBy, session, approvedTie: { tie_id: t.tie_id, rule: t.rule, docs: t.docs } },
+      ruling: { treatment: 'exact', net: t.net, ...(Math.abs(t.net) > 0.05 ? { roundingAccepted: true, maxNet } : {}), reason, approvedBy, session, approvedTie: { tie_id: t.tie_id, rule: t.rule, docs: t.docs } },
       members: members.map((r) => ({ key: rowKey(r), doc: r.clean_doc, entry_type: r.entry_type, lane: r.lane, date: r.date, amount: r.amount })),
       createdAt: now,
     });

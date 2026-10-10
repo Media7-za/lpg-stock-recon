@@ -1,7 +1,7 @@
 # Open Items Statement: TANDOOR THE CLAY OVEN (TAN002) — Internal
 **Period:** from 22 Feb 2025 to 06 Oct 2026 &nbsp;|&nbsp; **Balance due:** R7,938.37
 **Status:** matcher v5 RATIFIED 2026-10-10 (`PROPOSED_Projection_Matching_Locks.md`); probable ties are proposals until approved · generated 2026-10-10 by `render_open_items.mjs`
-**Sources:** `analysis/debtors/TAN002/data/v5_projection.json` (TXT sha256 `51d10507d04c…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (86 confirmed / 3 probable ties) · **REVIEW ONLY:** ingestCoverage partial
+**Sources:** `analysis/debtors/TAN002/data/v5_projection.json` (TXT sha256 `51d10507d04c…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (89 confirmed / 0 probable ties) · **REVIEW ONLY:** ingestCoverage partial
 **Locks:** no period closed yet
 
 ---
@@ -136,22 +136,18 @@
 
 ## Appendix A: Probable ties (review required, not locked)
 
-| Tie | Rule | Documents | Variance (R) | Note |
-| :--- | :--- | :--- | ---: | :--- |
-| T0059 | CN_DN_PAIR | Invoice 49360, Crd Note 14472 | — | CN 2 day(s) after invoice |
-| T0068 | CN_AMOUNT_DATE | Invoice 48722, Crd Note 14235 | — | CN 0 day(s) after invoice |
-| T0087 | NEAR_SUM | Payment 42300, Invoice 47662, Invoice 47666, Invoice 47285 | -0.36 | within R1.00 truncation |
+_None._
 
 ## Appendix B: Confirmed ties by rule
 
 | Rule | Ties |
 | :--- | ---: |
-| LOCKED | 17 |
+| LOCKED | 20 |
 | CN_DN_PAIR | 49 |
 | EXACT_RUN | 2 |
 | EXACT_SINGLE | 6 |
-| EXACT_SUM | 7 |
-| EXACT_MONTH_SUM | 3 |
+| EXACT_SUM | 6 |
+| EXACT_MONTH_SUM | 4 |
 | CYL_EXCHANGE | 2 |
 
 Full tie list: `data/projection_matches.json`.
@@ -177,4 +173,7 @@ Full tie list: `data/projection_matches.json`.
 | L0015 | exact | Invoice 48186, Crd Note 14063 | 0.00 | Operator ruling 2026-10-10 (main session, "We can approve them in groups"): approved as groups CN-DN-1 and CN-AD of docs/previews/2026-10-10_probable_ties_by_group.md. CN-DN-1 = credit note and invoice of the same delivery-note number and lane, exact opposite amount, credit note 2-5 days after the invoice. CN-AD = exact opposite amount and lane, credit note 0-1 day after the invoice, a single candidate. In both groups no other invoice or credit note of the same lane, amount and delivery note exists (a rival would make the pairing arbitrary). Group-level judgement, not a document-by-document review. Tripwires: an allocation-detail export tagging a credit note of this group to a different invoice; a re-issue of either document. |
 | L0016 | exact | Invoice 49972, Crd Note 14678 | 0.00 | Operator ruling 2026-10-10 (main session, "We can approve them in groups"): approved as groups CN-DN-1 and CN-AD of docs/previews/2026-10-10_probable_ties_by_group.md. CN-DN-1 = credit note and invoice of the same delivery-note number and lane, exact opposite amount, credit note 2-5 days after the invoice. CN-AD = exact opposite amount and lane, credit note 0-1 day after the invoice, a single candidate. In both groups no other invoice or credit note of the same lane, amount and delivery note exists (a rival would make the pairing arbitrary). Group-level judgement, not a document-by-document review. Tripwires: an allocation-detail export tagging a credit note of this group to a different invoice; a re-issue of either document. |
 | L0017 | exact | Invoice 45066, Crd Note 13033 | 0.00 | Operator ruling 2026-10-10 (main session, "We can approve them in groups"): approved as groups CN-DN-1 and CN-AD of docs/previews/2026-10-10_probable_ties_by_group.md. CN-DN-1 = credit note and invoice of the same delivery-note number and lane, exact opposite amount, credit note 2-5 days after the invoice. CN-AD = exact opposite amount and lane, credit note 0-1 day after the invoice, a single candidate. In both groups no other invoice or credit note of the same lane, amount and delivery note exists (a rival would make the pairing arbitrary). Group-level judgement, not a document-by-document review. Tripwires: an allocation-detail export tagging a credit note of this group to a different invoice; a re-issue of either document. |
+| L0018 | exact | Crd Note 14472, Invoice 49361 | 0.00 | Operator decision 2026-10-10 (main session, "Yes, go ahead" on the recommendation for the eight remaining probable ties, tie 1): credit note 14472 (R-1,184.37, reference DN-21922-EMPTY-HIL, 23 Feb 2026) is paired with invoice 49361 (R1,184.37, same day as 49360, reference DN-21922-EMPTY-HIL), not with invoice 49360 (reference DN-21922-HILTON) that the matcher chose by date alone. The credit note and 49361 carry the same EMPTY reference. Three invoices of R1,184.37 exist (49360, 49361, 49577): the credit note credits the deposit invoice 49361 and the cash payment 43562 pays the gas invoices (49577, 49397, 49360), the reverse of the matcher default. The balance is unaffected. Operator-chosen pairing the matcher did not make. Tripwire: an allocation-detail export tagging CN 14472 to invoice 49360, or payment 43562 to 49361. |
+| L0019 | exact | Invoice 48722, Crd Note 14235 | 0.00 | Operator decision 2026-10-10 (main session, "Yes, go ahead" on the recommendations in docs/previews/2026-10-10_remaining_probable_ties_recommendations.md). Tie 2: invoice 48722 (R1,162.63) carries the reference 'REV CN#14235', a named reversal of credit note 14235 (R-1,162.63), same day. Tie 3: payment 42300 (R6,746.02, STAT 120) vs invoices 47662 + 47666 + 47285 (R6,746.38), the only combination, short R0.36, within the R1.00 truncation tolerance; the difference is carried as rounding on matched items. Tripwires: an allocation-detail export tagging CN 14235 to another invoice, or payment 42300 to other invoices. |
+| L0020 | exact | Payment 42300, Invoice 47662, Invoice 47666, Invoice 47285 | 0.36 | Operator decision 2026-10-10 (main session, "Yes, go ahead" on the recommendations in docs/previews/2026-10-10_remaining_probable_ties_recommendations.md). Tie 2: invoice 48722 (R1,162.63) carries the reference 'REV CN#14235', a named reversal of credit note 14235 (R-1,162.63), same day. Tie 3: payment 42300 (R6,746.02, STAT 120) vs invoices 47662 + 47666 + 47285 (R6,746.38), the only combination, short R0.36, within the R1.00 truncation tolerance; the difference is carried as rounding on matched items. Tripwires: an allocation-detail export tagging CN 14235 to another invoice, or payment 42300 to other invoices. |
 

@@ -38,29 +38,19 @@
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 02 Apr 2026 | Invoice | 50097 ¹ | DN#21861- EXTRA SV | Gas | 1,407.60 | -414.78 |
-| 16 Apr 2026 | Crd Note | 14792 | FAULTY RETURN | Gas | -498.53 | -913.31 |
-| 24 Apr 2026 | Invoice | 50363 ¹ | DN-22341 | Gas | 2,815.20 | 1,901.89 |
+| 16 Apr 2026 | Crd Note | 14792 | FAULTY RETURN | Gas | -498.53 | -2,320.91 |
 
 ### July 2026
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 15 Jul 2026 | Payment | 45216 ¹ | TRANSF \| STAT 128 | Gas | -5,430.30 | -3,528.41 |
-| 15 Jul 2026 | Invoice | 51846 ¹ | DN#22820 | Gas | 3,123.10 | -405.31 |
-| 20 Jul 2026 | Invoice | 51952 | DN#22696 | Gas | 3,123.10 | 2,717.79 |
-
-### August 2026
-
-| Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 05 Aug 2026 | Payment | 45589 ¹ | TRANSF \| STAT 129 | Gas | -3,123.00 | -405.21 |
+| 20 Jul 2026 | Invoice | 51952 | DN#22696 | Gas | 3,123.10 | 802.19 |
 
 ### October 2026
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 02 Oct 2026 | Invoice | 53432 | DN#23829 | Gas | 2,822.45 | 2,417.24 |
+| 02 Oct 2026 | Invoice | 53432 | DN#23829 | Gas | 2,822.45 | 3,624.64 |
 
 **Cylinder deposit opening balance:** R0.00
 
@@ -70,10 +60,7 @@
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 02 Apr 2026 | Invoice | 50097 ¹ | DN#21861- EXTRA SV | Cylinder deposit | 1,207.50 | 1,207.50 |
-| 16 Apr 2026 | Crd Note | 14792 | FAULTY RETURN | Cylinder deposit | -1,207.50 | 0.00 |
-
-¹ Payment received; allocation to this item is being confirmed.
+| 16 Apr 2026 | Crd Note | 14792 | FAULTY RETURN | Cylinder deposit | -1,207.50 | -1,207.50 |
 
 ---
 
@@ -82,7 +69,7 @@
 | Component | Gas (R) | Cylinder deposit (R) | Total (R) |
 | :--- | ---: | ---: | ---: |
 | Opening balance | 162.86 | 0.00 | 162.86 |
-| Open items listed above | 2,254.38 | 0.00 | 2,254.38 |
-| Rounding on settled items | 0.00 | 0.00 | 0.00 |
-| **Balance** | 2,417.24 | 0.00 | 2,417.24 |
+| Open items listed above | 3,461.78 | -1,207.50 | 2,254.28 |
+| Rounding on settled items | 0.10 | 0.00 | 0.10 |
+| **Balance** | 3,624.74 | -1,207.50 | 2,417.24 |
 

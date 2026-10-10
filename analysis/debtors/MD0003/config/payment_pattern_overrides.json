@@ -488,6 +488,91 @@
           }
         ],
         "createdAt": "2026-10-10T05:06:10.544Z"
+      },
+      {
+        "lock_id": "L0007",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "exact",
+          "net": 0,
+          "reason": "Operator decision 2026-10-10 (main session, \"Yes, go ahead\" on the recommendations in docs/previews/2026-10-10_remaining_probable_ties_recommendations.md). Tie 8: remittance advice RM-2026-03-02 (payment 43494, R13,845.67, STAT:124) names every document of the tie and reconciles to the cent (net R0.00). The two line differences are +R0.62 on invoice 48784 (advice R2,252.80 vs ERP R2,252.18) and -R0.62 on invoice 48906 (advice R3,403.01 vs ERP R3,403.63): offsetting, read as a typo in the advice; the ERP amounts stand. Tripwire: a corrected advice or an allocation export naming other documents for 43494.",
+          "approvedBy": "operator",
+          "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx",
+          "approvedTie": {
+            "tie_id": "T0009",
+            "rule": "REMITTANCE",
+            "docs": [
+              "Payment 43494",
+              "Invoice 48737",
+              "Invoice 48784",
+              "Invoice 48906",
+              "Invoice 48919",
+              "Invoice 48927",
+              "Crd Note 14328"
+            ]
+          }
+        },
+        "members": [
+          {
+            "key": "43494|Payment|LPG|2026-03-02|-13845.67",
+            "doc": "43494",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2026-03-02",
+            "amount": -13845.67
+          },
+          {
+            "key": "48737|Invoice|LPG|2026-01-12|3378.27",
+            "doc": "48737",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-01-12",
+            "amount": 3378.27
+          },
+          {
+            "key": "48784|Invoice|LPG|2026-01-14|2252.18",
+            "doc": "48784",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-01-14",
+            "amount": 2252.18
+          },
+          {
+            "key": "48906|Invoice|LPG|2026-01-22|3403.63",
+            "doc": "48906",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-01-22",
+            "amount": 3403.63
+          },
+          {
+            "key": "48919|Invoice|LPG|2026-01-23|4869.09",
+            "doc": "48919",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-01-23",
+            "amount": 4869.09
+          },
+          {
+            "key": "48927|Invoice|CYL|2026-01-22|5462.50",
+            "doc": "48927",
+            "entry_type": "Invoice",
+            "lane": "CYL",
+            "date": "2026-01-22",
+            "amount": 5462.5
+          },
+          {
+            "key": "14328|Crd Note|CYL|2026-01-24|-5520.00",
+            "doc": "14328",
+            "entry_type": "Crd Note",
+            "lane": "CYL",
+            "date": "2026-01-24",
+            "amount": -5520
+          }
+        ],
+        "createdAt": "2026-10-10T08:26:31.499Z"
       }
     ],
     "voids": []

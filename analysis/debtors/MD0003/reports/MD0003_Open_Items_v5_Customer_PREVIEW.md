@@ -75,38 +75,23 @@
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
 | 31 Dec 2025 | Payment | 42858 | TRANSF \| STAT:122 | Gas | -9,730.26 | -10,481.11 |
 
-### January 2026
-
-| Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 12 Jan 2026 | Invoice | 48737 ¹ | DN-21630 | Gas | 3,378.27 | -7,102.84 |
-| 14 Jan 2026 | Invoice | 48784 ¹ | DN#21635-KONDENI | Gas | 2,252.18 | -4,850.66 |
-| 22 Jan 2026 | Invoice | 48906 ¹ | DN#21659 | Gas | 3,403.63 | -1,447.03 |
-| 23 Jan 2026 | Invoice | 48919 ¹ | DN#21502ROSEDALE | Gas | 4,869.09 | 3,422.06 |
-
-### March 2026
-
-| Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 02 Mar 2026 | Payment | 43494 ¹ | TRANSF \| STAT:124 | Gas | -13,845.67 | -10,423.61 |
-
 ### September 2026
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 07 Sept 2026 | Invoice | 53004 | DN#24826- ROSEDALE | Gas | 5,709.61 | -4,714.00 |
-| 07 Sept 2026 | Invoice | 53019 | DN#24972 | Gas | 3,915.16 | -798.84 |
-| 07 Sept 2026 | Invoice | 53019 | DN#24972 | Other | 524.99 | -273.85 |
-| 15 Sept 2026 | Invoice | 53138 | DN#24853 | Other | 3,599.99 | 3,326.14 |
-| 23 Sept 2026 | Invoice | 53259 | DN#24871 | Gas | 3,915.16 | 7,241.30 |
-| 26 Sept 2026 | Invoice | 53316 | DN#21383 | Gas | 3,915.16 | 11,156.46 |
+| 07 Sept 2026 | Invoice | 53004 | DN#24826- ROSEDALE | Gas | 5,709.61 | -4,771.50 |
+| 07 Sept 2026 | Invoice | 53019 | DN#24972 | Gas | 3,915.16 | -856.34 |
+| 07 Sept 2026 | Invoice | 53019 | DN#24972 | Other | 524.99 | -331.35 |
+| 15 Sept 2026 | Invoice | 53138 | DN#24853 | Other | 3,599.99 | 3,268.64 |
+| 23 Sept 2026 | Invoice | 53259 | DN#24871 | Gas | 3,915.16 | 7,183.80 |
+| 26 Sept 2026 | Invoice | 53316 | DN#21383 | Gas | 3,915.16 | 11,098.96 |
 
 ### October 2026
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 01 Oct 2026 | Invoice | 53417 | DN#23831 | Gas | 2,746.04 | 13,902.50 |
-| 08 Oct 2026 | Invoice | 53508 | DN#23844 | Gas | 3,967.81 | 17,870.31 |
+| 01 Oct 2026 | Invoice | 53417 | DN#23831 | Gas | 2,746.04 | 13,845.00 |
+| 08 Oct 2026 | Invoice | 53508 | DN#23844 | Gas | 3,967.81 | 17,812.81 |
 
 **Cylinder deposit opening balance:** R0.00
 
@@ -124,21 +109,12 @@
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
 | 17 Sept 2025 | Crd Note | 13494 | DN#20387-EMPTY- ROS | Cylinder deposit | -3,047.50 | -1,782.50 |
 
-### January 2026
-
-| Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 22 Jan 2026 | Invoice | 48927 ¹ | DN#21502- EMPTY | Cylinder deposit | 5,462.50 | 3,680.00 |
-| 24 Jan 2026 | Crd Note | 14328 ¹ | DN#21502- EMPTY | Cylinder deposit | -5,520.00 | -1,840.00 |
-
 ### August 2026
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 08 Aug 2026 | Invoice | 52422 | DN#23948-EMPTY | Cylinder deposit | 1,035.00 | -805.00 |
-| 09 Aug 2026 | Crd Note | 15422 | DN#23948-EMPTY | Cylinder deposit | -517.50 | -1,322.50 |
-
-¹ Payment received; allocation to this item is being confirmed.
+| 08 Aug 2026 | Invoice | 52422 | DN#23948-EMPTY | Cylinder deposit | 1,035.00 | -747.50 |
+| 09 Aug 2026 | Crd Note | 15422 | DN#23948-EMPTY | Cylinder deposit | -517.50 | -1,265.00 |
 
 ---
 
@@ -147,7 +123,7 @@
 | Component | Gas (R) | Cylinder deposit (R) | Total (R) |
 | :--- | ---: | ---: | ---: |
 | Opening balance | 52,607.52 | 0.00 | 52,607.52 |
-| Open items listed above | -34,737.21 | -1,322.50 | -36,059.71 |
+| Open items listed above | -34,794.71 | -1,265.00 | -36,059.71 |
 | Rounding on settled items | 0.00 | 0.00 | 0.00 |
-| **Balance** | 17,870.31 | -1,322.50 | 16,547.81 |
+| **Balance** | 17,812.81 | -1,265.00 | 16,547.81 |
 

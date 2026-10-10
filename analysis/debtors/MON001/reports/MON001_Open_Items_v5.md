@@ -1,7 +1,7 @@
 # Open Items Statement: SHORTEN INTERNATIONAL 66 ON MONZALI (MON001) — Internal
 **Period:** from 11 Jul 2024 to 02 Oct 2026 &nbsp;|&nbsp; **Balance due:** R2,417.24
 **Status:** matcher v5 RATIFIED 2026-10-10 (`PROPOSED_Projection_Matching_Locks.md`); probable ties are proposals until approved · generated 2026-10-10 by `render_open_items.mjs`
-**Sources:** `analysis/debtors/MON001/data/v5_projection.json` (TXT sha256 `3b289b8d9d76…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (28 confirmed / 2 probable ties) · **REVIEW ONLY:** ingestCoverage partial
+**Sources:** `analysis/debtors/MON001/data/v5_projection.json` (TXT sha256 `3b289b8d9d76…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (30 confirmed / 0 probable ties) · **REVIEW ONLY:** ingestCoverage partial
 **Locks:** no period closed yet
 
 ---
@@ -81,16 +81,13 @@
 
 ## Appendix A: Probable ties (review required, not locked)
 
-| Tie | Rule | Documents | Variance (R) | Note |
-| :--- | :--- | :--- | ---: | :--- |
-| T0029 | PROXIMITY | Payment 45589, Invoice 51846 | -0.10 | within ±R5.00 |
-| T0030 | BATCH_SUM | Payment 45216, Invoice 50363, Invoice 50097 | 0.00 |  |
+_None._
 
 ## Appendix B: Confirmed ties by rule
 
 | Rule | Ties |
 | :--- | ---: |
-| LOCKED | 2 |
+| LOCKED | 4 |
 | CN_DN_PAIR | 15 |
 | EXACT_SINGLE | 10 |
 | EXACT_MONTH_SUM | 1 |
@@ -103,4 +100,6 @@ Full tie list: `data/projection_matches.json`.
 | :--- | :--- | :--- | ---: | :--- |
 | L0001 | exact | Invoice 49461, Crd Note 14512 | 0.00 | Operator ruling 2026-10-10 (main session, "We can approve them in groups"): approved as groups CN-DN-1 and CN-AD of docs/previews/2026-10-10_probable_ties_by_group.md. CN-DN-1 = credit note and invoice of the same delivery-note number and lane, exact opposite amount, credit note 2-5 days after the invoice. CN-AD = exact opposite amount and lane, credit note 0-1 day after the invoice, a single candidate. In both groups no other invoice or credit note of the same lane, amount and delivery note exists (a rival would make the pairing arbitrary). Group-level judgement, not a document-by-document review. Tripwires: an allocation-detail export tagging a credit note of this group to a different invoice; a re-issue of either document. |
 | L0002 | exact | Invoice 51953, Crd Note 15303 | 0.00 | Operator ruling 2026-10-10 (main session, "We can approve them in groups"): approved as groups CN-DN-1 and CN-AD of docs/previews/2026-10-10_probable_ties_by_group.md. CN-DN-1 = credit note and invoice of the same delivery-note number and lane, exact opposite amount, credit note 2-5 days after the invoice. CN-AD = exact opposite amount and lane, credit note 0-1 day after the invoice, a single candidate. In both groups no other invoice or credit note of the same lane, amount and delivery note exists (a rival would make the pairing arbitrary). Group-level judgement, not a document-by-document review. Tripwires: an allocation-detail export tagging a credit note of this group to a different invoice; a re-issue of either document. |
+| L0003 | exact | Payment 45589, Invoice 51846 | 0.10 | Operator decision 2026-10-10 (main session, "Yes, go ahead" on the recommendations in docs/previews/2026-10-10_remaining_probable_ties_recommendations.md). Tie 6: payment 45589 (R3,123.00, STAT 129) vs invoice 51846 (R3,123.10), short R0.10; a twin, 51952 (R3,123.10), is equally close and the oldest-first pick of 51846 is the ratified tie-break, so 51952 stays open unless another payment covers it. Tie 7 (medium confidence): payment 45216 (R5,430.30, STAT 128) = invoice 50363 (R2,815.20) + invoice 50097 (R1,407.60 gas + R1,207.50 deposit lane, 'EXTRA SV'), exact to the cent across two deliveries (DN 22341 and DN 21861), no alternative combination; invoices dated April, payment July. Tripwires: a remittance or allocation export naming different invoices for 45216 or 45589. |
+| L0004 | exact | Payment 45216, Invoice 50363, Invoice 50097 | 0.00 | Operator decision 2026-10-10 (main session, "Yes, go ahead" on the recommendations in docs/previews/2026-10-10_remaining_probable_ties_recommendations.md). Tie 6: payment 45589 (R3,123.00, STAT 129) vs invoice 51846 (R3,123.10), short R0.10; a twin, 51952 (R3,123.10), is equally close and the oldest-first pick of 51846 is the ratified tie-break, so 51952 stays open unless another payment covers it. Tie 7 (medium confidence): payment 45216 (R5,430.30, STAT 128) = invoice 50363 (R2,815.20) + invoice 50097 (R1,407.60 gas + R1,207.50 deposit lane, 'EXTRA SV'), exact to the cent across two deliveries (DN 22341 and DN 21861), no alternative combination; invoices dated April, payment July. Tripwires: a remittance or allocation export naming different invoices for 45216 or 45589. |
 

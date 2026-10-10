@@ -685,6 +685,138 @@
           }
         ],
         "createdAt": "2026-10-10T05:06:10.818Z"
+      },
+      {
+        "lock_id": "L0018",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "exact",
+          "net": 0,
+          "reason": "Operator decision 2026-10-10 (main session, \"Yes, go ahead\" on the recommendation for the eight remaining probable ties, tie 1): credit note 14472 (R-1,184.37, reference DN-21922-EMPTY-HIL, 23 Feb 2026) is paired with invoice 49361 (R1,184.37, same day as 49360, reference DN-21922-EMPTY-HIL), not with invoice 49360 (reference DN-21922-HILTON) that the matcher chose by date alone. The credit note and 49361 carry the same EMPTY reference. Three invoices of R1,184.37 exist (49360, 49361, 49577): the credit note credits the deposit invoice 49361 and the cash payment 43562 pays the gas invoices (49577, 49397, 49360), the reverse of the matcher default. The balance is unaffected. Operator-chosen pairing the matcher did not make. Tripwire: an allocation-detail export tagging CN 14472 to invoice 49360, or payment 43562 to 49361.",
+          "approvedBy": "operator",
+          "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx"
+        },
+        "members": [
+          {
+            "key": "14472|Crd Note|LPG|2026-02-23|-1184.37",
+            "doc": "14472",
+            "entry_type": "Crd Note",
+            "lane": "LPG",
+            "date": "2026-02-23",
+            "amount": -1184.37
+          },
+          {
+            "key": "49361|Invoice|LPG|2026-02-21|1184.37",
+            "doc": "49361",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-02-21",
+            "amount": 1184.37
+          }
+        ],
+        "createdAt": "2026-10-10T08:26:09.043Z"
+      },
+      {
+        "lock_id": "L0019",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "exact",
+          "net": 0,
+          "reason": "Operator decision 2026-10-10 (main session, \"Yes, go ahead\" on the recommendations in docs/previews/2026-10-10_remaining_probable_ties_recommendations.md). Tie 2: invoice 48722 (R1,162.63) carries the reference 'REV CN#14235', a named reversal of credit note 14235 (R-1,162.63), same day. Tie 3: payment 42300 (R6,746.02, STAT 120) vs invoices 47662 + 47666 + 47285 (R6,746.38), the only combination, short R0.36, within the R1.00 truncation tolerance; the difference is carried as rounding on matched items. Tripwires: an allocation-detail export tagging CN 14235 to another invoice, or payment 42300 to other invoices.",
+          "approvedBy": "operator",
+          "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx",
+          "approvedTie": {
+            "tie_id": "T0068",
+            "rule": "CN_AMOUNT_DATE",
+            "docs": [
+              "Invoice 48722",
+              "Crd Note 14235"
+            ]
+          }
+        },
+        "members": [
+          {
+            "key": "48722|Invoice|LPG|2026-01-09|1162.63",
+            "doc": "48722",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2026-01-09",
+            "amount": 1162.63
+          },
+          {
+            "key": "14235|Crd Note|LPG|2026-01-09|-1162.63",
+            "doc": "14235",
+            "entry_type": "Crd Note",
+            "lane": "LPG",
+            "date": "2026-01-09",
+            "amount": -1162.63
+          }
+        ],
+        "createdAt": "2026-10-10T08:26:30.903Z"
+      },
+      {
+        "lock_id": "L0020",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "exact",
+          "net": 0.36,
+          "roundingAccepted": true,
+          "maxNet": 1,
+          "reason": "Operator decision 2026-10-10 (main session, \"Yes, go ahead\" on the recommendations in docs/previews/2026-10-10_remaining_probable_ties_recommendations.md). Tie 2: invoice 48722 (R1,162.63) carries the reference 'REV CN#14235', a named reversal of credit note 14235 (R-1,162.63), same day. Tie 3: payment 42300 (R6,746.02, STAT 120) vs invoices 47662 + 47666 + 47285 (R6,746.38), the only combination, short R0.36, within the R1.00 truncation tolerance; the difference is carried as rounding on matched items. Tripwires: an allocation-detail export tagging CN 14235 to another invoice, or payment 42300 to other invoices.",
+          "approvedBy": "operator",
+          "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx",
+          "approvedTie": {
+            "tie_id": "T0087",
+            "rule": "NEAR_SUM",
+            "docs": [
+              "Payment 42300",
+              "Invoice 47662",
+              "Invoice 47666",
+              "Invoice 47285"
+            ]
+          }
+        },
+        "members": [
+          {
+            "key": "42300|Payment|LPG|2025-11-18|-6746.02",
+            "doc": "42300",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2025-11-18",
+            "amount": -6746.02
+          },
+          {
+            "key": "47662|Invoice|LPG|2025-11-14|2770.91",
+            "doc": "47662",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-11-14",
+            "amount": 2770.91
+          },
+          {
+            "key": "47666|Invoice|LPG|2025-11-14|1614.36",
+            "doc": "47666",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-11-14",
+            "amount": 1614.36
+          },
+          {
+            "key": "47285|Invoice|LPG|2025-10-24|2361.11",
+            "doc": "47285",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-10-24",
+            "amount": 2361.11
+          }
+        ],
+        "createdAt": "2026-10-10T08:26:30.903Z"
       }
     ],
     "voids": []
