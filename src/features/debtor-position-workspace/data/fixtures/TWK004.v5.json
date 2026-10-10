@@ -1,0 +1,34 @@
+{
+  "debtorCode": "TWK004",
+  "debtorName": "TWK AGRI",
+  "period": {
+    "from": "2025-03-01",
+    "to": "2026-10-10"
+  },
+  "version": "v5",
+  "workspaceStatus": "clean",
+  "lastGeneratedAt": "2026-10-10T11:33:24.044Z",
+  "source": "analysis/debtors/TWK002/raw/TWK004_2026-10-10.TXT",
+  "financialPosition": {
+    "lpgGasDebt": 61000,
+    "cylinderFinancialBalance": 0,
+    "totalDebtorBalance": 61000,
+    "erpStatedBalance": 61000,
+    "erpVariance": 0,
+    "subLedgerVariance": 0
+  },
+  "custodyPosition": {
+    "totalCustodyExposure": 0,
+    "lines": []
+  },
+  "reconciliationPosition": {
+    "cylinderVariance": 0,
+    "erpVariance": 0,
+    "subLedgerVariance": 0,
+    "exceptions": []
+  },
+  "artifacts": {
+    "statementMarkdown": "analysis/debtors/TWK004/reports/TWK004_Statement_Account_v5.md",
+    "txtSource": "analysis/debtors/TWK002/raw/TWK004_2026-10-10.TXT"
+  }
+}

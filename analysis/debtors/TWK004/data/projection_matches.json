@@ -1,0 +1,179 @@
+{
+  "status": "matcher v5 RATIFIED 2026-10-10 (PROPOSED_Projection_Matching_Locks.md); probable ties stay proposals until approved",
+  "debtorCode": "TWK004",
+  "generatedBy": "match_projection.mjs",
+  "generatedAt": "2026-10-10T11:33:26.502Z",
+  "projection": {
+    "path": "analysis/debtors/TWK004/data/v5_projection.json",
+    "txtSha256": "e3e46aca4947346ea34cf3d5e658ee74b46ed5c2b015c9e891f32acd0fe4057c",
+    "dbChannel": "supabase-connector-replay",
+    "generatedAt": "2026-10-10T11:33:24.045Z"
+  },
+  "reviewOnly": true,
+  "reviewOnlyReasons": [
+    "ingestCoverage partial"
+  ],
+  "locksRegistry": "none yet",
+  "matcherVersion": 5,
+  "closedThrough": null,
+  "locksApplied": 0,
+  "lockConflicts": [],
+  "rules": {
+    "exactTolerance": 0.05,
+    "proximityTolerance": 5,
+    "nearSumTolerance": 1,
+    "cnConfirmedMaxDays": 1,
+    "cnRivalFreeMaxDays": 0,
+    "maxSumInvoices": 3,
+    "maxRunInvoices": 12,
+    "fifoWindowDays": 14,
+    "combinationPool": 40,
+    "paymentTargetLanes": [
+      "LPG",
+      "OTHER"
+    ],
+    "batchMaxPayments": 3,
+    "batchMaxBatches": 2,
+    "batchWindowDays": 120,
+    "batchPool": 40,
+    "cylExchange": true,
+    "balanceZeroCut": true,
+    "remittanceLineTolerance": 0.05,
+    "remittanceBatchTolerancePct": 0.001
+  },
+  "summary": {
+    "ties": 3,
+    "confirmed": 2,
+    "probable": 1,
+    "byRule": {
+      "CN_DN_PAIR": 2,
+      "EXACT_RUN": 1
+    },
+    "paymentsTotal": 1,
+    "paymentsUnallocated": 0
+  },
+  "proof": {
+    "rebuiltClosing": 61000,
+    "projectionClosing": 61000,
+    "erpCurrentBalance": 61000,
+    "holds": true
+  },
+  "residual": {
+    "openingBfUnitemised": 0,
+    "openInvoicesLpgOther": {
+      "count": 3,
+      "amount": 61000,
+      "rows": [
+        "52948|Invoice|OTHER|L9",
+        "53113|Invoice|OTHER|L10",
+        "53536|Invoice|LPG|L12"
+      ]
+    },
+    "openInvoicesCyl": {
+      "count": 0,
+      "amount": 0,
+      "rows": []
+    },
+    "unmatchedCredits": {
+      "count": 0,
+      "amount": 0,
+      "rows": []
+    },
+    "unallocatedPayments": {
+      "count": 0,
+      "amount": 0,
+      "rows": []
+    },
+    "otherUntied": {
+      "count": 0,
+      "amount": 0,
+      "rows": []
+    },
+    "tieNets": 0,
+    "discountJournalsPending": 0
+  },
+  "remittance": null,
+  "ties": [
+    {
+      "tie_id": "T0001",
+      "rule": "CN_DN_PAIR",
+      "confidence": "CONFIRMED",
+      "members": [
+        "47297|Invoice|OTHER|L5",
+        "13744|Crd Note|OTHER|L4"
+      ],
+      "docs": [
+        "Invoice 47297",
+        "Crd Note 13744"
+      ],
+      "net": 0,
+      "dn": "20749",
+      "lagDays": 0
+    },
+    {
+      "tie_id": "T0002",
+      "rule": "CN_DN_PAIR",
+      "confidence": "PROBABLE",
+      "members": [
+        "53535|Invoice|LPG|L11",
+        "15781|Crd Note|LPG|L13"
+      ],
+      "docs": [
+        "Invoice 53535",
+        "Crd Note 15781"
+      ],
+      "net": 0,
+      "dn": "24718",
+      "lagDays": 1
+    },
+    {
+      "tie_id": "T0003",
+      "rule": "EXACT_RUN",
+      "confidence": "CONFIRMED",
+      "members": [
+        "43500|Payment|LPG|L8",
+        "46858|Invoice|OTHER|L2",
+        "47176|Invoice|OTHER|L3",
+        "47303|Invoice|OTHER|L6",
+        "47584|Invoice|OTHER|L7"
+      ],
+      "docs": [
+        "Payment 43500",
+        "Invoice 46858",
+        "Invoice 47176",
+        "Invoice 47303",
+        "Invoice 47584"
+      ],
+      "net": 0,
+      "payment": {
+        "doc": "43500",
+        "date": "2026-02-25",
+        "amount": 25000.31
+      },
+      "invoices": [
+        {
+          "doc": "46858",
+          "date": "2025-10-03",
+          "amount": 9000.36
+        },
+        {
+          "doc": "47176",
+          "date": "2025-10-18",
+          "amount": 3000.12
+        },
+        {
+          "doc": "47303",
+          "date": "2025-10-24",
+          "amount": 7000.28
+        },
+        {
+          "doc": "47584",
+          "date": "2025-11-10",
+          "amount": 5999.55
+        }
+      ],
+      "variance": 0
+    }
+  ],
+  "unallocatedPayments": []
+}

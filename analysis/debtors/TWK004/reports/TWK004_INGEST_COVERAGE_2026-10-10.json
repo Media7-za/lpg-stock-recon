@@ -1,0 +1,214 @@
+{
+  "account_no": "TWK004",
+  "generated_at": "2026-10-10T11:32:39.657Z",
+  "statement_txt": "analysis/debtors/TWK002/raw/TWK004_2026-10-10.TXT",
+  "period_start": "2025-03-01",
+  "txt_as_at": "2026-10-10",
+  "header_sync_as_at": "2026-10-08",
+  "items_sync_as_at": "2026-10-08",
+  "ingestFreshness": "stale",
+  "ingestCoverage": "partial",
+  "display_status": "STALE_PARTIAL",
+  "summary": {
+    "documents_in_txt": 12,
+    "healthy": 9,
+    "gaps": 3,
+    "db_only": 0
+  },
+  "gates": {
+    "financial_balance_from_txt": "ALLOWED",
+    "custody": "BLOCKED",
+    "sku_analysis": "BLOCKED",
+    "allocation": "BLOCKED"
+  },
+  "ingest_gate": {
+    "status": "pass",
+    "ingestBlockedScopes": [
+      "custody",
+      "sku_analysis",
+      "allocation"
+    ]
+  },
+  "documents": [
+    {
+      "doc_no": "46858",
+      "doc_type": "Invoice",
+      "tx_date": "2025-10-03",
+      "ref_no": "DN#20289- 313100132",
+      "amount": 9000.36,
+      "in_txt": true,
+      "header_present": true,
+      "lines_present": true,
+      "required_ingest_shape": "header_and_lines",
+      "classification": "HEALTHY",
+      "blocks": [],
+      "exception": null
+    },
+    {
+      "doc_no": "47176",
+      "doc_type": "Invoice",
+      "tx_date": "2025-10-18",
+      "ref_no": "DN#20195",
+      "amount": 3000.12,
+      "in_txt": true,
+      "header_present": true,
+      "lines_present": true,
+      "required_ingest_shape": "header_and_lines",
+      "classification": "HEALTHY",
+      "blocks": [],
+      "exception": null
+    },
+    {
+      "doc_no": "13744",
+      "doc_type": "Crd Note",
+      "tx_date": "2025-10-24",
+      "ref_no": "DN#20749",
+      "amount": -7000.28,
+      "in_txt": true,
+      "header_present": true,
+      "lines_present": true,
+      "required_ingest_shape": "header_and_lines",
+      "classification": "HEALTHY",
+      "blocks": [],
+      "exception": null
+    },
+    {
+      "doc_no": "47297",
+      "doc_type": "Invoice",
+      "tx_date": "2025-10-24",
+      "ref_no": "DN#20749",
+      "amount": 7000.28,
+      "in_txt": true,
+      "header_present": true,
+      "lines_present": true,
+      "required_ingest_shape": "header_and_lines",
+      "classification": "HEALTHY",
+      "blocks": [],
+      "exception": null
+    },
+    {
+      "doc_no": "47303",
+      "doc_type": "Invoice",
+      "tx_date": "2025-10-24",
+      "ref_no": "DN-20749-313100223",
+      "amount": 7000.28,
+      "in_txt": true,
+      "header_present": true,
+      "lines_present": true,
+      "required_ingest_shape": "header_and_lines",
+      "classification": "HEALTHY",
+      "blocks": [],
+      "exception": null
+    },
+    {
+      "doc_no": "47584",
+      "doc_type": "Invoice",
+      "tx_date": "2025-11-10",
+      "ref_no": "DN-20779-313100349-0",
+      "amount": 5999.55,
+      "in_txt": true,
+      "header_present": true,
+      "lines_present": true,
+      "required_ingest_shape": "header_and_lines",
+      "classification": "HEALTHY",
+      "blocks": [],
+      "exception": null
+    },
+    {
+      "doc_no": "43500",
+      "doc_type": "Payment",
+      "tx_date": "2026-02-25",
+      "ref_no": "TRANSF | STAT 123",
+      "amount": -25000.31,
+      "in_txt": true,
+      "header_present": true,
+      "lines_present": false,
+      "required_ingest_shape": "header_only",
+      "classification": "EXPECTED_HEADER_ONLY",
+      "blocks": [],
+      "exception": null
+    },
+    {
+      "doc_no": "52948",
+      "doc_type": "Invoice",
+      "tx_date": "2026-09-04",
+      "ref_no": "DN#24817",
+      "amount": 9000,
+      "in_txt": true,
+      "header_present": true,
+      "lines_present": true,
+      "required_ingest_shape": "header_and_lines",
+      "classification": "HEALTHY",
+      "blocks": [],
+      "exception": null
+    },
+    {
+      "doc_no": "53113",
+      "doc_type": "Invoice",
+      "tx_date": "2026-09-10",
+      "ref_no": "DN#24985",
+      "amount": 22000,
+      "in_txt": true,
+      "header_present": true,
+      "lines_present": true,
+      "required_ingest_shape": "header_and_lines",
+      "classification": "HEALTHY",
+      "blocks": [],
+      "exception": null
+    },
+    {
+      "doc_no": "53535",
+      "doc_type": "Invoice",
+      "tx_date": "2026-10-09",
+      "ref_no": "DN#24718",
+      "amount": 32500,
+      "in_txt": true,
+      "header_present": false,
+      "lines_present": false,
+      "required_ingest_shape": "header_and_lines",
+      "classification": "MISSING_HEADER_AND_LINES",
+      "blocks": [
+        "custody",
+        "sku_analysis",
+        "allocation"
+      ],
+      "exception": null
+    },
+    {
+      "doc_no": "53536",
+      "doc_type": "Invoice",
+      "tx_date": "2026-10-09",
+      "ref_no": "DN#24718",
+      "amount": 30000,
+      "in_txt": true,
+      "header_present": false,
+      "lines_present": false,
+      "required_ingest_shape": "header_and_lines",
+      "classification": "MISSING_HEADER_AND_LINES",
+      "blocks": [
+        "custody",
+        "sku_analysis",
+        "allocation"
+      ],
+      "exception": null
+    },
+    {
+      "doc_no": "15781",
+      "doc_type": "Crd Note",
+      "tx_date": "2026-10-10",
+      "ref_no": "DN#24718",
+      "amount": -32500,
+      "in_txt": true,
+      "header_present": false,
+      "lines_present": false,
+      "required_ingest_shape": "header_and_lines",
+      "classification": "MISSING_HEADER_AND_LINES",
+      "blocks": [
+        "custody",
+        "sku_analysis",
+        "allocation"
+      ],
+      "exception": null
+    }
+  ]
+}

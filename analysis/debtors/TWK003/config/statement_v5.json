@@ -1,0 +1,24 @@
+{
+  "debtorCode": "TWK003",
+  "debtorName": "TWK AGRI",
+  "txtPath": "analysis/debtors/TWK002/raw/TWK003_2026-10-10.TXT",
+  "periodStart": "2025-03-01",
+  "combinedBf": 0.0,
+  "bfSourceNote": "TWK003_2026-10-10.TXT line 1 BALANCE B/F 0.00 (fresh ERP export dated 2026-10-10, verified by operator: header = running balance chain = totals). Child account of TWK002 (ADM-94 Q1/Q15, consolidated family).",
+  "cylOpeningFinancial": 0.0,
+  "paymentLane": "LPG",
+  "cylOpeningQty": {
+    "14.1": 0,
+    "19.1": 0,
+    "9.1": 0,
+    "D.1": 0,
+    "S.1": 0
+  },
+  "skuRates": {
+    "14.1": 575,
+    "19.1": 690,
+    "9.1": 517.5,
+    "D.1": 1150,
+    "S.1": 1150
+  }
+}

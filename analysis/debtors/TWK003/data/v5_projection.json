@@ -1,0 +1,184 @@
+{
+  "schemaVersion": 1,
+  "status": "RATIFIED 2026-10-10 (PROPOSED_Projection_Matching_Locks.md, projection builder)",
+  "debtorCode": "TWK003",
+  "generatedBy": "reconcile_debtor_v5_from_txt.mjs",
+  "generatedAt": "2026-10-10T11:33:23.863Z",
+  "source": {
+    "txtPath": "analysis/debtors/TWK002/raw/TWK003_2026-10-10.TXT",
+    "txtSha256": "9b68fd84a163f74c756c2a5f8943194464972e8453093ebd4446e9b30d0bebf8",
+    "configSha256": "116fa55ea4af4ad6894cfcb0cc4a7c04a93174f0be646e38455e967c1810d12c",
+    "erpCurrentBalance": -300,
+    "dbChannel": "supabase-connector-replay"
+  },
+  "window": {
+    "periodStart": "2025-03-01",
+    "lastRowDate": "2026-02-25",
+    "paymentLane": "LPG"
+  },
+  "openings": {
+    "combinedBf": 0,
+    "lpgOpeningBf": 0,
+    "cylOpeningFinancial": 0
+  },
+  "closings": {
+    "lpg": -300,
+    "cyl": 0,
+    "combined": -300,
+    "erpVariance": 0
+  },
+  "ingestGate": {
+    "ingestCoverage": "complete",
+    "ingestFreshness": "current",
+    "displayStatus": "CURRENT_COMPLETE"
+  },
+  "checks": {
+    "lpgRowsReproduce1A": true,
+    "cylRowsReproduce1B": true,
+    "tiesToErpHeader": true
+  },
+  "summary": {
+    "rowCount": 9,
+    "splitBasisCounts": {
+      "DB_LINES": 8,
+      "PAYMENT_LANE": 1
+    }
+  },
+  "rows": [
+    {
+      "row_id": "46857|Invoice|OTHER|L2",
+      "doc_no": "00046857",
+      "clean_doc": "46857",
+      "entry_type": "Invoice",
+      "kind": "invoice",
+      "date": "2025-10-03",
+      "ref_no": "DN#20290- 391175708",
+      "txt_line": 2,
+      "txt_amount": 11000.44,
+      "split_basis": "DB_LINES",
+      "confirmable": true,
+      "lane": "OTHER",
+      "amount": 11000.44
+    },
+    {
+      "row_id": "47076|Invoice|OTHER|L3",
+      "doc_no": "00047076",
+      "clean_doc": "47076",
+      "entry_type": "Invoice",
+      "kind": "invoice",
+      "date": "2025-10-10",
+      "ref_no": "DN #20297",
+      "txt_line": 3,
+      "txt_amount": 11000.44,
+      "split_basis": "DB_LINES",
+      "confirmable": true,
+      "lane": "OTHER",
+      "amount": 11000.44
+    },
+    {
+      "row_id": "47523|Invoice|OTHER|L4",
+      "doc_no": "00047523",
+      "clean_doc": "47523",
+      "entry_type": "Invoice",
+      "kind": "invoice",
+      "date": "2025-11-04",
+      "ref_no": "DN #20774",
+      "txt_line": 4,
+      "txt_amount": 11000.44,
+      "split_basis": "DB_LINES",
+      "confirmable": true,
+      "lane": "OTHER",
+      "amount": 11000.44
+    },
+    {
+      "row_id": "47866|Invoice|OTHER|L5",
+      "doc_no": "00047866",
+      "clean_doc": "47866",
+      "entry_type": "Invoice",
+      "kind": "invoice",
+      "date": "2025-11-21",
+      "ref_no": "DN # 21166",
+      "txt_line": 5,
+      "txt_amount": 2000,
+      "split_basis": "DB_LINES",
+      "confirmable": true,
+      "lane": "OTHER",
+      "amount": 2000
+    },
+    {
+      "row_id": "47880|Invoice|OTHER|L6",
+      "doc_no": "00047880",
+      "clean_doc": "47880",
+      "entry_type": "Invoice",
+      "kind": "invoice",
+      "date": "2025-11-22",
+      "ref_no": "DN#21166",
+      "txt_line": 6,
+      "txt_amount": 5499.99,
+      "split_basis": "DB_LINES",
+      "confirmable": true,
+      "lane": "OTHER",
+      "amount": 5499.99
+    },
+    {
+      "row_id": "13933|Crd Note|OTHER|L7",
+      "doc_no": "00013933",
+      "clean_doc": "13933",
+      "entry_type": "Crd Note",
+      "kind": "credit_note",
+      "date": "2025-11-24",
+      "ref_no": "DN # 21166",
+      "txt_line": 7,
+      "txt_amount": -2300,
+      "split_basis": "DB_LINES",
+      "confirmable": true,
+      "lane": "OTHER",
+      "amount": -2300
+    },
+    {
+      "row_id": "47991|Invoice|OTHER|L9",
+      "doc_no": "00047991",
+      "clean_doc": "47991",
+      "entry_type": "Invoice",
+      "kind": "invoice",
+      "date": "2025-11-28",
+      "ref_no": "391176350-001 /21166",
+      "txt_line": 9,
+      "txt_amount": 5499.99,
+      "split_basis": "DB_LINES",
+      "confirmable": true,
+      "lane": "OTHER",
+      "amount": 5499.99
+    },
+    {
+      "row_id": "13966|Crd Note|OTHER|L8",
+      "doc_no": "00013966",
+      "clean_doc": "13966",
+      "entry_type": "Crd Note",
+      "kind": "credit_note",
+      "date": "2025-11-28",
+      "ref_no": "DN#21166",
+      "txt_line": 8,
+      "txt_amount": -5499.99,
+      "split_basis": "DB_LINES",
+      "confirmable": true,
+      "lane": "OTHER",
+      "amount": -5499.99
+    },
+    {
+      "row_id": "43500|Payment|LPG|L10",
+      "doc_no": "00043500",
+      "clean_doc": "43500",
+      "entry_type": "Payment",
+      "kind": "payment",
+      "date": "2026-02-25",
+      "ref_no": "TRANSF | STAT 123",
+      "txt_line": 10,
+      "txt_amount": -38501.31,
+      "split_basis": "PAYMENT_LANE",
+      "confirmable": true,
+      "lane": "LPG",
+      "amount": -38501.31
+    }
+  ]
+}

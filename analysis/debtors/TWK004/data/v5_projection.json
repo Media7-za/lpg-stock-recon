@@ -1,0 +1,230 @@
+{
+  "schemaVersion": 1,
+  "status": "RATIFIED 2026-10-10 (PROPOSED_Projection_Matching_Locks.md, projection builder)",
+  "debtorCode": "TWK004",
+  "generatedBy": "reconcile_debtor_v5_from_txt.mjs",
+  "generatedAt": "2026-10-10T11:33:24.045Z",
+  "source": {
+    "txtPath": "analysis/debtors/TWK002/raw/TWK004_2026-10-10.TXT",
+    "txtSha256": "e3e46aca4947346ea34cf3d5e658ee74b46ed5c2b015c9e891f32acd0fe4057c",
+    "configSha256": "edf2b96d003d2852fbd48cbe50aa3c4c21da06ac793e11222e6c12848cd30fc1",
+    "erpCurrentBalance": 61000,
+    "dbChannel": "supabase-connector-replay"
+  },
+  "window": {
+    "periodStart": "2025-03-01",
+    "lastRowDate": "2026-10-10",
+    "paymentLane": "LPG"
+  },
+  "openings": {
+    "combinedBf": 0,
+    "lpgOpeningBf": 0,
+    "cylOpeningFinancial": 0
+  },
+  "closings": {
+    "lpg": 61000,
+    "cyl": 0,
+    "combined": 61000,
+    "erpVariance": 0
+  },
+  "ingestGate": {
+    "ingestCoverage": "partial",
+    "ingestFreshness": "stale",
+    "displayStatus": "STALE_PARTIAL"
+  },
+  "checks": {
+    "lpgRowsReproduce1A": true,
+    "cylRowsReproduce1B": true,
+    "tiesToErpHeader": true
+  },
+  "summary": {
+    "rowCount": 12,
+    "splitBasisCounts": {
+      "DB_LINES": 8,
+      "PAYMENT_LANE": 1,
+      "HEADER_FALLBACK": 3
+    }
+  },
+  "rows": [
+    {
+      "row_id": "46858|Invoice|OTHER|L2",
+      "doc_no": "00046858",
+      "clean_doc": "46858",
+      "entry_type": "Invoice",
+      "kind": "invoice",
+      "date": "2025-10-03",
+      "ref_no": "DN#20289- 313100132",
+      "txt_line": 2,
+      "txt_amount": 9000.36,
+      "split_basis": "DB_LINES",
+      "confirmable": true,
+      "lane": "OTHER",
+      "amount": 9000.36
+    },
+    {
+      "row_id": "47176|Invoice|OTHER|L3",
+      "doc_no": "00047176",
+      "clean_doc": "47176",
+      "entry_type": "Invoice",
+      "kind": "invoice",
+      "date": "2025-10-18",
+      "ref_no": "DN#20195",
+      "txt_line": 3,
+      "txt_amount": 3000.12,
+      "split_basis": "DB_LINES",
+      "confirmable": true,
+      "lane": "OTHER",
+      "amount": 3000.12
+    },
+    {
+      "row_id": "47297|Invoice|OTHER|L5",
+      "doc_no": "00047297",
+      "clean_doc": "47297",
+      "entry_type": "Invoice",
+      "kind": "invoice",
+      "date": "2025-10-24",
+      "ref_no": "DN#20749",
+      "txt_line": 5,
+      "txt_amount": 7000.28,
+      "split_basis": "DB_LINES",
+      "confirmable": true,
+      "lane": "OTHER",
+      "amount": 7000.28
+    },
+    {
+      "row_id": "47303|Invoice|OTHER|L6",
+      "doc_no": "00047303",
+      "clean_doc": "47303",
+      "entry_type": "Invoice",
+      "kind": "invoice",
+      "date": "2025-10-24",
+      "ref_no": "DN-20749-313100223",
+      "txt_line": 6,
+      "txt_amount": 7000.28,
+      "split_basis": "DB_LINES",
+      "confirmable": true,
+      "lane": "OTHER",
+      "amount": 7000.28
+    },
+    {
+      "row_id": "13744|Crd Note|OTHER|L4",
+      "doc_no": "00013744",
+      "clean_doc": "13744",
+      "entry_type": "Crd Note",
+      "kind": "credit_note",
+      "date": "2025-10-24",
+      "ref_no": "DN#20749",
+      "txt_line": 4,
+      "txt_amount": -7000.28,
+      "split_basis": "DB_LINES",
+      "confirmable": true,
+      "lane": "OTHER",
+      "amount": -7000.28
+    },
+    {
+      "row_id": "47584|Invoice|OTHER|L7",
+      "doc_no": "00047584",
+      "clean_doc": "47584",
+      "entry_type": "Invoice",
+      "kind": "invoice",
+      "date": "2025-11-10",
+      "ref_no": "DN-20779-313100349-0",
+      "txt_line": 7,
+      "txt_amount": 5999.55,
+      "split_basis": "DB_LINES",
+      "confirmable": true,
+      "lane": "OTHER",
+      "amount": 5999.55
+    },
+    {
+      "row_id": "43500|Payment|LPG|L8",
+      "doc_no": "00043500",
+      "clean_doc": "43500",
+      "entry_type": "Payment",
+      "kind": "payment",
+      "date": "2026-02-25",
+      "ref_no": "TRANSF | STAT 123",
+      "txt_line": 8,
+      "txt_amount": -25000.31,
+      "split_basis": "PAYMENT_LANE",
+      "confirmable": true,
+      "lane": "LPG",
+      "amount": -25000.31
+    },
+    {
+      "row_id": "52948|Invoice|OTHER|L9",
+      "doc_no": "00052948",
+      "clean_doc": "52948",
+      "entry_type": "Invoice",
+      "kind": "invoice",
+      "date": "2026-09-04",
+      "ref_no": "DN#24817",
+      "txt_line": 9,
+      "txt_amount": 9000,
+      "split_basis": "DB_LINES",
+      "confirmable": true,
+      "lane": "OTHER",
+      "amount": 9000
+    },
+    {
+      "row_id": "53113|Invoice|OTHER|L10",
+      "doc_no": "00053113",
+      "clean_doc": "53113",
+      "entry_type": "Invoice",
+      "kind": "invoice",
+      "date": "2026-09-10",
+      "ref_no": "DN#24985",
+      "txt_line": 10,
+      "txt_amount": 22000,
+      "split_basis": "DB_LINES",
+      "confirmable": true,
+      "lane": "OTHER",
+      "amount": 22000
+    },
+    {
+      "row_id": "53535|Invoice|LPG|L11",
+      "doc_no": "00053535",
+      "clean_doc": "53535",
+      "entry_type": "Invoice",
+      "kind": "invoice",
+      "date": "2026-10-09",
+      "ref_no": "DN#24718",
+      "txt_line": 11,
+      "txt_amount": 32500,
+      "split_basis": "HEADER_FALLBACK",
+      "confirmable": false,
+      "lane": "LPG",
+      "amount": 32500
+    },
+    {
+      "row_id": "53536|Invoice|LPG|L12",
+      "doc_no": "00053536",
+      "clean_doc": "53536",
+      "entry_type": "Invoice",
+      "kind": "invoice",
+      "date": "2026-10-09",
+      "ref_no": "DN#24718",
+      "txt_line": 12,
+      "txt_amount": 30000,
+      "split_basis": "HEADER_FALLBACK",
+      "confirmable": false,
+      "lane": "LPG",
+      "amount": 30000
+    },
+    {
+      "row_id": "15781|Crd Note|LPG|L13",
+      "doc_no": "00015781",
+      "clean_doc": "15781",
+      "entry_type": "Crd Note",
+      "kind": "credit_note",
+      "date": "2026-10-10",
+      "ref_no": "DN#24718",
+      "txt_line": 13,
+      "txt_amount": -32500,
+      "split_basis": "HEADER_FALLBACK",
+      "confirmable": false,
+      "lane": "LPG",
+      "amount": -32500
+    }
+  ]
+}
