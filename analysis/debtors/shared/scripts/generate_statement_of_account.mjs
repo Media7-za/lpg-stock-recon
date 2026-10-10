@@ -50,7 +50,13 @@ import {
   GATE_MEANING,
   REMEDY,
 } from './debenq_open_invoices.mjs';
-import { buildOpenItems } from './open_items.mjs';
+import { buildOpenItems, customerSummaryLines } from './open_items.mjs';
+import {
+  loadFamilyInputs,
+  buildFamilyStatement,
+  renderFamilyCustomerMarkdown,
+  renderFamilyInternalMarkdown,
+} from './family_statement.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '../../../..');
@@ -335,23 +341,8 @@ function buildOpenItemsCustomerLines({ cfg, debtorCode, asAtLabel, totalDue, mod
   const items = [...parts.lpg.lines, ...parts.cyl.lines].sort(
     (a, b) => a.date.localeCompare(b.date) || String(a.doc).localeCompare(String(b.doc)),
   );
-  const openingTotal = round2(parts.lpg.opening + parts.cyl.opening + parts.lpg.openingSettled + parts.cyl.openingSettled);
   const itemsTotal = round2(items.reduce((s, l) => s + l.amount, 0));
-  const named = [];
-  if (openingTotal) named.push(['Opening balance brought forward', openingTotal]);
-  const rounding = round2(parts.lpg.rounding + parts.cyl.rounding);
-  if (rounding) named.push(['Rounding on settled items', rounding]);
-  for (const [k, text] of [
-    ['applied_to_bf', 'Payments against opening balance'],
-    ['part_payment', 'Part-payments on items listed above'],
-    ['customer_credit', 'Credit in your favour'],
-    ['short_paid', 'Short payments still owed'],
-  ]) {
-    const v = round2((parts.lpg.rulings[k] || 0) + (parts.cyl.rulings[k] || 0));
-    if (v) named.push([text, v]);
-  }
-  const journals = round2(parts.lpg.journalsPending + parts.cyl.journalsPending);
-  if (journals) named.push(['Settlement discount (journal pending)', journals]);
+  const named = customerSummaryLines(model);
   const statementTotal = round2(itemsTotal + named.reduce((s, [, v]) => s + v, 0));
 
   const lines = [];
@@ -443,6 +434,41 @@ function main() {
   const debtorCode = args.debtor || 'TWK002';
   const cfgPath = path.join(ROOT, 'analysis/debtors', debtorCode, 'config/statement_of_account.json');
   const cfg = loadConfig(debtorCode);
+
+  // Consolidated family statement (config consolidatedFamily + customerLayout open_items): the parent
+  // and its payerGroup children on one customer statement. Every safeguard is checked here, before
+  // anything is written; --force does not override them. See family_statement.mjs.
+  let family = null;
+  if (cfg.customerLayout === 'open_items' && cfg.consolidatedFamily) {
+    try {
+      const members = loadFamilyInputs({ root: ROOT, parentCode: debtorCode, parentTxtRel: cfg.primaryTxt });
+      family = buildFamilyStatement(members);
+    } catch (e) {
+      console.error(`[${debtorCode}] ABORTED — family inputs could not be loaded: ${e.message}`);
+      process.exitCode = 1;
+      return;
+    }
+    if (family.problems.length) {
+      console.error(`[${debtorCode}] ABORTED — consolidated statement does not tie (nothing written):`);
+      for (const p of family.problems) console.error(`[${debtorCode}]   - ${p}`);
+      process.exitCode = 1;
+      return;
+    }
+    if (args.snapshot) {
+      console.error(`[${debtorCode}] ABORTED — --snapshot is not supported for a consolidated family statement (release is an operator decision; nothing archived).`);
+      process.exitCode = 1;
+      return;
+    }
+    if (family.draft) {
+      for (const r of family.draftReasons) console.warn(`[${debtorCode}] DRAFT: ${r}`);
+      if (args.pdf) {
+        console.error(`[${debtorCode}] ABORTED — no PDF is produced for a DRAFT family statement.`);
+        process.exitCode = 1;
+        return;
+      }
+    }
+    if (!args.asAt) args.asAt = family.asAtIso;
+  }
   if (!args.asAt && cfg.customerLayout === 'open_items') {
     try {
       const { projection } = loadOpenItemsCustomer(debtorCode);
@@ -555,7 +581,7 @@ function main() {
   }
 
   const siteTotal = round2(siteBalances.reduce((s, x) => s + x.headerBalance, 0));
-  const totalDue = round2(primaryHeader + siteTotal);
+  const totalDue = family ? family.erpTotal : round2(primaryHeader + siteTotal);
   const movementThisMonth =
     openingBalance != null ? round2(primaryHeader - openingBalance) : null;
 
@@ -608,7 +634,7 @@ function main() {
     });
   }
   const bridgeSum = round2(bridgeLines.reduce((s, l) => s + l.amount, 0));
-  if (Math.abs(bridgeSum - accountLevelTotal) > 0.05) {
+  if (!family && Math.abs(bridgeSum - accountLevelTotal) > 0.05) {
     console.warn(
       `[${debtorCode}] WARNING: balanceBridgeLines sum R${fmtAmount(bridgeSum)} ≠ account-level R${fmtAmount(accountLevelTotal)} — check config/statement_of_account.json`,
     );
@@ -634,7 +660,12 @@ function main() {
     customerDueBasis === 'open_invoices' ? sumOpenInvoices : totalDue;
 
   let lines = [];
-  if (customerLayout === 'open_items') {
+  if (family) {
+    lines = [renderFamilyCustomerMarkdown(family, { cfg: cfgForRun, asAtLabel })];
+    console.log(
+      `[${debtorCode}] Consolidated ${family.draft ? 'DRAFT PREVIEW' : 'statement'} (${family.members.map((m) => `${m.code} R${fmt(m.balance)}`).join(', ')}): ${family.items.length} open item(s) R${fmt(family.itemsTotal)} + other R${fmt(family.namedTotal)} → amount due R${fmt(family.statementTotal)} = ERP sum R${fmt(family.erpTotal)}`,
+    );
+  } else if (customerLayout === 'open_items') {
     const { projection, matches, model } = loadOpenItemsCustomer(debtorCode);
     const problems = [];
     if (!model.proof.holds) problems.push(`open items rebuild R${fmt(model.proof.combined)} ≠ projection closing R${fmt(model.proof.projectionClosing)}`);
@@ -770,11 +801,20 @@ function main() {
   const liveOutDir = path.join(ROOT, cfg.outputDir);
   const outDir = snapshotCtx ? snapshotCtx.snapshotDir : liveOutDir;
   fs.mkdirSync(outDir, { recursive: true });
-  const mdBaseName = snapshotCtx ? snapshotCtx.baseName : cfg.outputBaseName;
+  // A draft never takes the release file name.
+  const mdBaseName = snapshotCtx ? snapshotCtx.baseName : family?.draft ? `${cfg.outputBaseName}_Consolidated_DRAFT_PREVIEW` : cfg.outputBaseName;
   const mdPath = path.join(outDir, `${mdBaseName}.md`);
   const mdBody = lines.join('\n');
   fs.writeFileSync(mdPath, mdBody);
   console.log(`[${debtorCode}] Statement written: ${mdPath}`);
+  if (family) {
+    const internalPath = path.join(liveOutDir, `${debtorCode}_Family_Internal_Reconciliation.md`);
+    fs.writeFileSync(
+      internalPath,
+      renderFamilyInternalMarkdown(family, { cfg: { customerName: cfgForRun.customerName }, parentCode: debtorCode, generatedOn: generatedAt.toISOString().slice(0, 10) }),
+    );
+    console.log(`[${debtorCode}] Internal family reconciliation written: ${internalPath}`);
+  }
 
   if (snapshotCtx && args.alsoLive) {
     const liveMdPath = path.join(liveOutDir, `${cfg.outputBaseName}.md`);
@@ -782,7 +822,9 @@ function main() {
     fs.writeFileSync(liveMdPath, mdBody);
     console.log(`[${debtorCode}] Live draft also updated: ${liveMdPath}`);
   }
-  if (customerDueBasis === 'open_invoices') {
+  if (family) {
+    // amounts already reported by the consolidated branch above
+  } else if (customerDueBasis === 'open_invoices') {
     console.log(
       `[${debtorCode}] Customer amount due: R${fmt(customerAmountDue)} (open invoices only; ERP header R${fmt(totalDue)}, internal residual R${fmt(bridgeSum)})`,
     );
