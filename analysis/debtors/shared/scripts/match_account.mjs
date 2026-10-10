@@ -6,7 +6,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileFingerprint, verifyProjection } from './v5_projection.mjs';
-import { matchProjection } from './projection_matcher.mjs';
+import { matchProjection, RULES } from './projection_matcher.mjs';
 import { buildRemittanceEvidence } from './remittance_evidence.mjs';
 import { effectiveLocks } from './locks.mjs';
 import { parseDebenqWithRunning } from './debenq_open_invoices.mjs';
@@ -99,7 +99,12 @@ export function writeRegistry(acct, registry) {
   fs.writeFileSync(p, same ? text : full);
 }
 
-export function matchAccount(root, code) {
+/**
+ * options: { rules } overrides matcher rules for a preview; { dropLocks } is a substring: approved locks whose
+ * ruling reason contains it are left out (a counterfactual, e.g. "what would a rule have done before these
+ * approvals"). Neither option is used by the recording tools.
+ */
+export function matchAccount(root, code, options = {}) {
   const acct = path.join(root, 'analysis/debtors', code);
   const read = (p) => JSON.parse(fs.readFileSync(path.join(acct, p), 'utf8'));
   const cfg = read('config/statement_v5.json');
@@ -112,7 +117,9 @@ export function matchAccount(root, code) {
   const hasEvidence = evidence.batches.length > 0 || evidence.skipped.length > 0;
   const reg = readRegistry(acct, code);
   const locks = reg.supported ? effectiveLocks(reg.registry) : null;
-  const result = matchProjection(projection, undefined, hasEvidence ? evidence : null, locks);
+  if (locks && options.dropLocks) locks.locks = locks.locks.filter((l) => !String(l.ruling?.reason || '').includes(options.dropLocks));
+  const rules = options.rules ? { ...RULES, ...options.rules } : undefined;
+  const result = matchProjection(projection, rules, hasEvidence ? evidence : null, locks);
 
   const reviewOnlyReasons = [];
   if (!projection.checks.tiesToErpHeader) reviewOnlyReasons.push(`ERP variance R${projection.closings.erpVariance}`);

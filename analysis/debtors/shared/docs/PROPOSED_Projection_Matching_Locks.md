@@ -517,3 +517,17 @@ The behaviour implemented in `analysis/debtors/shared/scripts/` at commit `f34f0
 - a lock conflict appears on an account after a routine re-run without a changed document;
 - a rule is found to be correct only for one payer type and wrong for another (then add a config profile).
 
+---
+
+## Proposal R1, drafted 2026-10-10 (PROPOSED — NOT RATIFIED; the ratification above does not cover it)
+
+Drafted at the operator's request ("Yes, draft the rule with a preview"), after the 49 group approvals.
+
+**Rule R1 (CN_DN_PAIR).** A credit note and an invoice of the same delivery-note number and lane with an exact opposite amount are CONFIRMED up to N days after the invoice when it is the only possible pairing: no other invoice and no other credit note of the same lane, delivery-note number and amount exists in the projection. Today they are CONFIRMED only up to 1 day (`cnConfirmedMaxDays`). Option `cnRivalFreeMaxDays` (**default 0 = off**; proposed value 5). Pairs with a twin, pairs without a delivery-note number (`CN_AMOUNT_DATE`) and pairs beyond N days stay PROBABLE.
+
+**Preview** (`cn_rule_preview.mjs`, report `docs/previews/2026-10-10_cn_rival_free_rule_preview.md`): against the state before the group approvals, the rule confirms the 38 same-DN pairs the operator approved, none of the approved pairs is missed, and the one same-DN pair held back (TAN002, a twin) stays probable. It also confirms 4 pairs on MOZ002 and RED001 that the zero-balance rule had already settled inside a group; open rows and balances are identical on every account. No same-DN pair exists beyond 5 days, so N = 5 is the observed maximum. With the real locks kept, no account's open rows change.
+
+**Decision needed:** adopt R1 with N = 5 (set `cnRivalFreeMaxDays: 5`; add the ratification amendment; re-run `matcher_preview.mjs`), adopt it with another N, or leave it off.
+
+**A related refinement seen in the eight remaining ties (not drafted):** when a credit note could pair with twin invoices, prefer the twin whose reference carries the same marker (for example "EMPTY") as the credit note. TAN002 T0059 is the case.
+

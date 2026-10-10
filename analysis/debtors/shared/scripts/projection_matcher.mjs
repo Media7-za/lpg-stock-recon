@@ -95,6 +95,7 @@ export const RULES = Object.freeze({
   proximityTolerance: 5.0,
   nearSumTolerance: 1.0,
   cnConfirmedMaxDays: 1,
+  cnRivalFreeMaxDays: 0, // PROPOSED rule R1 (off): confirm a same-DN pair up to this many days when no rival exists
   maxSumInvoices: 3,
   maxRunInvoices: 12,
   fifoWindowDays: 14, // FIFO tie-break only among candidates within 14 days of the closest // EXACT_RUN: longest run of consecutive open invoices one payment may settle
@@ -421,9 +422,18 @@ export function matchProjection(projection, rules = RULES, evidence = null, lock
     if (!cands.length) continue;
     const inv = cands[0];
     const lag = days(inv.date, cn.date);
-    addTie('CN_DN_PAIR', lag <= rules.cnConfirmedMaxDays ? 'CONFIRMED' : 'PROBABLE', [inv, cn], {
+    // PROPOSED rule R1 (operator decision pending, default off): a pair of the same delivery-note number
+    // and lane with an exact opposite amount is CONFIRMED up to `cnRivalFreeMaxDays` after the invoice
+    // when it is the only possible pairing: no other invoice and no other credit note of the same lane,
+    // delivery-note number and amount exists anywhere in the projection (a twin would make it arbitrary).
+    const rivalFree = () =>
+      !rows.some((r) => r !== inv && r.kind === 'invoice' && r.lane === inv.lane && dnNumber(r.ref_no) === dn && Math.abs(r.amount - inv.amount) < 0.005) &&
+      !rows.some((r) => r !== cn && r.kind === 'credit_note' && r.lane === cn.lane && dnNumber(r.ref_no) === dn && Math.abs(r.amount - cn.amount) < 0.005);
+    const byRule = lag > rules.cnConfirmedMaxDays && lag <= rules.cnRivalFreeMaxDays && rivalFree();
+    addTie('CN_DN_PAIR', lag <= rules.cnConfirmedMaxDays || byRule ? 'CONFIRMED' : 'PROBABLE', [inv, cn], {
       dn,
       lagDays: lag,
+      ...(byRule ? { confirmedBy: 'RIVAL_FREE' } : {}),
     });
   }
   for (const cn of cnRows) {

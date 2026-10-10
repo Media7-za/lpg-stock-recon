@@ -473,3 +473,27 @@ test('M3: a discount journal joins only when it is the unique free journal equal
   const early = matchProjection(projection([row({ doc: 'P1', type: 'Payment', date: '2026-08-26', amount: -975 }), row({ doc: 'I1', date: '2026-08-01', amount: 1000 }), jrow({ doc: 'J0', date: '2026-08-01', amount: -25 })]), undefined, ev);
   assert.equal(early.ties[0].discountPending, 25); // journal dated before the payment never joins
 });
+
+// Proposed rule R1 (operator decision pending; default off): same-DN credit-note pair confirmed up to N days when rival-free
+test('R1 (off by default): a same-DN pair 3 days apart stays PROBABLE unless cnRivalFreeMaxDays allows it and no rival exists', () => {
+  const mk = (extra = []) => projection([
+    row({ doc: 'I1', date: '2026-01-01', ref: 'DN#500', amount: 100 }),
+    row({ doc: 'C1', type: 'Crd Note', date: '2026-01-04', ref: 'DN#500', amount: -100 }),
+    ...extra,
+  ]);
+  assert.equal(matchProjection(mk()).ties[0].confidence, 'PROBABLE'); // default: off
+  const on = matchProjection(mk(), { ...RULES, cnRivalFreeMaxDays: 5 });
+  assert.equal(on.ties[0].rule, 'CN_DN_PAIR');
+  assert.equal(on.ties[0].confidence, 'CONFIRMED');
+  assert.equal(on.ties[0].confirmedBy, 'RIVAL_FREE');
+  assert.equal(matchProjection(mk(), { ...RULES, cnRivalFreeMaxDays: 2 }).ties[0].confidence, 'PROBABLE'); // beyond the limit
+  // a twin invoice (same lane, DN and amount) makes the pairing arbitrary: stays PROBABLE
+  const twin = matchProjection(mk([row({ doc: 'I2', date: '2026-01-02', ref: 'DN#500', amount: 100 })]), { ...RULES, cnRivalFreeMaxDays: 5 });
+  assert.ok(twin.ties.every((t) => t.confidence === 'PROBABLE'));
+  // a twin credit note does too
+  const twinCn = matchProjection(mk([row({ doc: 'C2', type: 'Crd Note', date: '2026-01-05', ref: 'DN#500', amount: -100 })]), { ...RULES, cnRivalFreeMaxDays: 5 });
+  assert.ok(twinCn.ties.every((t) => t.confidence === 'PROBABLE'));
+  // a different lane is not a rival
+  const otherLane = matchProjection(mk([row({ doc: 'I3', date: '2026-01-02', ref: 'DN#500-EMPTY', lane: 'CYL', amount: 100 })]), { ...RULES, cnRivalFreeMaxDays: 5 });
+  assert.equal(otherLane.ties.find((t) => t.docs.includes('Invoice I1')).confidence, 'CONFIRMED');
+});
