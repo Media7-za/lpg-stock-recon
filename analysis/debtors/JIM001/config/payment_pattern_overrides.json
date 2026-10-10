@@ -791,5 +791,508 @@
       "evidence_status": "ASSERTED"
     }
   ],
-  "schema_note": "settlement_unit/evidence_tier/evidence_status added 2026-09-13 by the JIM001 exact-sum bridge review (see reports/JIM001_Exact_Sum_Bridge_Review_2026-09-13.md SS8). Additive only -- no amount, approval_status, or reason field was changed. evidence_tier is capped at 3 account-wide: no remittance advice exists for JIM001, so evidence_status is ASSERTED, never PROVEN, for every entry including these already human-ratified ones."
+  "schema_note": "settlement_unit/evidence_tier/evidence_status added 2026-09-13 by the JIM001 exact-sum bridge review (see reports/JIM001_Exact_Sum_Bridge_Review_2026-09-13.md SS8). Additive only -- no amount, approval_status, or reason field was changed. evidence_tier is capped at 3 account-wide: no remittance advice exists for JIM001, so evidence_status is ASSERTED, never PROVEN, for every entry including these already human-ratified ones.",
+  "projectionLocks": {
+    "schema": 1,
+    "closes": [],
+    "locks": [
+      {
+        "lock_id": "L0001",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "exact",
+          "net": 0,
+          "reason": "ADM-89 Q2 (2026-10-10): seven EXACT_MONTH_SUM ties for monthly batch payer JIM001 (no remittances) approved as one group after ruling them probable under payerCadence monthly_batch. Evidence is tier-3 exact month totals within R0.01. Tripwire: a remittance naming different invoices for any of payments 40063,40746,41664,42134,42788,43199,44555, or a TXT that re-itemises those months inside the B/F.",
+          "approvedBy": "Wall St",
+          "session": "unrecorded",
+          "approvedTie": {
+            "tie_id": "T0045",
+            "rule": "EXACT_MONTH_SUM",
+            "docs": [
+              "Payment 40063",
+              "Invoice 41216",
+              "Invoice 41486",
+              "Invoice 41633",
+              "Invoice 41799"
+            ]
+          }
+        },
+        "members": [
+          {
+            "key": "40063|Payment|LPG|2025-07-14|-11795.24",
+            "doc": "40063",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2025-07-14",
+            "amount": -11795.24
+          },
+          {
+            "key": "41216|Invoice|LPG|2025-03-05|2948.81",
+            "doc": "41216",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-03-05",
+            "amount": 2948.81
+          },
+          {
+            "key": "41486|Invoice|LPG|2025-03-14|2948.81",
+            "doc": "41486",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-03-14",
+            "amount": 2948.81
+          },
+          {
+            "key": "41633|Invoice|LPG|2025-03-20|2948.81",
+            "doc": "41633",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-03-20",
+            "amount": 2948.81
+          },
+          {
+            "key": "41799|Invoice|LPG|2025-03-28|2948.81",
+            "doc": "41799",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-03-28",
+            "amount": 2948.81
+          }
+        ],
+        "createdAt": "2026-10-10T11:46:48.252Z"
+      },
+      {
+        "lock_id": "L0002",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "exact",
+          "net": 0,
+          "reason": "ADM-89 Q2 (2026-10-10): seven EXACT_MONTH_SUM ties for monthly batch payer JIM001 (no remittances) approved as one group after ruling them probable under payerCadence monthly_batch. Evidence is tier-3 exact month totals within R0.01. Tripwire: a remittance naming different invoices for any of payments 40063,40746,41664,42134,42788,43199,44555, or a TXT that re-itemises those months inside the B/F.",
+          "approvedBy": "Wall St",
+          "session": "unrecorded",
+          "approvedTie": {
+            "tie_id": "T0046",
+            "rule": "EXACT_MONTH_SUM",
+            "docs": [
+              "Payment 40746",
+              "Invoice 44516",
+              "Invoice 44707",
+              "Invoice 44933",
+              "Invoice 45091",
+              "Invoice 45162"
+            ]
+          }
+        },
+        "members": [
+          {
+            "key": "40746|Payment|LPG|2025-08-22|-14579.44",
+            "doc": "40746",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2025-08-22",
+            "amount": -14579.44
+          },
+          {
+            "key": "44516|Invoice|LPG|2025-07-04|3115.05",
+            "doc": "44516",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-07-04",
+            "amount": 3115.05
+          },
+          {
+            "key": "44707|Invoice|LPG|2025-07-10|4200.69",
+            "doc": "44707",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-07-10",
+            "amount": 4200.69
+          },
+          {
+            "key": "44933|Invoice|LPG|2025-07-18|4200.69",
+            "doc": "44933",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-07-18",
+            "amount": 4200.69
+          },
+          {
+            "key": "45091|Invoice|LPG|2025-07-24|2800.46",
+            "doc": "45091",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-07-24",
+            "amount": 2800.46
+          },
+          {
+            "key": "45162|Invoice|LPG|2025-07-26|262.55",
+            "doc": "45162",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-07-26",
+            "amount": 262.55
+          }
+        ],
+        "createdAt": "2026-10-10T11:46:48.252Z"
+      },
+      {
+        "lock_id": "L0003",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "exact",
+          "net": 0.01,
+          "reason": "ADM-89 Q2 (2026-10-10): seven EXACT_MONTH_SUM ties for monthly batch payer JIM001 (no remittances) approved as one group after ruling them probable under payerCadence monthly_batch. Evidence is tier-3 exact month totals within R0.01. Tripwire: a remittance naming different invoices for any of payments 40063,40746,41664,42134,42788,43199,44555, or a TXT that re-itemises those months inside the B/F.",
+          "approvedBy": "Wall St",
+          "session": "unrecorded",
+          "approvedTie": {
+            "tie_id": "T0047",
+            "rule": "EXACT_MONTH_SUM",
+            "docs": [
+              "Payment 41664",
+              "Invoice 45323",
+              "Invoice 45498",
+              "Invoice 45671",
+              "Invoice 45831",
+              "Invoice 45992"
+            ]
+          }
+        },
+        "members": [
+          {
+            "key": "41664|Payment|LPG|2025-10-14|-16601.81",
+            "doc": "41664",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2025-10-14",
+            "amount": -16601.81
+          },
+          {
+            "key": "45323|Invoice|LPG|2025-08-01|4200.69",
+            "doc": "45323",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-08-01",
+            "amount": 4200.69
+          },
+          {
+            "key": "45498|Invoice|LPG|2025-08-08|2800.46",
+            "doc": "45498",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-08-08",
+            "amount": 2800.46
+          },
+          {
+            "key": "45671|Invoice|LPG|2025-08-15|4114.57",
+            "doc": "45671",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-08-15",
+            "amount": 4114.57
+          },
+          {
+            "key": "45831|Invoice|LPG|2025-08-22|4114.57",
+            "doc": "45831",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-08-22",
+            "amount": 4114.57
+          },
+          {
+            "key": "45992|Invoice|LPG|2025-08-29|1371.53",
+            "doc": "45992",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-08-29",
+            "amount": 1371.53
+          }
+        ],
+        "createdAt": "2026-10-10T11:46:48.252Z"
+      },
+      {
+        "lock_id": "L0004",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "exact",
+          "net": 0,
+          "reason": "ADM-89 Q2 (2026-10-10): seven EXACT_MONTH_SUM ties for monthly batch payer JIM001 (no remittances) approved as one group after ruling them probable under payerCadence monthly_batch. Evidence is tier-3 exact month totals within R0.01. Tripwire: a remittance naming different invoices for any of payments 40063,40746,41664,42134,42788,43199,44555, or a TXT that re-itemises those months inside the B/F.",
+          "approvedBy": "Wall St",
+          "session": "unrecorded",
+          "approvedTie": {
+            "tie_id": "T0048",
+            "rule": "EXACT_MONTH_SUM",
+            "docs": [
+              "Payment 42134",
+              "Invoice 46124",
+              "Invoice 46308",
+              "Invoice 46525",
+              "Invoice 46686"
+            ]
+          }
+        },
+        "members": [
+          {
+            "key": "42134|Payment|LPG|2025-11-06|-13327.87",
+            "doc": "42134",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2025-11-06",
+            "amount": -13327.87
+          },
+          {
+            "key": "46124|Invoice|LPG|2025-09-04|4114.57",
+            "doc": "46124",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-09-04",
+            "amount": 4114.57
+          },
+          {
+            "key": "46308|Invoice|LPG|2025-09-11|3948.56",
+            "doc": "46308",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-09-11",
+            "amount": 3948.56
+          },
+          {
+            "key": "46525|Invoice|LPG|2025-09-19|2632.37",
+            "doc": "46525",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-09-19",
+            "amount": 2632.37
+          },
+          {
+            "key": "46686|Invoice|LPG|2025-09-26|2632.37",
+            "doc": "46686",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-09-26",
+            "amount": 2632.37
+          }
+        ],
+        "createdAt": "2026-10-10T11:46:48.252Z"
+      },
+      {
+        "lock_id": "L0005",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "exact",
+          "net": 0,
+          "reason": "ADM-89 Q2 (2026-10-10): seven EXACT_MONTH_SUM ties for monthly batch payer JIM001 (no remittances) approved as one group after ruling them probable under payerCadence monthly_batch. Evidence is tier-3 exact month totals within R0.01. Tripwire: a remittance naming different invoices for any of payments 40063,40746,41664,42134,42788,43199,44555, or a TXT that re-itemises those months inside the B/F.",
+          "approvedBy": "Wall St",
+          "session": "unrecorded",
+          "approvedTie": {
+            "tie_id": "T0049",
+            "rule": "EXACT_MONTH_SUM",
+            "docs": [
+              "Payment 42788",
+              "Invoice 46859",
+              "Invoice 46990",
+              "Invoice 47148",
+              "Invoice 47292"
+            ]
+          }
+        },
+        "members": [
+          {
+            "key": "42788|Payment|LPG|2025-12-29|-13161.86",
+            "doc": "42788",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2025-12-29",
+            "amount": -13161.86
+          },
+          {
+            "key": "46859|Invoice|LPG|2025-10-03|3948.56",
+            "doc": "46859",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-10-03",
+            "amount": 3948.56
+          },
+          {
+            "key": "46990|Invoice|LPG|2025-10-09|3948.56",
+            "doc": "46990",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-10-09",
+            "amount": 3948.56
+          },
+          {
+            "key": "47148|Invoice|LPG|2025-10-17|2632.37",
+            "doc": "47148",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-10-17",
+            "amount": 2632.37
+          },
+          {
+            "key": "47292|Invoice|LPG|2025-10-24|2632.37",
+            "doc": "47292",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-10-24",
+            "amount": 2632.37
+          }
+        ],
+        "createdAt": "2026-10-10T11:46:48.252Z"
+      },
+      {
+        "lock_id": "L0006",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "exact",
+          "net": 0,
+          "reason": "ADM-89 Q2 (2026-10-10): seven EXACT_MONTH_SUM ties for monthly batch payer JIM001 (no remittances) approved as one group after ruling them probable under payerCadence monthly_batch. Evidence is tier-3 exact month totals within R0.01. Tripwire: a remittance naming different invoices for any of payments 40063,40746,41664,42134,42788,43199,44555, or a TXT that re-itemises those months inside the B/F.",
+          "approvedBy": "Wall St",
+          "session": "unrecorded",
+          "approvedTie": {
+            "tie_id": "T0050",
+            "rule": "EXACT_MONTH_SUM",
+            "docs": [
+              "Payment 43199",
+              "Invoice 47464",
+              "Invoice 47571",
+              "Invoice 47670",
+              "Invoice 47848",
+              "Invoice 47983"
+            ]
+          }
+        },
+        "members": [
+          {
+            "key": "43199|Payment|LPG|2026-02-05|-15578.23",
+            "doc": "43199",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2026-02-05",
+            "amount": -15578.23
+          },
+          {
+            "key": "47464|Invoice|LPG|2025-11-01|3948.56",
+            "doc": "47464",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-11-01",
+            "amount": 3948.56
+          },
+          {
+            "key": "47571|Invoice|LPG|2025-11-08|2584.37",
+            "doc": "47571",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-11-08",
+            "amount": 2584.37
+          },
+          {
+            "key": "47670|Invoice|LPG|2025-11-14|2584.37",
+            "doc": "47670",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-11-14",
+            "amount": 2584.37
+          },
+          {
+            "key": "47848|Invoice|LPG|2025-11-21|3876.56",
+            "doc": "47848",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-11-21",
+            "amount": 3876.56
+          },
+          {
+            "key": "47983|Invoice|LPG|2025-11-28|2584.37",
+            "doc": "47983",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-11-28",
+            "amount": 2584.37
+          }
+        ],
+        "createdAt": "2026-10-10T11:46:48.252Z"
+      },
+      {
+        "lock_id": "L0007",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "exact",
+          "net": -0.01,
+          "reason": "ADM-89 Q2 (2026-10-10): seven EXACT_MONTH_SUM ties for monthly batch payer JIM001 (no remittances) approved as one group after ruling them probable under payerCadence monthly_batch. Evidence is tier-3 exact month totals within R0.01. Tripwire: a remittance naming different invoices for any of payments 40063,40746,41664,42134,42788,43199,44555, or a TXT that re-itemises those months inside the B/F.",
+          "approvedBy": "Wall St",
+          "session": "unrecorded",
+          "approvedTie": {
+            "tie_id": "T0051",
+            "rule": "EXACT_MONTH_SUM",
+            "docs": [
+              "Payment 44555",
+              "Invoice 48098",
+              "Invoice 48244",
+              "Invoice 48391",
+              "Invoice 48487"
+            ]
+          }
+        },
+        "members": [
+          {
+            "key": "44555|Payment|LPG|2026-06-05|-11666.12",
+            "doc": "44555",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2026-06-05",
+            "amount": -11666.12
+          },
+          {
+            "key": "48098|Invoice|LPG|2025-12-04|3876.56",
+            "doc": "48098",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-12-04",
+            "amount": 3876.56
+          },
+          {
+            "key": "48244|Invoice|LPG|2025-12-12|2596.52",
+            "doc": "48244",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-12-12",
+            "amount": 2596.52
+          },
+          {
+            "key": "48391|Invoice|LPG|2025-12-19|3894.77",
+            "doc": "48391",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-12-19",
+            "amount": 3894.77
+          },
+          {
+            "key": "48487|Invoice|LPG|2025-12-24|1298.26",
+            "doc": "48487",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-12-24",
+            "amount": 1298.26
+          }
+        ],
+        "createdAt": "2026-10-10T11:46:48.252Z"
+      }
+    ],
+    "voids": []
+  }
 }
