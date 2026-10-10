@@ -1,8 +1,8 @@
 # Open Items Statement: FIRE AND VINE (FIR001) — Internal
 **Period:** from 29 Dec 2022 to 07 Oct 2026 &nbsp;|&nbsp; **Balance due:** R9,469.77
-**Status:** PROPOSED — NOT RATIFIED (`PROPOSED_Projection_Matching_Locks.md`, build step 3) · generated 2026-10-09 by `render_open_items.mjs`
-**Sources:** `analysis/debtors/FIR001/data/v5_projection.json` (TXT sha256 `1cf1b6f9c63e…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (154 confirmed / 9 probable ties) · **REVIEW ONLY:** ingestCoverage partial
-**Locks:** closed through 2026-08-31, 19 locks applied
+**Status:** PROPOSED — NOT RATIFIED (`PROPOSED_Projection_Matching_Locks.md`, build step 3) · generated 2026-10-10 by `render_open_items.mjs`
+**Sources:** `analysis/debtors/FIR001/data/v5_projection.json` (TXT sha256 `1cf1b6f9c63e…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (163 confirmed / 0 probable ties) · **REVIEW ONLY:** ingestCoverage partial
+**Locks:** closed through 2026-08-31, 28 locks applied
 
 ---
 
@@ -104,23 +104,13 @@
 
 ## Appendix A: Probable ties (review required, not locked)
 
-| Tie | Rule | Documents | Variance (R) | Note |
-| :--- | :--- | :--- | ---: | :--- |
-| T0026 | CN_DN_PAIR | Invoice 42699, Crd Note 12410 | — | CN 5 day(s) after invoice (closed period: not locked) |
-| T0049 | CN_DN_PAIR | Invoice 46902, Crd Note 13638 | — | CN 3 day(s) after invoice (closed period: not locked) |
-| T0068 | CN_DN_PAIR | Invoice 49035, Crd Note 14367 | — | CN 3 day(s) after invoice (closed period: not locked) |
-| T0069 | CN_DN_PAIR | Invoice 49146, Crd Note 14396 | — | CN 2 day(s) after invoice (closed period: not locked) |
-| T0072 | CN_DN_PAIR | Invoice 49459, Crd Note 14521 | — | CN 4 day(s) after invoice (closed period: not locked) |
-| T0089 | CN_AMOUNT_DATE | Invoice 44987, Crd Note 13027 | — | CN 0 day(s) after invoice (closed period: not locked) |
-| T0090 | CN_AMOUNT_DATE | Invoice 47067, Crd Note 13677 | — | CN 1 day(s) after invoice (closed period: not locked) |
-| T0091 | CN_AMOUNT_DATE | Invoice 51146, Crd Note 15044 | — | CN 1 day(s) after invoice (closed period: not locked) |
-| T0092 | CN_AMOUNT_DATE | Invoice 53277, Crd Note 15694 | — | CN 1 day(s) after invoice |
+_None._
 
 ## Appendix B: Confirmed ties by rule
 
 | Rule | Ties |
 | :--- | ---: |
-| LOCKED | 19 |
+| LOCKED | 28 |
 | CN_DN_PAIR | 64 |
 | EXACT_SINGLE | 65 |
 | EXACT_SUM | 3 |
@@ -135,4 +125,13 @@ Full tie list: `data/projection_matches.json`.
 | :--- | :--- | :--- | ---: | :--- |
 | L0020 | exact | Payment 45474, Invoice 52036 | 0.00 | Operator correction 2026-10-08 (ADM-86): "45591 should have been 52195" (FIFO pairing); replaces closest-date pairing locked at close C0001: 45474 (31 Jul) pays 52036 (23 Jul) |
 | L0021 | exact | Payment 45591, Invoice 52195 | 0.00 | Operator correction 2026-10-08 (ADM-86): "45591 should have been 52195" (FIFO pairing); replaces closest-date pairing locked at close C0001: 45591 (07 Aug) pays 52195 (30 Jul) |
+| L0022 | exact | Invoice 42699, Crd Note 12410 | 0.00 | Operator ruling 2026-10-10 (main session, "We can approve them in groups"): approved as groups CN-DN-1 and CN-AD of docs/previews/2026-10-10_probable_ties_by_group.md. CN-DN-1 = credit note and invoice of the same delivery-note number and lane, exact opposite amount, credit note 2-5 days after the invoice. CN-AD = exact opposite amount and lane, credit note 0-1 day after the invoice, a single candidate. In both groups no other invoice or credit note of the same lane, amount and delivery note exists (a rival would make the pairing arbitrary). Group-level judgement, not a document-by-document review. Tripwires: an allocation-detail export tagging a credit note of this group to a different invoice; a re-issue of either document. |
+| L0023 | exact | Invoice 46902, Crd Note 13638 | 0.00 | Operator ruling 2026-10-10 (main session, "We can approve them in groups"): approved as groups CN-DN-1 and CN-AD of docs/previews/2026-10-10_probable_ties_by_group.md. CN-DN-1 = credit note and invoice of the same delivery-note number and lane, exact opposite amount, credit note 2-5 days after the invoice. CN-AD = exact opposite amount and lane, credit note 0-1 day after the invoice, a single candidate. In both groups no other invoice or credit note of the same lane, amount and delivery note exists (a rival would make the pairing arbitrary). Group-level judgement, not a document-by-document review. Tripwires: an allocation-detail export tagging a credit note of this group to a different invoice; a re-issue of either document. |
+| L0024 | exact | Invoice 49035, Crd Note 14367 | 0.00 | Operator ruling 2026-10-10 (main session, "We can approve them in groups"): approved as groups CN-DN-1 and CN-AD of docs/previews/2026-10-10_probable_ties_by_group.md. CN-DN-1 = credit note and invoice of the same delivery-note number and lane, exact opposite amount, credit note 2-5 days after the invoice. CN-AD = exact opposite amount and lane, credit note 0-1 day after the invoice, a single candidate. In both groups no other invoice or credit note of the same lane, amount and delivery note exists (a rival would make the pairing arbitrary). Group-level judgement, not a document-by-document review. Tripwires: an allocation-detail export tagging a credit note of this group to a different invoice; a re-issue of either document. |
+| L0025 | exact | Invoice 49146, Crd Note 14396 | 0.00 | Operator ruling 2026-10-10 (main session, "We can approve them in groups"): approved as groups CN-DN-1 and CN-AD of docs/previews/2026-10-10_probable_ties_by_group.md. CN-DN-1 = credit note and invoice of the same delivery-note number and lane, exact opposite amount, credit note 2-5 days after the invoice. CN-AD = exact opposite amount and lane, credit note 0-1 day after the invoice, a single candidate. In both groups no other invoice or credit note of the same lane, amount and delivery note exists (a rival would make the pairing arbitrary). Group-level judgement, not a document-by-document review. Tripwires: an allocation-detail export tagging a credit note of this group to a different invoice; a re-issue of either document. |
+| L0026 | exact | Invoice 49459, Crd Note 14521 | 0.00 | Operator ruling 2026-10-10 (main session, "We can approve them in groups"): approved as groups CN-DN-1 and CN-AD of docs/previews/2026-10-10_probable_ties_by_group.md. CN-DN-1 = credit note and invoice of the same delivery-note number and lane, exact opposite amount, credit note 2-5 days after the invoice. CN-AD = exact opposite amount and lane, credit note 0-1 day after the invoice, a single candidate. In both groups no other invoice or credit note of the same lane, amount and delivery note exists (a rival would make the pairing arbitrary). Group-level judgement, not a document-by-document review. Tripwires: an allocation-detail export tagging a credit note of this group to a different invoice; a re-issue of either document. |
+| L0027 | exact | Invoice 44987, Crd Note 13027 | 0.00 | Operator ruling 2026-10-10 (main session, "We can approve them in groups"): approved as groups CN-DN-1 and CN-AD of docs/previews/2026-10-10_probable_ties_by_group.md. CN-DN-1 = credit note and invoice of the same delivery-note number and lane, exact opposite amount, credit note 2-5 days after the invoice. CN-AD = exact opposite amount and lane, credit note 0-1 day after the invoice, a single candidate. In both groups no other invoice or credit note of the same lane, amount and delivery note exists (a rival would make the pairing arbitrary). Group-level judgement, not a document-by-document review. Tripwires: an allocation-detail export tagging a credit note of this group to a different invoice; a re-issue of either document. |
+| L0028 | exact | Invoice 47067, Crd Note 13677 | 0.00 | Operator ruling 2026-10-10 (main session, "We can approve them in groups"): approved as groups CN-DN-1 and CN-AD of docs/previews/2026-10-10_probable_ties_by_group.md. CN-DN-1 = credit note and invoice of the same delivery-note number and lane, exact opposite amount, credit note 2-5 days after the invoice. CN-AD = exact opposite amount and lane, credit note 0-1 day after the invoice, a single candidate. In both groups no other invoice or credit note of the same lane, amount and delivery note exists (a rival would make the pairing arbitrary). Group-level judgement, not a document-by-document review. Tripwires: an allocation-detail export tagging a credit note of this group to a different invoice; a re-issue of either document. |
+| L0029 | exact | Invoice 51146, Crd Note 15044 | 0.00 | Operator ruling 2026-10-10 (main session, "We can approve them in groups"): approved as groups CN-DN-1 and CN-AD of docs/previews/2026-10-10_probable_ties_by_group.md. CN-DN-1 = credit note and invoice of the same delivery-note number and lane, exact opposite amount, credit note 2-5 days after the invoice. CN-AD = exact opposite amount and lane, credit note 0-1 day after the invoice, a single candidate. In both groups no other invoice or credit note of the same lane, amount and delivery note exists (a rival would make the pairing arbitrary). Group-level judgement, not a document-by-document review. Tripwires: an allocation-detail export tagging a credit note of this group to a different invoice; a re-issue of either document. |
+| L0030 | exact | Invoice 53277, Crd Note 15694 | 0.00 | Operator ruling 2026-10-10 (main session, "We can approve them in groups"): approved as groups CN-DN-1 and CN-AD of docs/previews/2026-10-10_probable_ties_by_group.md. CN-DN-1 = credit note and invoice of the same delivery-note number and lane, exact opposite amount, credit note 2-5 days after the invoice. CN-AD = exact opposite amount and lane, credit note 0-1 day after the invoice, a single candidate. In both groups no other invoice or credit note of the same lane, amount and delivery note exists (a rival would make the pairing arbitrary). Group-level judgement, not a document-by-document review. Tripwires: an allocation-detail export tagging a credit note of this group to a different invoice; a re-issue of either document. |
 

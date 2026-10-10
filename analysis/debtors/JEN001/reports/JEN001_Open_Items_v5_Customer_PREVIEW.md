@@ -40,14 +40,7 @@
 
 ## Cylinder deposits: open items
 
-### June 2026
-
-| Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 11 Jun 2026 | Invoice | 51155 ¹ | DN#22474 | Cylinder deposit | 5,692.50 | 5,175.00 |
-| 15 Jun 2026 | Crd Note | 15066 ¹ | DN#22474 | Cylinder deposit | -5,692.50 | -517.50 |
-
-¹ Payment received; allocation to this item is being confirmed.
+_No open items._
 
 ---
 

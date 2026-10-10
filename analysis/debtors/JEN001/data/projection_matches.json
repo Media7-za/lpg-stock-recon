@@ -2,7 +2,7 @@
   "status": "PROPOSED — NOT RATIFIED (PROPOSED_Projection_Matching_Locks.md, build step 2)",
   "debtorCode": "JEN001",
   "generatedBy": "match_projection.mjs",
-  "generatedAt": "2026-10-09T17:18:46.461Z",
+  "generatedAt": "2026-10-10T05:06:11.233Z",
   "projection": {
     "path": "analysis/debtors/JEN001/data/v5_projection.json",
     "txtSha256": "5f6c5151b1a6a3ed136a6b6b6a28b27fc82baf31ae61947246499c6d318c9cfc",
@@ -14,7 +14,7 @@
   "locksRegistry": "config/payment_pattern_overrides.json#projectionLocks",
   "matcherVersion": 5,
   "closedThrough": null,
-  "locksApplied": 2,
+  "locksApplied": 3,
   "lockConflicts": [],
   "rules": {
     "exactTolerance": 0.05,
@@ -40,12 +40,12 @@
   },
   "summary": {
     "ties": 17,
-    "confirmed": 16,
-    "probable": 1,
+    "confirmed": 17,
+    "probable": 0,
     "byRule": {
-      "LOCKED": 1,
+      "LOCKED": 2,
       "SETTLED_THROUGH": 1,
-      "CN_DN_PAIR": 14,
+      "CN_DN_PAIR": 13,
       "CYL_EXCHANGE": 1
     },
     "paymentsTotal": 0,
@@ -147,6 +147,38 @@
     },
     {
       "tie_id": "T0002",
+      "rule": "LOCKED",
+      "confidence": "CONFIRMED",
+      "members": [
+        "51155|Invoice|CYL|L151",
+        "15066|Crd Note|CYL|L152"
+      ],
+      "docs": [
+        "Invoice 51155",
+        "Crd Note 15066"
+      ],
+      "net": 0,
+      "lock_id": "L0003",
+      "close_id": null,
+      "lockedRule": "OPERATOR_RULING",
+      "ruling": {
+        "treatment": "exact",
+        "net": 0,
+        "reason": "Operator ruling 2026-10-10 (main session, \"We can approve them in groups\"): approved as groups CN-DN-1 and CN-AD of docs/previews/2026-10-10_probable_ties_by_group.md. CN-DN-1 = credit note and invoice of the same delivery-note number and lane, exact opposite amount, credit note 2-5 days after the invoice. CN-AD = exact opposite amount and lane, credit note 0-1 day after the invoice, a single candidate. In both groups no other invoice or credit note of the same lane, amount and delivery note exists (a rival would make the pairing arbitrary). Group-level judgement, not a document-by-document review. Tripwires: an allocation-detail export tagging a credit note of this group to a different invoice; a re-issue of either document.",
+        "approvedBy": "operator",
+        "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx",
+        "approvedTie": {
+          "tie_id": "T0006",
+          "rule": "CN_DN_PAIR",
+          "docs": [
+            "Invoice 51155",
+            "Crd Note 15066"
+          ]
+        }
+      }
+    },
+    {
+      "tie_id": "T0003",
       "rule": "SETTLED_THROUGH",
       "confidence": "CONFIRMED",
       "members": [
@@ -420,7 +452,7 @@
       }
     },
     {
-      "tie_id": "T0003",
+      "tie_id": "T0004",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -436,7 +468,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0004",
+      "tie_id": "T0005",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -452,7 +484,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0005",
+      "tie_id": "T0006",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -466,22 +498,6 @@
       "net": 0,
       "dn": "22734",
       "lagDays": 1
-    },
-    {
-      "tie_id": "T0006",
-      "rule": "CN_DN_PAIR",
-      "confidence": "PROBABLE",
-      "members": [
-        "51155|Invoice|CYL|L151",
-        "15066|Crd Note|CYL|L152"
-      ],
-      "docs": [
-        "Invoice 51155",
-        "Crd Note 15066"
-      ],
-      "net": 0,
-      "dn": "22474",
-      "lagDays": 4
     },
     {
       "tie_id": "T0007",

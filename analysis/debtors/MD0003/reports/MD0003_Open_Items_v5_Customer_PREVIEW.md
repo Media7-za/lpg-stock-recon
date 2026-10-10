@@ -28,8 +28,6 @@
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 04 Apr 2025 | Invoice | 42011 ¹ | DN#12997 | Gas | 4,689.96 | 15,841.88 |
-| 07 Apr 2025 | Crd Note | 12220 ¹ | DN#12997 | Gas | -4,689.96 | 11,151.92 |
 | 07 Apr 2025 | Payment | 37817 | TRANSF \| STAT:114 | Gas | -15,633.20 | -4,481.28 |
 
 ### May 2025
@@ -67,8 +65,6 @@
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
 | 08 Nov 2025 | Invoice | 47558 | DN#20807- VICTORIA | Gas | 3,360.06 | 35,560.12 |
 | 12 Nov 2025 | Invoice | 47622 | DN#20787-MKONDENI | Gas | 2,240.04 | 37,800.16 |
-| 18 Nov 2025 | Invoice | 47734 ¹ | DN#21158 | Gas | 5,600.10 | 43,400.26 |
-| 20 Nov 2025 | Crd Note | 13916 ¹ | DN#21158 | Gas | -5,600.10 | 37,800.16 |
 | 20 Nov 2025 | Invoice | 47827 | DN-20843-ROSEDALE | Gas | 5,600.10 | 43,400.26 |
 | 20 Nov 2025 | Invoice | 47828 | DN-21158 | Gas | 3,360.06 | 46,760.32 |
 | 28 Nov 2025 | Payment | 42440 | TRANSF \| STAT:121 | Gas | -47,511.17 | -750.85 |
@@ -116,30 +112,11 @@
 
 ## Cylinder deposits: open items
 
-### April 2025
-
-| Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 30 Apr 2025 | Invoice | 42677 ¹ | DN#13179-EMPTY | Cylinder deposit | 3,622.50 | 3,622.50 |
-
-### May 2025
-
-| Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 02 May 2025 | Crd Note | 12386 ¹ | DN#13179-EMPTY | Cylinder deposit | -3,622.50 | 0.00 |
-
 ### June 2025
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
 | 05 Jun 2025 | Invoice | 43636 | ROSEDALE- DN#12297 | Cylinder deposit | 1,265.00 | 1,265.00 |
-
-### July 2025
-
-| Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 26 Jul 2025 | Crd Note | 13062 ¹ | ON 257219 | Cylinder deposit | -3,622.50 | -2,357.50 |
-| 26 Jul 2025 | Invoice | 45161 ¹ | ON 257219 | Cylinder deposit | 3,622.50 | 1,265.00 |
 
 ### September 2025
 
@@ -154,26 +131,12 @@
 | 22 Jan 2026 | Invoice | 48927 ¹ | DN#21502- EMPTY | Cylinder deposit | 5,462.50 | 3,680.00 |
 | 24 Jan 2026 | Crd Note | 14328 ¹ | DN#21502- EMPTY | Cylinder deposit | -5,520.00 | -1,840.00 |
 
-### February 2026
-
-| Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 26 Feb 2026 | Invoice | 49444 ¹ | DN#21931-ROSE-EMPTY | Cylinder deposit | 4,830.00 | 2,990.00 |
-| 28 Feb 2026 | Crd Note | 14494 ¹ | DN#21931-ROSE-EMPTY | Cylinder deposit | -4,830.00 | -1,840.00 |
-
 ### August 2026
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
 | 08 Aug 2026 | Invoice | 52422 | DN#23948-EMPTY | Cylinder deposit | 1,035.00 | -805.00 |
 | 09 Aug 2026 | Crd Note | 15422 | DN#23948-EMPTY | Cylinder deposit | -517.50 | -1,322.50 |
-
-### September 2026
-
-| Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 26 Sept 2026 | Invoice | 53317 ¹ | DN#21383-EMPTY | Cylinder deposit | 3,622.50 | 2,300.00 |
-| 28 Sept 2026 | Crd Note | 15708 ¹ | DN#21383-EMPTY | Cylinder deposit | -3,622.50 | -1,322.50 |
 
 ¹ Payment received; allocation to this item is being confirmed.
 

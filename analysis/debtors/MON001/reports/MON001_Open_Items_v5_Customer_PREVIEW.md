@@ -66,26 +66,12 @@
 
 ## Cylinder deposits: open items
 
-### February 2026
-
-| Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 26 Feb 2026 | Invoice | 49461 ¹ | DN#21803-EMPTY | Cylinder deposit | 2,415.00 | 2,415.00 |
-| 28 Feb 2026 | Crd Note | 14512 ¹ | DN#21803-EMPTY | Cylinder deposit | -2,415.00 | 0.00 |
-
 ### April 2026
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
 | 02 Apr 2026 | Invoice | 50097 ¹ | DN#21861- EXTRA SV | Cylinder deposit | 1,207.50 | 1,207.50 |
 | 16 Apr 2026 | Crd Note | 14792 | FAULTY RETURN | Cylinder deposit | -1,207.50 | 0.00 |
-
-### July 2026
-
-| Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
-| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 20 Jul 2026 | Invoice | 51953 ¹ | DN#22696-EMPTY | Cylinder deposit | 2,415.00 | 2,415.00 |
-| 22 Jul 2026 | Crd Note | 15303 ¹ | DN#22696-EMPTY | Cylinder deposit | -2,415.00 | 0.00 |
 
 ¹ Payment received; allocation to this item is being confirmed.
 

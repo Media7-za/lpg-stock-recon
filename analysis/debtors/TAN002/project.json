@@ -98,6 +98,10 @@
     {
       "date": "2026-10-09",
       "event": "Matcher v5 applied (operator: \"Yes\" to applying the 2026-10-09 preview, docs/previews/2026-10-09_matcher_v5_preview.md): new rules BATCH_SUM, CYL_EXCHANGE, BALANCE_ZERO; DN parser reads DN_nnnnn. Re-run match_projection + render_open_items only; no lock created, no statement released. PROPOSED — NOT RATIFIED. Proof holds, 0 lock conflicts. Ties 87 -> 89 (+2 CYL_EXCHANGE; 69 confirmed / 20 probable); open rows internal 55 -> 41, customer 97 -> 83; ERP R7,938.37 ties. 7 payments unallocated (R78,617.03). Statement still not regenerated (placeholder opening)."
+    },
+    {
+      "date": "2026-10-10",
+      "event": "Operator (main session, 2026-10-10): \"We can approve them in groups\". Probable credit-note pairs approved as groups CN-DN-1 (same delivery-note number and lane, exact opposite amount, credit note 2-5 days after the invoice) and CN-AD (exact amount and lane, 0-1 day, single candidate), only where no rival invoice or credit note of the same lane, amount and DN exists (docs/previews/2026-10-10_probable_ties_by_group.md). Group-level judgement, not a document-by-document review. Recorded as approved locks (approve_tie.mjs --ties), reversible with close_period.mjs --void-lock. TAN002: 17 pairs approved; customer preview 83 -> 49 rows; ERP R7,938.37 ties, 0 conflicts. Held back: T0057 (invoice 49360 + CN 14472) and T0068 (invoice 48722 + CN 14235), each with a twin invoice of the same lane, amount and DN, so the pairing is arbitrary; and NEAR_SUM payment 42300 (R0.36, needs a treatment). Statement still not regenerated (placeholder opening)."
     }
   ]
 }

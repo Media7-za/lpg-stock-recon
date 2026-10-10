@@ -79,6 +79,10 @@
     {
       "date": "2026-10-09",
       "event": "Matcher v5 applied (operator: \"Yes\" to applying the 2026-10-09 preview, docs/previews/2026-10-09_matcher_v5_preview.md): new rules BATCH_SUM, CYL_EXCHANGE, BALANCE_ZERO; DN parser reads DN_nnnnn. Re-run match_projection + render_open_items only; no lock created, no statement released. PROPOSED — NOT RATIFIED. Proof holds, 0 lock conflicts. No change: 95 ties, 32 open rows, ERP R16,547.81 ties. Review-only (ingest partial: DN#23844 docs, ADM-93)."
+    },
+    {
+      "date": "2026-10-10",
+      "event": "Operator (main session, 2026-10-10): \"We can approve them in groups\". Probable credit-note pairs approved as groups CN-DN-1 (same delivery-note number and lane, exact opposite amount, credit note 2-5 days after the invoice) and CN-AD (exact amount and lane, 0-1 day, single candidate), only where no rival invoice or credit note of the same lane, amount and DN exists (docs/previews/2026-10-10_probable_ties_by_group.md). Group-level judgement, not a document-by-document review. Recorded as approved locks (approve_tie.mjs --ties), reversible with close_period.mjs --void-lock. MD0003: 6 pairs approved; customer preview 51 -> 39 rows; ERP R16,547.81 ties, 0 conflicts. Still probable: the remittance tie T0003 (payment 43494, line discrepancies) for operator review."
     }
   ]
 }

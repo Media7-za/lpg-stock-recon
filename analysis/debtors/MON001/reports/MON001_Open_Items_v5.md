@@ -1,7 +1,7 @@
 # Open Items Statement: SHORTEN INTERNATIONAL 66 ON MONZALI (MON001) — Internal
 **Period:** from 11 Jul 2024 to 02 Oct 2026 &nbsp;|&nbsp; **Balance due:** R2,417.24
-**Status:** PROPOSED — NOT RATIFIED (`PROPOSED_Projection_Matching_Locks.md`, build step 3) · generated 2026-10-09 by `render_open_items.mjs`
-**Sources:** `analysis/debtors/MON001/data/v5_projection.json` (TXT sha256 `3b289b8d9d76…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (26 confirmed / 4 probable ties) · **REVIEW ONLY:** ingestCoverage partial
+**Status:** PROPOSED — NOT RATIFIED (`PROPOSED_Projection_Matching_Locks.md`, build step 3) · generated 2026-10-10 by `render_open_items.mjs`
+**Sources:** `analysis/debtors/MON001/data/v5_projection.json` (TXT sha256 `3b289b8d9d76…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (28 confirmed / 2 probable ties) · **REVIEW ONLY:** ingestCoverage partial
 **Locks:** no period closed yet
 
 ---
@@ -83,8 +83,6 @@
 
 | Tie | Rule | Documents | Variance (R) | Note |
 | :--- | :--- | :--- | ---: | :--- |
-| T0010 | CN_DN_PAIR | Invoice 49461, Crd Note 14512 | — | CN 2 day(s) after invoice |
-| T0015 | CN_DN_PAIR | Invoice 51953, Crd Note 15303 | — | CN 2 day(s) after invoice |
 | T0029 | PROXIMITY | Payment 45589, Invoice 51846 | -0.10 | within ±R5.00 |
 | T0030 | BATCH_SUM | Payment 45216, Invoice 50363, Invoice 50097 | 0.00 |  |
 
@@ -92,9 +90,17 @@
 
 | Rule | Ties |
 | :--- | ---: |
+| LOCKED | 2 |
 | CN_DN_PAIR | 15 |
 | EXACT_SINGLE | 10 |
 | EXACT_MONTH_SUM | 1 |
 
 Full tie list: `data/projection_matches.json`.
+
+## Appendix D: Operator rulings applied (approved locks)
+
+| Lock | Treatment | Documents | Net (R) | Ruling |
+| :--- | :--- | :--- | ---: | :--- |
+| L0001 | exact | Invoice 49461, Crd Note 14512 | 0.00 | Operator ruling 2026-10-10 (main session, "We can approve them in groups"): approved as groups CN-DN-1 and CN-AD of docs/previews/2026-10-10_probable_ties_by_group.md. CN-DN-1 = credit note and invoice of the same delivery-note number and lane, exact opposite amount, credit note 2-5 days after the invoice. CN-AD = exact opposite amount and lane, credit note 0-1 day after the invoice, a single candidate. In both groups no other invoice or credit note of the same lane, amount and delivery note exists (a rival would make the pairing arbitrary). Group-level judgement, not a document-by-document review. Tripwires: an allocation-detail export tagging a credit note of this group to a different invoice; a re-issue of either document. |
+| L0002 | exact | Invoice 51953, Crd Note 15303 | 0.00 | Operator ruling 2026-10-10 (main session, "We can approve them in groups"): approved as groups CN-DN-1 and CN-AD of docs/previews/2026-10-10_probable_ties_by_group.md. CN-DN-1 = credit note and invoice of the same delivery-note number and lane, exact opposite amount, credit note 2-5 days after the invoice. CN-AD = exact opposite amount and lane, credit note 0-1 day after the invoice, a single candidate. In both groups no other invoice or credit note of the same lane, amount and delivery note exists (a rival would make the pairing arbitrary). Group-level judgement, not a document-by-document review. Tripwires: an allocation-detail export tagging a credit note of this group to a different invoice; a re-issue of either document. |
 

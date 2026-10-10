@@ -89,6 +89,10 @@
     {
       "date": "2026-10-09",
       "event": "Matcher v5 applied (operator: \"Yes\" to applying the 2026-10-09 preview, docs/previews/2026-10-09_matcher_v5_preview.md): new rules BATCH_SUM, CYL_EXCHANGE, BALANCE_ZERO; DN parser reads DN_nnnnn. Re-run match_projection + render_open_items only; no lock created, no statement released. PROPOSED — NOT RATIFIED. Proof holds, 0 lock conflicts. Ties 29 -> 30 (+1 BATCH_SUM probable: payment 45216 vs invoices 50363 + 50097); open rows internal 12 -> 8, customer 18 unchanged; ERP R2,417.24 ties. Review-only (gaps 45158, 52130)."
+    },
+    {
+      "date": "2026-10-10",
+      "event": "Operator (main session, 2026-10-10): \"We can approve them in groups\". Probable credit-note pairs approved as groups CN-DN-1 (same delivery-note number and lane, exact opposite amount, credit note 2-5 days after the invoice) and CN-AD (exact amount and lane, 0-1 day, single candidate), only where no rival invoice or credit note of the same lane, amount and DN exists (docs/previews/2026-10-10_probable_ties_by_group.md). Group-level judgement, not a document-by-document review. Recorded as approved locks (approve_tie.mjs --ties), reversible with close_period.mjs --void-lock. MON001: 2 pairs approved; customer preview 18 -> 14 rows; ERP R2,417.24 ties, 0 conflicts. Still probable: PROXIMITY (payment 45589 vs invoice 51846, R0.10) and BATCH_SUM (payment 45216 vs invoices 50363 + 50097)."
     }
   ]
 }

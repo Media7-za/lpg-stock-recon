@@ -2,7 +2,7 @@
   "status": "PROPOSED — NOT RATIFIED (PROPOSED_Projection_Matching_Locks.md, build step 2)",
   "debtorCode": "TAN002",
   "generatedBy": "match_projection.mjs",
-  "generatedAt": "2026-10-09T04:50:07.043Z",
+  "generatedAt": "2026-10-10T05:06:12.226Z",
   "projection": {
     "path": "analysis/debtors/TAN002/data/v5_projection.json",
     "txtSha256": "51d10507d04c7c4f1a7a23e2c53be111d93bb9d13a8b3a55d5ba3ea0866df502",
@@ -13,10 +13,10 @@
   "reviewOnlyReasons": [
     "ingestCoverage partial"
   ],
-  "locksRegistry": "none yet",
+  "locksRegistry": "config/payment_pattern_overrides.json#projectionLocks",
   "matcherVersion": 5,
   "closedThrough": null,
-  "locksApplied": 0,
+  "locksApplied": 17,
   "lockConflicts": [],
   "rules": {
     "exactTolerance": 0.05,
@@ -42,11 +42,12 @@
   },
   "summary": {
     "ties": 89,
-    "confirmed": 69,
-    "probable": 20,
+    "confirmed": 86,
+    "probable": 3,
     "byRule": {
-      "CN_DN_PAIR": 66,
-      "CN_AMOUNT_DATE": 2,
+      "LOCKED": 17,
+      "CN_DN_PAIR": 50,
+      "CN_AMOUNT_DATE": 1,
       "EXACT_RUN": 2,
       "EXACT_SINGLE": 6,
       "EXACT_SUM": 7,
@@ -142,6 +143,550 @@
   "ties": [
     {
       "tie_id": "T0001",
+      "rule": "LOCKED",
+      "confidence": "CONFIRMED",
+      "members": [
+        "41893|Invoice|CYL|L12",
+        "12186|Crd Note|CYL|L13"
+      ],
+      "docs": [
+        "Invoice 41893",
+        "Crd Note 12186"
+      ],
+      "net": 0,
+      "lock_id": "L0001",
+      "close_id": null,
+      "lockedRule": "OPERATOR_RULING",
+      "ruling": {
+        "treatment": "exact",
+        "net": 0,
+        "reason": "Operator ruling 2026-10-10 (main session, \"We can approve them in groups\"): approved as groups CN-DN-1 and CN-AD of docs/previews/2026-10-10_probable_ties_by_group.md. CN-DN-1 = credit note and invoice of the same delivery-note number and lane, exact opposite amount, credit note 2-5 days after the invoice. CN-AD = exact opposite amount and lane, credit note 0-1 day after the invoice, a single candidate. In both groups no other invoice or credit note of the same lane, amount and delivery note exists (a rival would make the pairing arbitrary). Group-level judgement, not a document-by-document review. Tripwires: an allocation-detail export tagging a credit note of this group to a different invoice; a re-issue of either document.",
+        "approvedBy": "operator",
+        "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx",
+        "approvedTie": {
+          "tie_id": "T0003",
+          "rule": "CN_DN_PAIR",
+          "docs": [
+            "Invoice 41893",
+            "Crd Note 12186"
+          ]
+        }
+      }
+    },
+    {
+      "tie_id": "T0002",
+      "rule": "LOCKED",
+      "confidence": "CONFIRMED",
+      "members": [
+        "42018|Invoice|CYL|L15",
+        "12204|Crd Note|CYL|L16"
+      ],
+      "docs": [
+        "Invoice 42018",
+        "Crd Note 12204"
+      ],
+      "net": 0,
+      "lock_id": "L0002",
+      "close_id": null,
+      "lockedRule": "OPERATOR_RULING",
+      "ruling": {
+        "treatment": "exact",
+        "net": 0,
+        "reason": "Operator ruling 2026-10-10 (main session, \"We can approve them in groups\"): approved as groups CN-DN-1 and CN-AD of docs/previews/2026-10-10_probable_ties_by_group.md. CN-DN-1 = credit note and invoice of the same delivery-note number and lane, exact opposite amount, credit note 2-5 days after the invoice. CN-AD = exact opposite amount and lane, credit note 0-1 day after the invoice, a single candidate. In both groups no other invoice or credit note of the same lane, amount and delivery note exists (a rival would make the pairing arbitrary). Group-level judgement, not a document-by-document review. Tripwires: an allocation-detail export tagging a credit note of this group to a different invoice; a re-issue of either document.",
+        "approvedBy": "operator",
+        "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx",
+        "approvedTie": {
+          "tie_id": "T0004",
+          "rule": "CN_DN_PAIR",
+          "docs": [
+            "Invoice 42018",
+            "Crd Note 12204"
+          ]
+        }
+      }
+    },
+    {
+      "tie_id": "T0003",
+      "rule": "LOCKED",
+      "confidence": "CONFIRMED",
+      "members": [
+        "42575|Invoice|CYL|L27",
+        "12360|Crd Note|CYL|L28"
+      ],
+      "docs": [
+        "Invoice 42575",
+        "Crd Note 12360"
+      ],
+      "net": 0,
+      "lock_id": "L0003",
+      "close_id": null,
+      "lockedRule": "OPERATOR_RULING",
+      "ruling": {
+        "treatment": "exact",
+        "net": 0,
+        "reason": "Operator ruling 2026-10-10 (main session, \"We can approve them in groups\"): approved as groups CN-DN-1 and CN-AD of docs/previews/2026-10-10_probable_ties_by_group.md. CN-DN-1 = credit note and invoice of the same delivery-note number and lane, exact opposite amount, credit note 2-5 days after the invoice. CN-AD = exact opposite amount and lane, credit note 0-1 day after the invoice, a single candidate. In both groups no other invoice or credit note of the same lane, amount and delivery note exists (a rival would make the pairing arbitrary). Group-level judgement, not a document-by-document review. Tripwires: an allocation-detail export tagging a credit note of this group to a different invoice; a re-issue of either document.",
+        "approvedBy": "operator",
+        "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx",
+        "approvedTie": {
+          "tie_id": "T0008",
+          "rule": "CN_DN_PAIR",
+          "docs": [
+            "Invoice 42575",
+            "Crd Note 12360"
+          ]
+        }
+      }
+    },
+    {
+      "tie_id": "T0004",
+      "rule": "LOCKED",
+      "confidence": "CONFIRMED",
+      "members": [
+        "42965|Invoice|CYL|L36",
+        "12459|Crd Note|CYL|L37"
+      ],
+      "docs": [
+        "Invoice 42965",
+        "Crd Note 12459"
+      ],
+      "net": 0,
+      "lock_id": "L0004",
+      "close_id": null,
+      "lockedRule": "OPERATOR_RULING",
+      "ruling": {
+        "treatment": "exact",
+        "net": 0,
+        "reason": "Operator ruling 2026-10-10 (main session, \"We can approve them in groups\"): approved as groups CN-DN-1 and CN-AD of docs/previews/2026-10-10_probable_ties_by_group.md. CN-DN-1 = credit note and invoice of the same delivery-note number and lane, exact opposite amount, credit note 2-5 days after the invoice. CN-AD = exact opposite amount and lane, credit note 0-1 day after the invoice, a single candidate. In both groups no other invoice or credit note of the same lane, amount and delivery note exists (a rival would make the pairing arbitrary). Group-level judgement, not a document-by-document review. Tripwires: an allocation-detail export tagging a credit note of this group to a different invoice; a re-issue of either document.",
+        "approvedBy": "operator",
+        "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx",
+        "approvedTie": {
+          "tie_id": "T0011",
+          "rule": "CN_DN_PAIR",
+          "docs": [
+            "Invoice 42965",
+            "Crd Note 12459"
+          ]
+        }
+      }
+    },
+    {
+      "tie_id": "T0005",
+      "rule": "LOCKED",
+      "confidence": "CONFIRMED",
+      "members": [
+        "43134|Invoice|CYL|L39",
+        "12516|Crd Note|CYL|L40"
+      ],
+      "docs": [
+        "Invoice 43134",
+        "Crd Note 12516"
+      ],
+      "net": 0,
+      "lock_id": "L0005",
+      "close_id": null,
+      "lockedRule": "OPERATOR_RULING",
+      "ruling": {
+        "treatment": "exact",
+        "net": 0,
+        "reason": "Operator ruling 2026-10-10 (main session, \"We can approve them in groups\"): approved as groups CN-DN-1 and CN-AD of docs/previews/2026-10-10_probable_ties_by_group.md. CN-DN-1 = credit note and invoice of the same delivery-note number and lane, exact opposite amount, credit note 2-5 days after the invoice. CN-AD = exact opposite amount and lane, credit note 0-1 day after the invoice, a single candidate. In both groups no other invoice or credit note of the same lane, amount and delivery note exists (a rival would make the pairing arbitrary). Group-level judgement, not a document-by-document review. Tripwires: an allocation-detail export tagging a credit note of this group to a different invoice; a re-issue of either document.",
+        "approvedBy": "operator",
+        "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx",
+        "approvedTie": {
+          "tie_id": "T0012",
+          "rule": "CN_DN_PAIR",
+          "docs": [
+            "Invoice 43134",
+            "Crd Note 12516"
+          ]
+        }
+      }
+    },
+    {
+      "tie_id": "T0006",
+      "rule": "LOCKED",
+      "confidence": "CONFIRMED",
+      "members": [
+        "43334|Invoice|CYL|L42",
+        "12565|Crd Note|CYL|L44"
+      ],
+      "docs": [
+        "Invoice 43334",
+        "Crd Note 12565"
+      ],
+      "net": 0,
+      "lock_id": "L0006",
+      "close_id": null,
+      "lockedRule": "OPERATOR_RULING",
+      "ruling": {
+        "treatment": "exact",
+        "net": 0,
+        "reason": "Operator ruling 2026-10-10 (main session, \"We can approve them in groups\"): approved as groups CN-DN-1 and CN-AD of docs/previews/2026-10-10_probable_ties_by_group.md. CN-DN-1 = credit note and invoice of the same delivery-note number and lane, exact opposite amount, credit note 2-5 days after the invoice. CN-AD = exact opposite amount and lane, credit note 0-1 day after the invoice, a single candidate. In both groups no other invoice or credit note of the same lane, amount and delivery note exists (a rival would make the pairing arbitrary). Group-level judgement, not a document-by-document review. Tripwires: an allocation-detail export tagging a credit note of this group to a different invoice; a re-issue of either document.",
+        "approvedBy": "operator",
+        "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx",
+        "approvedTie": {
+          "tie_id": "T0013",
+          "rule": "CN_DN_PAIR",
+          "docs": [
+            "Invoice 43334",
+            "Crd Note 12565"
+          ]
+        }
+      }
+    },
+    {
+      "tie_id": "T0007",
+      "rule": "LOCKED",
+      "confidence": "CONFIRMED",
+      "members": [
+        "43702|Invoice|CYL|L52",
+        "12661|Crd Note|CYL|L53"
+      ],
+      "docs": [
+        "Invoice 43702",
+        "Crd Note 12661"
+      ],
+      "net": 0,
+      "lock_id": "L0007",
+      "close_id": null,
+      "lockedRule": "OPERATOR_RULING",
+      "ruling": {
+        "treatment": "exact",
+        "net": 0,
+        "reason": "Operator ruling 2026-10-10 (main session, \"We can approve them in groups\"): approved as groups CN-DN-1 and CN-AD of docs/previews/2026-10-10_probable_ties_by_group.md. CN-DN-1 = credit note and invoice of the same delivery-note number and lane, exact opposite amount, credit note 2-5 days after the invoice. CN-AD = exact opposite amount and lane, credit note 0-1 day after the invoice, a single candidate. In both groups no other invoice or credit note of the same lane, amount and delivery note exists (a rival would make the pairing arbitrary). Group-level judgement, not a document-by-document review. Tripwires: an allocation-detail export tagging a credit note of this group to a different invoice; a re-issue of either document.",
+        "approvedBy": "operator",
+        "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx",
+        "approvedTie": {
+          "tie_id": "T0014",
+          "rule": "CN_DN_PAIR",
+          "docs": [
+            "Invoice 43702",
+            "Crd Note 12661"
+          ]
+        }
+      }
+    },
+    {
+      "tie_id": "T0008",
+      "rule": "LOCKED",
+      "confidence": "CONFIRMED",
+      "members": [
+        "45351|Invoice|CYL|L80",
+        "13135|Crd Note|CYL|L81"
+      ],
+      "docs": [
+        "Invoice 45351",
+        "Crd Note 13135"
+      ],
+      "net": 0,
+      "lock_id": "L0008",
+      "close_id": null,
+      "lockedRule": "OPERATOR_RULING",
+      "ruling": {
+        "treatment": "exact",
+        "net": 0,
+        "reason": "Operator ruling 2026-10-10 (main session, \"We can approve them in groups\"): approved as groups CN-DN-1 and CN-AD of docs/previews/2026-10-10_probable_ties_by_group.md. CN-DN-1 = credit note and invoice of the same delivery-note number and lane, exact opposite amount, credit note 2-5 days after the invoice. CN-AD = exact opposite amount and lane, credit note 0-1 day after the invoice, a single candidate. In both groups no other invoice or credit note of the same lane, amount and delivery note exists (a rival would make the pairing arbitrary). Group-level judgement, not a document-by-document review. Tripwires: an allocation-detail export tagging a credit note of this group to a different invoice; a re-issue of either document.",
+        "approvedBy": "operator",
+        "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx",
+        "approvedTie": {
+          "tie_id": "T0019",
+          "rule": "CN_DN_PAIR",
+          "docs": [
+            "Invoice 45351",
+            "Crd Note 13135"
+          ]
+        }
+      }
+    },
+    {
+      "tie_id": "T0009",
+      "rule": "LOCKED",
+      "confidence": "CONFIRMED",
+      "members": [
+        "45537|Invoice|CYL|L83",
+        "13185|Crd Note|CYL|L86"
+      ],
+      "docs": [
+        "Invoice 45537",
+        "Crd Note 13185"
+      ],
+      "net": 0,
+      "lock_id": "L0009",
+      "close_id": null,
+      "lockedRule": "OPERATOR_RULING",
+      "ruling": {
+        "treatment": "exact",
+        "net": 0,
+        "reason": "Operator ruling 2026-10-10 (main session, \"We can approve them in groups\"): approved as groups CN-DN-1 and CN-AD of docs/previews/2026-10-10_probable_ties_by_group.md. CN-DN-1 = credit note and invoice of the same delivery-note number and lane, exact opposite amount, credit note 2-5 days after the invoice. CN-AD = exact opposite amount and lane, credit note 0-1 day after the invoice, a single candidate. In both groups no other invoice or credit note of the same lane, amount and delivery note exists (a rival would make the pairing arbitrary). Group-level judgement, not a document-by-document review. Tripwires: an allocation-detail export tagging a credit note of this group to a different invoice; a re-issue of either document.",
+        "approvedBy": "operator",
+        "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx",
+        "approvedTie": {
+          "tie_id": "T0020",
+          "rule": "CN_DN_PAIR",
+          "docs": [
+            "Invoice 45537",
+            "Crd Note 13185"
+          ]
+        }
+      }
+    },
+    {
+      "tie_id": "T0010",
+      "rule": "LOCKED",
+      "confidence": "CONFIRMED",
+      "members": [
+        "45544|Invoice|CYL|L85",
+        "13188|Crd Note|CYL|L87"
+      ],
+      "docs": [
+        "Invoice 45544",
+        "Crd Note 13188"
+      ],
+      "net": 0,
+      "lock_id": "L0010",
+      "close_id": null,
+      "lockedRule": "OPERATOR_RULING",
+      "ruling": {
+        "treatment": "exact",
+        "net": 0,
+        "reason": "Operator ruling 2026-10-10 (main session, \"We can approve them in groups\"): approved as groups CN-DN-1 and CN-AD of docs/previews/2026-10-10_probable_ties_by_group.md. CN-DN-1 = credit note and invoice of the same delivery-note number and lane, exact opposite amount, credit note 2-5 days after the invoice. CN-AD = exact opposite amount and lane, credit note 0-1 day after the invoice, a single candidate. In both groups no other invoice or credit note of the same lane, amount and delivery note exists (a rival would make the pairing arbitrary). Group-level judgement, not a document-by-document review. Tripwires: an allocation-detail export tagging a credit note of this group to a different invoice; a re-issue of either document.",
+        "approvedBy": "operator",
+        "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx",
+        "approvedTie": {
+          "tie_id": "T0021",
+          "rule": "CN_DN_PAIR",
+          "docs": [
+            "Invoice 45544",
+            "Crd Note 13188"
+          ]
+        }
+      }
+    },
+    {
+      "tie_id": "T0011",
+      "rule": "LOCKED",
+      "confidence": "CONFIRMED",
+      "members": [
+        "46655|Invoice|CYL|L114",
+        "13561|Crd Note|CYL|L117"
+      ],
+      "docs": [
+        "Invoice 46655",
+        "Crd Note 13561"
+      ],
+      "net": 0,
+      "lock_id": "L0011",
+      "close_id": null,
+      "lockedRule": "OPERATOR_RULING",
+      "ruling": {
+        "treatment": "exact",
+        "net": 0,
+        "reason": "Operator ruling 2026-10-10 (main session, \"We can approve them in groups\"): approved as groups CN-DN-1 and CN-AD of docs/previews/2026-10-10_probable_ties_by_group.md. CN-DN-1 = credit note and invoice of the same delivery-note number and lane, exact opposite amount, credit note 2-5 days after the invoice. CN-AD = exact opposite amount and lane, credit note 0-1 day after the invoice, a single candidate. In both groups no other invoice or credit note of the same lane, amount and delivery note exists (a rival would make the pairing arbitrary). Group-level judgement, not a document-by-document review. Tripwires: an allocation-detail export tagging a credit note of this group to a different invoice; a re-issue of either document.",
+        "approvedBy": "operator",
+        "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx",
+        "approvedTie": {
+          "tie_id": "T0029",
+          "rule": "CN_DN_PAIR",
+          "docs": [
+            "Invoice 46655",
+            "Crd Note 13561"
+          ]
+        }
+      }
+    },
+    {
+      "tie_id": "T0012",
+      "rule": "LOCKED",
+      "confidence": "CONFIRMED",
+      "members": [
+        "46656|Invoice|LPG|L115",
+        "13562|Crd Note|LPG|L118"
+      ],
+      "docs": [
+        "Invoice 46656",
+        "Crd Note 13562"
+      ],
+      "net": 0,
+      "lock_id": "L0012",
+      "close_id": null,
+      "lockedRule": "OPERATOR_RULING",
+      "ruling": {
+        "treatment": "exact",
+        "net": 0,
+        "reason": "Operator ruling 2026-10-10 (main session, \"We can approve them in groups\"): approved as groups CN-DN-1 and CN-AD of docs/previews/2026-10-10_probable_ties_by_group.md. CN-DN-1 = credit note and invoice of the same delivery-note number and lane, exact opposite amount, credit note 2-5 days after the invoice. CN-AD = exact opposite amount and lane, credit note 0-1 day after the invoice, a single candidate. In both groups no other invoice or credit note of the same lane, amount and delivery note exists (a rival would make the pairing arbitrary). Group-level judgement, not a document-by-document review. Tripwires: an allocation-detail export tagging a credit note of this group to a different invoice; a re-issue of either document.",
+        "approvedBy": "operator",
+        "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx",
+        "approvedTie": {
+          "tie_id": "T0030",
+          "rule": "CN_DN_PAIR",
+          "docs": [
+            "Invoice 46656",
+            "Crd Note 13562"
+          ]
+        }
+      }
+    },
+    {
+      "tie_id": "T0013",
+      "rule": "LOCKED",
+      "confidence": "CONFIRMED",
+      "members": [
+        "46657|Invoice|CYL|L116",
+        "13563|Crd Note|CYL|L119"
+      ],
+      "docs": [
+        "Invoice 46657",
+        "Crd Note 13563"
+      ],
+      "net": 0,
+      "lock_id": "L0013",
+      "close_id": null,
+      "lockedRule": "OPERATOR_RULING",
+      "ruling": {
+        "treatment": "exact",
+        "net": 0,
+        "reason": "Operator ruling 2026-10-10 (main session, \"We can approve them in groups\"): approved as groups CN-DN-1 and CN-AD of docs/previews/2026-10-10_probable_ties_by_group.md. CN-DN-1 = credit note and invoice of the same delivery-note number and lane, exact opposite amount, credit note 2-5 days after the invoice. CN-AD = exact opposite amount and lane, credit note 0-1 day after the invoice, a single candidate. In both groups no other invoice or credit note of the same lane, amount and delivery note exists (a rival would make the pairing arbitrary). Group-level judgement, not a document-by-document review. Tripwires: an allocation-detail export tagging a credit note of this group to a different invoice; a re-issue of either document.",
+        "approvedBy": "operator",
+        "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx",
+        "approvedTie": {
+          "tie_id": "T0031",
+          "rule": "CN_DN_PAIR",
+          "docs": [
+            "Invoice 46657",
+            "Crd Note 13563"
+          ]
+        }
+      }
+    },
+    {
+      "tie_id": "T0014",
+      "rule": "LOCKED",
+      "confidence": "CONFIRMED",
+      "members": [
+        "48131|Invoice|CYL|L165",
+        "14023|Crd Note|CYL|L166"
+      ],
+      "docs": [
+        "Invoice 48131",
+        "Crd Note 14023"
+      ],
+      "net": 0,
+      "lock_id": "L0014",
+      "close_id": null,
+      "lockedRule": "OPERATOR_RULING",
+      "ruling": {
+        "treatment": "exact",
+        "net": 0,
+        "reason": "Operator ruling 2026-10-10 (main session, \"We can approve them in groups\"): approved as groups CN-DN-1 and CN-AD of docs/previews/2026-10-10_probable_ties_by_group.md. CN-DN-1 = credit note and invoice of the same delivery-note number and lane, exact opposite amount, credit note 2-5 days after the invoice. CN-AD = exact opposite amount and lane, credit note 0-1 day after the invoice, a single candidate. In both groups no other invoice or credit note of the same lane, amount and delivery note exists (a rival would make the pairing arbitrary). Group-level judgement, not a document-by-document review. Tripwires: an allocation-detail export tagging a credit note of this group to a different invoice; a re-issue of either document.",
+        "approvedBy": "operator",
+        "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx",
+        "approvedTie": {
+          "tie_id": "T0043",
+          "rule": "CN_DN_PAIR",
+          "docs": [
+            "Invoice 48131",
+            "Crd Note 14023"
+          ]
+        }
+      }
+    },
+    {
+      "tie_id": "T0015",
+      "rule": "LOCKED",
+      "confidence": "CONFIRMED",
+      "members": [
+        "48186|Invoice|CYL|L169",
+        "14063|Crd Note|CYL|L170"
+      ],
+      "docs": [
+        "Invoice 48186",
+        "Crd Note 14063"
+      ],
+      "net": 0,
+      "lock_id": "L0015",
+      "close_id": null,
+      "lockedRule": "OPERATOR_RULING",
+      "ruling": {
+        "treatment": "exact",
+        "net": 0,
+        "reason": "Operator ruling 2026-10-10 (main session, \"We can approve them in groups\"): approved as groups CN-DN-1 and CN-AD of docs/previews/2026-10-10_probable_ties_by_group.md. CN-DN-1 = credit note and invoice of the same delivery-note number and lane, exact opposite amount, credit note 2-5 days after the invoice. CN-AD = exact opposite amount and lane, credit note 0-1 day after the invoice, a single candidate. In both groups no other invoice or credit note of the same lane, amount and delivery note exists (a rival would make the pairing arbitrary). Group-level judgement, not a document-by-document review. Tripwires: an allocation-detail export tagging a credit note of this group to a different invoice; a re-issue of either document.",
+        "approvedBy": "operator",
+        "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx",
+        "approvedTie": {
+          "tie_id": "T0044",
+          "rule": "CN_DN_PAIR",
+          "docs": [
+            "Invoice 48186",
+            "Crd Note 14063"
+          ]
+        }
+      }
+    },
+    {
+      "tie_id": "T0016",
+      "rule": "LOCKED",
+      "confidence": "CONFIRMED",
+      "members": [
+        "49972|Invoice|CYL|L235",
+        "14678|Crd Note|CYL|L236"
+      ],
+      "docs": [
+        "Invoice 49972",
+        "Crd Note 14678"
+      ],
+      "net": 0,
+      "lock_id": "L0016",
+      "close_id": null,
+      "lockedRule": "OPERATOR_RULING",
+      "ruling": {
+        "treatment": "exact",
+        "net": 0,
+        "reason": "Operator ruling 2026-10-10 (main session, \"We can approve them in groups\"): approved as groups CN-DN-1 and CN-AD of docs/previews/2026-10-10_probable_ties_by_group.md. CN-DN-1 = credit note and invoice of the same delivery-note number and lane, exact opposite amount, credit note 2-5 days after the invoice. CN-AD = exact opposite amount and lane, credit note 0-1 day after the invoice, a single candidate. In both groups no other invoice or credit note of the same lane, amount and delivery note exists (a rival would make the pairing arbitrary). Group-level judgement, not a document-by-document review. Tripwires: an allocation-detail export tagging a credit note of this group to a different invoice; a re-issue of either document.",
+        "approvedBy": "operator",
+        "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx",
+        "approvedTie": {
+          "tie_id": "T0062",
+          "rule": "CN_DN_PAIR",
+          "docs": [
+            "Invoice 49972",
+            "Crd Note 14678"
+          ]
+        }
+      }
+    },
+    {
+      "tie_id": "T0017",
+      "rule": "LOCKED",
+      "confidence": "CONFIRMED",
+      "members": [
+        "45066|Invoice|CYL|L76",
+        "13033|Crd Note|CYL|L73"
+      ],
+      "docs": [
+        "Invoice 45066",
+        "Crd Note 13033"
+      ],
+      "net": 0,
+      "lock_id": "L0017",
+      "close_id": null,
+      "lockedRule": "OPERATOR_RULING",
+      "ruling": {
+        "treatment": "exact",
+        "net": 0,
+        "reason": "Operator ruling 2026-10-10 (main session, \"We can approve them in groups\"): approved as groups CN-DN-1 and CN-AD of docs/previews/2026-10-10_probable_ties_by_group.md. CN-DN-1 = credit note and invoice of the same delivery-note number and lane, exact opposite amount, credit note 2-5 days after the invoice. CN-AD = exact opposite amount and lane, credit note 0-1 day after the invoice, a single candidate. In both groups no other invoice or credit note of the same lane, amount and delivery note exists (a rival would make the pairing arbitrary). Group-level judgement, not a document-by-document review. Tripwires: an allocation-detail export tagging a credit note of this group to a different invoice; a re-issue of either document.",
+        "approvedBy": "operator",
+        "session": "https://claude.ai/code/session_01XuWexMJeX597HLQNq2BUyx",
+        "approvedTie": {
+          "tie_id": "T0067",
+          "rule": "CN_AMOUNT_DATE",
+          "docs": [
+            "Invoice 45066",
+            "Crd Note 13033"
+          ]
+        }
+      }
+    },
+    {
+      "tie_id": "T0018",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -157,7 +702,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0002",
+      "tie_id": "T0019",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -173,39 +718,7 @@
       "lagDays": 1
     },
     {
-      "tie_id": "T0003",
-      "rule": "CN_DN_PAIR",
-      "confidence": "PROBABLE",
-      "members": [
-        "41893|Invoice|CYL|L12",
-        "12186|Crd Note|CYL|L13"
-      ],
-      "docs": [
-        "Invoice 41893",
-        "Crd Note 12186"
-      ],
-      "net": 0,
-      "dn": "12835",
-      "lagDays": 3
-    },
-    {
-      "tie_id": "T0004",
-      "rule": "CN_DN_PAIR",
-      "confidence": "PROBABLE",
-      "members": [
-        "42018|Invoice|CYL|L15",
-        "12204|Crd Note|CYL|L16"
-      ],
-      "docs": [
-        "Invoice 42018",
-        "Crd Note 12204"
-      ],
-      "net": 0,
-      "dn": "13000",
-      "lagDays": 3
-    },
-    {
-      "tie_id": "T0005",
+      "tie_id": "T0020",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -221,7 +734,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0006",
+      "tie_id": "T0021",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -237,7 +750,7 @@
       "lagDays": 1
     },
     {
-      "tie_id": "T0007",
+      "tie_id": "T0022",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -253,23 +766,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0008",
-      "rule": "CN_DN_PAIR",
-      "confidence": "PROBABLE",
-      "members": [
-        "42575|Invoice|CYL|L27",
-        "12360|Crd Note|CYL|L28"
-      ],
-      "docs": [
-        "Invoice 42575",
-        "Crd Note 12360"
-      ],
-      "net": 0,
-      "dn": "13167",
-      "lagDays": 3
-    },
-    {
-      "tie_id": "T0009",
+      "tie_id": "T0023",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -285,7 +782,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0010",
+      "tie_id": "T0024",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -301,71 +798,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0011",
-      "rule": "CN_DN_PAIR",
-      "confidence": "PROBABLE",
-      "members": [
-        "42965|Invoice|CYL|L36",
-        "12459|Crd Note|CYL|L37"
-      ],
-      "docs": [
-        "Invoice 42965",
-        "Crd Note 12459"
-      ],
-      "net": 0,
-      "dn": "13212",
-      "lagDays": 2
-    },
-    {
-      "tie_id": "T0012",
-      "rule": "CN_DN_PAIR",
-      "confidence": "PROBABLE",
-      "members": [
-        "43134|Invoice|CYL|L39",
-        "12516|Crd Note|CYL|L40"
-      ],
-      "docs": [
-        "Invoice 43134",
-        "Crd Note 12516"
-      ],
-      "net": 0,
-      "dn": "13148",
-      "lagDays": 3
-    },
-    {
-      "tie_id": "T0013",
-      "rule": "CN_DN_PAIR",
-      "confidence": "PROBABLE",
-      "members": [
-        "43334|Invoice|CYL|L42",
-        "12565|Crd Note|CYL|L44"
-      ],
-      "docs": [
-        "Invoice 43334",
-        "Crd Note 12565"
-      ],
-      "net": 0,
-      "dn": "12262",
-      "lagDays": 2
-    },
-    {
-      "tie_id": "T0014",
-      "rule": "CN_DN_PAIR",
-      "confidence": "PROBABLE",
-      "members": [
-        "43702|Invoice|CYL|L52",
-        "12661|Crd Note|CYL|L53"
-      ],
-      "docs": [
-        "Invoice 43702",
-        "Crd Note 12661"
-      ],
-      "net": 0,
-      "dn": "12497",
-      "lagDays": 2
-    },
-    {
-      "tie_id": "T0015",
+      "tie_id": "T0025",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -381,7 +814,7 @@
       "lagDays": 1
     },
     {
-      "tie_id": "T0016",
+      "tie_id": "T0026",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -397,7 +830,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0017",
+      "tie_id": "T0027",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -413,7 +846,7 @@
       "lagDays": 1
     },
     {
-      "tie_id": "T0018",
+      "tie_id": "T0028",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -429,55 +862,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0019",
-      "rule": "CN_DN_PAIR",
-      "confidence": "PROBABLE",
-      "members": [
-        "45351|Invoice|CYL|L80",
-        "13135|Crd Note|CYL|L81"
-      ],
-      "docs": [
-        "Invoice 45351",
-        "Crd Note 13135"
-      ],
-      "net": 0,
-      "dn": "20049",
-      "lagDays": 3
-    },
-    {
-      "tie_id": "T0020",
-      "rule": "CN_DN_PAIR",
-      "confidence": "PROBABLE",
-      "members": [
-        "45537|Invoice|CYL|L83",
-        "13185|Crd Note|CYL|L86"
-      ],
-      "docs": [
-        "Invoice 45537",
-        "Crd Note 13185"
-      ],
-      "net": 0,
-      "dn": "20155",
-      "lagDays": 2
-    },
-    {
-      "tie_id": "T0021",
-      "rule": "CN_DN_PAIR",
-      "confidence": "PROBABLE",
-      "members": [
-        "45544|Invoice|CYL|L85",
-        "13188|Crd Note|CYL|L87"
-      ],
-      "docs": [
-        "Invoice 45544",
-        "Crd Note 13188"
-      ],
-      "net": 0,
-      "dn": "20158",
-      "lagDays": 2
-    },
-    {
-      "tie_id": "T0022",
+      "tie_id": "T0029",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -493,7 +878,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0023",
+      "tie_id": "T0030",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -509,7 +894,7 @@
       "lagDays": 1
     },
     {
-      "tie_id": "T0024",
+      "tie_id": "T0031",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -525,7 +910,7 @@
       "lagDays": 1
     },
     {
-      "tie_id": "T0025",
+      "tie_id": "T0032",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -541,7 +926,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0026",
+      "tie_id": "T0033",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -557,7 +942,7 @@
       "lagDays": 1
     },
     {
-      "tie_id": "T0027",
+      "tie_id": "T0034",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -573,7 +958,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0028",
+      "tie_id": "T0035",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -589,55 +974,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0029",
-      "rule": "CN_DN_PAIR",
-      "confidence": "PROBABLE",
-      "members": [
-        "46655|Invoice|CYL|L114",
-        "13561|Crd Note|CYL|L117"
-      ],
-      "docs": [
-        "Invoice 46655",
-        "Crd Note 13561"
-      ],
-      "net": 0,
-      "dn": "21066",
-      "lagDays": 4
-    },
-    {
-      "tie_id": "T0030",
-      "rule": "CN_DN_PAIR",
-      "confidence": "PROBABLE",
-      "members": [
-        "46656|Invoice|LPG|L115",
-        "13562|Crd Note|LPG|L118"
-      ],
-      "docs": [
-        "Invoice 46656",
-        "Crd Note 13562"
-      ],
-      "net": 0,
-      "dn": "21067",
-      "lagDays": 4
-    },
-    {
-      "tie_id": "T0031",
-      "rule": "CN_DN_PAIR",
-      "confidence": "PROBABLE",
-      "members": [
-        "46657|Invoice|CYL|L116",
-        "13563|Crd Note|CYL|L119"
-      ],
-      "docs": [
-        "Invoice 46657",
-        "Crd Note 13563"
-      ],
-      "net": 0,
-      "dn": "21067",
-      "lagDays": 4
-    },
-    {
-      "tie_id": "T0032",
+      "tie_id": "T0036",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -653,7 +990,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0033",
+      "tie_id": "T0037",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -669,7 +1006,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0034",
+      "tie_id": "T0038",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -685,7 +1022,7 @@
       "lagDays": 1
     },
     {
-      "tie_id": "T0035",
+      "tie_id": "T0039",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -701,7 +1038,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0036",
+      "tie_id": "T0040",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -717,7 +1054,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0037",
+      "tie_id": "T0041",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -733,7 +1070,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0038",
+      "tie_id": "T0042",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -749,7 +1086,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0039",
+      "tie_id": "T0043",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -765,7 +1102,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0040",
+      "tie_id": "T0044",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -781,7 +1118,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0041",
+      "tie_id": "T0045",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -797,7 +1134,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0042",
+      "tie_id": "T0046",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -813,39 +1150,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0043",
-      "rule": "CN_DN_PAIR",
-      "confidence": "PROBABLE",
-      "members": [
-        "48131|Invoice|CYL|L165",
-        "14023|Crd Note|CYL|L166"
-      ],
-      "docs": [
-        "Invoice 48131",
-        "Crd Note 14023"
-      ],
-      "net": 0,
-      "dn": "21401",
-      "lagDays": 2
-    },
-    {
-      "tie_id": "T0044",
-      "rule": "CN_DN_PAIR",
-      "confidence": "PROBABLE",
-      "members": [
-        "48186|Invoice|CYL|L169",
-        "14063|Crd Note|CYL|L170"
-      ],
-      "docs": [
-        "Invoice 48186",
-        "Crd Note 14063"
-      ],
-      "net": 0,
-      "dn": "21704",
-      "lagDays": 2
-    },
-    {
-      "tie_id": "T0045",
+      "tie_id": "T0047",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -861,7 +1166,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0046",
+      "tie_id": "T0048",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -877,7 +1182,7 @@
       "lagDays": 1
     },
     {
-      "tie_id": "T0047",
+      "tie_id": "T0049",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -893,7 +1198,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0048",
+      "tie_id": "T0050",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -909,7 +1214,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0049",
+      "tie_id": "T0051",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -925,7 +1230,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0050",
+      "tie_id": "T0052",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -941,7 +1246,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0051",
+      "tie_id": "T0053",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -957,7 +1262,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0052",
+      "tie_id": "T0054",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -973,7 +1278,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0053",
+      "tie_id": "T0055",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -989,7 +1294,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0054",
+      "tie_id": "T0056",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -1005,7 +1310,7 @@
       "lagDays": 1
     },
     {
-      "tie_id": "T0055",
+      "tie_id": "T0057",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -1021,7 +1326,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0056",
+      "tie_id": "T0058",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -1037,7 +1342,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0057",
+      "tie_id": "T0059",
       "rule": "CN_DN_PAIR",
       "confidence": "PROBABLE",
       "members": [
@@ -1053,7 +1358,7 @@
       "lagDays": 2
     },
     {
-      "tie_id": "T0058",
+      "tie_id": "T0060",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -1069,7 +1374,7 @@
       "lagDays": 1
     },
     {
-      "tie_id": "T0059",
+      "tie_id": "T0061",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -1085,7 +1390,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0060",
+      "tie_id": "T0062",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -1101,7 +1406,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0061",
+      "tie_id": "T0063",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -1117,23 +1422,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0062",
-      "rule": "CN_DN_PAIR",
-      "confidence": "PROBABLE",
-      "members": [
-        "49972|Invoice|CYL|L235",
-        "14678|Crd Note|CYL|L236"
-      ],
-      "docs": [
-        "Invoice 49972",
-        "Crd Note 14678"
-      ],
-      "net": 0,
-      "dn": "22032",
-      "lagDays": 2
-    },
-    {
-      "tie_id": "T0063",
+      "tie_id": "T0064",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -1149,7 +1438,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0064",
+      "tie_id": "T0065",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -1165,7 +1454,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0065",
+      "tie_id": "T0066",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -1181,7 +1470,7 @@
       "lagDays": 0
     },
     {
-      "tie_id": "T0066",
+      "tie_id": "T0067",
       "rule": "CN_DN_PAIR",
       "confidence": "CONFIRMED",
       "members": [
@@ -1194,21 +1483,6 @@
       ],
       "net": 0,
       "dn": "22891",
-      "lagDays": 0
-    },
-    {
-      "tie_id": "T0067",
-      "rule": "CN_AMOUNT_DATE",
-      "confidence": "PROBABLE",
-      "members": [
-        "45066|Invoice|CYL|L76",
-        "13033|Crd Note|CYL|L73"
-      ],
-      "docs": [
-        "Invoice 45066",
-        "Crd Note 13033"
-      ],
-      "net": 0,
       "lagDays": 0
     },
     {
