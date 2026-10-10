@@ -33,11 +33,11 @@
     "children": [
       {
         "code": "TWK003",
-        "txtPath": "analysis/debtors/TWK002/raw/DEBENQ_TWK003.TXT"
+        "txtPath": "analysis/debtors/TWK002/raw/TWK003_2026-10-10.TXT"
       },
       {
         "code": "TWK004",
-        "txtPath": "analysis/debtors/TWK002/raw/DEBENQ_TWK004.TXT"
+        "txtPath": "analysis/debtors/TWK002/raw/TWK004_2026-10-10.TXT"
       }
     ]
   },
