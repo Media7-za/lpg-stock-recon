@@ -181,20 +181,32 @@
 
 | Tie | Rule | Documents | Variance (R) | Note |
 | :--- | :--- | :--- | ---: | :--- |
-| T0003 | CN_DN_PAIR | Invoice 41634, Crd Note 12116 | — | CN 2 day(s) after invoice |
-| T0007 | CN_DN_PAIR | Invoice 42704, Crd Note 12390 | — | CN 3 day(s) after invoice |
-| T0008 | CN_DN_PAIR | Invoice 42705, Crd Note 12391 | — | CN 3 day(s) after invoice |
-| T0028 | CN_DN_PAIR | Invoice 47465, Crd Note 13804 | — | CN 2 day(s) after invoice |
-| T0042 | CN_DN_PAIR | Invoice 50713, Crd Note 14924 | — | CN 3 day(s) after invoice |
-| T0044 | CN_AMOUNT_DATE | Invoice 48776, Crd Note 14201 | — | CN 0 day(s) after invoice |
+| T0010 | CN_DN_PAIR | Invoice 41634, Crd Note 12116 | — | CN 2 day(s) after invoice |
+| T0014 | CN_DN_PAIR | Invoice 42704, Crd Note 12390 | — | CN 3 day(s) after invoice |
+| T0015 | CN_DN_PAIR | Invoice 42705, Crd Note 12391 | — | CN 3 day(s) after invoice |
+| T0035 | CN_DN_PAIR | Invoice 47465, Crd Note 13804 | — | CN 2 day(s) after invoice |
+| T0049 | CN_DN_PAIR | Invoice 50713, Crd Note 14924 | — | CN 3 day(s) after invoice |
+| T0051 | CN_AMOUNT_DATE | Invoice 48776, Crd Note 14201 | — | CN 0 day(s) after invoice |
 
 ## Appendix B: Confirmed ties by rule
 
 | Rule | Ties |
 | :--- | ---: |
+| LOCKED | 7 |
 | CN_DN_PAIR | 38 |
-| EXACT_MONTH_SUM | 7 |
 | CYL_EXCHANGE | 5 |
 
 Full tie list: `data/projection_matches.json`.
+
+## Appendix D: Operator rulings applied (approved locks)
+
+| Lock | Treatment | Documents | Net (R) | Ruling |
+| :--- | :--- | :--- | ---: | :--- |
+| L0001 | exact | Payment 40063, Invoice 41216, Invoice 41486, Invoice 41633, Invoice 41799 | 0.00 | ADM-89 Q2 (2026-10-10): seven EXACT_MONTH_SUM ties for monthly batch payer JIM001 (no remittances) approved as one group after ruling them probable under payerCadence monthly_batch. Evidence is tier-3 exact month totals within R0.01. Tripwire: a remittance naming different invoices for any of payments 40063,40746,41664,42134,42788,43199,44555, or a TXT that re-itemises those months inside the B/F. |
+| L0002 | exact | Payment 40746, Invoice 44516, Invoice 44707, Invoice 44933, Invoice 45091, Invoice 45162 | 0.00 | ADM-89 Q2 (2026-10-10): seven EXACT_MONTH_SUM ties for monthly batch payer JIM001 (no remittances) approved as one group after ruling them probable under payerCadence monthly_batch. Evidence is tier-3 exact month totals within R0.01. Tripwire: a remittance naming different invoices for any of payments 40063,40746,41664,42134,42788,43199,44555, or a TXT that re-itemises those months inside the B/F. |
+| L0003 | exact | Payment 41664, Invoice 45323, Invoice 45498, Invoice 45671, Invoice 45831, Invoice 45992 | 0.01 | ADM-89 Q2 (2026-10-10): seven EXACT_MONTH_SUM ties for monthly batch payer JIM001 (no remittances) approved as one group after ruling them probable under payerCadence monthly_batch. Evidence is tier-3 exact month totals within R0.01. Tripwire: a remittance naming different invoices for any of payments 40063,40746,41664,42134,42788,43199,44555, or a TXT that re-itemises those months inside the B/F. |
+| L0004 | exact | Payment 42134, Invoice 46124, Invoice 46308, Invoice 46525, Invoice 46686 | 0.00 | ADM-89 Q2 (2026-10-10): seven EXACT_MONTH_SUM ties for monthly batch payer JIM001 (no remittances) approved as one group after ruling them probable under payerCadence monthly_batch. Evidence is tier-3 exact month totals within R0.01. Tripwire: a remittance naming different invoices for any of payments 40063,40746,41664,42134,42788,43199,44555, or a TXT that re-itemises those months inside the B/F. |
+| L0005 | exact | Payment 42788, Invoice 46859, Invoice 46990, Invoice 47148, Invoice 47292 | 0.00 | ADM-89 Q2 (2026-10-10): seven EXACT_MONTH_SUM ties for monthly batch payer JIM001 (no remittances) approved as one group after ruling them probable under payerCadence monthly_batch. Evidence is tier-3 exact month totals within R0.01. Tripwire: a remittance naming different invoices for any of payments 40063,40746,41664,42134,42788,43199,44555, or a TXT that re-itemises those months inside the B/F. |
+| L0006 | exact | Payment 43199, Invoice 47464, Invoice 47571, Invoice 47670, Invoice 47848, Invoice 47983 | 0.00 | ADM-89 Q2 (2026-10-10): seven EXACT_MONTH_SUM ties for monthly batch payer JIM001 (no remittances) approved as one group after ruling them probable under payerCadence monthly_batch. Evidence is tier-3 exact month totals within R0.01. Tripwire: a remittance naming different invoices for any of payments 40063,40746,41664,42134,42788,43199,44555, or a TXT that re-itemises those months inside the B/F. |
+| L0007 | exact | Payment 44555, Invoice 48098, Invoice 48244, Invoice 48391, Invoice 48487 | -0.01 | ADM-89 Q2 (2026-10-10): seven EXACT_MONTH_SUM ties for monthly batch payer JIM001 (no remittances) approved as one group after ruling them probable under payerCadence monthly_batch. Evidence is tier-3 exact month totals within R0.01. Tripwire: a remittance naming different invoices for any of payments 40063,40746,41664,42134,42788,43199,44555, or a TXT that re-itemises those months inside the B/F. |
 

@@ -1,12 +1,14 @@
 # JIM001 ruling pack for ADM-89 (2026-10-10)
 
-Status: REVIEW ONLY. Nothing approved, locked or closed. Source: `config/payment_pattern_overrides.json` (36 legacy overrides, registry from June 2026), `data/projection_matches.json` and `data/v5_projection.json` (matcher v5, built from `raw/JIM001_2026-10-10.TXT`, connector-sourced db_replay).
+Status: **Q1 and Q2 recorded** (operator leanings in session "Jim001 ruling pack decisions", 2026-10-10). **Q3 proof dry-run only — not locked.** Source: `config/payment_pattern_overrides.json` (36 legacy overrides untouched; 7 new `projectionLocks` L0001–L0007), `data/projection_matches.json` and `data/v5_projection.json` (matcher v5, `raw/JIM001_2026-10-10.TXT`, connector-sourced db_replay).
 
 ## Question 1: do the 36 legacy overrides become approved locks?
 
+**Decision (operator, 2026-10-10): NO.** Keep them as history. The registry `overrides[]` array is untouched (still 36 rows). No lock was keyed on a legacy payment doc.
+
 **Finding (PROVEN, from the table below):** only 1 of the 36 overrides refers to a payment that exists in the current projection. The other 35 are payments dated 2022 to early 2025 that sit before the TXT window (they are inside the unitemised B/F of R60,183.98, TXT line 14) or have no payment at all (3 rows with `null`). A lock keyed on a row that is not in the projection would do nothing, so converting them would add records without changing any statement.
 
-**Recommendation:** do not convert the 35. Keep them as history (they stay in the registry untouched, per the amendments-append rule). For the one live row, see question 3.
+For the one live row (38481), see question 3.
 
 | # | Override payment | Date | Amount | Billing month | Type | In current projection? |
 | -: | :-- | :-- | ---: | :-- | :-- | :-- |
@@ -49,22 +51,55 @@ Status: REVIEW ONLY. Nothing approved, locked or closed. Source: `config/payment
 
 ## Question 2: should monthly-total matches count as probable?
 
-Seven EXACT_MONTH_SUM ties are CONFIRMED today. Each is one payment equal to the sum of one calendar month's invoices (variance within R0.01). No remittance advice exists to confirm them.
+**Decision (operator, 2026-10-10): YES — probable, then approve as one group.**
 
-| Tie | Payment | Date | Amount | Invoices | Invoice dates | Variance |
-| :-- | :-- | :-- | ---: | -: | :-- | ---: |
-| T0045 | 40063 | 2025-07-14 | 11795.24 | 4 | 2025-03-05..2025-03-28 | 0 |
-| T0046 | 40746 | 2025-08-22 | 14579.44 | 5 | 2025-07-04..2025-07-26 | 0 |
-| T0047 | 41664 | 2025-10-14 | 16601.81 | 5 | 2025-08-01..2025-08-29 | -0.01 |
-| T0048 | 42134 | 2025-11-06 | 13327.87 | 4 | 2025-09-04..2025-09-26 | 0 |
-| T0049 | 42788 | 2025-12-29 | 13161.86 | 4 | 2025-10-03..2025-10-24 | 0 |
-| T0050 | 43199 | 2026-02-05 | 15578.23 | 5 | 2025-11-01..2025-11-28 | 0 |
-| T0051 | 44555 | 2026-06-05 | 11666.12 | 4 | 2025-12-04..2025-12-24 | 0.01 |
+**Recorded:**
 
-**What changes if you rule "probable":** the 31 invoices in these seven ties return to the open list until the ties are approved, so the open-row count rises from 56 to about 87 until then. They are approved with one group command (`approve_tie.mjs --ties ...`), as was done for the other probable ties on 2026-10-10, which records your approval and a tripwire.
+1. `config/statement_v5.json` → `payerCadence: "monthly_batch"`.
+2. Matcher P-c: `EXACT_MONTH_SUM` is PROBABLE when that flag is set (default accounts unchanged). Amendment in `PROPOSED_Projection_Matching_Locks.md` (PROPOSED — NOT RATIFIED portfolio-wide).
+3. Group approval → locks **L0001–L0007** (`approve_tie.mjs --ties T0045…T0051`), treatment `exact`. Tripwire on each lock reason.
+4. After approval: internal open rows **56**, customer preview **68**, proof HOLDS at ERP R122,884.84, 0 lock conflicts. PROVEN (`data/projection_matches.json`).
 
-**Recommendation (ASSERTED):** rule "probable, then approve as one group". Exact month sums to within a cent on seven of seven months are strong evidence, and a batch payer without remittances is exactly where a recorded operator approval is worth having.
+| Tie (pre-approve) | Lock | Payment | Date | Amount | Invoices | Variance | Net |
+| :-- | :-- | :-- | :-- | ---: | -: | ---: | ---: |
+| T0045 | L0001 | 40063 | 2025-07-14 | 11795.24 | 4 | 0 | 0 |
+| T0046 | L0002 | 40746 | 2025-08-22 | 14579.44 | 5 | 0 | 0 |
+| T0047 | L0003 | 41664 | 2025-10-14 | 16601.81 | 5 | -0.01 | 0.01 |
+| T0048 | L0004 | 42134 | 2025-11-06 | 13327.87 | 4 | 0 | 0 |
+| T0049 | L0005 | 42788 | 2025-12-29 | 13161.86 | 4 | 0 | 0 |
+| T0050 | L0006 | 43199 | 2026-02-05 | 15578.23 | 5 | 0 | 0 |
+| T0051 | L0007 | 44555 | 2026-06-05 | 11666.12 | 4 | 0.01 | -0.01 |
 
-## Question 3: a pattern worth ruling on (ASSUMED, not tested as a lock)
+**Display note (PROVEN):** while the seven ties were PROBABLE (before approval), internal open rows stayed **56** (probable ties omit from the main internal view; Appendix A). Customer preview rose **68 → 106**, then returned to **68** after L0001–L0007. The pack's earlier "56 → ~87" figure counted probable invoice members as if they were open residual rows; the renderer does not do that on the internal copy.
 
-The matcher leaves four payments unallocated: 44686 (R14,941.48, 16 May 2022), 38481 (R15,816.63, 5 May 2025), 38846 (R7,337.97) and 39812 (R20,557.69), netting R58,653.77. Their dates and the override for 38481 (type BOUNDARY_PAYMENT, billing month 2024-12) say they pay invoices that are inside the B/F. The B/F is R60,183.98, so applying them to the B/F would leave R1,530.21 of B/F open. This is the same treatment used for TWK002 L0001 (`applied_to_bf`). It needs your ruling and a proof run before any lock is recorded.
+## Question 3: unallocated payments vs B/F (`applied_to_bf`) — ASSUMED, not locked
+
+**Status: proof dry-run only. Awaiting operator yes/no before any lock.**
+
+The matcher leaves four payments unallocated: 44686 (R14,941.48, 16 May 2022), 38481 (R15,816.63, 5 May 2025), 38846 (R7,337.97) and 39812 (R20,557.69), netting **R58,653.77** (PROVEN, `data/projection_matches.json` residual). B/F is **R60,183.98**. Applying them to the B/F would leave **R1,530.21** of B/F open.
+
+| Check | Result | Tag |
+| :--- | :--- | :--- |
+| Dry-run `approve_tie --payment 44686,38481,38846,39812 --treatment applied_to_bf` | Would record L0008, net R-58,653.77 | PROVEN (tool accepted) |
+| Arithmetic B/F − payments | 60,183.98 − 58,653.77 = **1,530.21** | PROVEN |
+| Counterfactual proof identity | remain B/F + open LPG/OTHER + CYL + unmatched CN = **R122,884.84** = ERP | PROVEN (arithmetic on residual) |
+| Jan/Feb 2025 invoices in current projection | **0** (consistent with those months sitting inside unitemised B/F) | PROVEN |
+| Override 38481 | type BOUNDARY_PAYMENT, billing month 2024-12 | ASSERTED (registry history) |
+| Same treatment as TWK002 L0001 | pattern match only | ASSUMED |
+
+**Tension (do not resolve without a ruling):** `project.json` history 2026-09-13 assigned 38846/39812 to specific Jan/Feb 2025 invoice runs in the CSV era. Those invoices are absent from today's open TXT, so `applied_to_bf` is compatible with that story at the B/F layer — but it is still an assumption, not a remittance.
+
+**Not recorded.** No L0008. No change to B/F display.
+
+### Decision needed for Q3
+
+Rule all four as one `applied_to_bf` lock (or split), or leave them unallocated until a remittance / pre-window TXT itemises the B/F?
+
+```bash
+# Only after an explicit yes:
+node analysis/debtors/shared/scripts/approve_tie.mjs --debtor JIM001 \
+  --payment 44686,38481,38846,39812 --treatment applied_to_bf \
+  --reason "…" --by "Wall St"
+node analysis/debtors/shared/scripts/match_projection.mjs --debtor JIM001
+node analysis/debtors/shared/scripts/render_open_items.mjs --debtor JIM001
+```

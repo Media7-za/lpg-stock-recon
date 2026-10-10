@@ -118,7 +118,11 @@ export function matchAccount(root, code, options = {}) {
   const reg = readRegistry(acct, code);
   const locks = reg.supported ? effectiveLocks(reg.registry) : null;
   if (locks && options.dropLocks) locks.locks = locks.locks.filter((l) => !String(l.ruling?.reason || '').includes(options.dropLocks));
-  const rules = options.rules ? { ...RULES, ...options.rules } : undefined;
+  const rules = {
+    ...RULES,
+    ...(cfg.payerCadence ? { payerCadence: cfg.payerCadence } : {}),
+    ...(options.rules || {}),
+  };
   const result = matchProjection(projection, rules, hasEvidence ? evidence : null, locks);
 
   const reviewOnlyReasons = [];
