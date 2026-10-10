@@ -20,5 +20,6 @@
     "D.1": 1150,
     "S.1": 1150
   },
-  "paymentLane": "LPG"
+  "paymentLane": "LPG",
+  "payerCadence": "monthly_batch"
 }

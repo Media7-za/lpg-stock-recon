@@ -498,13 +498,27 @@ The behaviour implemented in `analysis/debtors/shared/scripts/` at commit `f34f0
 
 - **Widening `cnConfirmedMaxDays`** (blanket confirmation of credit-note pairs by date lag). The 2026-10-10 group approvals are recorded as locks per account, not as a rule change. A rule "confirm a same-DN pair up to 5 days when no rival exists" is a possible next proposal.
 - **The near-run rule** (allowing a small per-invoice tolerance on 4–12 invoice runs, ADM-92).
-- **Mirror carry** for monthly batch payers (P4 opt-in) and the `payerCadence` config: not built.
+- **Mirror carry** for monthly batch payers (P4 opt-in): not built. (`payerCadence` itself is now used for P-c; see amendment 2026-10-10 below.)
 - **P7 pre-window lookback as a general rule:** applied only through operator rulings per account (`settled through`, `applied_to_bf`).
 - **P8 payer group beyond TWK002:** built for TWK002's interim slice only; the full family tie (child projections, consolidated customer statement) is not built.
 - **P9 creating settlement-discount journals:** the matcher only tracks "journals pending" and joins a posted journal (M3).
 - **Per-account matcher profiles** (turning rules on or off by payer type): not built; none is needed today (the preview shows no unintended change). If one is ever needed it is a config entry, not a forked matcher.
 - **Any individual probable tie.** Ratifying the matcher does not approve its probable results; each stays a proposal until approved as a lock.
 - **`BALANCE_ZERO` per-account outcomes** (cuts on JEN001, RED001, MOZ002) are ratified as a rule; their tripwire stays: a later export that changes any row on or before a cut re-forms the group.
+
+---
+
+## Amendment 2026-10-10 (ADM-89 / P-c): monthly-batch EXACT_MONTH_SUM is PROBABLE
+
+**Status: PROPOSED — NOT RATIFIED** (operator decision for JIM001 recorded; portfolio ratification of P-c as doctrine is separate).
+
+**Operator decision (ADM-89, 2026-10-10), via the JIM001 ruling pack:** monthly-total matches for a monthly batch payer with no remittances count as **probable**, then may be approved as one group. The 36 legacy `overrides` do **not** become locks (they stay as history; only payment 38481 exists in today's projection, and it is unallocated — see Q3).
+
+**Behaviour:** when `config/statement_v5.json` sets `payerCadence: "monthly_batch"` (never inferred), matcher rule `EXACT_MONTH_SUM` emits **PROBABLE** instead of CONFIRMED. Default accounts are unchanged. `match_account.mjs` passes the flag into `RULES`. Operator approval uses `approve_tie.mjs --ties …` as for other probable groups.
+
+**Pilot:** JIM001 (`payerCadence: "monthly_batch"`). The seven EXACT_MONTH_SUM ties (T0045–T0051 in the pre-ruling pack) are the first group.
+
+**Tripwires:** a remittance advice naming different invoices for any of those payments; a TXT that re-itemises the months inside the B/F; changing `payerCadence` off without voiding the approved locks.
 
 ### Not changed by this ratification
 

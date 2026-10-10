@@ -44,7 +44,9 @@
  *      exact rules a–c first; only then do the remaining payments try the probable rules d–e.
  *      So a probable guess can never take an invoice that a later payment matches exactly.
  *        a. EXACT_SINGLE      |payment − invoice| ≤ R0.05                → CONFIRMED
- *        b. EXACT_MONTH_SUM   = all open invoices of one billing month   → CONFIRMED
+ *        b. EXACT_MONTH_SUM   = all open invoices of one billing month   → CONFIRMED;
+ *                             PROBABLE when config payerCadence is "monthly_batch"
+ *                             (ADM-89 / P-c: no remittance; evidence capped at tier 3)
  *        c. EXACT_SUM         = 2–3 open invoices (≤ R0.05)              → CONFIRMED
  *        c2. EXACT_RUN        = 4–12 consecutive open invoices (≤ R0.05) → CONFIRMED (ADM-85);
  *                             oldest run first; PROBABLE if another run fits equally well
@@ -109,6 +111,9 @@ export const RULES = Object.freeze({
   balanceZeroCut: true,
   remittanceLineTolerance: 0.05,
   remittanceBatchTolerancePct: 0.001,
+  // Opt-in via statement_v5.json payerCadence: "monthly_batch" (never inferred).
+  // When set, EXACT_MONTH_SUM ties are PROBABLE (ADM-89 / P-c) until the operator approves them.
+  payerCadence: null,
 });
 
 const round2 = (n) => Math.round(Number(n) * 100) / 100;
@@ -515,7 +520,13 @@ export function matchProjection(projection, rules = RULES, evidence = null, lock
       }))
       .filter((c) => Math.abs(A - c.total) <= rules.exactTolerance);
     best = pick(monthCands, A, p.date);
-    if (best) return { best, rule: 'EXACT_MONTH_SUM' };
+    if (best) {
+      return {
+        best,
+        rule: 'EXACT_MONTH_SUM',
+        ...(rules.payerCadence === 'monthly_batch' ? { conf: 'PROBABLE' } : {}),
+      };
+    }
     // c. exact sum of 2–3 invoices
     best = pick(sumCands(eligible, A, rules.exactTolerance, p.date), A, p.date);
     if (best) return { best, rule: 'EXACT_SUM' };
