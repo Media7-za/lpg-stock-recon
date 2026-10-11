@@ -121,6 +121,8 @@ export function buildOpenItems(projection, matches, view = 'internal', opts = {}
         amount: r.amount,
         running: run,
         pendingProbable: Boolean(t && t.confidence === 'PROBABLE'),
+        // What the pending tie is about: a payment awaiting allocation, or a credit note awaiting its invoice.
+        pendingKind: t && t.confidence === 'PROBABLE' ? (t.docs.some((d) => d.startsWith('Payment ')) ? 'payment' : 'credit') : null,
         partPaid: partPaid.filter((x) => x.doc === r.clean_doc && r.lane !== 'CYL'),
       };
     });
@@ -157,6 +159,35 @@ export function buildOpenItems(projection, matches, view = 'internal', opts = {}
       tiesToErp: Math.abs(combined - erp) < 0.005,
     },
   };
+}
+
+/**
+ * Customer-copy lines that sit alongside the listed open items so that items + lines = ERP balance:
+ * [label, amount] pairs, zero amounts omitted. `includeNamed` adds the config `namedResiduals`
+ * (pre-window journals) under `namedLabel(entry)`; the single-account layout does not use them.
+ */
+export function customerSummaryLines(model, { includeNamed = false, namedLabel = (n) => n.label } = {}) {
+  const { parts } = model;
+  const out = [];
+  const openingTotal = round2(parts.lpg.opening + parts.cyl.opening + parts.lpg.openingSettled + parts.cyl.openingSettled);
+  if (openingTotal) out.push(['Opening balance brought forward', openingTotal]);
+  const rounding = round2(parts.lpg.rounding + parts.cyl.rounding);
+  if (rounding) out.push(['Rounding on settled items', rounding]);
+  for (const [k, text] of [
+    ['applied_to_bf', 'Payments against opening balance'],
+    ['part_payment', 'Part-payments on items listed above'],
+    ['customer_credit', 'Credit in your favour'],
+    ['short_paid', 'Short payments still owed'],
+  ]) {
+    const v = round2((parts.lpg.rulings[k] || 0) + (parts.cyl.rulings[k] || 0));
+    if (v) out.push([text, v]);
+  }
+  if (includeNamed) {
+    for (const n of model.named || []) if (n.amount) out.push([namedLabel(n), n.amount]);
+  }
+  const journals = round2(parts.lpg.journalsPending + parts.cyl.journalsPending);
+  if (journals) out.push(['Settlement discount (journal pending)', journals]);
+  return out;
 }
 
 function partTable(part, title, view) {
