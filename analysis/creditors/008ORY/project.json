@@ -1,0 +1,91 @@
+{
+  "creditorCode": "008ORY",
+  "supplierName": "ORYX ENERGY",
+  "status": "active",
+  "reconState": "in-progress",
+  "financials": {
+    "totalPayable": -437114.03,
+    "lineExportClose": -121237.7,
+    "udChequesPay": 315876.33,
+    "lastGrvDate": "2026-08-14",
+    "lastPaymentDate": "2026-08-14"
+  },
+  "ingestGate": {
+    "status": "fail",
+    "ingestFreshness": "current",
+    "ingestCoverage": "partial",
+    "displayStatus": "CURRENT_PARTIAL",
+    "asAt": "2026-08-20",
+    "reportPath": "analysis/creditors/008ORY/reports/008ORY_INGEST_COVERAGE_2026-08-20.json",
+    "ingestBlockedScopes": ["custody", "sku_analysis", "allocation"],
+    "exceptions": []
+  },
+  "supplierLedgerRecon": {
+    "status": "in-progress",
+    "enabled": true,
+    "theirLedgerAsAt": "2026-08-17",
+    "scopeFrom": "2026-01-01",
+    "scopeTo": "2026-08-31",
+    "reportPath": "analysis/creditors/008ORY/reports/008ORY_Supplier_Ledger_Recon_2026.md",
+    "decisionsPath": "analysis/creditors/008ORY/data/supplier_ledger_decisions.csv",
+    "lastGenerated": "2026-08-26",
+    "documentMatchSummary": {
+      "agreed": 43,
+      "variance": 17,
+      "ratifiedLink": 3,
+      "mergeGroup": 3,
+      "afterCutOff": 3,
+      "openOursOnly": 1,
+      "openTheirsOnly": 2,
+      "totalSoGroups": 69,
+      "basis": "PROVEN — per report §2 outcome table at last run"
+    },
+    "genuineChargeVarianceResidual": {
+      "value": 409676.85,
+      "currency": "ZAR",
+      "tag": "ASSERTED",
+      "basis": "Sum of abs charge_variance on SO_AMOUNT_VARIANCE rows excluding three pending MERGE_GROUP SO refs (141, 048, 291); see analysis/creditors/008ORY/data/supplier_ledger_matches.csv",
+      "killCondition": "Falsified if remaining merges collapse those three rows or if block-affinity reclassification moves SO 006/020 variances"
+    },
+    "nextAction": "Investigate open theirs-only SO 2026-01 / 005 (R196,901.31); then MERGE_GROUP queue (141, 048, 291); then ratify or reject block-affinity proposal for SO 006/020 (handoff P1)"
+  },
+  "history": [
+    {
+      "date": "2026-08-17",
+      "event": "Creditor micro-project scaffolded — v5 statement pipeline (GRV / Deb Note / Payment)."
+    },
+    {
+      "date": "2026-08-17",
+      "event": "Official CREDENQ.TXT ingested. Statement v5 PASS — line export R-121,237.70, ERP header R-437,114.03 (UD cheques R315,876.33 bridged). Ingest gate PARTIAL — 74/74 period docs MISSING_HEADER."
+    },
+    {
+      "date": "2026-08-20",
+      "event": "v5 regenerated. Financial PASS (1A R-121,237.71 / 1B R0.01 / combined R-121,237.70). TXT GRVNO pairing in effect. Ingest still 74/74 MISSING_HEADER — Part 2 custody blocked; 1A/1B vs DB lines do not tie."
+    },
+    {
+      "date": "2026-08-29",
+      "event": "Supplier ledger recon lane built and first-pass ratified (7 decisions in supplier_ledger_decisions.csv). Documents: 43 agree / 17 variance / 1 ours-only open / 2 theirs-only open (69 SO groups). Payments: 62/62 theirs matched; 4 open Ud XFer on ours (treasury). Rebate claim variance R96,208.43 (3 months not passed on their ledger). Genuine document charge residual ASSERTED R409,676.85 after excluding pending merges. Commit 933949a."
+    },
+    {
+      "date": "2026-08-29",
+      "event": "Session lineage catalog recorded (PROVEN index 6 chats; ASSERTED 5 substantive prior + 2 tangential local-only). Authoritative list in docs/handoffs/2026-08-29.md §008ORY session index. No account state changed this session."
+    },
+    {
+      "date": "2026-08-29",
+      "event": "v5 Part 1B vs Part 2 audit — variance R45,195.01 PROVEN (1B R0.01 vs custody R-45,195). Root causes: partial ingest 74/74 MISSING_HEADER; doc 3659 LPG-only routed to 1B via TXT GRVNO pairing; 6783 header vs sparse CYL lines. Report: reports/008ORY_v5_Part1B_Part2_Audit_2026-08-29.md. Custody remains BLOCKED."
+    },
+    {
+      "date": "2026-08-29",
+      "event": "Operator ratified P9 (session lineage meta-inquiry close pattern): handoff session-index table + history pointer; dual-source search mandatory. docs/roles/session_closer.md §Meta-inquiry close."
+    }
+  ],
+  "v5Statement": {
+    "part1bClose": 0.01,
+    "part2CustodyExposure": -45195.0,
+    "part1bVsCustodyVariance": 45195.01,
+    "ingestGate": "CURRENT_PARTIAL",
+    "custodyBlocked": true,
+    "auditReport": "analysis/creditors/008ORY/reports/008ORY_v5_Part1B_Part2_Audit_2026-08-29.md",
+    "tag": "PROVEN"
+  }
+}

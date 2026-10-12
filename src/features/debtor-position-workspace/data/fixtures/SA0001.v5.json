@@ -1,0 +1,34 @@
+{
+  "debtorCode": "SA0001",
+  "debtorName": "SAKI - VICTORIA RD",
+  "period": {
+    "from": "2023-02-07",
+    "to": "2026-07-31"
+  },
+  "version": "v5",
+  "workspaceStatus": "clean",
+  "lastGeneratedAt": "2026-08-05T08:22:43.805Z",
+  "source": "analysis/debtors/SA0001/raw/SA0001.TXT",
+  "financialPosition": {
+    "lpgGasDebt": 10804.97,
+    "cylinderFinancialBalance": 0,
+    "totalDebtorBalance": 10804.97,
+    "erpStatedBalance": 10804.97,
+    "erpVariance": 0,
+    "subLedgerVariance": 0
+  },
+  "custodyPosition": {
+    "totalCustodyExposure": 0,
+    "lines": []
+  },
+  "reconciliationPosition": {
+    "cylinderVariance": 0,
+    "erpVariance": 0,
+    "subLedgerVariance": 0,
+    "exceptions": []
+  },
+  "artifacts": {
+    "statementMarkdown": "analysis/debtors/SA0001/reports/SA0001_Statement_Account_v5.md",
+    "txtSource": "analysis/debtors/SA0001/raw/SA0001.TXT"
+  }
+}

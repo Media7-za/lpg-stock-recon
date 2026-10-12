@@ -3,6 +3,22 @@
   "clientName": "BLUFF MEAT SUPPLY(PTY) LTD",
   "status": "active",
   "reconState": "in-progress",
+  "linkedAccounts": [
+    {
+      "debtorCode": "MD0004",
+      "clientName": "BMS FOODS (PTY) LTD",
+      "relationship": "same_entity",
+      "lastKnownBalance": 4413.86,
+      "balanceAsAt": "2025-07-13",
+      "balanceConfidence": "low_stale_unreconciled",
+      "evidence": [
+        "MD0003 traded as 'BMS FOODS (PTY) LTD' in ERP 2016-2017 before renaming to Bluff Meat Supply",
+        "4 historical MD0004 credit notes reference explicit transfers to MD0003 (2017)"
+      ],
+      "dataGap": "No DEBENQ-style ledger export exists for MD0004 (no running balance / payment history). DETRANS.TXT current-period ledger has zero MD0004 rows. Reconstructed activity from scattered ERP RAW DATA stock-transaction dumps archived at raw/MD0004_source/MD0004_extracted_lines_2016-2024.csv.",
+      "report": "reports/MD0003_MD0004_Combined_Exposure.md"
+    }
+  ],
   "financials": {
     "totalOutstanding": 16371.56,
     "lastInvoiceDate": "2026-07-15",
@@ -39,6 +55,10 @@
     {
       "date": "2026-07-16",
       "event": "CURRENT.TXT ingested: erp_current_ledger.csv (232 lines), balance R16,371.56. Payment 44972 STAT:128 confirmed for Jul-2026 remittance. Override v6 for 2026-05. statement_v4.json scaffolded."
+    },
+    {
+      "date": "2026-08-11",
+      "event": "Confirmed MD0004 (BMS FOODS (PTY) LTD) is the same entity as MD0003 and linked. MD0004 has no DEBENQ ledger export; reconstructed 51 historical lines (2016-2024) from global ERP RAW DATA stock-transaction dumps found explicit 2017 credit-note references transferring charges to MD0003. Last known MD0004 balance R4,413.86 (13 Jul 2025, stale/unverified). Combined group exposure estimated at R23,267.22. Recommended pulling a live MD0004 DEBENQ export next."
     }
   ]
 }

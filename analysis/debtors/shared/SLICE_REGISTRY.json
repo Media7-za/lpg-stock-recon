@@ -1,0 +1,430 @@
+{
+  "$schema": "debtors/slice-registry/v1",
+  "version": "1.0.0",
+  "ratified": "2026-08-24",
+  "authority": "analysis/debtors/shared/DEBTORS_DOCTRINE.md",
+  "description": "Canonical slice registry — scope, dependencies, and invalidation for regenerable debtor artifacts.",
+  "scopes": {
+    "universal": "Every debtor account may emit this slice when prerequisites are met.",
+    "lane-specific": "Only accounts routed to the named recon lane.",
+    "account-specific": "Explicitly configured per debtor; not part of default bootstrap."
+  },
+  "tiers": {
+    "evidence": "Immutable inputs — never regenerated, only replaced.",
+    "derived": "Machine-computed JSON/CSV — canonical intermediate truth.",
+    "presentation": "Markdown/PDF/HTML rendered from derived slices.",
+    "governance": "Register, dashboard, turn bundle — portfolio projection."
+  },
+  "slices": [
+    {
+      "id": "txt.parse",
+      "tier": "derived",
+      "scope": "universal",
+      "role": "Parse ERP TXT into typed rows and header balance.",
+      "depends_on": ["evidence.erp_txt"],
+      "invalidates": ["v4.part1.financial", "v4.part2.custody", "v5.part1a.lpg", "v5.part1b.cyl", "v5.bridge", "customer.soa"],
+      "optional": false,
+      "outputs": ["data/{run}/context.json"]
+    },
+    {
+      "id": "ingest.coverage",
+      "tier": "derived",
+      "scope": "universal",
+      "role": "TXT vs DB ingest gate — freshness and coverage.",
+      "depends_on": ["evidence.erp_txt", "evidence.database"],
+      "invalidates": ["v5.part2.custody", "v5.ingest.gate"],
+      "optional": false,
+      "outputs": ["reports/{CODE}_INGEST_COVERAGE_{date}.json", "reports/{CODE}_INGEST_COVERAGE_{date}.md"]
+    },
+    {
+      "id": "v4.header",
+      "tier": "presentation",
+      "scope": "lane-specific",
+      "lane": "position_recon + statement v4",
+      "role": "Statement header — period, openings, TXT source.",
+      "depends_on": ["txt.parse"],
+      "invalidates": [],
+      "optional": false,
+      "outputs": ["render/v4/header.md"]
+    },
+    {
+      "id": "v4.part1.financial",
+      "tier": "derived",
+      "scope": "lane-specific",
+      "lane": "position_recon + statement v4",
+      "role": "Part 1 combined financial ledger.",
+      "depends_on": ["txt.parse"],
+      "invalidates": ["v4.position.financial", "v4.position.reconciliation", "fixture.v4"],
+      "optional": false,
+      "outputs": ["sections/v4/part1.financial.json", "render/v4/part1.financial.md"]
+    },
+    {
+      "id": "v4.part1.financial.month",
+      "tier": "derived",
+      "scope": "lane-specific",
+      "lane": "position_recon + statement v4",
+      "role": "Part 1 single-month slice — pattern: v4.part1.financial.{YYYY-MM}.",
+      "depends_on": ["txt.parse"],
+      "invalidates": ["v4.part1.financial"],
+      "optional": true,
+      "outputs": ["sections/v4/part1.financial.{YYYY-MM}.json"]
+    },
+    {
+      "id": "v4.part2.custody",
+      "tier": "derived",
+      "scope": "lane-specific",
+      "lane": "position_recon + statement v4",
+      "role": "Part 2 physical cylinder qty ledger.",
+      "depends_on": ["txt.parse", "evidence.database", "ingest.coverage"],
+      "invalidates": ["v4.position.custody", "v4.position.reconciliation", "fixture.v4"],
+      "optional": false,
+      "outputs": ["sections/v4/part2.custody.json", "render/v4/part2.custody.md"]
+    },
+    {
+      "id": "v4.part2.custody.month",
+      "tier": "derived",
+      "scope": "lane-specific",
+      "lane": "position_recon + statement v4",
+      "role": "Part 2 single-month slice — pattern: v4.part2.custody.{YYYY-MM}.",
+      "depends_on": ["txt.parse", "evidence.database"],
+      "invalidates": ["v4.part2.custody"],
+      "optional": true,
+      "outputs": ["sections/v4/part2.custody.{YYYY-MM}.json"]
+    },
+    {
+      "id": "v4.position.summary",
+      "tier": "derived",
+      "scope": "lane-specific",
+      "lane": "position_recon + statement v4",
+      "role": "Financial + custody + reconciliation position (internal).",
+      "depends_on": ["v4.part1.financial", "v4.part2.custody"],
+      "invalidates": ["fixture.v4", "statement.v4.composed"],
+      "optional": false,
+      "outputs": ["sections/v4/position.summary.json", "render/v4/position.summary.md"]
+    },
+    {
+      "id": "statement.v4.composed",
+      "tier": "presentation",
+      "scope": "lane-specific",
+      "lane": "position_recon + statement v4",
+      "role": "Full v4 markdown composed from section renders.",
+      "depends_on": ["v4.header", "v4.part1.financial", "v4.part2.custody", "v4.position.summary"],
+      "invalidates": ["fixture.v4"],
+      "optional": false,
+      "outputs": ["reports/{CODE}_Statement_Account_v4.md"]
+    },
+    {
+      "id": "fixture.v4",
+      "tier": "derived",
+      "scope": "lane-specific",
+      "lane": "position_recon + statement v4",
+      "role": "Workspace fixture for UI — three-position model.",
+      "depends_on": ["v4.position.summary"],
+      "invalidates": [],
+      "optional": false,
+      "outputs": ["src/features/debtor-position-workspace/data/fixtures/{CODE}.v4.json"]
+    },
+    {
+      "id": "v5.part1a.lpg",
+      "tier": "derived",
+      "scope": "lane-specific",
+      "lane": "position_recon + statement v5",
+      "role": "Part 1A LPG gas financial sub-ledger.",
+      "depends_on": ["txt.parse", "evidence.database"],
+      "invalidates": ["v5.bridge", "v5.position.summary", "fixture.v5"],
+      "optional": false,
+      "outputs": ["sections/v5/part1a.lpg.json", "render/v5/part1a.lpg.md"]
+    },
+    {
+      "id": "v5.part1b.cyl",
+      "tier": "derived",
+      "scope": "lane-specific",
+      "lane": "position_recon + statement v5",
+      "role": "Part 1B cylinder deposit financial sub-ledger.",
+      "depends_on": ["txt.parse", "evidence.database"],
+      "invalidates": ["v5.bridge", "v5.position.summary", "fixture.v5"],
+      "optional": false,
+      "outputs": ["sections/v5/part1b.cyl.json", "render/v5/part1b.cyl.md"]
+    },
+    {
+      "id": "v5.bridge",
+      "tier": "derived",
+      "scope": "lane-specific",
+      "lane": "position_recon + statement v5",
+      "role": "Reconciliation bridge — 1A + 1B = ERP.",
+      "depends_on": ["v5.part1a.lpg", "v5.part1b.cyl", "txt.parse"],
+      "invalidates": ["statement.v5.composed", "fixture.v5"],
+      "optional": false,
+      "outputs": ["sections/v5/bridge.json", "render/v5/bridge.md"]
+    },
+    {
+      "id": "v5.part2.custody",
+      "tier": "derived",
+      "scope": "lane-specific",
+      "lane": "position_recon + statement v5",
+      "role": "Part 2 physical cylinder ledger.",
+      "depends_on": ["txt.parse", "evidence.database", "ingest.coverage"],
+      "invalidates": ["v5.position.summary", "fixture.v5"],
+      "optional": false,
+      "outputs": ["sections/v5/part2.custody.json", "render/v5/part2.custody.md"]
+    },
+    {
+      "id": "v5.position.summary",
+      "tier": "derived",
+      "scope": "lane-specific",
+      "lane": "position_recon + statement v5",
+      "role": "Debtor position summary — financial, custody, reconciliation.",
+      "depends_on": ["v5.bridge", "v5.part2.custody"],
+      "invalidates": ["fixture.v5", "statement.v5.composed"],
+      "optional": false,
+      "outputs": ["sections/v5/position.summary.json"]
+    },
+    {
+      "id": "v5.ratification",
+      "tier": "derived",
+      "scope": "account-specific",
+      "role": "Active ratification scenario synthetic rows (e.g. RED001).",
+      "depends_on": ["ratification.scenarios"],
+      "invalidates": ["v5.part1b.cyl", "v5.bridge", "v5.position.summary"],
+      "optional": true,
+      "outputs": ["sections/v5/ratification.json"]
+    },
+    {
+      "id": "statement.v5.composed",
+      "tier": "presentation",
+      "scope": "lane-specific",
+      "lane": "position_recon + statement v5",
+      "role": "Full v5 markdown composed from section renders.",
+      "depends_on": ["v5.part1a.lpg", "v5.part1b.cyl", "v5.bridge", "v5.part2.custody", "v5.position.summary", "ingest.coverage"],
+      "invalidates": ["fixture.v5"],
+      "optional": false,
+      "outputs": ["reports/{CODE}_Statement_Account_v5.md"]
+    },
+    {
+      "id": "fixture.v5",
+      "tier": "derived",
+      "scope": "lane-specific",
+      "lane": "position_recon + statement v5",
+      "role": "Workspace fixture for UI.",
+      "depends_on": ["v5.position.summary"],
+      "invalidates": [],
+      "optional": false,
+      "outputs": ["src/features/debtor-position-workspace/data/fixtures/{CODE}.v5.json"]
+    },
+    {
+      "id": "tag.coverage",
+      "tier": "derived",
+      "scope": "lane-specific",
+      "lane": "customer statement",
+      "role": "Invoice-tag coverage gate — open-invoice hypothesis vs ERP.",
+      "depends_on": ["evidence.debenq_txt", "evidence.remittance"],
+      "invalidates": ["customer.soa", "customer.soa.open_invoices"],
+      "optional": false,
+      "outputs": ["reports/{CODE}_TAG_COVERAGE_{date}.json", "reports/{CODE}_TAG_COVERAGE_{date}.md"]
+    },
+    {
+      "id": "customer.soa.open_invoices",
+      "tier": "derived",
+      "scope": "lane-specific",
+      "lane": "customer statement",
+      "role": "Open invoice table — screening hypothesis only.",
+      "depends_on": ["evidence.debenq_txt", "tag.coverage"],
+      "invalidates": ["customer.soa"],
+      "optional": false,
+      "outputs": ["sections/customer/open_invoices.json"]
+    },
+    {
+      "id": "balance.bridge",
+      "tier": "derived",
+      "scope": "account-specific",
+      "lane": "customer statement",
+      "role": "Account-level balance bridge — gap between open invoices and balance due.",
+      "depends_on": ["customer.soa.open_invoices", "ratified.balance_bridge_lines"],
+      "invalidates": ["customer.soa"],
+      "optional": true,
+      "outputs": ["reports/{CODE}_Balance_Bridge_{date}.md", "config/balance_bridge_lines.json"]
+    },
+    {
+      "id": "customer.soa",
+      "tier": "presentation",
+      "scope": "lane-specific",
+      "lane": "customer statement",
+      "role": "Customer statement of account — MD + PDF.",
+      "depends_on": ["tag.coverage", "customer.soa.open_invoices", "balance.bridge"],
+      "invalidates": [],
+      "optional": true,
+      "outputs": ["reports/{CODE}_Statement_of_Account.md", "reports/{CODE}_Statement_of_Account.pdf"]
+    },
+    {
+      "id": "allocation.edges",
+      "tier": "derived",
+      "scope": "lane-specific",
+      "lane": "allocation",
+      "role": "Payment-to-invoice edges — canonical allocation graph.",
+      "depends_on": ["evidence.payments", "evidence.invoices", "evidence.remittance"],
+      "invalidates": ["allocation.report", "customer.soa"],
+      "optional": false,
+      "outputs": ["data/allocation_edges.csv"]
+    },
+    {
+      "id": "allocation.report",
+      "tier": "presentation",
+      "scope": "lane-specific",
+      "lane": "allocation",
+      "role": "Allocation workbook narrative — human audit trail.",
+      "depends_on": ["allocation.edges"],
+      "invalidates": [],
+      "optional": false,
+      "outputs": ["reports/{CODE}_Payment_Allocation_v1.md"]
+    },
+    {
+      "id": "settlement.discount",
+      "tier": "derived",
+      "scope": "lane-specific",
+      "lane": "settlement_discount",
+      "role": "Remittance batch settlement discount decomposition.",
+      "depends_on": ["evidence.remittance", "account.settlement_doctrine"],
+      "invalidates": ["allocation.edges", "allocation.report"],
+      "optional": false,
+      "outputs": ["reports/{CODE}_Settlement_*", "data/remittance_manifest_*.json"]
+    },
+    {
+      "id": "payment.pattern",
+      "tier": "derived",
+      "scope": "lane-specific",
+      "lane": "position_recon",
+      "role": "Historical payment pattern analysis.",
+      "depends_on": ["evidence.payment_txt"],
+      "invalidates": [],
+      "optional": true,
+      "outputs": ["reports/{CODE}_*_Payment_Pattern_Analysis.md"]
+    },
+    {
+      "id": "event.ledger",
+      "tier": "derived",
+      "scope": "account-specific",
+      "lane": "allocation",
+      "role": "Delivery event ledger — RED001-style custody/fill events.",
+      "depends_on": ["evidence.delivery_events"],
+      "invalidates": ["allocation.edges"],
+      "optional": true,
+      "outputs": ["reports/{CODE}_Delivery_Event_Ledger_v1.md", "data/event_ledger.csv"]
+    },
+    {
+      "id": "erp.freshness",
+      "tier": "governance",
+      "scope": "universal",
+      "role": "ERP freshness gate — operator confirms latest export.",
+      "depends_on": ["evidence.erp_txt"],
+      "invalidates": ["txt.parse", "v4.part1.financial", "v5.bridge", "customer.soa", "allocation.edges"],
+      "optional": false,
+      "outputs": ["evidence_exchange/{CODE}/turn-*/manifest.json#erp_freshness"]
+    },
+    {
+      "id": "d17.collections",
+      "tier": "governance",
+      "scope": "universal",
+      "role": "Collections eligibility gate — collectable + blockers.",
+      "depends_on": ["portfolio.register"],
+      "invalidates": ["portfolio.action_prompts"],
+      "optional": false,
+      "outputs": ["portfolio.sync exit code 2"]
+    },
+    {
+      "id": "portfolio.register",
+      "tier": "governance",
+      "scope": "universal",
+      "role": "Account register — project.json contract.",
+      "depends_on": [],
+      "invalidates": ["portfolio.dashboard", "portfolio.action_prompts", "d17.collections"],
+      "optional": false,
+      "outputs": ["analysis/debtors/{CODE}/project.json"]
+    },
+    {
+      "id": "portfolio.dashboard",
+      "tier": "governance",
+      "scope": "universal",
+      "role": "Portfolio priority queue and KPIs.",
+      "depends_on": ["portfolio.register"],
+      "invalidates": [],
+      "optional": false,
+      "outputs": ["DEBTORS_DASHBOARD.md"]
+    },
+    {
+      "id": "portfolio.action_prompts",
+      "tier": "governance",
+      "scope": "universal",
+      "role": "Human execution queue — collection prompts.",
+      "depends_on": ["portfolio.register", "d17.collections"],
+      "invalidates": [],
+      "optional": false,
+      "outputs": ["analysis/debtors/shared/ACTION_PROMPTS.md"]
+    },
+    {
+      "id": "turn.brief",
+      "tier": "governance",
+      "scope": "universal",
+      "role": "Worker turn instruction artifact.",
+      "depends_on": ["erp.freshness"],
+      "invalidates": [],
+      "optional": true,
+      "outputs": ["evidence_exchange/{CODE}/turn-{NNN}/turn_brief.md"]
+    },
+    {
+      "id": "turn.manifest",
+      "tier": "governance",
+      "scope": "universal",
+      "role": "Turn evidence inventory and anchors.",
+      "depends_on": ["turn.brief"],
+      "invalidates": [],
+      "optional": true,
+      "outputs": ["evidence_exchange/{CODE}/turn-{NNN}/manifest.json"]
+    },
+    {
+      "id": "onboarding.status",
+      "tier": "presentation",
+      "scope": "universal",
+      "role": "Account deliverable map and input inventory.",
+      "depends_on": [],
+      "invalidates": [],
+      "optional": true,
+      "outputs": ["reports/{CODE}_Onboarding_Status.md"]
+    },
+    {
+      "id": "creditor.v5.statement",
+      "tier": "presentation",
+      "scope": "lane-specific",
+      "lane": "creditor position_recon v5",
+      "role": "Creditor AP v5 statement — mirror of debtor v5.",
+      "depends_on": ["creditor.ingest.coverage"],
+      "invalidates": [],
+      "optional": true,
+      "outputs": ["analysis/creditors/{CODE}/reports/{CODE}_Statement_Account_v5.md"]
+    },
+    {
+      "id": "creditor.ingest.coverage",
+      "tier": "derived",
+      "scope": "lane-specific",
+      "lane": "creditor position_recon v5",
+      "role": "Creditor TXT vs DB ingest gate.",
+      "depends_on": ["evidence.creditor_txt", "evidence.database"],
+      "invalidates": ["creditor.v5.statement"],
+      "optional": false,
+      "outputs": ["analysis/creditors/{CODE}/reports/{CODE}_INGEST_COVERAGE_*.json"]
+    }
+  ],
+  "evidence_ids": [
+    "evidence.erp_txt",
+    "evidence.debenq_txt",
+    "evidence.database",
+    "evidence.remittance",
+    "evidence.payments",
+    "evidence.invoices",
+    "evidence.payment_txt",
+    "evidence.delivery_events",
+    "evidence.creditor_txt",
+    "ratification.scenarios",
+    "ratified.balance_bridge_lines",
+    "account.settlement_doctrine"
+  ]
+}

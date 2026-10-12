@@ -1,0 +1,154 @@
+-- ============================================================================
+-- PDP-31: Deduplicate transaction_items rows created by fingerprint drift
+-- ============================================================================
+--
+-- STATUS: NOT YET APPLIED — PENDING MANUAL REVIEW.
+-- This script contains DELETE statements against production data. It must be
+-- run manually, by a human, against project oqhpxnaadahohwkslive, only after
+-- reviewing the SELECT preview sections below and confirming the row counts
+-- and the amounts affected. Do not wire this into any automated migration
+-- runner. Take a fresh backup / point-in-time-recovery checkpoint first.
+--
+-- ROOT CAUSE (see src/lib/erpImportEngine.ts computeFingerprint() doc comment
+-- and the erpImportEngine.test.ts PDP-31 test block for full detail):
+--
+--   `SyncService.syncItems` (src/lib/syncService.ts) upserts into
+--   transaction_items with `onConflict: 'fingerprint'` — that is the ONLY
+--   mechanism that recognises an incoming row as "already imported". The
+--   fingerprint scheme (computeFingerprint()/clean()/parseItems() in
+--   erpImportEngine.ts) changed shape at least once in this codebase's
+--   history. A single historical batch export was ingested twice:
+--     - first as source_file = '2025.TXT' on 2026-04-12 (the day BEFORE the
+--       current fingerprinting scheme was introduced — hashed by an earlier,
+--       differently-shaped version of computeFingerprint()), and
+--     - again as source_file = 'STTRANS2024.TXT' on 2026-09-07 (hashed by the
+--       CURRENT algorithm).
+--   Every field that ends up stored (entry_type, account_no, doc_no,
+--   stock_no, description, reference, tx_date, qty, retail_price) is
+--   byte-for-byte identical between the two rows in every confirmed pair —
+--   this was verified directly against this project via length()/
+--   octet_length() equality and by recomputing today's exact SHA-256
+--   algorithm over the stored fields (it reproduces the *newer* row's
+--   fingerprint precisely, never the older row's). The two rows are the same
+--   real ERP transaction; only the fingerprint differs, because the
+--   algorithm that produced it differed across the two import runs.
+--
+--   This was not a TWK002/JEN001-specific event: the same detection query
+--   below shows 300+ accounts affected in the same 2024-03 to 2026-05
+--   window, with several accounts (GAS004, MON001, WES004, FAM000, MD0003)
+--   at 96-99% of their line-item groups duplicated — i.e. this is one mass
+--   historical re-ingestion event, not a per-account data quirk.
+--
+-- DETECTION QUERY (doctrine grouping — business_rules.md style; the same
+-- shape used to confirm the bug against vw_clean_transactions):
+--
+--   SELECT account_no, doc_no, entry_type, stock_no, qty, line_total, tx_date,
+--          COUNT(*) AS n
+--   FROM vw_clean_transactions
+--   WHERE tx_date BETWEEN '2024-03-01' AND '2026-05-31'
+--   GROUP BY account_no, doc_no, entry_type, stock_no, qty, line_total, tx_date
+--   HAVING COUNT(*) > 1;
+--
+-- DEDUP POLICY IN THIS SCRIPT:
+--   Within transaction_items directly (not the view), duplicates are grouped
+--   on the same natural key: (account_no, doc_no, entry_type, stock_no,
+--   qty, retail_price, tx_date). This is the actual imported-row's business
+--   identity — the same fields (minus the volatile `fingerprint`) that feed
+--   computeFingerprint(). Within each duplicate group we KEEP the row with
+--   the smallest `id` (the first-ever import of that transaction — typically
+--   the historically "original" row, e.g. the '2025.TXT' import) and DELETE
+--   every later duplicate (e.g. the 'STTRANS2024.TXT' re-import). This is a
+--   deliberate, simple, auditable "keep-oldest" rule; a reviewer who prefers
+--   "keep the row whose fingerprint matches the CURRENT algorithm" (so a
+--   future re-run of SyncService's onConflict('fingerprint') check will
+--   actually recognise the surviving row) should instead keep the row whose
+--   fingerprint was produced by today's computeFingerprint() — that is a
+--   judgement call best made by a human re-running the JS hash per row, not
+--   guessed at in SQL, since SQL's numeric->text casting is not guaranteed to
+--   match the exact JS Number.prototype.toString() behaviour that
+--   computeFingerprint() relies on (that mismatch is close to the root cause
+--   of this very bug). Whichever row is kept, the account's totals
+--   (SUM(line_total)) are unaffected either way, since the two rows in a
+--   duplicate pair are numerically identical.
+--
+-- SCOPE: restricted to the confirmed affected window (2024-03-01 through
+-- 2026-05-31 inclusive) to avoid touching unrelated legitimately-duplicate-
+-- looking rows (e.g. two genuinely separate deliveries on the same day with
+-- the same qty/price) outside that window. Widen only after reviewing.
+-- ============================================================================
+
+
+-- ---------------------------------------------------------------------------
+-- STEP 0 — sanity preview: how many groups / rows would this affect?
+-- Run this FIRST and eyeball it before anything else.
+-- ---------------------------------------------------------------------------
+-- SELECT
+--     COUNT(*)                                   AS duplicate_groups,
+--     SUM(cnt)                                   AS total_rows_in_dup_groups,
+--     SUM(cnt) - COUNT(*)                        AS rows_to_be_deleted
+-- FROM (
+--     SELECT
+--         account_no, doc_no, entry_type, stock_no, qty, retail_price, tx_date,
+--         COUNT(*) AS cnt
+--     FROM transaction_items
+--     WHERE tx_date BETWEEN '2024-03-01' AND '2026-05-31'
+--     GROUP BY account_no, doc_no, entry_type, stock_no, qty, retail_price, tx_date
+--     HAVING COUNT(*) > 1
+-- ) g;
+
+
+-- ---------------------------------------------------------------------------
+-- STEP 1 — full preview of every row that would be deleted, with its
+-- surviving sibling's id alongside it, source_file, and created_at, so a
+-- human reviewer can spot-check before running STEP 2.
+-- ---------------------------------------------------------------------------
+-- WITH dup_groups AS (
+--     SELECT
+--         id,
+--         account_no, doc_no, entry_type, stock_no, qty, retail_price, tx_date,
+--         source_file, created_at,
+--         ROW_NUMBER() OVER (
+--             PARTITION BY account_no, doc_no, entry_type, stock_no, qty, retail_price, tx_date
+--             ORDER BY id ASC
+--         ) AS rn,
+--         COUNT(*) OVER (
+--             PARTITION BY account_no, doc_no, entry_type, stock_no, qty, retail_price, tx_date
+--         ) AS group_size
+--     FROM transaction_items
+--     WHERE tx_date BETWEEN '2024-03-01' AND '2026-05-31'
+-- )
+-- SELECT *
+-- FROM dup_groups
+-- WHERE group_size > 1
+-- ORDER BY account_no, doc_no, tx_date, id;
+
+
+-- ---------------------------------------------------------------------------
+-- STEP 2 — THE ACTUAL DELETE. Commented out on purpose. Uncomment only after
+-- STEP 0 / STEP 1 have been reviewed and approved by a human. Runs inside an
+-- explicit transaction so it can be rolled back if the preview inside the
+-- transaction (via the RETURNING clause) doesn't match expectations.
+-- ---------------------------------------------------------------------------
+-- BEGIN;
+--
+-- WITH dup_groups AS (
+--     SELECT
+--         id,
+--         ROW_NUMBER() OVER (
+--             PARTITION BY account_no, doc_no, entry_type, stock_no, qty, retail_price, tx_date
+--             ORDER BY id ASC
+--         ) AS rn
+--     FROM transaction_items
+--     WHERE tx_date BETWEEN '2024-03-01' AND '2026-05-31'
+-- )
+-- DELETE FROM transaction_items
+-- WHERE id IN (
+--     SELECT id FROM dup_groups WHERE rn > 1
+-- )
+-- RETURNING id, account_no, doc_no, entry_type, stock_no, tx_date, source_file, created_at;
+--
+-- -- Inspect the RETURNING output above. If (and only if) it matches STEP 1's
+-- -- preview exactly:
+-- --   COMMIT;
+-- -- Otherwise:
+-- --   ROLLBACK;

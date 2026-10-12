@@ -8,6 +8,8 @@ The React/Vite PWA is the review and control surface. It must not become the rec
 
 ## Core Principle
 
+> **Constitutional alignment:** Agent-emitted state is **derived** from evidence (`DEBTORS_DOCTRINE.md` §§1–3). UI consumes projections; UI must not infer reconciliation (`DEBTORS_DOCTRINE.md` §2 Projection Rule).
+
 Agent produces structured debtor state → UI displays it → user reviews or approves → agent performs the next controlled action.
 
 ## Debtor Lifecycle

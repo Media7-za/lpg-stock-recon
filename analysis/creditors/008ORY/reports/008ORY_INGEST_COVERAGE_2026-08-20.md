@@ -1,0 +1,104 @@
+# 008ORY — Creditor Ingest Coverage Report
+
+**Generated:** 2026-08-20 · **Display status:** `CURRENT_PARTIAL`
+
+## Summary
+
+| Field | Value |
+| :--- | :--- |
+| Statement TXT | `analysis/creditors/008ORY/raw/008ORYCURRENT.TXT` |
+| Linked accounts | 008ORY, 007ORY |
+| TXT as-at (last period row) | 2026-08-14 |
+| Header sync as-at | 2026-08-19 |
+| ingestFreshness | `current` |
+| ingestCoverage | `partial` |
+| Documents in TXT (period) | 74 |
+| Healthy / expected | 0 |
+| Gaps | 74 |
+
+## Gate result
+
+| Lane | Status |
+| :--- | :--- |
+| Financial balance from TXT | ALLOWED |
+| Custody / Part 2 qty | BLOCKED |
+| SKU analysis | BLOCKED |
+
+## Document gaps
+
+| Doc | Type | Date | Class |
+| :--- | :--- | :--- | :--- |
+| 3633 | Deb Note | 2026-07-01 | MISSING_HEADER |
+| 6747 | GRV | 2026-07-01 | MISSING_HEADER |
+| 7409 | Bank XFer | 2026-07-01 | MISSING_HEADER |
+| 3634 | Deb Note | 2026-07-02 | MISSING_HEADER |
+| 6748 | GRV | 2026-07-02 | MISSING_HEADER |
+| 7411 | Bank XFer | 2026-07-02 | MISSING_HEADER |
+| 7412 | Bank XFer | 2026-07-02 | MISSING_HEADER |
+| 3635 | Deb Note | 2026-07-03 | MISSING_HEADER |
+| 6749 | GRV | 2026-07-03 | MISSING_HEADER |
+| 7413 | Ud XFer | 2026-07-03 | MISSING_HEADER |
+| 3636 | Deb Note | 2026-07-04 | MISSING_HEADER |
+| 6751 | GRV | 2026-07-04 | MISSING_HEADER |
+| 3637 | Deb Note | 2026-07-06 | MISSING_HEADER |
+| 6753 | GRV | 2026-07-06 | MISSING_HEADER |
+| 7417 | Bank XFer | 2026-07-07 | MISSING_HEADER |
+| 3639 | Deb Note | 2026-07-08 | MISSING_HEADER |
+| 6756 | GRV | 2026-07-08 | MISSING_HEADER |
+| 7418 | Bank XFer | 2026-07-08 | MISSING_HEADER |
+| C-COUNT | Bank XFer | 2026-07-08 | MISSING_HEADER |
+| 3642 | Deb Note | 2026-07-09 | MISSING_HEADER |
+| 6758 | GRV | 2026-07-09 | MISSING_HEADER |
+| 7421 | Bank XFer | 2026-07-09 | MISSING_HEADER |
+| 3643 | Deb Note | 2026-07-10 | MISSING_HEADER |
+| 6761 | GRV | 2026-07-10 | MISSING_HEADER |
+| 7423 | Bank XFer | 2026-07-10 | MISSING_HEADER |
+| 3644 | Deb Note | 2026-07-13 | MISSING_HEADER |
+| 6762 | GRV | 2026-07-13 | MISSING_HEADER |
+| 7426 | Bank XFer | 2026-07-15 | MISSING_HEADER |
+| 3645 | Deb Note | 2026-07-16 | MISSING_HEADER |
+| 6763 | GRV | 2026-07-16 | MISSING_HEADER |
+| 7429 | Bank XFer | 2026-07-17 | MISSING_HEADER |
+| 3647 | Deb Note | 2026-07-20 | MISSING_HEADER |
+| 6766 | GRV | 2026-07-20 | MISSING_HEADER |
+| 7435 | Bank XFer | 2026-07-22 | MISSING_HEADER |
+| 3651 | Deb Note | 2026-07-23 | MISSING_HEADER |
+| 6773 | GRV | 2026-07-23 | MISSING_HEADER |
+| 7437 | Bank XFer | 2026-07-23 | MISSING_HEADER |
+| 3652 | Deb Note | 2026-07-24 | MISSING_HEADER |
+| 6774 | GRV | 2026-07-24 | MISSING_HEADER |
+| 7438 | Bank XFer | 2026-07-27 | MISSING_HEADER |
+| 3653 | Deb Note | 2026-07-28 | MISSING_HEADER |
+| 6776 | GRV | 2026-07-28 | MISSING_HEADER |
+| 7441 | Bank XFer | 2026-07-29 | MISSING_HEADER |
+| 3657 | Deb Note | 2026-07-30 | MISSING_HEADER |
+| 3659 | Deb Note | 2026-07-30 | MISSING_HEADER |
+| 6781 | GRV | 2026-07-30 | MISSING_HEADER |
+| 6785 | GRV | 2026-07-30 | MISSING_HEADER |
+| STAT 128 | Bank XFer | 2026-07-30 | MISSING_HEADER |
+| 3658 | Deb Note | 2026-07-31 | MISSING_HEADER |
+| 6783 | GRV | 2026-07-31 | MISSING_HEADER |
+| 7442 | Bank XFer | 2026-07-31 | MISSING_HEADER |
+| 7443 | Bank XFer | 2026-07-31 | MISSING_HEADER |
+| 3664 | Deb Note | 2026-08-03 | MISSING_HEADER |
+| 6789 | GRV | 2026-08-03 | MISSING_HEADER |
+| 7446 | Bank XFer | 2026-08-03 | MISSING_HEADER |
+| 7445 | Bank XFer | 2026-08-04 | MISSING_HEADER |
+| 7449 | Bank XFer | 2026-08-05 | MISSING_HEADER |
+| 3668 | Deb Note | 2026-08-06 | MISSING_HEADER |
+| 6795 | GRV | 2026-08-06 | MISSING_HEADER |
+| 7450 | Bank XFer | 2026-08-06 | MISSING_HEADER |
+| 3669 | Deb Note | 2026-08-07 | MISSING_HEADER |
+| 3670 | Deb Note | 2026-08-07 | MISSING_HEADER |
+| 6797 | GRV | 2026-08-07 | MISSING_HEADER |
+| 6798 | GRV | 2026-08-07 | MISSING_HEADER |
+| 7451 | Bank XFer | 2026-08-07 | MISSING_HEADER |
+| 3674 | Deb Note | 2026-08-11 | MISSING_HEADER |
+| 6806 | GRV | 2026-08-11 | MISSING_HEADER |
+| 7454 | Bank XFer | 2026-08-11 | MISSING_HEADER |
+| 7455 | Bank XFer | 2026-08-12 | MISSING_HEADER |
+| 3677 | Deb Note | 2026-08-13 | MISSING_HEADER |
+| 6809 | GRV | 2026-08-13 | MISSING_HEADER |
+| 7458 | Ud XFer | 2026-08-13 | MISSING_HEADER |
+| 3678 | Deb Note | 2026-08-14 | MISSING_HEADER |
+| 6811 | GRV | 2026-08-14 | MISSING_HEADER |
