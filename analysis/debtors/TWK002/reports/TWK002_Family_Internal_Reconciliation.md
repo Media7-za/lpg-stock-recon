@@ -3,7 +3,6 @@
 
 **Why this is a draft:**
 - operator hold H2_TWK003_CREDIT: Treatment of the TWK003 customer credit R-300.00 (invoice 47866 vs CN 13933) pending.
-- operator hold H3_TWK004_TIE: 53535 / CN 15781 tie and whether invoice 53536 replaces 53535: operator approval pending.
 - operator hold H4_RELEASE_GATE: debtors:tag-check returns NOT_DERIVABLE_FROM_TXT for the family; operator to decide whether release may proceed.
 - operator hold H5_TWK004_DB_DOCS: Cleared in evidence on 2026-10-11 (TWK004 and TWK002 documents now in DB, replay 2026-10-11); operator to confirm and remove this hold.
 
@@ -103,6 +102,8 @@ Open rows after confirmed **and probable** ties are removed (internal view), 3 r
 | 04 Sept 2026 | Invoice | 52948 | DN#24817 | OTHER | 9,000.00 |
 | 10 Sept 2026 | Invoice | 53113 | DN#24985 | OTHER | 22,000.00 |
 | 09 Oct 2026 | Invoice | 53536 | DN#24718 | OTHER | 30,000.00 |
+
+- **Invoice 53536 (operator note):** Operator ruling 2026-10-12 (main session, answer "yes"): invoice 53536 (R30,000.00, DN#24718, 2026-10-09) REPLACES invoice 53535 (R32,500.00, same DN, same day), which CN 15781 (-R32,500.00, 2026-10-10) reverses in full. 53535 / CN 15781 is a settled pair (matcher CONFIRMED CN_DN_PAIR T0002, 2026-10-11 replay; no lock needed or possible) and 53536 is the open, correct invoice. Evidence: headers 53535/53536/15781 in DB (DTRX1010.TXT); lines show 53536 = 200 x stock 00000400 + 40 x 00000401 vs 53535 = 200 x 00000400 + 50 x 00000401. The R2,500.00 difference (10 x R250.00) is the correction; the reason for it is unverified. Tripwires: a delivery note or ERP statement that 53536 is NOT a replacement; any further credit or document on DN#24718; a DB re-sync that changes the 53535, 53536 or 15781 lines.
 
 Reconciliation:
 

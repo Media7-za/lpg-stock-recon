@@ -20,5 +20,12 @@
     "9.1": 517.5,
     "D.1": 1150,
     "S.1": 1150
-  }
+  },
+  "rowNotes": [
+    {
+      "entry_type": "Invoice",
+      "doc": "53536",
+      "note": "Operator ruling 2026-10-12 (main session, answer \"yes\"): invoice 53536 (R30,000.00, DN#24718, 2026-10-09) REPLACES invoice 53535 (R32,500.00, same DN, same day), which CN 15781 (-R32,500.00, 2026-10-10) reverses in full. 53535 / CN 15781 is a settled pair (matcher CONFIRMED CN_DN_PAIR T0002, 2026-10-11 replay; no lock needed or possible) and 53536 is the open, correct invoice. Evidence: headers 53535/53536/15781 in DB (DTRX1010.TXT); lines show 53536 = 200 x stock 00000400 + 40 x 00000401 vs 53535 = 200 x 00000400 + 50 x 00000401. The R2,500.00 difference (10 x R250.00) is the correction; the reason for it is unverified. Tripwires: a delivery note or ERP statement that 53536 is NOT a replacement; any further credit or document on DN#24718; a DB re-sync that changes the 53535, 53536 or 15781 lines."
+    }
+  ]
 }
