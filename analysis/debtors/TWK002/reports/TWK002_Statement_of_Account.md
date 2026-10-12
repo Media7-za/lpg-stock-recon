@@ -46,19 +46,17 @@ PIETERMARITZBURG
 
 ² A credit note was issued against this invoice; matching of the two documents is being confirmed.
 
-## Other amounts included in the balance
+## Opening balance
 
 | Account | Description | Amount (R) |
 | :--- | :--- | ---: |
-| TWK002 | Opening balance brought forward | 38,791.27 |
-| TWK002 | Payments against opening balance | -35,922.77 |
-| TWK002 | Journal adjustments brought forward | 5,216.17 |
+| TWK002 | Opening balance | 8,084.67 |
 
 ---
 
 ## Summary by account
 
-| Account | Open items (R) | Other amounts (R) | Balance (R) |
+| Account | Open items (R) | Opening balance (R) | Balance (R) |
 | :--- | ---: | ---: | ---: |
 | TWK002 | 46,051.52 | 8,084.67 | 54,136.19 |
 | TWK003 | 0.00 | 0.00 | 0.00 |

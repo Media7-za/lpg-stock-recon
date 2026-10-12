@@ -198,11 +198,18 @@ export function renderFamilyCustomerMarkdown(fam, { cfg, asAtLabel }) {
   const kinds = new Set(fam.items.filter((l) => l.pendingProbable).map((l) => l.pendingKind));
   for (const k of ['payment', 'credit']) if (kinds.has(k)) L.push(FOOTNOTE[k], '');
   if (fam.named.length) {
-    L.push('## Other amounts included in the balance', '', '| Account | Description | Amount (R) |', '| :--- | :--- | ---: |');
-    for (const n of fam.named) L.push(`| ${n.account} | ${cell(n.label)} | ${fmt(n.amount)} |`);
-    L.push('');
+    // One "Opening balance" line per account: the brought-forward, settled-against-opening and journal
+    // lines are summed (customer wording; the itemised detail stays on the internal view).
+    const opening = new Map();
+    for (const n of fam.named) opening.set(n.account, round2((opening.get(n.account) || 0) + n.amount));
+    const lines = [...opening].filter(([, v]) => v);
+    if (lines.length) {
+      L.push('## Opening balance', '', '| Account | Description | Amount (R) |', '| :--- | :--- | ---: |');
+      for (const [account, amount] of lines) L.push(`| ${account} | Opening balance | ${fmt(amount)} |`);
+      L.push('');
+    }
   }
-  L.push('---', '', '## Summary by account', '', '| Account | Open items (R) | Other amounts (R) | Balance (R) |', '| :--- | ---: | ---: | ---: |');
+  L.push('---', '', '## Summary by account', '', '| Account | Open items (R) | Opening balance (R) | Balance (R) |', '| :--- | ---: | ---: | ---: |');
   for (const m of fam.members) L.push(`| ${m.code} | ${fmt(m.itemsTotal)} | ${fmt(m.namedTotal)} | ${fmt(m.balance)} |`);
   L.push(`| **Amount due** | **${fmt(fam.itemsTotal)}** | **${fmt(fam.namedTotal)}** | **${fmt(fam.statementTotal)}** |`, '');
   if (fam.members.some((m) => m.balance < 0)) {

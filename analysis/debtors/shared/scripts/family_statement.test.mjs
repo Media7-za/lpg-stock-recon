@@ -204,3 +204,19 @@ test('customer quarantine does not hide anything that is not named, and no quara
   assert.deepEqual(partial.items.filter((l) => l.account === 'C001').map((l) => l.doc), ['2002']);
   assert.equal(partial.statementTotal, partial.erpTotal - 2000);
 });
+
+test('customer copy collapses the account-level lines into one "Opening balance" line per account', () => {
+  const p = parent();
+  p.projection.openings = { combinedBf: 500, lpgOpeningBf: 500, cylOpeningFinancial: 0 };
+  p.projection.closings = { combined: 1500 };
+  p.erpHeader = 1500;
+  p.projection.source.erpCurrentBalance = 1500;
+  p.matches.projection.txtSha256 = p.projection.source.txtSha256;
+  const fam = buildFamilyStatement([p, creditChild()]);
+  assert.deepEqual(fam.problems, []);
+  const md = renderFamilyCustomerMarkdown(fam, { cfg, asAtLabel: 'x' });
+  assert.match(md, /## Opening balance\n\n\| Account \| Description \| Amount \(R\) \|/);
+  assert.equal((md.match(/\| P001 \| Opening balance \| 500\.00 \|/g) || []).length, 1);
+  assert.doesNotMatch(md, /Other amounts|brought forward|Journal adjustments/);
+  assert.match(md, /\| Account \| Open items \(R\) \| Opening balance \(R\) \| Balance \(R\) \|/);
+});

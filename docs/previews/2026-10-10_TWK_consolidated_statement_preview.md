@@ -134,3 +134,7 @@ Sending it to the customer is the operator's step and is not done. Tripwires for
 ## 15. Update 2026-10-12: stale draft preview file deleted
 
 At the operator's instruction, `analysis/debtors/TWK002/reports/TWK002_Statement_of_Account_Consolidated_DRAFT_PREVIEW.md` was deleted (section 14 left it stale). It is a derived artifact and remains in git history. The generator would write a file under that name again only if the output became a draft (a review-only account, a listed hold, or a failed quarantine would do it). The live file is `TWK002_Statement_of_Account.md`.
+
+## 16. Update 2026-10-12: account-level lines collapsed to one "Opening balance" line
+
+Operator instruction: collapse "Other amounts included in the balance" into one line called "Opening balance". The customer copy now has an `Opening balance` section with one line per account that has such amounts: TWK002 R8,084.67 (the brought-forward, settled-against-opening and pre-window journal lines summed; PROVEN, same total as before). The summary column is renamed "Opening balance (R)". Amount due unchanged at R115,136.19. The itemised lines stay on the internal view and in the config rulings; nothing in the numbers changed. Markdown and PDF regenerated; test added (172 pass).
