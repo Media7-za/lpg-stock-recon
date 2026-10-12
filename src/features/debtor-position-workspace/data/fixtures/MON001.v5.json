@@ -1,0 +1,41 @@
+{
+  "debtorCode": "MON001",
+  "debtorName": "SHORTEN INTERNATIONAL 66 ON MONZALI",
+  "period": {
+    "from": "2024-01-01",
+    "to": "2026-07-22"
+  },
+  "version": "v5",
+  "workspaceStatus": "pending_review",
+  "lastGeneratedAt": "2026-08-04T10:07:08.607Z",
+  "source": "analysis/debtors/MON001/raw/MON001CURRENT_FROM202401.TXT",
+  "financialPosition": {
+    "lpgGasDebt": 3665.79,
+    "cylinderFinancialBalance": -948,
+    "totalDebtorBalance": 2717.79,
+    "erpStatedBalance": 2717.79,
+    "erpVariance": 0,
+    "subLedgerVariance": 0
+  },
+  "custodyPosition": {
+    "totalCustodyExposure": 0,
+    "lines": []
+  },
+  "reconciliationPosition": {
+    "cylinderVariance": -948,
+    "erpVariance": 0,
+    "subLedgerVariance": 0,
+    "exceptions": [
+      {
+        "type": "CUSTODY",
+        "basis": "ASSERTED",
+        "status": "open",
+        "description": "Part 1B financial vs Part 2 custody — check DB ingest vs TXT"
+      }
+    ]
+  },
+  "artifacts": {
+    "statementMarkdown": "analysis/debtors/MON001/reports/MON001_Statement_Account_v5.md",
+    "txtSource": "analysis/debtors/MON001/raw/MON001CURRENT_FROM202401.TXT"
+  }
+}

@@ -7,6 +7,7 @@
 
 import { db } from './db';
 import { supabase, isCloudEnabled } from './supabase';
+import { ERPImportEngine } from './erpImportEngine';
 import type { ProcessedTransactionHeader, ProcessedTransactionItem } from './erpImportEngine';
 
 // Maximum retries before marking a sync attempt as failed
@@ -97,19 +98,37 @@ export class SyncService {
         );
 
         const skipped = headers.length - newHeaders.length;
-        const progress: SyncProgress = { total: newHeaders.length, synced: 0, errors: [], hints: [] };
+        const progress: SyncProgress = { total: 0, synced: 0, errors: [], hints: [] };
         if (skipped > 0) progress.hints.push(`${skipped} existing or duplicate records skipped.`);
-        
-        if (newHeaders.length === 0) {
+
+        // Step 1.6: Financial Control Layer (DK-593) — run integrity checks on every
+        // header before it is accepted, and reject (never insert) any row that comes
+        // back CRITICAL. Findings are surfaced via progress.errors so the operator
+        // sees exactly which documents were rejected and why.
+        const integrityEngine = new ERPImportEngine();
+        const acceptedHeaders: ProcessedTransactionHeader[] = [];
+        for (const header of newHeaders) {
+            const findings = integrityEngine.validateIntegrity(header);
+            const critical = findings.filter(f => f.severity === 'CRITICAL');
+            if (critical.length > 0) {
+                critical.forEach(f => progress.errors.push(`Rejected doc ${f.id} (${f.rule}): ${f.message}`));
+            } else {
+                acceptedHeaders.push(header);
+            }
+        }
+
+        progress.total = acceptedHeaders.length;
+
+        if (acceptedHeaders.length === 0) {
             if (onProgress) onProgress({ ...progress, synced: 0 });
             return;
         }
 
         // Step 2: Upload Delta
-        for (let i = 0; i < newHeaders.length; i += BATCH_SIZE) {
+        for (let i = 0; i < acceptedHeaders.length; i += BATCH_SIZE) {
             if (signal?.aborted) break;
 
-            const batch = newHeaders.slice(i, i + BATCH_SIZE);
+            const batch = acceptedHeaders.slice(i, i + BATCH_SIZE);
             let success = false;
             let retries = 0;
 
@@ -141,7 +160,7 @@ export class SyncService {
             await supabase.from('sync_logs').insert({
                 filename: fileName,
                 file_type: 'HEADERS',
-                records_synced: newHeaders.length
+                records_synced: acceptedHeaders.length
             });
         }
     }

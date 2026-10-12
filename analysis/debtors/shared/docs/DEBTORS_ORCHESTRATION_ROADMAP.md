@@ -1,7 +1,8 @@
 # Roadmap: Debtors Orchestration
 
-**Last updated:** 2026-07-13  
-**PRD:** [DEBTORS_ORCHESTRATION_PRD.md](./DEBTORS_ORCHESTRATION_PRD.md)
+**Last updated:** 2026-07-21  
+**PRD:** [DEBTORS_ORCHESTRATION_PRD.md](./DEBTORS_ORCHESTRATION_PRD.md)  
+**Constitution:** [../DEBTORS_DOCTRINE.md](../DEBTORS_DOCTRINE.md)
 
 ---
 
@@ -55,6 +56,19 @@ Priority order — one bounded turn at a time; do not parallelise finance-depend
 | 2.4 | **WES004** LOD follow-up | collections | Collections Agent | Response logged or escalated |
 | 2.5 | **TAN001** draft LOD | collections | Collections Agent | LOD sent; `dateSent` in `project.json` |
 | 2.6 | **WO0001** baseline recon | allocation | Worker → PM | `reconState: complete` or documented exceptions |
+| 2.7 | **Turn 9** projection generator (staged) | architecture | Repo agent | `PROJECT_PROJECTION_SCHEMA.md` + `DEBTOR_PROJECTION_TEMPLATE.md` — **staged, not sync-enforced** |
+
+---
+
+## Phase 2b — Projection & schema (Turn 9 — staged 2026-07-21)
+
+| # | Deliverable | Status |
+| :---: | :--- | :---: |
+| 9.1 | `DEBTORS_DOCTRINE.md` constitutional file | ✅ Turn 10 |
+| 9.2 | `PROJECT_PROJECTION_SCHEMA.md` | ✅ Staged |
+| 9.3 | `DEBTOR_PROJECTION_TEMPLATE.md` | ✅ Staged |
+| 9.4 | Sync enforcement + per-debtor projection paths | ⏸ Operator decision |
+| 9.5 | Event sourcing / digital twin (`EVENT_SCHEMA.md`) | ⏸ **Parked** — explicit operator decision required |
 
 ---
 
@@ -126,6 +140,7 @@ Quick reference so future sessions do not re-debate settled choices:
 | Skill | Path |
 | :--- | :--- |
 | Orchestrator | `.agents/skills/SKILL_Debtors_Orchestrator.md` |
+| **Constitution** | `analysis/debtors/shared/DEBTORS_DOCTRINE.md` |
 | Project Manager | `.agents/skills/SKILL_Debtors_Project_Manager.md` |
 | Human ERP | `.agents/skills/SKILL_Human_ERP_Agent.md` |
 | Human Collections | `.agents/skills/SKILL_Human_Collections_Agent.md` |

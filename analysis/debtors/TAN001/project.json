@@ -4,10 +4,23 @@
   "status": "collection",
   "reconState": "complete",
   "financials": {
-    "totalOutstanding": 96284.18,
-    "lastInvoiceDate": "2026-06-01",
-    "lastPaymentDate": "2026-06-01",
-    "agedDebt180Plus": 66565.10
+    "totalOutstanding": 92177.12,
+    "lastInvoiceDate": "2026-07-14",
+    "lastPaymentDate": "2026-07-16",
+    "agedDebt180Plus": 66565.10,
+    "erpTxtClosing": 87697.12,
+    "erpTxtTransactionTotal": 86392.1,
+    "erpTxtClosingAsOf": "2026-07-16",
+    "erpTxtSource": "raw/TAN001CURRENT.TXT",
+    "collectable": {
+      "amount": 87697.12,
+      "erpBalance": 87697.12,
+      "ratifiedHoldsTotal": 0,
+      "asAt": "2026-07-16",
+      "source": "analysis/debtors/TAN001/raw/TAN001CURRENT.TXT (CURRENT BALANCE header)",
+      "basis": "STALE",
+      "operatorConfirmation": "pending"
+    }
   },
   "collections": {
     "actionRequired": true,
@@ -16,7 +29,33 @@
     "deadlineDate": null,
     "nextAction": "draft_lod",
     "nextActionDate": "2026-06-16",
-    "notes": "Reconciliation v4 complete. Substantial historical aged debt (Pre-Jan 2026). Sent to collections."
+    "notes": "v5 statement from ERP TXT (Jul 2026). Ingest CURRENT_COMPLETE. ERP header R87,697.12 vs reconstructed 1A+1B R92,177.12 (R4,480.00) — collections blocked until bridge ratified. Draft LOD overdue (H-009).",
+    "blockers": [
+      {
+        "type": "OTHER",
+        "status": "open",
+        "description": "Part 1A+1B closing R92,177.12 does not tie ERP TXT header R87,697.12 (variance R4,480.00). See TAN001_Statement_Account_v5.md bridge.",
+        "source": "reports/TAN001_Statement_Account_v5.md",
+        "asAt": "2026-07-30"
+      },
+      {
+        "type": "OTHER",
+        "status": "open",
+        "description": "ERP TXT transaction total R86,392.10 differs from CURRENT BALANCE header R87,697.12 (UD pay/cheques R1,305.02) — confirm which figure is the §2 anchor before demand.",
+        "source": "raw/TAN001CURRENT.TXT",
+        "asAt": "2026-07-30"
+      }
+    ]
+  },
+  "ingestGate": {
+    "status": "pass",
+    "ingestFreshness": "current",
+    "ingestCoverage": "complete",
+    "displayStatus": "CURRENT_COMPLETE",
+    "asAt": "2026-07-30",
+    "reportPath": "reports/TAN001_INGEST_COVERAGE_2026-07-30.json",
+    "ingestBlockedScopes": [],
+    "exceptions": []
   },
   "history": [
     {
@@ -26,6 +65,10 @@
     {
       "date": "2026-06-15",
       "event": "Reconciliation v4 baseline verified. Moved to collection due to R66.5k 180+ aged debt."
+    },
+    {
+      "date": "2026-07-30",
+      "event": "ERP TXT placed at raw/TAN001CURRENT.TXT; ingest CURRENT_COMPLETE; v5 statement generated. D17 still blocked: collectable STALE/pending confirmation; open blockers for R4,480 header vs sub-ledger bridge and UD/header total mismatch."
     }
   ]
 }

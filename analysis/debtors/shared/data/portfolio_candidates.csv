@@ -7,11 +7,11 @@ INC002,MRS DLAMINI,,86365.25,39808.63,no,defer,A,
 DON001,DONNYBROOK,7,78426.01,67765.19,no,position_recon,A,
 TOP000,TOPS SUPERMARKET,COD,57447.37,57447.37,no,position_recon,A,
 SAV001,SAYAR AND SONS (PTY) LTD,7,56128.58,0.00,no,position_recon,A,
-CAP000,CAPITOL CATERERS SELECT (PTY),30T,46228.47,20302.25,no,settlement_discount,A,
+CAP000,CAPITOL CATERERS SELECT (PTY),30T,46228.47,20302.25,yes,settlement_discount,A,active portfolio
 WO0001,L3 CASH AND CARRY,COD,43662.35,9562.79,yes,allocation,A,active portfolio
 SWA002,SWAADISHT - NEW ACCOUNT,30T,23167.50,23167.50,no,settlement_discount,A,
 JUS003,JUST GAS,,22723.79,22723.79,no,defer,A,
-GAS004,GAS 2 GO HILTIN NEW ACCOUNT,,20061.51,20061.49,no,defer,A,
+GAS004,GAS 2 GO HILTIN NEW ACCOUNT,,20061.51,20061.49,yes,position_recon,A,active portfolio — TXT locked position_recon (CSV defer was triage-only)
 BEA001,THE BEACH (PTY) LTD,30T,14138.76,14138.76,no,settlement_discount,A,
 BU0009,IMPENDLE WHOLESALE 2025,7,13846.82,5678.77,yes,position_recon,A,active portfolio
 UC0000,UCL COMPANY (PTY) LTD,30T,6727.32,6727.32,no,position_recon,A,

@@ -1,0 +1,3 @@
+allocation_id,allocation_group_id,payment_doc,payment_date,payment_amount,slice_amount,target_doc,target_date,lpg_target_amount,allocated_amount,variance,allocation_type,confidence,review_required,batch_id,erp_stat
+AL-0001,AG-BU0009-01,PMT-2001,2025-06-20,2500.00,1000.00,INV-1001,2025-06-01,1000.00,1000.00,0,REMITTANCE_EXPLICIT,Confirmed,false,BATCH-BU0009-01,STAT:1
+AL-0002,AG-BU0009-01,PMT-2001,2025-06-20,2500.00,1500.00,INV-1002,2025-06-10,1500.00,1500.00,0,REMITTANCE_EXPLICIT,Confirmed,false,BATCH-BU0009-01,STAT:1

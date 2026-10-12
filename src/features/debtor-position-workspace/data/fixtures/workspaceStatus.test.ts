@@ -52,13 +52,23 @@ describe('DebtorWorkspaceState contract (B0)', () => {
   });
 
   it('v5 fixtures with cylinderVariance >= 1 are pending_review, not the invalid "review"', () => {
-    for (const [name, raw] of [['JEN001.v5', JEN001v5], ['BR0001.v5', BR0001v5], ['IVE001.v5', IVE001v5]] as const) {
+    // JEN001.v5 is excluded here: its cylinderVariance is 0 (a clean reconciliation),
+    // so it belongs to the zero-variance case below, not this group.
+    for (const [name, raw] of [['BR0001.v5', BR0001v5], ['IVE001.v5', IVE001v5]] as const) {
       const f = raw as unknown as DebtorWorkspaceState & {
         reconciliationPosition: { cylinderVariance: number };
       };
       expect(Math.abs(f.reconciliationPosition.cylinderVariance), `${name} variance`).toBeGreaterThanOrEqual(1);
       expect(f.workspaceStatus, name).toBe('pending_review');
     }
+  });
+
+  it('JEN001.v5 has cylinderVariance 0 and is clean, not pending_review', () => {
+    const f = JEN001v5 as unknown as DebtorWorkspaceState & {
+      reconciliationPosition: { cylinderVariance: number };
+    };
+    expect(f.reconciliationPosition.cylinderVariance).toBe(0);
+    expect(f.workspaceStatus).toBe('clean');
   });
 
   it('preserves each v4 fixture\'s original status value under the new field name', () => {

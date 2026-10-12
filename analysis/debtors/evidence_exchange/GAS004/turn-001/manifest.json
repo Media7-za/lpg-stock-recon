@@ -1,0 +1,134 @@
+{
+  "debtor_code": "GAS004",
+  "turn": 1,
+  "generated_at": "2026-08-17T10:55:00Z",
+  "generated_by": "cursor",
+  "supersedes_turn": null,
+  "source_as_at": "2026-08-03",
+  "source_as_at_basis": "Last period row in raw/DEBENQ_CURRENT.TXT (inv 52262)",
+  "erp_freshness": {
+    "repository_latest_file": "DEBENQ_CURRENT.TXT",
+    "repository_latest_path": "analysis/debtors/GAS004/raw/DEBENQ_CURRENT.TXT",
+    "balance": 20061.51,
+    "currency": "ZAR",
+    "period_end": null,
+    "last_transaction_date": "2026-08-03",
+    "repository_commit": null,
+    "evidence_as_at": "2026-08-03",
+    "operator_confirmation": "uploaded",
+    "confirmation_date": "2026-08-17",
+    "status": "LATEST_IN_REPOSITORY",
+    "balance_classification": "PROVEN_RUNNING_CLOSE_TXT",
+    "fresh_upload_requested": true,
+    "header_current_balance": 30242.46,
+    "ud_pay_cheques": -10180.95,
+    "live_debtor_communications": "blocked",
+    "reconciliation_closure": "blocked",
+    "registry_ratification_dependent_on_current_balance": "blocked"
+  },
+  "erp_anchor": {
+    "amount": 20061.51,
+    "currency": "ZAR",
+    "as_at": "2026-08-03",
+    "source": "raw/DEBENQ_CURRENT.TXT last running BALANCE",
+    "status": "LATEST_IN_REPOSITORY",
+    "balance_classification": "PROVEN",
+    "canonical_source": "analysis/debtors/GAS004/raw/DEBENQ_CURRENT.TXT"
+  },
+  "portfolio_anchor": {
+    "amount": 20061.51,
+    "currency": "ZAR",
+    "as_at": "2025-07-13",
+    "source": "130720251H45M.TXT GAS004 row — coincidentally same rand as 2026-08-03 running close; ageing still stale",
+    "canonical_source": "analysis/debtors/Global Reports/130720251H45M.TXT"
+  },
+  "lane": "position_recon + v5",
+  "outcome": "PARTIAL",
+  "recon_state": "in-progress",
+  "residual": {
+    "amount": 0.0,
+    "tolerance": 0.05,
+    "unit": "ZAR",
+    "note": "1A+1B vs TXT running close R0.00. Header CURRENT BALANCE differs by UD R-10,180.95 (itemized, not a residual)."
+  },
+  "artifacts": [
+    {
+      "path": "worker_report.md",
+      "canonical_source": "analysis/debtors/GAS004/reports/GAS004_Onboarding_Status.md",
+      "purpose": "Turn execution / onboarding"
+    },
+    {
+      "path": "GAS004_Statement_Account_v5.md",
+      "canonical_source": "analysis/debtors/GAS004/reports/GAS004_Statement_Account_v5.md",
+      "purpose": "v5 statement"
+    }
+  ],
+  "proven_identities": [
+    {
+      "label": "1A+1B vs TXT running close",
+      "amount": 20061.51,
+      "as_at": "2026-08-03"
+    },
+    {
+      "label": "running close − UD PAY/CHEQUES = CURRENT BALANCE",
+      "amount": 30242.46,
+      "as_at": "2026-08-03",
+      "source": "10 Ud Paymnt rows sum to -10180.95"
+    },
+    {
+      "label": "sub-ledger tie",
+      "amount": 0.0
+    }
+  ],
+  "asserted_items": [
+    {
+      "label": "Sibling GAS002/GAS003/GAS010 balances",
+      "source": "130720251H45M.TXT",
+      "as_at": "2025-07-13"
+    },
+    {
+      "label": "agedDebt180Plus from global 120+",
+      "amount": 20061.49,
+      "as_at": "2025-07-13"
+    }
+  ],
+  "assumed_hypotheses": [
+    {
+      "label": "GAS002 is superseded Hilton code; GAS003/GAS010 are empties splits",
+      "kill_condition": "Sibling TXT shows a different customer"
+    }
+  ],
+  "invariants": [
+    {
+      "name": "TXT running-close bridge",
+      "status": "PASS",
+      "result": 0.0,
+      "required": "<= 0.05 ZAR vs last BALANCE"
+    },
+    {
+      "name": "header CURRENT BALANCE bridge",
+      "status": "EXPLAINED_UD",
+      "result": -10180.95,
+      "required": "named identity, not silent R0.00"
+    },
+    {
+      "name": "custody 1B vs qty",
+      "status": "NOT_SIGNED_OFF",
+      "result": -57.5,
+      "required": "ingest ALLOWED"
+    }
+  ],
+  "operator_decisions_required": [
+    {
+      "id": 1,
+      "decision": "H-021 fresh DEBENQ + DTRX/ITEMS through today",
+      "blocking": true
+    },
+    {
+      "id": 2,
+      "decision": "Customer-statement presentation of CURRENT BALANCE vs UD vs running close",
+      "blocking": true
+    }
+  ],
+  "staleness_warning": "DEBENQ_CURRENT last row 2026-08-03; Supabase has invoices 52467–52586 dated 10–14 Aug 2026."
+}

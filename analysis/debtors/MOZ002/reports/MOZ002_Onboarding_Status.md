@@ -72,5 +72,21 @@
 | New payment | **45202** — 2026-07-16, −R5,004.42 (STAT 128) |
 | Clears | Invoice **50657** (EX-0035 closed → EX-0038) |
 | ERP closing | **R8,010.08** (was R13,014.50) |
-| Open LPG | 49143, 50528, 51789 — **R12,989.00** |
+| Open LPG (P17 TXT) | 49143, 50528, 51789 — **R12,989.00** |
 | DB | 45202 not in `transaction_headers` yet — re-run ingest after sync |
+
+---
+
+## Turn 11C + post-close (2026-07-22 – 2026-07-28)
+
+| Item | Detail | Tag |
+| :--- | :--- | :--- |
+| Doctrine | **D14** (ref_no payer-class exception), **D15** (edge vs epistemic) — ratified 2026-07-22 | **PROVEN** — `DEBTORS_DOCTRINE.md` §4 @ 311a65c |
+| EX-0038 | `ratified_by_operator: 2026-07-22` on 45202→50657 | **PROVEN** — `payment_pattern_overrides.json` |
+| Operator view | `reports/MOZ002_OPERATOR_VIEW.md` via `scripts/build_operator_view.mjs` | **PROVEN** |
+| Cross-account **49143** | Payment **43322** on MOZ001 — operator asserts ERP fix posted | **ASSERTED** — kill: fresh TXT still lists 49143 open |
+| Collectable (post-fix) | **R4,170.38** = open LPG **R9,149.30** − credit **44227** **R4,978.91** | **ASSERTED** |
+| Customer email | `reports/MOZ002_Customer_Statement_Email_2026-07-23.md` — not sent | **ASSERTED** |
+| v5 statement | `reports/MOZ002_Statement_Account_v5.md` — CURRENT.TXT close **R13,014.50** | **PROVEN** — pre-P17; operator layer only |
+
+**Tripwire:** Fresh TXT showing 49143 still open after claimed MOZ001 transfer → reopen cross-account ruling and email draft.
