@@ -7,18 +7,18 @@
   },
   "version": "v5",
   "workspaceStatus": "pending_review",
-  "lastGeneratedAt": "2026-10-08T16:28:56.825Z",
+  "lastGeneratedAt": "2026-10-12T11:04:05.233Z",
   "source": "analysis/debtors/TWK002/raw/TWK002_2026-10-08.TXT",
   "financialPosition": {
-    "lpgGasDebt": 45971.19,
-    "cylinderFinancialBalance": 8165,
+    "lpgGasDebt": 45281.19,
+    "cylinderFinancialBalance": 8855,
     "totalDebtorBalance": 54136.19,
     "erpStatedBalance": 54136.19,
     "erpVariance": 0,
     "subLedgerVariance": 0
   },
   "custodyPosition": {
-    "totalCustodyExposure": 8222.5,
+    "totalCustodyExposure": 8912.5,
     "lines": [
       {
         "sku": "14.1",
@@ -30,9 +30,9 @@
       {
         "sku": "19.1",
         "label": "19kg",
-        "qty": 6,
+        "qty": 7,
         "depositRate": 690,
-        "exposure": 4140
+        "exposure": 4830
       },
       {
         "sku": "9.1",

@@ -3,7 +3,7 @@
 **Combined Opening B/F:** R0.00 (ERP verified — source: `analysis/debtors/TWK002/raw/TWK004_2026-10-10.TXT` TWK004_2026-10-10.TXT line 1 BALANCE B/F 0.00 (fresh ERP export dated 2026-10-10, verified by operator: header = running balance chain = totals). Child account of TWK002 (ADM-94 Q1/Q15, consolidated family).)
 **LPG Opening B/F (1A):** R0.00 &nbsp;|&nbsp; **CYL Opening B/F (1B):** R0.00
 **Payment routing:** LPG lane (payments post to Part 1A unless configured otherwise)
-**Last regenerated:** 2026-10-10 from ERP TXT (`reconcile_debtor_v5_from_txt.mjs`)
+**Last regenerated:** 2026-10-11 from ERP TXT (`reconcile_debtor_v5_from_txt.mjs`)
 
 ---
 
@@ -83,27 +83,20 @@ _No CYL deposit activity in period._
 
 ---
 
-## Ingest Gate (`ingestFreshness: stale` · `ingestCoverage: partial`)
+## Ingest Gate (`ingestFreshness: stale` · `ingestCoverage: complete`)
 
 | Check | Status |
 | :--- | :--- |
-| Display status | `STALE_PARTIAL` |
+| Display status | `STALE_COMPLETE` |
 | Financial balance from TXT | **ALLOWED** |
-| Custody / Part 2 qty | **BLOCKED** |
-| SKU analysis | **BLOCKED** |
-
-> **Custody conclusions blocked.** DB qty may be incomplete or stale vs statement TXT (`analysis/debtors/TWK002/raw/TWK004_2026-10-10.TXT`). See `TWK004_INGEST_COVERAGE_*.md`.
-
-**INGEST_GAP documents (custody-blocking):**
-- **53535** (Invoice, 2026-10-09) — `MISSING_HEADER_AND_LINES`
-- **53536** (Invoice, 2026-10-09) — `MISSING_HEADER_AND_LINES`
-- **15781** (Crd Note, 2026-10-10) — `MISSING_HEADER_AND_LINES`
+| Custody / Part 2 qty | **ALLOWED** |
+| SKU analysis | **ALLOWED** |
 
 ---
 
 
 ## Part 2: Cylinder (CYL) Ledger (Physical Asset Tracker)
-*Cylinders tracked by physical count. Opening balances per `config/statement_v5.json`. **Gate: custody BLOCKED — see Ingest Gate above.***
+*Cylinders tracked by physical count. Opening balances per `config/statement_v5.json`.*
 
 ### October 2025
 | Date | Entry Type | Doc # | 14kg Qty | 19kg Qty | 9kg Qty | D.1 Qty | S.1 Qty |
@@ -163,8 +156,6 @@ _No CYL deposit activity in period._
 |---|---:|---:|---:|
 | Cylinder Position (1B vs custody) | R0.00 | R0.00 | R0.00 |
 | Sub-ledger tie (1A + 1B vs combined) | R61,000.00 | — | R0.00 |
-
-> **INGEST_GATE:** Custody variance below is **not signed off** — ingest coverage `STALE_PARTIAL`. DB-backed qty may not reflect all TXT documents.
 
 **ERP Combined Balance (TXT header):** R61,000.00  
 **Reconstructed Balance (1A + 1B):** R61,000.00  

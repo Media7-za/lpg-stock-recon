@@ -7,7 +7,7 @@
   },
   "version": "v5",
   "workspaceStatus": "clean",
-  "lastGeneratedAt": "2026-10-10T11:33:24.044Z",
+  "lastGeneratedAt": "2026-10-11T07:45:35.079Z",
   "source": "analysis/debtors/TWK002/raw/TWK004_2026-10-10.TXT",
   "financialPosition": {
     "lpgGasDebt": 61000,

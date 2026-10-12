@@ -159,3 +159,13 @@ test('probable credit-note pair stays listed with a credit footnote (not the pay
   assert.match(md, /A credit note was issued against this invoice/);
   assert.doesNotMatch(md, /Payment received; allocation/);
 });
+
+test('operator hold keeps the output a draft even when every member is current and tying', () => {
+  const fam = buildFamilyStatement([parent(), creditChild(), openChild()], { holds: [{ id: 'H1', text: 'credit treatment pending' }] });
+  assert.deepEqual(fam.problems, []);
+  assert.equal(fam.draft, true);
+  assert.deepEqual(fam.draftReasons, ['operator hold H1: credit treatment pending']);
+  const md = renderFamilyCustomerMarkdown(fam, { cfg, asAtLabel: 'x' });
+  assert.match(md, /^# Statement of Account — DRAFT PREVIEW/);
+  assert.doesNotMatch(md, /credit treatment pending/); // hold text is internal only
+});

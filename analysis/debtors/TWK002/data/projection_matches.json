@@ -2,17 +2,15 @@
   "status": "matcher v5 RATIFIED 2026-10-10 (PROPOSED_Projection_Matching_Locks.md); probable ties stay proposals until approved",
   "debtorCode": "TWK002",
   "generatedBy": "match_projection.mjs",
-  "generatedAt": "2026-10-10T05:07:53.230Z",
+  "generatedAt": "2026-10-12T11:04:05.452Z",
   "projection": {
     "path": "analysis/debtors/TWK002/data/v5_projection.json",
     "txtSha256": "e657e03f68cdb9090cf2ec0e2ccf35fc71550e624de7005a7287142998c55a7d",
     "dbChannel": "supabase-connector-replay",
-    "generatedAt": "2026-10-08T16:28:56.826Z"
+    "generatedAt": "2026-10-12T11:04:05.235Z"
   },
-  "reviewOnly": true,
-  "reviewOnlyReasons": [
-    "ingestCoverage partial"
-  ],
+  "reviewOnly": false,
+  "reviewOnlyReasons": [],
   "locksRegistry": "config/payment_pattern_overrides.json#projectionLocks",
   "matcherVersion": 5,
   "closedThrough": null,
@@ -23,6 +21,8 @@
     "proximityTolerance": 5,
     "nearSumTolerance": 1,
     "cnConfirmedMaxDays": 1,
+    "monthSumConfidence": "CONFIRMED",
+    "cnRivalFreeMaxDays": 0,
     "maxSumInvoices": 3,
     "maxRunInvoices": 12,
     "fifoWindowDays": 14,
@@ -62,7 +62,7 @@
     "openingBfUnitemised": 38791.27,
     "openInvoicesLpgOther": {
       "count": 5,
-      "amount": 53641.52,
+      "amount": 45016.52,
       "rows": [
         "52484|Invoice|LPG|L110",
         "52803|Invoice|LPG|L114",
@@ -72,11 +72,12 @@
       ]
     },
     "openInvoicesCyl": {
-      "count": 2,
-      "amount": 28462.5,
+      "count": 3,
+      "amount": 37087.5,
       "rows": [
         "52484|Invoice|CYL|L110",
-        "52803|Invoice|CYL|L114"
+        "52803|Invoice|CYL|L114",
+        "53507|Invoice|CYL|L126"
       ]
     },
     "unmatchedCredits": {
@@ -85,7 +86,7 @@
       "rows": [
         "15443|Crd Note|CYL|L109",
         "15553|Crd Note|CYL|L112",
-        "15775|Crd Note|LPG|L125"
+        "15775|Crd Note|CYL|L125"
       ]
     },
     "unallocatedPayments": {

@@ -71,3 +71,22 @@ Outputs (derived; regenerate with the script, do not edit):
 
 * `node --test analysis/debtors/shared/scripts/*.test.mjs`: 167 pass (159 existing + 8 new in `family_statement.test.mjs`: aggregation with Account column, settled items omitted, per-account tie gate abort, stale fingerprint / lock conflict / projection ERP mismatch abort, reviewOnly child draft marker, no marker when none, negative-balance child R-300.00, credit-note footnote wording). PROVEN, test run output.
 * `generate_statement_of_account.mjs --debtor TWK002 --snapshot` aborts with exit 1 and archives nothing (PROVEN, console run; no new folder under `TWK002/snapshots/`).
+
+## 7. Update 2026-10-11/12: connector replay for TWK002 and TWK004 (still a DRAFT)
+
+**Channel:** connector-sourced (db_replay). Read-only SELECTs through the Supabase connector (project `oqhpxnaadahohwkslive`), run unchanged from each `captureSql`, md5 and length verified by `record_capture.mjs`. Captures: `analysis/debtors/TWK002/data/db_replay/2026-10-11/` (6 captures) and `analysis/debtors/TWK004/data/db_replay/2026-10-11/` (5 captures). DB sync as at 2026-10-10 19:22 UTC (headers) / 19:22 UTC (items). One earlier ad-hoc SELECT (not a capture) was used only to see whether the documents had arrived.
+
+| Account | Ingest coverage (artifact) | Matcher | reviewOnly | Closing vs ERP |
+| :--- | :--- | :--- | :--- | :--- |
+| TWK002 | complete, `CURRENT_COMPLETE`, 0 gaps (`TWK002/reports/TWK002_INGEST_COVERAGE_2026-10-12.md`) | 17 ties, 5 locks applied, 0 conflicts | **false** | R54,136.19 = ERP, HOLDS |
+| TWK004 | complete, `STALE_COMPLETE`, 0 gaps (`TWK004/reports/TWK004_INGEST_COVERAGE_2026-10-11.md`; exit 1 is the script's rule for stale freshness) | 3 confirmed / 0 probable | **false** | R61,000.00 = ERP, HOLDS |
+
+PROVEN (script output). What moved:
+* **CN 15775 is now a CYL document in the projection** (lines: 19.1 x -4 = R-2,760.00 and 9.1 x -10 = R-5,175.00, all CYL, no LPG line). TWK002 split is now LPG R45,281.19 / CYL R8,855.00 (was 45,971.19 / 8,165.00; difference R690.00 = invoice 53507's 19.1 deposit net of the credit). Total unchanged, R54,136.19. The "reopen if any part lands in LPG" tripwire did not fire. The lane ruling itself is still the operator's to record.
+* **Invoice 53507 split** (R14,375.86): CYL R8,625.00 (5 x 19.1, 10 x 9.1) and gas R5,750.86 (5 x 19.4, 10 x 9.4).
+* **TWK004's T0002 (53535 / CN 15781) is now a CONFIRMED CN_DN_PAIR by the matcher's own rule** (exact amount, same DN, lines present and equal). That is a matcher result, **not an operator approval and not a lock**. Both documents therefore drop off the customer list; **invoice 53536 (R30,000.00) stays open**. Whether 53536 replaces 53535 (53536 has 10 fewer units of stock 00000401) is `unverified`.
+* Customer list now 23 open items (was 24); amount due unchanged at R114,836.19 (PROVEN, `TWK002_Family_Internal_Reconciliation.md`).
+
+**Why it is still a draft.** Neither account is review-only any more, so the review-only rule alone would have dropped the draft marker. Because the five operator decisions are still open, the generator now also reads `familyReleaseHolds` in `TWK002/config/statement_of_account.json` (H1 CN 15775 lane, H2 TWK003 R-300.00 credit, H3 53535/CN 15781 tie and 53536, H4 release gate, H5 TWK004 DB documents, which is cleared in evidence and awaits your confirmation). While any hold is listed the output stays a DRAFT PREVIEW under the draft file name; the operator clears a hold by ruling on it. A test covers this (`operator hold keeps the output a draft...`). 168 tests pass.
+
+Still not done, by design: no lock recorded, no tie approved, no snapshot, no release, tag-check unchanged (`NOT_DERIVABLE_FROM_TXT`), custody view for CN 15775 not yet re-read (the TWK002 custody gate is now ALLOWED; the double-credit check against the R7,590 STAT 123 deposits is still open).

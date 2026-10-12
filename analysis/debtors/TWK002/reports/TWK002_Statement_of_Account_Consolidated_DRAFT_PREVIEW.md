@@ -36,8 +36,9 @@ PIETERMARITZBURG
 | TWK002 | 26 Aug 2026 | Invoice | 52803 | DN#24938 | Gas | 11,142.35 |
 | TWK002 | 10 Sept 2026 | Invoice | 53077 | DN#24836 | Gas | 8,448.07 |
 | TWK002 | 29 Sept 2026 | Invoice | 53350 | DN-21388 | Gas | 12,748.90 |
-| TWK002 | 08 Oct 2026 | Crd Note | 15775 | DN#23843 | Gas | -7,935.00 |
-| TWK002 | 08 Oct 2026 | Invoice | 53507 | DN#23843 | Gas | 14,375.86 |
+| TWK002 | 08 Oct 2026 | Crd Note | 15775 | DN#23843 | Cylinder deposit | -7,935.00 |
+| TWK002 | 08 Oct 2026 | Invoice | 53507 | DN#23843 | Cylinder deposit | 8,625.00 |
+| TWK002 | 08 Oct 2026 | Invoice | 53507 | DN#23843 | Gas | 5,750.86 |
 | TWK003 | 03 Oct 2025 | Invoice | 46857 | DN#20290- 391175708 | Other | 11,000.44 |
 | TWK003 | 10 Oct 2025 | Invoice | 47076 | DN #20297 | Other | 11,000.44 |
 | TWK003 | 04 Nov 2025 | Invoice | 47523 | DN #20774 | Other | 11,000.44 |
@@ -49,9 +50,7 @@ PIETERMARITZBURG
 | TWK003 | 25 Feb 2026 | Payment | 43500 | TRANSF \| STAT 123 | Gas | -38,501.31 |
 | TWK004 | 04 Sept 2026 | Invoice | 52948 | DN#24817 | Other | 9,000.00 |
 | TWK004 | 10 Sept 2026 | Invoice | 53113 | DN#24985 | Other | 22,000.00 |
-| TWK004 | 09 Oct 2026 | Invoice | 53535 ² | DN#24718 | Gas | 32,500.00 |
-| TWK004 | 09 Oct 2026 | Invoice | 53536 | DN#24718 | Gas | 30,000.00 |
-| TWK004 | 10 Oct 2026 | Crd Note | 15781 ² | DN#24718 | Gas | -32,500.00 |
+| TWK004 | 09 Oct 2026 | Invoice | 53536 | DN#24718 | Other | 30,000.00 |
 | | | | | | **Total open items** | **106,751.52** |
 
 ² A credit note was issued against this invoice; matching of the two documents is being confirmed.

@@ -14,7 +14,8 @@
  *   - each member's rebuild proof holds and there are no unresolved lock conflicts
  *   - each member: listed open items + named lines = its ERP header (to the cent)
  *   - family amount due = sum of the member ERP headers
- * A member whose matcher output is reviewOnly makes the whole output a DRAFT (never a release copy).
+ * A member whose matcher output is reviewOnly, or any listed operator hold, makes the whole output a DRAFT
+ * (never a release copy).
  */
 import fs from 'fs';
 import path from 'path';
@@ -69,7 +70,7 @@ export function loadFamilyInputs({ root, parentCode, parentTxtRel }) {
  * @param members [{ code, role, txtPath, erpHeader, txtSha256Actual, projection, matches, namedResiduals, rowNotes }]
  *   parent first, then children in config order.
  */
-export function buildFamilyStatement(members) {
+export function buildFamilyStatement(members, { holds = [] } = {}) {
   const problems = [];
   const draftReasons = [];
   const built = members.map((m) => {
@@ -113,6 +114,10 @@ export function buildFamilyStatement(members) {
     }
     return { ...m, model, items, named, itemsTotal, namedTotal, balance: round2(itemsTotal + namedTotal) };
   });
+
+  // Operator holds (config familyReleaseHolds [{ id, text }]): decisions still pending. Each keeps the
+  // output a DRAFT even when every member is current and tying; the operator clears a hold by removing it.
+  for (const h of holds) draftReasons.push(`operator hold ${h.id}: ${h.text}`);
 
   const items = built.flatMap((b) => b.items);
   const named = built.flatMap((b) => b.named);

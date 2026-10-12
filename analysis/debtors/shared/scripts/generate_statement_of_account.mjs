@@ -442,7 +442,7 @@ function main() {
   if (cfg.customerLayout === 'open_items' && cfg.consolidatedFamily) {
     try {
       const members = loadFamilyInputs({ root: ROOT, parentCode: debtorCode, parentTxtRel: cfg.primaryTxt });
-      family = buildFamilyStatement(members);
+      family = buildFamilyStatement(members, { holds: cfg.familyReleaseHolds || [] });
     } catch (e) {
       console.error(`[${debtorCode}] ABORTED — family inputs could not be loaded: ${e.message}`);
       process.exitCode = 1;

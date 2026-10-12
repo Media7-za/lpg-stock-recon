@@ -3,7 +3,7 @@
   "status": "RATIFIED 2026-10-10 (PROPOSED_Projection_Matching_Locks.md, projection builder)",
   "debtorCode": "TWK004",
   "generatedBy": "reconcile_debtor_v5_from_txt.mjs",
-  "generatedAt": "2026-10-10T11:33:24.045Z",
+  "generatedAt": "2026-10-11T07:45:35.081Z",
   "source": {
     "txtPath": "analysis/debtors/TWK002/raw/TWK004_2026-10-10.TXT",
     "txtSha256": "e3e46aca4947346ea34cf3d5e658ee74b46ed5c2b015c9e891f32acd0fe4057c",
@@ -28,9 +28,9 @@
     "erpVariance": 0
   },
   "ingestGate": {
-    "ingestCoverage": "partial",
+    "ingestCoverage": "complete",
     "ingestFreshness": "stale",
-    "displayStatus": "STALE_PARTIAL"
+    "displayStatus": "STALE_COMPLETE"
   },
   "checks": {
     "lpgRowsReproduce1A": true,
@@ -40,9 +40,8 @@
   "summary": {
     "rowCount": 12,
     "splitBasisCounts": {
-      "DB_LINES": 8,
-      "PAYMENT_LANE": 1,
-      "HEADER_FALLBACK": 3
+      "DB_LINES": 11,
+      "PAYMENT_LANE": 1
     }
   },
   "rows": [
@@ -182,7 +181,7 @@
       "amount": 22000
     },
     {
-      "row_id": "53535|Invoice|LPG|L11",
+      "row_id": "53535|Invoice|OTHER|L11",
       "doc_no": "00053535",
       "clean_doc": "53535",
       "entry_type": "Invoice",
@@ -191,13 +190,13 @@
       "ref_no": "DN#24718",
       "txt_line": 11,
       "txt_amount": 32500,
-      "split_basis": "HEADER_FALLBACK",
-      "confirmable": false,
-      "lane": "LPG",
+      "split_basis": "DB_LINES",
+      "confirmable": true,
+      "lane": "OTHER",
       "amount": 32500
     },
     {
-      "row_id": "53536|Invoice|LPG|L12",
+      "row_id": "53536|Invoice|OTHER|L12",
       "doc_no": "00053536",
       "clean_doc": "53536",
       "entry_type": "Invoice",
@@ -206,13 +205,13 @@
       "ref_no": "DN#24718",
       "txt_line": 12,
       "txt_amount": 30000,
-      "split_basis": "HEADER_FALLBACK",
-      "confirmable": false,
-      "lane": "LPG",
+      "split_basis": "DB_LINES",
+      "confirmable": true,
+      "lane": "OTHER",
       "amount": 30000
     },
     {
-      "row_id": "15781|Crd Note|LPG|L13",
+      "row_id": "15781|Crd Note|OTHER|L13",
       "doc_no": "00015781",
       "clean_doc": "15781",
       "entry_type": "Crd Note",
@@ -221,9 +220,9 @@
       "ref_no": "DN#24718",
       "txt_line": 13,
       "txt_amount": -32500,
-      "split_basis": "HEADER_FALLBACK",
-      "confirmable": false,
-      "lane": "LPG",
+      "split_basis": "DB_LINES",
+      "confirmable": true,
+      "lane": "OTHER",
       "amount": -32500
     }
   ]

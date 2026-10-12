@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "status": "PROPOSED — NOT RATIFIED (PROPOSED_Projection_Matching_Locks.md, build step 1)",
+  "status": "RATIFIED 2026-10-10 (PROPOSED_Projection_Matching_Locks.md, projection builder)",
   "debtorCode": "TWK002",
   "generatedBy": "reconcile_debtor_v5_from_txt.mjs",
-  "generatedAt": "2026-10-08T16:28:56.826Z",
+  "generatedAt": "2026-10-12T11:04:05.235Z",
   "source": {
     "txtPath": "analysis/debtors/TWK002/raw/TWK002_2026-10-08.TXT",
     "txtSha256": "e657e03f68cdb9090cf2ec0e2ccf35fc71550e624de7005a7287142998c55a7d",
-    "configSha256": "f056a2cf5d6ede4d92666374e46296bc9252bd815cd780b5aaf318c9b73c3c73",
+    "configSha256": "82f2b811d3bac94c55659d3eb224371e564aed14feaf1c76bf047c2be3528c0b",
     "erpCurrentBalance": 54136.19,
     "dbChannel": "supabase-connector-replay"
   },
@@ -22,15 +22,15 @@
     "cylOpeningFinancial": 0
   },
   "closings": {
-    "lpg": 45971.19,
-    "cyl": 8165,
+    "lpg": 45281.19,
+    "cyl": 8855,
     "combined": 54136.19,
     "erpVariance": 0
   },
   "ingestGate": {
-    "ingestCoverage": "partial",
-    "ingestFreshness": "stale",
-    "displayStatus": "STALE_PARTIAL"
+    "ingestCoverage": "complete",
+    "ingestFreshness": "current",
+    "displayStatus": "CURRENT_COMPLETE"
   },
   "checks": {
     "lpgRowsReproduce1A": true,
@@ -38,11 +38,10 @@
     "tiesToErpHeader": true
   },
   "summary": {
-    "rowCount": 159,
+    "rowCount": 160,
     "splitBasisCounts": {
       "PAYMENT_LANE": 31,
-      "DB_LINES": 126,
-      "HEADER_FALLBACK": 2
+      "DB_LINES": 129
     }
   },
   "rows": [
@@ -2411,13 +2410,28 @@
       "ref_no": "DN#23843",
       "txt_line": 126,
       "txt_amount": 14375.86,
-      "split_basis": "HEADER_FALLBACK",
-      "confirmable": false,
+      "split_basis": "DB_LINES",
+      "confirmable": true,
       "lane": "LPG",
-      "amount": 14375.86
+      "amount": 5750.86
     },
     {
-      "row_id": "15775|Crd Note|LPG|L125",
+      "row_id": "53507|Invoice|CYL|L126",
+      "doc_no": "00053507",
+      "clean_doc": "53507",
+      "entry_type": "Invoice",
+      "kind": "invoice",
+      "date": "2026-10-08",
+      "ref_no": "DN#23843",
+      "txt_line": 126,
+      "txt_amount": 14375.86,
+      "split_basis": "DB_LINES",
+      "confirmable": true,
+      "lane": "CYL",
+      "amount": 8625
+    },
+    {
+      "row_id": "15775|Crd Note|CYL|L125",
       "doc_no": "00015775",
       "clean_doc": "15775",
       "entry_type": "Crd Note",
@@ -2426,9 +2440,9 @@
       "ref_no": "DN#23843",
       "txt_line": 125,
       "txt_amount": -7935,
-      "split_basis": "HEADER_FALLBACK",
-      "confirmable": false,
-      "lane": "LPG",
+      "split_basis": "DB_LINES",
+      "confirmable": true,
+      "lane": "CYL",
       "amount": -7935
     }
   ]

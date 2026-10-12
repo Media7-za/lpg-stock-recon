@@ -2,17 +2,15 @@
   "status": "matcher v5 RATIFIED 2026-10-10 (PROPOSED_Projection_Matching_Locks.md); probable ties stay proposals until approved",
   "debtorCode": "TWK004",
   "generatedBy": "match_projection.mjs",
-  "generatedAt": "2026-10-10T11:33:26.502Z",
+  "generatedAt": "2026-10-11T07:45:35.272Z",
   "projection": {
     "path": "analysis/debtors/TWK004/data/v5_projection.json",
     "txtSha256": "e3e46aca4947346ea34cf3d5e658ee74b46ed5c2b015c9e891f32acd0fe4057c",
     "dbChannel": "supabase-connector-replay",
-    "generatedAt": "2026-10-10T11:33:24.045Z"
+    "generatedAt": "2026-10-11T07:45:35.081Z"
   },
-  "reviewOnly": true,
-  "reviewOnlyReasons": [
-    "ingestCoverage partial"
-  ],
+  "reviewOnly": false,
+  "reviewOnlyReasons": [],
   "locksRegistry": "none yet",
   "matcherVersion": 5,
   "closedThrough": null,
@@ -23,6 +21,7 @@
     "proximityTolerance": 5,
     "nearSumTolerance": 1,
     "cnConfirmedMaxDays": 1,
+    "monthSumConfidence": "CONFIRMED",
     "cnRivalFreeMaxDays": 0,
     "maxSumInvoices": 3,
     "maxRunInvoices": 12,
@@ -43,8 +42,8 @@
   },
   "summary": {
     "ties": 3,
-    "confirmed": 2,
-    "probable": 1,
+    "confirmed": 3,
+    "probable": 0,
     "byRule": {
       "CN_DN_PAIR": 2,
       "EXACT_RUN": 1
@@ -66,7 +65,7 @@
       "rows": [
         "52948|Invoice|OTHER|L9",
         "53113|Invoice|OTHER|L10",
-        "53536|Invoice|LPG|L12"
+        "53536|Invoice|OTHER|L12"
       ]
     },
     "openInvoicesCyl": {
@@ -113,10 +112,10 @@
     {
       "tie_id": "T0002",
       "rule": "CN_DN_PAIR",
-      "confidence": "PROBABLE",
+      "confidence": "CONFIRMED",
       "members": [
-        "53535|Invoice|LPG|L11",
-        "15781|Crd Note|LPG|L13"
+        "53535|Invoice|OTHER|L11",
+        "15781|Crd Note|OTHER|L13"
       ],
       "docs": [
         "Invoice 53535",

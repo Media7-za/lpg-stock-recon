@@ -3,7 +3,7 @@
 **Combined Opening B/F:** R38,791.27 (ERP verified — source: `analysis/debtors/TWK002/raw/TWK002_2026-10-08.TXT` TWK002_2026-10-08.TXT line 14 BALANCE B/F R38791.27 (fresh ERP export, Linear ADM-78, CURRENT BALANCE R54,136.19; same export window). Switched on operator instruction 2026-10-08 ("switch the other six accounts ... YES"). SUPERSEDED (kept for the record; previous TXT DEBENQTWK002CURRENT.TXT, CURRENT BALANCE R27,721.81): DEBENQTWK002CURRENT.TXT line 14 — BALANCE B/F R38,791.27 before first period row (export window starts Mar 2025; TXT as at 2026-08-26). Switched from DEBENQ_TWK002.TXT (as at 2026-08-09, same B/F at its line 13) on operator decision 2026-10-08.)
 **LPG Opening B/F (1A):** R38,791.27 &nbsp;|&nbsp; **CYL Opening B/F (1B):** R0.00
 **Payment routing:** LPG lane (payments post to Part 1A unless configured otherwise)
-**Last regenerated:** 2026-10-08 from ERP TXT (`reconcile_debtor_v5_from_txt.mjs`)
+**Last regenerated:** 2026-10-12 from ERP TXT (`reconcile_debtor_v5_from_txt.mjs`)
 
 ---
 
@@ -248,8 +248,7 @@
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
 | **01 Oct** | **Opening Balance** | — | | **39,530.33** |
-| 08 Oct 2026 | Invoice | 53507 | 14,375.86 | 53,906.19 |
-| 08 Oct 2026 | Crd Note | 15775 | -7,935.00 | 45,971.19 |
+| 08 Oct 2026 | Invoice | 53507 | 5,750.86 | 45,281.19 |
 
 ---
 
@@ -486,38 +485,42 @@
 
 ---
 
+### October 2026
+
+| Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
+| :--- | :--- | :--- | ---: | ---: |
+| **01 Oct** | **Opening Balance** | — | | **8,165.00** |
+| 08 Oct 2026 | Invoice | 53507 | 8,625.00 | 16,790.00 |
+| 08 Oct 2026 | Crd Note | 15775 | -7,935.00 | 8,855.00 |
+
+---
+
 ## Part 1 — Reconciliation Bridge
 
 | Component | Closing (R) |
 | :--- | ---: |
-| Part 1A — LPG Gas | 45,971.19 |
-| Part 1B — CYL Deposits | 8,165.00 |
+| Part 1A — LPG Gas | 45,281.19 |
+| Part 1B — CYL Deposits | 8,855.00 |
 | **Combined (1A + 1B)** | **54,136.19** |
 | ERP `CURRENT BALANCE` (TXT header) | 54,136.19 |
 | **Variance (Combined − ERP)** | **0.00** |
 
 ---
 
-## Ingest Gate (`ingestFreshness: stale` · `ingestCoverage: partial`)
+## Ingest Gate (`ingestFreshness: current` · `ingestCoverage: complete`)
 
 | Check | Status |
 | :--- | :--- |
-| Display status | `STALE_PARTIAL` |
+| Display status | `CURRENT_COMPLETE` |
 | Financial balance from TXT | **ALLOWED** |
-| Custody / Part 2 qty | **BLOCKED** |
-| SKU analysis | **BLOCKED** |
-
-> **Custody conclusions blocked.** DB qty may be incomplete or stale vs statement TXT (`analysis/debtors/TWK002/raw/TWK002_2026-10-08.TXT`). See `TWK002_INGEST_COVERAGE_*.md`.
-
-**INGEST_GAP documents (custody-blocking):**
-- **15775** (Crd Note, 2026-10-08) — `MISSING_HEADER_AND_LINES`
-- **53507** (Invoice, 2026-10-08) — `MISSING_HEADER_AND_LINES`
+| Custody / Part 2 qty | **ALLOWED** |
+| SKU analysis | **ALLOWED** |
 
 ---
 
 
 ## Part 2: Cylinder (CYL) Ledger (Physical Asset Tracker)
-*Cylinders tracked by physical count. Opening balances per `config/statement_v5.json`. **Gate: custody BLOCKED — see Ingest Gate above.***
+*Cylinders tracked by physical count. Opening balances per `config/statement_v5.json`.*
 
 ### March 2025
 | Date | Entry Type | Doc # | 14kg Qty | 19kg Qty | 9kg Qty | D.1 Qty | S.1 Qty |
@@ -753,7 +756,9 @@
 | Date | Entry Type | Doc # | 14kg Qty | 19kg Qty | 9kg Qty | D.1 Qty | S.1 Qty |
 | :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: |
 | **01 Oct** | **Opening Balance** | — | **-1** | **6** | **9** | **0** | **0** |
-| **End Oct** | **Closing Balance** | — | **-1** | **6** | **9** | **0** | **0** |
+| 08 Oct 2026 | Invoice | 53507 | 0 | +5 | +10 | 0 | 0 |
+| 08 Oct 2026 | Crd Note | 15775 | 0 | -4 | -10 | 0 | 0 |
+| **End Oct** | **Closing Balance** | — | **-1** | **7** | **9** | **0** | **0** |
 
 ---
 
@@ -766,8 +771,8 @@
 
 | Component | Amount |
 |---|---:|
-| LPG Gas Debt (Part 1A close) | R45,971.19 |
-| Cylinder Financial Balance (Part 1B close) | R8,165.00 |
+| LPG Gas Debt (Part 1A close) | R45,281.19 |
+| Cylinder Financial Balance (Part 1B close) | R8,855.00 |
 | **Total Debtor Balance** | **R54,136.19** |
 
 ### 2. Custody Position
@@ -775,18 +780,16 @@
 | SKU | Net Returnable Qty | Deposit Rate | Custody Exposure |
 |---|---:|---:|---:|
 | 14kg | -1 | R575.00 | R-575.00 |
-| 19kg | 6 | R690.00 | R4,140.00 |
+| 19kg | 7 | R690.00 | R4,830.00 |
 | 9kg | 9 | R517.50 | R4,657.50 |
-| **Total** | **14** | — | **R8,222.50** |
+| **Total** | **15** | — | **R8,912.50** |
 
 ### 3. Reconciliation Position
 
 | Check | Financial | Custody | Variance |
 |---|---:|---:|---:|
-| Cylinder Position (1B vs custody) | R8,165.00 | R8,222.50 | R-57.50 |
+| Cylinder Position (1B vs custody) | R8,855.00 | R8,912.50 | R-57.50 |
 | Sub-ledger tie (1A + 1B vs combined) | R54,136.19 | — | R0.00 |
-
-> **INGEST_GATE:** Custody variance below is **not signed off** — ingest coverage `STALE_PARTIAL`. DB-backed qty may not reflect all TXT documents.
 
 **ERP Combined Balance (TXT header):** R54,136.19  
 **Reconstructed Balance (1A + 1B):** R54,136.19  
