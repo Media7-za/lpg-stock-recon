@@ -130,3 +130,7 @@ Operator ruling ("yes, remove H4"): the v5 evidence path and the generator's per
 With no holds and no review-only member, the generator no longer marks the output a draft. The live write `analysis/debtors/TWK002/reports/TWK002_Statement_of_Account.md` is now the non-draft consolidated statement: 16 open items R107,051.52 + other R8,084.67 = **amount due R115,136.19** (ERP sum R114,836.19 excluding the quarantined R-300.00, section 12). That overwrote the August single-account live file by design. **No `--snapshot`, no PDF** (unsupported for a family statement). `TWK002_Statement_of_Account_Consolidated_DRAFT_PREVIEW.md` is now a stale artifact of the earlier draft runs and is not regenerated.
 
 Sending it to the customer is the operator's step and is not done. Tripwires for re-opening: a TXT re-export of any family account (fingerprint gate aborts), the ERP correction on TWK003 posting (quarantine gate aborts), a new document on any family account, or a lock conflict.
+
+## 15. Update 2026-10-12: stale draft preview file deleted
+
+At the operator's instruction, `analysis/debtors/TWK002/reports/TWK002_Statement_of_Account_Consolidated_DRAFT_PREVIEW.md` was deleted (section 14 left it stale). It is a derived artifact and remains in git history. The generator would write a file under that name again only if the output became a draft (a review-only account, a listed hold, or a failed quarantine would do it). The live file is `TWK002_Statement_of_Account.md`.
