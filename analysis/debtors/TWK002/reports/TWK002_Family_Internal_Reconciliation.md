@@ -4,7 +4,6 @@
 **Why this is a draft:**
 - operator hold H2_TWK003_CREDIT: Treatment of the TWK003 customer credit R-300.00 (invoice 47866 vs CN 13933) pending.
 - operator hold H4_RELEASE_GATE: debtors:tag-check returns NOT_DERIVABLE_FROM_TXT for the family; operator to decide whether release may proceed.
-- operator hold H5_TWK004_DB_DOCS: Cleared in evidence on 2026-10-11 (TWK004 and TWK002 documents now in DB, replay 2026-10-11); operator to confirm and remove this hold.
 
 ## Reconciliation to each ERP balance
 
