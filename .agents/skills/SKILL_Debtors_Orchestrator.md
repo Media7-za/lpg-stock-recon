@@ -166,7 +166,7 @@ Do not ratify on my behalf unless I paste explicit approval.
 | Lane | When | Worker skill / playbook |
 | :--- | :--- | :--- |
 | `settlement_discount` | Remittance batches; missing `DISCOUNT ALLOWED` | TWK002 doctrine v2 + finance checklist |
-| `allocation` | Payment ref_no / deposit allocation mismatch | `SKILL_Payment_To_Invoice_Allocation.md` (**WO0001**) · **BU0005:** `SKILL_BU0005_Allocation_Worker.md` |
+| `allocation` | Payment ref_no / deposit allocation mismatch | **`SKILL_Allocation_Worker.md`** (generic cold-start) · **`SKILL_Payment_To_Invoice_Allocation.md`** (tier doctrine) · **BU0005:** `SKILL_BU0005_Allocation_Worker.md` |
 | `position_recon` | Standard ERP TXT; baseline + pattern | `debtors-analysis_Skill.md` (+ payment pattern for **JIM001**) |
 | `position_recon` + statement | Full Statement of Account required | **v4** — combined Part 1, EMPTY-pair stripping (**MOZ002**): `SKILL_Debtor_Statement_v4_From_TXT.md` · **v5** — split LPG/CYL deposit sub-ledgers, Part 1A/1B (**JEN001** — reference implementation; JEN001's ratified lane record is still v4, v5 artifacts uncommitted): `SKILL_Debtor_Statement_v5_From_TXT.md`. Statement layout skills are `position_recon`-only — never `allocation` or `settlement_discount` |
 | `defer` | COD micro-balance, empties-only, unallocated | No worker dispatched — **not a disposal.** Record basis, as-at date, threshold/reason, and reopening condition in the account's onboarding status. `defer` is a triage hint from `portfolio_candidates.csv`, revisable on new evidence — **MOZ002** was triaged `defer`/tier B and later reconciled to `complete` |

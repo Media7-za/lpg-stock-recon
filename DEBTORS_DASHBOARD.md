@@ -1,6 +1,6 @@
 # Debtors Portfolio Management Dashboard
 
-*Last Updated: 2026-08-09*
+*Last Updated: 2026-08-10*
 
 > **View dashboard:** `npm run debtors:sync` then read this file. Orchestrator skill: `.agents/skills/SKILL_Debtors_Orchestrator.md`
 
@@ -10,7 +10,7 @@
 |---|---|
 | **Recon in progress** | 3 |
 | **Collection-blocked exposure** (recon ≠ complete, actionable) | **R205 374,45** |
-| **Open human tasks** | 9 ([queue](analysis/debtors/shared/HUMAN_TASKS.md)) |
+| **Open human tasks** | 6 ([queue](analysis/debtors/shared/HUMAN_TASKS.md)) |
 | **Tier A backlog (not in portfolio)** | 9 |
 | **Backlog candidates (parsed)** | 68 ([CSV](analysis/debtors/shared/data/portfolio_candidates.csv)) |
 | **Recon complete rate** | 43% (6/14) |
@@ -25,7 +25,7 @@
 | **Recon Pending** | 5 |
 | **Collection Active** | 2 |
 | **Legal** | 0 |
-| **Total Outstanding** | **R626 635,68** |
+| **Total Outstanding** | **R625 899,98** |
 | **180+ Debt** | **R232 804,43** |
 | **LOD Issued** | 1 |
 | **Awaiting Response** | 0 |
@@ -42,7 +42,7 @@ Accounts are automatically sorted by Risk Score using the Collections Intelligen
 | **40** | [MOZ002](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/MOZ002/) | MOZAMBIK | ✅ Complete | 🟢 ACTIVE | R22 898,47 | R3 190,07 | None |
 | **40** | [SA0001](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/SA0001/) | SAKI - VICTORIA RD | ✅ Complete | 🟢 ACTIVE | R10 804,97 | R10 463,39 | None |
 | **40** | [TAN001](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/TAN001/) | Tanya Lehman | ✅ Complete | ⛔ COLLECTIONS_BLOCKED | R92 177,12 | R66 565,10 | ⚠️ **draft_lod** (by 2026-06-16) |
-| **35** | [TWK002](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/TWK002/) | TWK AGRI PTY LTD | ✅ Complete | 🟢 ACTIVE | R118 867,24 | R0,00 | None |
+| **35** | [TWK002](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/TWK002/) | TWK AGRI PTY LTD | ✅ Complete | 🟢 ACTIVE | R118 131,54 | R0,00 | None |
 | **30** | [CAP000](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/CAP000/) | CAPITOL CATERERS SELECT (PTY) | ⏳ Pending | 🟢 ACTIVE | R46 228,47 | R20 302,25 | None |
 | **30** | [WO0001](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/WO0001/) | L3 Cash and Carry | ⏳ Pending | 🟢 ACTIVE | R110 789,36 | R51 628,92 | None |
 | **0** | [BU0009](file:///Users/admin/Documents/LPG%20Stock%20Recon%20App/analysis/debtors/BU0009/) | BU0009 Client Placeholder | ⏳ Pending | 🟢 ACTIVE | R0,00 | R0,00 | None |

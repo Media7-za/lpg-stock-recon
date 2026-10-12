@@ -187,11 +187,45 @@ No repo access needed — queries run via Supabase SQL Editor.
 Supabase project ref: movixifclapeprdemgwk (eu-west-2)
 ```
 
+### ALLOCATION-WORKER (invoice-linked debtors — WO0001 family)
+```
+Role: ALLOCATION-WORKER
+
+Read .agents/skills/SKILL_Allocation_Worker.md and follow §0 (session starter).
+Replace [DEBTOR_CODE], turn, and pilot dates before starting.
+
+Mandatory skill chain:
+1. .agents/skills/SKILL_Allocation_Worker.md
+2. .agents/skills/SKILL_Payment_To_Invoice_Allocation.md
+3. analysis/debtors/shared/docs/ALLOCATION_DOCTRINE.md
+
+NOT for JIM001 (monthly batch) or TWK002 (settlement discount).
+Account-specific: BU0005 → SKILL_BU0005_Allocation_Worker.md instead.
+```
+
 ### SESSION-CLOSER
+Run this at the end of **every** session, before context is lost.
+
 ```
 Role: SESSION-CLOSER
-Produce the session handoff doc.
-Save to docs/handoffs/YYYY-MM-DD.md
+
+Read docs/roles/session_closer.md and follow it end to end.
+
+Harvest this session's durable value and route each item to its authoritative
+destination: project.json history/fields, account config/*.json, the owning
+report, or the handoff. Write to files — a summary in chat is a no-op.
+
+Respect DEBTORS_DOCTRINE.md §7: this is a worker session unless I say otherwise,
+so stage any portfolio-wide rule as "PROPOSED — NOT RATIFIED" and name the
+decision I have to make. Do not treat my silence as ratification.
+
+Carry §6 epistemic tags (PROVEN/ASSERTED/ASSUMED) on every material number, a
+tripwire on every closed ruling, and a kill condition on every assumption.
+
+Record dead ends and the rationale behind decisions — those are what get lost.
+
+Save to docs/handoffs/YYYY-MM-DD.md (append if it exists), then report: what was
+locked, what is staged for my ratification, and the first action next session.
 ```
 
 ---
@@ -213,6 +247,8 @@ Save to docs/handoffs/YYYY-MM-DD.md
 | ANOMALY-INVESTIGATOR | `roles/anomaly_investigator.md` | Financial | Investigate data anomalies |
 | FINANCIAL-VALIDATOR | `roles/financial_validator.md` | Financial | Validate reconciliation results |
 | DATA-INTEGRITY-AGENT | `roles/data_integrity_agent.md` | Ops | Audit live database |
+| ALLOCATION-WORKER | `.agents/skills/SKILL_Allocation_Worker.md` | Debtors | Payment→invoice graph for ref_no-linked payers |
+| SESSION-CLOSER | `roles/session_closer.md` | All | Harvest session value; route to doctrine/config/handoff |
 
 ---
 
@@ -221,8 +257,11 @@ Save to docs/handoffs/YYYY-MM-DD.md
 Read the latest handoff first:
 
 ```bash
-ls docs/handoffs/*.md | sort | tail -1 | xargs cat
+ls docs/handoffs/[0-9]*.md 2>/dev/null | sort | tail -1 | xargs cat
 ```
+
+Dated handoffs (`YYYY-MM-DD.md`) only — the other files in `docs/handoffs/` are
+templates and starters, not session state.
 
 Then check open Jira backlog:
 - Jira project: LSR

@@ -1,0 +1,76 @@
+{
+  "debtorCode": "TAN001",
+  "debtorName": "Tanya Lehman",
+  "period": {
+    "from": "2026-01-01",
+    "to": "2026-07-16"
+  },
+  "version": "v5",
+  "workspaceStatus": "pending_review",
+  "lastGeneratedAt": "2026-07-30T11:03:29.405Z",
+  "source": "analysis/debtors/TAN001/raw/TAN001CURRENT.TXT",
+  "financialPosition": {
+    "lpgGasDebt": 93039.62,
+    "cylinderFinancialBalance": -862.5,
+    "totalDebtorBalance": 92177.12,
+    "erpStatedBalance": 87697.12,
+    "erpVariance": 4480,
+    "subLedgerVariance": 0
+  },
+  "custodyPosition": {
+    "totalCustodyExposure": 1667.5,
+    "lines": [
+      {
+        "sku": "19.1",
+        "label": "19kg",
+        "qty": -4,
+        "depositRate": 690,
+        "exposure": -2760
+      },
+      {
+        "sku": "9.1",
+        "label": "9kg",
+        "qty": 13,
+        "depositRate": 517.5,
+        "exposure": 6727.5
+      },
+      {
+        "sku": "D.1",
+        "label": "D.1",
+        "qty": 2,
+        "depositRate": 1150,
+        "exposure": 2300
+      },
+      {
+        "sku": "S.1",
+        "label": "S.1",
+        "qty": -4,
+        "depositRate": 1150,
+        "exposure": -4600
+      }
+    ]
+  },
+  "reconciliationPosition": {
+    "cylinderVariance": -2530,
+    "erpVariance": 4480,
+    "subLedgerVariance": 0,
+    "exceptions": [
+      {
+        "type": "VARIANCE",
+        "basis": "ASSERTED",
+        "status": "open",
+        "description": "Part 1 bridge differs from ERP TXT header"
+      },
+      {
+        "type": "CUSTODY",
+        "basis": "ASSERTED",
+        "status": "open",
+        "description": "Part 1B financial vs Part 2 custody — check DB ingest vs TXT"
+      }
+    ]
+  },
+  "artifacts": {
+    "statementMarkdown": "analysis/debtors/TAN001/reports/TAN001_Statement_Account_v5.md",
+    "txtSource": "analysis/debtors/TAN001/raw/TAN001CURRENT.TXT"
+  }
+}

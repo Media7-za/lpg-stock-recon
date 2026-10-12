@@ -1,0 +1,8 @@
+doc_no,doc_type,tx_date,month_year,gross_amount,settled_amount,open_amount,settlement_unit,evidence_tier,evidence_status,matched_against,notes
+INV-1001,INVOICE,2025-06-01,2025-06,1000,1000,0,PER_INVOICE_REF_LINKED,1,PROVEN,PMT-2001,Settled via ONE_SHOT_REMITTANCE profile (1 allocation row(s)).
+INV-1002,INVOICE,2025-06-10,2025-06,1500,1500,0,PER_INVOICE_REF_LINKED,1,PROVEN,PMT-2001,Settled via ONE_SHOT_REMITTANCE profile (1 allocation row(s)).
+INV-1003,INVOICE,2025-07-01,2025-07,800,0,800,PER_CALENDAR_MONTH_EXACT_SUM,3,ASSERTED,PMT-2002,"STEP 3 candidate (EXACT_SUM_SINGLE) vs payment PMT-2002; basket-check: LPG lane consistent, SKU baskets present. Script-generated — not ERP/human-confirmed. Per D-NEW.5, month-level tie-out only — never treat as per-invoice-confident."
+INV-1004,INVOICE,2025-07-15,2025-07,1200,0,1200,UNCHARACTERIZED,5,UNASSESSED,,"No candidate found (exact-sum, contiguous-run, proximity, or cross-account). Genuine gap requiring investigation."
+INV-1005,INVOICE,2025-05-01,2025-05,500,0,500,UNCHARACTERIZED,5,UNASSESSED,,"NOT_ATTEMPTED_BY_DESIGN (D-NEW.7): doc predates allocation_edges.csv's earliest payment_date (2025-06-20) — outside the allocator's coverage, not a genuine gap. Verify against the raw ERP export before treating as open."
+PMT-2002,PAYMENT,2025-07-20,2025-07,800,0,800,UNCHARACTERIZED,5,UNASSESSED,(consumed by a STEP 3 candidate above),Orphaned cash consumed by a candidate match against a gap doc above.
+PMT-2003,PAYMENT,2025-08-01,2025-08,333.33,0,333.33,UNCHARACTERIZED,5,UNASSESSED,,Orphaned cash — no target doc found in this account or any sibling account.

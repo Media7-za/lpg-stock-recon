@@ -1,0 +1,59 @@
+{
+  "exceptions": [
+    {
+      "exception_id": "ING-SA0001-001",
+      "doc_no": "44740",
+      "entry_type": "Payment",
+      "classification": "MISSING_HEADER",
+      "allowed_use": ["financial_balance_from_txt", "custody", "sku_analysis", "allocation"],
+      "blocked_use": [],
+      "reason": "Operator ratified ignore — TXT payment line authoritative; no DB header required.",
+      "ratified_by": "operator",
+      "ratified_at": "2026-08-05"
+    },
+    {
+      "exception_id": "ING-SA0001-002",
+      "doc_no": "42780",
+      "entry_type": "Bank UD",
+      "classification": "DOCUMENT_TYPE_UNRESOLVED",
+      "allowed_use": ["financial_balance_from_txt", "custody", "sku_analysis", "allocation"],
+      "blocked_use": [],
+      "reason": "Operator ratified ignore — paired Bank UD / Payment on TXT; no separate DB ingest.",
+      "ratified_by": "operator",
+      "ratified_at": "2026-08-05"
+    },
+    {
+      "exception_id": "ING-SA0001-003",
+      "doc_no": "45114",
+      "entry_type": "Bank UD",
+      "classification": "DOCUMENT_TYPE_UNRESOLVED",
+      "allowed_use": ["financial_balance_from_txt", "custody", "sku_analysis", "allocation"],
+      "blocked_use": [],
+      "reason": "Operator ratified ignore — paired Bank UD / Payment on TXT; no separate DB ingest.",
+      "ratified_by": "operator",
+      "ratified_at": "2026-08-05"
+    },
+    {
+      "exception_id": "ING-SA0001-004",
+      "doc_no": "45329",
+      "entry_type": "Payment",
+      "classification": "MISSING_HEADER",
+      "allowed_use": ["financial_balance_from_txt", "custody", "sku_analysis", "allocation"],
+      "blocked_use": [],
+      "reason": "Operator ratified ignore — TXT payment line authoritative; no DB header required.",
+      "ratified_by": "operator",
+      "ratified_at": "2026-08-05"
+    },
+    {
+      "exception_id": "ING-SA0001-005",
+      "doc_no": "45466",
+      "entry_type": "Payment",
+      "classification": "MISSING_HEADER",
+      "allowed_use": ["financial_balance_from_txt", "custody", "sku_analysis", "allocation"],
+      "blocked_use": [],
+      "reason": "Operator ratified ignore — TXT payment line authoritative; no DB header required.",
+      "ratified_by": "operator",
+      "ratified_at": "2026-08-05"
+    }
+  ]
+}

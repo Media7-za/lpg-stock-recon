@@ -1,0 +1,5 @@
+allocation_id,allocation_group_id,payment_doc,payment_date,payment_amount,slice_amount,target_doc,target_date,lpg_target_amount,allocated_amount,variance,allocation_type,confidence,review_required
+AL-0001,AG-000001,43928,2026-04-07,2527.19,2527.19,50072,2026-04-01,2527.19,2527.19,0,CONFIRMED_REF_LPG_MATCH,Confirmed,false
+AL-0002,AG-000002,44746,2026-06-17,3109.32,3109.32,51175,2026-06-11,3109.32,3109.32,0,CONFIRMED_REF_LPG_MATCH,Confirmed,false
+AL-0003,AG-000003,45216,2026-07-14,5430.3,2815.2,50363,2026-04-23,2815.2,2815.2,0,CONFIRMED_REF_LPG_MATCH,Confirmed,false
+AL-0004,AG-000003,45216,2026-07-14,5430.3,2615.1,50097,2026-04-01,2615.1,0,1706.03,REVIEW_GROSS_VS_NET_CN,Exception,true

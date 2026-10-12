@@ -222,7 +222,7 @@ elif "[CODE]" in account:
 
 ## Doctrine addendum — line-level lanes (Turn 7i, MOZ002)
 
-> Summarized in [`SKILL_Debtors_Orchestrator.md` §5 Orchestration Methods · §3 Evidence hierarchy](SKILL_Debtors_Orchestrator.md#3-evidence-hierarchy); **this section is canonical — edit here only.**
+> **Constitutional doctrine:** `analysis/debtors/shared/DEBTORS_DOCTRINE.md` §§1–4. Summarized in `SKILL_Debtors_Orchestrator.md` §5 · §3 Evidence hierarchy; **this section is scoped-canonical for line-level lane implementation — edit here only.**
 
 **Lane membership is a property of the line, not the document.**
 

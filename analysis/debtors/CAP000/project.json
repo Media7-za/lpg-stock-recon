@@ -1,0 +1,42 @@
+{
+  "debtorCode": "CAP000",
+  "clientName": "CAPITOL CATERERS SELECT (PTY)",
+  "status": "active",
+  "reconState": "pending",
+  "financials": {
+    "totalOutstanding": 70773.28,
+    "lastInvoiceDate": "2026-09-17",
+    "lastPaymentDate": "2026-02-28",
+    "agedDebt180Plus": 351153.99,
+    "debtorTxtSource": "analysis/debtors/CAP000/raw/CAP000.TXT",
+    "debtorTxtAsAt": "2026-09-29",
+    "debtorTxtNote": "Updated 2026-09-29 with DEBENQ account enquiry covering full transaction history from 2022-09 to 2026-09-17. Current balance PROVEN at R70,773.28. Statement of Account generated with open invoices R419,914.21 and account-level balance R-349,140.93. Status: data current, allocation lane work pending (H-011 ONGOING)."
+  },
+  "collections": {
+    "actionRequired": false,
+    "actionType": null,
+    "dateSent": null,
+    "deadlineDate": null,
+    "nextAction": null,
+    "nextActionDate": null,
+    "notes": "Turn 001 onboarded. No collection until reconState complete and D17 satisfied. Global balance R46,228.47 operator-confirmed 2026-08-05, but anchor itself is ~13 months stale (2025-07-13) — debtor TXT pending (H-011)."
+  },
+  "history": [
+    {
+      "date": "2026-08-05",
+      "event": "Turn 001 scaffold: Tier A off-portfolio onboarding. Global anchor R46,228.47 (130720251H45M.TXT) operator-confirmed 2026-08-05. Lane triage settlement_discount — ASSUMED until TXT. H-011 OPEN for full CAP000CURRENT.TXT + remittances."
+    },
+    {
+      "date": "2026-08-05",
+      "event": "Self-review correction: globalAgedDebtAsAt was mistranscribed as 2026-07-13 during Turn 001 execution (orchestrator-stage message correctly stated 2025-07-13). Corrected to 2025-07-13 — anchor is ~13 months stale, not ~3 weeks. Re-tagged ASSERTED_STALE. Removed duplicate lastInvoiceDate key and nulled it (prior value sourced an advisory-only snippet without a caveat)."
+    },
+    {
+      "date": "2026-09-29",
+      "event": "Turn 002 data update: DEBENQ account enquiry ingested covering full transaction history 2022-09 to 2026-09-17. Current balance PROVEN R70,773.28 (vs prior global estimate R46,228.47). Statement of Account generated: open invoices R419,914.21, account-level residual R-349,140.93. Backup of prior CAP000.TXT retained. Config statement_of_account.json created. Invoice-tag coverage gate: NOT_DERIVABLE_FROM_TXT (expected for DEBENQ export without allocation detail) — statement generated with --force. Allocation lane work ongoing (H-011 status)."
+    },
+    {
+      "date": "2026-10-03",
+      "event": "Turn 003 reconciliation pass: Registered UNALLOCATED_DEBENQ_ONLY settlement profile in build_reconciliation_status.mjs. Generated invoices.csv (207 rows, LPG/CYL classified from DEBENQ descriptions) and allocation_edges.csv (8 unallocated payments totaling R182,213.63). Reconciliation status produced: 129 invoices, 104 genuine gaps, 25 pre-allocation-coverage flags. Automated allocation matching failed (0/8 payments matched) — likely partial/multi-invoice payments. Created CAP000_Allocation_Gap_Analysis.md documenting three options: (A) supply remittance advice, (B) manual allocation, or (C) accept pending state. Account balance verified R70,773.28 ✓. Tag-check skipped (expected NOT_DERIVABLE_FROM_TXT). Awaiting customer remittance advice or manual allocation mapping (H-011 status)."
+    }
+  ]
+}

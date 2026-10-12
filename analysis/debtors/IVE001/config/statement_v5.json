@@ -1,0 +1,24 @@
+{
+  "debtorCode": "IVE001",
+  "debtorName": "ST IVES",
+  "txtPath": "analysis/debtors/IVE001/raw/IVE001X22072026.TXT",
+  "periodStart": "2026-01-01",
+  "combinedBf": 25919.93,
+  "bfSourceNote": "IVE001X22072026.TXT — chronological balance before first 2026 row (pay 42855, 2 Jan 2026)",
+  "cylOpeningFinancial": 0.0,
+  "paymentLane": "LPG",
+  "cylOpeningQty": {
+    "14.1": 0,
+    "19.1": 0,
+    "9.1": 0,
+    "D.1": 0,
+    "S.1": 0
+  },
+  "skuRates": {
+    "14.1": 575,
+    "19.1": 690,
+    "9.1": 517.5,
+    "D.1": 1150,
+    "S.1": 1150
+  }
+}

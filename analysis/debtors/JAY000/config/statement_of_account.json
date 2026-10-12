@@ -1,0 +1,29 @@
+{
+  "debtorCode": "JAY000",
+  "customerName": "JAYZ GRILL",
+  "referenceLabel": "Reference",
+  "referenceValue": "",
+  "businessHeader": [
+    "BELLA ENERGY SERVICES (PTY) LTD T/A GAZ EXPRESS",
+    "50 WINSTON ROAD",
+    "PIETERMARITZBURG",
+    "3201"
+  ],
+  "primaryTxt": "analysis/debtors/JAY000/raw/JAY000CURRENT.TXT.TXT",
+  "_comment_primaryTxt": "Aug-Sep 2026 CURRENT window, as-at 3 Sep 2026. Brand-new account, B/F R0.00, no payments recorded yet.",
+  "siteTxts": {},
+  "outputDir": "analysis/debtors/JAY000/reports",
+  "outputBaseName": "JAY000_Statement_of_Account",
+  "pdfStylesheet": "analysis/debtors/shared/templates/statement_pdf.css",
+  "customerLayout": "lpg_ledger_plus_position",
+  "_comment_customerLayout": "Same house pattern adopted for FIR001 on 2026-09-14: customer SOA = v5 LPG ledger (plain English) + 3-row account position. Chosen deliberately for JAY000 because invoice 52688 bundles both an LPG and a CYL deposit line in one doc (v5 correctly splits it via DB debt_group) — the plain open-invoice text-heuristic model cannot split a mixed invoice and would overstate the open list; this layout reads the already-correct v5 split instead of recomputing from raw TXT refs.",
+  "lpgLedgerHeading": "LPG account",
+  "lpgLedgerIntro": "Deliveries, payments, and credits.",
+  "financialPositionLabels": {
+    "lpg": "LPG",
+    "cylinder": "Cylinder deposits"
+  },
+  "v5StatementPath": "analysis/debtors/JAY000/reports/JAY000_Statement_Account_v5.md",
+  "v5FixturePath": "src/features/debtor-position-workspace/data/fixtures/JAY000.v5.json",
+  "customerDueBasis": "erp_header"
+}

@@ -1,7 +1,7 @@
 # JEN001 — Onboarding Status
 
-**Updated:** 2026-07-16  
-**Lane:** `position_recon` — stripped-gas + CYL Settlement Allocation v4
+**Updated:** 2026-08-25  
+**Lane:** `position_recon` — stripped-gas payment pattern · v5 operator · customer SOA presentation
 
 ---
 
@@ -50,6 +50,25 @@
 | :---: | :--- | :---: |
 | 1 | Scaffold + doctrine | ✅ |
 | 1b | ERP TXT ingest + v4 rebuild | ✅ |
-| 2 | Pilot payment 44878 / STAT 127 | ⏳ **next** |
+| 2 | Pilot STAT 127 + STAT 129 LIFO allocation | ✅ **2026-08-25** |
+| 3 | Bank deposit Tier-1 (STAT 129) | ⏳ REQUEST |
 
-**Collections gate:** `reconState: in-progress` — blocked on TXT-aligned statement.
+**Collections gate:** Presentation `ALLOWED` (PATTERN_ONLY) — `JEN001_Statement_of_Account.md` · 1 open invoice R597.11. Bank remittance still missing.
+
+---
+
+## Presentation vs operator layout (2026-08-25)
+
+| Layer | Artifact | Role |
+| :--- | :--- | :--- |
+| Operator | `JEN001_Statement_Account_v5.md` | Sub-ledger position proof — internal only |
+| Presentation | `JEN001_Statement_of_Account.md` (+ `.pdf`) | Customer/collections — open LPG invoices + collapsed B/F |
+| Allocation | `JEN001_Payment_Allocation_v1.md` | Feeds presentation via `config/statement_of_account.json` |
+
+**Current DEBENQ (`raw/DEBENQ.TXT`):** CURRENT BALANCE **R22,685.21** (PROVEN) · period Jul–Aug 2026 · B/F **R22,088.10** post STAT 127.
+
+Regenerate presentation:
+```bash
+node analysis/debtors/JEN001/scripts/allocation_ingest_pilot.mjs
+npm run debtors:customer-statement -- --debtor JEN001 --as-at 2026-08-25 --pdf
+```

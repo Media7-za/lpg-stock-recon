@@ -1,8 +1,10 @@
 # TWK002 — Model B position (north star)
 
 **Debtor:** TWK002 · TWK AGRI PTY LTD · ref B226  
-**Updated:** 2026-08-11  
+**Updated:** 2026-08-29  
 **Authority:** This document is the reconciliation objective for TWK002. All balance, ageing, statement, and collections work should be read against it.
+
+**ERP execution plan (ratified 2026-08-29; residual lever ratified 2026-08-30 evening):** `docs/TWK002_ERP_Opening_Balance_Fix_Plan.md` — hygiene tagging H-022/H-023/H-026 first; residual lever is **H-027 current-period BS reclass** (DR suspense / CR AR). Not accept-in-header. Not P&L write-off. B/F R38,791.27 accepted as historical carry. Instruction: `docs/TWK002_ERP_Agent_Note_H027_BS_Reclassification.md`.
 
 ---
 
@@ -91,13 +93,14 @@ The statement generator and balance bridge are **downstream of Model B**, not a 
 | Account-level bridge lines | Opening/residual + untagged settlements (−R49,551.05) — ratified in `config/statement_of_account.json` |
 | `debtors:tag-check` REMITTANCE_BACKED | Only account with extracted `remittance_lines_*.csv` — strongest gate check |
 
-**Current statement posture (2026-08-11):**
+**Current statement posture (2026-08-11 → superseded 2026-08-29 for customer send):**
 
+- ~~Balance due **R118,131.54** on customer document~~ — **superseded:** customer document now shows **Amount due R110,046.87** only (`customerDueBasis: open_invoices`).
 - TWK002-only (`siteTxts` empty — TWK003/TWK004 ignored for now)
-- Balance due **R118,131.54** = ERP TWK002 CURRENT BALANCE header
-- Open invoices **R110,046.87** + account-level **R8,084.67** (explicit, not hidden in 120-day)
-- Reports: `TWK002_Statement_of_Account.md`, `TWK002_Balance_Gap_Investigation_2026-08-11.md`, `TWK002_Balance_Bridge_2026-08-11.md`
-- **Presentation decision (2026-08-11):** the R8,084.67 account-level subtotal is fully itemised into 7 ratified sub-lines *internally* (`config/statement_of_account.json` → `balanceBridgeLines`, backed by `TWK002_Pre_Mar2025_BF_Bridge_2026-08-11.md`, `TWK002_Phantom_CN_Nets_Breakdown_2026-08-11.md`, `TWK002_Balance_Bridge_Line_Investigation_2026-08-11.md`), but the **customer-facing statement now collapses it into a single "Opening balance" line** (`collapseAccountLevelAsOpeningBalance: true`). Collections/ageing focus for now is scoped to the **R110,046.87 open invoices only** — the account-level detail is audit backup, not a customer-facing worklist yet.
+- Open invoices **R110,046.87** + account-level **R8,084.67** internal (hidden on customer snapshot)
+- Reports: `TWK002_Statement_of_Account.md` (live draft), `snapshots/2026-08-11_v1/` (sign-off artifact)
+- **Presentation decision (2026-08-11 → 2026-08-29):** the R8,084.67 account-level subtotal is fully itemised into 7 ratified sub-lines *internally* (`config/statement_of_account.json` → `balanceBridgeLines`, backed by bridge reports), but the **customer-facing statement now shows Amount due = open invoices only (R110,046.87)**. The R8,084.67 internal residual is hidden (`customerDueBasis: open_invoices`, `hideAccountLevelSection: true`) — it is Model B posting reconciliation, not billable debt.
+- **Snapshot doctrine (2026-08-29):** live drafts → `reports/TWK002_Statement_of_Account.md` (re-run freely). Finance sign-off / customer send → `--snapshot` → `snapshots/[YYYY-MM-DD]_vN/` (archived TXT + config + manifest sha256). First sign-off artifact: `snapshots/2026-08-11_v1/`. Regenerate: `npm run debtors:twk002-statement-snapshot -- --as-at YYYY-MM-DD`.
 
 **Rule:** Do not send a customer-facing open-invoice schedule unless Model B settlement is reflected (Path B journals posted, untagged slices understood, remittance contradictions cleared). The gate catches remittance-vs-open contradictions; the bridge names account-level residual (itemised detail kept internal; statement shows it collapsed as Opening balance).
 
@@ -107,6 +110,7 @@ The statement generator and balance bridge are **downstream of Model B**, not a 
 
 | Asset | Path |
 | :--- | :--- |
+| **ERP opening balance fix plan** | `docs/TWK002_ERP_Opening_Balance_Fix_Plan.md` |
 | Doctrine v2 | `docs/TWK002_Settlement_Discount_Doctrine_v2.md` |
 | Finance checklist (16 batch) | `data/finance_posting_checklist.csv` |
 | Phase 2 checklist | `data/finance_posting_checklist_2025_phase2.csv` |
