@@ -1,18 +1,21 @@
 # Family reconciliation: TWK AGRI PTY LTD (TWK002 + TWK003 + TWK004), internal
-**INTERNAL, not for the customer.** Consolidated statement as at 2026-10-10 · generated 2026-10-12 · parent TWK002 · **DRAFT: not releasable** · family amount due R114,836.19 vs sum of ERP headers R114,836.19 (variance R0.00).
+**INTERNAL, not for the customer.** Consolidated statement as at 2026-10-10 · generated 2026-10-12 · parent TWK002 · **DRAFT: not releasable** · customer amount due R115,136.19 vs sum of ERP headers R114,836.19 excluding quarantined R-300.00 (not shown to the customer) (unexplained variance R0.00).
 
 **Why this is a draft:**
-- operator hold H2_TWK003_ERP_CORRECTION: TWK003 R-300.00 ruled an ERP agent price typo on CN 13933 (2026-10-12); the ERP reversal (invoice at R115 x 20, credit at R100 x 20) has not posted yet, so the statement still shows the wrong R-300.00. Operator to clear when the correcting documents post and TWK003 is re-exported.
 - operator hold H4_RELEASE_GATE: debtors:tag-check returns NOT_DERIVABLE_FROM_TXT for the family; operator to decide whether release may proceed.
 
 ## Reconciliation to each ERP balance
 
-| Account | Role | ERP header (R) | Open items (R) | Named / other lines (R) | Statement balance (R) | Variance (R) | Matcher | Review only |
-| :--- | :--- | ---: | ---: | ---: | ---: | ---: | :--- | :--- |
-| TWK002 | parent | 54,136.19 | 46,051.52 | 8,084.67 | 54,136.19 | 0.00 | 17 confirmed / 0 probable | no |
-| TWK003 | child | -300.00 | -300.00 | 0.00 | -300.00 | 0.00 | 0 confirmed / 1 probable | no |
-| TWK004 | child | 61,000.00 | 61,000.00 | 0.00 | 61,000.00 | 0.00 | 3 confirmed / 0 probable | no |
-| **Family** | | **114,836.19** | **106,751.52** | **8,084.67** | **114,836.19** | **0.00** | | |
+| Account | Role | ERP header (R) | Open items (R) | Named / other lines (R) | Quarantined, not on customer copy (R) | Customer balance (R) | Variance (R) | Matcher | Review only |
+| :--- | :--- | ---: | ---: | ---: | ---: | ---: | ---: | :--- | :--- |
+| TWK002 | parent | 54,136.19 | 46,051.52 | 8,084.67 | 0.00 | 54,136.19 | 0.00 | 17 confirmed / 0 probable | no |
+| TWK003 | child | -300.00 | 0.00 | 0.00 | -300.00 | 0.00 | 0.00 | 0 confirmed / 1 probable | no |
+| TWK004 | child | 61,000.00 | 61,000.00 | 0.00 | 0.00 | 61,000.00 | 0.00 | 3 confirmed / 0 probable | no |
+| **Family** | | **114,836.19** | **107,051.52** | **8,084.67** | **-300.00** | **115,136.19** | **0.00** | | |
+
+**Quarantined (operator ruling; real in the ERP, not shown on the customer copy):**
+
+- **TWK003 Q1_PRICE_TYPO:** Invoice 47866 + Crd Note 13933 net R-300.00. Operator ruling 2026-10-12 (main session): the R-300.00 is an ERP agent price typo on CN 13933 (R115.00 instead of R100.00) and will be reversed on the ERP; release the consolidated statement with it quarantined and do not show it on the customer statement. Invoice 47866 (R2,000.00) and CN 13933 (R-2,300.00) are therefore left off the customer copy; the customer amount due is the sum of the ERP balances plus R300.00 and equals the figure expected once the ERP reversal posts. The generator aborts if these two rows ever stop netting to R-300.00 (e.g. after the correcting documents post), so the ruling is reviewed then. Tripwires: the correcting invoice and credit note post; the posted amounts differ from R2,300.00 / R2,000.00; the correction is not made.
 
 Sources (TXT fingerprint = projection fingerprint is a gate):
 

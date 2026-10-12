@@ -61,13 +61,15 @@ export function loadFamilyInputs({ root, parentCode, parentTxtRel }) {
       matches: readJson(d.code, 'data/projection_matches.json'),
       namedResiduals: cfg.namedResiduals || [],
       rowNotes: cfg.rowNotes || [],
+      customerQuarantine: cfg.customerQuarantine || [],
       debtorName: cfg.debtorName,
     };
   });
 }
 
 /**
- * @param members [{ code, role, txtPath, erpHeader, txtSha256Actual, projection, matches, namedResiduals, rowNotes }]
+ * @param members [{ code, role, txtPath, erpHeader, txtSha256Actual, projection, matches, namedResiduals, rowNotes,
+ *   customerQuarantine }]
  *   parent first, then children in config order.
  */
 export function buildFamilyStatement(members, { holds = [] } = {}) {
@@ -92,6 +94,8 @@ export function buildFamilyStatement(members, { holds = [] } = {}) {
     let named = [];
     let itemsTotal = 0;
     let namedTotal = 0;
+    let quarantinedTotal = 0;
+    const quarantined = [];
     if (model) {
       items = [...model.parts.lpg.lines, ...model.parts.cyl.lines]
         .map((l) => ({ ...l, account: m.code }))
@@ -103,16 +107,31 @@ export function buildFamilyStatement(members, { holds = [] } = {}) {
         namedLabel: (n) => n.customerLabel || GENERIC_NAMED_LABEL,
       })) byLabel.set(label, round2((byLabel.get(label) || 0) + amount));
       named = [...byLabel].filter(([, amount]) => amount).map(([label, amount]) => ({ account: m.code, label, amount }));
+      // Customer quarantine (config customerQuarantine [{ id, rows: [{ entry_type, doc }], expectedAmount, ruling }]):
+      // operator-ruled rows that are real in the ERP but must not appear on the customer copy. They are
+      // taken out of the customer list and total, reported on the internal view, and must net to exactly
+      // `expectedAmount`; any other amount (e.g. after a correcting document posts) aborts the run.
+      for (const q of m.customerQuarantine || []) {
+        const hit = items.filter((l) => q.rows.some((r) => r.entry_type === l.entry_type && String(r.doc) === String(l.doc)));
+        const amount = round2(hit.reduce((s, l) => s + l.amount, 0));
+        if (Math.abs(amount - q.expectedAmount) > 0.005) {
+          problems.push(`${prefix} quarantine ${q.id}: rows ${q.rows.map((r) => `${r.entry_type} ${r.doc}`).join(', ')} net R${fmt(amount)}, config expects R${fmt(q.expectedAmount)} (review the quarantine ruling)`);
+          continue;
+        }
+        quarantined.push({ ...q, account: m.code, amount, hit });
+        items = items.filter((l) => !hit.includes(l));
+      }
+      quarantinedTotal = round2(quarantined.reduce((s, q) => s + q.amount, 0));
       itemsTotal = round2(items.reduce((s, l) => s + l.amount, 0));
       namedTotal = round2(named.reduce((s, l) => s + l.amount, 0));
-      if (Math.abs(itemsTotal + namedTotal - m.erpHeader) > 0.005) {
-        problems.push(`${prefix} open items R${fmt(itemsTotal)} + named lines R${fmt(namedTotal)} = R${fmt(round2(itemsTotal + namedTotal))} ≠ ERP header R${fmt(m.erpHeader)}`);
+      if (Math.abs(itemsTotal + namedTotal + quarantinedTotal - m.erpHeader) > 0.005) {
+        problems.push(`${prefix} open items R${fmt(itemsTotal)} + named lines R${fmt(namedTotal)} + quarantined R${fmt(quarantinedTotal)} = R${fmt(round2(itemsTotal + namedTotal + quarantinedTotal))} ≠ ERP header R${fmt(m.erpHeader)}`);
       }
     }
     if (m.matches?.reviewOnly) {
       draftReasons.push(`${m.code} is review-only: ${(m.matches.reviewOnlyReasons || ['reason not recorded']).join('; ')}`);
     }
-    return { ...m, model, items, named, itemsTotal, namedTotal, balance: round2(itemsTotal + namedTotal) };
+    return { ...m, model, items, named, quarantined, itemsTotal, namedTotal, quarantinedTotal, balance: round2(itemsTotal + namedTotal) };
   });
 
   // Operator holds (config familyReleaseHolds [{ id, text }]): decisions still pending. Each keeps the
@@ -125,8 +144,10 @@ export function buildFamilyStatement(members, { holds = [] } = {}) {
   const namedTotal = round2(built.reduce((s, b) => s + b.namedTotal, 0));
   const erpTotal = round2(built.reduce((s, b) => s + b.erpHeader, 0));
   const statementTotal = round2(itemsTotal + namedTotal);
-  if (Math.abs(statementTotal - erpTotal) > 0.005) {
-    problems.push(`family statement R${fmt(statementTotal)} ≠ sum of ERP headers R${fmt(erpTotal)}`);
+  const quarantinedTotal = round2(built.reduce((s, b) => s + b.quarantinedTotal, 0));
+  // Customer amount due = sum of ERP headers less what the operator has quarantined (zero when none).
+  if (Math.abs(statementTotal + quarantinedTotal - erpTotal) > 0.005) {
+    problems.push(`family statement R${fmt(statementTotal)} + quarantined R${fmt(quarantinedTotal)} ≠ sum of ERP headers R${fmt(erpTotal)}`);
   }
   return {
     members: built,
@@ -135,6 +156,8 @@ export function buildFamilyStatement(members, { holds = [] } = {}) {
     itemsTotal,
     namedTotal,
     erpTotal,
+    quarantinedTotal,
+    quarantined: built.flatMap((b) => b.quarantined),
     statementTotal,
     problems,
     draft: draftReasons.length > 0,
@@ -201,21 +224,26 @@ export function renderFamilyInternalMarkdown(fam, { cfg, parentCode, generatedOn
   L.push(`# Family reconciliation: ${cfg.customerName} (${fam.members.map((m) => m.code).join(' + ')}), internal`);
   L.push(
     `**INTERNAL, not for the customer.** Consolidated statement as at ${fam.asAtIso} · generated ${generatedOn} · parent ${parentCode} · ` +
-      `${fam.draft ? '**DRAFT: not releasable**' : 'no draft reasons'} · family amount due R${fmt(fam.statementTotal)} vs sum of ERP headers R${fmt(fam.erpTotal)} (variance R${fmt(round2(fam.statementTotal - fam.erpTotal))}).`,
+      `${fam.draft ? '**DRAFT: not releasable**' : 'no draft reasons'} · customer amount due R${fmt(fam.statementTotal)} vs sum of ERP headers R${fmt(fam.erpTotal)}${fam.quarantinedTotal ? ` excluding quarantined R${fmt(fam.quarantinedTotal)} (not shown to the customer)` : ''} (unexplained variance R${fmt(round2(fam.statementTotal + fam.quarantinedTotal - fam.erpTotal))}).`,
     '',
   );
   if (fam.draftReasons.length) {
     L.push('**Why this is a draft:**', ...fam.draftReasons.map((r) => `- ${r}`), '');
   }
   L.push('## Reconciliation to each ERP balance', '');
-  L.push('| Account | Role | ERP header (R) | Open items (R) | Named / other lines (R) | Statement balance (R) | Variance (R) | Matcher | Review only |', '| :--- | :--- | ---: | ---: | ---: | ---: | ---: | :--- | :--- |');
+  L.push('| Account | Role | ERP header (R) | Open items (R) | Named / other lines (R) | Quarantined, not on customer copy (R) | Customer balance (R) | Variance (R) | Matcher | Review only |', '| :--- | :--- | ---: | ---: | ---: | ---: | ---: | ---: | :--- | :--- |');
   for (const m of fam.members) {
     const s = m.matches.summary || {};
     L.push(
-      `| ${m.code} | ${m.role} | ${fmt(m.erpHeader)} | ${fmt(m.itemsTotal)} | ${fmt(m.namedTotal)} | ${fmt(m.balance)} | ${fmt(round2(m.balance - m.erpHeader))} | ${s.confirmed ?? 0} confirmed / ${s.probable ?? 0} probable | ${m.matches.reviewOnly ? 'YES' : 'no'} |`,
+      `| ${m.code} | ${m.role} | ${fmt(m.erpHeader)} | ${fmt(m.itemsTotal)} | ${fmt(m.namedTotal)} | ${fmt(m.quarantinedTotal)} | ${fmt(m.balance)} | ${fmt(round2(m.balance + m.quarantinedTotal - m.erpHeader))} | ${s.confirmed ?? 0} confirmed / ${s.probable ?? 0} probable | ${m.matches.reviewOnly ? 'YES' : 'no'} |`,
     );
   }
-  L.push(`| **Family** | | **${fmt(fam.erpTotal)}** | **${fmt(fam.itemsTotal)}** | **${fmt(fam.namedTotal)}** | **${fmt(fam.statementTotal)}** | **${fmt(round2(fam.statementTotal - fam.erpTotal))}** | | |`, '');
+  L.push(`| **Family** | | **${fmt(fam.erpTotal)}** | **${fmt(fam.itemsTotal)}** | **${fmt(fam.namedTotal)}** | **${fmt(fam.quarantinedTotal)}** | **${fmt(fam.statementTotal)}** | **${fmt(round2(fam.statementTotal + fam.quarantinedTotal - fam.erpTotal))}** | | |`, '');
+  if (fam.quarantined.length) {
+    L.push('**Quarantined (operator ruling; real in the ERP, not shown on the customer copy):**', '');
+    for (const q of fam.quarantined) L.push(`- **${q.account} ${q.id}:** ${q.rows.map((r) => `${r.entry_type} ${r.doc}`).join(' + ')} net R${fmt(q.amount)}. ${q.ruling}`);
+    L.push('');
+  }
   L.push('Sources (TXT fingerprint = projection fingerprint is a gate):', '');
   L.push('| Account | TXT | sha256 | Projection sha256 | Match |', '| :--- | :--- | :--- | :--- | :--- |');
   for (const m of fam.members) {

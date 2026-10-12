@@ -169,3 +169,38 @@ test('operator hold keeps the output a draft even when every member is current a
   assert.match(md, /^# Statement of Account — DRAFT PREVIEW/);
   assert.doesNotMatch(md, /credit treatment pending/); // hold text is internal only
 });
+
+const Q = { id: 'Q1', rows: [{ entry_type: 'Invoice', doc: '2001' }, { entry_type: 'Crd Note', doc: '2002' }], expectedAmount: -300, ruling: 'typo, reversal pending' };
+
+test('customer quarantine: rows are off the customer copy, amount due excludes them, internal view reports them', () => {
+  const fam = buildFamilyStatement([parent(), { ...creditChild(), customerQuarantine: [Q] }, openChild()]);
+  assert.deepEqual(fam.problems, []);
+  assert.equal(fam.erpTotal, 30700); // 1,000 + (-300) + 30,000
+  assert.equal(fam.quarantinedTotal, -300);
+  assert.equal(fam.statementTotal, 31000); // ERP sum less the quarantined -300
+  assert.deepEqual(fam.items.filter((l) => l.account === 'C001'), []);
+  const md = renderFamilyCustomerMarkdown(fam, { cfg, asAtLabel: 'x' });
+  assert.match(md, /\*\*R31,000\.00\*\*/);
+  assert.doesNotMatch(md, /2001|2002|uarantin|typo/);
+  assert.doesNotMatch(md, /credit in your favour/); // no negative balance left to explain
+  assert.match(md, /\| C001 \| 0\.00 \| 0\.00 \| 0\.00 \|/);
+  const internal = renderFamilyInternalMarkdown(fam, { cfg, parentCode: 'P001', generatedOn: '2026-10-12' });
+  assert.match(internal, /Quarantined \(operator ruling/);
+  assert.match(internal, /C001 Q1:\*\* Invoice 2001 \+ Crd Note 2002 net R-300\.00/);
+  assert.match(internal, /\| C001 \| child \| -300\.00 \| 0\.00 \| 0\.00 \| -300\.00 \| 0\.00 \| 0\.00 \|/);
+});
+
+test('customer quarantine aborts when the quarantined rows no longer net to the ruled amount', () => {
+  const fam = buildFamilyStatement([parent(), { ...creditChild(), customerQuarantine: [{ ...Q, expectedAmount: -250 }] }]);
+  assert.ok(fam.problems.some((p) => p.startsWith('C001: quarantine Q1') && /expects R-250\.00/.test(p)), fam.problems.join('\n'));
+});
+
+test('customer quarantine does not hide anything that is not named, and no quarantine changes nothing', () => {
+  const none = buildFamilyStatement([parent(), creditChild()]);
+  assert.equal(none.quarantinedTotal, 0);
+  assert.equal(none.statementTotal, none.erpTotal);
+  const partial = buildFamilyStatement([parent(), { ...creditChild(), customerQuarantine: [{ ...Q, rows: [{ entry_type: 'Invoice', doc: '2001' }], expectedAmount: 2000 }] }]);
+  assert.deepEqual(partial.problems, []);
+  assert.deepEqual(partial.items.filter((l) => l.account === 'C001').map((l) => l.doc), ['2002']);
+  assert.equal(partial.statementTotal, partial.erpTotal - 2000);
+});

@@ -18,7 +18,7 @@ PIETERMARITZBURG
 
 ## Amount due
 
-**R114,836.19**
+**R115,136.19**
 
 ---
 
@@ -42,16 +42,14 @@ PIETERMARITZBURG
 | TWK003 | 03 Oct 2025 | Invoice | 46857 | DN#20290- 391175708 | Other | 11,000.44 |
 | TWK003 | 10 Oct 2025 | Invoice | 47076 | DN #20297 | Other | 11,000.44 |
 | TWK003 | 04 Nov 2025 | Invoice | 47523 | DN #20774 | Other | 11,000.44 |
-| TWK003 | 21 Nov 2025 | Invoice | 47866 | DN # 21166 | Other | 2,000.00 |
 | TWK003 | 22 Nov 2025 | Invoice | 47880 ² | DN#21166 | Other | 5,499.99 |
-| TWK003 | 24 Nov 2025 | Crd Note | 13933 | DN # 21166 | Other | -2,300.00 |
 | TWK003 | 28 Nov 2025 | Crd Note | 13966 ² | DN#21166 | Other | -5,499.99 |
 | TWK003 | 28 Nov 2025 | Invoice | 47991 | 391176350-001 /21166 | Other | 5,499.99 |
 | TWK003 | 25 Feb 2026 | Payment | 43500 | TRANSF \| STAT 123 | Gas | -38,501.31 |
 | TWK004 | 04 Sept 2026 | Invoice | 52948 | DN#24817 | Other | 9,000.00 |
 | TWK004 | 10 Sept 2026 | Invoice | 53113 | DN#24985 | Other | 22,000.00 |
 | TWK004 | 09 Oct 2026 | Invoice | 53536 | DN#24718 | Other | 30,000.00 |
-| | | | | | **Total open items** | **106,751.52** |
+| | | | | | **Total open items** | **107,051.52** |
 
 ² A credit note was issued against this invoice; matching of the two documents is being confirmed.
 
@@ -70,11 +68,9 @@ PIETERMARITZBURG
 | Account | Open items (R) | Other amounts (R) | Balance (R) |
 | :--- | ---: | ---: | ---: |
 | TWK002 | 46,051.52 | 8,084.67 | 54,136.19 |
-| TWK003 | -300.00 | 0.00 | -300.00 |
+| TWK003 | 0.00 | 0.00 | 0.00 |
 | TWK004 | 61,000.00 | 0.00 | 61,000.00 |
-| **Amount due** | **106,751.52** | **8,084.67** | **114,836.19** |
-
-A negative amount is a credit in your favour; it is included in the amount due above.
+| **Amount due** | **107,051.52** | **8,084.67** | **115,136.19** |
 
 ---
 

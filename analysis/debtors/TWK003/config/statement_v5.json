@@ -32,5 +32,22 @@
       "doc": "13933",
       "note": "Operator ruling 2026-10-12 (main session): the R-300.00 on TWK003 is an ERP agent typo on the unit price of CN 13933 (20 units at R115.00 instead of the original R100.00 on invoice 47866). It will be reversed on the ERP: the ERP agent will invoice at the credit-note price (20 x R115.00 = R2,300.00, cancelling CN 13933) and credit at the original price (20 x R100.00 = R2,000.00, cancelling invoice 47866), taking TWK003 to R0.00. Not a customer credit and not a refund. Until those documents post, the ERP balance stays R-300.00 and the statement carries it as it is. Reading of the correction mechanics is the agent's, to be confirmed against the posted documents. Tripwires: the correcting invoice and credit note post (re-export the TXT and rebuild the TWK003 projection; family amount due then rises by R300.00); the posted amounts differ from R2,300.00 / R2,000.00; the correction is not made."
     }
+  ],
+  "customerQuarantine": [
+    {
+      "id": "Q1_PRICE_TYPO",
+      "rows": [
+        {
+          "entry_type": "Invoice",
+          "doc": "47866"
+        },
+        {
+          "entry_type": "Crd Note",
+          "doc": "13933"
+        }
+      ],
+      "expectedAmount": -300.0,
+      "ruling": "Operator ruling 2026-10-12 (main session): the R-300.00 is an ERP agent price typo on CN 13933 (R115.00 instead of R100.00) and will be reversed on the ERP; release the consolidated statement with it quarantined and do not show it on the customer statement. Invoice 47866 (R2,000.00) and CN 13933 (R-2,300.00) are therefore left off the customer copy; the customer amount due is the sum of the ERP balances plus R300.00 and equals the figure expected once the ERP reversal posts. The generator aborts if these two rows ever stop netting to R-300.00 (e.g. after the correcting documents post), so the ruling is reviewed then. Tripwires: the correcting invoice and credit note post; the posted amounts differ from R2,300.00 / R2,000.00; the correction is not made."
+    }
   ]
 }

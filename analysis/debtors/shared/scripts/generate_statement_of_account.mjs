@@ -663,7 +663,7 @@ function main() {
   if (family) {
     lines = [renderFamilyCustomerMarkdown(family, { cfg: cfgForRun, asAtLabel })];
     console.log(
-      `[${debtorCode}] Consolidated ${family.draft ? 'DRAFT PREVIEW' : 'statement'} (${family.members.map((m) => `${m.code} R${fmt(m.balance)}`).join(', ')}): ${family.items.length} open item(s) R${fmt(family.itemsTotal)} + other R${fmt(family.namedTotal)} → amount due R${fmt(family.statementTotal)} = ERP sum R${fmt(family.erpTotal)}`,
+      `[${debtorCode}] Consolidated ${family.draft ? 'DRAFT PREVIEW' : 'statement'} (${family.members.map((m) => `${m.code} R${fmt(m.balance)}`).join(', ')}): ${family.items.length} open item(s) R${fmt(family.itemsTotal)} + other R${fmt(family.namedTotal)} → amount due R${fmt(family.statementTotal)} = ERP sum R${fmt(family.erpTotal)}${family.quarantinedTotal ? ` excluding quarantined R${fmt(family.quarantinedTotal)}` : ""}`,
     );
   } else if (customerLayout === 'open_items') {
     const { projection, matches, model } = loadOpenItemsCustomer(debtorCode);
