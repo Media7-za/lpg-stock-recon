@@ -3,7 +3,7 @@
 **Combined Opening B/F:** R0.00 (ERP verified — source: `analysis/debtors/TWK002/raw/TWK003_2026-10-10.TXT` TWK003_2026-10-10.TXT line 1 BALANCE B/F 0.00 (fresh ERP export dated 2026-10-10, verified by operator: header = running balance chain = totals). Child account of TWK002 (ADM-94 Q1/Q15, consolidated family).)
 **LPG Opening B/F (1A):** R0.00 &nbsp;|&nbsp; **CYL Opening B/F (1B):** R0.00
 **Payment routing:** LPG lane (payments post to Part 1A unless configured otherwise)
-**Last regenerated:** 2026-10-10 from ERP TXT (`reconcile_debtor_v5_from_txt.mjs`)
+**Last regenerated:** 2026-10-12 from ERP TXT (`reconcile_debtor_v5_from_txt.mjs`)
 
 ---
 

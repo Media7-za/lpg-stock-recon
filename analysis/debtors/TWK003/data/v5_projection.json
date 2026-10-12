@@ -3,11 +3,11 @@
   "status": "RATIFIED 2026-10-10 (PROPOSED_Projection_Matching_Locks.md, projection builder)",
   "debtorCode": "TWK003",
   "generatedBy": "reconcile_debtor_v5_from_txt.mjs",
-  "generatedAt": "2026-10-10T11:33:23.863Z",
+  "generatedAt": "2026-10-12T12:08:19.853Z",
   "source": {
     "txtPath": "analysis/debtors/TWK002/raw/TWK003_2026-10-10.TXT",
     "txtSha256": "9b68fd84a163f74c756c2a5f8943194464972e8453093ebd4446e9b30d0bebf8",
-    "configSha256": "116fa55ea4af4ad6894cfcb0cc4a7c04a93174f0be646e38455e967c1810d12c",
+    "configSha256": "ee49046cb6fd7e6eaa98b11316fdfe69f55c4b378768fbf896ea7ed525eb7728",
     "erpCurrentBalance": -300,
     "dbChannel": "supabase-connector-replay"
   },

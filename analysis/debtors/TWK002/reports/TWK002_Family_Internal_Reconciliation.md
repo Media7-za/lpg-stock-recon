@@ -2,7 +2,7 @@
 **INTERNAL, not for the customer.** Consolidated statement as at 2026-10-10 · generated 2026-10-12 · parent TWK002 · **DRAFT: not releasable** · family amount due R114,836.19 vs sum of ERP headers R114,836.19 (variance R0.00).
 
 **Why this is a draft:**
-- operator hold H2_TWK003_CREDIT: Treatment of the TWK003 customer credit R-300.00 (invoice 47866 vs CN 13933) pending.
+- operator hold H2_TWK003_ERP_CORRECTION: TWK003 R-300.00 ruled an ERP agent price typo on CN 13933 (2026-10-12); the ERP reversal (invoice at R115 x 20, credit at R100 x 20) has not posted yet, so the statement still shows the wrong R-300.00. Operator to clear when the correcting documents post and TWK003 is re-exported.
 - operator hold H4_RELEASE_GATE: debtors:tag-check returns NOT_DERIVABLE_FROM_TXT for the family; operator to decide whether release may proceed.
 
 ## Reconciliation to each ERP balance
@@ -73,6 +73,9 @@ Open rows after confirmed **and probable** ties are removed (internal view), 7 r
 | 24 Nov 2025 | Crd Note | 13933 | DN # 21166 | OTHER | -2,300.00 |
 | 28 Nov 2025 | Invoice | 47991 | 391176350-001 /21166 | OTHER | 5,499.99 |
 | 25 Feb 2026 | Payment | 43500 | TRANSF \| STAT 123 | LPG | -38,501.31 |
+
+- **Invoice 47866 (operator note):** Operator ruling 2026-10-12 (main session): the R-300.00 on TWK003 is an ERP agent typo on the unit price of CN 13933 (20 units at R115.00 instead of the original R100.00 on invoice 47866). It will be reversed on the ERP: the ERP agent will invoice at the credit-note price (20 x R115.00 = R2,300.00, cancelling CN 13933) and credit at the original price (20 x R100.00 = R2,000.00, cancelling invoice 47866), taking TWK003 to R0.00. Not a customer credit and not a refund. Until those documents post, the ERP balance stays R-300.00 and the statement carries it as it is. Reading of the correction mechanics is the agent's, to be confirmed against the posted documents. Tripwires: the correcting invoice and credit note post (re-export the TXT and rebuild the TWK003 projection; family amount due then rises by R300.00); the posted amounts differ from R2,300.00 / R2,000.00; the correction is not made.
+- **Crd Note 13933 (operator note):** Operator ruling 2026-10-12 (main session): the R-300.00 on TWK003 is an ERP agent typo on the unit price of CN 13933 (20 units at R115.00 instead of the original R100.00 on invoice 47866). It will be reversed on the ERP: the ERP agent will invoice at the credit-note price (20 x R115.00 = R2,300.00, cancelling CN 13933) and credit at the original price (20 x R100.00 = R2,000.00, cancelling invoice 47866), taking TWK003 to R0.00. Not a customer credit and not a refund. Until those documents post, the ERP balance stays R-300.00 and the statement carries it as it is. Reading of the correction mechanics is the agent's, to be confirmed against the posted documents. Tripwires: the correcting invoice and credit note post (re-export the TXT and rebuild the TWK003 projection; family amount due then rises by R300.00); the posted amounts differ from R2,300.00 / R2,000.00; the correction is not made.
 
 Reconciliation:
 

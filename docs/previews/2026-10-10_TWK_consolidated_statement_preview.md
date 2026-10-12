@@ -102,3 +102,9 @@ Operator answered "yes" to approving the 53535 / CN 15781 tie and to invoice 535
 ## 10. Update 2026-10-12: hold H5 removed
 
 Operator confirmed ("yes, remove H5") after a live read-only DB check: TWK004 invoices 52948, 53113, 53535, 53536 and CN 15781 are in the DB with headers and line counts matching the TXT (last sync 2026-10-10 19:22 UTC; replay 2026-10-11 ingest coverage complete, 0 gaps). `H5_TWK004_DB_DOCS` is removed from `familyReleaseHolds`. **Still a DRAFT** on `H2_TWK003_CREDIT` (R-300.00 credit treatment) and `H4_RELEASE_GATE` (`debtors:tag-check` returns `NOT_DERIVABLE_FROM_TXT`). Amount due unchanged at R114,836.19.
+
+## 11. Update 2026-10-12: TWK003 R-300.00 ruled an ERP price typo
+
+Operator ruling (main session): the R-300.00 is an ERP agent typo on the unit price of CN 13933 (R115.00 instead of the original R100.00). The ERP agent will reverse it: invoice at the credit-note price (20 x R115.00 = R2,300.00) and credit at the original (20 x R100.00 = R2,000.00), which takes TWK003 to R0.00. So it is **not** a customer credit and not a refund (this supersedes the open "carry as a credit" options in section 4 item 4). Mechanics are the agent's reading of the operator's words, to be confirmed against the posted documents. Recorded as dated `rowNotes` on 47866 and CN 13933 in `analysis/debtors/TWK003/config/statement_v5.json` (TWK003 projection rebuilt from the existing 2026-10-10 captures: proof HOLDS at R-300.00). No lock.
+
+**The correction has not posted**, so the ERP balance and this draft still show R-300.00. Hold `H2_TWK003_CREDIT` is replaced by `H2_TWK003_ERP_CORRECTION`: the statement stays a DRAFT until the correcting documents post and TWK003 is re-exported. When they do, TWK003 should be R0.00 and the family amount due should rise by R300.00, from R114,836.19 to **R115,136.19** (ASSUMED until the posted amounts are seen). Still a DRAFT also on `H4_RELEASE_GATE`.
