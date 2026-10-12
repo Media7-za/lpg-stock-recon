@@ -1,0 +1,45 @@
+{
+  "debtorCode": "GAS004",
+  "clientName": "GAS 2 GO HILTIN NEW ACCOUNT",
+  "status": "active",
+  "reconState": "in-progress",
+  "financials": {
+    "totalOutstanding": 20061.51,
+    "lastInvoiceDate": "2026-08-03",
+    "lastPaymentDate": "2026-07-23",
+    "agedDebt180Plus": 20061.49,
+    "erpTxtClosing": 20061.51,
+    "erpTxtClosingAsOf": "2026-08-03",
+    "erpTxtSource": "raw/DEBENQ_CURRENT.TXT",
+    "erpHeaderCurrentBalance": 30242.46,
+    "erpUdPayCheques": -10180.95,
+    "globalAgedDebtSource": "analysis/debtors/Global Reports/130720251H45M.TXT",
+    "globalAgedDebtAsAt": "2025-07-13",
+    "globalAgedDebtNote": "agedDebt180Plus still from stale global 120+ column. TXT running close R20,061.51 as-at 2026-08-03 is the financial figure; header CURRENT BALANCE R30,242.46 excludes UD PAY/CHEQUES R-10,180.95."
+  },
+  "collections": {
+    "actionRequired": false,
+    "actionType": null,
+    "dateSent": null,
+    "deadlineDate": null,
+    "nextAction": null,
+    "nextActionDate": null,
+    "notes": "Turn 001 v5 from DEBENQ_CURRENT.TXT. Lane position_recon locked. D17 not met. Header CURRENT BALANCE vs running close is the UD identity — not a collectable. TXT last row 2026-08-03; DB has later invoices."
+  },
+  "ingestGate": {
+    "status": "pass",
+    "ingestFreshness": "current",
+    "ingestCoverage": "partial",
+    "displayStatus": "CURRENT_PARTIAL",
+    "asAt": "2026-08-17",
+    "reportPath": "reports/GAS004_INGEST_COVERAGE_2026-08-17.json",
+    "ingestBlockedScopes": ["custody", "sku_analysis", "allocation"],
+    "exceptions": []
+  },
+  "history": [
+    {
+      "date": "2026-08-17",
+      "event": "Turn 001: DEBENQ_2024/2025/CURRENT copied to raw/. v5 generated — combined 1A+1B = running close R20,061.51 (PROVEN); header CURRENT BALANCE R30,242.46 is running close excluding UD R-10,180.95. Ingest CURRENT_PARTIAL (10 missing headers). reconState in-progress. Family GAS002/GAS003/GAS010 noted, not merged. H-020 global + H-021 fresh DEBENQ/DTRX queued."
+    }
+  ]
+}

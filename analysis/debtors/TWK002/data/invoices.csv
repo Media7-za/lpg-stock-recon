@@ -1,0 +1,736 @@
+debtor_code,doc_no,entry_type,tx_date,month_year,stock_code,description,debt_group,lane,qty,amount_excl,tax_amount,amount_incl,is_cyl,is_lpg,paired_cyl_doc,notes
+TWK002,00019704,Invoice,2023-04-27,2023-04,9.4,D/N 4145,LPG,LPG,15,3413.7,512.05,3925.75,False,True,,Pulled from vw_clean_transactions
+TWK002,00019704,Invoice,2023-04-27,2023-04,S.3,D/N 4145,LPG,LPG,4,4855.09,728.26,5583.35,False,True,,Pulled from vw_clean_transactions
+TWK002,00019706,Invoice,2023-04-27,2023-04,9.1,D/N 4145 EMPTIES,CYL,CYL,15,7800,1170,8970,True,False,,Pulled from vw_clean_transactions
+TWK002,00019706,Invoice,2023-04-27,2023-04,S.1,D/N 4145 EMPTIES,CYL,CYL,4,2080,312,2392,True,False,,Pulled from vw_clean_transactions
+TWK002,00019768,Invoice,2023-04-28,2023-04,1401,D/N 4147,LPG,LPG,6,2123.37,318.51,2441.88,False,True,,Pulled from vw_clean_transactions
+TWK002,00019768,Invoice,2023-04-28,2023-04,1901,D/N 4147,LPG,LPG,15,7204.3,1080.64,8284.94,False,True,,Pulled from vw_clean_transactions
+TWK002,00019769,Invoice,2023-04-28,2023-04,14.1,D/N 4147 EMPTIES,CYL,CYL,6,3120,468,3588,True,False,,Pulled from vw_clean_transactions
+TWK002,00019769,Invoice,2023-04-28,2023-04,19.1,D/N 4147 EMPTIES,CYL,CYL,15,7800,1170,8970,True,False,,Pulled from vw_clean_transactions
+TWK002,00019977,Invoice,2023-05-05,2023-05,14.4,D/N 4172,LPG,LPG,6,1841.43,276.21,2117.64,False,True,,Pulled from vw_clean_transactions
+TWK002,00019977,Invoice,2023-05-05,2023-05,19.3,D/N 4172,LPG,LPG,10,4165.13,624.77,4789.9,False,True,,Pulled from vw_clean_transactions
+TWK002,00019977,Invoice,2023-05-05,2023-05,9.3,D/N 4172,LPG,LPG,15,2959.43,443.92,3403.35,False,True,,Pulled from vw_clean_transactions
+TWK002,00019977,Invoice,2023-05-05,2023-05,S.3,D/N 4172,LPG,LPG,2,2104.49,315.67,2420.16,False,True,,Pulled from vw_clean_transactions
+TWK002,00019985,Invoice,2023-05-05,2023-05,14.1,D/N 4172 EMPTIES,CYL,CYL,6,3120,468,3588,True,False,,Pulled from vw_clean_transactions
+TWK002,00019985,Invoice,2023-05-05,2023-05,19.1,D/N 4172 EMPTIES,CYL,CYL,10,5200,780,5980,True,False,,Pulled from vw_clean_transactions
+TWK002,00019985,Invoice,2023-05-05,2023-05,9.1,D/N 4172 EMPTIES,CYL,CYL,15,7800,1170,8970,True,False,,Pulled from vw_clean_transactions
+TWK002,00019985,Invoice,2023-05-05,2023-05,S.1,D/N 4172 EMPTIES,CYL,CYL,2,1040,156,1196,True,False,,Pulled from vw_clean_transactions
+TWK002,00004917,Crd Note,2023-05-11,2023-05,14.4,D/N 4172,LPG,LPG,-6,-1841.43,-276.21,-2117.64,False,True,19977,Pulled from vw_clean_transactions
+TWK002,00004917,Crd Note,2023-05-11,2023-05,19.3,D/N 4172,LPG,LPG,-10,-4165.13,-624.77,-4789.9,False,True,19977,Pulled from vw_clean_transactions
+TWK002,00004917,Crd Note,2023-05-11,2023-05,9.3,D/N 4172,LPG,LPG,-15,-2959.43,-443.92,-3403.35,False,True,19977,Pulled from vw_clean_transactions
+TWK002,00004917,Crd Note,2023-05-11,2023-05,S.3,D/N 4172,LPG,LPG,-2,-2104.49,-315.67,-2420.16,False,True,19977,Pulled from vw_clean_transactions
+TWK002,00004918,Crd Note,2023-05-11,2023-05,14.1,D/N 4172 EMPTIES,CYL,CYL,-6,-3120,-468,-3588,True,False,19985,Pulled from vw_clean_transactions
+TWK002,00004918,Crd Note,2023-05-11,2023-05,19.1,D/N 4172 EMPTIES,CYL,CYL,-10,-5200,-780,-5980,True,False,19985,Pulled from vw_clean_transactions
+TWK002,00004918,Crd Note,2023-05-11,2023-05,9.1,D/N 4172 EMPTIES,CYL,CYL,-15,-7800,-1170,-8970,True,False,19985,Pulled from vw_clean_transactions
+TWK002,00004918,Crd Note,2023-05-11,2023-05,S.1,D/N 4172 EMPTIES,CYL,CYL,-2,-1040,-156,-1196,True,False,19985,Pulled from vw_clean_transactions
+TWK002,00005038,Crd Note,2023-05-23,2023-05,19.1,D/N 4777 EMPTIES,CYL,CYL,-1,-300,-45,-345,True,False,20607,Pulled from vw_clean_transactions
+TWK002,00005038,Crd Note,2023-05-23,2023-05,9.1,D/N 4777 EMPTIES,CYL,CYL,-8,-2400,-360,-2760,True,False,20607,Pulled from vw_clean_transactions
+TWK002,00020606,Invoice,2023-05-23,2023-05,9.4,D/N 4777,LPG,LPG,10,1973,295.95,2268.95,False,True,,Pulled from vw_clean_transactions
+TWK002,00020607,Invoice,2023-05-23,2023-05,9.1,D/N 4777 EMPTIES,CYL,CYL,10,3000,450,3450,True,False,,Pulled from vw_clean_transactions
+TWK002,00005155,Crd Note,2023-06-07,2023-06,19.1,D/N 4675 EMPTIES,CYL,CYL,-2,-600,-90,-690,True,False,21123,Pulled from vw_clean_transactions
+TWK002,00005155,Crd Note,2023-06-07,2023-06,9.1,D/N 4675 EMPTIES,CYL,CYL,-13,-3900,-585,-4485,True,False,21123,Pulled from vw_clean_transactions
+TWK002,00021122,Invoice,2023-06-07,2023-06,9.3,D/N 4799,LPG,LPG,15,3035.7,455.35,3491.05,False,True,,Pulled from vw_clean_transactions
+TWK002,00021123,Invoice,2023-06-07,2023-06,9.1,D/N 4675 EMPTIES,CYL,CYL,15,4500,675,5175,True,False,,Pulled from vw_clean_transactions
+TWK002,00005308,Crd Note,2023-06-22,2023-06,14.1,D/N 5238 EMPTIES,CYL,CYL,-1,-300,-45,-345,True,False,21597,Pulled from vw_clean_transactions
+TWK002,00005308,Crd Note,2023-06-22,2023-06,19.1,D/N 5238 EMPTIES,CYL,CYL,-3,-900,-135,-1035,True,False,21597,Pulled from vw_clean_transactions
+TWK002,00005308,Crd Note,2023-06-22,2023-06,9.1,D/N 5238 EMPTIES,CYL,CYL,-15,-4500,-675,-5175,True,False,21597,Pulled from vw_clean_transactions
+TWK002,00021594,Invoice,2023-06-22,2023-06,9.4,D/N 5238,LPG,LPG,20,4047.6,607.14,4654.74,False,True,,Pulled from vw_clean_transactions
+TWK002,00021597,Invoice,2023-06-22,2023-06,9.1,D/N 5238 EMPTIES,CYL,CYL,20,6000,900,6900,True,False,,Pulled from vw_clean_transactions
+TWK002,00005443,Crd Note,2023-07-05,2023-07,14.1,D/N 4869 EMPTIES,CYL,CYL,-2,-600,-90,-690,True,False,22058,Pulled from vw_clean_transactions
+TWK002,00005443,Crd Note,2023-07-05,2023-07,19.1,D/N 4869 EMPTIES,CYL,CYL,-6,-1800,-270,-2070,True,False,22058,Pulled from vw_clean_transactions
+TWK002,00005443,Crd Note,2023-07-05,2023-07,9.1,D/N 4869 EMPTIES,CYL,CYL,-10,-3000,-450,-3450,True,False,22058,Pulled from vw_clean_transactions
+TWK002,00022058,Invoice,2023-07-05,2023-07,14.1,D/N 4869 EMPTIES,CYL,CYL,5,1500,225,1725,True,False,,Pulled from vw_clean_transactions
+TWK002,00022058,Invoice,2023-07-05,2023-07,19.1,D/N 4869 EMPTIES,CYL,CYL,5,1500,225,1725,True,False,,Pulled from vw_clean_transactions
+TWK002,00022058,Invoice,2023-07-05,2023-07,9.1,D/N 4869 EMPTIES,CYL,CYL,10,3000,450,3450,True,False,,Pulled from vw_clean_transactions
+TWK002,00022058,Invoice,2023-07-05,2023-07,S.1,D/N 4869 EMPTIES,CYL,CYL,1,300,45,345,True,False,,Pulled from vw_clean_transactions
+TWK002,00022060,Invoice,2023-07-05,2023-07,14.3,D/N 4869,LPG,LPG,5,1418.26,212.74,1631,False,True,,Pulled from vw_clean_transactions
+TWK002,00022060,Invoice,2023-07-05,2023-07,19.3,D/N 4869,LPG,LPG,5,1924.78,288.72,2213.5,False,True,,Pulled from vw_clean_transactions
+TWK002,00022060,Invoice,2023-07-05,2023-07,9.3,D/N 4869,LPG,LPG,10,1823.48,273.52,2097,False,True,,Pulled from vw_clean_transactions
+TWK002,00022060,Invoice,2023-07-05,2023-07,S.3,D/N 4869,LPG,LPG,1,972.52,145.88,1118.4,False,True,,Pulled from vw_clean_transactions
+TWK002,00005498,Crd Note,2023-07-11,2023-07,9.1,D/N 4888 EMPTIES,CYL,CYL,-20,-6000,-900,-6900,True,False,22268,Pulled from vw_clean_transactions
+TWK002,00022255,Invoice,2023-07-11,2023-07,19.4,D/N 4888,LPG,LPG,5,1924.78,288.72,2213.5,False,True,,Pulled from vw_clean_transactions
+TWK002,00022255,Invoice,2023-07-11,2023-07,9.3,D/N 4888,LPG,LPG,15,2735.22,410.28,3145.5,False,True,,Pulled from vw_clean_transactions
+TWK002,00022268,Invoice,2023-07-11,2023-07,19.1,D/N 4888 EMPTIES,CYL,CYL,5,1500,225,1725,True,False,,Pulled from vw_clean_transactions
+TWK002,00022268,Invoice,2023-07-11,2023-07,9.1,D/N 4888 EMPTIES,CYL,CYL,15,4500,675,5175,True,False,,Pulled from vw_clean_transactions
+TWK002,00005603,Crd Note,2023-07-20,2023-07,14.1,D/N 5518 EMPTIES,CYL,CYL,-3,-900,-135,-1035,True,False,22627,Pulled from vw_clean_transactions
+TWK002,00005603,Crd Note,2023-07-20,2023-07,19.1,D/N 5518 EMPTIES,CYL,CYL,-11,-3300,-495,-3795,True,False,22627,Pulled from vw_clean_transactions
+TWK002,00005603,Crd Note,2023-07-20,2023-07,9.1,D/N 5518 EMPTIES,CYL,CYL,-8,-2400,-360,-2760,True,False,22627,Pulled from vw_clean_transactions
+TWK002,00022626,Invoice,2023-07-20,2023-07,19.3,D/N 5518,LPG,LPG,10,3849.57,577.44,4427.01,False,True,,Pulled from vw_clean_transactions
+TWK002,00022626,Invoice,2023-07-20,2023-07,9.3,D/N 5518,LPG,LPG,20,3646.96,547.04,4194,False,True,,Pulled from vw_clean_transactions
+TWK002,00022627,Invoice,2023-07-20,2023-07,19.1,D/N 5518 EMPTIES,CYL,CYL,10,3000,450,3450,True,False,,Pulled from vw_clean_transactions
+TWK002,00022627,Invoice,2023-07-20,2023-07,9.1,D/N 5518 EMPTIES,CYL,CYL,20,6000,900,6900,True,False,,Pulled from vw_clean_transactions
+TWK002,00005632,Crd Note,2023-07-23,2023-07,9.1,D/N 5529 EMPTIES,CYL,CYL,-6,-1800,-270,-2070,True,False,22739,Pulled from vw_clean_transactions
+TWK002,00022702,Invoice,2023-07-23,2023-07,1901,D/N 5529,LPG,LPG,5,1924.78,288.72,2213.5,False,True,,Pulled from vw_clean_transactions
+TWK002,00022739,Invoice,2023-07-23,2023-07,19.1,D/N 5529 EMPTIES,CYL,CYL,5,1500,225,1725,True,False,,Pulled from vw_clean_transactions
+TWK002,00005768,Crd Note,2023-08-02,2023-08,19.1,D/N 5865 EMPTIES,CYL,CYL,-1,-300,-45,-345,True,False,23077,Pulled from vw_clean_transactions
+TWK002,00005768,Crd Note,2023-08-02,2023-08,9.1,D/N 5865 EMPTIES,CYL,CYL,-13,-3900,-585,-4485,True,False,23077,Pulled from vw_clean_transactions
+TWK002,00023075,Invoice,2023-08-02,2023-08,9.4,D/N 5865,LPG,LPG,20,3429.4,514.41,3943.81,False,True,,Pulled from vw_clean_transactions
+TWK002,00023077,Invoice,2023-08-02,2023-08,9.1,D/N 5865 EMPTIES,CYL,CYL,20,6000,900,6900,True,False,,Pulled from vw_clean_transactions
+TWK002,00023311,Invoice,2023-08-09,2023-08,1901,D/N 5592,LPG,LPG,5,1809.95,271.49,2081.44,False,True,,Pulled from vw_clean_transactions
+TWK002,00023311,Invoice,2023-08-09,2023-08,901,D/N 5592,LPG,LPG,15,2572.05,385.81,2957.86,False,True,,Pulled from vw_clean_transactions
+TWK002,00023311,Invoice,2023-08-09,2023-08,S01,D/N 5592,LPG,LPG,2,1829,274.35,2103.35,False,True,,Pulled from vw_clean_transactions
+TWK002,00023312,Invoice,2023-08-09,2023-08,19.1,D/N 5592 EMPTIES,CYL,CYL,5,1500,225,1725,True,False,,Pulled from vw_clean_transactions
+TWK002,00023312,Invoice,2023-08-09,2023-08,9.1,D/N 5592 EMPTIES,CYL,CYL,15,4500,675,5175,True,False,,Pulled from vw_clean_transactions
+TWK002,00023312,Invoice,2023-08-09,2023-08,S.1,D/N 5592 EMPTIES,CYL,CYL,2,600,90,690,True,False,,Pulled from vw_clean_transactions
+TWK002,00005845,Crd Note,2023-08-10,2023-08,19.1,D/N 5592 EMPTIES,CYL,CYL,-3,-900,-135,-1035,True,False,23312,Pulled from vw_clean_transactions
+TWK002,00005845,Crd Note,2023-08-10,2023-08,9.1,D/N 5592 EMPTIES,CYL,CYL,-11,-3300,-495,-3795,True,False,23312,Pulled from vw_clean_transactions
+TWK002,00005845,Crd Note,2023-08-10,2023-08,S.1,D/N 5592 EMPTIES,CYL,CYL,-2,-600,-90,-690,True,False,23312,Pulled from vw_clean_transactions
+TWK002,00005875,Crd Note,2023-08-13,2023-08,9.3,D/N 5592,LPG,LPG,-1,-171.47,-25.72,-197.19,False,True,23311,Pulled from vw_clean_transactions
+TWK002,00006078,Crd Note,2023-08-31,2023-08,19.1,D/N 6423 EMPTIES,CYL,CYL,-10,-3000,-450,-3450,True,False,24012,Pulled from vw_clean_transactions
+TWK002,00006078,Crd Note,2023-08-31,2023-08,9.1,D/N 6423 EMPTIES,CYL,CYL,-20,-6000,-900,-6900,True,False,24012,Pulled from vw_clean_transactions
+TWK002,00024011,Invoice,2023-08-31,2023-08,19.3,D/N 6423,LPG,LPG,10,3809.9,571.49,4381.39,False,True,,Pulled from vw_clean_transactions
+TWK002,00024011,Invoice,2023-08-31,2023-08,9.3,D/N 6423,LPG,LPG,20,3609.39,541.41,4150.8,False,True,,Pulled from vw_clean_transactions
+TWK002,00024012,Invoice,2023-08-31,2023-08,19.1,D/N 6423 EMPTIES,CYL,CYL,10,3000,450,3450,True,False,,Pulled from vw_clean_transactions
+TWK002,00024012,Invoice,2023-08-31,2023-08,9.1,D/N 6423 EMPTIES,CYL,CYL,20,6000,900,6900,True,False,,Pulled from vw_clean_transactions
+TWK002,00006134,Crd Note,2023-09-05,2023-09,14.1,D/N 6392 EMPTIES,CYL,CYL,-1,-300,-45,-345,True,False,24202,Pulled from vw_clean_transactions
+TWK002,00006134,Crd Note,2023-09-05,2023-09,19.1,D/N 6392 EMPTIES,CYL,CYL,-5,-1500,-225,-1725,True,False,24202,Pulled from vw_clean_transactions
+TWK002,00006134,Crd Note,2023-09-05,2023-09,9.1,D/N 6392 EMPTIES,CYL,CYL,-14,-4200,-630,-4830,True,False,24202,Pulled from vw_clean_transactions
+TWK002,00024201,Invoice,2023-09-05,2023-09,1901,D/N 6392,LPG,LPG,10,3809.9,571.49,4381.39,False,True,,Pulled from vw_clean_transactions
+TWK002,00024201,Invoice,2023-09-05,2023-09,9.3,D/N 6392,LPG,LPG,20,3609.39,541.41,4150.8,False,True,,Pulled from vw_clean_transactions
+TWK002,00024202,Invoice,2023-09-05,2023-09,19.1,D/N 6392 EMPTIES,CYL,CYL,10,3000,450,3450,True,False,,Pulled from vw_clean_transactions
+TWK002,00024202,Invoice,2023-09-05,2023-09,9.1,D/N 6392 EMPTIES,CYL,CYL,20,6000,900,6900,True,False,,Pulled from vw_clean_transactions
+TWK002,00006387,Crd Note,2023-10-01,2023-10,14.1,D/N 6492 EMPTIES,CYL,CYL,-2,-600,-90,-690,True,False,25043,Pulled from vw_clean_transactions
+TWK002,00006387,Crd Note,2023-10-01,2023-10,19.1,D/N 6492 EMPTIES,CYL,CYL,-5,-1500,-225,-1725,True,False,25043,Pulled from vw_clean_transactions
+TWK002,00006387,Crd Note,2023-10-01,2023-10,9.1,D/N 6492 EMPTIES,CYL,CYL,-25,-7500,-1125,-8625,True,False,25043,Pulled from vw_clean_transactions
+TWK002,00025042,Invoice,2023-10-01,2023-10,14.3,D/N 6492,LPG,LPG,2,582.84,87.43,670.27,False,True,,Pulled from vw_clean_transactions
+TWK002,00025042,Invoice,2023-10-01,2023-10,19.3,D/N 6492,LPG,LPG,5,1977.5,296.62,2274.12,False,True,,Pulled from vw_clean_transactions
+TWK002,00025042,Invoice,2023-10-01,2023-10,9.3,D/N 6492,LPG,LPG,25,4683.5,702.53,5386.03,False,True,,Pulled from vw_clean_transactions
+TWK002,00025043,Invoice,2023-10-01,2023-10,14.1,D/N 6492 EMPTIES,CYL,CYL,2,600,90,690,True,False,,Pulled from vw_clean_transactions
+TWK002,00025043,Invoice,2023-10-01,2023-10,19.1,D/N 6492 EMPTIES,CYL,CYL,5,1500,225,1725,True,False,,Pulled from vw_clean_transactions
+TWK002,00025043,Invoice,2023-10-01,2023-10,9.1,D/N 6492 EMPTIES,CYL,CYL,25,7500,1125,8625,True,False,,Pulled from vw_clean_transactions
+TWK002,00006461,Crd Note,2023-10-08,2023-10,19.1,D/N 6266 EMPTIES,CYL,CYL,-10,-3000,-450,-3450,True,False,24202,Pulled from vw_clean_transactions
+TWK002,00006462,Crd Note,2023-10-08,2023-10,19.1,D/N 6266 EMPTIES,CYL,CYL,-3,-900,-135,-1035,True,False,25294,Pulled from vw_clean_transactions
+TWK002,00006462,Crd Note,2023-10-08,2023-10,9.1,D/N 6266 EMPTIES,CYL,CYL,-9,-2700,-405,-3105,True,False,25294,Pulled from vw_clean_transactions
+TWK002,00006462,Crd Note,2023-10-08,2023-10,S.1,D/N 6266 EMPTIES,CYL,CYL,-1,-300,-45,-345,True,False,25294,Pulled from vw_clean_transactions
+TWK002,00025293,Invoice,2023-10-08,2023-10,19.3,D/N 6266,LPG,LPG,10,4313.5,647.03,4960.53,False,True,,Pulled from vw_clean_transactions
+TWK002,00025293,Invoice,2023-10-08,2023-10,S01,D/N 6266,LPG,LPG,2,2179.42,326.91,2506.33,False,True,,Pulled from vw_clean_transactions
+TWK002,00025294,Invoice,2023-10-08,2023-10,19.1,D/N 6266 EMPTIES,CYL,CYL,10,3000,450,3450,True,False,,Pulled from vw_clean_transactions
+TWK002,00025294,Invoice,2023-10-08,2023-10,S.1,D/N 6266 EMPTIES,CYL,CYL,2,600,90,690,True,False,,Pulled from vw_clean_transactions
+TWK002,00006667,Crd Note,2023-10-30,2023-10,14.1,D/N 6758 EMPTIES,CYL,CYL,-1,-300,-45,-345,True,False,26033,Pulled from vw_clean_transactions
+TWK002,00006667,Crd Note,2023-10-30,2023-10,19.1,D/N 6758 EMPTIES,CYL,CYL,-8,-2400,-360,-2760,True,False,26033,Pulled from vw_clean_transactions
+TWK002,00006667,Crd Note,2023-10-30,2023-10,9.1,D/N 6758 EMPTIES,CYL,CYL,-22,-6600,-990,-7590,True,False,26033,Pulled from vw_clean_transactions
+TWK002,00006667,Crd Note,2023-10-30,2023-10,S.1,D/N 6758 EMPTIES,CYL,CYL,-1,-300,-45,-345,True,False,26033,Pulled from vw_clean_transactions
+TWK002,00026027,Invoice,2023-10-30,2023-10,19.4,D/N 6758,LPG,LPG,7,3019.43,452.91,3472.34,False,True,,Pulled from vw_clean_transactions
+TWK002,00026027,Invoice,2023-10-30,2023-10,1901,D/N 6758,LPG,LPG,8,3450.78,517.62,3968.4,False,True,,Pulled from vw_clean_transactions
+TWK002,00026027,Invoice,2023-10-30,2023-10,9.4,D/N 6758,LPG,LPG,25,5108.06,766.21,5874.27,False,True,,Pulled from vw_clean_transactions
+TWK002,00026033,Invoice,2023-10-30,2023-10,19.1,D/N 6758 EMPTIES,CYL,CYL,15,4500,675,5175,True,False,,Pulled from vw_clean_transactions
+TWK002,00026033,Invoice,2023-10-30,2023-10,9.1,D/N 6758 EMPTIES,CYL,CYL,25,7500,1125,8625,True,False,,Pulled from vw_clean_transactions
+TWK002,00006810,Crd Note,2023-11-13,2023-11,14.1,D/N 6859 EMPTIES,CYL,CYL,-2,-600,-90,-690,True,False,26554,Pulled from vw_clean_transactions
+TWK002,00006810,Crd Note,2023-11-13,2023-11,19.1,D/N 6859 EMPTIES,CYL,CYL,-8,-2400,-360,-2760,True,False,26554,Pulled from vw_clean_transactions
+TWK002,00006810,Crd Note,2023-11-13,2023-11,9.1,D/N 6859 EMPTIES,CYL,CYL,-18,-5400,-810,-6210,True,False,26554,Pulled from vw_clean_transactions
+TWK002,00006810,Crd Note,2023-11-13,2023-11,D.1,D/N 6859 EMPTIES,CYL,CYL,-1,-300,-45,-345,True,False,26554,Pulled from vw_clean_transactions
+TWK002,00006816,Crd Note,2023-11-13,2023-11,19.4,QTY,LPG,LPG,-5,-2262.65,-339.4,-2602.05,False,True,26553,Pulled from vw_clean_transactions
+TWK002,00006816,Crd Note,2023-11-13,2023-11,9.3,QTY,LPG,LPG,-18,-3858.47,-578.77,-4437.24,False,True,26553,Pulled from vw_clean_transactions
+TWK002,00006816,Crd Note,2023-11-13,2023-11,9.4,QTY,LPG,LPG,-2,-428.73,-64.31,-493.04,False,True,26553,Pulled from vw_clean_transactions
+TWK002,00026553,Invoice,2023-11-13,2023-11,19.4,D/N 6859,LPG,LPG,5,2262.65,339.4,2602.05,False,True,,Pulled from vw_clean_transactions
+TWK002,00026553,Invoice,2023-11-13,2023-11,9.3,D/N 6859,LPG,LPG,18,3858.42,578.76,4437.18,False,True,,Pulled from vw_clean_transactions
+TWK002,00026553,Invoice,2023-11-13,2023-11,9.4,D/N 6859,LPG,LPG,2,428.71,64.31,493.02,False,True,,Pulled from vw_clean_transactions
+TWK002,00026554,Invoice,2023-11-13,2023-11,19.1,D/N 6859 EMPTIES,CYL,CYL,5,1500,225,1725,True,False,,Pulled from vw_clean_transactions
+TWK002,00026554,Invoice,2023-11-13,2023-11,9.1,D/N 6859 EMPTIES,CYL,CYL,25,7500,1125,8625,True,False,,Pulled from vw_clean_transactions
+TWK002,00026577,Invoice,2023-11-13,2023-11,19.4,D/N 6859,LPG,LPG,5,2262.65,339.4,2602.05,False,True,,Pulled from vw_clean_transactions
+TWK002,00026577,Invoice,2023-11-13,2023-11,9.3,D/N 6859,LPG,LPG,18,3858.42,578.76,4437.18,False,True,,Pulled from vw_clean_transactions
+TWK002,00026577,Invoice,2023-11-13,2023-11,9.4,D/N 6859,LPG,LPG,2,428.71,64.31,493.02,False,True,,Pulled from vw_clean_transactions
+TWK002,00026577,Invoice,2023-11-13,2023-11,9.4,D/N 6859,LPG,LPG,5,1071.77,160.77,1232.54,False,True,,Pulled from vw_clean_transactions
+TWK002,00006990,Crd Note,2023-12-05,2023-12,14.1,D/N 7111 EMPTIES,CYL,CYL,-1,-300,-45,-345,True,False,27341,Pulled from vw_clean_transactions
+TWK002,00006990,Crd Note,2023-12-05,2023-12,19.1,D/N 7111 EMPTIES,CYL,CYL,-17,-5100,-765,-5865,True,False,27341,Pulled from vw_clean_transactions
+TWK002,00006990,Crd Note,2023-12-05,2023-12,9.1,D/N 7111 EMPTIES,CYL,CYL,-25,-7500,-1125,-8625,True,False,27341,Pulled from vw_clean_transactions
+TWK002,00006990,Crd Note,2023-12-05,2023-12,S.1,D/N 7111 EMPTIES,CYL,CYL,-4,-1200,-180,-1380,True,False,27341,Pulled from vw_clean_transactions
+TWK002,00027340,Invoice,2023-12-05,2023-12,19.3,D/N 7111,LPG,LPG,18,8145.55,1221.83,9367.38,False,True,,Pulled from vw_clean_transactions
+TWK002,00027340,Invoice,2023-12-05,2023-12,9.3,D/N 7111,LPG,LPG,34,7288.12,1093.22,8381.34,False,True,,Pulled from vw_clean_transactions
+TWK002,00027340,Invoice,2023-12-05,2023-12,S.3,D/N 7111,LPG,LPG,4,4572.94,685.94,5258.88,False,True,,Pulled from vw_clean_transactions
+TWK002,00027341,Invoice,2023-12-05,2023-12,19.1,D/N 7111 EMPTIES,CYL,CYL,18,5400,810,6210,True,False,,Pulled from vw_clean_transactions
+TWK002,00027341,Invoice,2023-12-05,2023-12,9.1,D/N 7111 EMPTIES,CYL,CYL,34,10200,1530,11730,True,False,,Pulled from vw_clean_transactions
+TWK002,00027341,Invoice,2023-12-05,2023-12,S.1,D/N 7111 EMPTIES,CYL,CYL,4,1200,180,1380,True,False,,Pulled from vw_clean_transactions
+TWK002,00007127,Crd Note,2023-12-18,2023-12,19.1,D/N 7529 EMPTIES,CYL,CYL,-7,-2100,-315,-2415,True,False,27765,Pulled from vw_clean_transactions
+TWK002,00007127,Crd Note,2023-12-18,2023-12,9.1,D/N 7529 EMPTIES,CYL,CYL,-18,-5400,-810,-6210,True,False,27765,Pulled from vw_clean_transactions
+TWK002,00027764,Invoice,2023-12-18,2023-12,19.3,D/N 7529,LPG,LPG,10,4712,706.8,5418.8,False,True,,Pulled from vw_clean_transactions
+TWK002,00027764,Invoice,2023-12-18,2023-12,9.4,D/N 7529,LPG,LPG,30,6696,1004.4,7700.4,False,True,,Pulled from vw_clean_transactions
+TWK002,00027765,Invoice,2023-12-18,2023-12,19.1,D/N 7529 EMPTIES,CYL,CYL,10,3000,450,3450,True,False,,Pulled from vw_clean_transactions
+TWK002,00027765,Invoice,2023-12-18,2023-12,9.1,D/N 7529 EMPTIES,CYL,CYL,30,9000,1350,10350,True,False,,Pulled from vw_clean_transactions
+TWK002,00007332,Crd Note,2024-01-17,2024-01,19.1,D/N 7733 EMPTIES,CYL,CYL,-10,-3000,-450,-3450,True,False,28766,Pulled from vw_clean_transactions
+TWK002,00007332,Crd Note,2024-01-17,2024-01,9.1,D/N 7733 EMPTIES,CYL,CYL,-15,-4500,-675,-5175,True,False,28766,Pulled from vw_clean_transactions
+TWK002,00028765,Invoice,2024-01-17,2024-01,19.4,D/N 7733,LPG,LPG,11,5201.35,780.2,5981.55,False,True,,Pulled from vw_clean_transactions
+TWK002,00028765,Invoice,2024-01-17,2024-01,1901,D/N 7733,LPG,LPG,4,1891.4,283.71,2175.11,False,True,,Pulled from vw_clean_transactions
+TWK002,00028765,Invoice,2024-01-17,2024-01,9.4,D/N 7733,LPG,LPG,10,2239.8,335.97,2575.77,False,True,,Pulled from vw_clean_transactions
+TWK002,00028766,Invoice,2024-01-17,2024-01,19.1,D/N 7733 EMPTIES,CYL,CYL,15,4500,675,5175,True,False,,Pulled from vw_clean_transactions
+TWK002,00028766,Invoice,2024-01-17,2024-01,9.1,D/N 7733 EMPTIES,CYL,CYL,10,3000,450,3450,True,False,,Pulled from vw_clean_transactions
+TWK002,00007410,Crd Note,2024-01-30,2024-01,14.1,D/N 7370 EMPTIES,CYL,CYL,-3,-900,-135,-1035,True,False,29141,Pulled from vw_clean_transactions
+TWK002,00007410,Crd Note,2024-01-30,2024-01,19.1,D/N 7370 EMPTIES,CYL,CYL,-23,-6900,-1035,-7935,True,False,29141,Pulled from vw_clean_transactions
+TWK002,00007410,Crd Note,2024-01-30,2024-01,9.1,D/N 7370 EMPTIES,CYL,CYL,-27,-8100,-1215,-9315,True,False,29141,Pulled from vw_clean_transactions
+TWK002,00029140,Invoice,2024-01-30,2024-01,19.4,D/N 7370,LPG,LPG,15,7119,1067.85,8186.85,False,True,,Pulled from vw_clean_transactions
+TWK002,00029140,Invoice,2024-01-30,2024-01,9.4,D/N 7370,LPG,LPG,25,5620.25,843.04,6463.29,False,True,,Pulled from vw_clean_transactions
+TWK002,00029141,Invoice,2024-01-30,2024-01,19.1,D/N 7370 EMPTIES,CYL,CYL,15,4500,675,5175,True,False,,Pulled from vw_clean_transactions
+TWK002,00029141,Invoice,2024-01-30,2024-01,9.1,D/N 7370 EMPTIES,CYL,CYL,25,7500,1125,8625,True,False,,Pulled from vw_clean_transactions
+TWK002,00007547,Crd Note,2024-02-25,2024-02,19.1,D/N 7391 EMPTIES,CYL,CYL,-9,-4680,-702,-5382,True,False,29890,Pulled from vw_clean_transactions
+TWK002,00007547,Crd Note,2024-02-25,2024-02,9.1,D/N 7391 EMPTIES,CYL,CYL,-18,-9360,-1404,-10764,True,False,29890,Pulled from vw_clean_transactions
+TWK002,00029889,Invoice,2024-02-25,2024-02,19.4,D/N 7391,LPG,LPG,10,4806.2,720.93,5527.13,False,True,,Pulled from vw_clean_transactions
+TWK002,00029889,Invoice,2024-02-25,2024-02,9.4,D/N 7391,LPG,LPG,20,5075,761.25,5836.25,False,True,,Pulled from vw_clean_transactions
+TWK002,00029890,Invoice,2024-02-25,2024-02,19.1,D/N 7391 EMPTIES,CYL,CYL,10,5200,780,5980,True,False,,Pulled from vw_clean_transactions
+TWK002,00029890,Invoice,2024-02-25,2024-02,9.1,D/N 7391 EMPTIES,CYL,CYL,20,10400,1560,11960,True,False,,Pulled from vw_clean_transactions
+TWK002,00007848,Crd Note,2024-03-26,2024-03,19.1,30762- EMPTY,CYL,CYL,-15,-7800,-1170,-8970,True,False,30763,Pulled from vw_clean_transactions
+TWK002,00007848,Crd Note,2024-03-26,2024-03,9.1,30762- EMPTY,CYL,CYL,-25,-13000,-1950,-14950,True,False,30763,Pulled from vw_clean_transactions
+TWK002,00030762,Invoice,2024-03-26,2024-03,19.3,DN#8075 SO#8034,LPG,LPG,11,5346.66,802,6148.66,False,True,,Pulled from vw_clean_transactions
+TWK002,00030762,Invoice,2024-03-26,2024-03,1901,DN#8075 SO#8034,LPG,LPG,4,1944.24,291.64,2235.88,False,True,,Pulled from vw_clean_transactions
+TWK002,00030762,Invoice,2024-03-26,2024-03,9.4,DN#8075 SO#8034,LPG,LPG,25,5756,863.4,6619.4,False,True,,Pulled from vw_clean_transactions
+TWK002,00030763,Invoice,2024-03-26,2024-03,19.1,30762- EMPTY,CYL,CYL,15,7800,1170,8970,True,False,,Pulled from vw_clean_transactions
+TWK002,00030763,Invoice,2024-03-26,2024-03,9.1,30762- EMPTY,CYL,CYL,25,13000,1950,14950,True,False,,Pulled from vw_clean_transactions
+TWK002,00008120,Crd Note,2024-04-17,2024-04,14.1,31404- EMPTY,CYL,CYL,-2,-1040,-156,-1196,True,False,31405,Pulled from vw_clean_transactions
+TWK002,00008120,Crd Note,2024-04-17,2024-04,19.1,31404- EMPTY,CYL,CYL,-7,-3640,-546,-4186,True,False,31405,Pulled from vw_clean_transactions
+TWK002,00008120,Crd Note,2024-04-17,2024-04,9.1,31404- EMPTY,CYL,CYL,-17,-8840,-1326,-10166,True,False,31405,Pulled from vw_clean_transactions
+TWK002,00008120,Crd Note,2024-04-17,2024-04,S.1,31404- EMPTY,CYL,CYL,-2,-1040,-156,-1196,True,False,31405,Pulled from vw_clean_transactions
+TWK002,00031404,Invoice,2024-04-17,2024-04,19.3,DN#8675 SO#8229,LPG,LPG,4,1933.6,290.04,2223.64,False,True,,Pulled from vw_clean_transactions
+TWK002,00031404,Invoice,2024-04-17,2024-04,1901,DN#8675 SO#8229,LPG,LPG,6,2900.4,435.06,3335.46,False,True,,Pulled from vw_clean_transactions
+TWK002,00031404,Invoice,2024-04-17,2024-04,9.4,DN#8675 SO#8229,LPG,LPG,20,4579.6,686.94,5266.54,False,True,,Pulled from vw_clean_transactions
+TWK002,00031405,Invoice,2024-04-17,2024-04,19.1,31404- EMPTY,CYL,CYL,10,5200,780,5980,True,False,,Pulled from vw_clean_transactions
+TWK002,00031405,Invoice,2024-04-17,2024-04,9.1,31404- EMPTY,CYL,CYL,20,10400,1560,11960,True,False,,Pulled from vw_clean_transactions
+TWK002,00008324,Crd Note,2024-05-05,2024-05,19.1,31907 - EMPTY,CYL,CYL,-8,-4160,-624,-4784,True,False,31908,Pulled from vw_clean_transactions
+TWK002,00008324,Crd Note,2024-05-05,2024-05,9.1,31907 - EMPTY,CYL,CYL,-20,-10400,-1560,-11960,True,False,31908,Pulled from vw_clean_transactions
+TWK002,00031907,Invoice,2024-05-05,2024-05,1901,DN#8907 SO#8339,LPG,LPG,10,4767.9,715.19,5483.09,False,True,,Pulled from vw_clean_transactions
+TWK002,00031907,Invoice,2024-05-05,2024-05,901,DN#8907 SO#8339,LPG,LPG,20,4516.8,677.52,5194.32,False,True,,Pulled from vw_clean_transactions
+TWK002,00031908,Invoice,2024-05-05,2024-05,19.1,31907 - EMPTY,CYL,CYL,10,5200,780,5980,True,False,,Pulled from vw_clean_transactions
+TWK002,00031908,Invoice,2024-05-05,2024-05,9.1,31907 - EMPTY,CYL,CYL,20,10400,1560,11960,True,False,,Pulled from vw_clean_transactions
+TWK002,00008530,Crd Note,2024-05-23,2024-05,14.1,32419-EMPTY,CYL,CYL,-1,-520,-78,-598,True,False,32425,Pulled from vw_clean_transactions
+TWK002,00008530,Crd Note,2024-05-23,2024-05,19.1,32419-EMPTY,CYL,CYL,-9,-4680,-702,-5382,True,False,32425,Pulled from vw_clean_transactions
+TWK002,00008530,Crd Note,2024-05-23,2024-05,9.1,32419-EMPTY,CYL,CYL,-22,-11440,-1716,-13156,True,False,32425,Pulled from vw_clean_transactions
+TWK002,00032419,Invoice,2024-05-23,2024-05,1901,DN#8920,LPG,LPG,16,7631.2,1144.68,8775.88,False,True,,Pulled from vw_clean_transactions
+TWK002,00032419,Invoice,2024-05-23,2024-05,9.4,DN#8920,LPG,LPG,30,6777.9,1016.69,7794.59,False,True,,Pulled from vw_clean_transactions
+TWK002,00032419,Invoice,2024-05-23,2024-05,S.4,DN#8920,LPG,LPG,1,1204.94,180.74,1385.68,False,True,,Pulled from vw_clean_transactions
+TWK002,00032425,Invoice,2024-05-23,2024-05,19.1,32419-EMPTY,CYL,CYL,16,8320,1248,9568,True,False,,Pulled from vw_clean_transactions
+TWK002,00032425,Invoice,2024-05-23,2024-05,9.1,32419-EMPTY,CYL,CYL,30,15600,2340,17940,True,False,,Pulled from vw_clean_transactions
+TWK002,00032425,Invoice,2024-05-23,2024-05,S.1,32419-EMPTY,CYL,CYL,1,520,78,598,True,False,,Pulled from vw_clean_transactions
+TWK002,00008700,Crd Note,2024-06-06,2024-06,1901,DN#8920,LPG,LPG,-1,-476.95,-71.54,-548.49,False,True,32419,Pulled from vw_clean_transactions
+TWK002,00008913,Crd Note,2024-06-19,2024-06,14.1,33277-EMPTY,CYL,CYL,-1,-520,-78,-598,True,False,33278,Pulled from vw_clean_transactions
+TWK002,00008913,Crd Note,2024-06-19,2024-06,19.1,33277-EMPTY,CYL,CYL,-11,-5720,-858,-6578,True,False,33278,Pulled from vw_clean_transactions
+TWK002,00008913,Crd Note,2024-06-19,2024-06,9.1,33277-EMPTY,CYL,CYL,-30,-15600,-2340,-17940,True,False,33278,Pulled from vw_clean_transactions
+TWK002,00033277,Invoice,2024-06-19,2024-06,19.4,DN39971,LPG,LPG,15,6864.3,1029.64,7893.94,False,True,,Pulled from vw_clean_transactions
+TWK002,00033277,Invoice,2024-06-19,2024-06,9.4,DN39971,LPG,LPG,30,6503.1,975.47,7478.57,False,True,,Pulled from vw_clean_transactions
+TWK002,00033278,Invoice,2024-06-19,2024-06,19.1,33277-EMPTY,CYL,CYL,15,7800,1170,8970,True,False,,Pulled from vw_clean_transactions
+TWK002,00033278,Invoice,2024-06-19,2024-06,9.1,33277-EMPTY,CYL,CYL,30,15600,2340,17940,True,False,,Pulled from vw_clean_transactions
+TWK002,00009158,Crd Note,2024-07-03,2024-07,14.1,EMPTIES,CYL,CYL,-1,-300,-45,-345,True,False,33801,Pulled from vw_clean_transactions
+TWK002,00009158,Crd Note,2024-07-03,2024-07,19.1,EMPTIES,CYL,CYL,-3,-900,-135,-1035,True,False,33801,Pulled from vw_clean_transactions
+TWK002,00009158,Crd Note,2024-07-03,2024-07,9.1,EMPTIES,CYL,CYL,-31,-9300,-1395,-10695,True,False,33801,Pulled from vw_clean_transactions
+TWK002,00009393,Crd Note,2024-07-03,2024-07,14.1,D/N 9760,CYL,CYL,-1,-520,-78,-598,True,False,34285,Pulled from vw_clean_transactions
+TWK002,00009393,Crd Note,2024-07-03,2024-07,19.1,D/N 9760,CYL,CYL,-3,-1560,-234,-1794,True,False,34285,Pulled from vw_clean_transactions
+TWK002,00009393,Crd Note,2024-07-03,2024-07,9.1,D/N 9760,CYL,CYL,-31,-16120,-2418,-18538,True,False,34285,Pulled from vw_clean_transactions
+TWK002,00033800,Invoice,2024-07-03,2024-07,9.4,D/N 9760,LPG,LPG,35,7586.95,1138.04,8724.99,False,True,,Pulled from vw_clean_transactions
+TWK002,00033801,Invoice,2024-07-03,2024-07,9.1,EMPTIES,CYL,CYL,35,10500,1575,12075,True,False,,Pulled from vw_clean_transactions
+TWK002,00034285,Invoice,2024-07-03,2024-07,9.1,D/N 9760,CYL,CYL,35,18200,2730,20930,True,False,,Pulled from vw_clean_transactions
+TWK002,00009426,Crd Note,2024-07-17,2024-07,19.1,34337-EMPTY,CYL,CYL,-6,-3120,-468,-3588,True,False,34343,Pulled from vw_clean_transactions
+TWK002,00009426,Crd Note,2024-07-17,2024-07,9.1,34337-EMPTY,CYL,CYL,-26,-13520,-2028,-15548,True,False,34343,Pulled from vw_clean_transactions
+TWK002,00009426,Crd Note,2024-07-17,2024-07,S.1,34337-EMPTY,CYL,CYL,-1,-520,-78,-598,True,False,34343,Pulled from vw_clean_transactions
+TWK002,00034342,Invoice,2024-07-17,2024-07,19.4,DN#9592,LPG,LPG,9,4089.5,613.43,4702.93,False,True,,Pulled from vw_clean_transactions
+TWK002,00034342,Invoice,2024-07-17,2024-07,9.4,DN#9592,LPG,LPG,20,4304.8,645.72,4950.52,False,True,,Pulled from vw_clean_transactions
+TWK002,00034342,Invoice,2024-07-17,2024-07,S.4,DN#9592,LPG,LPG,3,3443.83,516.57,3960.4,False,True,,Pulled from vw_clean_transactions
+TWK002,00034343,Invoice,2024-07-17,2024-07,19.1,34337-EMPTY,CYL,CYL,9,4680,702,5382,True,False,,Pulled from vw_clean_transactions
+TWK002,00034343,Invoice,2024-07-17,2024-07,9.1,34337-EMPTY,CYL,CYL,20,10400,1560,11960,True,False,,Pulled from vw_clean_transactions
+TWK002,00034343,Invoice,2024-07-17,2024-07,S.1,34337-EMPTY,CYL,CYL,3,1560,234,1794,True,False,,Pulled from vw_clean_transactions
+TWK002,00009769,Crd Note,2024-08-07,2024-08,14.1,35091-EMPTY,CYL,CYL,-1,-520,-78,-598,True,False,35092,Pulled from vw_clean_transactions
+TWK002,00009769,Crd Note,2024-08-07,2024-08,19.1,35091-EMPTY,CYL,CYL,-12,-6240,-936,-7176,True,False,35092,Pulled from vw_clean_transactions
+TWK002,00009769,Crd Note,2024-08-07,2024-08,9.1,35091-EMPTY,CYL,CYL,-25,-13000,-1950,-14950,True,False,35092,Pulled from vw_clean_transactions
+TWK002,00035091,Invoice,2024-08-07,2024-08,19.3,D/N 11370,LPG,LPG,8,3635.12,545.27,4180.39,False,True,,Pulled from vw_clean_transactions
+TWK002,00035091,Invoice,2024-08-07,2024-08,9.3,D/N 11370,LPG,LPG,30,6457.2,968.58,7425.78,False,True,,Pulled from vw_clean_transactions
+TWK002,00035092,Invoice,2024-08-07,2024-08,19.1,35091-EMPTY,CYL,CYL,8,4160,624,4784,True,False,,Pulled from vw_clean_transactions
+TWK002,00035092,Invoice,2024-08-07,2024-08,9.1,35091-EMPTY,CYL,CYL,30,15600,2340,17940,True,False,,Pulled from vw_clean_transactions
+TWK002,00036005,Invoice,2024-09-05,2024-09,19.4,DN#10943,LPG,LPG,20,9087.8,1363.17,10450.97,False,True,,Pulled from vw_clean_transactions
+TWK002,00036005,Invoice,2024-09-05,2024-09,9.4,DN#10943,LPG,LPG,20,4304.8,645.72,4950.52,False,True,,Pulled from vw_clean_transactions
+TWK002,00036006,Invoice,2024-09-05,2024-09,19.1,36005-EMPTY,CYL,CYL,20,10400,1560,11960,True,False,,Pulled from vw_clean_transactions
+TWK002,00036006,Invoice,2024-09-05,2024-09,9.1,36005-EMPTY,CYL,CYL,20,10400,1560,11960,True,False,,Pulled from vw_clean_transactions
+TWK002,00010189,Crd Note,2024-09-06,2024-09,19.1,36005-EMPTY,CYL,CYL,-19,-9880,-1482,-11362,True,False,36006,Pulled from vw_clean_transactions
+TWK002,00010189,Crd Note,2024-09-06,2024-09,9.1,36005-EMPTY,CYL,CYL,-23,-11960,-1794,-13754,True,False,36006,Pulled from vw_clean_transactions
+TWK002,00010189,Crd Note,2024-09-06,2024-09,9.3,36005-EMPTY,LPG,LPG,-2,-430.48,-64.57,-495.05,False,True,36006,Pulled from vw_clean_transactions
+TWK002,00010617,Crd Note,2024-10-02,2024-10,14.1,EMPTY 10168,CYL,CYL,-1,-260.87,-39.13,-300,True,False,36927,Pulled from vw_clean_transactions
+TWK002,00010617,Crd Note,2024-10-02,2024-10,19.1,EMPTY 10168,CYL,CYL,-16,-4173.91,-626.09,-4800,True,False,36927,Pulled from vw_clean_transactions
+TWK002,00010617,Crd Note,2024-10-02,2024-10,9.1,EMPTY 10168,CYL,CYL,-39,-10173.91,-1526.09,-11700,True,False,36927,Pulled from vw_clean_transactions
+TWK002,00010617,Crd Note,2024-10-02,2024-10,S.1,EMPTY 10168,CYL,CYL,-1,-260.87,-39.13,-300,True,False,36927,Pulled from vw_clean_transactions
+TWK002,00036926,Invoice,2024-10-02,2024-10,19.4,D/N 1068,LPG,LPG,14,6343.96,951.59,7295.55,False,True,,Pulled from vw_clean_transactions
+TWK002,00036926,Invoice,2024-10-02,2024-10,9.4,D/N 1068,LPG,LPG,45,9659.25,1448.89,11108.14,False,True,,Pulled from vw_clean_transactions
+TWK002,00036926,Invoice,2024-10-02,2024-10,S.4,D/N 1068,LPG,LPG,2,2289.54,343.43,2632.97,False,True,,Pulled from vw_clean_transactions
+TWK002,00036927,Invoice,2024-10-02,2024-10,14.1,EMPTY 10168,CYL,CYL,14,4200,630,4830,True,False,,Pulled from vw_clean_transactions
+TWK002,00036927,Invoice,2024-10-02,2024-10,9.1,EMPTY 10168,CYL,CYL,40,12000,1800,13800,True,False,,Pulled from vw_clean_transactions
+TWK002,00036927,Invoice,2024-10-02,2024-10,S.1,EMPTY 10168,CYL,CYL,2,600,90,690,True,False,,Pulled from vw_clean_transactions
+TWK002,00037189,Invoice,2024-10-02,2024-10,14.1,36927 EMPTY,CYL,CYL,14,4200,630,4830,True,False,,Pulled from vw_clean_transactions
+TWK002,00037189,Invoice,2024-10-02,2024-10,9.1,36927 EMPTY,CYL,CYL,45,13500,2025,15525,True,False,,Pulled from vw_clean_transactions
+TWK002,00037189,Invoice,2024-10-02,2024-10,S.1,36927 EMPTY,CYL,CYL,2,600,90,690,True,False,,Pulled from vw_clean_transactions
+TWK002,00010723,Crd Note,2024-10-09,2024-10,14.1,EMPTY 10168,CYL,CYL,-14,-4200,-630,-4830,True,False,36927,Pulled from vw_clean_transactions
+TWK002,00010723,Crd Note,2024-10-09,2024-10,9.1,EMPTY 10168,CYL,CYL,-40,-12000,-1800,-13800,True,False,36927,Pulled from vw_clean_transactions
+TWK002,00010723,Crd Note,2024-10-09,2024-10,S.1,EMPTY 10168,CYL,CYL,-2,-600,-90,-690,True,False,36927,Pulled from vw_clean_transactions
+TWK002,00011003,Crd Note,2024-10-30,2024-10,19.1,EMPTY 11171,CYL,CYL,-14,-4200,-630,-4830,True,False,37818,Pulled from vw_clean_transactions
+TWK002,00011003,Crd Note,2024-10-30,2024-10,9.1,EMPTY 11171,CYL,CYL,-37,-11100,-1665,-12765,True,False,37818,Pulled from vw_clean_transactions
+TWK002,00011003,Crd Note,2024-10-30,2024-10,S.1,EMPTY 11171,CYL,CYL,-2,-600,-90,-690,True,False,37818,Pulled from vw_clean_transactions
+TWK002,00037817,Invoice,2024-10-30,2024-10,1901,D/N 11171,LPG,LPG,20,9062.8,1359.42,10422.22,False,True,,Pulled from vw_clean_transactions
+TWK002,00037817,Invoice,2024-10-30,2024-10,9.4,D/N 11171,LPG,LPG,40,8586,1287.9,9873.9,False,True,,Pulled from vw_clean_transactions
+TWK002,00037818,Invoice,2024-10-30,2024-10,19.1,EMPTY 11171,CYL,CYL,20,6000,900,6900,True,False,,Pulled from vw_clean_transactions
+TWK002,00037818,Invoice,2024-10-30,2024-10,9.1,EMPTY 11171,CYL,CYL,40,12000,1800,13800,True,False,,Pulled from vw_clean_transactions
+TWK002,00011320,Crd Note,2024-11-25,2024-11,19.1,DN#10764,CYL,CYL,-15,-9000,-1350,-10350,True,False,38582,Pulled from vw_clean_transactions
+TWK002,00011320,Crd Note,2024-11-25,2024-11,9.1,DN#10764,CYL,CYL,-21,-9450,-1417.5,-10867.5,True,False,38582,Pulled from vw_clean_transactions
+TWK002,00011320,Crd Note,2024-11-25,2024-11,S.1,DN#10764,CYL,CYL,-1,-1050,-157.5,-1207.5,True,False,38582,Pulled from vw_clean_transactions
+TWK002,00038582,Invoice,2024-11-25,2024-11,19.1,DN#10764,CYL,CYL,15,9000,1350,10350,True,False,,Pulled from vw_clean_transactions
+TWK002,00038582,Invoice,2024-11-25,2024-11,19.3,DN#10764,LPG,LPG,15,6874.05,1031.11,7905.16,False,True,,Pulled from vw_clean_transactions
+TWK002,00038582,Invoice,2024-11-25,2024-11,9.1,DN#10764,CYL,CYL,15,6750,1012.5,7762.5,True,False,,Pulled from vw_clean_transactions
+TWK002,00038582,Invoice,2024-11-25,2024-11,9.4,DN#10764,LPG,LPG,15,3256.2,488.43,3744.63,False,True,,Pulled from vw_clean_transactions
+TWK002,00038582,Invoice,2024-11-25,2024-11,S.1,DN#10764,CYL,CYL,2,2100,315,2415,True,False,,Pulled from vw_clean_transactions
+TWK002,00038582,Invoice,2024-11-25,2024-11,S.4,DN#10764,LPG,LPG,2,2315.46,347.32,2662.78,False,True,,Pulled from vw_clean_transactions
+TWK002,00011475,Crd Note,2024-12-12,2024-12,19.1,DN#10831,CYL,CYL,-8,-4800,-720,-5520,True,False,39022,Pulled from vw_clean_transactions
+TWK002,00011475,Crd Note,2024-12-12,2024-12,9.1,DN#10831,CYL,CYL,-20,-9000,-1350,-10350,True,False,39022,Pulled from vw_clean_transactions
+TWK002,00039022,Invoice,2024-12-12,2024-12,19.1,DN#10831,CYL,CYL,7,4200,630,4830,True,False,,Pulled from vw_clean_transactions
+TWK002,00039022,Invoice,2024-12-12,2024-12,19.4,DN#10831,LPG,LPG,7,3361.05,504.16,3865.21,False,True,,Pulled from vw_clean_transactions
+TWK002,00039022,Invoice,2024-12-12,2024-12,9.1,DN#10831,CYL,CYL,15,6750,1012.5,7762.5,True,False,,Pulled from vw_clean_transactions
+TWK002,00039022,Invoice,2024-12-12,2024-12,9.4,DN#10831,LPG,LPG,15,3411.6,511.74,3923.34,False,True,,Pulled from vw_clean_transactions
+TWK002,00011648,Crd Note,2025-01-07,2025-01,19.1,DN#11910,CYL,CYL,-10,-6000,-900,-6900,True,False,39683,Pulled from vw_clean_transactions
+TWK002,00011648,Crd Note,2025-01-07,2025-01,9.1,DN#11910,CYL,CYL,-15,-6750,-1012.5,-7762.5,True,False,39683,Pulled from vw_clean_transactions
+TWK002,00011648,Crd Note,2025-01-07,2025-01,S.1,DN#11910,CYL,CYL,-1,-1050,-157.5,-1207.5,True,False,39683,Pulled from vw_clean_transactions
+TWK002,00039683,Invoice,2025-01-07,2025-01,19.1,DN#11910,CYL,CYL,10,6000,900,6900,True,False,,Pulled from vw_clean_transactions
+TWK002,00039683,Invoice,2025-01-07,2025-01,1901,DN#11910,LPG,LPG,10,4826.3,723.95,5550.25,False,True,,Pulled from vw_clean_transactions
+TWK002,00039683,Invoice,2025-01-07,2025-01,9.1,DN#11910,CYL,CYL,15,6750,1012.5,7762.5,True,False,,Pulled from vw_clean_transactions
+TWK002,00039683,Invoice,2025-01-07,2025-01,901,DN#11910,LPG,LPG,15,3429.15,514.37,3943.52,False,True,,Pulled from vw_clean_transactions
+TWK002,00039683,Invoice,2025-01-07,2025-01,S.1,DN#11910,CYL,CYL,1,1050,157.5,1207.5,True,False,,Pulled from vw_clean_transactions
+TWK002,00039683,Invoice,2025-01-07,2025-01,S01,DN#11910,LPG,LPG,1,1219.26,182.89,1402.15,False,True,,Pulled from vw_clean_transactions
+TWK002,00011743,Crd Note,2025-01-21,2025-01,9.1,DN#11939,CYL,CYL,-20,-9000,-1350,-10350,True,False,40081,Pulled from vw_clean_transactions
+TWK002,00040081,Invoice,2025-01-21,2025-01,9.1,DN#11939,CYL,CYL,20,9000,1350,10350,True,False,,Pulled from vw_clean_transactions
+TWK002,00040081,Invoice,2025-01-21,2025-01,901,DN#11939,LPG,LPG,20,4572.2,685.83,5258.03,False,True,,Pulled from vw_clean_transactions
+TWK002,00011821,Crd Note,2025-02-04,2025-02,19.1,DN#12753,CYL,CYL,-10,-6000,-900,-6900,True,False,40459,Pulled from vw_clean_transactions
+TWK002,00011821,Crd Note,2025-02-04,2025-02,9.1,DN#12753,CYL,CYL,-10,-4500,-675,-5175,True,False,40459,Pulled from vw_clean_transactions
+TWK002,00011821,Crd Note,2025-02-04,2025-02,S.1,DN#12753,CYL,CYL,-1,-1050,-157.5,-1207.5,True,False,40459,Pulled from vw_clean_transactions
+TWK002,00040459,Invoice,2025-02-04,2025-02,19.1,DN#12753,CYL,CYL,10,6000,900,6900,True,False,,Pulled from vw_clean_transactions
+TWK002,00040459,Invoice,2025-02-04,2025-02,1901,DN#12753,LPG,LPG,10,4867.6,730.14,5597.74,False,True,,Pulled from vw_clean_transactions
+TWK002,00040459,Invoice,2025-02-04,2025-02,9.1,DN#12753,CYL,CYL,10,4500,675,5175,True,False,,Pulled from vw_clean_transactions
+TWK002,00040459,Invoice,2025-02-04,2025-02,901,DN#12753,LPG,LPG,10,2305.7,345.86,2651.56,False,True,,Pulled from vw_clean_transactions
+TWK002,00040459,Invoice,2025-02-04,2025-02,S.1,DN#12753,CYL,CYL,1,1050,157.5,1207.5,True,False,,Pulled from vw_clean_transactions
+TWK002,00040459,Invoice,2025-02-04,2025-02,S01,DN#12753,LPG,LPG,1,1229.7,184.45,1414.15,False,True,,Pulled from vw_clean_transactions
+TWK002,00011953,Crd Note,2025-02-23,2025-02,19.1,DN#12795,CYL,CYL,-7,-4200,-630,-4830,True,False,40950,Pulled from vw_clean_transactions
+TWK002,00011953,Crd Note,2025-02-23,2025-02,9.1,DN#12795,CYL,CYL,-18,-8100,-1215,-9315,True,False,40950,Pulled from vw_clean_transactions
+TWK002,00011953,Crd Note,2025-02-23,2025-02,S.1,DN#12795,CYL,CYL,-1,-1050,-157.5,-1207.5,True,False,40950,Pulled from vw_clean_transactions
+TWK002,00040950,Invoice,2025-02-23,2025-02,19.1,DN#12795,CYL,CYL,7,4200,630,4830,True,False,,Pulled from vw_clean_transactions
+TWK002,00040950,Invoice,2025-02-23,2025-02,1901,DN#12795,LPG,LPG,7,3407.32,511.1,3918.42,False,True,,Pulled from vw_clean_transactions
+TWK002,00040950,Invoice,2025-02-23,2025-02,9.1,DN#12795,CYL,CYL,18,8100,1215,9315,True,False,,Pulled from vw_clean_transactions
+TWK002,00040950,Invoice,2025-02-23,2025-02,901,DN#12795,LPG,LPG,18,4150.26,622.54,4772.8,False,True,,Pulled from vw_clean_transactions
+TWK002,00040950,Invoice,2025-02-23,2025-02,S.1,DN#12795,CYL,CYL,1,1050,157.5,1207.5,True,False,,Pulled from vw_clean_transactions
+TWK002,00040950,Invoice,2025-02-23,2025-02,S01,DN#12795,LPG,LPG,1,1229.7,184.45,1414.15,False,True,,Pulled from vw_clean_transactions
+TWK002,00041747,Invoice,2025-03-25,2025-03,19.1,DN#12826,CYL,CYL,10,6000,900,6900,True,False,,Pulled from vw_clean_transactions
+TWK002,00041747,Invoice,2025-03-25,2025-03,19.1,DN#12826,CYL,CYL,10,6000,900,6900,True,False,,Pulled from vw_clean_transactions
+TWK002,00041747,Invoice,2025-03-25,2025-03,1901,DN#12826,LPG,LPG,10,4867.6,730.14,5597.74,False,True,,Pulled from vw_clean_transactions
+TWK002,00041747,Invoice,2025-03-25,2025-03,1901,DN#12826,LPG,LPG,10,4867.6,730.14,5597.74,False,True,,Pulled from vw_clean_transactions
+TWK002,00041747,Invoice,2025-03-25,2025-03,9.1,DN#12826,CYL,CYL,25,11250,1687.5,12937.5,True,False,,Pulled from vw_clean_transactions
+TWK002,00041747,Invoice,2025-03-25,2025-03,9.1,DN#12826,CYL,CYL,25,11250,1687.5,12937.5,True,False,,Pulled from vw_clean_transactions
+TWK002,00041747,Invoice,2025-03-25,2025-03,9.4,DN#12826,LPG,LPG,25,5764.25,864.64,6628.89,False,True,,Pulled from vw_clean_transactions
+TWK002,00041747,Invoice,2025-03-25,2025-03,9.4,DN#12826,LPG,LPG,25,5764.25,864.64,6628.89,False,True,,Pulled from vw_clean_transactions
+TWK002,00012131,Crd Note,2025-03-26,2025-03,19.1,DN#12826,CYL,CYL,-10,-6000,-900,-6900,True,False,41747,Pulled from vw_clean_transactions
+TWK002,00012131,Crd Note,2025-03-26,2025-03,19.1,DN#12826,CYL,CYL,-10,-6000,-900,-6900,True,False,41747,Pulled from vw_clean_transactions
+TWK002,00012131,Crd Note,2025-03-26,2025-03,9.1,DN#12826,CYL,CYL,-25,-11250,-1687.5,-12937.5,True,False,41747,Pulled from vw_clean_transactions
+TWK002,00012131,Crd Note,2025-03-26,2025-03,9.1,DN#12826,CYL,CYL,-25,-11250,-1687.5,-12937.5,True,False,41747,Pulled from vw_clean_transactions
+TWK002,00012207,Crd Note,2025-04-06,2025-04,19.1,DN#10546,CYL,CYL,-10,-6000,-900,-6900,True,False,42045,Pulled from vw_clean_transactions
+TWK002,00012207,Crd Note,2025-04-06,2025-04,19.1,DN#10546,CYL,CYL,-10,-6000,-900,-6900,True,False,42045,Pulled from vw_clean_transactions
+TWK002,00012207,Crd Note,2025-04-06,2025-04,1901,DN#10546,LPG,LPG,-10,-4867.6,-730.14,-5597.74,False,True,42045,Pulled from vw_clean_transactions
+TWK002,00012207,Crd Note,2025-04-06,2025-04,1901,DN#10546,LPG,LPG,-10,-4867.6,-730.14,-5597.74,False,True,42045,Pulled from vw_clean_transactions
+TWK002,00012207,Crd Note,2025-04-06,2025-04,9.1,DN#10546,CYL,CYL,-10,-4500,-675,-5175,True,False,42045,Pulled from vw_clean_transactions
+TWK002,00012207,Crd Note,2025-04-06,2025-04,9.1,DN#10546,CYL,CYL,-10,-4500,-675,-5175,True,False,42045,Pulled from vw_clean_transactions
+TWK002,00012207,Crd Note,2025-04-06,2025-04,9.4,DN#10546,LPG,LPG,-10,-2305.7,-345.86,-2651.56,False,True,42045,Pulled from vw_clean_transactions
+TWK002,00012207,Crd Note,2025-04-06,2025-04,9.4,DN#10546,LPG,LPG,-10,-2305.7,-345.86,-2651.56,False,True,42045,Pulled from vw_clean_transactions
+TWK002,00012214,Crd Note,2025-04-06,2025-04,19.1,DN#10546,CYL,CYL,-10,-6000,-900,-6900,True,False,42050,Pulled from vw_clean_transactions
+TWK002,00012214,Crd Note,2025-04-06,2025-04,19.1,DN#10546,CYL,CYL,-10,-6000,-900,-6900,True,False,42050,Pulled from vw_clean_transactions
+TWK002,00012214,Crd Note,2025-04-06,2025-04,9.1,DN#10546,CYL,CYL,-10,-4500,-675,-5175,True,False,42050,Pulled from vw_clean_transactions
+TWK002,00012214,Crd Note,2025-04-06,2025-04,9.1,DN#10546,CYL,CYL,-10,-4500,-675,-5175,True,False,42050,Pulled from vw_clean_transactions
+TWK002,00012215,Crd Note,2025-04-06,2025-04,19.1,DN#12826,CYL,CYL,-1,-600,-90,-690,True,False,41747,Pulled from vw_clean_transactions
+TWK002,00012215,Crd Note,2025-04-06,2025-04,19.1,DN#12826,CYL,CYL,-1,-600,-90,-690,True,False,41747,Pulled from vw_clean_transactions
+TWK002,00012215,Crd Note,2025-04-06,2025-04,1901,DN#12826,LPG,LPG,-1,-486.76,-73.01,-559.77,False,True,41747,Pulled from vw_clean_transactions
+TWK002,00012215,Crd Note,2025-04-06,2025-04,1901,DN#12826,LPG,LPG,-1,-486.76,-73.01,-559.77,False,True,41747,Pulled from vw_clean_transactions
+TWK002,00042045,Invoice,2025-04-06,2025-04,19.1,DN#10546,CYL,CYL,10,6000,900,6900,True,False,,Pulled from vw_clean_transactions
+TWK002,00042045,Invoice,2025-04-06,2025-04,19.1,DN#10546,CYL,CYL,10,6000,900,6900,True,False,,Pulled from vw_clean_transactions
+TWK002,00042045,Invoice,2025-04-06,2025-04,1901,DN#10546,LPG,LPG,10,4867.61,730.14,5597.75,False,True,,Pulled from vw_clean_transactions
+TWK002,00042045,Invoice,2025-04-06,2025-04,1901,DN#10546,LPG,LPG,10,4867.61,730.14,5597.75,False,True,,Pulled from vw_clean_transactions
+TWK002,00042045,Invoice,2025-04-06,2025-04,9.1,DN#10546,CYL,CYL,10,4500,675,5175,True,False,,Pulled from vw_clean_transactions
+TWK002,00042045,Invoice,2025-04-06,2025-04,9.1,DN#10546,CYL,CYL,10,4500,675,5175,True,False,,Pulled from vw_clean_transactions
+TWK002,00042045,Invoice,2025-04-06,2025-04,9.4,DN#10546,LPG,LPG,10,2305.7,345.85,2651.55,False,True,,Pulled from vw_clean_transactions
+TWK002,00042045,Invoice,2025-04-06,2025-04,9.4,DN#10546,LPG,LPG,10,2305.7,345.85,2651.55,False,True,,Pulled from vw_clean_transactions
+TWK002,00042050,Invoice,2025-04-06,2025-04,19.1,DN#10546,CYL,CYL,10,6000,900,6900,True,False,,Pulled from vw_clean_transactions
+TWK002,00042050,Invoice,2025-04-06,2025-04,19.1,DN#10546,CYL,CYL,10,6000,900,6900,True,False,,Pulled from vw_clean_transactions
+TWK002,00042050,Invoice,2025-04-06,2025-04,1901,DN#10546,LPG,LPG,10,4755.3,713.3,5468.6,False,True,,Pulled from vw_clean_transactions
+TWK002,00042050,Invoice,2025-04-06,2025-04,1901,DN#10546,LPG,LPG,10,4755.3,713.3,5468.6,False,True,,Pulled from vw_clean_transactions
+TWK002,00042050,Invoice,2025-04-06,2025-04,9.1,DN#10546,CYL,CYL,10,4500,675,5175,True,False,,Pulled from vw_clean_transactions
+TWK002,00042050,Invoice,2025-04-06,2025-04,9.1,DN#10546,CYL,CYL,10,4500,675,5175,True,False,,Pulled from vw_clean_transactions
+TWK002,00042050,Invoice,2025-04-06,2025-04,9.4,DN#10546,LPG,LPG,10,2252.5,337.87,2590.37,False,True,,Pulled from vw_clean_transactions
+TWK002,00042050,Invoice,2025-04-06,2025-04,9.4,DN#10546,LPG,LPG,10,2252.5,337.87,2590.37,False,True,,Pulled from vw_clean_transactions
+TWK002,00012329,Crd Note,2025-04-22,2025-04,19.1,DN#13029-EMPTY,CYL,CYL,-7,-4200,-630,-4830,True,False,42469,Pulled from vw_clean_transactions
+TWK002,00012329,Crd Note,2025-04-22,2025-04,19.1,DN#13029-EMPTY,CYL,CYL,-7,-4200,-630,-4830,True,False,42469,Pulled from vw_clean_transactions
+TWK002,00012329,Crd Note,2025-04-22,2025-04,9.1,DN#13029-EMPTY,CYL,CYL,-15,-6750,-1012.5,-7762.5,True,False,42469,Pulled from vw_clean_transactions
+TWK002,00012329,Crd Note,2025-04-22,2025-04,9.1,DN#13029-EMPTY,CYL,CYL,-15,-6750,-1012.5,-7762.5,True,False,42469,Pulled from vw_clean_transactions
+TWK002,00042468,Invoice,2025-04-22,2025-04,1901,DN#13029,LPG,LPG,7,3328.71,499.31,3828.02,False,True,,Pulled from vw_clean_transactions
+TWK002,00042468,Invoice,2025-04-22,2025-04,1901,DN#13029,LPG,LPG,7,3328.71,499.31,3828.02,False,True,,Pulled from vw_clean_transactions
+TWK002,00042468,Invoice,2025-04-22,2025-04,9.4,DN#13029,LPG,LPG,15,3378.75,506.81,3885.56,False,True,,Pulled from vw_clean_transactions
+TWK002,00042468,Invoice,2025-04-22,2025-04,9.4,DN#13029,LPG,LPG,15,3378.75,506.81,3885.56,False,True,,Pulled from vw_clean_transactions
+TWK002,00042469,Invoice,2025-04-22,2025-04,19.1,DN#13029-EMPTY,CYL,CYL,7,4200,630,4830,True,False,,Pulled from vw_clean_transactions
+TWK002,00042469,Invoice,2025-04-22,2025-04,19.1,DN#13029-EMPTY,CYL,CYL,7,4200,630,4830,True,False,,Pulled from vw_clean_transactions
+TWK002,00042469,Invoice,2025-04-22,2025-04,9.1,DN#13029-EMPTY,CYL,CYL,15,6750,1012.5,7762.5,True,False,,Pulled from vw_clean_transactions
+TWK002,00042469,Invoice,2025-04-22,2025-04,9.1,DN#13029-EMPTY,CYL,CYL,15,6750,1012.5,7762.5,True,False,,Pulled from vw_clean_transactions
+TWK002,00042470,Invoice,2025-04-22,2025-04,19.1,DN#13030,CYL,CYL,1,600,90,690,True,False,,Pulled from vw_clean_transactions
+TWK002,00042470,Invoice,2025-04-22,2025-04,19.1,DN#13030,CYL,CYL,1,600,90,690,True,False,,Pulled from vw_clean_transactions
+TWK002,00042470,Invoice,2025-04-22,2025-04,1901,DN#13030,LPG,LPG,1,475.53,71.33,546.86,False,True,,Pulled from vw_clean_transactions
+TWK002,00042470,Invoice,2025-04-22,2025-04,1901,DN#13030,LPG,LPG,1,475.53,71.33,546.86,False,True,,Pulled from vw_clean_transactions
+TWK002,00012494,Crd Note,2025-05-15,2025-05,1901,DN#13234,LPG,LPG,-10,-4755.3,-713.3,-5468.6,False,True,43111,Pulled from vw_clean_transactions
+TWK002,00012494,Crd Note,2025-05-15,2025-05,1901,DN#13234,LPG,LPG,-10,-4755.3,-713.3,-5468.6,False,True,43111,Pulled from vw_clean_transactions
+TWK002,00012494,Crd Note,2025-05-15,2025-05,9.4,DN#13234,LPG,LPG,-20,-4504.99,-675.75,-5180.74,False,True,43111,Pulled from vw_clean_transactions
+TWK002,00012494,Crd Note,2025-05-15,2025-05,9.4,DN#13234,LPG,LPG,-20,-4504.99,-675.75,-5180.74,False,True,43111,Pulled from vw_clean_transactions
+TWK002,00012502,Crd Note,2025-05-15,2025-05,19.1,DN#13234,CYL,CYL,-10,-6000,-900,-6900,True,False,43112,Pulled from vw_clean_transactions
+TWK002,00012502,Crd Note,2025-05-15,2025-05,19.1,DN#13234,CYL,CYL,-10,-6000,-900,-6900,True,False,43112,Pulled from vw_clean_transactions
+TWK002,00012502,Crd Note,2025-05-15,2025-05,9.1,DN#13234,CYL,CYL,-20,-9000,-1350,-10350,True,False,43112,Pulled from vw_clean_transactions
+TWK002,00012502,Crd Note,2025-05-15,2025-05,9.1,DN#13234,CYL,CYL,-20,-9000,-1350,-10350,True,False,43112,Pulled from vw_clean_transactions
+TWK002,00043111,Invoice,2025-05-15,2025-05,1901,DN#13234,LPG,LPG,10,4755.3,713.3,5468.6,False,True,,Pulled from vw_clean_transactions
+TWK002,00043111,Invoice,2025-05-15,2025-05,1901,DN#13234,LPG,LPG,10,4755.3,713.3,5468.6,False,True,,Pulled from vw_clean_transactions
+TWK002,00043111,Invoice,2025-05-15,2025-05,9.4,DN#13234,LPG,LPG,20,4504.99,675.75,5180.74,False,True,,Pulled from vw_clean_transactions
+TWK002,00043111,Invoice,2025-05-15,2025-05,9.4,DN#13234,LPG,LPG,20,4504.99,675.75,5180.74,False,True,,Pulled from vw_clean_transactions
+TWK002,00043112,Invoice,2025-05-15,2025-05,19.1,DN#13234,CYL,CYL,10,6000,900,6900,True,False,,Pulled from vw_clean_transactions
+TWK002,00043112,Invoice,2025-05-15,2025-05,19.1,DN#13234,CYL,CYL,10,6000,900,6900,True,False,,Pulled from vw_clean_transactions
+TWK002,00043112,Invoice,2025-05-15,2025-05,1901,DN#13234,LPG,LPG,10,4755.3,713.3,5468.6,False,True,,Pulled from vw_clean_transactions
+TWK002,00043112,Invoice,2025-05-15,2025-05,1901,DN#13234,LPG,LPG,10,4755.3,713.3,5468.6,False,True,,Pulled from vw_clean_transactions
+TWK002,00043112,Invoice,2025-05-15,2025-05,9.1,DN#13234,CYL,CYL,20,9000,1350,10350,True,False,,Pulled from vw_clean_transactions
+TWK002,00043112,Invoice,2025-05-15,2025-05,9.1,DN#13234,CYL,CYL,20,9000,1350,10350,True,False,,Pulled from vw_clean_transactions
+TWK002,00043112,Invoice,2025-05-15,2025-05,9.4,DN#13234,LPG,LPG,20,4504.99,675.75,5180.74,False,True,,Pulled from vw_clean_transactions
+TWK002,00043112,Invoice,2025-05-15,2025-05,9.4,DN#13234,LPG,LPG,20,4504.99,675.75,5180.74,False,True,,Pulled from vw_clean_transactions
+TWK002,00043294,Invoice,2025-05-22,2025-05,19.1,DN#12257,CYL,CYL,5,3000,450,3450,True,False,,Pulled from vw_clean_transactions
+TWK002,00043294,Invoice,2025-05-22,2025-05,19.1,DN#12257,CYL,CYL,5,3000,450,3450,True,False,,Pulled from vw_clean_transactions
+TWK002,00043294,Invoice,2025-05-22,2025-05,1901,DN#12257,LPG,LPG,5,2410.65,361.6,2772.25,False,True,,Pulled from vw_clean_transactions
+TWK002,00043294,Invoice,2025-05-22,2025-05,1901,DN#12257,LPG,LPG,5,2410.65,361.6,2772.25,False,True,,Pulled from vw_clean_transactions
+TWK002,00043294,Invoice,2025-05-22,2025-05,9.1,DN#12257,CYL,CYL,20,9000,1350,10350,True,False,,Pulled from vw_clean_transactions
+TWK002,00043294,Invoice,2025-05-22,2025-05,9.1,DN#12257,CYL,CYL,20,9000,1350,10350,True,False,,Pulled from vw_clean_transactions
+TWK002,00043294,Invoice,2025-05-22,2025-05,9.4,DN#12257,LPG,LPG,20,4567.6,685.14,5252.74,False,True,,Pulled from vw_clean_transactions
+TWK002,00043294,Invoice,2025-05-22,2025-05,9.4,DN#12257,LPG,LPG,20,4567.6,685.14,5252.74,False,True,,Pulled from vw_clean_transactions
+TWK002,00043294,Invoice,2025-05-22,2025-05,S.1,DN#12257,CYL,CYL,1,1050,157.5,1207.5,True,False,,Pulled from vw_clean_transactions
+TWK002,00043294,Invoice,2025-05-22,2025-05,S.1,DN#12257,CYL,CYL,1,1050,157.5,1207.5,True,False,,Pulled from vw_clean_transactions
+TWK002,00043294,Invoice,2025-05-22,2025-05,S01,DN#12257,LPG,LPG,1,1218.02,182.7,1400.72,False,True,,Pulled from vw_clean_transactions
+TWK002,00043294,Invoice,2025-05-22,2025-05,S01,DN#12257,LPG,LPG,1,1218.02,182.7,1400.72,False,True,,Pulled from vw_clean_transactions
+TWK002,00012550,Crd Note,2025-05-23,2025-05,19.1,DN#12257,CYL,CYL,-7,-4200,-630,-4830,True,False,43294,Pulled from vw_clean_transactions
+TWK002,00012550,Crd Note,2025-05-23,2025-05,19.1,DN#12257,CYL,CYL,-7,-4200,-630,-4830,True,False,43294,Pulled from vw_clean_transactions
+TWK002,00012550,Crd Note,2025-05-23,2025-05,9.1,DN#12257,CYL,CYL,-17,-7650,-1147.5,-8797.5,True,False,43294,Pulled from vw_clean_transactions
+TWK002,00012550,Crd Note,2025-05-23,2025-05,9.1,DN#12257,CYL,CYL,-17,-7650,-1147.5,-8797.5,True,False,43294,Pulled from vw_clean_transactions
+TWK002,00012550,Crd Note,2025-05-23,2025-05,S.1,DN#12257,CYL,CYL,-1,-1050,-157.5,-1207.5,True,False,43294,Pulled from vw_clean_transactions
+TWK002,00012550,Crd Note,2025-05-23,2025-05,S.1,DN#12257,CYL,CYL,-1,-1050,-157.5,-1207.5,True,False,43294,Pulled from vw_clean_transactions
+TWK002,00012724,Crd Note,2025-06-12,2025-06,19.1,DN#12516,CYL,CYL,-8,-4800,-720,-5520,True,False,43909,Pulled from vw_clean_transactions
+TWK002,00012724,Crd Note,2025-06-12,2025-06,19.1,DN#12516,CYL,CYL,-8,-4800,-720,-5520,True,False,43909,Pulled from vw_clean_transactions
+TWK002,00012724,Crd Note,2025-06-12,2025-06,9.1,DN#12516,CYL,CYL,-22,-9900,-1485,-11385,True,False,43909,Pulled from vw_clean_transactions
+TWK002,00012724,Crd Note,2025-06-12,2025-06,9.1,DN#12516,CYL,CYL,-22,-9900,-1485,-11385,True,False,43909,Pulled from vw_clean_transactions
+TWK002,00043909,Invoice,2025-06-12,2025-06,19.1,DN#12516,CYL,CYL,10,6000,900,6900,True,False,,Pulled from vw_clean_transactions
+TWK002,00043909,Invoice,2025-06-12,2025-06,19.1,DN#12516,CYL,CYL,10,6000,900,6900,True,False,,Pulled from vw_clean_transactions
+TWK002,00043909,Invoice,2025-06-12,2025-06,1901,DN#12516,LPG,LPG,10,4694.1,704.11,5398.21,False,True,,Pulled from vw_clean_transactions
+TWK002,00043909,Invoice,2025-06-12,2025-06,1901,DN#12516,LPG,LPG,10,4694.1,704.11,5398.21,False,True,,Pulled from vw_clean_transactions
+TWK002,00043909,Invoice,2025-06-12,2025-06,9.1,DN#12516,CYL,CYL,20,9000,1350,10350,True,False,,Pulled from vw_clean_transactions
+TWK002,00043909,Invoice,2025-06-12,2025-06,9.1,DN#12516,CYL,CYL,20,9000,1350,10350,True,False,,Pulled from vw_clean_transactions
+TWK002,00043909,Invoice,2025-06-12,2025-06,901,DN#12516,LPG,LPG,20,4447,667.05,5114.05,False,True,,Pulled from vw_clean_transactions
+TWK002,00043909,Invoice,2025-06-12,2025-06,901,DN#12516,LPG,LPG,20,4447,667.05,5114.05,False,True,,Pulled from vw_clean_transactions
+TWK002,00012825,Crd Note,2025-06-25,2025-06,19.1,DN#12335,CYL,CYL,-10,-6000,-900,-6900,True,False,44235,Pulled from vw_clean_transactions
+TWK002,00012825,Crd Note,2025-06-25,2025-06,19.1,DN#12335,CYL,CYL,-10,-6000,-900,-6900,True,False,44235,Pulled from vw_clean_transactions
+TWK002,00012825,Crd Note,2025-06-25,2025-06,9.1,DN#12335,CYL,CYL,-20,-9000,-1350,-10350,True,False,44235,Pulled from vw_clean_transactions
+TWK002,00012825,Crd Note,2025-06-25,2025-06,9.1,DN#12335,CYL,CYL,-20,-9000,-1350,-10350,True,False,44235,Pulled from vw_clean_transactions
+TWK002,00044235,Invoice,2025-06-25,2025-06,19.1,DN#12335,CYL,CYL,10,6000,900,6900,True,False,,Pulled from vw_clean_transactions
+TWK002,00044235,Invoice,2025-06-25,2025-06,19.1,DN#12335,CYL,CYL,10,6000,900,6900,True,False,,Pulled from vw_clean_transactions
+TWK002,00044235,Invoice,2025-06-25,2025-06,1901,DN#12335,LPG,LPG,10,4694.1,704.11,5398.21,False,True,,Pulled from vw_clean_transactions
+TWK002,00044235,Invoice,2025-06-25,2025-06,1901,DN#12335,LPG,LPG,10,4694.1,704.11,5398.21,False,True,,Pulled from vw_clean_transactions
+TWK002,00044235,Invoice,2025-06-25,2025-06,9.1,DN#12335,CYL,CYL,20,9000,1350,10350,True,False,,Pulled from vw_clean_transactions
+TWK002,00044235,Invoice,2025-06-25,2025-06,9.1,DN#12335,CYL,CYL,20,9000,1350,10350,True,False,,Pulled from vw_clean_transactions
+TWK002,00044235,Invoice,2025-06-25,2025-06,9.4,DN#12335,LPG,LPG,20,4447,667.05,5114.05,False,True,,Pulled from vw_clean_transactions
+TWK002,00044235,Invoice,2025-06-25,2025-06,9.4,DN#12335,LPG,LPG,20,4447,667.05,5114.05,False,True,,Pulled from vw_clean_transactions
+TWK002,00012908,Crd Note,2025-07-04,2025-07,19.1,DN#12620,CYL,CYL,-10,-6000,-900,-6900,True,False,44542,Pulled from vw_clean_transactions
+TWK002,00012908,Crd Note,2025-07-04,2025-07,19.1,DN#12620,CYL,CYL,-10,-6000,-900,-6900,True,False,44542,Pulled from vw_clean_transactions
+TWK002,00012908,Crd Note,2025-07-04,2025-07,9.1,DN#12620,CYL,CYL,-20,-9000,-1350,-10350,True,False,44542,Pulled from vw_clean_transactions
+TWK002,00012908,Crd Note,2025-07-04,2025-07,9.1,DN#12620,CYL,CYL,-20,-9000,-1350,-10350,True,False,44542,Pulled from vw_clean_transactions
+TWK002,00044542,Invoice,2025-07-04,2025-07,19.1,DN#12620,CYL,CYL,10,6000,900,6900,True,False,,Pulled from vw_clean_transactions
+TWK002,00044542,Invoice,2025-07-04,2025-07,19.1,DN#12620,CYL,CYL,10,6000,900,6900,True,False,,Pulled from vw_clean_transactions
+TWK002,00044542,Invoice,2025-07-04,2025-07,1901,DN#12620,LPG,LPG,10,4694.1,704.11,5398.21,False,True,,Pulled from vw_clean_transactions
+TWK002,00044542,Invoice,2025-07-04,2025-07,1901,DN#12620,LPG,LPG,10,4694.1,704.11,5398.21,False,True,,Pulled from vw_clean_transactions
+TWK002,00044542,Invoice,2025-07-04,2025-07,9.1,DN#12620,CYL,CYL,20,9000,1350,10350,True,False,,Pulled from vw_clean_transactions
+TWK002,00044542,Invoice,2025-07-04,2025-07,9.1,DN#12620,CYL,CYL,20,9000,1350,10350,True,False,,Pulled from vw_clean_transactions
+TWK002,00044542,Invoice,2025-07-04,2025-07,9.4,DN#12620,LPG,LPG,20,4447,667.05,5114.05,False,True,,Pulled from vw_clean_transactions
+TWK002,00044542,Invoice,2025-07-04,2025-07,9.4,DN#12620,LPG,LPG,20,4447,667.05,5114.05,False,True,,Pulled from vw_clean_transactions
+TWK002,00044731,Invoice,2025-07-09,2025-07,9.1,DN#12191,CYL,CYL,10,4500,675,5175,True,False,,Pulled from vw_clean_transactions
+TWK002,00044731,Invoice,2025-07-09,2025-07,9.1,DN#12191,CYL,CYL,10,4500,675,5175,True,False,,Pulled from vw_clean_transactions
+TWK002,00044731,Invoice,2025-07-09,2025-07,901,DN#12191,LPG,LPG,10,2184.8,327.72,2512.52,False,True,,Pulled from vw_clean_transactions
+TWK002,00044731,Invoice,2025-07-09,2025-07,901,DN#12191,LPG,LPG,10,2184.8,327.72,2512.52,False,True,,Pulled from vw_clean_transactions
+TWK002,00012958,Crd Note,2025-07-11,2025-07,9.1,DN#12191,CYL,CYL,-10,-4500,-675,-5175,True,False,44731,Pulled from vw_clean_transactions
+TWK002,00012958,Crd Note,2025-07-11,2025-07,9.1,DN#12191,CYL,CYL,-10,-4500,-675,-5175,True,False,44731,Pulled from vw_clean_transactions
+TWK002,00012982,Crd Note,2025-07-13,2025-07,9.1,DN#12202,CYL,CYL,-10,-4500,-675,-5175,True,False,44816,Pulled from vw_clean_transactions
+TWK002,00012982,Crd Note,2025-07-13,2025-07,9.1,DN#12202,CYL,CYL,-10,-4500,-675,-5175,True,False,44816,Pulled from vw_clean_transactions
+TWK002,00044816,Invoice,2025-07-13,2025-07,9.1,DN#12202,CYL,CYL,10,4500,675,5175,True,False,,Pulled from vw_clean_transactions
+TWK002,00044816,Invoice,2025-07-13,2025-07,9.1,DN#12202,CYL,CYL,10,4500,675,5175,True,False,,Pulled from vw_clean_transactions
+TWK002,00044816,Invoice,2025-07-13,2025-07,9.4,DN#12202,LPG,LPG,10,2184.8,327.72,2512.52,False,True,,Pulled from vw_clean_transactions
+TWK002,00044816,Invoice,2025-07-13,2025-07,9.4,DN#12202,LPG,LPG,10,2184.8,327.72,2512.52,False,True,,Pulled from vw_clean_transactions
+TWK002,00013019,Crd Note,2025-07-18,2025-07,19.1,DN#12721,CYL,CYL,-9,-5400,-810,-6210,True,False,44967,Pulled from vw_clean_transactions
+TWK002,00013019,Crd Note,2025-07-18,2025-07,19.1,DN#12721,CYL,CYL,-9,-5400,-810,-6210,True,False,44967,Pulled from vw_clean_transactions
+TWK002,00013019,Crd Note,2025-07-18,2025-07,9.1,DN#12721,CYL,CYL,-15,-6750,-1012.5,-7762.5,True,False,44967,Pulled from vw_clean_transactions
+TWK002,00013019,Crd Note,2025-07-18,2025-07,9.1,DN#12721,CYL,CYL,-15,-6750,-1012.5,-7762.5,True,False,44967,Pulled from vw_clean_transactions
+TWK002,00044967,Invoice,2025-07-18,2025-07,19.1,DN#12721,CYL,CYL,9,5400,810,6210,True,False,,Pulled from vw_clean_transactions
+TWK002,00044967,Invoice,2025-07-18,2025-07,19.1,DN#12721,CYL,CYL,9,5400,810,6210,True,False,,Pulled from vw_clean_transactions
+TWK002,00044967,Invoice,2025-07-18,2025-07,19.4,DN#12721,LPG,LPG,9,4151.07,622.66,4773.73,False,True,,Pulled from vw_clean_transactions
+TWK002,00044967,Invoice,2025-07-18,2025-07,19.4,DN#12721,LPG,LPG,9,4151.07,622.66,4773.73,False,True,,Pulled from vw_clean_transactions
+TWK002,00044967,Invoice,2025-07-18,2025-07,9.1,DN#12721,CYL,CYL,15,6750,1012.5,7762.5,True,False,,Pulled from vw_clean_transactions
+TWK002,00044967,Invoice,2025-07-18,2025-07,9.1,DN#12721,CYL,CYL,15,6750,1012.5,7762.5,True,False,,Pulled from vw_clean_transactions
+TWK002,00044967,Invoice,2025-07-18,2025-07,9.4,DN#12721,LPG,LPG,15,3277.2,491.58,3768.78,False,True,,Pulled from vw_clean_transactions
+TWK002,00044967,Invoice,2025-07-18,2025-07,9.4,DN#12721,LPG,LPG,15,3277.2,491.58,3768.78,False,True,,Pulled from vw_clean_transactions
+TWK002,00013057,Crd Note,2025-07-25,2025-07,9.1,DN 20009,CYL,CYL,-15,-6750,-1012.5,-7762.5,True,False,45149,Pulled from vw_clean_transactions
+TWK002,00013057,Crd Note,2025-07-25,2025-07,9.1,DN 20009,CYL,CYL,-15,-6750,-1012.5,-7762.5,True,False,45149,Pulled from vw_clean_transactions
+TWK002,00045148,Invoice,2025-07-25,2025-07,901,ON 375149748-001,LPG,LPG,15,3277.2,491.58,3768.78,False,True,,Pulled from vw_clean_transactions
+TWK002,00045148,Invoice,2025-07-25,2025-07,901,ON 375149748-001,LPG,LPG,15,3277.2,491.58,3768.78,False,True,,Pulled from vw_clean_transactions
+TWK002,00045149,Invoice,2025-07-25,2025-07,9.1,DN 20009,CYL,CYL,15,6750,1012.5,7762.5,True,False,,Pulled from vw_clean_transactions
+TWK002,00045149,Invoice,2025-07-25,2025-07,9.1,DN 20009,CYL,CYL,15,6750,1012.5,7762.5,True,False,,Pulled from vw_clean_transactions
+TWK002,00013101,Crd Note,2025-07-31,2025-07,19.1,DN #20125,CYL,CYL,-6,-3600,-540,-4140,True,False,45302,Pulled from vw_clean_transactions
+TWK002,00013101,Crd Note,2025-07-31,2025-07,19.1,DN #20125,CYL,CYL,-6,-3600,-540,-4140,True,False,45302,Pulled from vw_clean_transactions
+TWK002,00013101,Crd Note,2025-07-31,2025-07,9.1,DN #20125,CYL,CYL,-10,-4500,-675,-5175,True,False,45302,Pulled from vw_clean_transactions
+TWK002,00013101,Crd Note,2025-07-31,2025-07,9.1,DN #20125,CYL,CYL,-10,-4500,-675,-5175,True,False,45302,Pulled from vw_clean_transactions
+TWK002,00013101,Crd Note,2025-07-31,2025-07,S.1,DN #20125,CYL,CYL,-2,-2100,-315,-2415,True,False,45302,Pulled from vw_clean_transactions
+TWK002,00013101,Crd Note,2025-07-31,2025-07,S.1,DN #20125,CYL,CYL,-2,-2100,-315,-2415,True,False,45302,Pulled from vw_clean_transactions
+TWK002,00045302,Invoice,2025-07-31,2025-07,19.1,DN #20125,CYL,CYL,6,3600,540,4140,True,False,,Pulled from vw_clean_transactions
+TWK002,00045302,Invoice,2025-07-31,2025-07,19.1,DN #20125,CYL,CYL,6,3600,540,4140,True,False,,Pulled from vw_clean_transactions
+TWK002,00045302,Invoice,2025-07-31,2025-07,19.4,DN #20125,LPG,LPG,6,2767.38,415.11,3182.49,False,True,,Pulled from vw_clean_transactions
+TWK002,00045302,Invoice,2025-07-31,2025-07,19.4,DN #20125,LPG,LPG,6,2767.38,415.11,3182.49,False,True,,Pulled from vw_clean_transactions
+TWK002,00045302,Invoice,2025-07-31,2025-07,9.1,DN #20125,CYL,CYL,10,4500,675,5175,True,False,,Pulled from vw_clean_transactions
+TWK002,00045302,Invoice,2025-07-31,2025-07,9.1,DN #20125,CYL,CYL,10,4500,675,5175,True,False,,Pulled from vw_clean_transactions
+TWK002,00045302,Invoice,2025-07-31,2025-07,9.4,DN #20125,LPG,LPG,10,2184.8,327.72,2512.52,False,True,,Pulled from vw_clean_transactions
+TWK002,00045302,Invoice,2025-07-31,2025-07,9.4,DN #20125,LPG,LPG,10,2184.8,327.72,2512.52,False,True,,Pulled from vw_clean_transactions
+TWK002,00045302,Invoice,2025-07-31,2025-07,S.1,DN #20125,CYL,CYL,2,2100,315,2415,True,False,,Pulled from vw_clean_transactions
+TWK002,00045302,Invoice,2025-07-31,2025-07,S.1,DN #20125,CYL,CYL,2,2100,315,2415,True,False,,Pulled from vw_clean_transactions
+TWK002,00045302,Invoice,2025-07-31,2025-07,S01,DN #20125,LPG,LPG,2,2330.4,349.56,2679.96,False,True,,Pulled from vw_clean_transactions
+TWK002,00045302,Invoice,2025-07-31,2025-07,S01,DN #20125,LPG,LPG,2,2330.4,349.56,2679.96,False,True,,Pulled from vw_clean_transactions
+TWK002,00013235,Crd Note,2025-08-14,2025-08,19.1,DN#20319,CYL,CYL,-10,-6000,-900,-6900,True,False,45666,Pulled from vw_clean_transactions
+TWK002,00013235,Crd Note,2025-08-14,2025-08,19.1,DN#20319,CYL,CYL,-10,-6000,-900,-6900,True,False,45666,Pulled from vw_clean_transactions
+TWK002,00013235,Crd Note,2025-08-14,2025-08,9.1,DN#20319,CYL,CYL,-18,-8100,-1215,-9315,True,False,45666,Pulled from vw_clean_transactions
+TWK002,00013235,Crd Note,2025-08-14,2025-08,9.1,DN#20319,CYL,CYL,-18,-8100,-1215,-9315,True,False,45666,Pulled from vw_clean_transactions
+TWK002,00045666,Invoice,2025-08-14,2025-08,19.1,DN#20319,CYL,CYL,10,6000,900,6900,True,False,,Pulled from vw_clean_transactions
+TWK002,00045666,Invoice,2025-08-14,2025-08,19.1,DN#20319,CYL,CYL,10,6000,900,6900,True,False,,Pulled from vw_clean_transactions
+TWK002,00045666,Invoice,2025-08-14,2025-08,19.4,DN#20319,LPG,LPG,10,4513.5,677.03,5190.53,False,True,,Pulled from vw_clean_transactions
+TWK002,00045666,Invoice,2025-08-14,2025-08,19.4,DN#20319,LPG,LPG,10,4513.5,677.03,5190.53,False,True,,Pulled from vw_clean_transactions
+TWK002,00045666,Invoice,2025-08-14,2025-08,9.1,DN#20319,CYL,CYL,18,8100,1215,9315,True,False,,Pulled from vw_clean_transactions
+TWK002,00045666,Invoice,2025-08-14,2025-08,9.1,DN#20319,CYL,CYL,18,8100,1215,9315,True,False,,Pulled from vw_clean_transactions
+TWK002,00045666,Invoice,2025-08-14,2025-08,9.4,DN#20319,LPG,LPG,18,3848.4,577.26,4425.66,False,True,,Pulled from vw_clean_transactions
+TWK002,00045666,Invoice,2025-08-14,2025-08,9.4,DN#20319,LPG,LPG,18,3848.4,577.26,4425.66,False,True,,Pulled from vw_clean_transactions
+TWK002,00013335,Crd Note,2025-08-28,2025-08,19.1,DN#20560,CYL,CYL,-6,-3600,-540,-4140,True,False,45986,Pulled from vw_clean_transactions
+TWK002,00013335,Crd Note,2025-08-28,2025-08,19.1,DN#20560,CYL,CYL,-6,-3600,-540,-4140,True,False,45986,Pulled from vw_clean_transactions
+TWK002,00013335,Crd Note,2025-08-28,2025-08,9.1,DN#20560,CYL,CYL,-20,-9000,-1350,-10350,True,False,45986,Pulled from vw_clean_transactions
+TWK002,00013335,Crd Note,2025-08-28,2025-08,9.1,DN#20560,CYL,CYL,-20,-9000,-1350,-10350,True,False,45986,Pulled from vw_clean_transactions
+TWK002,00013335,Crd Note,2025-08-28,2025-08,S.1,DN#20560,CYL,CYL,-2,-2100,-315,-2415,True,False,45986,Pulled from vw_clean_transactions
+TWK002,00013335,Crd Note,2025-08-28,2025-08,S.1,DN#20560,CYL,CYL,-2,-2100,-315,-2415,True,False,45986,Pulled from vw_clean_transactions
+TWK002,00045986,Invoice,2025-08-28,2025-08,19.1,DN#20560,CYL,CYL,6,3600,540,4140,True,False,,Pulled from vw_clean_transactions
+TWK002,00045986,Invoice,2025-08-28,2025-08,19.1,DN#20560,CYL,CYL,6,3600,540,4140,True,False,,Pulled from vw_clean_transactions
+TWK002,00045986,Invoice,2025-08-28,2025-08,19.4,DN#20560,LPG,LPG,6,2708.1,406.22,3114.32,False,True,,Pulled from vw_clean_transactions
+TWK002,00045986,Invoice,2025-08-28,2025-08,19.4,DN#20560,LPG,LPG,6,2708.1,406.22,3114.32,False,True,,Pulled from vw_clean_transactions
+TWK002,00045986,Invoice,2025-08-28,2025-08,9.1,DN#20560,CYL,CYL,20,9000,1350,10350,True,False,,Pulled from vw_clean_transactions
+TWK002,00045986,Invoice,2025-08-28,2025-08,9.1,DN#20560,CYL,CYL,20,9000,1350,10350,True,False,,Pulled from vw_clean_transactions
+TWK002,00045986,Invoice,2025-08-28,2025-08,9.4,DN#20560,LPG,LPG,20,4276,641.4,4917.4,False,True,,Pulled from vw_clean_transactions
+TWK002,00045986,Invoice,2025-08-28,2025-08,9.4,DN#20560,LPG,LPG,20,4276,641.4,4917.4,False,True,,Pulled from vw_clean_transactions
+TWK002,00045986,Invoice,2025-08-28,2025-08,S.1,DN#20560,CYL,CYL,2,2100,315,2415,True,False,,Pulled from vw_clean_transactions
+TWK002,00045986,Invoice,2025-08-28,2025-08,S.1,DN#20560,CYL,CYL,2,2100,315,2415,True,False,,Pulled from vw_clean_transactions
+TWK002,00045986,Invoice,2025-08-28,2025-08,S.4,DN#20560,LPG,LPG,2,2280.48,342.07,2622.55,False,True,,Pulled from vw_clean_transactions
+TWK002,00045986,Invoice,2025-08-28,2025-08,S.4,DN#20560,LPG,LPG,2,2280.48,342.07,2622.55,False,True,,Pulled from vw_clean_transactions
+TWK002,00046470,Invoice,2025-09-16,2025-09,19.1,D/N 21042,CYL,CYL,15,9000,1350,10350,True,False,,Pulled from vw_clean_transactions
+TWK002,00046470,Invoice,2025-09-16,2025-09,19.1,D/N 21042,CYL,CYL,15,9000,1350,10350,True,False,,Pulled from vw_clean_transactions
+TWK002,00046470,Invoice,2025-09-16,2025-09,19.4,D/N 21042,LPG,LPG,15,6484.35,972.65,7457,False,True,,Pulled from vw_clean_transactions
+TWK002,00046470,Invoice,2025-09-16,2025-09,19.4,D/N 21042,LPG,LPG,15,6484.35,972.65,7457,False,True,,Pulled from vw_clean_transactions
+TWK002,00046470,Invoice,2025-09-16,2025-09,9.1,D/N 21042,CYL,CYL,20,9000,1350,10350,True,False,,Pulled from vw_clean_transactions
+TWK002,00046470,Invoice,2025-09-16,2025-09,9.1,D/N 21042,CYL,CYL,20,9000,1350,10350,True,False,,Pulled from vw_clean_transactions
+TWK002,00046470,Invoice,2025-09-16,2025-09,9.4,D/N 21042,LPG,LPG,20,4095.4,614.31,4709.71,False,True,,Pulled from vw_clean_transactions
+TWK002,00046470,Invoice,2025-09-16,2025-09,9.4,D/N 21042,LPG,LPG,20,4095.4,614.31,4709.71,False,True,,Pulled from vw_clean_transactions
+TWK002,00013500,Crd Note,2025-09-17,2025-09,19.1,D/N 21042,CYL,CYL,-15,-9000,-1350,-10350,True,False,46470,Pulled from vw_clean_transactions
+TWK002,00013500,Crd Note,2025-09-17,2025-09,19.1,D/N 21042,CYL,CYL,-15,-9000,-1350,-10350,True,False,46470,Pulled from vw_clean_transactions
+TWK002,00013500,Crd Note,2025-09-17,2025-09,9.1,D/N 21042,CYL,CYL,-20,-9000,-1350,-10350,True,False,46470,Pulled from vw_clean_transactions
+TWK002,00013500,Crd Note,2025-09-17,2025-09,9.1,D/N 21042,CYL,CYL,-20,-9000,-1350,-10350,True,False,46470,Pulled from vw_clean_transactions
+TWK002,00046762,Invoice,2025-09-29,2025-09,19.1,DN#21079,CYL,CYL,3,1800,270,2070,True,False,,Pulled from vw_clean_transactions
+TWK002,00046762,Invoice,2025-09-29,2025-09,19.1,DN#21079,CYL,CYL,3,1800,270,2070,True,False,,Pulled from vw_clean_transactions
+TWK002,00046762,Invoice,2025-09-29,2025-09,1901,DN#21079,LPG,LPG,3,1296.87,194.53,1491.4,False,True,,Pulled from vw_clean_transactions
+TWK002,00046762,Invoice,2025-09-29,2025-09,1901,DN#21079,LPG,LPG,3,1296.87,194.53,1491.4,False,True,,Pulled from vw_clean_transactions
+TWK002,00046762,Invoice,2025-09-29,2025-09,9.1,DN#21079,CYL,CYL,10,4500,675,5175,True,False,,Pulled from vw_clean_transactions
+TWK002,00046762,Invoice,2025-09-29,2025-09,9.1,DN#21079,CYL,CYL,10,4500,675,5175,True,False,,Pulled from vw_clean_transactions
+TWK002,00046762,Invoice,2025-09-29,2025-09,9.4,DN#21079,LPG,LPG,10,2047.7,307.16,2354.86,False,True,,Pulled from vw_clean_transactions
+TWK002,00046762,Invoice,2025-09-29,2025-09,9.4,DN#21079,LPG,LPG,10,2047.7,307.16,2354.86,False,True,,Pulled from vw_clean_transactions
+TWK002,00013587,Crd Note,2025-09-30,2025-09,19.1,DN#21079,CYL,CYL,-3,-1800,-270,-2070,True,False,46762,Pulled from vw_clean_transactions
+TWK002,00013587,Crd Note,2025-09-30,2025-09,19.1,DN#21079,CYL,CYL,-3,-1800,-270,-2070,True,False,46762,Pulled from vw_clean_transactions
+TWK002,00013587,Crd Note,2025-09-30,2025-09,9.1,DN#21079,CYL,CYL,-10,-4500,-675,-5175,True,False,46762,Pulled from vw_clean_transactions
+TWK002,00013587,Crd Note,2025-09-30,2025-09,9.1,DN#21079,CYL,CYL,-10,-4500,-675,-5175,True,False,46762,Pulled from vw_clean_transactions
+TWK002,00013716,Crd Note,2025-10-19,2025-10,19.1,DN#20197,CYL,CYL,-10,-6000,-900,-6900,True,False,47196,Pulled from vw_clean_transactions
+TWK002,00013716,Crd Note,2025-10-19,2025-10,19.1,DN#20197,CYL,CYL,-10,-6000,-900,-6900,True,False,47196,Pulled from vw_clean_transactions
+TWK002,00013716,Crd Note,2025-10-19,2025-10,9.1,DN#20197,CYL,CYL,-18,-8100,-1215,-9315,True,False,47196,Pulled from vw_clean_transactions
+TWK002,00013716,Crd Note,2025-10-19,2025-10,9.1,DN#20197,CYL,CYL,-18,-8100,-1215,-9315,True,False,47196,Pulled from vw_clean_transactions
+TWK002,00047196,Invoice,2025-10-19,2025-10,19.1,DN#20197,CYL,CYL,15,9000,1350,10350,True,False,,Pulled from vw_clean_transactions
+TWK002,00047196,Invoice,2025-10-19,2025-10,19.1,DN#20197,CYL,CYL,15,9000,1350,10350,True,False,,Pulled from vw_clean_transactions
+TWK002,00047196,Invoice,2025-10-19,2025-10,1901,DN#20197,LPG,LPG,15,6484.35,972.65,7457,False,True,,Pulled from vw_clean_transactions
+TWK002,00047196,Invoice,2025-10-19,2025-10,1901,DN#20197,LPG,LPG,15,6484.35,972.65,7457,False,True,,Pulled from vw_clean_transactions
+TWK002,00047196,Invoice,2025-10-19,2025-10,9.1,DN#20197,CYL,CYL,25,11250,1687.5,12937.5,True,False,,Pulled from vw_clean_transactions
+TWK002,00047196,Invoice,2025-10-19,2025-10,9.1,DN#20197,CYL,CYL,25,11250,1687.5,12937.5,True,False,,Pulled from vw_clean_transactions
+TWK002,00047196,Invoice,2025-10-19,2025-10,901,DN#20197,LPG,LPG,25,5119.25,767.89,5887.14,False,True,,Pulled from vw_clean_transactions
+TWK002,00047196,Invoice,2025-10-19,2025-10,901,DN#20197,LPG,LPG,25,5119.25,767.89,5887.14,False,True,,Pulled from vw_clean_transactions
+TWK002,00013874,Crd Note,2025-11-16,2025-11,19.1,DN#20798 EMPTIES,CYL,CYL,-8,-4800,-720,-5520,True,False,47714,Pulled from vw_clean_transactions
+TWK002,00013874,Crd Note,2025-11-16,2025-11,19.1,DN#20798 EMPTIES,CYL,CYL,-8,-4800,-720,-5520,True,False,47714,Pulled from vw_clean_transactions
+TWK002,00013874,Crd Note,2025-11-16,2025-11,9.1,DN#20798 EMPTIES,CYL,CYL,-20,-9000,-1350,-10350,True,False,47714,Pulled from vw_clean_transactions
+TWK002,00013874,Crd Note,2025-11-16,2025-11,9.1,DN#20798 EMPTIES,CYL,CYL,-20,-9000,-1350,-10350,True,False,47714,Pulled from vw_clean_transactions
+TWK002,00047714,Invoice,2025-11-16,2025-11,19.1,DN#20798,CYL,CYL,8,4800,720,5520,True,False,,Pulled from vw_clean_transactions
+TWK002,00047714,Invoice,2025-11-16,2025-11,19.1,DN#20798,CYL,CYL,8,4800,720,5520,True,False,,Pulled from vw_clean_transactions
+TWK002,00047714,Invoice,2025-11-16,2025-11,19.4,DN#20798,LPG,LPG,8,3392.24,508.84,3901.08,False,True,,Pulled from vw_clean_transactions
+TWK002,00047714,Invoice,2025-11-16,2025-11,19.4,DN#20798,LPG,LPG,8,3392.24,508.84,3901.08,False,True,,Pulled from vw_clean_transactions
+TWK002,00047714,Invoice,2025-11-16,2025-11,9.1,DN#20798,CYL,CYL,20,9000,1350,10350,True,False,,Pulled from vw_clean_transactions
+TWK002,00047714,Invoice,2025-11-16,2025-11,9.1,DN#20798,CYL,CYL,20,9000,1350,10350,True,False,,Pulled from vw_clean_transactions
+TWK002,00047714,Invoice,2025-11-16,2025-11,9.4,DN#20798,LPG,LPG,20,4017.2,602.58,4619.78,False,True,,Pulled from vw_clean_transactions
+TWK002,00047714,Invoice,2025-11-16,2025-11,9.4,DN#20798,LPG,LPG,20,4017.2,602.58,4619.78,False,True,,Pulled from vw_clean_transactions
+TWK002,00048160,Invoice,2025-12-07,2025-12,19.1,DN#20905,CYL,CYL,13,7800,1170,8970,True,False,,Pulled from vw_clean_transactions
+TWK002,00048160,Invoice,2025-12-07,2025-12,19.1,DN#20905,CYL,CYL,13,7800,1170,8970,True,False,,Pulled from vw_clean_transactions
+TWK002,00048160,Invoice,2025-12-07,2025-12,19.4,DN#20905,LPG,LPG,13,5539.56,830.93,6370.49,False,True,,Pulled from vw_clean_transactions
+TWK002,00048160,Invoice,2025-12-07,2025-12,19.4,DN#20905,LPG,LPG,13,5539.56,830.93,6370.49,False,True,,Pulled from vw_clean_transactions
+TWK002,00048160,Invoice,2025-12-07,2025-12,9.1,DN#20905,CYL,CYL,12,5400,810,6210,True,False,,Pulled from vw_clean_transactions
+TWK002,00048160,Invoice,2025-12-07,2025-12,9.1,DN#20905,CYL,CYL,12,5400,810,6210,True,False,,Pulled from vw_clean_transactions
+TWK002,00048160,Invoice,2025-12-07,2025-12,9.4,DN#20905,LPG,LPG,12,2422.2,363.33,2785.53,False,True,,Pulled from vw_clean_transactions
+TWK002,00048160,Invoice,2025-12-07,2025-12,9.4,DN#20905,LPG,LPG,12,2422.2,363.33,2785.53,False,True,,Pulled from vw_clean_transactions
+TWK002,00014034,Crd Note,2025-12-08,2025-12,19.1,DN#20905,CYL,CYL,-13,-7800,-1170,-8970,True,False,48160,Pulled from vw_clean_transactions
+TWK002,00014034,Crd Note,2025-12-08,2025-12,19.1,DN#20905,CYL,CYL,-13,-7800,-1170,-8970,True,False,48160,Pulled from vw_clean_transactions
+TWK002,00014034,Crd Note,2025-12-08,2025-12,9.1,DN#20905,CYL,CYL,-12,-5400,-810,-6210,True,False,48160,Pulled from vw_clean_transactions
+TWK002,00014034,Crd Note,2025-12-08,2025-12,9.1,DN#20905,CYL,CYL,-12,-5400,-810,-6210,True,False,48160,Pulled from vw_clean_transactions
+TWK002,00014232,Crd Note,2026-01-08,2026-01,1901,DN-20974,LPG,LPG,-12,-5113.44,-767.02,-5880.46,False,True,48686,Pulled from vw_clean_transactions
+TWK002,00014232,Crd Note,2026-01-08,2026-01,1901,DN-20974,LPG,LPG,-12,-5113.44,-767.02,-5880.46,False,True,48686,Pulled from vw_clean_transactions
+TWK002,00014232,Crd Note,2026-01-08,2026-01,9.4,DN-20974,LPG,LPG,-28,-5651.8,-847.77,-6499.57,False,True,48686,Pulled from vw_clean_transactions
+TWK002,00014232,Crd Note,2026-01-08,2026-01,9.4,DN-20974,LPG,LPG,-28,-5651.8,-847.77,-6499.57,False,True,48686,Pulled from vw_clean_transactions
+TWK002,00014237,Crd Note,2026-01-08,2026-01,19.1,DN-20975,CYL,CYL,-12,-7200,-1080,-8280,True,False,48687,Pulled from vw_clean_transactions
+TWK002,00014237,Crd Note,2026-01-08,2026-01,19.1,DN-20975,CYL,CYL,-12,-7200,-1080,-8280,True,False,48687,Pulled from vw_clean_transactions
+TWK002,00014237,Crd Note,2026-01-08,2026-01,9.1,DN-20975,CYL,CYL,-28,-12600,-1890,-14490,True,False,48687,Pulled from vw_clean_transactions
+TWK002,00014237,Crd Note,2026-01-08,2026-01,9.1,DN-20975,CYL,CYL,-28,-12600,-1890,-14490,True,False,48687,Pulled from vw_clean_transactions
+TWK002,00048686,Invoice,2026-01-08,2026-01,1901,DN-20974,LPG,LPG,12,5113.44,767.02,5880.46,False,True,,Pulled from vw_clean_transactions
+TWK002,00048686,Invoice,2026-01-08,2026-01,1901,DN-20974,LPG,LPG,12,5113.44,767.02,5880.46,False,True,,Pulled from vw_clean_transactions
+TWK002,00048686,Invoice,2026-01-08,2026-01,9.4,DN-20974,LPG,LPG,28,5651.8,847.77,6499.57,False,True,,Pulled from vw_clean_transactions
+TWK002,00048686,Invoice,2026-01-08,2026-01,9.4,DN-20974,LPG,LPG,28,5651.8,847.77,6499.57,False,True,,Pulled from vw_clean_transactions
+TWK002,00048687,Invoice,2026-01-08,2026-01,19.1,DN-20975,CYL,CYL,12,7200,1080,8280,True,False,,Pulled from vw_clean_transactions
+TWK002,00048687,Invoice,2026-01-08,2026-01,19.1,DN-20975,CYL,CYL,12,7200,1080,8280,True,False,,Pulled from vw_clean_transactions
+TWK002,00048687,Invoice,2026-01-08,2026-01,1901,DN-20975,LPG,LPG,12,5113.44,767.02,5880.46,False,True,,Pulled from vw_clean_transactions
+TWK002,00048687,Invoice,2026-01-08,2026-01,1901,DN-20975,LPG,LPG,12,5113.44,767.02,5880.46,False,True,,Pulled from vw_clean_transactions
+TWK002,00048687,Invoice,2026-01-08,2026-01,9.1,DN-20975,CYL,CYL,28,12600,1890,14490,True,False,,Pulled from vw_clean_transactions
+TWK002,00048687,Invoice,2026-01-08,2026-01,9.1,DN-20975,CYL,CYL,28,12600,1890,14490,True,False,,Pulled from vw_clean_transactions
+TWK002,00048687,Invoice,2026-01-08,2026-01,9.4,DN-20975,LPG,LPG,28,5651.8,847.77,6499.57,False,True,,Pulled from vw_clean_transactions
+TWK002,00048687,Invoice,2026-01-08,2026-01,9.4,DN-20975,LPG,LPG,28,5651.8,847.77,6499.57,False,True,,Pulled from vw_clean_transactions
+TWK002,00014414,Crd Note,2026-02-11,2026-02,14.1,DN#21535,CYL,CYL,-1,-550,-82.5,-632.5,True,False,49208,Pulled from vw_clean_transactions
+TWK002,00014414,Crd Note,2026-02-11,2026-02,14.1,DN#21535,CYL,CYL,-1,-550,-82.5,-632.5,True,False,49208,Pulled from vw_clean_transactions
+TWK002,00014414,Crd Note,2026-02-11,2026-02,19.1,DN#21535,CYL,CYL,-9,-5400,-810,-6210,True,False,49208,Pulled from vw_clean_transactions
+TWK002,00014414,Crd Note,2026-02-11,2026-02,19.1,DN#21535,CYL,CYL,-9,-5400,-810,-6210,True,False,49208,Pulled from vw_clean_transactions
+TWK002,00014414,Crd Note,2026-02-11,2026-02,9.1,DN#21535,CYL,CYL,-25,-11250,-1687.5,-12937.5,True,False,49208,Pulled from vw_clean_transactions
+TWK002,00014414,Crd Note,2026-02-11,2026-02,9.1,DN#21535,CYL,CYL,-25,-11250,-1687.5,-12937.5,True,False,49208,Pulled from vw_clean_transactions
+TWK002,00014414,Crd Note,2026-02-11,2026-02,S.1,DN#21535,CYL,CYL,-2,-2100,-315,-2415,True,False,49208,Pulled from vw_clean_transactions
+TWK002,00014414,Crd Note,2026-02-11,2026-02,S.1,DN#21535,CYL,CYL,-2,-2100,-315,-2415,True,False,49208,Pulled from vw_clean_transactions
+TWK002,00049208,Invoice,2026-02-11,2026-02,19.1,DN#21535,CYL,CYL,10,6000,900,6900,True,False,,Pulled from vw_clean_transactions
+TWK002,00049208,Invoice,2026-02-11,2026-02,19.1,DN#21535,CYL,CYL,10,6000,900,6900,True,False,,Pulled from vw_clean_transactions
+TWK002,00049208,Invoice,2026-02-11,2026-02,1901,DN#21535,LPG,LPG,10,4336.1,650.42,4986.52,False,True,,Pulled from vw_clean_transactions
+TWK002,00049208,Invoice,2026-02-11,2026-02,1901,DN#21535,LPG,LPG,10,4336.1,650.42,4986.52,False,True,,Pulled from vw_clean_transactions
+TWK002,00049208,Invoice,2026-02-11,2026-02,9.1,DN#21535,CYL,CYL,25,11250,1687.5,12937.5,True,False,,Pulled from vw_clean_transactions
+TWK002,00049208,Invoice,2026-02-11,2026-02,9.1,DN#21535,CYL,CYL,25,11250,1687.5,12937.5,True,False,,Pulled from vw_clean_transactions
+TWK002,00049208,Invoice,2026-02-11,2026-02,901,DN#21535,LPG,LPG,25,5134.75,770.21,5904.96,False,True,,Pulled from vw_clean_transactions
+TWK002,00049208,Invoice,2026-02-11,2026-02,901,DN#21535,LPG,LPG,25,5134.75,770.21,5904.96,False,True,,Pulled from vw_clean_transactions
+TWK002,00049208,Invoice,2026-02-11,2026-02,S.1,DN#21535,CYL,CYL,2,2100,315,2415,True,False,,Pulled from vw_clean_transactions
+TWK002,00049208,Invoice,2026-02-11,2026-02,S.1,DN#21535,CYL,CYL,2,2100,315,2415,True,False,,Pulled from vw_clean_transactions
+TWK002,00049208,Invoice,2026-02-11,2026-02,S01,DN#21535,LPG,LPG,2,2190.86,328.63,2519.49,False,True,,Pulled from vw_clean_transactions
+TWK002,00049208,Invoice,2026-02-11,2026-02,S01,DN#21535,LPG,LPG,2,2190.86,328.63,2519.49,False,True,,Pulled from vw_clean_transactions
+TWK002,00049606,Invoice,2026-03-05,2026-03,19.1,DN#21950,CYL,CYL,7,4200,630,4830,True,False,,Pulled from vw_clean_transactions
+TWK002,00049606,Invoice,2026-03-05,2026-03,19.1,DN#21950,CYL,CYL,7,4200,630,4830,True,False,,Pulled from vw_clean_transactions
+TWK002,00049606,Invoice,2026-03-05,2026-03,1901,DN#21950,LPG,LPG,7,3058.37,458.76,3517.13,False,True,,Pulled from vw_clean_transactions
+TWK002,00049606,Invoice,2026-03-05,2026-03,1901,DN#21950,LPG,LPG,7,3058.37,458.76,3517.13,False,True,,Pulled from vw_clean_transactions
+TWK002,00049606,Invoice,2026-03-05,2026-03,9.1,DN#21950,CYL,CYL,20,9000,1350,10350,True,False,,Pulled from vw_clean_transactions
+TWK002,00049606,Invoice,2026-03-05,2026-03,9.1,DN#21950,CYL,CYL,20,9000,1350,10350,True,False,,Pulled from vw_clean_transactions
+TWK002,00049606,Invoice,2026-03-05,2026-03,901,DN#21950,LPG,LPG,20,4139.2,620.88,4760.08,False,True,,Pulled from vw_clean_transactions
+TWK002,00049606,Invoice,2026-03-05,2026-03,901,DN#21950,LPG,LPG,20,4139.2,620.88,4760.08,False,True,,Pulled from vw_clean_transactions
+TWK002,00014554,Crd Note,2026-03-06,2026-03,19.1,DN#21950,CYL,CYL,-7,-4200,-630,-4830,True,False,49606,Pulled from vw_clean_transactions
+TWK002,00014554,Crd Note,2026-03-06,2026-03,19.1,DN#21950,CYL,CYL,-7,-4200,-630,-4830,True,False,49606,Pulled from vw_clean_transactions
+TWK002,00014554,Crd Note,2026-03-06,2026-03,9.1,DN#21950,CYL,CYL,-20,-9000,-1350,-10350,True,False,49606,Pulled from vw_clean_transactions
+TWK002,00014554,Crd Note,2026-03-06,2026-03,9.1,DN#21950,CYL,CYL,-20,-9000,-1350,-10350,True,False,49606,Pulled from vw_clean_transactions
+TWK002,00049882,Invoice,2026-03-23,2026-03,19.1,DN-21976,CYL,CYL,8,4800,720,5520,True,False,,Pulled from vw_clean_transactions
+TWK002,00049882,Invoice,2026-03-23,2026-03,19.1,DN-21976,CYL,CYL,8,4800,720,5520,True,False,,Pulled from vw_clean_transactions
+TWK002,00049882,Invoice,2026-03-23,2026-03,19.4,DN-21976,LPG,LPG,8,3495.28,524.29,4019.57,False,True,,Pulled from vw_clean_transactions
+TWK002,00049882,Invoice,2026-03-23,2026-03,19.4,DN-21976,LPG,LPG,8,3495.28,524.29,4019.57,False,True,,Pulled from vw_clean_transactions
+TWK002,00049882,Invoice,2026-03-23,2026-03,9.1,DN-21976,CYL,CYL,15,6750,1012.5,7762.5,True,False,,Pulled from vw_clean_transactions
+TWK002,00049882,Invoice,2026-03-23,2026-03,9.1,DN-21976,CYL,CYL,15,6750,1012.5,7762.5,True,False,,Pulled from vw_clean_transactions
+TWK002,00049882,Invoice,2026-03-23,2026-03,9.4,DN-21976,LPG,LPG,15,3104.4,465.66,3570.06,False,True,,Pulled from vw_clean_transactions
+TWK002,00049882,Invoice,2026-03-23,2026-03,9.4,DN-21976,LPG,LPG,15,3104.4,465.66,3570.06,False,True,,Pulled from vw_clean_transactions
+TWK002,00049882,Invoice,2026-03-23,2026-03,S.1,DN-21976,CYL,CYL,1,1050,157.5,1207.5,True,False,,Pulled from vw_clean_transactions
+TWK002,00049882,Invoice,2026-03-23,2026-03,S.1,DN-21976,CYL,CYL,1,1050,157.5,1207.5,True,False,,Pulled from vw_clean_transactions
+TWK002,00049882,Invoice,2026-03-23,2026-03,S01,DN-21976,LPG,LPG,1,1103.77,165.57,1269.34,False,True,,Pulled from vw_clean_transactions
+TWK002,00049882,Invoice,2026-03-23,2026-03,S01,DN-21976,LPG,LPG,1,1103.77,165.57,1269.34,False,True,,Pulled from vw_clean_transactions
+TWK002,00014649,Crd Note,2026-03-24,2026-03,19.1,DN-21976,CYL,CYL,-8,-4800,-720,-5520,True,False,49882,Pulled from vw_clean_transactions
+TWK002,00014649,Crd Note,2026-03-24,2026-03,19.1,DN-21976,CYL,CYL,-8,-4800,-720,-5520,True,False,49882,Pulled from vw_clean_transactions
+TWK002,00014649,Crd Note,2026-03-24,2026-03,9.1,DN-21976,CYL,CYL,-15,-6750,-1012.5,-7762.5,True,False,49882,Pulled from vw_clean_transactions
+TWK002,00014649,Crd Note,2026-03-24,2026-03,9.1,DN-21976,CYL,CYL,-15,-6750,-1012.5,-7762.5,True,False,49882,Pulled from vw_clean_transactions
+TWK002,00014649,Crd Note,2026-03-24,2026-03,S.1,DN-21976,CYL,CYL,-1,-1050,-157.5,-1207.5,True,False,49882,Pulled from vw_clean_transactions
+TWK002,00014649,Crd Note,2026-03-24,2026-03,S.1,DN-21976,CYL,CYL,-1,-1050,-157.5,-1207.5,True,False,49882,Pulled from vw_clean_transactions
+TWK002,00050099,Invoice,2026-04-05,2026-04,19.1,DN-22046,CYL,CYL,9,5400,810,6210,True,False,,Pulled from vw_clean_transactions
+TWK002,00050099,Invoice,2026-04-05,2026-04,19.1,DN-22046,CYL,CYL,9,5400,810,6210,True,False,,Pulled from vw_clean_transactions
+TWK002,00050099,Invoice,2026-04-05,2026-04,1901,DN-22046,LPG,LPG,9,4378.32,656.75,5035.07,False,True,,Pulled from vw_clean_transactions
+TWK002,00050099,Invoice,2026-04-05,2026-04,1901,DN-22046,LPG,LPG,9,4378.32,656.75,5035.07,False,True,,Pulled from vw_clean_transactions
+TWK002,00050099,Invoice,2026-04-05,2026-04,9.1,DN-22046,CYL,CYL,15,6750,1012.5,7762.5,True,False,,Pulled from vw_clean_transactions
+TWK002,00050099,Invoice,2026-04-05,2026-04,9.1,DN-22046,CYL,CYL,15,6750,1012.5,7762.5,True,False,,Pulled from vw_clean_transactions
+TWK002,00050099,Invoice,2026-04-05,2026-04,901,DN-22046,LPG,LPG,15,3456.6,518.49,3975.09,False,True,,Pulled from vw_clean_transactions
+TWK002,00050099,Invoice,2026-04-05,2026-04,901,DN-22046,LPG,LPG,15,3456.6,518.49,3975.09,False,True,,Pulled from vw_clean_transactions
+TWK002,00014711,Crd Note,2026-04-06,2026-04,19.1,DN-22046,CYL,CYL,-9,-5400,-810,-6210,True,False,50099,Pulled from vw_clean_transactions
+TWK002,00014711,Crd Note,2026-04-06,2026-04,19.1,DN-22046,CYL,CYL,-9,-5400,-810,-6210,True,False,50099,Pulled from vw_clean_transactions
+TWK002,00014711,Crd Note,2026-04-06,2026-04,9.1,DN-22046,CYL,CYL,-15,-6750,-1012.5,-7762.5,True,False,50099,Pulled from vw_clean_transactions
+TWK002,00014711,Crd Note,2026-04-06,2026-04,9.1,DN-22046,CYL,CYL,-15,-6750,-1012.5,-7762.5,True,False,50099,Pulled from vw_clean_transactions
+TWK002,00050439,Invoice,2026-04-29,2026-04,9.4,DN-21880,LPG,LPG,20,4608.8,691.32,5300.12,False,True,,Pulled from vw_clean_transactions
+TWK002,00050440,Invoice,2026-04-29,2026-04,9.1,DN-21880-EMPTY,CYL,CYL,20,9000,1350,10350,True,False,,Pulled from vw_clean_transactions
+TWK002,00014820,Crd Note,2026-04-30,2026-04,9.1,DN-21880-EMPTY,CYL,CYL,-20,-9000,-1350,-10350,True,False,50440,Pulled from vw_clean_transactions
+TWK002,00050680,Invoice,2026-05-13,2026-05,19.1,DN#22709,CYL,CYL,4,2400,360,2760,True,False,,Pulled from vw_clean_transactions
+TWK002,00050680,Invoice,2026-05-13,2026-05,19.1,DN#22709,CYL,CYL,4,2400,360,2760,True,False,,Pulled from vw_clean_transactions
+TWK002,00050680,Invoice,2026-05-13,2026-05,19.4,DN#22709,LPG,LPG,4,2237.52,335.63,2573.15,False,True,,Pulled from vw_clean_transactions
+TWK002,00050680,Invoice,2026-05-13,2026-05,19.4,DN#22709,LPG,LPG,4,2237.52,335.63,2573.15,False,True,,Pulled from vw_clean_transactions
+TWK002,00050680,Invoice,2026-05-13,2026-05,9.1,DN#22709,CYL,CYL,10,4500,675,5175,True,False,,Pulled from vw_clean_transactions
+TWK002,00050680,Invoice,2026-05-13,2026-05,9.1,DN#22709,CYL,CYL,10,4500,675,5175,True,False,,Pulled from vw_clean_transactions
+TWK002,00050680,Invoice,2026-05-13,2026-05,9.4,DN#22709,LPG,LPG,10,2649.7,397.46,3047.16,False,True,,Pulled from vw_clean_transactions
+TWK002,00050680,Invoice,2026-05-13,2026-05,9.4,DN#22709,LPG,LPG,10,2649.7,397.46,3047.16,False,True,,Pulled from vw_clean_transactions
+TWK002,00050680,Invoice,2026-05-13,2026-05,S.1,DN#22709,CYL,CYL,1,1050,157.5,1207.5,True,False,,Pulled from vw_clean_transactions
+TWK002,00050680,Invoice,2026-05-13,2026-05,S.1,DN#22709,CYL,CYL,1,1050,157.5,1207.5,True,False,,Pulled from vw_clean_transactions
+TWK002,00050680,Invoice,2026-05-13,2026-05,S01,DN#22709,LPG,LPG,1,1413.17,211.97,1625.14,False,True,,Pulled from vw_clean_transactions
+TWK002,00050680,Invoice,2026-05-13,2026-05,S01,DN#22709,LPG,LPG,1,1413.17,211.97,1625.14,False,True,,Pulled from vw_clean_transactions
+TWK002,00014910,Crd Note,2026-05-14,2026-05,19.1,DN#22709,CYL,CYL,-4,-2400,-360,-2760,True,False,50680,Pulled from vw_clean_transactions
+TWK002,00014910,Crd Note,2026-05-14,2026-05,19.1,DN#22709,CYL,CYL,-4,-2400,-360,-2760,True,False,50680,Pulled from vw_clean_transactions
+TWK002,00014910,Crd Note,2026-05-14,2026-05,9.1,DN#22709,CYL,CYL,-10,-4500,-675,-5175,True,False,50680,Pulled from vw_clean_transactions
+TWK002,00014910,Crd Note,2026-05-14,2026-05,9.1,DN#22709,CYL,CYL,-10,-4500,-675,-5175,True,False,50680,Pulled from vw_clean_transactions
+TWK002,00014910,Crd Note,2026-05-14,2026-05,S.1,DN#22709,CYL,CYL,-1,-1050,-157.5,-1207.5,True,False,50680,Pulled from vw_clean_transactions
+TWK002,00014910,Crd Note,2026-05-14,2026-05,S.1,DN#22709,CYL,CYL,-1,-1050,-157.5,-1207.5,True,False,50680,Pulled from vw_clean_transactions
+TWK002,00050898,Invoice,2026-05-26,2026-05,19.1,DN#22761,CYL,CYL,6,3600,540,4140,True,False,,Pulled from vw_clean_transactions
+TWK002,00050898,Invoice,2026-05-26,2026-05,19.4,DN#22761,LPG,LPG,6,3356.27,503.44,3859.71,False,True,,Pulled from vw_clean_transactions
+TWK002,00050898,Invoice,2026-05-26,2026-05,9.1,DN#22761,CYL,CYL,15,6750,1012.5,7762.5,True,False,,Pulled from vw_clean_transactions
+TWK002,00050898,Invoice,2026-05-26,2026-05,9.4,DN#22761,LPG,LPG,15,3974.56,596.18,4570.74,False,True,,Pulled from vw_clean_transactions
+TWK002,00014982,Crd Note,2026-05-27,2026-05,19.1,DN#22761,CYL,CYL,-6,-3600,-540,-4140,True,False,50898,Pulled from vw_clean_transactions
+TWK002,00014982,Crd Note,2026-05-27,2026-05,9.1,DN#22761,CYL,CYL,-14,-6300,-945,-7245,True,False,50898,Pulled from vw_clean_transactions
+TWK002,00051180,Invoice,2026-06-11,2026-06,19.1,DN#22798,CYL,CYL,10,6000,900,6900,True,False,,Pulled from vw_clean_transactions
+TWK002,00051180,Invoice,2026-06-11,2026-06,19.4,DN#22798,LPG,LPG,10,5569.2,835.38,6404.58,False,True,,Pulled from vw_clean_transactions
+TWK002,00051180,Invoice,2026-06-11,2026-06,9.1,DN#22798,CYL,CYL,20,9000,1350,10350,True,False,,Pulled from vw_clean_transactions
+TWK002,00051180,Invoice,2026-06-11,2026-06,9.4,DN#22798,LPG,LPG,20,5276,791.4,6067.4,False,True,,Pulled from vw_clean_transactions
+TWK002,00015063,Crd Note,2026-06-14,2026-06,19.1,DN#22798,CYL,CYL,-10,-6000,-900,-6900,True,False,51180,Pulled from vw_clean_transactions
+TWK002,00015063,Crd Note,2026-06-14,2026-06,19.4,DN#22798,LPG,LPG,-10,-5569.2,-835.38,-6404.58,False,True,51180,Pulled from vw_clean_transactions
+TWK002,00015063,Crd Note,2026-06-14,2026-06,9.1,DN#22798,CYL,CYL,-20,-9000,-1350,-10350,True,False,51180,Pulled from vw_clean_transactions
+TWK002,00015063,Crd Note,2026-06-14,2026-06,9.4,DN#22798,LPG,LPG,-20,-5276,-791.4,-6067.4,False,True,51180,Pulled from vw_clean_transactions
+TWK002,00015070,Crd Note,2026-06-14,2026-06,19.1,DN#22904-EMPTY,CYL,CYL,-10,-6000,-900,-6900,True,False,51227,Pulled from vw_clean_transactions
+TWK002,00015070,Crd Note,2026-06-14,2026-06,9.1,DN#22904-EMPTY,CYL,CYL,-20,-9000,-1350,-10350,True,False,51227,Pulled from vw_clean_transactions
+TWK002,00051226,Invoice,2026-06-14,2026-06,19.4,DN#22904,LPG,LPG,10,5569.2,835.38,6404.58,False,True,,Pulled from vw_clean_transactions
+TWK002,00051226,Invoice,2026-06-14,2026-06,9.4,DN#22904,LPG,LPG,20,5276,791.4,6067.4,False,True,,Pulled from vw_clean_transactions
+TWK002,00051227,Invoice,2026-06-14,2026-06,19.1,DN#22904-EMPTY,CYL,CYL,10,6000,900,6900,True,False,,Pulled from vw_clean_transactions
+TWK002,00051227,Invoice,2026-06-14,2026-06,9.1,DN#22904-EMPTY,CYL,CYL,20,9000,1350,10350,True,False,,Pulled from vw_clean_transactions
+TWK002,00015155,Crd Note,2026-06-30,2026-06,19.1,DN#22534,CYL,CYL,-10,-6000,-900,-6900,True,False,51496,Pulled from vw_clean_transactions
+TWK002,00015155,Crd Note,2026-06-30,2026-06,9.1,DN#22534,CYL,CYL,-20,-9000,-1350,-10350,True,False,51496,Pulled from vw_clean_transactions
+TWK002,00051496,Invoice,2026-06-30,2026-06,19.1,DN#22534,CYL,CYL,10,6000,900,6900,True,False,,Pulled from vw_clean_transactions
+TWK002,00051496,Invoice,2026-06-30,2026-06,19.4,DN#22534,LPG,LPG,10,5569.2,835.38,6404.58,False,True,,Pulled from vw_clean_transactions
+TWK002,00051496,Invoice,2026-06-30,2026-06,9.1,DN#22534,CYL,CYL,20,9000,1350,10350,True,False,,Pulled from vw_clean_transactions
+TWK002,00051496,Invoice,2026-06-30,2026-06,9.4,DN#22534,LPG,LPG,20,5276,791.4,6067.4,False,True,,Pulled from vw_clean_transactions
+TWK002,00015262,Crd Note,2026-07-14,2026-07,19.1,DN#22576,CYL,CYL,-8,-4800,-720,-5520,True,False,51841,Pulled from vw_clean_transactions
+TWK002,00015262,Crd Note,2026-07-14,2026-07,9.1,DN#22576,CYL,CYL,-18,-8100,-1215,-9315,True,False,51841,Pulled from vw_clean_transactions
+TWK002,00051841,Invoice,2026-07-14,2026-07,19.1,DN#22576,CYL,CYL,6,3600,540,4140,True,False,,Pulled from vw_clean_transactions
+TWK002,00051841,Invoice,2026-07-14,2026-07,19.4,DN#22576,LPG,LPG,6,3355.74,503.36,3859.1,False,True,,Pulled from vw_clean_transactions
+TWK002,00051841,Invoice,2026-07-14,2026-07,9.1,DN#22576,CYL,CYL,20,9000,1350,10350,True,False,,Pulled from vw_clean_transactions
+TWK002,00051841,Invoice,2026-07-14,2026-07,9.4,DN#22576,LPG,LPG,20,5298.6,794.79,6093.39,False,True,,Pulled from vw_clean_transactions
+TWK002,00052241,Invoice,2026-07-30,2026-07,19.1,DN#24229,CYL,CYL,8,4800,720,5520,True,False,,Pulled from vw_clean_transactions
+TWK002,00052241,Invoice,2026-07-30,2026-07,1901,DN#24229,LPG,LPG,8,4474.32,671.15,5145.47,False,True,,Pulled from vw_clean_transactions
+TWK002,00052241,Invoice,2026-07-30,2026-07,9.1,DN#24229,CYL,CYL,25,11250,1687.5,12937.5,True,False,,Pulled from vw_clean_transactions
+TWK002,00052241,Invoice,2026-07-30,2026-07,901,DN#24229,LPG,LPG,25,6623.25,993.49,7616.74,False,True,,Pulled from vw_clean_transactions
+TWK002,00052241,Invoice,2026-07-30,2026-07,S.1,DN#24229,CYL,CYL,1,1050,157.5,1207.5,True,False,,Pulled from vw_clean_transactions
+TWK002,00052241,Invoice,2026-07-30,2026-07,S01,DN#24229,LPG,LPG,1,1412.94,211.94,1624.88,False,True,,Pulled from vw_clean_transactions
+TWK002,00015370,Crd Note,2026-07-31,2026-07,19.1,DN#24229,CYL,CYL,-8,-4800,-720,-5520,True,False,52241,Pulled from vw_clean_transactions
+TWK002,00015370,Crd Note,2026-07-31,2026-07,9.1,DN#24229,CYL,CYL,-25,-11250,-1687.5,-12937.5,True,False,52241,Pulled from vw_clean_transactions
+TWK002,00015370,Crd Note,2026-07-31,2026-07,S.1,DN#24229,CYL,CYL,-1,-1050,-157.5,-1207.5,True,False,52241,Pulled from vw_clean_transactions
+TWK002,00015443,Crd Note,2026-08-11,2026-08,19.1,DN#23954,CYL,CYL,-4,-2400,-360,-2760,True,False,52484,Pulled from vw_clean_transactions
+TWK002,00015443,Crd Note,2026-08-11,2026-08,9.1,DN#23954,CYL,CYL,-16,-7200,-1080,-8280,True,False,52484,Pulled from vw_clean_transactions
+TWK002,00052484,Invoice,2026-08-11,2026-08,19.1,DN#23954,CYL,CYL,5,3000,450,3450,True,False,,Pulled from vw_clean_transactions
+TWK002,00052484,Invoice,2026-08-11,2026-08,19.4,DN#23954,LPG,LPG,5,2487.7,373.16,2860.86,False,True,,Pulled from vw_clean_transactions
+TWK002,00052484,Invoice,2026-08-11,2026-08,9.1,DN#23954,CYL,CYL,15,6750,1012.5,7762.5,True,False,,Pulled from vw_clean_transactions
+TWK002,00052484,Invoice,2026-08-11,2026-08,9.4,DN#23954,LPG,LPG,15,3535.2,530.28,4065.48,False,True,,Pulled from vw_clean_transactions
+TWK002,00015553,Crd Note,2026-08-25,2026-08,19.1,DN#24938,CYL,CYL,-9,-5400,-810,-6210,True,False,52803,Pulled from vw_clean_transactions
+TWK002,00015553,Crd Note,2026-08-25,2026-08,9.1,DN#24938,CYL,CYL,-21,-9450,-1417.5,-10867.5,True,False,52803,Pulled from vw_clean_transactions
+TWK002,00052803,Invoice,2026-08-25,2026-08,19.1,DN#24938,CYL,CYL,10,6000,900,6900,True,False,,Pulled from vw_clean_transactions
+TWK002,00052803,Invoice,2026-08-25,2026-08,19.4,DN#24938,LPG,LPG,10,4975.4,746.31,5721.71,False,True,,Pulled from vw_clean_transactions
+TWK002,00052803,Invoice,2026-08-25,2026-08,9.1,DN#24938,CYL,CYL,20,9000,1350,10350,True,False,,Pulled from vw_clean_transactions
+TWK002,00052803,Invoice,2026-08-25,2026-08,9.4,DN#24938,LPG,LPG,20,4713.6,707.04,5420.64,False,True,,Pulled from vw_clean_transactions

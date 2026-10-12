@@ -1,0 +1,30 @@
+{
+  "debtorCode": "DON001",
+  "clientName": "DONNYBROOK",
+  "status": "active",
+  "reconState": "pending",
+  "financials": {
+    "totalOutstanding": 97976.63,
+    "lastInvoiceDate": "2026-08-23",
+    "lastPaymentDate": "2026-08-23",
+    "agedDebt180Plus": null,
+    "debtorTxtSource": "analysis/debtors/DON001/raw/DON001.TXT",
+    "debtorTxtAsAt": "2026-09-29",
+    "debtorTxtNote": "Ingested 2026-09-29 with DEBENQ account enquiry covering transaction history from 2022-01 to 2026-08-23. Current balance PROVEN at R97,976.63. Statement of Account generated with open invoices breakdown. Status: data current, allocation lane work pending."
+  },
+  "collections": {
+    "actionRequired": false,
+    "actionType": null,
+    "dateSent": null,
+    "deadlineDate": null,
+    "nextAction": null,
+    "nextActionDate": null,
+    "notes": "Onboarding initiated. No collection until reconState complete. Current balance R97,976.63 with UD cheques R140.00."
+  },
+  "history": [
+    {
+      "date": "2026-09-29",
+      "event": "Turn 001 data intake: DEBENQ account enquiry ingested covering 2022-01 to 2026-08-23. Current balance PROVEN R97,976.63 (UD cheques R140.00). Statement of Account generated v5. Config statement_of_account.json created. Allocation lane work pending."
+    }
+  ]
+}

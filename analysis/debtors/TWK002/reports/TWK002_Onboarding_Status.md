@@ -1,8 +1,46 @@
 # TWK002 — Onboarding Status
 
-**Updated:** 2026-08-11  
+**Updated:** 2026-08-29  
 **North star:** [`docs/TWK002_Model_B_Position.md`](../docs/TWK002_Model_B_Position.md) — remittance-authoritative Model B; balance and collections based on real debt, not posting artefacts.  
 **Scope:** 2023–2024 analysis complete · ERP catch-up **mostly posted** (Path B) · **`reconState: validation_pending`** until finance sign-off
+
+---
+
+## Statement & allocation (Aug 2026) — PROVEN anchors
+
+| Item | Path | Basis | Status |
+| :--- | :--- | :--- | :---: |
+| Bridge decomposition (7 sub-lines → R8,084.67) | `config/statement_of_account.json` · `reports/TWK002_Balance_Bridge_Line_Investigation_2026-08-11.md` | PROVEN | ✅ |
+| Pre–Mar 2025 B/F provenance (R38,791.27) | `reports/TWK002_Pre_Mar2025_BF_Bridge_2026-08-11.md` | PROVEN (11 STAT batches tie) | ✅ |
+| Payment→invoice edges | `data/allocation_edges.csv` (170 edges, 20 batches) | PROVEN (remittance) | ✅ |
+| Knowledge bundle | `data/knowledge-bundle.json` | PROVEN (compiled from edges) | ✅ |
+| Customer statement config | `customerDueBasis: open_invoices`, `hideAccountLevelSection: true` | Operator decision 2026-08-29 | ✅ |
+| **Sign-off snapshot** | `snapshots/2026-08-11_v1/` + `manifest.json` | PROVEN (gate ALLOWED, sha256) | ✅ created — **send not authorised** |
+| Live working draft | `reports/TWK002_Statement_of_Account.md` | ASSERTED (re-runnable) | ✅ |
+
+**Customer amount due (billable):** **R110,046.87** — PROVEN (`snapshots/2026-08-11_v1/manifest.json`, 11 open invoices, tag gate ALLOWED REMITTANCE_BACKED).
+
+**Internal bridge (not billable):** R8,084.67 — PROVEN (bridge lines sum; not on customer snapshot).
+
+**ERP header (operator console):** R118,131.54 — PROVEN (`raw/DEBENQ_TWK002.TXT` CURRENT BALANCE).
+
+---
+
+## ERP opening balance fix (Aug 2026) — ratified execution plan
+
+**Authority:** [`docs/TWK002_ERP_Opening_Balance_Fix_Plan.md`](../docs/TWK002_ERP_Opening_Balance_Fix_Plan.md) (ratified 2026-08-29, pushed `main` @ `e09c815`).
+
+| Layer | Amount | Epistemic | ERP action |
+| :--- | ---: | :--- | :--- |
+| B/F export carry | R38,791.27 | **PROVEN** (11 STAT batches) | Accept — not zeroable without full restatement |
+| Account-level residual | R8,084.67 | **PROVEN** (7 bridge lines sum) | **H-027 BS reclass** after H-022/H-023/H-026 — tagging does **not** move the *total* |
+| Path B journals posted | 16 + 3 batches | **PROVEN** (checklists DONE) | No further discount journal wave |
+
+**Human tasks:** H-013 → **H-022 → H-023 → H-026** → rebuild bridge → **H-027** (DR suspense / CR AR) → Phase 4. H-024 Path A still optional.
+
+**Residual lever ratified 2026-08-30 (evening):** current-period BS reclassification — `docs/TWK002_ERP_Agent_Note_H027_BS_Reclassification.md`. Accept-in-header and P&L write-off superseded.
+
+**Collections posture unchanged:** customer due = open invoices only (live draft R18,413.69 after STAT 129; snapshot `2026-08-11_v1` stale). ERP plan does not change billable amount.
 
 ---
 
@@ -23,8 +61,9 @@
 | Item | Status |
 | :--- | :---: |
 | **Phase 2 tranche 1** | STAT 110/112/114 — **posted** |
-| **Phase 2 tranche 2** | STAT 123 — blocked on `18.02.2026.pdf` footer; gaps 111/113/115–122 documented |
-| Kickoff / extension | `TWK002_Phase2_2025_Kickoff.md` · `TWK002_Phase2_Extension.md` |
+| **Phase 2 tranche 2** | STAT 123 — **posted** (zero discount) |
+| **Phase 2 tranche 3** | **STAT 129** — cash **posted** `00045899`; discount journal **posted** `00000510` (H-025 done); tagging **pending** (H-026) |
+| Kickoff / extension | `TWK002_Phase2_2025_Kickoff.md` · `TWK002_Phase2_Extension.md` · **`TWK002_STAT129_Remittance_2026-08.md`** |
 
 ---
 

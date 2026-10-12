@@ -1,0 +1,24 @@
+{
+  "debtorCode": "SA0001",
+  "debtorName": "SAKI - VICTORIA RD",
+  "txtPath": "analysis/debtors/SA0001/raw/SA0001.TXT",
+  "periodStart": "2023-02-07",
+  "combinedBf": 4945.93,
+  "bfSourceNote": "ERP TXT line 14 BALANCE B/F before first period row",
+  "cylOpeningFinancial": 0.0,
+  "paymentLane": "LPG",
+  "cylOpeningQty": {
+    "14.1": 0,
+    "19.1": 0,
+    "9.1": 0,
+    "D.1": 0,
+    "S.1": 0
+  },
+  "skuRates": {
+    "14.1": 575,
+    "19.1": 690,
+    "9.1": 517.5,
+    "D.1": 1150,
+    "S.1": 1150
+  }
+}

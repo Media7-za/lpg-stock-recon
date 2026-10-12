@@ -1,0 +1,54 @@
+{
+  "debtorCode": "JEN001",
+  "customerName": "JENS SPOON PTY LTD",
+  "referenceLabel": "Trading as",
+  "referenceValue": "Spoon Eatery",
+  "businessHeader": [
+    "BELLA ENERGY SERVICES300 (PTY) LTD T/A GAZ EXPRESS",
+    "50 WINSTON ROAD",
+    "PIETERMARITZBURG",
+    "3201"
+  ],
+  "primaryTxt": "analysis/debtors/JEN001/raw/DEBENQ.TXT",
+  "siteTxts": {},
+  "outputDir": "analysis/debtors/JEN001/reports",
+  "outputBaseName": "JEN001_Statement_of_Account",
+  "pdfStylesheet": "analysis/debtors/shared/templates/statement_pdf.css",
+  "openInvoiceModel": "lpg_stripped",
+  "_comment_openInvoiceModel": "DEBENQ export has EXCLUDE: ALLOCATION DETAIL — no INVNO tagging. Open list = LPG gas invoices only (EMPTY pairs stripped). Operator sub-ledger: JEN001_Statement_Account_v5.md.",
+  "allocationGate": {
+    "status": "RATIFIED",
+    "method": "lpg_stripped_lifo",
+    "pilotReport": "reports/JEN001_Payment_Allocation_v1.md",
+    "ratifiedDate": "2026-08-25"
+  },
+  "closedInvoiceOverrides": [
+    {
+      "doc": "51691",
+      "reason": "STAT 129 / doc 45717 — LIFO full clear R4,887.10 (AL-0057). Pilot: allocation_ingest_pilot.mjs 2026-08-25."
+    },
+    {
+      "doc": "51823",
+      "reason": "STAT 129 / doc 45717 — LIFO full clear R935.81 (AL-0056)."
+    },
+    {
+      "doc": "52044",
+      "reason": "STAT 129 / doc 45717 — LIFO full clear R3,951.29 (AL-0055)."
+    },
+    {
+      "doc": "52305",
+      "reason": "STAT 129 / doc 45717 — LIFO full clear R5,199.03 (AL-0054)."
+    }
+  ],
+  "openInvoiceAdjustments": [
+    {
+      "doc": "51564",
+      "due": 597.11,
+      "reason": "STAT 129 / doc 45717 — LIFO partial R26.77 of R623.88 (AL-0058). Remainder R597.11 open."
+    }
+  ],
+  "collapseAccountLevelAsOpeningBalance": true,
+  "collapsedAccountLevelLabel": "Opening balance (pre-Jul 2026 carry, not itemised below)",
+  "collapsedAccountLevelReference": "B/F R22,088.10 combined (post STAT 127) minus Jul–Aug open invoice detail. Full allocation: data/allocation_edges.csv.",
+  "balanceBridgeLines": []
+}

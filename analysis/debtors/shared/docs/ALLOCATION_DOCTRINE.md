@@ -1,5 +1,7 @@
 # Cylinder Allocation Doctrine (Version 1)
 
+> **Scoped-canonical** for cylinder deposit allocation evidence tiers. Constitutional epistemic tags and evidence ranks: `DEBTORS_DOCTRINE.md` §§4–6 (ALIGNED — edit matching tiers here for CYL allocation scope).
+
 This specification defines the principles and evidence-based matching logic of the **Cylinder Allocation Doctrine**. It provides a standard framework for classifying how payments and credits are allocated against cylinder deposit liabilities.
 
 ---

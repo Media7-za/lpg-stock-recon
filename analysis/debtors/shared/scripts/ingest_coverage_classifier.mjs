@@ -3,7 +3,7 @@
  * Aligns with CURRENT_STATE.md DTRX literals and LANE_1_INPUT_INGESTION.md.
  */
 
-/** @typedef {'header_and_lines' | 'header_only' | 'unresolved'} IngestShape */
+/** @typedef {'header_and_lines' | 'header_only' | 'lines_only' | 'txt_only' | 'unresolved'} IngestShape */
 
 /** @type {Record<string, IngestShape>} */
 export const ENTRY_INGEST_SHAPE = {
@@ -17,7 +17,7 @@ export const ENTRY_INGEST_SHAPE = {
   'Bank UD': 'unresolved',
 };
 
-/** @typedef {'HEALTHY' | 'MISSING_HEADER' | 'MISSING_LINES' | 'MISSING_HEADER_AND_LINES' | 'DB_ONLY_DOCUMENT' | 'EXPECTED_HEADER_ONLY' | 'DOCUMENT_TYPE_UNRESOLVED' | 'RATIFIED_EXCEPTION'} CoverageClassification */
+/** @typedef {'HEALTHY' | 'MISSING_HEADER' | 'MISSING_LINES' | 'MISSING_HEADER_AND_LINES' | 'DB_ONLY_DOCUMENT' | 'EXPECTED_HEADER_ONLY' | 'EXPECTED_TXT_ONLY' | 'DOCUMENT_TYPE_UNRESOLVED' | 'RATIFIED_EXCEPTION'} CoverageClassification */
 
 /**
  * @param {string} entryType ERP ENTRY column literal
@@ -48,6 +48,15 @@ export function classifyDocument({ inTxt, headerPresent, linesPresent, requiredS
     return 'MISSING_HEADER';
   }
 
+  if (requiredShape === 'lines_only') {
+    if (linesPresent) return 'HEALTHY';
+    return 'MISSING_LINES';
+  }
+
+  if (requiredShape === 'txt_only') {
+    return 'EXPECTED_TXT_ONLY';
+  }
+
   // header_and_lines
   if (headerPresent && linesPresent) return 'HEALTHY';
   if (!headerPresent && !linesPresent) return 'MISSING_HEADER_AND_LINES';
@@ -59,6 +68,7 @@ export function classifyDocument({ inTxt, headerPresent, linesPresent, requiredS
 export const CLASSIFICATION_BLOCKS = {
   HEALTHY: [],
   EXPECTED_HEADER_ONLY: [],
+  EXPECTED_TXT_ONLY: [],
   MISSING_HEADER: ['custody', 'sku_analysis', 'allocation'],
   MISSING_LINES: ['custody', 'sku_analysis', 'allocation'],
   MISSING_HEADER_AND_LINES: ['custody', 'sku_analysis', 'allocation'],
@@ -83,5 +93,10 @@ export function deriveDisplayStatus(freshness, coverage) {
  * @returns {boolean}
  */
 export function classificationIsPass(c) {
-  return c === 'HEALTHY' || c === 'EXPECTED_HEADER_ONLY' || c === 'RATIFIED_EXCEPTION';
+  return (
+    c === 'HEALTHY' ||
+    c === 'EXPECTED_HEADER_ONLY' ||
+    c === 'EXPECTED_TXT_ONLY' ||
+    c === 'RATIFIED_EXCEPTION'
+  );
 }
