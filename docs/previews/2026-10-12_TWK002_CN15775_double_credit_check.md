@@ -40,3 +40,7 @@ Every net is a whole number of cylinders at the stated rate (this is the DEBTORS
 * the R-57.50 custody variance and the -1 x 14kg from CN 14414 (12 Feb 2026), which this check does not touch (`unverified`).
 
 **Tripwires (reopen if):** a customer remittance or correction naming 15775 or 53507; a DB re-sync that changes the 53507 / 15775 SKU lines; a ruling that the older cash-paid cylinders are not customer-owned; any credit of 19kg or 9kg on a later document that exceeds its own delivery.
+
+## 4. Status (2026-10-12)
+
+The operator has since confirmed the CYL lane ruling for CN 15775 on this evidence; it is recorded in `TWK002/config/statement_v5.json` `rowNotes`. The tripwires in section 3 stand.

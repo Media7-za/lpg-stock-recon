@@ -2,7 +2,6 @@
 **INTERNAL, not for the customer.** Consolidated statement as at 2026-10-10 · generated 2026-10-12 · parent TWK002 · **DRAFT: not releasable** · family amount due R114,836.19 vs sum of ERP headers R114,836.19 (variance R0.00).
 
 **Why this is a draft:**
-- operator hold H1_CN15775_LANE: CN 15775 lane ruling (ADM-94 Q5, CYL) not yet recorded by the operator.
 - operator hold H2_TWK003_CREDIT: Treatment of the TWK003 customer credit R-300.00 (invoice 47866 vs CN 13933) pending.
 - operator hold H3_TWK004_TIE: 53535 / CN 15781 tie and whether invoice 53536 replaces 53535: operator approval pending.
 - operator hold H4_RELEASE_GATE: debtors:tag-check returns NOT_DERIVABLE_FROM_TXT for the family; operator to decide whether release may proceed.
@@ -45,7 +44,7 @@ Open rows after confirmed **and probable** ties are removed (internal view), 11 
 | 08 Oct 2026 | Invoice | 53507 | DN#23843 | LPG | 5,750.86 |
 | 08 Oct 2026 | Invoice | 53507 | DN#23843 | CYL | 8,625.00 |
 
-- **Crd Note 15775 (operator note):** Operator ruling 2026-10-09 (ADM-94 Q5): CN 15775 (-R7,935.00, DN#23843, 2026-10-08) is a CYLINDER credit and belongs in the CYL lane. Shown in the gas (LPG) lane here only because its lines are not yet in the DB (split_basis HEADER_FALLBACK; ADM-93). Amounts are unchanged. The reconcile has no lane override, so the lane moves when the ADM-93 sync brings the DB lines; if any part then lands in the LPG lane, reopen this ruling. Check the DB lines (SKUs, quantities) against the R7,590 of cylinder deposits paid in cash on STAT 123 for a double credit (unverified).
+- **Crd Note 15775 (operator note):** Operator ruling 2026-10-09 (ADM-94 Q5): CN 15775 (-R7,935.00, DN#23843, 2026-10-08) is a CYLINDER credit and belongs in the CYL lane. Shown in the gas (LPG) lane here only because its lines are not yet in the DB (split_basis HEADER_FALLBACK; ADM-93). Amounts are unchanged. The reconcile has no lane override, so the lane moves when the ADM-93 sync brings the DB lines; if any part then lands in the LPG lane, reopen this ruling. Check the DB lines (SKUs, quantities) against the R7,590 of cylinder deposits paid in cash on STAT 123 for a double credit (unverified). CONFIRMED 2026-10-12 (operator instruction "yes, record it", main session) against DB lines from connector replay 2026-10-11 (data/db_replay/2026-10-11): CN 15775 is entirely cylinder (19.1 x -4 = R-2,760.00 and 9.1 x -10 = R-5,175.00; no LPG line), the CYL lane is correct, the reopen condition did not fire. Double-credit check against the R7,590 STAT 123 deposits: no overlap indicated (docs/previews/2026-10-12_TWK002_CN15775_double_credit_check.md; ASSERTED, physical return unverified). Tripwires: a DB re-sync that changes the 15775 or 53507 SKU lines; a remittance or ERP correction naming 15775 or 53507; any LPG line on 15775.
 - **Invoice 53507 (operator note):** Same delivery as CN 15775 (DN#23843), dated 2026-10-08, lines not yet in the DB (HEADER_FALLBACK; ADM-93). May pair with the CYL deposit lane once the lines arrive.
 
 Reconciliation:
