@@ -1,0 +1,504 @@
+{
+  "account": "MON001",
+  "generated": "2026-08-25T21:06:33.195Z",
+  "decisions": [
+    {
+      "id": "D-MON001-33672-REM",
+      "payment_doc": "33672",
+      "payment_date": "2024-09-25",
+      "payment_amount": 7923.9,
+      "stat": "STAT 106",
+      "edge_id": "AL-0007",
+      "allocation_type": "UNALLOCATED_REMAINDER",
+      "target_doc": null,
+      "target_date": null,
+      "target_dn": null,
+      "allocated_amount": 0,
+      "variance": 1543.67,
+      "lpg_open_before": 0,
+      "anomaly": "Payment 33672 (R7,923.90) leaves R1,543.67 unallocated after LIFO targets — no open gas invoice at or before 25 Sept 2024 absorbs the remainder.",
+      "coupled_with": [],
+      "ledger_window": [
+        {
+          "date": "2024-08-14",
+          "doc": "9834",
+          "entry": "Crd Note",
+          "dn": "EMPTY",
+          "amount": -1794,
+          "running": -1794
+        },
+        {
+          "date": "2024-08-14",
+          "doc": "35241",
+          "entry": "Invoice",
+          "dn": "DN#9408",
+          "amount": 2875.23,
+          "running": 1081.23
+        },
+        {
+          "date": "2024-08-14",
+          "doc": "35242",
+          "entry": "Invoice",
+          "dn": "EMPTY",
+          "amount": 1794,
+          "running": 2875.23
+        },
+        {
+          "date": "2024-08-15",
+          "doc": "32849",
+          "entry": "Payment",
+          "dn": "TRANSF | STAT 105",
+          "amount": -2875.23,
+          "running": 0
+        },
+        {
+          "date": "2024-09-25",
+          "doc": "33672",
+          "entry": "Payment",
+          "dn": "TRANSF | STAT 106",
+          "amount": -7923.9,
+          "running": -7923.9
+        },
+        {
+          "date": "2024-09-27",
+          "doc": "36720",
+          "entry": "Invoice",
+          "dn": "DN#10064",
+          "amount": 2602.86,
+          "running": -5321.04
+        },
+        {
+          "date": "2024-09-27",
+          "doc": "36721",
+          "entry": "Invoice",
+          "dn": "36720-EMPTY",
+          "amount": 1196,
+          "running": -4125.04
+        },
+        {
+          "date": "2024-09-28",
+          "doc": "10514",
+          "entry": "Crd Note",
+          "dn": "36720-EMPTY",
+          "amount": -1196,
+          "running": -5321.04
+        },
+        {
+          "date": "2024-10-01",
+          "doc": "39293",
+          "entry": "Payment",
+          "dn": "TRANSF | STAT 109",
+          "amount": -2602.86,
+          "running": -7923.9
+        },
+        {
+          "date": "2024-11-07",
+          "doc": "11103",
+          "entry": "Crd Note",
+          "dn": "38044-EMPTY",
+          "amount": -1196,
+          "running": -9119.9
+        },
+        {
+          "date": "2024-11-07",
+          "doc": "38044",
+          "entry": "Invoice",
+          "dn": "DN#11186",
+          "amount": 2651.33,
+          "running": -6468.57
+        },
+        {
+          "date": "2024-11-07",
+          "doc": "38045",
+          "entry": "Invoice",
+          "dn": "38044-EMPTY",
+          "amount": 1196,
+          "running": -5272.57
+        }
+      ],
+      "ruling": null,
+      "ruling_docs": "",
+      "ruling_reason": ""
+    },
+    {
+      "id": "D-MON001-39293",
+      "payment_doc": "39293",
+      "payment_date": "2024-10-01",
+      "payment_amount": 2602.86,
+      "stat": "STAT 109",
+      "edge_id": "AL-0008",
+      "allocation_type": "LIFO_FULL",
+      "target_doc": "36720",
+      "target_date": "2024-09-27",
+      "target_dn": "DN#10064",
+      "allocated_amount": 2602.86,
+      "variance": 0,
+      "lpg_open_before": 2602.86,
+      "anomaly": "Payment 39293 (R2,602.86) allocated R2,602.86 to 36720 (27 Sept 2024, open R2,602.86) — full; account balance before payment R-5,321.04.",
+      "coupled_with": [],
+      "ledger_window": [
+        {
+          "date": "2024-09-25",
+          "doc": "33672",
+          "entry": "Payment",
+          "dn": "TRANSF | STAT 106",
+          "amount": -7923.9,
+          "running": -7923.9
+        },
+        {
+          "date": "2024-09-27",
+          "doc": "36720",
+          "entry": "Invoice",
+          "dn": "DN#10064",
+          "amount": 2602.86,
+          "running": -5321.04
+        },
+        {
+          "date": "2024-09-27",
+          "doc": "36721",
+          "entry": "Invoice",
+          "dn": "36720-EMPTY",
+          "amount": 1196,
+          "running": -4125.04
+        },
+        {
+          "date": "2024-09-28",
+          "doc": "10514",
+          "entry": "Crd Note",
+          "dn": "36720-EMPTY",
+          "amount": -1196,
+          "running": -5321.04
+        },
+        {
+          "date": "2024-10-01",
+          "doc": "39293",
+          "entry": "Payment",
+          "dn": "TRANSF | STAT 109",
+          "amount": -2602.86,
+          "running": -7923.9
+        },
+        {
+          "date": "2024-11-07",
+          "doc": "11103",
+          "entry": "Crd Note",
+          "dn": "38044-EMPTY",
+          "amount": -1196,
+          "running": -9119.9
+        },
+        {
+          "date": "2024-11-07",
+          "doc": "38044",
+          "entry": "Invoice",
+          "dn": "DN#11186",
+          "amount": 2651.33,
+          "running": -6468.57
+        },
+        {
+          "date": "2024-11-07",
+          "doc": "38045",
+          "entry": "Invoice",
+          "dn": "38044-EMPTY",
+          "amount": 1196,
+          "running": -5272.57
+        },
+        {
+          "date": "2024-11-15",
+          "doc": "11205",
+          "entry": "Crd Note",
+          "dn": "DN#11186",
+          "amount": -2651.33,
+          "running": -7923.9
+        },
+        {
+          "date": "2024-11-15",
+          "doc": "38283",
+          "entry": "Invoice",
+          "dn": "07/11/2024 38044",
+          "amount": 2651.33,
+          "running": -5272.57
+        },
+        {
+          "date": "2024-11-18",
+          "doc": "35241",
+          "entry": "Payment",
+          "dn": "TRANSF | STAT 109",
+          "amount": -2651.33,
+          "running": -7923.9
+        },
+        {
+          "date": "2024-12-18",
+          "doc": "35818",
+          "entry": "Payment",
+          "dn": "TRANSF | STAT 109",
+          "amount": -1059.2,
+          "running": -8983.1
+        }
+      ],
+      "ruling": null,
+      "ruling_docs": "",
+      "ruling_reason": ""
+    },
+    {
+      "id": "D-MON001-35818",
+      "payment_doc": "35818",
+      "payment_date": "2024-12-18",
+      "payment_amount": 1059.2,
+      "stat": "STAT 109",
+      "edge_id": "AL-0010",
+      "allocation_type": "LIFO_PARTIAL",
+      "target_doc": "39150",
+      "target_date": "2024-12-18",
+      "target_dn": "D/N 11966",
+      "allocated_amount": 1059.2,
+      "variance": 1979.7,
+      "lpg_open_before": 3038.9,
+      "anomaly": "Payment 35818 (R1,059.20) allocated R1,059.20 to 39150 (18 Dec 2024, open R3,038.90) — partial, R1,979.70 remains open; account balance before payment R436.04.",
+      "coupled_with": [
+        "36258"
+      ],
+      "ledger_window": [
+        {
+          "date": "2024-10-01",
+          "doc": "39293",
+          "entry": "Payment",
+          "dn": "TRANSF | STAT 109",
+          "amount": -2602.86,
+          "running": -2602.86
+        },
+        {
+          "date": "2024-11-07",
+          "doc": "11103",
+          "entry": "Crd Note",
+          "dn": "38044-EMPTY",
+          "amount": -1196,
+          "running": -3798.86
+        },
+        {
+          "date": "2024-11-07",
+          "doc": "38044",
+          "entry": "Invoice",
+          "dn": "DN#11186",
+          "amount": 2651.33,
+          "running": -1147.53
+        },
+        {
+          "date": "2024-11-07",
+          "doc": "38045",
+          "entry": "Invoice",
+          "dn": "38044-EMPTY",
+          "amount": 1196,
+          "running": 48.47
+        },
+        {
+          "date": "2024-11-15",
+          "doc": "11205",
+          "entry": "Crd Note",
+          "dn": "DN#11186",
+          "amount": -2651.33,
+          "running": -2602.86
+        },
+        {
+          "date": "2024-11-15",
+          "doc": "38283",
+          "entry": "Invoice",
+          "dn": "07/11/2024 38044",
+          "amount": 2651.33,
+          "running": 48.47
+        },
+        {
+          "date": "2024-11-18",
+          "doc": "35241",
+          "entry": "Payment",
+          "dn": "TRANSF | STAT 109",
+          "amount": -2651.33,
+          "running": -2602.86
+        },
+        {
+          "date": "2024-12-18",
+          "doc": "11510",
+          "entry": "Crd Note",
+          "dn": "D/N 11966",
+          "amount": -2932.5,
+          "running": -5535.36
+        },
+        {
+          "date": "2024-12-18",
+          "doc": "35818",
+          "entry": "Payment",
+          "dn": "TRANSF | STAT 109",
+          "amount": -1059.2,
+          "running": -6594.56
+        },
+        {
+          "date": "2024-12-18",
+          "doc": "39150",
+          "entry": "Invoice",
+          "dn": "D/N 11966",
+          "amount": 5971.4,
+          "running": -623.16
+        },
+        {
+          "date": "2025-01-05",
+          "doc": "35817",
+          "entry": "Payment",
+          "dn": "CASH",
+          "amount": -0.01,
+          "running": -623.17
+        },
+        {
+          "date": "2025-01-16",
+          "doc": "36258",
+          "entry": "Payment",
+          "dn": "TRANSF | STAT 110",
+          "amount": -3090,
+          "running": -3713.17
+        },
+        {
+          "date": "2025-01-17",
+          "doc": "11714",
+          "entry": "Crd Note",
+          "dn": "DN#9329-EMPTY",
+          "amount": -2415,
+          "running": -6128.17
+        },
+        {
+          "date": "2025-01-17",
+          "doc": "39953",
+          "entry": "Invoice",
+          "dn": "D/N 9329",
+          "amount": 2792.84,
+          "running": -3335.33
+        },
+        {
+          "date": "2025-01-17",
+          "doc": "39972",
+          "entry": "Invoice",
+          "dn": "DN#9329-EMPTY",
+          "amount": 2415,
+          "running": -920.33
+        }
+      ],
+      "ruling": null,
+      "ruling_docs": "",
+      "ruling_reason": ""
+    },
+    {
+      "id": "D-MON001-36258-REM",
+      "payment_doc": "36258",
+      "payment_date": "2025-01-16",
+      "payment_amount": 3090,
+      "stat": "STAT 110",
+      "edge_id": "AL-0012",
+      "allocation_type": "UNALLOCATED_REMAINDER",
+      "target_doc": null,
+      "target_date": null,
+      "target_dn": null,
+      "allocated_amount": 0,
+      "variance": 1110.3,
+      "lpg_open_before": 0,
+      "anomaly": "Payment 36258 (R3,090.00) leaves R1,110.30 unallocated after LIFO targets — no open gas invoice at or before 16 Jan 2025 absorbs the remainder.",
+      "coupled_with": [],
+      "ledger_window": [
+        {
+          "date": "2024-12-18",
+          "doc": "11510",
+          "entry": "Crd Note",
+          "dn": "D/N 11966",
+          "amount": -2932.5,
+          "running": -2932.5
+        },
+        {
+          "date": "2024-12-18",
+          "doc": "35818",
+          "entry": "Payment",
+          "dn": "TRANSF | STAT 109",
+          "amount": -1059.2,
+          "running": -3991.7
+        },
+        {
+          "date": "2024-12-18",
+          "doc": "39150",
+          "entry": "Invoice",
+          "dn": "D/N 11966",
+          "amount": 5971.4,
+          "running": 1979.7
+        },
+        {
+          "date": "2025-01-05",
+          "doc": "35817",
+          "entry": "Payment",
+          "dn": "CASH",
+          "amount": -0.01,
+          "running": 1979.69
+        },
+        {
+          "date": "2025-01-16",
+          "doc": "36258",
+          "entry": "Payment",
+          "dn": "TRANSF | STAT 110",
+          "amount": -3090,
+          "running": -1110.31
+        },
+        {
+          "date": "2025-01-17",
+          "doc": "11714",
+          "entry": "Crd Note",
+          "dn": "DN#9329-EMPTY",
+          "amount": -2415,
+          "running": -3525.31
+        },
+        {
+          "date": "2025-01-17",
+          "doc": "39953",
+          "entry": "Invoice",
+          "dn": "D/N 9329",
+          "amount": 2792.84,
+          "running": -732.47
+        },
+        {
+          "date": "2025-01-17",
+          "doc": "39972",
+          "entry": "Invoice",
+          "dn": "DN#9329-EMPTY",
+          "amount": 2415,
+          "running": 1682.53
+        },
+        {
+          "date": "2025-02-10",
+          "doc": "36737",
+          "entry": "Payment",
+          "dn": "TRANSF | STAT 111",
+          "amount": -2792.84,
+          "running": -1110.31
+        },
+        {
+          "date": "2025-02-11",
+          "doc": "11874",
+          "entry": "Crd Note",
+          "dn": "DN#11682-EMPTY",
+          "amount": -2415,
+          "running": -3525.31
+        },
+        {
+          "date": "2025-02-11",
+          "doc": "40628",
+          "entry": "Invoice",
+          "dn": "DN#11682",
+          "amount": 2816.83,
+          "running": -708.48
+        },
+        {
+          "date": "2025-02-11",
+          "doc": "40629",
+          "entry": "Invoice",
+          "dn": "DN#11682-EMPTY",
+          "amount": 2415,
+          "running": 1706.52
+        }
+      ],
+      "ruling": null,
+      "ruling_docs": "",
+      "ruling_reason": ""
+    }
+  ]
+}

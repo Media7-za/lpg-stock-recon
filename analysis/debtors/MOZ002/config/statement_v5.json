@@ -1,0 +1,24 @@
+{
+  "debtorCode": "MOZ002",
+  "debtorName": "MOZAMBIK",
+  "txtPath": "analysis/debtors/MOZ002/raw/MOZ002CURRENT.TXT",
+  "periodStart": "2025-03-15",
+  "combinedBf": 0.0,
+  "bfSourceNote": "MOZ002CURRENT.TXT line 14 — BALANCE B/F R0.00 before first row (CN 12074, 15 Mar 2025)",
+  "cylOpeningFinancial": 0.0,
+  "paymentLane": "LPG",
+  "cylOpeningQty": {
+    "14.1": 0,
+    "19.1": 0,
+    "9.1": 0,
+    "D.1": 0,
+    "S.1": 0
+  },
+  "skuRates": {
+    "14.1": 575,
+    "19.1": 690,
+    "9.1": 517.5,
+    "D.1": 1150,
+    "S.1": 1150
+  }
+}

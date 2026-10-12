@@ -1,25 +1,53 @@
 {
   "debtorCode": "SA0001",
-  "clientName": "SA0001 Client Placeholder",
+  "clientName": "SAKI - VICTORIA RD",
   "status": "active",
-  "reconState": "pending",
+  "reconState": "complete",
   "financials": {
-    "totalOutstanding": 0,
-    "lastInvoiceDate": null,
-    "lastPaymentDate": null,
-    "agedDebt180Plus": 0
+    "totalOutstanding": 10804.97,
+    "lastInvoiceDate": "2026-07-30",
+    "lastPaymentDate": "2026-07-28",
+    "agedDebt180Plus": 10463.39,
+    "erpTxtClosing": 10804.97,
+    "erpTxtClosingAsOf": "2026-07-31",
+    "erpTxtSource": "raw/SA0001.TXT"
   },
   "collections": {
     "actionRequired": false,
     "actionType": null,
     "dateSent": null,
     "deadlineDate": null,
-    "notes": "Placeholder initialization."
+    "nextAction": null,
+    "nextActionDate": null,
+    "notes": "v5 statement from raw/SA0001.TXT (Jul 2026). Ingest CURRENT_COMPLETE after operator-ratified exceptions ING-SA0001-001..005. D17 not met for collection (no collectable object / not collection status).",
+    "blockers": []
+  },
+  "ingestGate": {
+    "status": "pass",
+    "ingestFreshness": "current",
+    "ingestCoverage": "complete",
+    "displayStatus": "CURRENT_COMPLETE",
+    "asAt": "2026-08-05",
+    "reportPath": "reports/SA0001_INGEST_COVERAGE_2026-08-05.json",
+    "ingestBlockedScopes": [],
+    "exceptions": []
   },
   "history": [
     {
       "date": "2026-06-15",
       "event": "Initialized micro-project tracking."
+    },
+    {
+      "date": "2026-08-05",
+      "event": "Turn 001 dispatched: evidence_exchange brief + H-012 Sources intake. project.json aligned to portfolio/global aged-debt (STALE until SA0001CURRENT.TXT)."
+    },
+    {
+      "date": "2026-08-05",
+      "event": "raw/SA0001.TXT ingested; v5 statement PROVEN R0.00 vs CURRENT BALANCE R10,804.97; ingest CURRENT_PARTIAL; reconState in-progress."
+    },
+    {
+      "date": "2026-08-05",
+      "event": "Operator ratified ignore for 5 ingest gaps (44740, 42780, 45114, 45329, 45466) via config/ingest_exceptions.json; ingest CURRENT_COMPLETE; reconState complete."
     }
   ]
 }

@@ -182,6 +182,29 @@ reference:
 Never hand-edit a generated statement — the next run resurrects the error.
 Rule: `analysis/debtors/shared/docs/business_rules.md` §15.
 
+## 3.2 Live draft vs immutable snapshot
+
+| Mode | Flag | Output | When |
+| :--- | :--- | :--- | :--- |
+| **Live draft** | (default) | `reports/[CODE]_Statement_of_Account.md` (+ optional PDF) | Internal reconciliation, what-if, active Model B work |
+| **Snapshot** | `--snapshot` | `snapshots/[YYYY-MM-DD]_vN/` | Finance sign-off, collections gate, customer send, dispute defence |
+
+Snapshot mode **archives** the exact TXT + `statement_of_account.json` used, writes versioned
+`[CODE]_Statement_of_Account_[YYYY-MM-DD]_vN.md/.pdf`, embeds a **Record provenance**
+section (sha256, gate, config flags), and writes `manifest.json` with artifact checksums.
+It does **not** overwrite the live draft unless `--also-live` is passed.
+
+```bash
+# Internal working draft (safe to re-run after TXT refresh)
+npm run debtors:customer-statement -- --debtor TWK002 --as-at 2026-08-11 --pdf
+
+# Immutable sign-off / customer artifact
+npm run debtors:customer-statement -- --debtor TWK002 --as-at 2026-08-11 --snapshot --pdf
+```
+
+Auto-versioning: if `2026-08-11_v1` exists, the next run creates `_v2`, etc. Override with
+`--snapshot-version v1` only when re-capturing deliberately.
+
 ## 4. Scripts
 
 | Script | Role |

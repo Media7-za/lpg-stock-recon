@@ -6,6 +6,7 @@ import { debtorKnowledgePlugin } from './vite.debtorKnowledge'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: process.env.GITHUB_PAGES === 'true' ? '/lpg-stock-recon/' : '/',
   resolve: {
     alias: {
       // Added in Orders-Module migration Phase 3 — the ported components/ui/*

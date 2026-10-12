@@ -197,6 +197,132 @@ export function computeOpenInvoices(rows, closedOverrides = []) {
     .sort((a, b) => a.iso.localeCompare(b.iso) || a.docno.localeCompare(b.docno));
 }
 
+/** Matches v5 CYL ref predicate — deposit / EMPTY rows are excluded from LPG open list. */
+export const CYL_REF_PATTERN = /[-`#]?EMPTY|EMPTIES/i;
+
+export function isCylRef(ref) {
+  return CYL_REF_PATTERN.test(ref || '');
+}
+
+/** Normalise DN reference for gas-invoice ↔ gas-CN pairing (JEN001-style). */
+export function dnBase(ref) {
+  return (ref || '')
+    .replace(/=EMPTY/gi, '')
+    .replace(/-EMPTY/gi, '')
+    .replace(/EMPTY$/gi, '')
+    .trim();
+}
+
+/**
+ * Open LPG gas invoices for stripped-gas accounts where DEBENQ carries no
+ * INVNO tagging (EXCLUDE: ALLOCATION DETAIL). Deposit EMPTY pairs are
+ * stripped; gas CNs net by DN base. Untagged payments stay account-level.
+ */
+export function computeOpenLpgInvoices(rows, closedOverrides = []) {
+  const closedDocs = new Set(closedOverrides.map((o) => normDoc(o.doc)));
+  const invoices = [];
+
+  for (const r of rows) {
+    if (r.entry !== 'Invoice' || isCylRef(r.dn)) continue;
+    invoices.push({
+      doc: r.cleanDoc,
+      docno: r.docno,
+      iso: r.iso,
+      dn: r.dn,
+      dnBase: dnBase(r.dn),
+      due: r.amount,
+      closed: false,
+    });
+  }
+
+  const gasCns = rows
+    .filter((r) => r.entry === 'Crd Note' && !isCylRef(r.dn))
+    .sort((a, b) => a.iso.localeCompare(b.iso) || a.docno.localeCompare(b.docno));
+
+  for (const cn of gasCns) {
+    const base = dnBase(cn.dn);
+    const candidates = invoices.filter(
+      (inv) => !inv.closed && inv.due > 0.01 && inv.dnBase === base,
+    );
+    candidates.sort(
+      (a, b) =>
+        (a.iso === cn.iso ? 0 : 1) - (b.iso === cn.iso ? 0 : 1) ||
+        a.doc.localeCompare(b.doc),
+    );
+    const target = candidates[0];
+    if (!target) continue;
+    target.due = round2(target.due + cn.amount);
+    if (target.due <= 0.01) target.closed = true;
+  }
+
+  return invoices
+    .filter((inv) => !inv.closed && inv.due > 0.01 && !closedDocs.has(inv.doc))
+    .map(({ doc, docno, iso, dn, due }) => ({ doc, docno, iso, dn, due }))
+    .sort((a, b) => a.iso.localeCompare(b.iso) || a.doc.localeCompare(b.doc));
+}
+
+/**
+ * Coverage gate for stripped-gas open-invoice model (no INVNO column).
+ * Invariant: Σ(open LPG) + account-level gap = ERP CURRENT BALANCE.
+ */
+export function analyseLpgOpenCoverage({
+  rows,
+  openInvoices,
+  headerBalance,
+  closedOverrides = [],
+  ratifiedAllocation = false,
+}) {
+  const sumOpen = round2(openInvoices.reduce((s, i) => s + i.due, 0));
+  const hasHeader = Number.isFinite(headerBalance);
+  const reconciliationGap = hasHeader ? round2(headerBalance - sumOpen) : null;
+  const untaggedCredits = findUntaggedCredits(rows);
+  const untaggedTotal = round2(untaggedCredits.reduce((s, c) => s + c.amount, 0));
+
+  let gate = 'ALLOWED';
+  let blockingReason = null;
+  if (hasHeader && sumOpen > headerBalance + 0.05) {
+    gate = 'BLOCKED';
+    blockingReason = 'OPEN_LIST_OVERSTATES_ACCOUNT';
+  } else if (!ratifiedAllocation && untaggedCredits.some((c) => PAYMENT_TYPES.has(c.entry))) {
+    gate = 'REVIEW_REQUIRED';
+  }
+
+  return {
+    gate,
+    blocking_reason: blockingReason,
+    export_quality: 'LPG_STRIPPED_MODEL',
+    evidence: {
+      basis: 'PATTERN_ONLY',
+      remittance_invoice_docs: 0,
+      checks_run: ['LPG_STRIPPED_INVARIANT', 'UNTAGGED_PAYMENT_PRESENT'],
+      checks_inert: ['REMITTANCE_CONTRADICTION', 'INVNO_TAGGING'],
+      note:
+        'Open LPG gas invoices derived from stripped-gas DN matching (no INVNO tagging). Untagged payments reduce the account balance but do not close specific invoice lines until payment-pattern allocation is ratified — see JEN001_Settlement_Discount_Doctrine_v1.md §3.',
+    },
+    tagging: { model: 'lpg_stripped', invno_tagging: 'NOT_USED' },
+    counts: { clear: openInvoices.length, stale_open: 0, likely_paid: 0, unassessable: 0 },
+    invariant: {
+      name: 'Σ(open LPG invoices) ≤ ERP CURRENT BALANCE',
+      status: !hasHeader ? 'UNVERIFIED' : sumOpen > headerBalance + 0.05 ? 'BREACHED' : 'PASS',
+      overstated_by: hasHeader && sumOpen > headerBalance ? round2(sumOpen - headerBalance) : 0,
+    },
+    untagged_credits: untaggedCredits,
+    untagged_credit_total: untaggedTotal,
+    sum_open_invoices: sumOpen,
+    header_balance: hasHeader ? headerBalance : null,
+    reconciliation_gap: reconciliationGap,
+    ratified_closed: closedOverrides.map((o) => ({ doc: normDoc(o.doc), reason: o.reason || '' })),
+    invoices: openInvoices.map((inv) => ({
+      doc: inv.doc,
+      iso: inv.iso,
+      dn: inv.dn,
+      due: inv.due,
+      risk: 'CLEAR',
+      basis: 'LPG_STRIPPED_DN_MATCH',
+    })),
+  };
+}
+
 /**
  * Credit rows that reduce the account balance but name no invoice — the money
  * that makes the open-invoice list a hypothesis. A Crd Note with no invno is

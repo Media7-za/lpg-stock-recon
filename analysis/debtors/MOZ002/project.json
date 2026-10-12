@@ -40,13 +40,27 @@
     "erpTxtSource": "raw/MOZ002P17.TXT"
   },
   "collections": {
-    "actionRequired": false,
-    "actionType": null,
+    "actionRequired": true,
+    "actionType": "customer_statement",
     "dateSent": null,
     "deadlineDate": null,
-    "nextAction": null,
+    "nextAction": "Confirm ERP TXT post-49143 fix shows balance R4,170.38 (ASSERTED); then send reports/MOZ002_Customer_Statement_Email_2026-07-23.md",
     "nextActionDate": null,
-    "notes": "Recon complete 2026-07-20. P17 catch-up 2026-07-16: 45202 clears 50657; ERP closing R8,010.08. Open LPG: 49143, 50528, 51789. Verified on-account 44227 R4,978.91."
+    "blockers": [
+      {
+        "id": "MOZ002-P17-INGEST",
+        "summary": "Payment 45202 absent from DB — allocation_edges and v1 statement stale",
+        "tag": "ASSERTED",
+        "basis": "reports/MOZ002_OPERATOR_VIEW.md Branch B"
+      },
+      {
+        "id": "MOZ002-49143-TXT",
+        "summary": "Invoice 49143 cross-account fix (43322 MOZ001) asserted by operator — fresh TXT not yet ingested",
+        "tag": "ASSERTED",
+        "basis": "Operator 2026-07-23; kill: P17/CURRENT TXT still shows 49143 open"
+      }
+    ],
+    "notes": "Recon complete 2026-07-20. P17 anchor R8,010.08 @ 2026-07-16. Post 49143 ERP fix collectable ASSERTED R4,170.38 (open LPG 50528+51789 R9,149.30 less credit 44227 R4,978.91). Turn 11C: D14/D15 ratified; EX-0038 operator-ratified 2026-07-22."
   },
   "history": [
     {
@@ -112,6 +126,18 @@
     {
       "date": "2026-07-20",
       "event": "Portfolio catch-up: MOZ002P17.TXT — payment 45202 (2026-07-16, R5,004.42) clears invoice 50657. ERP closing R13,014.50 → R8,010.08. EX-0038 registered; DB sync pending."
+    },
+    {
+      "date": "2026-07-22",
+      "event": "Turn 11C: D14/D15 committed to DEBTORS_DOCTRINE.md; EX-0038 ratified_by_operator 2026-07-22; REF_DECIDED rule in allocation skill; MOZ002_OPERATOR_VIEW.md + build_operator_view.mjs. Commit 311a65c."
+    },
+    {
+      "date": "2026-07-23",
+      "event": "Operator: ERP agent receipted R3,839.70 to MOZ001 (43322) — should clear MOZ002 invoice 49143; cross-account transfer done per operator. Collectable restated ASSERTED R4,170.38. Customer email draft MOZ002_Customer_Statement_Email_2026-07-23.md."
+    },
+    {
+      "date": "2026-07-28",
+      "event": "v5 statement generated from MOZ002CURRENT.TXT — Part 1A close R13,014.50 PROVEN (pre-P17 anchor); ingest gate CURRENT_COMPLETE custody ALLOWED. Not customer-facing; v1/P17 still authoritative for collections until regen."
     }
   ]
 }
