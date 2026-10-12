@@ -1,8 +1,5 @@
 # Family reconciliation: TWK AGRI PTY LTD (TWK002 + TWK003 + TWK004), internal
-**INTERNAL, not for the customer.** Consolidated statement as at 2026-10-10 · generated 2026-10-12 · parent TWK002 · **DRAFT: not releasable** · customer amount due R115,136.19 vs sum of ERP headers R114,836.19 excluding quarantined R-300.00 (not shown to the customer) (unexplained variance R0.00).
-
-**Why this is a draft:**
-- operator hold H4_RELEASE_GATE: debtors:tag-check returns NOT_DERIVABLE_FROM_TXT for the family; operator to decide whether release may proceed.
+**INTERNAL, not for the customer.** Consolidated statement as at 2026-10-10 · generated 2026-10-12 · parent TWK002 · no draft reasons · customer amount due R115,136.19 vs sum of ERP headers R114,836.19 excluding quarantined R-300.00 (not shown to the customer) (unexplained variance R0.00).
 
 ## Reconciliation to each ERP balance
 
