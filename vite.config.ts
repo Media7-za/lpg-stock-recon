@@ -1,3 +1,4 @@
+import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
@@ -6,6 +7,13 @@ import { debtorKnowledgePlugin } from './vite.debtorKnowledge'
 // https://vitejs.dev/config/
 export default defineConfig({
   base: process.env.GITHUB_PAGES === 'true' ? '/lpg-stock-recon/' : '/',
+  resolve: {
+    alias: {
+      // Added in Orders-Module migration Phase 3 — the ported components/ui/*
+      // and layout files use "@/..." imports (Next.js/shadcn convention).
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+    },
+  },
   plugins: [
     react(),
     debtorKnowledgePlugin(),
