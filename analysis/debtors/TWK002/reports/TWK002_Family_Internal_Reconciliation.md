@@ -9,7 +9,7 @@
 | Account | Role | ERP header (R) | Open items (R) | Named / other lines (R) | Quarantined, not on customer copy (R) | Customer balance (R) | Variance (R) | Matcher | Review only |
 | :--- | :--- | ---: | ---: | ---: | ---: | ---: | ---: | :--- | :--- |
 | TWK002 | parent | 54,136.19 | 46,051.52 | 8,084.67 | 0.00 | 54,136.19 | 0.00 | 17 confirmed / 0 probable | no |
-| TWK003 | child | -300.00 | 0.00 | 0.00 | -300.00 | 0.00 | 0.00 | 0 confirmed / 1 probable | no |
+| TWK003 | child | -300.00 | 0.00 | 0.00 | -300.00 | 0.00 | 0.00 | 1 confirmed / 1 probable | no |
 | TWK004 | child | 61,000.00 | 61,000.00 | 0.00 | 0.00 | 61,000.00 | 0.00 | 3 confirmed / 0 probable | no |
 | **Family** | | **114,836.19** | **107,051.52** | **8,084.67** | **-300.00** | **115,136.19** | **0.00** | | |
 
@@ -65,17 +65,12 @@ Reconciliation:
 
 ## TWK003: child, ERP R-300.00
 
-Open rows after confirmed **and probable** ties are removed (internal view), 7 row(s):
+Open rows after confirmed **and probable** ties are removed (internal view), 2 row(s):
 
 | Date | Type | Doc # | Reference | Lane | Amount (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: |
-| 03 Oct 2025 | Invoice | 46857 | DN#20290- 391175708 | OTHER | 11,000.44 |
-| 10 Oct 2025 | Invoice | 47076 | DN #20297 | OTHER | 11,000.44 |
-| 04 Nov 2025 | Invoice | 47523 | DN #20774 | OTHER | 11,000.44 |
 | 21 Nov 2025 | Invoice | 47866 | DN # 21166 | OTHER | 2,000.00 |
 | 24 Nov 2025 | Crd Note | 13933 | DN # 21166 | OTHER | -2,300.00 |
-| 28 Nov 2025 | Invoice | 47991 | 391176350-001 /21166 | OTHER | 5,499.99 |
-| 25 Feb 2026 | Payment | 43500 | TRANSF \| STAT 123 | LPG | -38,501.31 |
 
 - **Invoice 47866 (operator note):** Operator ruling 2026-10-12 (main session): the R-300.00 on TWK003 is an ERP agent typo on the unit price of CN 13933 (20 units at R115.00 instead of the original R100.00 on invoice 47866). It will be reversed on the ERP: the ERP agent will invoice at the credit-note price (20 x R115.00 = R2,300.00, cancelling CN 13933) and credit at the original price (20 x R100.00 = R2,000.00, cancelling invoice 47866), taking TWK003 to R0.00. Not a customer credit and not a refund. Until those documents post, the ERP balance stays R-300.00 and the statement carries it as it is. Reading of the correction mechanics is the agent's, to be confirmed against the posted documents. Tripwires: the correcting invoice and credit note post (re-export the TXT and rebuild the TWK003 projection; family amount due then rises by R300.00); the posted amounts differ from R2,300.00 / R2,000.00; the correction is not made.
 - **Crd Note 13933 (operator note):** Operator ruling 2026-10-12 (main session): the R-300.00 on TWK003 is an ERP agent typo on the unit price of CN 13933 (20 units at R115.00 instead of the original R100.00 on invoice 47866). It will be reversed on the ERP: the ERP agent will invoice at the credit-note price (20 x R115.00 = R2,300.00, cancelling CN 13933) and credit at the original price (20 x R100.00 = R2,000.00, cancelling invoice 47866), taking TWK003 to R0.00. Not a customer credit and not a refund. Until those documents post, the ERP balance stays R-300.00 and the statement carries it as it is. Reading of the correction mechanics is the agent's, to be confirmed against the posted documents. Tripwires: the correcting invoice and credit note post (re-export the TXT and rebuild the TWK003 projection; family amount due then rises by R300.00); the posted amounts differ from R2,300.00 / R2,000.00; the correction is not made.
@@ -94,7 +89,7 @@ Probable ties (proposals; not approved, not locked):
 
 | Tie | Rule | Documents | Variance (R) |
 | :--- | :--- | :--- | ---: |
-| T0001 | CN_DN_PAIR | Invoice 47880, Crd Note 13966 | — |
+| T0002 | CN_DN_PAIR | Invoice 47880, Crd Note 13966 | — |
 
 ---
 

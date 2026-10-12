@@ -1,0 +1,68 @@
+{
+  "debtor": "TWK003",
+  "registry_version": 1,
+  "overrides": [],
+  "projectionLocks": {
+    "schema": 1,
+    "closes": [],
+    "locks": [
+      {
+        "lock_id": "L0001",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "exact",
+          "net": 0,
+          "reason": "Operator approval 2026-10-12 (main session): STAT 123 payment 43500 TWK003 slice R-38,501.31 settles invoices 46857, 47076, 47523 (R11,000.44 each) and the R5,499.99 invoice. The advice names 47880 for the R5,499.99 but 47880 is reversed by CN 13966 (same DN#21166), so the cash is applied to 47991 (equal amount, only open one). Same cash either way. 47880/CN 13966 stays a separate probable tie, not approved.",
+          "approvedBy": "operator (main session)",
+          "session": "unrecorded"
+        },
+        "members": [
+          {
+            "key": "43500|Payment|LPG|2026-02-25|-38501.31",
+            "doc": "43500",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2026-02-25",
+            "amount": -38501.31
+          },
+          {
+            "key": "46857|Invoice|OTHER|2025-10-03|11000.44",
+            "doc": "46857",
+            "entry_type": "Invoice",
+            "lane": "OTHER",
+            "date": "2025-10-03",
+            "amount": 11000.44
+          },
+          {
+            "key": "47076|Invoice|OTHER|2025-10-10|11000.44",
+            "doc": "47076",
+            "entry_type": "Invoice",
+            "lane": "OTHER",
+            "date": "2025-10-10",
+            "amount": 11000.44
+          },
+          {
+            "key": "47523|Invoice|OTHER|2025-11-04|11000.44",
+            "doc": "47523",
+            "entry_type": "Invoice",
+            "lane": "OTHER",
+            "date": "2025-11-04",
+            "amount": 11000.44
+          },
+          {
+            "key": "47991|Invoice|OTHER|2025-11-28|5499.99",
+            "doc": "47991",
+            "entry_type": "Invoice",
+            "lane": "OTHER",
+            "date": "2025-11-28",
+            "amount": 5499.99
+          }
+        ],
+        "createdAt": "2026-10-12T13:13:32.161Z"
+      }
+    ],
+    "voids": []
+  }
+}

@@ -2,7 +2,7 @@
   "status": "matcher v5 RATIFIED 2026-10-10 (PROPOSED_Projection_Matching_Locks.md); probable ties stay proposals until approved",
   "debtorCode": "TWK003",
   "generatedBy": "match_projection.mjs",
-  "generatedAt": "2026-10-12T12:08:20.031Z",
+  "generatedAt": "2026-10-12T13:13:32.441Z",
   "projection": {
     "path": "analysis/debtors/TWK003/data/v5_projection.json",
     "txtSha256": "9b68fd84a163f74c756c2a5f8943194464972e8453093ebd4446e9b30d0bebf8",
@@ -11,10 +11,10 @@
   },
   "reviewOnly": false,
   "reviewOnlyReasons": [],
-  "locksRegistry": "none yet",
+  "locksRegistry": "config/payment_pattern_overrides.json#projectionLocks",
   "matcherVersion": 5,
   "closedThrough": null,
-  "locksApplied": 0,
+  "locksApplied": 1,
   "lockConflicts": [],
   "rules": {
     "exactTolerance": 0.05,
@@ -41,14 +41,15 @@
     "remittanceBatchTolerancePct": 0.001
   },
   "summary": {
-    "ties": 1,
-    "confirmed": 0,
+    "ties": 2,
+    "confirmed": 1,
     "probable": 1,
     "byRule": {
+      "LOCKED": 1,
       "CN_DN_PAIR": 1
     },
-    "paymentsTotal": 1,
-    "paymentsUnallocated": 1
+    "paymentsTotal": 0,
+    "paymentsUnallocated": 0
   },
   "proof": {
     "rebuiltClosing": -300,
@@ -59,14 +60,10 @@
   "residual": {
     "openingBfUnitemised": 0,
     "openInvoicesLpgOther": {
-      "count": 5,
-      "amount": 40501.31,
+      "count": 1,
+      "amount": 2000,
       "rows": [
-        "46857|Invoice|OTHER|L2",
-        "47076|Invoice|OTHER|L3",
-        "47523|Invoice|OTHER|L4",
-        "47866|Invoice|OTHER|L5",
-        "47991|Invoice|OTHER|L9"
+        "47866|Invoice|OTHER|L5"
       ]
     },
     "openInvoicesCyl": {
@@ -82,11 +79,9 @@
       ]
     },
     "unallocatedPayments": {
-      "count": 1,
-      "amount": -38501.31,
-      "rows": [
-        "43500|Payment|LPG|L10"
-      ]
+      "count": 0,
+      "amount": 0,
+      "rows": []
     },
     "otherUntied": {
       "count": 0,
@@ -100,6 +95,36 @@
   "ties": [
     {
       "tie_id": "T0001",
+      "rule": "LOCKED",
+      "confidence": "CONFIRMED",
+      "members": [
+        "43500|Payment|LPG|L10",
+        "46857|Invoice|OTHER|L2",
+        "47076|Invoice|OTHER|L3",
+        "47523|Invoice|OTHER|L4",
+        "47991|Invoice|OTHER|L9"
+      ],
+      "docs": [
+        "Payment 43500",
+        "Invoice 46857",
+        "Invoice 47076",
+        "Invoice 47523",
+        "Invoice 47991"
+      ],
+      "net": 0,
+      "lock_id": "L0001",
+      "close_id": null,
+      "lockedRule": "OPERATOR_RULING",
+      "ruling": {
+        "treatment": "exact",
+        "net": 0,
+        "reason": "Operator approval 2026-10-12 (main session): STAT 123 payment 43500 TWK003 slice R-38,501.31 settles invoices 46857, 47076, 47523 (R11,000.44 each) and the R5,499.99 invoice. The advice names 47880 for the R5,499.99 but 47880 is reversed by CN 13966 (same DN#21166), so the cash is applied to 47991 (equal amount, only open one). Same cash either way. 47880/CN 13966 stays a separate probable tie, not approved.",
+        "approvedBy": "operator (main session)",
+        "session": "unrecorded"
+      }
+    },
+    {
+      "tie_id": "T0002",
       "rule": "CN_DN_PAIR",
       "confidence": "PROBABLE",
       "members": [
@@ -115,7 +140,5 @@
       "lagDays": 6
     }
   ],
-  "unallocatedPayments": [
-    "43500|Payment|LPG|L10"
-  ]
+  "unallocatedPayments": []
 }
