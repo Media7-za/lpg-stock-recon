@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "status": "PROPOSED — NOT RATIFIED (PROPOSED_Projection_Matching_Locks.md, build step 1)",
+  "status": "RATIFIED 2026-10-10 (PROPOSED_Projection_Matching_Locks.md, projection builder)",
   "debtorCode": "MD0003",
   "generatedBy": "reconcile_debtor_v5_from_txt.mjs",
-  "generatedAt": "2026-10-08T17:36:51.056Z",
+  "generatedAt": "2026-10-13T20:31:09.237Z",
   "source": {
     "txtPath": "analysis/debtors/MD0003/raw/MD0003_2026-10-08.TXT",
     "txtSha256": "863946cb36f81446ca087e1fa2bb972293147ab0cdd4a663e039682dc516a985",
@@ -28,9 +28,9 @@
     "erpVariance": 0
   },
   "ingestGate": {
-    "ingestCoverage": "partial",
-    "ingestFreshness": "stale",
-    "displayStatus": "STALE_PARTIAL"
+    "ingestCoverage": "complete",
+    "ingestFreshness": "current",
+    "displayStatus": "CURRENT_COMPLETE"
   },
   "checks": {
     "lpgRowsReproduce1A": true,
@@ -41,9 +41,7 @@
     "rowCount": 275,
     "splitBasisCounts": {
       "PAYMENT_LANE": 23,
-      "DB_LINES": 249,
-      "HEADER_FALLBACK": 1,
-      "REF_EMPTY": 2
+      "DB_LINES": 252
     }
   },
   "rows": [
@@ -4137,8 +4135,8 @@
       "ref_no": "DN#23844",
       "txt_line": 275,
       "txt_amount": 3967.81,
-      "split_basis": "HEADER_FALLBACK",
-      "confirmable": false,
+      "split_basis": "DB_LINES",
+      "confirmable": true,
       "lane": "LPG",
       "amount": 3967.81
     },
@@ -4152,7 +4150,7 @@
       "ref_no": "DN#23844-EMPTY",
       "txt_line": 276,
       "txt_amount": 3622.5,
-      "split_basis": "REF_EMPTY",
+      "split_basis": "DB_LINES",
       "confirmable": true,
       "lane": "CYL",
       "amount": 3622.5
@@ -4167,7 +4165,7 @@
       "ref_no": "DN#23844-EMPTY",
       "txt_line": 274,
       "txt_amount": -3622.5,
-      "split_basis": "REF_EMPTY",
+      "split_basis": "DB_LINES",
       "confirmable": true,
       "lane": "CYL",
       "amount": -3622.5

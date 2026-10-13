@@ -3,7 +3,7 @@
 **Combined Opening B/F:** R52,607.52 (ERP verified — source: `analysis/debtors/MD0003/raw/MD0003_2026-10-08.TXT` MD0003_2026-10-08.TXT line 14 BALANCE B/F R52607.52 (fresh ERP export, Linear ADM-78, CURRENT BALANCE R16,547.81; same export window). Switched on operator instruction 2026-10-08 ("switch the other six accounts ... YES"). SUPERSEDED (kept for the record; previous TXT MD0003CURRENT.TXT, CURRENT BALANCE R16,371.56): MD0003CURRENT.TXT line 14 — BALANCE B/F before 2025 payment sequence)
 **LPG Opening B/F (1A):** R52,607.52 &nbsp;|&nbsp; **CYL Opening B/F (1B):** R0.00
 **Payment routing:** LPG lane (payments post to Part 1A unless configured otherwise)
-**Last regenerated:** 2026-10-08 from ERP TXT (`reconcile_debtor_v5_from_txt.mjs`)
+**Last regenerated:** 2026-10-13 from ERP TXT (`reconcile_debtor_v5_from_txt.mjs`)
 
 ---
 
@@ -629,27 +629,20 @@
 
 ---
 
-## Ingest Gate (`ingestFreshness: stale` · `ingestCoverage: partial`)
+## Ingest Gate (`ingestFreshness: current` · `ingestCoverage: complete`)
 
 | Check | Status |
 | :--- | :--- |
-| Display status | `STALE_PARTIAL` |
+| Display status | `CURRENT_COMPLETE` |
 | Financial balance from TXT | **ALLOWED** |
-| Custody / Part 2 qty | **BLOCKED** |
-| SKU analysis | **BLOCKED** |
-
-> **Custody conclusions blocked.** DB qty may be incomplete or stale vs statement TXT (`analysis/debtors/MD0003/raw/MD0003_2026-10-08.TXT`). See `MD0003_INGEST_COVERAGE_*.md`.
-
-**INGEST_GAP documents (custody-blocking):**
-- **15774** (Crd Note, 2026-10-08) — `MISSING_HEADER_AND_LINES`
-- **53508** (Invoice, 2026-10-08) — `MISSING_HEADER_AND_LINES`
-- **53509** (Invoice, 2026-10-08) — `MISSING_HEADER_AND_LINES`
+| Custody / Part 2 qty | **ALLOWED** |
+| SKU analysis | **ALLOWED** |
 
 ---
 
 
 ## Part 2: Cylinder (CYL) Ledger (Physical Asset Tracker)
-*Cylinders tracked by physical count. Opening balances per `config/statement_v5.json`. **Gate: custody BLOCKED — see Ingest Gate above.***
+*Cylinders tracked by physical count. Opening balances per `config/statement_v5.json`.*
 
 ### March 2025
 | Date | Entry Type | Doc # | 14kg Qty | 19kg Qty | 9kg Qty | D.1 Qty | S.1 Qty |
@@ -960,6 +953,8 @@
 | Date | Entry Type | Doc # | 14kg Qty | 19kg Qty | 9kg Qty | D.1 Qty | S.1 Qty |
 | :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: |
 | **01 Oct** | **Opening Balance** | — | **2** | **0** | **1** | **3** | **-3** |
+| 08 Oct 2026 | Invoice | 53509 | 0 | 0 | 0 | 0 | +3 |
+| 08 Oct 2026 | Crd Note | 15774 | 0 | 0 | 0 | 0 | -3 |
 | **End Oct** | **Closing Balance** | — | **2** | **0** | **1** | **3** | **-3** |
 
 ---
@@ -993,8 +988,6 @@
 |---|---:|---:|---:|
 | Cylinder Position (1B vs custody) | R1,782.50 | R1,667.50 | R115.00 |
 | Sub-ledger tie (1A + 1B vs combined) | R16,547.81 | — | R-0.00 |
-
-> **INGEST_GATE:** Custody variance below is **not signed off** — ingest coverage `STALE_PARTIAL`. DB-backed qty may not reflect all TXT documents.
 
 **ERP Combined Balance (TXT header):** R16,547.81  
 **Reconstructed Balance (1A + 1B):** R16,547.81  
