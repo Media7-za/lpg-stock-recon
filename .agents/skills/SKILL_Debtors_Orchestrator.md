@@ -275,6 +275,9 @@ Closing turns close; they do not open. Investigation turns are read-only by defa
 | Duplicate headers | JOIN doubling line values; audit blast radius across lanes when found |
 | Stale comms | Letter drafted against a superseded closing balance |
 | Credentials in scripts | Connection strings as env-var fallbacks; TLS verification disabled |
+| Relayed status taken as fact | A pasted or forwarded report describes locks, files or commits that are not on the remote branch (a divergent cloud-agent branch did this on 2026-10-10). Verify against `git` and the remote before acting. |
+| Stale or undated export | A TXT without its export date in the file name, or whose header disagrees with its own running balance, treated as current (DEBTORS_DOCTRINE D21). |
+| Premature family release | A consolidated statement released while a member is review-only or an operator hold is open (DEBTORS_DOCTRINE D20). |
 
 ### 8. Sequencing doctrine
 
@@ -283,6 +286,8 @@ Closing turns close; they do not open. Investigation turns are read-only by defa
 3. Fix the data defect, then re-test the hypothesis against the corrected pool.
 4. Close on identities, not ties: four-lane line-level sum to TXT closing exact; bridge residual reduced to named, registered micro-items.
 5. Board the endgame: convert all remaining work into explicit operator decisions (ratify / close / send), each with a recommendation.
+6. Fan-out is for independent, read-only work. The "pick one account" rule in §3 still holds for finance-dependent lanes; independent accounts may be built in parallel by scoped subagents (one account or file group each). Brief each with: the exact files, connector-sourced replay only, **no locks / approvals / period closes**, no edits to `analysis/debtors/shared`, no commits. The main session verifies each result, then commits. Shared-code changes (generators, matcher) go on their own branch and wait until agents that run those scripts have finished.
+7. Payer families (DEBTORS_DOCTRINE D20): reconcile every member to its own ERP header first, then build the family view. Evidence reports come before rulings, rulings before locks. Procedures: `SKILL_Family_Statement_Refresh.md`, `SKILL_Family_Rulings_And_Holds.md`, `SKILL_Cylinder_Custody_Check.md`, `SKILL_Remittance_Advice_Cross_Check.md`, `SKILL_Customer_Statement_Send.md`.
 
 ## 6. Human agents
 

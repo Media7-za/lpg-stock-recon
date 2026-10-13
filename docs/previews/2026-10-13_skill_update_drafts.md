@@ -1,6 +1,6 @@
 # Skill update drafts (2026-10-13) — for operator review, NOT APPLIED
 
-Status: DRAFT. Nothing in `.agents/skills/` was edited. These implement the rules ratified on 2026-10-13: D20 (payer-family release rule) and D21 (ERP export intake) in `DEBTORS_DOCTRINE.md`, and ALLOCATION_DOCTRINE section 6 (price-differential credit, double-credit test). Say "apply" and I will paste each block verbatim, as appended sections (no existing text changed or deleted).
+Status: APPLIED 2026-10-13 (blocks 2 to 5; block 1 superseded by the family skills). Originally a draft; nothing in `.agents/skills/` had been edited when written. These implement the rules ratified on 2026-10-13: D20 (payer-family release rule) and D21 (ERP export intake) in `DEBTORS_DOCTRINE.md`, and ALLOCATION_DOCTRINE section 6 (price-differential credit, double-credit test). Say "apply" and I will paste each block verbatim, as appended sections (no existing text changed or deleted).
 
 **Design choice.** I did not create a new `SKILL_ERP_Export_Intake.md`. The repo already has the right homes: `SKILL_Human_Sources_Agent.md` (intake, section 6 "Paired ERP export rule"), `SKILL_Human_ERP_Agent.md` (who exports) and the orchestrator's "ERP freshness gate". A fourth document would duplicate them. If you prefer a standalone skill, the same text in blocks 3 and 4 can be moved.
 

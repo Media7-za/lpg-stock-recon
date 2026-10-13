@@ -48,6 +48,7 @@ Read these before posting:
 4. Mark task **DONE** in `HUMAN_TASKS.md`.
 5. If balance verification is needed, create or complete a Sources Agent task for fresh TXT export.
 6. Tell the orchestrator or PM: *"H-00x done"* — they append `project.json` `history` and run `npm run debtors:sync`.
+7. For an export task: use the same DEBENQ report as the previous export, name each file `{CODE}_{YYYY-MM-DD}.TXT` (D21), export all accounts in one sitting, and note the export time. If an account named in the request does not exist (as FAM001 did), say so in the task comment instead of exporting. Do not change ERP data without an operator ruling.
 
 ## 5. Posting rules (TWK002 / settlement-discount lane)
 
@@ -82,4 +83,13 @@ Account: TWK002
 Posted: FIX 00000494 on receipt 00031558
 Checklist row: [reference]
 Next: H-004 or fresh TXT for H-007
+```
+
+Export task variant:
+
+```text
+Task: ADM-96
+Files: BU0005_2026-10-10.TXT ... (13), exported 2026-10-10 hh:mm
+Not exported: FAM001 (no such account)
+Open questions for the operator: none
 ```

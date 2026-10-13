@@ -562,3 +562,8 @@ Does >50% of payment value have ref_no → invoice.doc_no?
 | JIM001 | LPG Payment Pattern Analysis |
 | JEN001 | Reconciliation skill (running balance + CYL strip) |
 | FAM000 | CSV ground truth skill |
+
+## Deposit credit notes (ALLOCATION_DOCTRINE section 6)
+
+- A price-only difference between an invoice and a credit note on one delivery is carried as a customer credit (negative balance), not a cash overpayment, **unless the operator rules it an ERP typo** (TWK003 R-300.00, 2026-10-12, held off the customer copy by a quarantine). Correction or refund is always an operator ruling.
+- Before calling a cylinder credit note a double credit, decompose the cash deposit into whole cylinders per SKU from DB line quantities and compare the credit note with its own delivery invoice. Same value with a different SKU mix is not a reversal. Procedure: `SKILL_Cylinder_Custody_Check.md`.

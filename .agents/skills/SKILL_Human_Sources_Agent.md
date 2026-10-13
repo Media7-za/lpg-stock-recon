@@ -104,6 +104,16 @@ grep 'ALLOCATION DETAIL' analysis/debtors/{CODE}/raw/{FILE}.TXT
 
 Only pull a fresh export *with* allocation detail when the operator specifically wants CYL / credit-note detail, since Crd Note tagging is broadly canonical. Never request one on the theory that it will make payment allocation trustworthy — it will not.
 
+### 6.2 Dated, verified statement exports (DEBTORS_DOCTRINE D21)
+
+- **Name:** `analysis/debtors/{CODE}/raw/{CODE}_{YYYY-MM-DD}.TXT` (creditors under `analysis/creditors/{CODE}/raw/`). Child accounts of a payer family may live in the parent's `raw/` until they have their own folder. An undated file is never treated as current.
+- **Report:** same DEBENQ report as the previous export (same window start, header block, running balance column, allocation detail excluded). Export all requested accounts in one sitting and record the export date and time in the task comment.
+- **Verify before filing** (worker or Sources Agent): every running balance = previous balance + amount; the last balance = header CURRENT BALANCE = TOTAL TRANSACTIONS line; if the header has a UD figure, header minus last balance = that figure exactly. Anything else is returned to the ERP Agent, not filed.
+- **Large files:** the Drive connector escapes `#`, `_`, `~`, `*`; remove those backslashes. For files too big to display, decode the connector's saved JSON output mechanically (jq/sed), never retype, then re-run the check.
+- **Hand-off:** comment on the Linear task with each account's balance, row count and last transaction date; mark DONE only when every file is filed and verified. For a payer family continue with `SKILL_Family_Statement_Refresh.md`.
+
+---
+
 ## 7. Quality checklist (before marking DONE)
 
 - [ ] File opens and is readable (not corrupt PDF)
