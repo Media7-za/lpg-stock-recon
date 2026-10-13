@@ -51,3 +51,7 @@ Section 1 below is the position on 2026-10-12 morning. Since then the operator r
 | `db_replay/README.md` | Add the jq/sed decode path for large saved connector outputs. |
 | `docs/roles/session_closer.md` | Add: record held decisions (`familyReleaseHolds`) in the handoff's resume section. |
 | Code | Make `debtors:tag-check` family-aware; keep `/tmp` helper `chain.mjs` as a committed script (`analysis/debtors/shared/scripts/check_erp_export.mjs`) so intake verification is repeatable. |
+
+## 5. Send record for a family statement (operator-adopted 2026-10-13)
+
+Family statements cannot be snapshotted (`--snapshot` is refused), so each send is recorded by committing the exact PDF and markdown plus a hash manifest to `analysis/debtors/<PARENT>/sends/<as-at>_v<N>/` before the draft email is made. Procedure and manifest fields: `.agents/skills/SKILL_Customer_Statement_Send.md` section 3. Option 3 (family snapshot support in the generator) remains a possible later improvement.
