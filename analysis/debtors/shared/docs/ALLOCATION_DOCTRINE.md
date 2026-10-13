@@ -91,3 +91,5 @@ Source and evidence: `PROPOSED_Projection_Matching_Locks.md` amendments (e) and 
 
 **Tripwires:** 6.1 reopens if the ERP confirms the credit note price was intended and the invoice price wrong, or the reverse. 6.2 reopens if a later credit note credits more of a SKU than its own delivery.
 
+**Note 2026-10-13 (appended; the 6.1 example above is superseded, not deleted).** The TWK003 R-300.00 used as the 6.1 example was ruled by the operator on 2026-10-12 to be an ERP price typo on CN 13933 (R115.00 entered instead of R100.00), not a customer credit. The ERP correction was pending and the R-300.00 is held off the customer copy by a `customerQuarantine` (see `docs/previews/2026-10-10_TWK_consolidated_statement_preview.md` sections 11 and 12). Rule 6.1 itself still applies where a price difference is a genuine credit; whether a given difference is a typo or a credit remains an operator ruling.
+

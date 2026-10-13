@@ -4,7 +4,7 @@ Status: DRAFT. Nothing in `.agents/skills/` was edited. These implement the rule
 
 **Design choice.** I did not create a new `SKILL_ERP_Export_Intake.md`. The repo already has the right homes: `SKILL_Human_Sources_Agent.md` (intake, section 6 "Paired ERP export rule"), `SKILL_Human_ERP_Agent.md` (who exports) and the orchestrator's "ERP freshness gate". A fourth document would duplicate them. If you prefer a standalone skill, the same text in blocks 3 and 4 can be moved.
 
-## Block 1: `SKILL_Debtor_Statement_v5_From_TXT.md` — append after "Config fields" (before "Layout produced")
+## Block 1 (SUPERSEDED 2026-10-13 by the new `SKILL_Family_Statement_Refresh.md` and `SKILL_Family_Rulings_And_Holds.md`; do not apply): `SKILL_Debtor_Statement_v5_From_TXT.md` — append after "Config fields" (before "Layout produced")
 
 ```markdown
 ### Payer family (consolidated) statements — DEBTORS_DOCTRINE D20

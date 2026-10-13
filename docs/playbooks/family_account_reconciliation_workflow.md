@@ -2,6 +2,10 @@
 
 Status: PROCEDURE NOTE from the main session. Not doctrine. The four proposals in section 4 marked as amendments (d)-(g) were RATIFIED by the operator on 2026-10-13 (see PROPOSED_Projection_Matching_Locks.md, "Ratification 2026-10-13"); the document and skill edits in section 4 remain PROPOSED. Every proposed change in section 4 is **PROPOSED, NOT RATIFIED** (AGENTS.md section 7): the operator decides. Nothing here edits DEBTORS_DOCTRINE.md, the skills or AGENTS.md.
 
+## 0. Update 2026-10-13: state after the operator's rulings of 2026-10-12
+
+Section 1 below is the position on 2026-10-12 morning. Since then the operator ruled all five holds (H1 CN 15775 lane = CYL; H3 TWK004 tie and 53536 replacement; H5 DB documents confirmed; H2 the TWK003 R-300.00 is an ERP price typo, held off the customer copy by a quarantine; H4 the v5 evidence path stands in for the tag gate), approved lock L0001 on TWK003, and `familyReleaseHolds` is empty. The generator now writes a **non-draft live consolidated statement**: 16 open items, amount due **R115,136.19** (ERP sum R114,836.19 less the quarantined R-300.00). Not snapshotted, no customer send by an agent. Details: preview note sections 8 to 16. Re-run and ruling procedures: `.agents/skills/SKILL_Family_Statement_Refresh.md`, `.agents/skills/SKILL_Family_Rulings_And_Holds.md`.
+
 ## 1. Result (what "win" means, and what it does not)
 
 - TWK002 + TWK003 + TWK004 reconcile as one family: R54,136.19 - R300.00 + R61,000.00 = **R114,836.19**, variance R0.00 on every account and on the family (PROVEN, `docs/previews/2026-10-10_TWK_consolidated_statement_preview.md`).
