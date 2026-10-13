@@ -6,6 +6,14 @@ Each pipeline has its own doc in `docs/Pipelines/`.
 
 ---
 
+## One-line triggers
+
+| Say | What runs |
+| :--- | :--- |
+| `Run TWK Analysis` | `.claude/skills/run-twk-analysis/SKILL.md`: orients from the handoff and `analysis/debtors/TWK002/docs/TWK002_Family_Runbook.md`, checks for newer exports, refreshes the TWK AGRI family if inputs changed, reads the gates, reports. Analysis only; rulings, releases and sends stay with the operator. Add a word for another mode: `refresh only`, `ruling: <quote>`, `send prep`. |
+
+---
+
 ## Execution Environment
 
 All agent sessions run in **Cursor or Claude Code** with direct access to the
