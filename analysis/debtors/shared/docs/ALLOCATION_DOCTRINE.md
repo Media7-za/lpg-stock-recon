@@ -78,3 +78,16 @@ Spoon Eatery (JEN001) v4 baseline features R7,176.00 in historical cylinder sett
 2.  **Payment `00029694` (22 March 2024):** Cleared Invoice `30652` in full (contained 6 x 19.1 cylinder deposits worth R3,588.00). Strength: *Confirmed* via `FULL_INVOICE_SETTLEMENT`.
 
 These settlements reduce the outstanding 19kg custody position from a gross delivered total of 59 cylinders to a net outstanding of **2 cylinders** (after subtracting 45 returned and 12 settled).
+
+---
+
+## 6. Deposit credit notes: price-differential credit and double-credit test (ratified 2026-10-13)
+
+Source and evidence: `PROPOSED_Projection_Matching_Locks.md` amendments (e) and (f); `docs/previews/2026-10-10_TWK_family_children.md`; `docs/previews/2026-10-12_TWK002_CN15775_double_credit_check.md`. Appended; no earlier text is superseded.
+
+**6.1 Price-differential credit.** When an invoice and a credit note on the same delivery differ only in unit price, the difference stays on the account as a **customer credit** (negative balance). It is not a cash overpayment and not a write-off. It is shown as a negative amount, and any correction or refund treatment is an operator ruling. Example: TWK003 invoice 47866 (20 units at R100) against CN 13933 (20 units at R115) leaves R-300.00; which price was correct is unverified.
+
+**6.2 Double-credit test.** To test whether a cylinder credit note repeats cylinders already paid for in cash, decompose the cash deposit into whole cylinders per SKU from the DB line quantities, then compare the credit note per SKU with its own delivery invoice. A credit note is a double credit only if it credits more of a SKU than its own delivery invoiced **and** the excess equals the cash-paid cylinders. The same total value with a different SKU mix is not a reversal. Custody conclusions remain the operator's.
+
+**Tripwires:** 6.1 reopens if the ERP confirms the credit note price was intended and the invoice price wrong, or the reverse. 6.2 reopens if a later credit note credits more of a SKU than its own delivery.
+

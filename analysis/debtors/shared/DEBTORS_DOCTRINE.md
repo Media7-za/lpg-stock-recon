@@ -198,6 +198,22 @@ It therefore:
 
 **(6) Migration.** No existing debtor has `ingestGate` populated today. Validators must **warn**, not fail, on its absence for any pre-existing account; a hard failure applies only to a malformed-but-present object. Retroactively failing `debtors:sync` for the 13 accounts that never populated this field — including four already `reconState: complete` — is not an acceptable consequence of ratifying this schema.
 
+### D20 — Payer-family release rule (ratified 2026-10-13)
+
+Source and evidence: `analysis/debtors/shared/docs/PROPOSED_Projection_Matching_Locks.md` amendment (d) and "Ratification 2026-10-13"; `docs/playbooks/family_account_reconciliation_workflow.md`; implemented in `analysis/debtors/shared/scripts/family_statement.mjs`.
+
+A parent account whose `statement_v5.json` lists a `payerGroup` is reconciled and released as a **family**. A family customer statement is a release copy only when **all** hold: (1) every member's ERP export is dated and its projection fingerprint matches that export; (2) every member's open items plus named lines equal that member's ERP header; (3) no member has a lock conflict or is review-only; (4) the family total equals the sum of the members' ERP balances; (5) the parent config lists no open operator hold (`familyReleaseHolds`). Otherwise the output is a DRAFT PREVIEW under a non-release file name, with no snapshot or PDF. Customer copy is still released only through `generate_statement_of_account.mjs` and `npm run debtors:tag-check`. A draft is not evidence that any account is reconciled to the customer.
+
+**Tripwires:** reopen if a member projection stops matching its TXT, or if the generator is changed so a review-only or held family can produce a release file name.
+
+### D21 — ERP export intake (ratified 2026-10-13)
+
+Source: `PROPOSED_Projection_Matching_Locks.md` amendment (g); `docs/requests/2026-10-10_erp_export_request.md`.
+
+An ERP statement export is treated as current only if its file name carries its export date (`<CODE>_<YYYY-MM-DD>.TXT`); an undated file is never current. Every export is verified on intake before it is filed under `raw/`: each running balance equals the previous balance plus the amount; the last balance equals the header CURRENT BALANCE and the TOTAL TRANSACTIONS line; where the header shows an undeposited (UD) figure, the gap between the last running balance and the header equals that figure exactly. A file that fails is not filed and is returned to the ERP agent. This extends D19: ingest freshness and coverage are judged on dated, verified inputs only.
+
+**Tripwires:** reopen if the ERP export loses dated naming or the running-balance column.
+
 ### Scoped-canonical implementation (do not duplicate here)
 
 | Topic | Constitutional home for implementation |
@@ -257,6 +273,8 @@ Full rules: `SKILL_Debtors_Orchestrator.md` §5.2 Epistemic bookkeeping.
 **Ratified 2026-07-26 (Turn 14c):** D18 (collectable-balance and blocker contract in `PROJECT_SCHEMA.md`; projection validity separable from collections eligibility; blocked accounts remain visible, labelled `COLLECTIONS_BLOCKED`, with demand drafting prohibited).
 
 **Ratified 2026-07-26 (Turn B4):** D19 (`ingestGate` canonical but optional in `project.json`; `status` redefined as schema validity — not ingest health — to prevent it overlapping with `ingestFreshness`/`ingestCoverage`; absence never read as clearance for custody/SKU/allocation claims; no auto-population of `collections.blockers`; existing debtors migrate under a warning model, not retroactive failure). **Implementation pending** — `PROJECT_SCHEMA.md` promotion, and the `status` field in the already-shipped `validate_txt_db_coverage.mjs` (Turn B1, commit `269d8ce`), are not yet aligned to this ruling; see flag below.
+
+**Ratified 2026-10-13 (operator "Ratify", TWK AGRI lessons):** D20 (payer-family release rule) and D21 (ERP export intake), with ALLOCATION_DOCTRINE §6 (price-differential credit; double-credit test). Recorded first as amendments (d)-(g) in `PROPOSED_Projection_Matching_Locks.md`; text written into this file on the operator's instruction of 2026-10-13. Nothing superseded.
 
 ---
 

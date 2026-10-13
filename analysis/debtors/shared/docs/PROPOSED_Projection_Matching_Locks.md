@@ -568,3 +568,5 @@ On 2026-10-13 the operator answered "Ratify" to the question whether to stage an
 - `payerCadence: monthly_batch` beyond JIM001 (amendment (c)).
 - The code items in the playbook (committing the intake check script, making `debtors:tag-check` family-aware).
 - The five open TWK holds (CN 15775 lane, TWK003 credit treatment, 53535/CN 15781 tie approval, release gate verdict, DB-sync hold confirmation). Ratifying (e) says how such a credit is carried; it does not decide TWK003's treatment.
+
+**Update 2026-10-13:** on the operator's instruction ("Yes, write them into the doctrine") the ratified text of (d) and (g) was written into `DEBTORS_DOCTRINE.md` as D20 and D21, and (e) and (f) into `ALLOCATION_DOCTRINE.md` section 6. Skills in `.agents/skills/`, `AGENTS.md`, `payerCadence` beyond JIM001 and the code items remain NOT RATIFIED / not edited.
