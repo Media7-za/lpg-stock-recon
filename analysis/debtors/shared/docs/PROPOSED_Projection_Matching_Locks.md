@@ -540,3 +540,31 @@ Drafted at the operator's request ("Yes, draft the rule with a preview"), after 
 - **Authority:** the operator ruled this for JIM001 only (ADM-89 JIM001 Q2, 2026-10-10: "Yes, then approved as one group"). Applying the flag to any other account, or making it a portfolio default, is **NOT RATIFIED** and needs a separate operator decision.
 - **JIM001 outcome (PROVEN, `config/payment_pattern_overrides.json` projectionLocks):** seven month-sum ties approved as one group (L0002–L0008); L0001 applies payments 44686, 38481, 38846, 39812 (net R-58,653.77) to the opening B/F R60,183.98 (`applied_to_bf`; R1,530.21 of B/F stays open). Proof HOLDS at ERP R122,884.84; 0 lock conflicts; 0 unallocated payments. The 36 legacy `overrides[]` stay as history, not locks.
 - **Tripwires:** reopen L0002–L0008 if a remittance advice or the ERP allocation contradicts a month sum, or JIM001 stops paying by whole billing month. Reopen L0001 if a different JIM001 export changes the B/F, or the ERP shows those payments allocated elsewhere.
+
+---
+
+### Amendment 2026-10-13 (d)-(g): lessons from the TWK AGRI payer family — text of the four proposals
+
+Source: `docs/playbooks/family_account_reconciliation_workflow.md` (section 3 and 4); evidence `docs/previews/2026-10-10_TWK_consolidated_statement_preview.md`, `docs/previews/2026-10-10_TWK_family_children.md`, `docs/previews/2026-10-12_TWK002_CN15775_double_credit_check.md`.
+
+**(d) Payer-family release rule.** A parent account whose config lists a `payerGroup` is reconciled and released as a family. A family customer statement is a release copy only when (1) every member's export is dated and current (fingerprint of the projection matches its TXT), (2) every member's open items plus named lines equal that member's ERP header, (3) no member has a lock conflict or is review-only, (4) the family total equals the sum of the members' ERP balances, and (5) the parent config lists no open operator hold (`familyReleaseHolds`). Otherwise the output is a DRAFT PREVIEW under a non-release file name, with no snapshot or PDF. Implemented in `family_statement.mjs`.
+
+**(e) Price-differential credit.** When an invoice and a credit note on the same delivery differ only in unit price, the difference stays on the account as a customer credit (negative balance), not a cash overpayment and not a write-off. It is shown as a negative amount, and any correction or refund treatment is an operator ruling. Example: TWK003 invoice 47866 (20 units at R100) against CN 13933 (20 units at R115) gives R-300.00 (price actually correct is unverified).
+
+**(f) Double-credit test for deposit credit notes.** To test whether a cylinder credit note repeats cylinders already paid for in cash, decompose the cash deposit into whole cylinders per SKU from the DB line quantities, then compare the credit note per SKU with its own delivery invoice. It is a double credit only if the credit note credits more of a SKU than its own delivery invoiced and the excess equals the cash-paid cylinders. Same total value with a different SKU mix is not a reversal. Custody conclusions stay with the operator.
+
+**(g) Export intake rule.** An ERP export is current only if its file name carries its date (`<CODE>_<YYYY-MM-DD>.TXT`); an undated file is never treated as current. On intake every file is verified: each running balance equals the previous balance plus the amount, the last balance equals the header CURRENT BALANCE and the TOTAL TRANSACTIONS line, and where the header shows a UD figure the gap equals that figure exactly. A file that fails is not filed.
+
+**Tripwires:** (d) reopen if a member projection stops matching its TXT or the generator is changed so a review-only or held family can produce a release file name; (e) reopen if the ERP confirms the credit note price was intended and the invoice price wrong, or the reverse; (f) reopen if a later credit note credits more of a SKU than its own delivery; (g) reopen if the ERP export format loses the dated naming or the running-balance column.
+
+### Ratification 2026-10-13 (operator)
+
+On 2026-10-13 the operator answered "Ratify" to the question whether to stage and ratify these four proposals.
+
+**RATIFIED (scope exactly):** amendments (d), (e), (f) and (g) above, as worded, as operating rules for the debtors portfolio.
+
+**NOT RATIFIED, still PROPOSED:**
+- Any text change to `DEBTORS_DOCTRINE.md`, `ALLOCATION_DOCTRINE.md`, `AGENTS.md` or the skills in `.agents/skills/`. This amendment is the recorded authority; edits to those documents wait for the operator's explicit instruction.
+- `payerCadence: monthly_batch` beyond JIM001 (amendment (c)).
+- The code items in the playbook (committing the intake check script, making `debtors:tag-check` family-aware).
+- The five open TWK holds (CN 15775 lane, TWK003 credit treatment, 53535/CN 15781 tie approval, release gate verdict, DB-sync hold confirmation). Ratifying (e) says how such a credit is carried; it does not decide TWK003's treatment.

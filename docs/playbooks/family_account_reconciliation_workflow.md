@@ -1,6 +1,6 @@
 # Playbook: reconciling a payer family (TWK AGRI, 2026-10-08 to 2026-10-12)
 
-Status: PROCEDURE NOTE from the main session. Not doctrine. Every proposed change in section 4 is **PROPOSED, NOT RATIFIED** (AGENTS.md section 7): the operator decides. Nothing here edits DEBTORS_DOCTRINE.md, the skills or AGENTS.md.
+Status: PROCEDURE NOTE from the main session. Not doctrine. The four proposals in section 4 marked as amendments (d)-(g) were RATIFIED by the operator on 2026-10-13 (see PROPOSED_Projection_Matching_Locks.md, "Ratification 2026-10-13"); the document and skill edits in section 4 remain PROPOSED. Every proposed change in section 4 is **PROPOSED, NOT RATIFIED** (AGENTS.md section 7): the operator decides. Nothing here edits DEBTORS_DOCTRINE.md, the skills or AGENTS.md.
 
 ## 1. Result (what "win" means, and what it does not)
 
