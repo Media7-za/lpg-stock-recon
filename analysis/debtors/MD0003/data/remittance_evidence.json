@@ -1,6 +1,56 @@
 {
   "batches": [
     {
+      "batchId": "RM-2023-01-01",
+      "paymentDoc": "17669",
+      "remittanceDate": "2023-01-01",
+      "cash": 12025.08,
+      "manifest": "data/remittance_manifest_2023.json",
+      "discount": 0,
+      "lines": [
+        {
+          "invoiceDate": "2022-11-13",
+          "docType": "Invoice",
+          "doc": "16425",
+          "gross": 1273.05,
+          "discount": 0,
+          "paid": 1273.05
+        },
+        {
+          "invoiceDate": "2022-11-17",
+          "docType": "Invoice",
+          "doc": "16474",
+          "gross": 4032.01,
+          "discount": 0,
+          "paid": 4032.01
+        },
+        {
+          "invoiceDate": "2022-11-20",
+          "docType": "Invoice",
+          "doc": "16544",
+          "gross": 2688.01,
+          "discount": 0,
+          "paid": 2688.01
+        },
+        {
+          "invoiceDate": "2022-11-28",
+          "docType": "Invoice",
+          "doc": "16615",
+          "gross": 4032.01,
+          "discount": 0,
+          "paid": 4032.01
+        }
+      ],
+      "source": {
+        "method": "manifest",
+        "file": "data/remittance_manifest_2023.json"
+      },
+      "checks": {
+        "linesSumToCash": true,
+        "sumPaid": 12025.08
+      }
+    },
+    {
       "batchId": "RM-2025-11-01",
       "paymentDoc": "42051",
       "remittanceDate": "2025-11-01",
@@ -487,10 +537,5 @@
       }
     }
   ],
-  "skipped": [
-    {
-      "file": "remittance_manifest_2023.json",
-      "reason": "unreadable JSON: Expected ',' or '}' after property value in JSON at position 283 (line 10 column 3)"
-    }
-  ]
+  "skipped": []
 }
