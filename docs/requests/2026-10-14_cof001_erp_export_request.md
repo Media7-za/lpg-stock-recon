@@ -1,6 +1,6 @@
 # ERP export request — COF001 (14 Oct 2026)
 
-**DRAFT for posting by the main session / operator. Not posted by the drafting session (analyst session, branch `claude/cof001-analysis`).**
+**Superseded as the posting vehicle:** per the PM session (message 2026-10-14) the request was posted as Linear **ADM-135**; this file is retained as the drafted text and checklist (not verified by this session against Linear). Drafted by the analyst session, branch `claude/cof001-analysis`.
 **To:** ERP agent / @Sharmin  **From:** operator (Louis; confirm before it goes out), drafted by Claude Code
 **Purpose:** onboard COF001 (COFFEEBERRY-CASCADES, terms 7) and prove its ERP balance with a v5 open-items statement (B/F + open documents = ERP CURRENT BALANCE, variance R0.00). The portfolio list shows R7,958.38 (ASSERTED, `analysis/debtors/shared/data/portfolio_candidates.csv`), but there is no per-account export for COF001 in the repo or on any origin branch, so the balance cannot be proven.
 

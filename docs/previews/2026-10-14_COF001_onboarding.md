@@ -34,7 +34,7 @@
 
 ## 4. Questions for the operator (none is a ruling by this session)
 
-1. **Post the export request** (drafted file above) to Sharmin (new Linear ticket under ADM-76, or add to ADM-96)? Please confirm; this session did not post it.
+1. ~~Post the export request~~ Done by the PM session as Linear ADM-135 (reported by message; not verified here). Expected at `analysis/debtors/COF001/raw/COF001_<date>.TXT` on `claude/payment-matching-mechanisms-4h34be` or in the ADM-79 Drive folder.
 2. **COF001 and COF002**: kept separate, not netted. If the operator wants them handled as a payer family, that needs an explicit ruling (D20 `payerGroup`); none is assumed. COF002 is balance -R5,267.66, deferred (ASSERTED, same CSV).
 3. When the export arrives, its cylinder opening (B/F split between LPG and CYL deposits) will need operator confirmation if it cannot be derived from the first rows (as with TAN001).
 
@@ -43,3 +43,6 @@ Reopen if: a dated COF001 export arrives; the portfolio balance moves from R7,95
 
 ## 6. Next steps once the export arrives
 Verify per D21 (chain, header CURRENT BALANCE, TOTAL TRANSACTIONS, UD gap) -> file as `raw/COF001_<date>.TXT` -> set `txtPath`, `combinedBf`, `periodStart` from the header (cite lines in `bfSourceNote`) -> `node analysis/debtors/shared/scripts/reconcile_debtor_v5_from_txt.mjs --debtor COF001` -> `npm run debtors:ingest-check -- --debtor COF001` (needs DB authorisation) -> review variance and open items.
+
+## 7. Provisional extract (added after PM message)
+`analysis/debtors/COF001/data/provisional/COF001_shared_dump_extract_ASSUMED.csv` (171 rows, filtered only, ASSUMED; see README there). No first-pass generator run was possible without inventing a B/F, so none was run.
