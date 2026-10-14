@@ -573,6 +573,142 @@
           }
         ],
         "createdAt": "2026-10-10T08:26:31.499Z"
+      },
+      {
+        "lock_id": "L0008",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "applied_to_bf",
+          "net": -37351.77,
+          "reason": "Operator ruling 2026-10-14 (user, 'go with recommendations' on docs/previews/2026-10-13_MD0003_ruling_pack.md, Q2a): payments 37262, 37263 and 37817 (R37,351.77) settle documents inside or before the opening B/F R52,607.52. Evidence: ERP allocation detail slices name the Jan 2025 invoices 39784, 39842, 40016, 40112 (sum R21,718.57 = 37262 + 37263) and the Feb 2025 invoices 40661, 40803, 40954, 41010 (sum R15,633.20 = 37817); the customer AP ledger shows all eight at zero balance; legacy override 2025-01 VERIFIED_SPLIT_BATCH. Does NOT decide: 37143 and 37144 (Q2b, held), the composition of the B/F (unitemised, unverified). Tripwires: an MD0003 export that changes the B/F; an allocation-detail export tagging these payments to documents inside the window; evidence that the Jan-Feb 2025 invoices are not in the B/F.",
+          "approvedBy": "operator",
+          "session": "unrecorded"
+        },
+        "members": [
+          {
+            "key": "37262|Payment|LPG|2025-03-03|-4653.98",
+            "doc": "37262",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2025-03-03",
+            "amount": -4653.98
+          },
+          {
+            "key": "37263|Payment|LPG|2025-03-03|-17064.59",
+            "doc": "37263",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2025-03-03",
+            "amount": -17064.59
+          },
+          {
+            "key": "37817|Payment|LPG|2025-04-07|-15633.20",
+            "doc": "37817",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2025-04-07",
+            "amount": -15633.2
+          }
+        ],
+        "createdAt": "2026-10-14T06:59:48.592Z"
+      },
+      {
+        "lock_id": "L0009",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "exact",
+          "net": 0,
+          "reason": "Operator ruling 2026-10-14 (user, 'go with recommendations', ruling pack Q3b): payment 41044 (R9,895.88) settles 44439 + 44634 + 44937, as the customer AP ledger snapshot of 2025-09-08 (open items 44439, 44634, 44937 = R9,895.88) and the ERP allocation slices both show; 44937 and 45435 are equal-amount twins (R3,684.19), so this only fixes which twin 41044 paid. No open item changes. Does NOT decide Q3a (T0090, held). Tripwires: a remittance advice or ledger showing the other assignment.",
+          "approvedBy": "operator",
+          "session": "unrecorded"
+        },
+        "members": [
+          {
+            "key": "41044|Payment|LPG|2025-09-01|-9895.88",
+            "doc": "41044",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2025-09-01",
+            "amount": -9895.88
+          },
+          {
+            "key": "44439|Invoice|LPG|2025-07-02|3755.57",
+            "doc": "44439",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-07-02",
+            "amount": 3755.57
+          },
+          {
+            "key": "44634|Invoice|LPG|2025-07-08|2456.12",
+            "doc": "44634",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-07-08",
+            "amount": 2456.12
+          },
+          {
+            "key": "44937|Invoice|LPG|2025-07-18|3684.19",
+            "doc": "44937",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-07-18",
+            "amount": 3684.19
+          }
+        ],
+        "createdAt": "2026-10-14T06:59:48.778Z"
+      },
+      {
+        "lock_id": "L0010",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "exact",
+          "net": 0,
+          "reason": "Operator ruling 2026-10-14 (user, 'go with recommendations', ruling pack Q3b): payment 41501 (R6,232.93) settles 45435 + 45778 + 45787, as the ERP allocation slices show and the customer AP report of 2025-10-10 (45435, 45778, 45787 still open at that date, cleared by the 2025-10-01 ERP payment) is consistent with; twin of 44937. No open item changes. Tripwires: a remittance advice or ledger showing the other assignment.",
+          "approvedBy": "operator",
+          "session": "unrecorded"
+        },
+        "members": [
+          {
+            "key": "41501|Payment|LPG|2025-10-01|-6232.93",
+            "doc": "41501",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2025-10-01",
+            "amount": -6232.93
+          },
+          {
+            "key": "45435|Invoice|LPG|2025-08-06|3684.19",
+            "doc": "45435",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-08-06",
+            "amount": 3684.19
+          },
+          {
+            "key": "45778|Invoice|LPG|2025-08-20|2398.72",
+            "doc": "45778",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-08-20",
+            "amount": 2398.72
+          },
+          {
+            "key": "45787|Invoice|LPG|2025-08-20|150.02",
+            "doc": "45787",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-08-20",
+            "amount": 150.02
+          }
+        ],
+        "createdAt": "2026-10-14T06:59:48.970Z"
       }
     ],
     "voids": []
