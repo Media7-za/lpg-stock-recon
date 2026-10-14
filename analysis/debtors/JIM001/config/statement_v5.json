@@ -14,13 +14,14 @@
     "S.1": 0
   },
   "skuRates": {
-    "14.1": 575,
+    "14.1": 632.5,
     "19.1": 690,
     "9.1": 517.5,
-    "D.1": 1150,
-    "S.1": 1150
+    "D.1": 1207.5,
+    "S.1": 1207.5
   },
   "paymentLane": "LPG",
   "payerCadence": "monthly_batch",
-  "payerCadenceNote": "Operator ruling 2026-10-10 (ADM-89 JIM001 Q2): monthly batch payer with no remittances; EXACT_MONTH_SUM ties are PROBABLE until approved as a group."
+  "payerCadenceNote": "Operator ruling 2026-10-10 (ADM-89 JIM001 Q2): monthly batch payer with no remittances; EXACT_MONTH_SUM ties are PROBABLE until approved as a group.",
+  "skuRatesNote": "Operator ruling 2026-10-14 (option B, portfolio preview docs/previews/2026-10-13_sku_rates_portfolio_preview.md): cylinder deposit rates follow the ERP list incl. 15% VAT: 14.1 575 -> 632.5, D.1 and S.1 1150 -> 1207.5 (19.1 690 and 9.1 517.5 unchanged). Deposits are static since 2024-12-04. Tripwires: an ERP deposit price change; a customer-specific deposit rate; a stock count that disagrees; accounts with pre-2024-12 history or an opening cylinder position (TAN001) to be reviewed when onboarded."
 }

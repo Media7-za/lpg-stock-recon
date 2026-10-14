@@ -3,7 +3,7 @@
 **Combined Opening B/F:** R9,461.01 (ERP verified — source: `analysis/debtors/JEN001/raw/JEN001_2026-10-08.TXT` JEN001_2026-10-08.TXT line 14 BALANCE B/F R9461.01 (fresh ERP export, Linear ADM-78, CURRENT BALANCE R25,332.00; window widened, periodStart 2026-07-01 -> 2025-03-03 (first row of the new export)). Switched on operator instruction 2026-10-08 ("switch the other six accounts ... YES"). SUPERSEDED (kept for the record; previous TXT DEBENQ.TXT, CURRENT BALANCE R22,685.21): DEBENQ.TXT line 14 — BALANCE B/F (post payment 44878, 25 Jun 2026))
 **LPG Opening B/F (1A):** R9,978.51 &nbsp;|&nbsp; **CYL Opening B/F (1B):** R-517.50
 **Payment routing:** LPG lane (payments post to Part 1A unless configured otherwise)
-**Last regenerated:** 2026-10-08 from ERP TXT (`reconcile_debtor_v5_from_txt.mjs`)
+**Last regenerated:** 2026-10-14 from ERP TXT (`reconcile_debtor_v5_from_txt.mjs`)
 
 ---
 

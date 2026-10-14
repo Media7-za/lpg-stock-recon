@@ -7,7 +7,7 @@
   },
   "version": "v5",
   "workspaceStatus": "pending_review",
-  "lastGeneratedAt": "2026-10-10T11:31:10.959Z",
+  "lastGeneratedAt": "2026-10-14T07:08:19.079Z",
   "source": "analysis/debtors/JIM001/raw/JIM001_2026-10-10.TXT",
   "financialPosition": {
     "lpgGasDebt": 122562.84,
@@ -18,7 +18,7 @@
     "subLedgerVariance": 0
   },
   "custodyPosition": {
-    "totalCustodyExposure": -632.5,
+    "totalCustodyExposure": -690,
     "lines": [
       {
         "sku": "9.1",
@@ -31,20 +31,20 @@
         "sku": "D.1",
         "label": "D.1",
         "qty": 1,
-        "depositRate": 1150,
-        "exposure": 1150
+        "depositRate": 1207.5,
+        "exposure": 1207.5
       },
       {
         "sku": "S.1",
         "label": "S.1",
         "qty": -2,
-        "depositRate": 1150,
-        "exposure": -2300
+        "depositRate": 1207.5,
+        "exposure": -2415
       }
     ]
   },
   "reconciliationPosition": {
-    "cylinderVariance": 954.5,
+    "cylinderVariance": 1012,
     "erpVariance": 0,
     "subLedgerVariance": 0,
     "exceptions": [

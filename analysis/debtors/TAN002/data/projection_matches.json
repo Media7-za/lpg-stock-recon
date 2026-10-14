@@ -2,12 +2,12 @@
   "status": "matcher v5 RATIFIED 2026-10-10 (PROPOSED_Projection_Matching_Locks.md); probable ties stay proposals until approved",
   "debtorCode": "TAN002",
   "generatedBy": "match_projection.mjs",
-  "generatedAt": "2026-10-10T08:26:31.592Z",
+  "generatedAt": "2026-10-14T07:08:23.265Z",
   "projection": {
     "path": "analysis/debtors/TAN002/data/v5_projection.json",
     "txtSha256": "51d10507d04c7c4f1a7a23e2c53be111d93bb9d13a8b3a55d5ba3ea0866df502",
     "dbChannel": "supabase-connector-replay",
-    "generatedAt": "2026-10-08T16:29:37.077Z"
+    "generatedAt": "2026-10-14T07:08:23.151Z"
   },
   "reviewOnly": true,
   "reviewOnlyReasons": [
@@ -23,6 +23,7 @@
     "proximityTolerance": 5,
     "nearSumTolerance": 1,
     "cnConfirmedMaxDays": 1,
+    "monthSumConfidence": "CONFIRMED",
     "cnRivalFreeMaxDays": 0,
     "maxSumInvoices": 3,
     "maxRunInvoices": 12,

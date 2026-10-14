@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "status": "PROPOSED — NOT RATIFIED (PROPOSED_Projection_Matching_Locks.md, build step 1)",
+  "status": "RATIFIED 2026-10-10 (PROPOSED_Projection_Matching_Locks.md, projection builder)",
   "debtorCode": "FIR001",
   "generatedBy": "reconcile_debtor_v5_from_txt.mjs",
-  "generatedAt": "2026-10-08T16:29:16.093Z",
+  "generatedAt": "2026-10-14T07:08:17.898Z",
   "source": {
     "txtPath": "analysis/debtors/FIR001/raw/FIR001_2026-10-08.TXT",
     "txtSha256": "1cf1b6f9c63e31e15ed44832d6961d6f2dec9f75fc471991ca3e75857aa16bfa",
-    "configSha256": "cdb35ee6405713dacf7a1d0c89b92fee88228b843567cc90128ba3f3d34470e9",
+    "configSha256": "9e26d44657b58d72a7c84667cf8033d1356a9bb8b04b32949aaa23e85d8f0660",
     "erpCurrentBalance": 9469.77,
     "dbChannel": "supabase-connector-replay"
   },

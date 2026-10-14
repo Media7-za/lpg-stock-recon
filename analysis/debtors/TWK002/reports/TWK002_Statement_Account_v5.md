@@ -3,7 +3,7 @@
 **Combined Opening B/F:** R38,791.27 (ERP verified — source: `analysis/debtors/TWK002/raw/TWK002_2026-10-08.TXT` TWK002_2026-10-08.TXT line 14 BALANCE B/F R38791.27 (fresh ERP export, Linear ADM-78, CURRENT BALANCE R54,136.19; same export window). Switched on operator instruction 2026-10-08 ("switch the other six accounts ... YES"). SUPERSEDED (kept for the record; previous TXT DEBENQTWK002CURRENT.TXT, CURRENT BALANCE R27,721.81): DEBENQTWK002CURRENT.TXT line 14 — BALANCE B/F R38,791.27 before first period row (export window starts Mar 2025; TXT as at 2026-08-26). Switched from DEBENQ_TWK002.TXT (as at 2026-08-09, same B/F at its line 13) on operator decision 2026-10-08.)
 **LPG Opening B/F (1A):** R38,791.27 &nbsp;|&nbsp; **CYL Opening B/F (1B):** R0.00
 **Payment routing:** LPG lane (payments post to Part 1A unless configured otherwise)
-**Last regenerated:** 2026-10-12 from ERP TXT (`reconcile_debtor_v5_from_txt.mjs`)
+**Last regenerated:** 2026-10-14 from ERP TXT (`reconcile_debtor_v5_from_txt.mjs`)
 
 ---
 
@@ -779,16 +779,16 @@
 
 | SKU | Net Returnable Qty | Deposit Rate | Custody Exposure |
 |---|---:|---:|---:|
-| 14kg | -1 | R575.00 | R-575.00 |
+| 14kg | -1 | R632.50 | R-632.50 |
 | 19kg | 7 | R690.00 | R4,830.00 |
 | 9kg | 9 | R517.50 | R4,657.50 |
-| **Total** | **15** | — | **R8,912.50** |
+| **Total** | **15** | — | **R8,855.00** |
 
 ### 3. Reconciliation Position
 
 | Check | Financial | Custody | Variance |
 |---|---:|---:|---:|
-| Cylinder Position (1B vs custody) | R8,855.00 | R8,912.50 | R-57.50 |
+| Cylinder Position (1B vs custody) | R8,855.00 | R8,855.00 | R0.00 |
 | Sub-ledger tie (1A + 1B vs combined) | R54,136.19 | — | R0.00 |
 
 **ERP Combined Balance (TXT header):** R54,136.19  

@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "status": "PROPOSED — NOT RATIFIED (PROPOSED_Projection_Matching_Locks.md, build step 1)",
+  "status": "RATIFIED 2026-10-10 (PROPOSED_Projection_Matching_Locks.md, projection builder)",
   "debtorCode": "TAN002",
   "generatedBy": "reconcile_debtor_v5_from_txt.mjs",
-  "generatedAt": "2026-10-08T16:29:37.077Z",
+  "generatedAt": "2026-10-14T07:08:23.151Z",
   "source": {
     "txtPath": "analysis/debtors/TAN002/raw/TAN002_2026-10-08.TXT",
     "txtSha256": "51d10507d04c7c4f1a7a23e2c53be111d93bb9d13a8b3a55d5ba3ea0866df502",
-    "configSha256": "0f11151f5b7b9974a1e863df74fe9310a4889acc7b543ca35aaa04bc0fb76587",
+    "configSha256": "59c636da67ce0c526089a8c06d731f6b68e23af95895ac79c0707b996bdf0171",
     "erpCurrentBalance": 7938.37,
     "dbChannel": "supabase-connector-replay"
   },

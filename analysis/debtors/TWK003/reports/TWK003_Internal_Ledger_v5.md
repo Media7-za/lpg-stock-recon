@@ -1,5 +1,5 @@
 # Internal ledger: TWK AGRI (TWK003), matcher review
-**INTERNAL, not for the customer.** Every transaction in ERP order with the ERP running balance and what matcher v5 did with it · generated 2026-10-12 · 1 confirmed / 1 probable ties · 2 rows open · ERP `CURRENT BALANCE` R-300.00 · matcher v5 ratified 2026-10-10; probable ties are proposals until approved
+**INTERNAL, not for the customer.** Every transaction in ERP order with the ERP running balance and what matcher v5 did with it · generated 2026-10-14 · 1 confirmed / 1 probable ties · 2 rows open · ERP `CURRENT BALANCE` R-300.00 · matcher v5 ratified 2026-10-10; probable ties are proposals until approved
 
 **Status key:** `OPEN` untied · `T0001 EXACT_SINGLE ✓` confirmed tie · `T0001 BATCH_SUM ?` probable tie (needs approval) · `LOCKED` operator-approved lock · `◀ ZERO` ERP running balance is within R0.05 after this line.
 

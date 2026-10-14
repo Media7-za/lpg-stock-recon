@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "status": "PROPOSED — NOT RATIFIED (PROPOSED_Projection_Matching_Locks.md, build step 1)",
+  "status": "RATIFIED 2026-10-10 (PROPOSED_Projection_Matching_Locks.md, projection builder)",
   "debtorCode": "MON001",
   "generatedBy": "reconcile_debtor_v5_from_txt.mjs",
-  "generatedAt": "2026-10-08T13:30:40.263Z",
+  "generatedAt": "2026-10-14T07:08:21.175Z",
   "source": {
     "txtPath": "analysis/debtors/MON001/raw/MON001_CURRENT_2026-10-08.TXT",
     "txtSha256": "3b289b8d9d7684672e7f844a656c089f24ce8c2483de0de7855a6b3391b8fef2",
-    "configSha256": "8b2f1f175162d04f4b4cc021852c3126ac8ab0ed1cec14b7ab94178c1a298721",
+    "configSha256": "103f896c766ef8be0192148e3f204438269a6663c25431189b679133bcf4fb45",
     "erpCurrentBalance": 2417.24,
     "dbChannel": "supabase-connector-replay"
   },

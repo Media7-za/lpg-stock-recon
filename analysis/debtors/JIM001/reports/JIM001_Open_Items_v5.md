@@ -1,6 +1,6 @@
 # Open Items Statement: JIMMY'S / INVESCO (JIM001) — Internal
 **Period:** from 16 May 2022 to 05 Jun 2026 &nbsp;|&nbsp; **Balance due:** R122,884.84
-**Status:** matcher v5 RATIFIED 2026-10-10 (`PROPOSED_Projection_Matching_Locks.md`); probable ties are proposals until approved · generated 2026-10-10 by `render_open_items.mjs`
+**Status:** matcher v5 RATIFIED 2026-10-10 (`PROPOSED_Projection_Matching_Locks.md`); probable ties are proposals until approved · generated 2026-10-14 by `render_open_items.mjs`
 **Sources:** `analysis/debtors/JIM001/data/v5_projection.json` (TXT sha256 `54b3336ac483…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (51 confirmed / 6 probable ties) · **REVIEW ONLY:** ingestCoverage partial
 **Locks:** no period closed yet
 

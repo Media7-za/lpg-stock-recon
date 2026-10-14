@@ -1,6 +1,6 @@
 # Open Items Statement: TWK AGRI (TWK003) — Internal
 **Period:** from 01 Mar 2025 to 25 Feb 2026 &nbsp;|&nbsp; **Balance due:** R-300.00
-**Status:** matcher v5 RATIFIED 2026-10-10 (`PROPOSED_Projection_Matching_Locks.md`); probable ties are proposals until approved · generated 2026-10-12 by `render_open_items.mjs`
+**Status:** matcher v5 RATIFIED 2026-10-10 (`PROPOSED_Projection_Matching_Locks.md`); probable ties are proposals until approved · generated 2026-10-14 by `render_open_items.mjs`
 **Sources:** `analysis/debtors/TWK003/data/v5_projection.json` (TXT sha256 `9b68fd84a163…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (1 confirmed / 1 probable ties)
 **Locks:** no period closed yet
 

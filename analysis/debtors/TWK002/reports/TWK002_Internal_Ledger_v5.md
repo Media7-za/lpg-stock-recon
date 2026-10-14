@@ -1,5 +1,5 @@
 # Internal ledger: TWK AGRI PTY LTD (TWK002), matcher review
-**INTERNAL, not for the customer.** Every transaction in ERP order with the ERP running balance and what matcher v5 did with it · generated 2026-10-10 · 17 confirmed / 0 probable ties · 34 rows open · ERP `CURRENT BALANCE` R54,136.19 · matcher v5 ratified 2026-10-10; probable ties are proposals until approved · **REVIEW ONLY:** ingestCoverage partial
+**INTERNAL, not for the customer.** Every transaction in ERP order with the ERP running balance and what matcher v5 did with it · generated 2026-10-14 · 17 confirmed / 0 probable ties · 35 rows open · ERP `CURRENT BALANCE` R54,136.19 · matcher v5 ratified 2026-10-10; probable ties are proposals until approved
 
 **Status key:** `OPEN` untied · `T0001 EXACT_SINGLE ✓` confirmed tie · `T0001 BATCH_SUM ?` probable tie (needs approval) · `LOCKED` operator-approved lock · `◀ ZERO` ERP running balance is within R0.05 after this line.
 
@@ -301,8 +301,9 @@ Opening balance (ERP running): **R47,695.33**
 
 | Date | Type | Doc # | Reference | Lane | Amount (R) | ERP running (R) | Matcher status |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: | :--- |
-| 08 Oct 2026 | Crd Note | 15775 | DN#23843 | LPG | -7,935.00 | 39,760.33 | OPEN |
-| 08 Oct 2026 | Invoice | 53507 | DN#23843 | LPG | 14,375.86 | 54,136.19 | OPEN |
+| 08 Oct 2026 | Crd Note | 15775 | DN#23843 | CYL | -7,935.00 | 39,760.33 | OPEN |
+| 08 Oct 2026 | Invoice | 53507 | DN#23843 | CYL | 8,625.00 | 48,385.33 | OPEN |
+| 08 Oct 2026 | Invoice | 53507 | DN#23843 | LPG | 5,750.86 | 54,136.19 | OPEN |
 
 ---
 

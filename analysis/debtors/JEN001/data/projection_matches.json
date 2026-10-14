@@ -2,12 +2,12 @@
   "status": "matcher v5 RATIFIED 2026-10-10 (PROPOSED_Projection_Matching_Locks.md); probable ties stay proposals until approved",
   "debtorCode": "JEN001",
   "generatedBy": "match_projection.mjs",
-  "generatedAt": "2026-10-10T05:07:51.620Z",
+  "generatedAt": "2026-10-14T07:08:18.568Z",
   "projection": {
     "path": "analysis/debtors/JEN001/data/v5_projection.json",
     "txtSha256": "5f6c5151b1a6a3ed136a6b6b6a28b27fc82baf31ae61947246499c6d318c9cfc",
     "dbChannel": "supabase-connector-replay",
-    "generatedAt": "2026-10-08T16:29:36.725Z"
+    "generatedAt": "2026-10-14T07:08:18.478Z"
   },
   "reviewOnly": false,
   "reviewOnlyReasons": [],
@@ -21,6 +21,8 @@
     "proximityTolerance": 5,
     "nearSumTolerance": 1,
     "cnConfirmedMaxDays": 1,
+    "monthSumConfidence": "CONFIRMED",
+    "cnRivalFreeMaxDays": 0,
     "maxSumInvoices": 3,
     "maxRunInvoices": 12,
     "fifoWindowDays": 14,

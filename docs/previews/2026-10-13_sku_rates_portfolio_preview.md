@@ -64,3 +64,11 @@ Method: a scratch copy of `analysis/` outside the repo (the real tree was untouc
 | C | B, plus per-account decisions for TAN001 and for the pre-Dec-2024 accounts, then a dated rate table | Correct long term, larger change |
 
 If B is approved the work is mechanical: change the template (affects all future onboarding), update the 19 configs with a dated note in `bfSourceNote` style (old value kept in the text, never silently overwritten), rebuild each account offline, run `npm run debtors:test`, and record the ruling with its tripwires (an ERP deposit price change; a customer-specific deposit rate; a stock count that disagrees).
+
+## 7. Update 2026-10-14: option B applied (operator: "Yes")
+
+Operator approved option B on 2026-10-14. Applied: `14.1` 632.5, `D.1` 1207.5, `S.1` 1207.5 in `analysis/debtors/shared/templates/statement_v5_config.template.json` and all 19 `statement_v5.json` configs (19.1 and 9.1 unchanged). Each config carries a `skuRatesNote` with the ruling and tripwires (the old values are recorded in the note text; MD0003 had already taken `14.1` on its own ruling the same day). The 13 onboarded accounts were rebuilt offline (`reconcile_debtor_v5_from_txt.mjs`, `match_projection.mjs`, `render_open_items.mjs`) from their latest committed replay captures; no connector query was made.
+
+Result (PROVEN, script output): every account's ERP variance is R0.00 and every proof HOLDS; custody exposure now MD0003 R1,782.50, TWK002 R8,855.00, BU0009 R2,760.00, RED001 R-3,622.50, TAN002 R3,105.00, JIM001 R-690.00; the others unchanged. These equal the scratch-run predictions in section 4. Customer statements, ERP balances, ties and the live `TWK002_Statement_of_Account.md` did not change; regenerated files differ in timestamps, config hashes and Part 2 custody figures. Tests 172/172.
+
+Not done: the six accounts without a projection (BR0001, BU0002, GAS004, IVE001, JAY000, TAN001) pick up the new rates when onboarded; TAN001 (opening cylinder position) and accounts with pre-December-2024 history need the review noted in section 5. A dated rate table remains an option (C).

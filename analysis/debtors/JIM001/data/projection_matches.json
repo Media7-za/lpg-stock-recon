@@ -2,12 +2,12 @@
   "status": "matcher v5 RATIFIED 2026-10-10 (PROPOSED_Projection_Matching_Locks.md); probable ties stay proposals until approved",
   "debtorCode": "JIM001",
   "generatedBy": "match_projection.mjs",
-  "generatedAt": "2026-10-10T12:54:23.535Z",
+  "generatedAt": "2026-10-14T07:08:19.179Z",
   "projection": {
     "path": "analysis/debtors/JIM001/data/v5_projection.json",
     "txtSha256": "54b3336ac4832092ba964b538e65717d7101769983071d0bb55c2d76784b784c",
     "dbChannel": "supabase-connector-replay",
-    "generatedAt": "2026-10-10T11:31:10.960Z"
+    "generatedAt": "2026-10-14T07:08:19.080Z"
   },
   "reviewOnly": true,
   "reviewOnlyReasons": [

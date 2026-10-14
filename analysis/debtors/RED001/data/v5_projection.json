@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "status": "PROPOSED — NOT RATIFIED (PROPOSED_Projection_Matching_Locks.md, build step 1)",
+  "status": "RATIFIED 2026-10-10 (PROPOSED_Projection_Matching_Locks.md, projection builder)",
   "debtorCode": "RED001",
   "generatedBy": "reconcile_debtor_v5_from_txt.mjs",
-  "generatedAt": "2026-10-08T16:29:26.243Z",
+  "generatedAt": "2026-10-14T07:08:22.072Z",
   "source": {
     "txtPath": "analysis/debtors/RED001/raw/RED001_2026-10-08.TXT",
     "txtSha256": "57faaf07f287728e2d77e5245537d2456c5f9b7293ac3476f0d84c507a5ad730",
-    "configSha256": "dbf4b35d6d6fb42ad4f90eb65130df23ac9a68ad3c7411576580d96c5bb64d9c",
+    "configSha256": "d1ccd86b2f4cd1838ecbdf346f1a8e6a6c1a12b7d3713c37e69abcc4e8cfcb19",
     "erpCurrentBalance": 10183.43,
     "dbChannel": "supabase-connector-replay"
   },

@@ -3,7 +3,7 @@
 **Combined Opening B/F:** R25,752.41 (ERP verified — source: `analysis/debtors/FIR001/raw/FIR001_2026-10-08.TXT` FIR001_2026-10-08.TXT line 14 BALANCE B/F R25752.41 (fresh ERP export, Linear ADM-78, CURRENT BALANCE R9,469.77; window widened, periodStart 2026-07-01 -> 2022-12-29 (first row of the new export)). Switched on operator instruction 2026-10-08 ("switch the other six accounts ... YES"). SUPERSEDED (kept for the record; previous TXT FIR001CURRENT.TXT.TXT, CURRENT BALANCE R8,721.02): FIR001CURRENT.TXT.TXT line 14 — BALANCE B/F R597.43 immediately before first CURRENT-year row inv 51530 (02 Jul 2026). TXT window is Jul–Sep 2026 (periods 17–19); not a Jan YTD export.)
 **LPG Opening B/F (1A):** R25,752.41 &nbsp;|&nbsp; **CYL Opening B/F (1B):** R0.00
 **Payment routing:** LPG lane (payments post to Part 1A unless configured otherwise)
-**Last regenerated:** 2026-10-08 from ERP TXT (`reconcile_debtor_v5_from_txt.mjs`)
+**Last regenerated:** 2026-10-14 from ERP TXT (`reconcile_debtor_v5_from_txt.mjs`)
 
 ---
 
@@ -1085,8 +1085,8 @@
 | SKU | Net Returnable Qty | Deposit Rate | Custody Exposure |
 |---|---:|---:|---:|
 | 9kg | 3 | R517.50 | R1,552.50 |
-| D.1 | -5 | R1,150.00 | R-5,750.00 |
-| S.1 | 5 | R1,150.00 | R5,750.00 |
+| D.1 | -5 | R1,207.50 | R-6,037.50 |
+| S.1 | 5 | R1,207.50 | R6,037.50 |
 | **Total** | **3** | — | **R1,552.50** |
 
 ### 3. Reconciliation Position

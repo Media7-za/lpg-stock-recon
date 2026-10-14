@@ -2,12 +2,12 @@
   "status": "matcher v5 RATIFIED 2026-10-10 (PROPOSED_Projection_Matching_Locks.md); probable ties stay proposals until approved",
   "debtorCode": "FIR001",
   "generatedBy": "match_projection.mjs",
-  "generatedAt": "2026-10-10T05:07:51.375Z",
+  "generatedAt": "2026-10-14T07:08:18.010Z",
   "projection": {
     "path": "analysis/debtors/FIR001/data/v5_projection.json",
     "txtSha256": "1cf1b6f9c63e31e15ed44832d6961d6f2dec9f75fc471991ca3e75857aa16bfa",
     "dbChannel": "supabase-connector-replay",
-    "generatedAt": "2026-10-08T16:29:16.093Z"
+    "generatedAt": "2026-10-14T07:08:17.898Z"
   },
   "reviewOnly": true,
   "reviewOnlyReasons": [
@@ -23,6 +23,8 @@
     "proximityTolerance": 5,
     "nearSumTolerance": 1,
     "cnConfirmedMaxDays": 1,
+    "monthSumConfidence": "CONFIRMED",
+    "cnRivalFreeMaxDays": 0,
     "maxSumInvoices": 3,
     "maxRunInvoices": 12,
     "fifoWindowDays": 14,

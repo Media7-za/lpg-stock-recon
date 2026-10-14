@@ -3,7 +3,7 @@
 **Combined Opening B/F:** R162.86 (ERP verified — source: `analysis/debtors/MON001/raw/MON001_CURRENT_2026-10-08.TXT` MON001_CURRENT_2026-10-08.TXT line 14 BALANCE B/F R162.86 (genuine ERP export, Linear ADM-80; chains to MON001_2025_2026-10-08.TXT closing R162.86 - PROVEN). periodStart 2024-07-11 = first row of the current-year export (it carries forward unallocated payments 45158 and 37379). Switched on operator instruction 2026-10-08 ("Switch MON001"). SUPERSEDED (kept for the record): Derived opening 2024-01-01: ERP CURRENT R2,717.79 minus sum(all rows). Jun ERP headers: 32911=5295.11, 32912=2392, 8743=-2704, 9078=-1745.02; bridge R162.86 before pmt 45158. Jan–May from deduped DB headers — ratify vs full ERP 2024 export.)
 **LPG Opening B/F (1A):** R162.86 &nbsp;|&nbsp; **CYL Opening B/F (1B):** R0.00
 **Payment routing:** LPG lane (payments post to Part 1A unless configured otherwise)
-**Last regenerated:** 2026-10-08 from ERP TXT (`reconcile_debtor_v5_from_txt.mjs`)
+**Last regenerated:** 2026-10-14 from ERP TXT (`reconcile_debtor_v5_from_txt.mjs`)
 
 ---
 

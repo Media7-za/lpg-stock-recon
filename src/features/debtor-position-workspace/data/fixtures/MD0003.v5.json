@@ -7,7 +7,7 @@
   },
   "version": "v5",
   "workspaceStatus": "clean",
-  "lastGeneratedAt": "2026-10-14T06:59:54.992Z",
+  "lastGeneratedAt": "2026-10-14T07:08:19.568Z",
   "source": "analysis/debtors/MD0003/raw/MD0003_2026-10-08.TXT",
   "financialPosition": {
     "lpgGasDebt": 14765.31,
@@ -38,15 +38,15 @@
         "sku": "D.1",
         "label": "D.1",
         "qty": 3,
-        "depositRate": 1150,
-        "exposure": 3450
+        "depositRate": 1207.5,
+        "exposure": 3622.5
       },
       {
         "sku": "S.1",
         "label": "S.1",
         "qty": -3,
-        "depositRate": 1150,
-        "exposure": -3450
+        "depositRate": 1207.5,
+        "exposure": -3622.5
       }
     ]
   },

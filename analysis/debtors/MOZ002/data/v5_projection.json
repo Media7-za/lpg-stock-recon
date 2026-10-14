@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "status": "PROPOSED — NOT RATIFIED (PROPOSED_Projection_Matching_Locks.md, build step 1)",
+  "status": "RATIFIED 2026-10-10 (PROPOSED_Projection_Matching_Locks.md, projection builder)",
   "debtorCode": "MOZ002",
   "generatedBy": "reconcile_debtor_v5_from_txt.mjs",
-  "generatedAt": "2026-10-08T16:29:32.463Z",
+  "generatedAt": "2026-10-14T07:08:21.600Z",
   "source": {
     "txtPath": "analysis/debtors/MOZ002/raw/MOZ002_2026-10-08.TXT",
     "txtSha256": "4a6e6bbcc72413ddae3f5c4d325d034faf6a648a4d3fd788f846ab5503654044",
-    "configSha256": "73999e29312b6a49d440c7b7000c6afa63bbbec824292776e7b6dcb81c208b75",
+    "configSha256": "47464ea8c1e651bbb988844870b7a87042f051ade55be516cceb24abc11e99fd",
     "erpCurrentBalance": 1562.67,
     "dbChannel": "supabase-connector-replay"
   },

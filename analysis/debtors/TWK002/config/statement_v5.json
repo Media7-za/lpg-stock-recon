@@ -15,11 +15,11 @@
     "S.1": 0
   },
   "skuRates": {
-    "14.1": 575,
+    "14.1": 632.5,
     "19.1": 690,
     "9.1": 517.5,
-    "D.1": 1150,
-    "S.1": 1150
+    "D.1": 1207.5,
+    "S.1": 1207.5
   },
   "remittanceDocAliases": {
     "_comment": "Operator ruling 2026-10-09 (ADM-94 Q2): the STAT 123 advice line 'Crd Note 10, 23.10.2025, -R6,900.00' is the second line of CN 13716 (-R9,315.00 + -R6,900.00 = -R16,215.00). Advice-line identity only: do NOT create a CN 10 in the ERP and do NOT park -R6,900 on another invoice; the cash is already in receipt 43500. Applied when the remittance evidence is built; the generated CSV/JSON are never hand-edited. Tripwire: a document numbered 10 on any family account, or a corrected advice from the customer.",
@@ -86,5 +86,6 @@
       "doc": "53507",
       "note": "Same delivery as CN 15775 (DN#23843), dated 2026-10-08, lines not yet in the DB (HEADER_FALLBACK; ADM-93). May pair with the CYL deposit lane once the lines arrive."
     }
-  ]
+  ],
+  "skuRatesNote": "Operator ruling 2026-10-14 (option B, portfolio preview docs/previews/2026-10-13_sku_rates_portfolio_preview.md): cylinder deposit rates follow the ERP list incl. 15% VAT: 14.1 575 -> 632.5, D.1 and S.1 1150 -> 1207.5 (19.1 690 and 9.1 517.5 unchanged). Deposits are static since 2024-12-04. Tripwires: an ERP deposit price change; a customer-specific deposit rate; a stock count that disagrees; accounts with pre-2024-12 history or an opening cylinder position (TAN001) to be reviewed when onboarded."
 }

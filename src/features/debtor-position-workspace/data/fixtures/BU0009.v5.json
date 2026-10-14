@@ -6,8 +6,8 @@
     "to": "2026-09-22"
   },
   "version": "v5",
-  "workspaceStatus": "pending_review",
-  "lastGeneratedAt": "2026-10-10T11:31:51.721Z",
+  "workspaceStatus": "clean",
+  "lastGeneratedAt": "2026-10-14T07:08:17.329Z",
   "source": "analysis/debtors/BU0009/raw/BU0009_2026-10-10.TXT",
   "financialPosition": {
     "lpgGasDebt": 14358.47,
@@ -18,14 +18,14 @@
     "subLedgerVariance": 0
   },
   "custodyPosition": {
-    "totalCustodyExposure": 1610,
+    "totalCustodyExposure": 2760,
     "lines": [
       {
         "sku": "14.1",
         "label": "14kg",
         "qty": 21,
-        "depositRate": 575,
-        "exposure": 12075
+        "depositRate": 632.5,
+        "exposure": 13282.5
       },
       {
         "sku": "19.1",
@@ -45,23 +45,16 @@
         "sku": "D.1",
         "label": "D.1",
         "qty": -1,
-        "depositRate": 1150,
-        "exposure": -1150
+        "depositRate": 1207.5,
+        "exposure": -1207.5
       }
     ]
   },
   "reconciliationPosition": {
-    "cylinderVariance": 1150,
+    "cylinderVariance": 0,
     "erpVariance": 0,
     "subLedgerVariance": 0,
-    "exceptions": [
-      {
-        "type": "CUSTODY",
-        "basis": "ASSERTED",
-        "status": "open",
-        "description": "Part 1B financial vs Part 2 custody — check DB ingest vs TXT"
-      }
-    ]
+    "exceptions": []
   },
   "artifacts": {
     "statementMarkdown": "analysis/debtors/BU0009/reports/BU0009_Statement_Account_v5.md",

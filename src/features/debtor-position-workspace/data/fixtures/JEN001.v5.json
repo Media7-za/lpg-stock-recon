@@ -7,7 +7,7 @@
   },
   "version": "v5",
   "workspaceStatus": "clean",
-  "lastGeneratedAt": "2026-10-08T16:29:36.723Z",
+  "lastGeneratedAt": "2026-10-14T07:08:18.477Z",
   "source": "analysis/debtors/JEN001/raw/JEN001_2026-10-08.TXT",
   "financialPosition": {
     "lpgGasDebt": 25332,

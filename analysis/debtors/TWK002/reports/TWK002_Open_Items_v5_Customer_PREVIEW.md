@@ -28,8 +28,7 @@
 
 | Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 08 Oct 2026 | Crd Note | 15775 | DN#23843 | Gas | -7,935.00 | 70,121.93 |
-| 08 Oct 2026 | Invoice | 53507 | DN#23843 | Gas | 14,375.86 | 84,497.79 |
+| 08 Oct 2026 | Invoice | 53507 | DN#23843 | Gas | 5,750.86 | 83,807.79 |
 
 **Cylinder deposit opening balance:** R0.00
 
@@ -44,6 +43,13 @@
 | 26 Aug 2026 | Crd Note | 15553 | DN#24938 | Cylinder deposit | -17,077.50 | -16,905.00 |
 | 26 Aug 2026 | Invoice | 52803 | DN#24938 | Cylinder deposit | 17,250.00 | 345.00 |
 
+### October 2026
+
+| Date | Type | Doc # | Reference | Item | Amount (R) | Balance (R) |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
+| 08 Oct 2026 | Crd Note | 15775 | DN#23843 | Cylinder deposit | -7,935.00 | -7,590.00 |
+| 08 Oct 2026 | Invoice | 53507 | DN#23843 | Cylinder deposit | 8,625.00 | 1,035.00 |
+
 ---
 
 ## Balance summary
@@ -51,10 +57,10 @@
 | Component | Gas (R) | Cylinder deposit (R) | Total (R) |
 | :--- | ---: | ---: | ---: |
 | Opening balance | 38,791.27 | 0.00 | 38,791.27 |
-| Open items listed above | 45,706.52 | 345.00 | 46,051.52 |
+| Open items listed above | 45,016.52 | 1,035.00 | 46,051.52 |
 | Rounding on settled items | 0.00 | 0.00 | 0.00 |
 | Payments against opening balance | -35,922.77 | 0.00 | -35,922.77 |
 | Path B phantom journal nets (ratified bridge line phantom_cn_nets) (13 journal rows) | 9,894.01 | 0.00 | 9,894.01 |
 | Path B discount journals, blank INVNO (ratified bridge line pathb_journals_untagged) (11 journal rows) | -4,677.84 | 0.00 | -4,677.84 |
-| **Balance** | 53,791.19 | 345.00 | 54,136.19 |
+| **Balance** | 53,101.19 | 1,035.00 | 54,136.19 |
 

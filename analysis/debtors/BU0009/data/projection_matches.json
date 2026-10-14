@@ -2,12 +2,12 @@
   "status": "matcher v5 RATIFIED 2026-10-10 (PROPOSED_Projection_Matching_Locks.md); probable ties stay proposals until approved",
   "debtorCode": "BU0009",
   "generatedBy": "match_projection.mjs",
-  "generatedAt": "2026-10-10T11:31:54.613Z",
+  "generatedAt": "2026-10-14T07:08:17.434Z",
   "projection": {
     "path": "analysis/debtors/BU0009/data/v5_projection.json",
     "txtSha256": "b9a46b1e55f4b03ed191f1500141ed2ee8c1239fb558e3949726d931c20267a1",
     "dbChannel": "supabase-connector-replay",
-    "generatedAt": "2026-10-10T11:31:51.722Z"
+    "generatedAt": "2026-10-14T07:08:17.332Z"
   },
   "reviewOnly": true,
   "reviewOnlyReasons": [
@@ -23,6 +23,7 @@
     "proximityTolerance": 5,
     "nearSumTolerance": 1,
     "cnConfirmedMaxDays": 1,
+    "monthSumConfidence": "CONFIRMED",
     "cnRivalFreeMaxDays": 0,
     "maxSumInvoices": 3,
     "maxRunInvoices": 12,

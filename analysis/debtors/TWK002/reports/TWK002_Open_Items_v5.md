@@ -1,7 +1,7 @@
 # Open Items Statement: TWK AGRI PTY LTD (TWK002) — Internal
 **Period:** from 01 Mar 2025 to 08 Oct 2026 &nbsp;|&nbsp; **Balance due:** R54,136.19
-**Status:** matcher v5 RATIFIED 2026-10-10 (`PROPOSED_Projection_Matching_Locks.md`); probable ties are proposals until approved · generated 2026-10-10 by `render_open_items.mjs`
-**Sources:** `analysis/debtors/TWK002/data/v5_projection.json` (TXT sha256 `e657e03f68cd…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (17 confirmed / 0 probable ties) · **REVIEW ONLY:** ingestCoverage partial
+**Status:** matcher v5 RATIFIED 2026-10-10 (`PROPOSED_Projection_Matching_Locks.md`); probable ties are proposals until approved · generated 2026-10-14 by `render_open_items.mjs`
+**Sources:** `analysis/debtors/TWK002/data/v5_projection.json` (TXT sha256 `e657e03f68cd…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (17 confirmed / 0 probable ties)
 **Locks:** no period closed yet
 
 ---
@@ -30,8 +30,7 @@
 
 | Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
 | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
-| 08 Oct 2026 | Crd Note | 15775 | DN#23843 | LPG | -7,935.00 | 70,121.93 |
-| 08 Oct 2026 | Invoice | 53507 | DN#23843 | LPG | 14,375.86 | 84,497.79 |
+| 08 Oct 2026 | Invoice | 53507 | DN#23843 | LPG | 5,750.86 | 83,807.79 |
 
 **Cylinder deposit opening balance:** R0.00
 
@@ -46,6 +45,13 @@
 | 26 Aug 2026 | Crd Note | 15553 | DN#24938 | CYL | -17,077.50 | -16,905.00 |
 | 26 Aug 2026 | Invoice | 52803 | DN#24938 | CYL | 17,250.00 | 345.00 |
 
+### October 2026
+
+| Date | Type | Doc # | Reference | Lane | Amount (R) | Running (R) |
+| :--- | :--- | :--- | :--- | :--- | ---: | ---: |
+| 08 Oct 2026 | Crd Note | 15775 | DN#23843 | CYL | -7,935.00 | -7,590.00 |
+| 08 Oct 2026 | Invoice | 53507 | DN#23843 | CYL | 8,625.00 | 1,035.00 |
+
 ---
 
 ## Proof: open items reconcile to the ERP balance
@@ -53,18 +59,18 @@
 | Component | Gas (R) | Cylinder deposit (R) | Total (R) |
 | :--- | ---: | ---: | ---: |
 | Opening B/F (unitemised) | 38,791.27 | 0.00 | 38,791.27 |
-| Open items listed above | 45,706.52 | 345.00 | 46,051.52 |
+| Open items listed above | 45,016.52 | 1,035.00 | 46,051.52 |
 | Rounding on matched items (tie nets) | 0.00 | 0.00 | 0.00 |
 | Payments applied to opening B/F (operator rulings) | -35,922.77 | 0.00 | -35,922.77 |
 | Path B phantom journal nets (ratified bridge line phantom_cn_nets) (13 journal rows) | 9,894.01 | 0.00 | 9,894.01 |
 | Path B discount journals, blank INVNO (ratified bridge line pathb_journals_untagged) (11 journal rows) | -4,677.84 | 0.00 | -4,677.84 |
-| **Balance** | 53,791.19 | 345.00 | 54,136.19 |
+| **Balance** | 53,101.19 | 1,035.00 | 54,136.19 |
 | ERP `CURRENT BALANCE` (TXT header) | | | 54,136.19 |
 | **Variance** | | | **0.00** |
 
 ## Operator notes on open rows
 
-- **Crd Note 15775:** Operator ruling 2026-10-09 (ADM-94 Q5): CN 15775 (-R7,935.00, DN#23843, 2026-10-08) is a CYLINDER credit and belongs in the CYL lane. Shown in the gas (LPG) lane here only because its lines are not yet in the DB (split_basis HEADER_FALLBACK; ADM-93). Amounts are unchanged. The reconcile has no lane override, so the lane moves when the ADM-93 sync brings the DB lines; if any part then lands in the LPG lane, reopen this ruling. Check the DB lines (SKUs, quantities) against the R7,590 of cylinder deposits paid in cash on STAT 123 for a double credit (unverified).
+- **Crd Note 15775:** Operator ruling 2026-10-09 (ADM-94 Q5): CN 15775 (-R7,935.00, DN#23843, 2026-10-08) is a CYLINDER credit and belongs in the CYL lane. Shown in the gas (LPG) lane here only because its lines are not yet in the DB (split_basis HEADER_FALLBACK; ADM-93). Amounts are unchanged. The reconcile has no lane override, so the lane moves when the ADM-93 sync brings the DB lines; if any part then lands in the LPG lane, reopen this ruling. Check the DB lines (SKUs, quantities) against the R7,590 of cylinder deposits paid in cash on STAT 123 for a double credit (unverified). CONFIRMED 2026-10-12 (operator instruction "yes, record it", main session) against DB lines from connector replay 2026-10-11 (data/db_replay/2026-10-11): CN 15775 is entirely cylinder (19.1 x -4 = R-2,760.00 and 9.1 x -10 = R-5,175.00; no LPG line), the CYL lane is correct, the reopen condition did not fire. Double-credit check against the R7,590 STAT 123 deposits: no overlap indicated (docs/previews/2026-10-12_TWK002_CN15775_double_credit_check.md; ASSERTED, physical return unverified). Tripwires: a DB re-sync that changes the 15775 or 53507 SKU lines; a remittance or ERP correction naming 15775 or 53507; any LPG line on 15775.
 - **Invoice 53507:** Same delivery as CN 15775 (DN#23843), dated 2026-10-08, lines not yet in the DB (HEADER_FALLBACK; ADM-93). May pair with the CYL deposit lane once the lines arrive.
 
 ---

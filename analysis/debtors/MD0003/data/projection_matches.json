@@ -2,12 +2,12 @@
   "status": "matcher v5 RATIFIED 2026-10-10 (PROPOSED_Projection_Matching_Locks.md); probable ties stay proposals until approved",
   "debtorCode": "MD0003",
   "generatedBy": "match_projection.mjs",
-  "generatedAt": "2026-10-14T06:59:55.167Z",
+  "generatedAt": "2026-10-14T07:08:20.825Z",
   "projection": {
     "path": "analysis/debtors/MD0003/data/v5_projection.json",
     "txtSha256": "863946cb36f81446ca087e1fa2bb972293147ab0cdd4a663e039682dc516a985",
     "dbChannel": "supabase-connector-replay",
-    "generatedAt": "2026-10-14T06:59:54.993Z"
+    "generatedAt": "2026-10-14T07:08:19.570Z"
   },
   "reviewOnly": false,
   "reviewOnlyReasons": [],

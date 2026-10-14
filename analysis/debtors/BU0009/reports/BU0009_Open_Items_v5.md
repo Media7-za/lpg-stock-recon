@@ -1,6 +1,6 @@
 # Open Items Statement: IMPENDLE WHOLESALE 2025 (BU0009) — Internal
 **Period:** from 21 Dec 2024 to 22 Sept 2026 &nbsp;|&nbsp; **Balance due:** R17,118.47
-**Status:** matcher v5 RATIFIED 2026-10-10 (`PROPOSED_Projection_Matching_Locks.md`); probable ties are proposals until approved · generated 2026-10-10 by `render_open_items.mjs`
+**Status:** matcher v5 RATIFIED 2026-10-10 (`PROPOSED_Projection_Matching_Locks.md`); probable ties are proposals until approved · generated 2026-10-14 by `render_open_items.mjs`
 **Sources:** `analysis/debtors/BU0009/data/v5_projection.json` (TXT sha256 `b9a46b1e55f4…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (42 confirmed / 8 probable ties) · **REVIEW ONLY:** ingestCoverage partial
 **Locks:** no period closed yet
 

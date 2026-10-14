@@ -3,7 +3,7 @@
 **Combined Opening B/F:** R0.00 (ERP verified — source: `analysis/debtors/RED001/raw/RED001_2026-10-08.TXT` RED001_2026-10-08.TXT line 14 BALANCE B/F R0.00 (fresh ERP export, Linear ADM-78, CURRENT BALANCE R10,183.43; same export window). Switched on operator instruction 2026-10-08 ("switch the other six accounts ... YES"). SUPERSEDED (kept for the record; previous TXT RED001CURRENT.TXT, CURRENT BALANCE R5,559.76): RED001CURRENT.TXT line 14 — BALANCE B/F R0.00 before first period row (payment 38566, 08 May 2025))
 **LPG Opening B/F (1A):** R0.00 &nbsp;|&nbsp; **CYL Opening B/F (1B):** R0.00
 **Payment routing:** LPG lane (payments post to Part 1A unless configured otherwise)
-**Last regenerated:** 2026-10-08 from ERP TXT (`reconcile_debtor_v5_from_txt.mjs`)
+**Last regenerated:** 2026-10-14 from ERP TXT (`reconcile_debtor_v5_from_txt.mjs`)
 
 ---
 
@@ -679,15 +679,15 @@
 
 | SKU | Net Returnable Qty | Deposit Rate | Custody Exposure |
 |---|---:|---:|---:|
-| D.1 | 7 | R1,150.00 | R8,050.00 |
-| S.1 | -10 | R1,150.00 | R-11,500.00 |
-| **Total** | **-3** | — | **R-3,450.00** |
+| D.1 | 7 | R1,207.50 | R8,452.50 |
+| S.1 | -10 | R1,207.50 | R-12,075.00 |
+| **Total** | **-3** | — | **R-3,622.50** |
 
 ### 3. Reconciliation Position
 
 | Check | Financial | Custody | Variance |
 |---|---:|---:|---:|
-| Cylinder Position (1B vs custody) | R-3,622.50 | R-3,450.00 | R-172.50 |
+| Cylinder Position (1B vs custody) | R-3,622.50 | R-3,622.50 | R0.00 |
 | Sub-ledger tie (1A + 1B vs combined) | R10,183.43 | — | R0.00 |
 
 > **INGEST_GATE:** Custody variance below is **not signed off** — ingest coverage `CURRENT_PARTIAL`. DB-backed qty may not reflect all TXT documents.

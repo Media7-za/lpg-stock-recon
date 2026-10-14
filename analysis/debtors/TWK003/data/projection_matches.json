@@ -2,12 +2,12 @@
   "status": "matcher v5 RATIFIED 2026-10-10 (PROPOSED_Projection_Matching_Locks.md); probable ties stay proposals until approved",
   "debtorCode": "TWK003",
   "generatedBy": "match_projection.mjs",
-  "generatedAt": "2026-10-12T13:13:32.441Z",
+  "generatedAt": "2026-10-14T07:08:24.147Z",
   "projection": {
     "path": "analysis/debtors/TWK003/data/v5_projection.json",
     "txtSha256": "9b68fd84a163f74c756c2a5f8943194464972e8453093ebd4446e9b30d0bebf8",
     "dbChannel": "supabase-connector-replay",
-    "generatedAt": "2026-10-12T12:08:19.853Z"
+    "generatedAt": "2026-10-14T07:08:24.062Z"
   },
   "reviewOnly": false,
   "reviewOnlyReasons": [],

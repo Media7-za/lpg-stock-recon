@@ -3,11 +3,11 @@
   "status": "RATIFIED 2026-10-10 (PROPOSED_Projection_Matching_Locks.md, projection builder)",
   "debtorCode": "JIM001",
   "generatedBy": "reconcile_debtor_v5_from_txt.mjs",
-  "generatedAt": "2026-10-10T11:31:10.960Z",
+  "generatedAt": "2026-10-14T07:08:19.080Z",
   "source": {
     "txtPath": "analysis/debtors/JIM001/raw/JIM001_2026-10-10.TXT",
     "txtSha256": "54b3336ac4832092ba964b538e65717d7101769983071d0bb55c2d76784b784c",
-    "configSha256": "deb66501f0c94a49646e99a44b84abcd499aa0893b538aac7902bdf877d5022a",
+    "configSha256": "f757b18694319f9b1dd38a050cafc265f69b7f3ed1535606072e9b1b5daf1434",
     "erpCurrentBalance": 122884.84,
     "dbChannel": "supabase-connector-replay"
   },
