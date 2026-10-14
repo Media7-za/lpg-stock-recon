@@ -1,0 +1,25 @@
+{
+  "debtorCode": "COF001",
+  "clientName": "COFFEEBERRY-CASCADES",
+  "status": "active",
+  "reconState": "pending",
+  "financials": {
+    "totalOutstanding": 7958.38,
+    "lastInvoiceDate": null,
+    "lastPaymentDate": null,
+    "agedDebt180Plus": 0
+  },
+  "collections": {
+    "actionRequired": false,
+    "actionType": null,
+    "dateSent": null,
+    "deadlineDate": null,
+    "notes": "Onboarding scaffold only. totalOutstanding R7,958.38 is ASSERTED from analysis/debtors/shared/data/portfolio_candidates.csv (not proven; no per-account ERP export). COF002 (COFFEEBERRY-HILTON) is a different account: not merged, not netted, not a payer family without an operator ruling."
+  },
+  "history": [
+    {
+      "date": "2026-10-14",
+      "event": "Initialized micro-project tracking (analyst session, branch claude/cof001-analysis). No per-account ERP export exists on origin or in the repo, so no projection was built and the ERP balance is NOT proven (variance unverified). Request for a dated COF001 DEBENQ export drafted in docs/requests/2026-10-14_cof001_erp_export_request.md (not posted). Config scaffolded with portfolio skuRates (option B). See docs/previews/2026-10-14_COF001_onboarding.md and docs/handoffs/2026-10-14_COF001.md."
+    }
+  ]
+}
