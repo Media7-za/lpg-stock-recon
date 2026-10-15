@@ -1,0 +1,72 @@
+{
+  "source": "Supabase project oqhpxnaadahohwkslive, account_no = 'COF001', queried 2026-10-15 (transaction_items, vw_clean_transactions)",
+  "cyl_skus": ["9.1", "14.1", "19.1", "S.1", "D.1"],
+  "routing_rule": "Invoice / Crd Note with only cylinder SKU lines -> 1B; with no cylinder SKU lines -> 1A; with both -> line-level split (cylinder lines to 1B, other lines to 1A). Payments -> 1A.",
+  "db_routing_counts_doc_level": {
+    "LPG_invoices_no_cyl_sku": 155,
+    "LPG_credit_notes_no_cyl_sku": 13,
+    "CYL_invoices_only_cyl_sku": 69,
+    "CYL_credit_notes_only_cyl_sku": 77,
+    "MIXED_invoices": 7,
+    "MIXED_credit_notes": 2
+  },
+  "db_header_row_counts": {
+    "Invoice": 317,
+    "Crd Note": 132,
+    "Payment": 263,
+    "Bank UD": 7,
+    "Bank XFer": 1,
+    "Journal": 1
+  },
+  "cyl_docs": [
+    "00003283|Crd Note", "00003292|Crd Note", "00003685|Crd Note", "00003687|Crd Note", "00003779|Crd Note",
+    "00003784|Crd Note", "00004012|Crd Note", "00004148|Crd Note", "00004286|Crd Note", "00004304|Crd Note",
+    "00004362|Crd Note", "00004376|Crd Note", "00004489|Crd Note", "00004598|Crd Note", "00004837|Crd Note",
+    "00005192|Crd Note", "00005252|Crd Note", "00005320|Crd Note", "00005410|Crd Note", "00005505|Crd Note",
+    "00005688|Crd Note", "00005806|Crd Note", "00005827|Crd Note", "00005835|Crd Note", "00006040|Crd Note",
+    "00006137|Crd Note", "00006281|Crd Note", "00006331|Crd Note", "00006459|Crd Note", "00011452|Crd Note",
+    "00011492|Crd Note", "00011573|Crd Note", "00011625|Crd Note", "00011718|Crd Note", "00011780|Crd Note",
+    "00011840|Crd Note", "00011950|Crd Note", "00012009|Crd Note", "00012089|Crd Note", "00012176|Crd Note",
+    "00012273|Crd Note", "00012370|Crd Note", "00012396|Crd Note", "00012429|Crd Note", "00012547|Crd Note",
+    "00012644|Crd Note", "00012753|Crd Note", "00012857|Crd Note", "00012956|Crd Note", "00013059|Crd Note",
+    "00013191|Crd Note", "00013307|Crd Note", "00013363|Crd Note", "00013465|Crd Note", "00013469|Crd Note",
+    "00013599|Crd Note", "00013676|Crd Note", "00013753|Crd Note", "00013765|Crd Note", "00013956|Invoice",
+    "00013996|Crd Note", "00014053|Crd Note", "00014139|Crd Note", "00014221|Crd Note", "00014252|Crd Note",
+    "00014331|Crd Note", "00014412|Crd Note", "00014531|Crd Note", "00014613|Crd Note", "00014703|Crd Note",
+    "00014768|Crd Note", "00014854|Crd Note", "00014866|Invoice", "00014878|Invoice", "00014939|Crd Note",
+    "00015113|Crd Note", "00015227|Crd Note", "00015312|Crd Note", "00015477|Invoice", "00015531|Crd Note",
+    "00015532|Crd Note", "00015911|Invoice", "00016442|Invoice", "00016770|Invoice", "00017259|Invoice",
+    "00018353|Invoice", "00019881|Invoice", "00021235|Invoice", "00021415|Invoice", "00021662|Invoice",
+    "00021943|Invoice", "00022270|Invoice", "00022841|Invoice", "00023188|Invoice", "00023253|Invoice",
+    "00023259|Invoice", "00023892|Invoice", "00024191|Invoice", "00024652|Invoice", "00024816|Invoice",
+    "00025274|Invoice", "00039609|Invoice", "00039968|Invoice", "00040253|Invoice", "00040554|Invoice",
+    "00040943|Invoice", "00041239|Invoice", "00041563|Invoice", "00041931|Invoice", "00042261|Invoice",
+    "00042615|Invoice", "00042749|Invoice", "00042876|Invoice", "00043288|Invoice", "00043672|Invoice",
+    "00044012|Invoice", "00044349|Invoice", "00044730|Invoice", "00045144|Invoice", "00045529|Invoice",
+    "00045884|Invoice", "00046072|Invoice", "00046376|Invoice", "00046380|Invoice", "00046820|Invoice",
+    "00047065|Invoice", "00047336|Invoice", "00047380|Invoice", "00048068|Invoice", "00048217|Invoice",
+    "00048423|Invoice", "00048682|Invoice", "00048740|Invoice", "00048939|Invoice", "00049194|Invoice",
+    "00049555|Invoice", "00049795|Invoice", "00050063|Invoice", "00050274|Invoice", "00050515|Invoice",
+    "00050809|Invoice", "00051373|Invoice", "00051706|Invoice", "00052015|Invoice", "00052750|Invoice",
+    "00052751|Invoice"
+  ],
+  "mixed_docs": [
+    { "doc_no": "00012420", "entry_type": "Invoice", "cyl_amt": 1035.00, "gas_amt": 838.01, "doc_amt": 1873.01 },
+    { "doc_no": "00012454", "entry_type": "Invoice", "cyl_amt": 1725.00, "gas_amt": 7593.62, "doc_amt": 9318.62 },
+    { "doc_no": "00038976", "entry_type": "Invoice", "cyl_amt": 1552.50, "gas_amt": 848.53, "doc_amt": 2401.03 },
+    { "doc_no": "00039076", "entry_type": "Invoice", "cyl_amt": 6037.50, "gas_amt": 7542.39, "doc_amt": 13579.89 },
+    { "doc_no": "00039311", "entry_type": "Invoice", "cyl_amt": 7590.00, "gas_amt": 8390.92, "doc_amt": 15980.92 },
+    { "doc_no": "00042061", "entry_type": "Invoice", "cyl_amt": 1207.50, "gas_amt": 1495.06, "doc_amt": 2702.56 },
+    { "doc_no": "00045528", "entry_type": "Invoice", "cyl_amt": 6037.50, "gas_amt": 1362.69, "doc_amt": 7400.19 },
+    { "doc_no": "00012218", "entry_type": "Crd Note", "cyl_amt": -1207.50, "gas_amt": -1495.06, "doc_amt": -2702.56 },
+    { "doc_no": "00015558", "entry_type": "Crd Note", "cyl_amt": -15697.50, "gas_amt": -3002.83, "doc_amt": -18700.33 }
+  ],
+  "custody_qty_net_dedup": {
+    "9.1": -3,
+    "14.1": 0,
+    "19.1": -1,
+    "S.1": -15,
+    "D.1": 10
+  },
+  "dedup_rule": "DISTINCT ON (LTRIM(doc_no,'0'), entry_type, stock_no, category, line_total) as in reconcile_debtor_v5_from_txt.mjs fetchDocLineSplit. Raw (non-deduplicated) DB lines double-count six of the nine mixed documents."
+}
