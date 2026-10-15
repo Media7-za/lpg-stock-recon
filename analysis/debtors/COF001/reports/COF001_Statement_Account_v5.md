@@ -1,7 +1,7 @@
 # Statement of Account - Version 5 (Sub-Ledger Position Statement)
 
 **Account:** COF001 - COFFEEBERRY-CASCADES  
-**Period:** 01 Mar 2022 to 09 Sep 2026 (ERP extracts 2023, 2024, 2025, CURRENT)  
+**Period:** 2022-03-01 to 2026-09-09 (ERP extracts 2023, 2024, 2025, CURRENT)  
 **Sources:** `analysis/debtors/COF001/raw/COF001_{2023,2024,2025,CURRENT}.TXT`; combined as `raw/COF001_COMBINED.TXT`  
 **Authority:** ERP TXT for amounts and balances. Supabase (DB) for SKU routing, mixed-document splits and Part 2 quantities.  
 **Generator:** `analysis/debtors/COF001/scripts/build_statement_v5.mjs` (generated, not hand-edited).
@@ -10,8 +10,8 @@
 
 | Position | Amount | Tag / artifact |
 | :--- | ---: | :--- |
-| ERP opening balance (01 Mar 2022) | 0.00 | PROVEN - `raw/COF001_2023.TXT` B/F row |
-| ERP closing balance (CURRENT BALANCE) | -16,256.52 | PROVEN - `raw/COF001_CURRENT.TXT` header |
+| ERP opening balance (before first row) | 0.00 | PROVEN - `raw/COF001_2023.TXT` B/F row or prior ERP running balance |
+| ERP closing balance (last row) | -16,256.52 | PROVEN - ERP running balance on the last row |
 | Part 1A LPG closing | -8,482.52 | PROVEN - computed in this report |
 | Part 1B CYL deposit closing | -7,774.00 | PROVEN - computed in this report |
 | Bridge variance (1A + 1B - ERP) | 0.00 | PROVEN - zero on every row |

@@ -18,7 +18,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../.
 const ACCT = path.join(ROOT, 'analysis/debtors/COF001');
 const YEARS = ['2023', '2024', '2025', 'CURRENT'];
 const COMBINED = path.join(ACCT, 'raw/COF001_COMBINED.TXT');
-const OUT = path.join(ACCT, 'reports/COF001_Statement_Account_v5.md');
+let OUT = path.join(ACCT, 'reports/COF001_Statement_Account_v5.md');
 const cfg = JSON.parse(fs.readFileSync(path.join(ACCT, 'config/statement_v5.json'), 'utf8'));
 const db = JSON.parse(fs.readFileSync(path.join(ACCT, 'data/db_sku_classification.json'), 'utf8'));
 
@@ -117,7 +117,7 @@ for (const r of rows) {
 }
 const duplicateKeys = [...keyCount.entries()].filter(([, n]) => n > 1);
 
-const ledger = rows.map((r) => {
+let ledger = rows.map((r) => {
   const key = `${r.docNo}|${r.type}`;
   let lane;
   let cyl = 0;
@@ -152,8 +152,8 @@ const ledger = rows.map((r) => {
 // 4. Running sub-ledgers and per-row bridge (1A + 1B must equal ERP balance on every row).
 let run1A = r2(cfg.combinedBf - cfg.cylOpeningFinancial);
 let run1B = r2(cfg.cylOpeningFinancial);
-const open1A = run1A;
-const open1B = run1B;
+let open1A = run1A;
+let open1B = run1B;
 for (const r of ledger) {
   run1A = r2(run1A + r.gas);
   run1B = r2(run1B + r.cyl);
@@ -163,20 +163,40 @@ for (const r of ledger) {
     problems.push(`bridge break ${r.year} line ${r.line} ${r.docNo}: 1A+1B ${fmt(r2(run1A + run1B))} vs ERP ${fmt(r.bal)}`);
   }
 }
-const close1A = run1A;
-const close1B = run1B;
-const bridgeVariance = r2(close1A + close1B - erpHeaderBalance);
+// Full-history ledger and validation use fullLedger. --from YYYY-MM-DD narrows the statement
+// to rows on or after that date, with opening balances taken from the full running balance.
+const fullLedger = ledger;
+let erpOpen = cfg.combinedBf;
+const FROM = process.argv.includes('--from') ? process.argv[process.argv.indexOf('--from') + 1] : null;
+if (FROM) {
+  const idx = ledger.findIndex((r) => r.date >= FROM);
+  if (idx < 0) throw new Error(`no rows on or after ${FROM}`);
+  if (!ledger.slice(idx).every((r) => r.date >= FROM)) {
+    problems.push(`rows on or after ${FROM} are not contiguous in ledger order`);
+  }
+  const prev = idx > 0 ? ledger[idx - 1] : null;
+  open1A = prev ? prev.bal1A : r2(cfg.combinedBf - cfg.cylOpeningFinancial);
+  open1B = prev ? prev.bal1B : r2(cfg.cylOpeningFinancial);
+  erpOpen = prev ? prev.bal : cfg.combinedBf;
+  ledger = ledger.slice(idx);
+  OUT = path.join(ACCT, `reports/COF001_Statement_Account_v5_${FROM}_to_${ledger.at(-1).date}.md`);
+}
+const erpClose = ledger.at(-1).bal;
+const close1A = ledger.at(-1).bal1A;
+const close1B = ledger.at(-1).bal1B;
+const bridgeVariance = r2(close1A + close1B - erpClose);
+const periodLabel = `${ledger[0].date} to ${ledger.at(-1).date}`;
 
 // 5. Cross-checks for the report.
 const laneCounts = {};
-for (const r of ledger) {
+for (const r of fullLedger) {
   const k = `${r.type} | ${r.lane}`;
   laneCounts[k] = (laneCounts[k] || 0) + 1;
 }
-const emptyNot1B = ledger.filter((r) => r.emptyRef && r.lane === '1A' && (r.type === 'Invoice' || r.type === 'Crd Note'));
-const cyl1BNoEmpty = ledger.filter((r) => r.lane === '1B' && !r.emptyRef);
+const emptyNot1B = fullLedger.filter((r) => r.emptyRef && r.lane === '1A' && (r.type === 'Invoice' || r.type === 'Crd Note'));
+const cyl1BNoEmpty = fullLedger.filter((r) => r.lane === '1B' && !r.emptyRef);
 const txtTypeCounts = {};
-for (const r of ledger) txtTypeCounts[r.type] = (txtTypeCounts[r.type] || 0) + 1;
+for (const r of fullLedger) txtTypeCounts[r.type] = (txtTypeCounts[r.type] || 0) + 1;
 
 const sumLane = (lane, col) => r2(ledger.filter((r) => r.lane === lane || (lane === 'SPLIT' && r.lane === 'SPLIT')).reduce((a, r) => a + r[col], 0));
 const mixedRows = ledger.filter((r) => r.lane === 'SPLIT');
@@ -197,7 +217,7 @@ const md = [];
 md.push('# Statement of Account - Version 5 (Sub-Ledger Position Statement)');
 md.push('');
 md.push(`**Account:** COF001 - COFFEEBERRY-CASCADES  `);
-md.push(`**Period:** 01 Mar 2022 to 09 Sep 2026 (ERP extracts 2023, 2024, 2025, CURRENT)  `);
+md.push(`**Period:** ${periodLabel} (ERP extracts 2023, 2024, 2025, CURRENT)  `);
 md.push(`**Sources:** \`analysis/debtors/COF001/raw/COF001_{2023,2024,2025,CURRENT}.TXT\`; combined as \`raw/COF001_COMBINED.TXT\`  `);
 md.push('**Authority:** ERP TXT for amounts and balances. Supabase (DB) for SKU routing, mixed-document splits and Part 2 quantities.  ');
 md.push('**Generator:** `analysis/debtors/COF001/scripts/build_statement_v5.mjs` (generated, not hand-edited).');
@@ -206,8 +226,8 @@ md.push('## Summary');
 md.push('');
 md.push('| Position | Amount | Tag / artifact |');
 md.push('| :--- | ---: | :--- |');
-md.push(`| ERP opening balance (01 Mar 2022) | ${fmt(cfg.combinedBf)} | PROVEN - \`raw/COF001_2023.TXT\` B/F row |`);
-md.push(`| ERP closing balance (CURRENT BALANCE) | ${fmt(erpHeaderBalance)} | PROVEN - \`raw/COF001_CURRENT.TXT\` header |`);
+md.push(`| ERP opening balance (before first row) | ${fmt(erpOpen)} | PROVEN - \`raw/COF001_2023.TXT\` B/F row or prior ERP running balance |`);
+md.push(`| ERP closing balance (last row) | ${fmt(erpClose)} | PROVEN - ERP running balance on the last row |`);
 md.push(`| Part 1A LPG closing | ${fmt(close1A)} | PROVEN - computed in this report |`);
 md.push(`| Part 1B CYL deposit closing | ${fmt(close1B)} | PROVEN - computed in this report |`);
 md.push(`| Bridge variance (1A + 1B - ERP) | ${fmt(bridgeVariance)} | ${Math.abs(bridgeVariance) < 0.01 ? 'PROVEN - zero on every row' : 'UNRECONCILED'} |`);
@@ -221,9 +241,9 @@ md.push('| :--- | ---: | ---: | ---: | ---: |');
 const totalGas = r2(ledger.reduce((a, r) => a + r.gas, 0));
 const totalCyl = r2(ledger.reduce((a, r) => a + r.cyl, 0));
 const totalAmt = r2(ledger.reduce((a, r) => a + r.amount, 0));
-md.push(`| Opening | ${fmt(open1A)} | ${fmt(open1B)} | ${fmt(open1A + open1B)} | ${fmt(cfg.combinedBf)} |`);
+md.push(`| Opening | ${fmt(open1A)} | ${fmt(open1B)} | ${fmt(open1A + open1B)} | ${fmt(erpOpen)} |`);
 md.push(`| Movements | ${fmt(totalGas)} | ${fmt(totalCyl)} | ${fmt(r2(totalGas + totalCyl))} | ${fmt(totalAmt)} |`);
-md.push(`| Closing | ${fmt(close1A)} | ${fmt(close1B)} | ${fmt(r2(close1A + close1B))} | ${fmt(erpHeaderBalance)} |`);
+md.push(`| Closing | ${fmt(close1A)} | ${fmt(close1B)} | ${fmt(r2(close1A + close1B))} | ${fmt(erpClose)} |`);
 md.push('');
 md.push(`Mixed documents split at line level: ${mixedRows.length} documents (${mixedRows.map((r) => r.docNo.replace(/^0+/, '')).join(', ')}). Payments route to 1A only (\`paymentLane: LPG\`); no proportional payment split.`);
 md.push('');
@@ -279,7 +299,7 @@ md.push(`| Balance chain across extracts (rows and file boundaries) | ${problems
 md.push(`| Per-row bridge 1A + 1B = ERP balance | ${Math.abs(bridgeVariance) < 0.01 ? 'Holds on all rows' : 'Breaks - see problems'} | PROVEN |`);
 md.push(`| TXT rows by type | ${Object.entries(txtTypeCounts).map(([k, v]) => `${k}: ${v}`).join('; ')} | PROVEN - TXT |`);
 md.push(`| DB header rows by type (for coverage comparison) | ${Object.entries(db.db_header_row_counts).map(([k, v]) => `${k}: ${v}`).join('; ')} | ASSERTED - DB |`);
-md.push(`| Invoice rows: TXT vs DB | TXT ${ledger.filter((r) => r.type === 'Invoice').length} rows; DB ${db.db_header_row_counts.Invoice} rows | Not reconciled per document; ingest gate not run | UNRECONCILED |`);
+md.push(`| Invoice rows: TXT vs DB | TXT ${fullLedger.filter((r) => r.type === 'Invoice').length} rows; DB ${db.db_header_row_counts.Invoice} rows | Not reconciled per document; ingest gate not run | UNRECONCILED |`);
 md.push(`| Credit-note rows whose EMPTY marker routes to 1A | ${emptyNot1B.length} rows | ${emptyNot1B.length ? 'Review: EMPTY ref but SKU rule says gas' : 'PROVEN - none'} |`);
 md.push(`| Cylinder-lane rows without an EMPTY marker in the ERP reference | ${cyl1BNoEmpty.length} rows | Expected: routing is SKU-based (user rule), not ERP-reference-based |`);
 md.push(`| Document number used on more than one row (invoice or credit note) | ${duplicateKeys.length} keys | ${duplicateKeys.length ? 'Review: ' + duplicateKeys.map(([k, n]) => `${k} x${n}`).join(', ') : 'PROVEN - none'} |`);
@@ -295,7 +315,7 @@ if (emptyNot1B.length) {
 md.push('### Findings for review');
 md.push('');
 md.push('- **DB line duplication:** raw DB lines double-count six of the nine mixed documents (for example 00045528: 14,800.38 raw vs 7,400.19 in the TXT). The split uses de-duplicated lines (same rule as the generator), which tie to the TXT.');
-md.push(`- **DB row count exceeds the extracts:** DB has ${db.db_header_row_counts.Invoice} invoice and ${db.db_header_row_counts.Payment} payment rows; the four extracts have ${ledger.filter((r) => r.type === 'Invoice').length} and ${ledger.filter((r) => r.type === 'Payment').length}. The TXT chain ties to the ERP balance, so the statement is unaffected, but Part 2 custody (DB-only) may include documents outside the ERP extracts.`);
+md.push(`- **DB row count exceeds the extracts:** DB has ${db.db_header_row_counts.Invoice} invoice and ${db.db_header_row_counts.Payment} payment rows; the four extracts have ${fullLedger.filter((r) => r.type === 'Invoice').length} and ${fullLedger.filter((r) => r.type === 'Payment').length}. The TXT chain ties to the ERP balance, so the statement is unaffected, but Part 2 custody (DB-only) may include documents outside the ERP extracts.`);
 md.push(`- **EMPTY marker vs SKU rule:** ${cyl1BNoEmpty.length} cylinder-routed rows carry no EMPTY marker in the ERP reference. A reference-based generator would send them to 1A, so the SKU rule changes the answer here.`);
 md.push('- **Charges without cylinder SKUs:** lines such as `SM CYL RENTAL` (00049204) and rental lines 00041576 to 00041579 contain no cylinder SKU, so the SKU rule routes them to 1A. Confirm that is the intended treatment.');
 md.push(`- **1B vs custody:** 1B closes at ${fmt(close1B)} and custody exposure at template rates is ${fmt(custodyExposure)}. The statement does not reconcile deposits to custody quantities.`);
@@ -318,7 +338,7 @@ md.push('');
 
 fs.writeFileSync(OUT, md.join('\n'));
 
-console.log(`1A closing ${fmt(close1A)} | 1B closing ${fmt(close1B)} | ERP ${fmt(erpHeaderBalance)} | bridge variance ${fmt(bridgeVariance)}`);
+console.log(`1A closing ${fmt(close1A)} | 1B closing ${fmt(close1B)} | ERP ${fmt(erpClose)} | bridge variance ${fmt(bridgeVariance)}`);
 console.log(`rows ${rows.length} | by lane: ${JSON.stringify(laneCounts)}`);
 console.log(`EMPTY-ref routed 1A: ${emptyNot1B.length} | 1B without EMPTY ref: ${cyl1BNoEmpty.length} | duplicate doc keys: ${duplicateKeys.length}`);
 console.log(problems.length ? `PROBLEMS (${problems.length}):\n - ${problems.join('\n - ')}` : 'No chain or bridge problems.');
