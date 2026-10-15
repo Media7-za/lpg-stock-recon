@@ -166,8 +166,19 @@ ${scenario.assumption}
 `;
 }
 
+// Optional period end (config.periodEnd). Unset = open-ended, as before.
+function inPeriod(iso, cfg) {
+  return iso >= cfg.periodStart && (!cfg.periodEnd || iso <= cfg.periodEnd);
+}
+
 function loadConfig(debtorCode) {
-  const configPath = path.join(ROOT, 'analysis/debtors', debtorCode, 'config/statement_v5.json');
+  // --config <path> (relative to repo root) selects a second statement config for the same account.
+  const configArg = process.argv.indexOf('--config');
+  const configRel =
+    configArg !== -1 && process.argv[configArg + 1]
+      ? process.argv[configArg + 1]
+      : path.join('analysis/debtors', debtorCode, 'config/statement_v5.json');
+  const configPath = path.join(ROOT, configRel);
   if (!fs.existsSync(configPath)) {
     throw new Error(
       `Missing config: ${configPath}\nCopy from analysis/debtors/shared/templates/statement_v5_config.template.json`,
@@ -194,14 +205,13 @@ function loadConfig(debtorCode) {
     paymentLane: cfg.paymentLane || 'LPG',
     ratificationScenario,
     ratificationRows,
-    reportPath: path.join(
-      ROOT,
-      `analysis/debtors/${debtorCode}/reports/${debtorCode}_Statement_Account_v5.md`,
-    ),
-    fixturePath: path.join(
-      ROOT,
-      `src/features/debtor-position-workspace/data/fixtures/${debtorCode}.v5.json`,
-    ),
+    // Optional reportPath / fixturePath overrides keep a window run from overwriting the main statement.
+    reportPath: cfg.reportPath
+      ? path.join(ROOT, cfg.reportPath)
+      : path.join(ROOT, `analysis/debtors/${debtorCode}/reports/${debtorCode}_Statement_Account_v5.md`),
+    fixturePath: cfg.fixturePath
+      ? path.join(ROOT, cfg.fixturePath)
+      : path.join(ROOT, `src/features/debtor-position-workspace/data/fixtures/${debtorCode}.v5.json`),
     skuRates: cfg.skuRates || { '14.1': 575, '19.1': 690, '9.1': 517.5, 'D.1': 1150, 'S.1': 1150 },
     cylOpeningQty: cfg.cylOpeningQty || Object.fromEntries(SKUS.map((s) => [s, 0])),
   };
@@ -352,7 +362,7 @@ function buildLaneSections(financial, lane, openingBf, amountKey, runningKey) {
 }
 
 function buildPart1Split(rows, cfg, docSplit) {
-  const periodRows = rows.filter((r) => r.iso >= cfg.periodStart);
+  const periodRows = rows.filter((r) => inPeriod(r.iso, cfg));
   periodRows.sort(
     (a, b) =>
       a.iso.localeCompare(b.iso) ||
@@ -414,7 +424,7 @@ async function fetchDocLineSplit(client, cfg) {
       SELECT DISTINCT ON (LTRIM(doc_no,'0'), entry_type, debt_group, stock_no, category, line_total)
         LTRIM(doc_no,'0') AS doc_no, entry_type, debt_group, line_total
       FROM vw_clean_transactions
-      WHERE account_no = $2 AND tx_date >= $1
+      WHERE account_no = $2 AND tx_date >= $1 AND tx_date <= $3
         AND entry_type IN ('Invoice', 'Crd Note')
       ORDER BY LTRIM(doc_no,'0'), entry_type, debt_group, stock_no, category, line_total, id DESC
     )
@@ -422,7 +432,7 @@ async function fetchDocLineSplit(client, cfg) {
       ROUND(SUM(line_total)::numeric, 2)::float AS s
     FROM deduped
     GROUP BY doc_no, entry_type, debt_group`,
-    [cfg.periodStart, cfg.debtorCode],
+    [cfg.periodStart, cfg.debtorCode, cfg.periodEnd || '9999-12-31'],
   );
   const map = new Map();
   for (const r of res.rows) {
@@ -442,14 +452,14 @@ async function buildPart2(client, cfg) {
       SELECT DISTINCT ON (LTRIM(doc_no,'0'), entry_type, stock_no, debt_group, line_total, qty)
         tx_date::text AS tx_date, LTRIM(doc_no,'0') AS doc_no, entry_type, stock_no, qty
       FROM vw_clean_transactions
-      WHERE account_no = $2 AND debt_group = 'CYL' AND tx_date >= $1
+      WHERE account_no = $2 AND debt_group = 'CYL' AND tx_date >= $1 AND tx_date <= $3
       ORDER BY LTRIM(doc_no,'0'), entry_type, stock_no, debt_group, line_total, qty, id DESC
     )
     SELECT tx_date, doc_no, entry_type, stock_no, SUM(qty)::int AS qty
     FROM deduped
     GROUP BY tx_date, doc_no, entry_type, stock_no
     ORDER BY tx_date, doc_no`,
-    [cfg.periodStart, cfg.debtorCode],
+    [cfg.periodStart, cfg.debtorCode, cfg.periodEnd || '9999-12-31'],
   );
 
   const cylLookup = new Map();
@@ -464,7 +474,7 @@ async function buildPart2(client, cfg) {
   const ratificationInvCn = (cfg.ratificationRows || []).filter((r) => r.is_ratification);
   const periodRows = [
     ...rows.filter(
-      (r) => r.iso >= cfg.periodStart && (r.entry_type === 'Invoice' || r.entry_type === 'Crd Note'),
+      (r) => inPeriod(r.iso, cfg) && (r.entry_type === 'Invoice' || r.entry_type === 'Crd Note'),
     ),
     ...ratificationInvCn,
   ].sort(
@@ -553,7 +563,11 @@ async function main() {
     docSplit,
   );
 
-  const erpVariance = round2(finalCombined - headerBalance);
+  // Closing reference: ERP header by default; config.closingReference when the statement ends before the ERP header date.
+  const erpReference = cfg.closingReference ?? headerBalance;
+  const erpReferenceLabel =
+    cfg.closingReference != null ? 'TXT-derived closing reference' : 'ERP `CURRENT BALANCE` (TXT header)';
+  const erpVariance = round2(finalCombined - erpReference);
   const subLedgerVariance = round2(finalLpg + finalCyl - finalCombined);
 
   const custodyLines = SKUS.map((sku) => ({
@@ -568,7 +582,7 @@ async function main() {
   );
   const cylVariance = round2(finalCyl - totalCustodyExposure);
 
-  const lastIso = financial.at(-1)?.iso || cfg.periodStart;
+  const lastIso = cfg.periodEnd || financial.at(-1)?.iso || cfg.periodStart;
   const periodEndLabel = displayDate(lastIso).split(' ').slice(1).join(' ');
   const periodStartLabel = displayDate(cfg.periodStart).split(' ').slice(1).join(' ');
   const txtRel = path.relative(ROOT, cfg.txtPath);
@@ -609,7 +623,7 @@ ${part1b.length ? part1b.join('\n\n---\n\n') : '_No CYL deposit activity in peri
 | Part 1A — LPG Gas | ${fmt(finalLpg)} |
 | Part 1B — CYL Deposits | ${fmt(finalCyl)} |
 | **Combined (1A + 1B)** | **${fmt(finalLpg + finalCyl)}** |
-| ERP \`CURRENT BALANCE\` (TXT header) | ${fmt(headerBalance)} |
+| ${erpReferenceLabel} | ${fmt(erpReference)} |
 | **Variance (Combined − ERP)** | **${fmt(erpVariance)}** |
 
 ---
@@ -650,7 +664,7 @@ ${custodyLines.length ? custodyLines.map((l) => `| ${l.label} | ${l.qty} | R${fm
 | Cylinder Position (1B vs custody) | R${fmt(finalCyl)} | R${fmt(totalCustodyExposure)} | R${fmt(cylVariance)} |
 | Sub-ledger tie (1A + 1B vs combined) | R${fmt(finalCombined)} | — | R${fmt(subLedgerVariance)} |
 ${custodyBlockedNote}
-**ERP Combined Balance (TXT header):** R${fmt(headerBalance)}  
+**${erpReferenceLabel}:** R${fmt(erpReference)}  
 **Reconstructed Balance (1A + 1B):** R${fmt(finalCombined)}  
 **Variance:** R${fmt(erpVariance)}
 
@@ -687,7 +701,7 @@ ${custodyBlockedNote}
       lpgGasDebt: finalLpg,
       cylinderFinancialBalance: finalCyl,
       totalDebtorBalance: finalCombined,
-      erpStatedBalance: headerBalance,
+      erpStatedBalance: erpReference,
       erpVariance,
       subLedgerVariance,
     },

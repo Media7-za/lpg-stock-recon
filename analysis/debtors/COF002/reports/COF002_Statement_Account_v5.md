@@ -770,7 +770,7 @@
 | Cylinder Position (1B vs custody) | R14,247.50 | R23,920.00 | R-9,672.50 |
 | Sub-ledger tie (1A + 1B vs combined) | R21,683.76 | — | R0.00 |
 
-**ERP Combined Balance (TXT header):** R21,683.76  
+**ERP `CURRENT BALANCE` (TXT header):** R21,683.76  
 **Reconstructed Balance (1A + 1B):** R21,683.76  
 **Variance:** R0.00
 

@@ -1,0 +1,31 @@
+{
+  "debtorCode": "COF002",
+  "debtorName": "COFFEEBERRY-HILTON",
+  "txtPath": "analysis/debtors/COF002/raw/COF002_DEBENQ_CURRENT.TXT",
+  "periodStart": "2025-07-01",
+  "combinedBf": 10970.26,
+  "bfSourceNote": "Derived opening 2025-07-01 from COF002_DEBENQ_CURRENT.TXT: BALANCE B/F 23547.59 plus pre-2025-07-01 non-UD rows (-12577.33; PROVEN by row sum). UD rows (-9537.82) are excluded. Derived, not an ERP B/F at 2025-07-01 - ratify.",
+  "cylOpeningFinancial": 1000.0,
+  "paymentLane": "LPG",
+  "cylOpeningQty": {
+    "14.1": 0,
+    "19.1": 0,
+    "9.1": 4,
+    "D.1": 4,
+    "S.1": 15
+  },
+  "skuRates": {
+    "14.1": 575,
+    "19.1": 690,
+    "9.1": 517.5,
+    "D.1": 1150,
+    "S.1": 1150
+  },
+  "cylOpeningQtyNote": "Opening custody at 2025-07-01 from DB CYL history before periodStart (9.1=4, D.1=4, S.1=15; 3112=4 not a SKU). PROVEN by query.",
+  "periodEnd": "2025-10-31",
+  "closingReference": 9173.94,
+  "closingReferenceNote": "TXT-derived closing 2025-10-31: opening 10970.26 plus window non-UD rows (-1796.32). Cross-check: opening plus all non-UD rows (incl. post-Oct 2025) = ERP header 21683.76. No ERP balance exists at 31 Oct 2025 in the TXT.",
+  "reportPath": "analysis/debtors/COF002/reports/COF002_Statement_Account_v5_2025-07_2025-10.md",
+  "fixturePath": "analysis/debtors/COF002/reports/COF002_Statement_Account_v5_2025-07_2025-10.fixture.json",
+  "cylOpeningFinancialNote": "1B opening 2025-07-01 = R1,000.00 = CYL-lane running balance at 30 Jun 2025 in reports/COF002_Statement_Account_v5.md (March run basis, which assumed a zero 1B opening at 1 Mar 2025). Relative to that basis only; not an ERP cylinder balance."
+}

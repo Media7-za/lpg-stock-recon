@@ -22,6 +22,10 @@
     {
       "date": "2026-10-15",
       "event": "V5 generated via reconcile_debtor_v5_from_txt.mjs (DB stand-in from Supabase connector pulls). Opening derived 1813.02 (B/F 23547.59 less pre-period non-UD payments 21734.57). ERP variance R0.00; sub-ledger tie R0.00; custody variance -9672.50 open. Ingest gate not run. Opening and custody rates need operator ratification."
+    },
+    {
+      "date": "2026-10-15",
+      "event": "V5 window 2025-07-01..2025-10-31 generated (config statement_v5_2025-07_2025-10.json). Opening 10970.26 derived from CURRENT TXT; closing reference 9173.94 TXT-derived. ERP variance 0.00 against that reference; sub-ledger tie 0.00; 1A 8173.94 / 1B 1000.00. Custody variance -22920.00 open. Script gained optional periodEnd, closingReference, --config, reportPath and fixturePath (defaults unchanged)."
     }
   ],
   "v5": {
@@ -30,5 +34,19 @@
     "subLedgerTieVariance": 0.0,
     "custodyVariance": -9672.5,
     "custodyNote": "Custody uses template deposit rates (9kg 517.50, D.1/S.1 1150.00), not verified for this account. Cylinder financial 14247.50 vs custody 23920.00 is unexplained."
-  }
+  },
+  "v5Windows": [
+    {
+      "period": "2025-07-01..2025-10-31",
+      "config": "analysis/debtors/COF002/config/statement_v5_2025-07_2025-10.json",
+      "reportPath": "analysis/debtors/COF002/reports/COF002_Statement_Account_v5_2025-07_2025-10.md",
+      "closingReference": 9173.94,
+      "closingReferenceBasis": "TXT-derived (no ERP balance at 31 Oct 2025)",
+      "erpVariance": 0.0,
+      "subLedgerTieVariance": 0.0,
+      "cylOpeningFinancial": 1000.0,
+      "custodyVariance": -22920.0,
+      "custodyNote": "Same template deposit-rate caveat as the main V5."
+    }
+  ]
 }
