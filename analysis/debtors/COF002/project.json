@@ -30,6 +30,10 @@
     {
       "date": "2026-10-15",
       "event": "Review: Part 1B contained SKU 3112 rental charges (CYL debt group). v5 query now routes any CYL-group line whose stock is not 9.1/14.1/19.1/D.1/S.1 to the LPG lane. March statement regenerated: 1A 15646.26, 1B 6037.50 (ERP variance 0.00, sub-ledger tie 0.00). Jul-Oct window unaffected (no 3112 lines). Open: 53589 TXT-only; custody variance -17882.50."
+    },
+    {
+      "date": "2026-10-15",
+      "event": "Review: Part 1A (gas) checked for SKUs 9.1/14.1/19.1/D.1/S.1. No gas-lane DB line carries these SKUs since 2025-03-01, and no TXT EMPTY-reference document is in 1A. Only 53588 (LPG, R7,740.25, Oct 2026) lacks DB lines, so its SKU is unverified (ingest gap). No code change."
     }
   ],
   "v5": {
