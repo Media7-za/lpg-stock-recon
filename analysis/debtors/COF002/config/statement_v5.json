@@ -1,0 +1,24 @@
+{
+  "debtorCode": "COF002",
+  "debtorName": "COFFEEBERRY-HILTON",
+  "txtPath": "analysis/debtors/COF002/raw/COF002_DEBENQ_CURRENT.TXT",
+  "periodStart": "2025-03-01",
+  "combinedBf": 23547.59,
+  "bfSourceNote": "ERP TXT COF002_DEBENQ_CURRENT.TXT line 14 'BALANCE B/F' 23547.59 = closing balance of COF002_DEBENQ_2025.TXT (24/02/2025, PROVEN by chain check). Pre-period rows in CURRENT (e.g. 29/09/2023 payment -7619.77) are outside periodStart and are NOT in the opening; ratify before relying on the bridge.",
+  "cylOpeningFinancial": 0.0,
+  "paymentLane": "LPG",
+  "cylOpeningQty": {
+    "14.1": 0,
+    "19.1": 0,
+    "9.1": 0,
+    "D.1": 0,
+    "S.1": 0
+  },
+  "skuRates": {
+    "14.1": 575,
+    "19.1": 690,
+    "9.1": 517.5,
+    "D.1": 1150,
+    "S.1": 1150
+  }
+}
