@@ -5,7 +5,7 @@
   "reconState": "in-progress",
   "financials": {
     "totalOutstanding": 21683.76,
-    "totalOutstandingNote": "ERP CURRENT BALANCE header on raw/COF002_DEBENQ_CURRENT.TXT (PROVEN). Includes UD PAY/CHEQUES -9537.82; running balance excluding UD = 12145.94 (PROVEN, chain check).",
+    "totalOutstandingNote": "ERP CURRENT BALANCE on raw/COF002_DEBENQ_CURRENT.TXT (no UD items in this export, PROVEN). Running balance: B/F 23547.59 + invoices 537240.85 - credit notes 266934.33 - payments 272170.35 = 21683.76 (PROVEN by re-add, 0 breaks).",
     "lastInvoiceDate": "2026-10-14",
     "lastPaymentDate": "2026-10-07",
     "agedDebt180Plus": 0
@@ -38,6 +38,10 @@
     {
       "date": "2026-10-15",
       "event": "Review before generate: window 2026-07-01..2026-10-31 has gas lines on 9.4, 901, S.4, S01 (LPG) and MSM.S (OTHER) only; cylinder lines on 9.1 and S.1 only. V5 generated: 1A 15646.26, 1B 6037.50, ERP variance 0.00, sub-ledger tie 0.00, custody variance -17882.50 (open). 53588 and 53589 remain TXT-only."
+    },
+    {
+      "date": "2026-10-15",
+      "event": "Removed UD payment rows (Ud Paymnt 29505, 29503, 29493; total -9537.82) by replacing raw/COF002_DEBENQ_CURRENT.TXT with the ERP export that has no UD rows (161 rows; header UD 0.00). Database has no Ud Paymnt rows for COF002. All V5 statements regenerated; numbers unchanged."
     }
   ],
   "v5": {
