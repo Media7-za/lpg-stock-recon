@@ -1,0 +1,29 @@
+{
+  "debtorCode": "COF002",
+  "debtorName": "COFFEEBERRY-HILTON",
+  "txtPath": "analysis/debtors/COF002/raw/COF002_DEBENQ_CURRENT.TXT",
+  "periodStart": "2026-07-01",
+  "combinedBf": -2032.92,
+  "bfSourceNote": "Derived opening 2026-07-01 from COF002_DEBENQ_CURRENT.TXT: BALANCE B/F 23547.59 plus all pre-2026-07-01 non-UD rows (-25580.51; PROVEN by row sum). UD rows (-9537.82) excluded. Closing 2026-10-31 is checked against the ERP CURRENT BALANCE header (no rows after 14 Oct 2026). Derived opening - ratify.",
+  "cylOpeningFinancial": 0.0,
+  "paymentLane": "LPG",
+  "cylOpeningQty": {
+    "14.1": 0,
+    "19.1": 0,
+    "9.1": 4,
+    "D.1": 4,
+    "S.1": 15
+  },
+  "skuRates": {
+    "14.1": 575,
+    "19.1": 690,
+    "9.1": 517.5,
+    "D.1": 1150,
+    "S.1": 1150
+  },
+  "cylOpeningQtyNote": "Opening custody at 2026-07-01 from DB CYL history before periodStart: 9.1=4, D.1=4, S.1=15 (3112=7 not a SKU). PROVEN by query.",
+  "periodEnd": "2026-10-31",
+  "reportPath": "analysis/debtors/COF002/reports/COF002_Statement_Account_v5_2026-07_2026-10.md",
+  "fixturePath": "analysis/debtors/COF002/reports/COF002_Statement_Account_v5_2026-07_2026-10.fixture.json",
+  "cylOpeningFinancialNote": "1B opening 2026-07-01 = R0.00 on the March run basis (reports/COF002_Statement_Account_v5.md, 01 Jun 2026 and June close 0.00)."
+}

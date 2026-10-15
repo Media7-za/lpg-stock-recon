@@ -1,0 +1,8 @@
+{
+  "source": "Supabase project oqhpxnaadahohwkslive, vw_clean_transactions, account_no='COF002', tx_date between 2026-07-01 and 2026-10-31 (fetchDocLineSplit query with the 3112 rule: CYL lines on stock not in 9.1/14.1/19.1/D.1/S.1 routed to LPG; pulled 2026-10-15 via Supabase connector)",
+  "columns": ["doc_no", "entry_type", "debt_group", "s"],
+  "rows": [
+    ["15176","Crd Note","CYL",-5692.5],["15311","Crd Note","CYL",-8625],["15515","Crd Note","CYL",-2415],["15529","Crd Note","CYL",-8625],["15533","Crd Note","CYL",-517.5],["15659","Crd Note","CYL",-8107.5],["15748","Crd Note","CYL",-6037.5],
+    ["51528","Invoice","LPG",6303.08],["51529","Invoice","CYL",5692.5],["52012","Invoice","LPG",9979.87],["52013","Invoice","CYL",8625],["52692","Invoice","CYL",2932.5],["52722","Invoice","LPG",8914.68],["52723","Invoice","CYL",8625],["53143","Invoice","CYL",8107.5],["53144","Invoice","LPG",8800.33],["53144","Invoice","OTHER",714.15],["53362","Invoice","LPG",7652.45],["53363","Invoice","CYL",6037.5]
+  ]
+}

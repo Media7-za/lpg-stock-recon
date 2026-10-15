@@ -34,6 +34,10 @@
     {
       "date": "2026-10-15",
       "event": "Review: Part 1A (gas) checked for SKUs 9.1/14.1/19.1/D.1/S.1. No gas-lane DB line carries these SKUs since 2025-03-01, and no TXT EMPTY-reference document is in 1A. Only 53588 (LPG, R7,740.25, Oct 2026) lacks DB lines, so its SKU is unverified (ingest gap). No code change."
+    },
+    {
+      "date": "2026-10-15",
+      "event": "Review before generate: window 2026-07-01..2026-10-31 has gas lines on 9.4, 901, S.4, S01 (LPG) and MSM.S (OTHER) only; cylinder lines on 9.1 and S.1 only. V5 generated: 1A 15646.26, 1B 6037.50, ERP variance 0.00, sub-ledger tie 0.00, custody variance -17882.50 (open). 53588 and 53589 remain TXT-only."
     }
   ],
   "v5": {
@@ -56,6 +60,16 @@
       "cylOpeningFinancial": 1000.0,
       "custodyVariance": -22920.0,
       "custodyNote": "Same template deposit-rate caveat as the main V5."
+    },
+    {
+      "period": "2026-07-01..2026-10-31",
+      "config": "analysis/debtors/COF002/config/statement_v5_2026-07_2026-10.json",
+      "reportPath": "analysis/debtors/COF002/reports/COF002_Statement_Account_v5_2026-07_2026-10.md",
+      "erpVariance": 0.0,
+      "subLedgerTieVariance": 0.0,
+      "cylOpeningFinancial": 0.0,
+      "custodyVariance": -17882.5,
+      "custodyNote": "Closing checked against the ERP CURRENT BALANCE header (no rows after 14 Oct 2026). Opening -2032.92 is derived. 53588 (1A) and 53589 (1B) are TXT-only, so their SKUs are unverified. Template deposit-rate caveat applies."
     }
   ]
 }
