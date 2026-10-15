@@ -12,12 +12,23 @@
   },
   "ingestGate": {
     "status": "not-run",
-    "note": "npm run debtors:ingest-check -- --debtor COF002 not run: DATABASE_URL not available in this session."
+    "note": "npm run debtors:ingest-check -- --debtor COF002 not run: the coverage check needs DATABASE_URL, which this session does not have. The v5 run used a DB stand-in fed by Supabase connector pulls (data/db_*.json)."
   },
   "history": [
     {
       "date": "2026-10-15",
       "event": "Folder created. Four ERP enquiry TXT files added to raw/ (2023, 2024, 2025, CURRENT). Running-balance chain verified in-session with 0 breaks across all four files (ASSERTED until re-run by script). v5 config drafted; statement NOT generated (DATABASE_URL missing)."
+    },
+    {
+      "date": "2026-10-15",
+      "event": "V5 generated via reconcile_debtor_v5_from_txt.mjs (DB stand-in from Supabase connector pulls). Opening derived 1813.02 (B/F 23547.59 less pre-period non-UD payments 21734.57). ERP variance R0.00; sub-ledger tie R0.00; custody variance -9672.50 open. Ingest gate not run. Opening and custody rates need operator ratification."
     }
-  ]
+  ],
+  "v5": {
+    "reportPath": "analysis/debtors/COF002/reports/COF002_Statement_Account_v5.md",
+    "erpVariance": 0.0,
+    "subLedgerTieVariance": 0.0,
+    "custodyVariance": -9672.5,
+    "custodyNote": "Custody uses template deposit rates (9kg 517.50, D.1/S.1 1150.00), not verified for this account. Cylinder financial 14247.50 vs custody 23920.00 is unexplained."
+  }
 }

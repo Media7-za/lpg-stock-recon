@@ -1,0 +1,63 @@
+{
+  "debtorCode": "COF002",
+  "debtorName": "COFFEEBERRY-HILTON",
+  "period": {
+    "from": "2025-03-01",
+    "to": "2026-10-14"
+  },
+  "version": "v5",
+  "workspaceStatus": "pending_review",
+  "lastGeneratedAt": "2026-10-15T07:43:31.223Z",
+  "source": "analysis/debtors/COF002/raw/COF002_DEBENQ_CURRENT.TXT",
+  "financialPosition": {
+    "lpgGasDebt": 7436.26,
+    "cylinderFinancialBalance": 14247.5,
+    "totalDebtorBalance": 21683.76,
+    "erpStatedBalance": 21683.76,
+    "erpVariance": 0,
+    "subLedgerVariance": 0
+  },
+  "custodyPosition": {
+    "totalCustodyExposure": 23920,
+    "lines": [
+      {
+        "sku": "9.1",
+        "label": "9kg",
+        "qty": 4,
+        "depositRate": 517.5,
+        "exposure": 2070
+      },
+      {
+        "sku": "D.1",
+        "label": "D.1",
+        "qty": 4,
+        "depositRate": 1150,
+        "exposure": 4600
+      },
+      {
+        "sku": "S.1",
+        "label": "S.1",
+        "qty": 15,
+        "depositRate": 1150,
+        "exposure": 17250
+      }
+    ]
+  },
+  "reconciliationPosition": {
+    "cylinderVariance": -9672.5,
+    "erpVariance": 0,
+    "subLedgerVariance": 0,
+    "exceptions": [
+      {
+        "type": "CUSTODY",
+        "basis": "ASSERTED",
+        "status": "open",
+        "description": "Part 1B financial vs Part 2 custody — check DB ingest vs TXT"
+      }
+    ]
+  },
+  "artifacts": {
+    "statementMarkdown": "analysis/debtors/COF002/reports/COF002_Statement_Account_v5.md",
+    "txtSource": "analysis/debtors/COF002/raw/COF002_DEBENQ_CURRENT.TXT"
+  }
+}

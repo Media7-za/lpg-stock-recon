@@ -3,16 +3,16 @@
   "debtorName": "COFFEEBERRY-HILTON",
   "txtPath": "analysis/debtors/COF002/raw/COF002_DEBENQ_CURRENT.TXT",
   "periodStart": "2025-03-01",
-  "combinedBf": 23547.59,
-  "bfSourceNote": "ERP TXT COF002_DEBENQ_CURRENT.TXT line 14 'BALANCE B/F' 23547.59 = closing balance of COF002_DEBENQ_2025.TXT (24/02/2025, PROVEN by chain check). Pre-period rows in CURRENT (e.g. 29/09/2023 payment -7619.77) are outside periodStart and are NOT in the opening; ratify before relying on the bridge.",
+  "combinedBf": 1813.02,
+  "bfSourceNote": "Derived opening 2025-03-01 from COF002_DEBENQ_CURRENT.TXT: BALANCE B/F 23547.59 (= 2025 file close, PROVEN) plus pre-2025-03-01 non-UD rows in the CURRENT listing (-21734.57 payments; PROVEN by row sum). Header identity: ERP CURRENT BALANCE 21683.76 = B/F + all non-UD rows (ASSERTED, ties exactly). UD rows (-9537.82) are excluded from the balance per the header. Derived, not an ERP B/F at 2025-03-01 - ratify.",
   "cylOpeningFinancial": 0.0,
   "paymentLane": "LPG",
   "cylOpeningQty": {
     "14.1": 0,
     "19.1": 0,
-    "9.1": 0,
-    "D.1": 0,
-    "S.1": 0
+    "9.1": 4,
+    "D.1": 4,
+    "S.1": 15
   },
   "skuRates": {
     "14.1": 575,
@@ -20,5 +20,6 @@
     "9.1": 517.5,
     "D.1": 1150,
     "S.1": 1150
-  }
+  },
+  "cylOpeningQtyNote": "Opening custody at 2025-03-01 derived from DB CYL history before periodStart (vw_clean_transactions, same dedupe as buildPart2): 9.1=4, D.1=4, S.1=15 (PROVEN by query, no pre-period 14.1/19.1). Config value, not ERP."
 }
