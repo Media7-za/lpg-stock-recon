@@ -7,11 +7,11 @@
   },
   "version": "v5",
   "workspaceStatus": "pending_review",
-  "lastGeneratedAt": "2026-10-15T07:43:31.223Z",
+  "lastGeneratedAt": "2026-10-15T09:07:33.121Z",
   "source": "analysis/debtors/COF002/raw/COF002_DEBENQ_CURRENT.TXT",
   "financialPosition": {
-    "lpgGasDebt": 7436.26,
-    "cylinderFinancialBalance": 14247.5,
+    "lpgGasDebt": 15646.26,
+    "cylinderFinancialBalance": 6037.5,
     "totalDebtorBalance": 21683.76,
     "erpStatedBalance": 21683.76,
     "erpVariance": 0,
@@ -44,7 +44,7 @@
     ]
   },
   "reconciliationPosition": {
-    "cylinderVariance": -9672.5,
+    "cylinderVariance": -17882.5,
     "erpVariance": 0,
     "subLedgerVariance": 0,
     "exceptions": [
