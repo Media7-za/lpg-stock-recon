@@ -7,7 +7,7 @@
   },
   "version": "v5",
   "workspaceStatus": "pending_review",
-  "lastGeneratedAt": "2026-10-15T07:58:36.305Z",
+  "lastGeneratedAt": "2026-10-15T09:07:33.231Z",
   "source": "analysis/debtors/COF002/raw/COF002_DEBENQ_CURRENT.TXT",
   "financialPosition": {
     "lpgGasDebt": 8173.94,

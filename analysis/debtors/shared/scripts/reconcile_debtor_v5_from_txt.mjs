@@ -16,6 +16,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '../../../..');
 
 const SKUS = ['14.1', '19.1', '9.1', 'D.1', 'S.1'];
+// Cylinder deposit SKUs. Any other stock on a CYL debt-group line (e.g. 3112 rental) is routed to the LPG lane.
+const CYL_SKU_SQL = SKUS.map((k) => `'${k}'`).join(', ');
 const CYL_PATTERN = /[-`#]?EMPTY|EMPTIES/i;
 const PAYMENT_TYPES = new Set([
   'Payment',
@@ -422,16 +424,17 @@ async function fetchDocLineSplit(client, cfg) {
     `
     WITH deduped AS (
       SELECT DISTINCT ON (LTRIM(doc_no,'0'), entry_type, debt_group, stock_no, category, line_total)
-        LTRIM(doc_no,'0') AS doc_no, entry_type, debt_group, line_total
+        LTRIM(doc_no,'0') AS doc_no, entry_type, line_total,
+        CASE WHEN debt_group = 'CYL' AND stock_no NOT IN (${CYL_SKU_SQL}) THEN 'LPG' ELSE debt_group END AS debt_group_split
       FROM vw_clean_transactions
       WHERE account_no = $2 AND tx_date >= $1 AND tx_date <= $3
         AND entry_type IN ('Invoice', 'Crd Note')
       ORDER BY LTRIM(doc_no,'0'), entry_type, debt_group, stock_no, category, line_total, id DESC
     )
-    SELECT doc_no, entry_type, debt_group,
+    SELECT doc_no, entry_type, debt_group_split AS debt_group,
       ROUND(SUM(line_total)::numeric, 2)::float AS s
     FROM deduped
-    GROUP BY doc_no, entry_type, debt_group`,
+    GROUP BY doc_no, entry_type, debt_group_split`,
     [cfg.periodStart, cfg.debtorCode, cfg.periodEnd || '9999-12-31'],
   );
   const map = new Map();

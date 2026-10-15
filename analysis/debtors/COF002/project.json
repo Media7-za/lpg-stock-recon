@@ -12,7 +12,7 @@
   },
   "ingestGate": {
     "status": "not-run",
-    "note": "npm run debtors:ingest-check -- --debtor COF002 not run: the coverage check needs DATABASE_URL, which this session does not have. The v5 run used a DB stand-in fed by Supabase connector pulls (data/db_*.json)."
+    "note": "npm run debtors:ingest-check -- --debtor COF002 not run: the coverage check needs DATABASE_URL, which this session does not have. The v5 run used a DB stand-in fed by Supabase connector pulls (data/db_*.json). Invoices 53588 and 53589 (Oct 2026, TXT only) are absent from vw_clean_transactions and transaction_headers; 53589 (R6,037.50, 1B) is routed by its TXT EMPTY reference, not verified SKUs."
   },
   "history": [
     {
@@ -26,14 +26,19 @@
     {
       "date": "2026-10-15",
       "event": "V5 window 2025-07-01..2025-10-31 generated (config statement_v5_2025-07_2025-10.json). Opening 10970.26 derived from CURRENT TXT; closing reference 9173.94 TXT-derived. ERP variance 0.00 against that reference; sub-ledger tie 0.00; 1A 8173.94 / 1B 1000.00. Custody variance -22920.00 open. Script gained optional periodEnd, closingReference, --config, reportPath and fixturePath (defaults unchanged)."
+    },
+    {
+      "date": "2026-10-15",
+      "event": "Review: Part 1B contained SKU 3112 rental charges (CYL debt group). v5 query now routes any CYL-group line whose stock is not 9.1/14.1/19.1/D.1/S.1 to the LPG lane. March statement regenerated: 1A 15646.26, 1B 6037.50 (ERP variance 0.00, sub-ledger tie 0.00). Jul-Oct window unaffected (no 3112 lines). Open: 53589 TXT-only; custody variance -17882.50."
     }
   ],
   "v5": {
     "reportPath": "analysis/debtors/COF002/reports/COF002_Statement_Account_v5.md",
     "erpVariance": 0.0,
     "subLedgerTieVariance": 0.0,
-    "custodyVariance": -9672.5,
-    "custodyNote": "Custody uses template deposit rates (9kg 517.50, D.1/S.1 1150.00), not verified for this account. Cylinder financial 14247.50 vs custody 23920.00 is unexplained."
+    "custodyVariance": -17882.5,
+    "custodyNote": "Rental SKU 3112 (R8,210.00 across 41580-41583, 49203, 50719) moved from Part 1B to Part 1A on 2026-10-15. Deposit SKUs in 1B are 9.1 and S.1 only. Template deposit-rate caveat still applies.",
+    "cylinderFinancialBalance": 6037.5
   },
   "v5Windows": [
     {
