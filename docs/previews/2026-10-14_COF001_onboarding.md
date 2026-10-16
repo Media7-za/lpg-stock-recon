@@ -143,3 +143,12 @@ Observations for review (not conclusions): payments 44844 and 36512 (R7,224.65) 
 - **P2:** approve the 2023 batch tie?
 - **P3:** for the remaining 8 payments (R56,477.08), approve treating them as `customer_credit` (account in credit on the gas lane) or instruct otherwise per payment?
 - **P4:** Journal 476 (+R7,224.65, 2024-12-11): is it a reversal of payment 44844?
+
+---
+
+## 12. Amendment 2026-10-16 (workflow audit; supersedes tags above where they conflict)
+- Sections 8 and 9 tag the statement-TXT intake check "PROVEN, ad hoc". It is now a committed script with output in `reports/COF001_D21_INTAKE_2026-10-16.md`. That output corrects one claim: the year-split files COF001_2023/2024/2025 **fail** D21 (moved to `raw/Enquiry/`, see its README); `COF001_COMBINED.TXT` and `COF001_CURRENT.TXT` pass. The statement is unaffected (it reads COMBINED).
+- Section 8 "Ruling pack" Q3 (needs allocation detail) is superseded by section 11.
+- ERP freshness gate (Orchestrator §3): file status `LATEST_IN_REPOSITORY`, balance class `ASSERTED_STALE_PENDING_OPERATOR_CONFIRMATION` until the operator says whether COMBINED is the latest export; manifest `analysis/debtors/evidence_exchange/COF001/turn-001/manifest.json`.
+- `debtors:tag-check`: NOT_DERIVABLE_FROM_TXT, evidence basis PATTERN_ONLY. Internal use fine; no customer release.
+- Human tasks queued: H-028 to H-030 in `analysis/debtors/shared/HUMAN_TASKS.md`.

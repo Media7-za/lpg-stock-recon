@@ -1,0 +1,104 @@
+{
+  "debtor_code": "COF001",
+  "turn": 1,
+  "generated_at": "2026-10-16T00:00:00Z",
+  "generated_by": "claude-code analyst session (branch claude/cof001-analysis)",
+  "supersedes_turn": null,
+  "source_as_at": "2026-09-09",
+  "source_as_at_basis": "last transaction row in analysis/debtors/COF001/raw/COF001_COMBINED.TXT (file is undated; export date unknown)",
+  "erp_freshness": {
+    "repository_latest_file": "COF001_COMBINED.TXT",
+    "repository_latest_path": "analysis/debtors/COF001/raw/COF001_COMBINED.TXT",
+    "balance": -16256.52,
+    "currency": "ZAR",
+    "period_end": null,
+    "last_transaction_date": "2026-09-09",
+    "repository_commit": null,
+    "evidence_as_at": "2026-09-09",
+    "operator_confirmation": "partial: operator ruled the balance -16256.52 correct (Q1, 2026-10-16) and accepted the undated file as an interim D21 exception (Q3); has not answered whether it is the latest export",
+    "confirmation_date": "2026-10-16",
+    "status": "LATEST_IN_REPOSITORY",
+    "balance_classification": "ASSERTED_STALE_PENDING_OPERATOR_CONFIRMATION",
+    "fresh_upload_requested": true,
+    "live_debtor_communications": "blocked",
+    "reconciliation_closure": "blocked",
+    "registry_ratification_dependent_on_current_balance": "blocked"
+  },
+  "erp_anchor": {
+    "amount": -16256.52,
+    "currency": "ZAR",
+    "as_at": "2026-09-09",
+    "source": "COF001_COMBINED.TXT header CURRENT BALANCE",
+    "status": "LATEST_IN_REPOSITORY",
+    "balance_classification": "ASSERTED_STALE_PENDING_OPERATOR_CONFIRMATION",
+    "canonical_source": "analysis/debtors/COF001/raw/COF001_COMBINED.TXT"
+  },
+  "portfolio_anchor": {
+    "amount": 7958.38,
+    "currency": "ZAR",
+    "as_at": "2026-10-09",
+    "source": "portfolio_candidates.csv (ASSERTED; operator ruled it is not the balance)",
+    "canonical_source": "analysis/debtors/shared/data/portfolio_candidates.csv"
+  },
+  "lane": "position_recon",
+  "outcome": "PARTIAL",
+  "recon_state": "pending",
+  "residual": {
+    "amount": 0.0,
+    "tolerance": 0.05,
+    "unit": "ZAR"
+  },
+  "artifacts": [
+    {
+      "path": "COF001_Statement_Account_v5.md",
+      "canonical_source": "analysis/debtors/COF001/reports/COF001_Statement_Account_v5.md",
+      "purpose": "v5 statement (connector-sourced, review only)"
+    },
+    {
+      "path": "COF001_Open_Items_v5.md",
+      "canonical_source": "analysis/debtors/COF001/reports/COF001_Open_Items_v5.md",
+      "purpose": "internal open items + proof"
+    },
+    {
+      "path": "COF001_INGEST_COVERAGE",
+      "canonical_source": "analysis/debtors/COF001/reports/COF001_INGEST_COVERAGE_2026-10-16.md",
+      "purpose": "ingest gate (4 gaps remain)"
+    },
+    {
+      "path": "COF001_D21_INTAKE",
+      "canonical_source": "analysis/debtors/COF001/reports/COF001_D21_INTAKE_2026-10-16.md",
+      "purpose": "D21 intake check output"
+    },
+    {
+      "path": "onboarding_preview",
+      "canonical_source": "docs/previews/2026-10-14_COF001_onboarding.md",
+      "purpose": "ruling pack and analysis (sections 8 to 11)"
+    }
+  ],
+  "proven_identities": [
+    "ERP variance R0.00 (reports/COF001_Statement_Account_v5.md)",
+    "open-items proof holds, ERP -16256.52 (reports/COF001_Open_Items_v5.md)",
+    "statement TXT chain, last balance = header = TOTAL TRANSACTIONS (reports/COF001_D21_INTAKE_2026-10-16.md)"
+  ],
+  "asserted_items": [
+    "custody exposure -R8,280.00 (ingest gate partial)",
+    "R7,958.38 equals the 2026-07-08 intermediate running balance (inference, not proven)"
+  ],
+  "assumed_hypotheses": [
+    "8 remaining unallocated payments (R56,477.08) are customer credit / duplicate or advance payments"
+  ],
+  "invariants": [
+    {
+      "name": "ERP variance",
+      "status": "PASS",
+      "result": 0.0,
+      "required": "<= 0.05"
+    }
+  ],
+  "operator_decisions_required": [
+    "P1 to P4 (preview section 11)",
+    "ERP freshness gate: is COF001_COMBINED.TXT the latest export?",
+    "post H-029 re-ingest request"
+  ],
+  "staleness_warning": "Undated interim export; last row 2026-09-09. Replace with the dated ADM-135 export."
+}

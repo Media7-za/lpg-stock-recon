@@ -14,7 +14,9 @@
     "actionType": null,
     "dateSent": null,
     "deadlineDate": null,
-    "notes": "ERP CURRENT BALANCE -R16,256.52 (PROVEN from raw/COF001_COMBINED.TXT header, last row 2026-09-09; undated file, operator-directed use). The portfolio list figure R7,958.38 is not the ledger end. COF002 (COFFEEBERRY-HILTON) is a different account: not merged, not netted."
+    "notes": "ERP CURRENT BALANCE -R16,256.52 (PROVEN from raw/COF001_COMBINED.TXT header, last row 2026-09-09; undated file, operator-directed use). The portfolio list figure R7,958.38 is not the ledger end. COF002 (COFFEEBERRY-HILTON) is a different account: not merged, not netted.",
+    "nextAction": "operator rules P1-P4; dated ADM-135 export; group A re-ingest (H-028 to H-030)",
+    "nextActionDate": null
   },
   "history": [
     {
@@ -36,6 +38,35 @@
     {
       "date": "2026-10-16",
       "event": "Operator Q4: re-ingest group A (payments 24732, 30219, 29646, 29696; -R31,131.01), exception for group B (Bank UD 32615, 40294, 42621 = config/ingest_exceptions.json ING-COF001-001..003). Ingest gaps 7 to 4; custody/SKU/allocation still blocked, outputs still reviewOnly until group A is re-ingested (request drafted, not posted: docs/requests/2026-10-16_cof001_reingest_request.md). ERP-agent upload filed unchanged as raw/Enquiry/COF001_UNDATED_post_fix_window.TXT (window, undated, not the statement TXT): credit note 15558 reversed by invoice 53619 and re-issued as 15803/15804; balance unchanged -16256.52. Rebuilt from the existing replay captures: ERP variance R0.00, proof HOLDS, 14 locks applied."
+    },
+    {
+      "date": "2026-10-16",
+      "event": "Workflow audit against the debtor skill pipeline: ingestGate populated from reports/COF001_INGEST_COVERAGE_2026-10-16.json; HUMAN_TASKS H-028 to H-030 queued; Evidence Exchange manifest evidence_exchange/COF001/turn-001; D21 intake check committed (scripts/d21_intake_check.mjs) - year-split files COF001_2023/2024/2025.TXT FAIL D21 (header is current balance, last balance is year-end) and were moved to raw/Enquiry/; statement TXT COF001_COMBINED.TXT passes. debtors:tag-check: NOT_DERIVABLE_FROM_TXT, PATTERN_ONLY (no release)."
     }
-  ]
+  ],
+  "ingestGate": {
+    "status": "fail",
+    "ingestFreshness": "current",
+    "ingestCoverage": "partial",
+    "displayStatus": "CURRENT_PARTIAL",
+    "asAt": "2026-10-16",
+    "reportPath": "reports/COF001_INGEST_COVERAGE_2026-10-16.json",
+    "ingestBlockedScopes": [
+      "custody",
+      "sku_analysis",
+      "allocation"
+    ],
+    "exceptions": [
+      {
+        "exception_id": "ING-COF001-001..003",
+        "doc_nos": [
+          "32615",
+          "40294",
+          "42621"
+        ],
+        "ratified_by": "operator",
+        "ratified_at": "2026-10-16"
+      }
+    ]
+  }
 }
