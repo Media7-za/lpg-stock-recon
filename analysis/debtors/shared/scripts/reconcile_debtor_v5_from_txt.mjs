@@ -263,7 +263,7 @@ function isCylRef(ref) {
 
 function parseTxtRows(filePath) {
   const txt = fs.readFileSync(filePath, 'utf8');
-  const headerBalance = Number(txt.match(/CURRENT BALANCE:","([0-9.]+)"/)?.[1]);
+  const headerBalance = Number(txt.match(/CURRENT BALANCE:","(-?[0-9.]+)"/)?.[1]);
   const rows = [];
   for (const line of txt.split('\n')) {
     if (!line.startsWith('"') || line.includes('LINE","PERIOD')) continue;
