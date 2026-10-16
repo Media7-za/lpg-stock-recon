@@ -1,0 +1,154 @@
+source COF002_DEBENQ_2023.TXT @ fd8a268 sha256 931df5a475f3339c
+source COF002_DEBENQ_2024.TXT @ fd8a268 sha256 fefa96705c854749
+source COF002_DEBENQ_2025.TXT @ fd8a268 sha256 5294f17c09e805e7
+source COF002_DEBENQ_CURRENT.TXT @ fd8a268 sha256 8783c2accb355a53
+source analysis/debtors/COF001/raw/COF001_COMBINED.TXT sha256 af6fa321fa8c511a
+
+## D21 intake check (existing script analysis/debtors/COF001/scripts/d21_intake_check.mjs)
+FAIL COF002_DEBENQ_2023.TXT | rows 124 | header 21683.76 | last 2352 | UD 0 | UNDATED name | allocation detail EXCLUDED | last balance 2352 != header 21683.76
+FAIL COF002_DEBENQ_2024.TXT | rows 76 | header 21683.76 | last 10316.77 | UD 0 | UNDATED name | allocation detail EXCLUDED | last balance 10316.77 != header 21683.76
+FAIL COF002_DEBENQ_2025.TXT | rows 60 | header 21683.76 | last 23547.59 | UD 0 | UNDATED name | allocation detail EXCLUDED | last balance 23547.59 != header 21683.76
+PASS COF002_DEBENQ_CURRENT.TXT | rows 162 | header 21683.76 | last 21683.76 | UD 0 | UNDATED name | allocation detail EXCLUDED
+
+## Chain of the year files and merge (COF002)
+COF002_DEBENQ_2023.TXT: rows 123, B/F 0.00, last balance 2352.00
+COF002_DEBENQ_2024.TXT: rows 75, B/F 2352.00, last balance 10316.77
+COF002_DEBENQ_2025.TXT: rows 59, B/F 10316.77, last balance 23547.59
+COF002_DEBENQ_CURRENT.TXT: rows 161, B/F 23547.59, last balance 21683.76
+merged COF002 rows 418 (docs duplicated across files: 0); sum of AMOUNT = 21683.76; header CURRENT BALANCE 21683.76 -> MATCH
+CURRENT carries 5 payments dated before 2025-03 that no year file carries: 00024733 2023-09-29 -7619.77; 00044819 2024-03-05 -7541.87; 00044825 2024-03-08 -565.64; 00044826 2024-03-12 -1430.31; 00029691 2024-03-22 -4576.98
+COF001 COMBINED rows 480; sum -16256.52; header -16256.52
+
+## Where do the portfolio figures come from? (running balance on the merged date-ordered ledger)
+COF002: running balance equals Global Report figure -5267.66 at: no date
+COF002: balance on 2025-07-13 = 19187.73
+COF001: running balance equals Global Report figure 7958.38 at: 2026-07-08 after Invoice 00051705 | 2026-07-09 after Crd Note 00015227
+COF001: balance on 2025-07-13 = 17933.15
+
+## COF001 2024 payments: own-account exact-amount pairing
+00027740 Payment 2024-01-09 STAT99 -8022.40 -> 00028389
+00028328 Payment 2024-01-22 STAT99 -8302.16 -> 00028747
+00028820 Payment 2024-02-09 STAT100 -8581.10 -> 00029248
+00028857 Payment 2024-02-16 STAT100 -7550.67 -> 00029536
+00030219 Payment 2024-03-12 STAT101 -7628.30 -> 00030276
+00029646 Payment 2024-03-20 STAT101 -8390.33 -> 00030007
+00029696 Payment 2024-03-25 STAT101 -8486.48 -> 00030576
+00029994 Payment 2024-04-08 STAT102 -8486.48 -> 00030918
+00029492 Payment 2024-04-18 STAT102 -7628.30 -> -   <-- NO OWN INVOICE OF THIS AMOUNT
+00030279 Payment 2024-04-22 STAT102 -7589.65 -> 00031431
+00030458 Payment 2024-05-02 STAT103 -853.84 -> 00031699
+00030635 Payment 2024-05-07 STAT103 -7589.65 -> 00031803
+00031367 Payment 2024-05-27 STAT103 -8339.36 -> 00032280
+00031352 Payment 2024-06-11 STAT104 -8339.36 -> 00032727
+00031551 Payment 2024-06-26 STAT104 -8026.93 -> 00033254
+00032143 Payment 2024-07-09 STAT105 -8026.93 -> 00033790
+00037733 Payment 2024-07-26 STAT105 -7705.92 -> 00034418
+00032615 Payment 2024-08-03 STAT106 -8512.36 -> -   <-- NO OWN INVOICE OF THIS AMOUNT
+00032615 Bank UD 2024-08-03 STAT105 8512.36 -> -   <-- non-payment entry
+00032620 Payment 2024-08-05 STAT106 -7437.11 -> 00034831
+00032942 Payment 2024-08-22 STAT106 -7974.73 -> 00035371
+00033629 Payment 2024-09-16 STAT107 -7369.88 -> 00036109
+00033627 Payment 2024-09-18 STAT107 -7902.65 -> 00036265
+00033618 Payment 2024-09-20 STAT107 -7168.30 -> 00036047
+00033989 Payment 2024-10-07 STAT108 -7902.65 -> 00036863
+00034139 Payment 2024-10-15 STAT108 -7150.13 -> 00037197
+00034565 Payment 2024-10-28 STAT108 -7954.53 -> 00037530
+00034683 Payment 2024-11-08 STAT109 -7954.53 -> 00037967
+00035214 Payment 2024-11-14 STAT110 -7224.65 -> 00038158
+00044844 Payment 2024-11-14 STAT109 -7224.65 -> 00038734
+00035248 Payment 2024-11-29 STAT109 -812.79 -> 00038585
+00000476 Journal 2024-12-11 7224.65 -> -   <-- non-payment entry
+00035898 Payment 2024-12-11 STAT110 -7224.65 -> 00038735
+00039454 Payment 2024-12-11 STAT110 -7224.65 -> -   <-- NO OWN INVOICE OF THIS AMOUNT
+00035887 Payment 2024-12-23 STAT110 -7542.39 -> 00039076
+00035888 Payment 2024-12-23 STAT110 -848.53 -> 00038976
+00035877 Payment 2024-12-30 STAT110 -9649.56 -> -   <-- NO OWN INVOICE OF THIS AMOUNT
+STAT repeats in 2024 (payments per STAT): 99:2 100:2 101:3 102:3 103:3 104:2 105:2 106:3 107:3 108:3 109:3 110:6
+
+## COF002 2024 payments: own-account exact-amount pairing
+00027739 Payment 2024-01-09 STAT99 -8582.00 -> 00028465
+00027959 Payment 2024-01-16 STAT99 -8554.15 -> 00027813
+00028486 Payment 2024-01-31 STAT99 -8860.92 -> 00029077
+00029022 Payment 2024-02-21 STAT100 -8966.43 -> 00029648
+00044819 Payment 2024-03-05 STAT101 -7541.87 -> 00030037
+00044825 Payment 2024-03-08 STAT101 -565.64 -> 00030165
+00044826 Payment 2024-03-12 STAT101 -1430.31 -> 00030293
+00029691 Payment 2024-03-22 STAT101 -4576.98 -> 00030492
+00030002 Payment 2024-04-03 STAT102 -1430.31 -> 00030874
+00030218 Payment 2024-04-18 STAT102 -1423.07 -> 00031344
+00030421 Payment 2024-04-26 STAT102 -7589.65 -> 00031509
+00030459 Payment 2024-05-02 STAT103 -1138.45 -> 00031701
+00030630 Payment 2024-05-10 STAT103 -8339.36 -> 00031941
+00031366 Payment 2024-05-27 STAT103 -8339.36 -> 00032353
+00031353 Payment 2024-06-11 STAT104 -8620.47 -> 00032766
+00031554 Payment 2024-06-26 STAT104 -6854.46 -> 00033292
+00032130 Payment 2024-07-13 STAT105 -8781.17 -> 00034087
+00037735 Payment 2024-07-31 STAT105 -8512.36 -> 00034681
+00032598 Payment 2024-08-03 STAT106 -8512.36 -> -   <-- NO OWN INVOICE OF THIS AMOUNT
+00032837 Payment 2024-08-20 STAT106 -7974.73 -> 00035264
+00033619 Payment 2024-09-20 STAT107 -6809.89 -> 00035770
+00033825 Payment 2024-09-27 STAT107 -7014.72 -> 00036565
+00034350 Payment 2024-10-21 STAT108 -8490.79 -> 00037334
+00034684 Payment 2024-11-08 STAT109 -7954.53 -> 00037913
+00035222 Payment 2024-11-22 STAT109 -8308.36 -> 00038338
+STAT repeats in 2024 (payments per STAT): 99:3 100:1 101:4 102:3 103:3 104:2 105:2 106:2 107:2 108:1 109:2
+
+## 2024-dated invoices with no own-account payment of the same net amount
+COF001: 00039311 Invoice 2024-12-23 15980.92 net 8390.92 DN#11988
+COF002: 00031096 Invoice 2024-04-08 7628.30 net 7628.30 DN#8770 SO#8135
+
+## Open own-account leftovers that are 2024-dated, payments side (spare payments, 2024)
+COF001: 00029492 Payment 2024-04-18 STAT102 -7628.30
+COF001: 00032615 Payment 2024-08-03 STAT106 -8512.36
+COF001: 00039454 Payment 2024-12-11 STAT110 -7224.65
+COF001: 00035877 Payment 2024-12-30 STAT110 -9649.56
+COF002: 00032598 Payment 2024-08-03 STAT106 -8512.36
+
+## Cross-account exact-sum tests (2024 spare payments of one account vs open invoices of the other, exact and sums of up to 3)
+COF001 00029492 Payment 2024-04-18 STAT102 -7628.30  vs COF002 open invoices (+-90d): 00031096 2024-04-08 7628.30 [DN#8770 SO#8135]   (same amount exists as COF002 invoice: 00031096 2024-04-08 UNPAID)
+COF001 00032615 Payment 2024-08-03 STAT106 -8512.36  vs COF002 open invoices (+-90d): none   (same amount exists as COF002 invoice: 00034681 2024-07-29 paid by 00037735)
+COF001 00039454 Payment 2024-12-11 STAT110 -7224.65  vs COF002 open invoices (+-90d): none
+COF001 00035877 Payment 2024-12-30 STAT110 -9649.56  vs COF002 open invoices (+-90d): none
+COF002 00032598 Payment 2024-08-03 STAT106 -8512.36  vs COF001 open invoices (+-90d): none
+
+## Context only (outside the 2024 scope): spare payments of any year vs open invoices of the other account, exact amount, any date
+COF001 precedent: invoices of 7996.26: 00027821 2023-12-11, 00027997 2023-12-23; payments of 7996.26: 00027448 Payment 2023-12-30 STAT98 -7996.26; 00027449 Payment 2023-12-30 STAT98 -7996.26
+
+## Stock lines behind the candidate invoices (ERP RAW DATA/CURRENT.TXT, shared stock-line dump; ASSERTED, not a statement)
+COF001 00030276 09/03/2024 S.4 48KG SV LPG- PACKED qty 5.00 x 1326.6600 = 6633.30 + line tax 995.00 = 7628.30
+COF002 00031096 08/04/2024 S.4 48KG SV LPG- PACKED qty 5.00 x 1326.6600 = 6633.30 + line tax 995.00 = 7628.30
+COF002 00034681 29/07/2024 9.4 9KG ORYX LPG qty 5.00 x 233.7500 = 1168.75 + line tax 175.31 = 1344.06
+COF002 00034681 29/07/2024 S.4 48KG SV LPG- PACKED qty 5.00 x 1246.6600 = 6233.30 + line tax 935.00 = 7168.30
+
+## Base rate: how often does one account invoice an amount the other also invoiced?
+all years: COF001 distinct invoice amounts > R1000: 125; COF002: 134; amounts invoiced in both accounts: 46 (8292.08, 9224.92, 4784.00, 8913.97, 2990.00, 7439.98, 7997.99, 4186.00, 1794.00, 7235.97, 1380.00, 8461.22, 7861.50, 1035.00, 9135.56, 2760.00, 7287.78, 8002.06, 1725.00, 2415.00, 6978.91, 2070.00, 7628.30, 7589.65, 8339.36, 7974.73, 7954.53, 7072.50, 8107.50, 6037.50, 8784.18, 9070.63, 8625.00, 8596.58, 7590.00, 8630.23, 8459.80, 7617.59, 7360.82, 6757.63, 7381.33, 6960.00, 7432.90, 8493.21, 9671.37, 2932.50)
+2024: COF001 distinct invoice amounts > R1000: 25; COF002: 25; amounts invoiced in both accounts: 5 (7628.30, 7589.65, 8339.36, 7974.73, 7954.53)
+
+## Document-number adjacency across the two accounts, 2024 payment-type rows (|delta doc| <= 3)
+first CURRENT export (010688c, header UD PAY/CHEQUES -9537.82) carried: 00029505 Ud Paymnt 2024-03-05 -7541.87; 00029503 Ud Paymnt 2024-03-08 -565.64; 00029493 Ud Paymnt 2024-03-12 -1430.31
+UD rows vs later Payment rows (same date and amount in the later export): 00029505 -> 00044819 STAT101; 00029503 -> 00044825 STAT101; 00029493 -> 00044826 STAT101
+COF001 00027740 Payment 2024-01-09 STAT99 -8022.40 | COF002 00027739 Payment 2024-01-09 STAT99 -8582.00 | own-account invoice: 00028389 / 00028465
+COF001 00030219 Payment 2024-03-12 STAT101 -7628.30 | COF002 00030218 Payment 2024-04-18 STAT102 -1423.07 | own-account invoice: 00030276 / 00031344
+COF001 00029492 Payment 2024-04-18 STAT102 -7628.30 | COF002 00029493 Ud Paymnt 2024-03-12 -1430.31 | own-account invoice: - / UD row
+COF001 00030458 Payment 2024-05-02 STAT103 -853.84 | COF002 00030459 Payment 2024-05-02 STAT103 -1138.45 | own-account invoice: 00031699 / 00031701
+COF001 00031367 Payment 2024-05-27 STAT103 -8339.36 | COF002 00031366 Payment 2024-05-27 STAT103 -8339.36 | own-account invoice: 00032280 / 00032353
+COF001 00031352 Payment 2024-06-11 STAT104 -8339.36 | COF002 00031353 Payment 2024-06-11 STAT104 -8620.47 | own-account invoice: 00032727 / 00032766
+COF001 00031551 Payment 2024-06-26 STAT104 -8026.93 | COF002 00031554 Payment 2024-06-26 STAT104 -6854.46 | own-account invoice: 00033254 / 00033292
+COF001 00037733 Payment 2024-07-26 STAT105 -7705.92 | COF002 00037735 Payment 2024-07-31 STAT105 -8512.36 | own-account invoice: 00034418 / 00034681
+COF001 00033618 Payment 2024-09-20 STAT107 -7168.30 | COF002 00033619 Payment 2024-09-20 STAT107 -6809.89 | own-account invoice: 00036047 / 00035770
+COF001 00034683 Payment 2024-11-08 STAT109 -7954.53 | COF002 00034684 Payment 2024-11-08 STAT109 -7954.53 | own-account invoice: 00037967 / 00037913
+
+## Document-number "era" vs ledger date (payment-type rows, both accounts, 2023-09..2025-01; era = median date of the 4 nearest doc numbers)
+COF001 00029492 Payment 2024-04-18 STAT102 -7628.30: doc number sits in the 2024-03-12 era, ledger date is 37 days later
+COF001 00030219 Payment 2024-03-12 STAT101 -7628.30: doc number sits in the 2024-04-22 era, ledger date is 41 days earlier
+COF002 00032130 Payment 2024-07-13 STAT105 -8781.17: doc number sits in the 2024-08-03 era, ledger date is 21 days earlier
+COF001 00032143 Payment 2024-07-09 STAT105 -8026.93: doc number sits in the 2024-08-03 era, ledger date is 25 days earlier
+COF001 00036190 Payment 2025-01-20 STAT111 -8146.82: doc number sits in the 2024-12-23 era, ledger date is 28 days later
+COF002 00036192 Payment 2025-01-20 STAT111 -8999.38: doc number sits in the 2024-12-23 era, ledger date is 28 days later
+COF001 00037733 Payment 2024-07-26 STAT105 -7705.92: doc number sits in the 2025-01-27 era, ledger date is 185 days earlier
+COF002 00037735 Payment 2024-07-31 STAT105 -8512.36: doc number sits in the 2025-01-27 era, ledger date is 180 days earlier
+COF001 00039454 Payment 2024-12-11 STAT110 -7224.65: doc number sits in the 2025-01-22 era, ledger date is 42 days earlier
+COF002 00044819 Payment 2024-03-05 STAT101 -7541.87: doc number sits in the 2024-11-14 era, ledger date is 254 days earlier
+COF002 00044825 Payment 2024-03-08 STAT101 -565.64: doc number sits in the 2024-11-14 era, ledger date is 251 days earlier
+COF002 00044826 Payment 2024-03-12 STAT101 -1430.31: doc number sits in the 2024-11-14 era, ledger date is 247 days earlier
+COF001 00044844 Payment 2024-11-14 STAT109 -7224.65: doc number sits in the 2024-03-12 era, ledger date is 247 days later
