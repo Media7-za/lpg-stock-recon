@@ -14,6 +14,8 @@ import re
 import sys
 import tempfile
 
+sys.dont_write_bytecode = True  # importing the shared exporter must not leave __pycache__ in the repo
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 SHARED = os.path.abspath(os.path.join(HERE, "../../shared/scripts/export_to_pdf.py"))
 
