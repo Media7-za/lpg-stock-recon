@@ -1,0 +1,24 @@
+{
+  "debtorCode": "COF001",
+  "debtorName": "COFFEEBERRY-CASCADES",
+  "txtPath": "analysis/debtors/COF001/raw/COF001_COMBINED.TXT",
+  "periodStart": "2026-06-01",
+  "combinedBf": 8595.35,
+  "bfSourceNote": "ERP running balance after the last May 2026 row (invoice 50809, 21 May 2026), COF001_CURRENT.TXT line 172",
+  "cylOpeningFinancial": 7406.0,
+  "paymentLane": "LPG",
+  "cylOpeningQty": {
+    "14.1": 0,
+    "19.1": -1,
+    "9.1": 3,
+    "D.1": 10,
+    "S.1": -5
+  },
+  "skuRates": {
+    "14.1": 575,
+    "19.1": 690,
+    "9.1": 517.5,
+    "D.1": 1150,
+    "S.1": 1150
+  }
+}
