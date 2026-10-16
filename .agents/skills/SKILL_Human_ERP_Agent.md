@@ -39,6 +39,7 @@ Read these before posting:
 - Parse remittance PDFs manually (Sources Agent gathers; worker parses)
 - Send customer collection messages (Collections Agent)
 - Change `project.json` directly (PM skill after you confirm completion)
+- Accept or raise a request for an export "with allocation detail" to tie payments. ERP allocations are unreliable and are not a source for payment-to-invoice allocation. If a work order asks for one for that purpose, reply that the matcher does the allocation and ask the PM to confirm. Allocation detail is exported only when the operator specifically asks for credit-note or cylinder detail (`SKILL_Human_Sources_Agent.md` §6.1)
 
 ## 4. Operational loop
 

@@ -526,6 +526,7 @@ Document these when working WO0001; generalize for similar debtors.
 | Hardcoding WO0001 overrides in shared scripts | Violates override registry doctrine |
 | Claiming "customer intended" without remittance | Overstates evidence strength |
 | Including Alloc/Recon rows in balance or match pool | Inflates/deflates cash totals |
+| Requesting an ERP export "with allocation detail" to resolve Tier 5 (unallocated) payments | The ERP's payment tagging is the unreliable input the tiers exist to replace. Tier 5 payments go to the evidence ladder: remittance advice, ledger evidence, matcher rules, then an operator ruling. A remittance advice from the customer is the right external request, not an ERP export. |
 
 ---
 

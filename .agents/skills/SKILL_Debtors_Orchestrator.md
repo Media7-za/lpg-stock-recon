@@ -278,6 +278,7 @@ Closing turns close; they do not open. Investigation turns are read-only by defa
 | Relayed status taken as fact | A pasted or forwarded report describes locks, files or commits that are not on the remote branch (a divergent cloud-agent branch did this on 2026-10-10). Verify against `git` and the remote before acting. |
 | Stale or undated export | A TXT without its export date in the file name, or whose header disagrees with its own running balance, treated as current (DEBTORS_DOCTRINE D21). |
 | Premature family release | A consolidated statement released while a member is review-only or an operator hold is open (DEBTORS_DOCTRINE D20). |
+| Asking the ERP for allocation detail to unblock untied payments | Wrong blocker. ERP payment allocations are unreliable (ASSERTED); allocation is the matcher's job. Work untied payments from ledger evidence and remittance advices, or hold them as a ruling. Do not raise an ERP export request for allocation detail. Only exception: operator-requested credit-note or cylinder detail (`SKILL_Human_Sources_Agent.md` §6.1; `business_rules.md` rule 3). Seen on MD0003 (request of 2026-10-13, ADM-129) and COF001 (2026-10-16). |
 
 ### 8. Sequencing doctrine
 

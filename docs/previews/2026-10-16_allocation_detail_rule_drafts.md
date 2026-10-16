@@ -1,6 +1,6 @@
-# Allocation-detail rule: draft edits (2026-10-16), for operator review, NOT APPLIED
+# Allocation-detail rule: draft edits (2026-10-16) (blocks 2 to 5 applied)
 
-Status: DRAFT. Nothing in `.agents/skills/`, `AGENTS.md` or `docs/requests/` has been edited.
+Status: blocks 2 to 5 APPLIED 2026-10-16; block 1 (AGENTS.md) awaits operator approval; block 6 sent to the COF001 session (ADM-135 line not changed).
 
 **Why this exists.** Agents keep asking for ERP allocation detail as the way to unblock unallocated payments. The rule against it is already written in `SKILL_Human_Sources_Agent.md` section 6.1 and `analysis/debtors/shared/docs/business_rules.md` (rule 3, "Never derive an open-invoice list from ERP payment tagging alone"). It sits in the Sources agent's skill, which a worker or PM session does not open when it hits a blocker. The main session also broke the rule: `docs/requests/2026-10-13_md0003_allocation_detail_request.md` and ADM-129 asked for exactly this, and COF001 followed the same pattern.
 

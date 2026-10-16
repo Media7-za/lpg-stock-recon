@@ -1,5 +1,8 @@
 # ERP export request — MD0003 allocation detail (13 Oct 2026)
 
+> **SUPERSEDED 2026-10-16 as a pattern.** This request asked the ERP for allocation detail to tie untied payments. That is not the right blocker (see `SKILL_Human_Sources_Agent.md` §6.1 and `business_rules.md` rule 3). The file was delivered (ADM-129) and is on record; do not copy this request for other accounts.
+
+
 **DRAFT for posting by the main session. Not posted by the drafting session.**
 **To:** ERP agent / @Sharmin  **From:** operator (request to be confirmed by the operator before it goes out), drafted by Claude Code
 **Purpose:** MD0003 (BLUFF MEAT SUPPLY(PTY) LTD) has 7 payments the matcher cannot tie to invoices (R114,330.23) and the only allocation detail on file is `DEBENQ_CURRENT.TXT`, which ends on 2026-08-09 (CURRENT BALANCE R18,853.36). A fresh export with allocation detail shows which invoices the ERP applied each payment to, so the operator can rule on payments 37143, 37144, 37262, 37263, 37817, 42440 and 42858 and can check the later 2026 payments. The statement balance itself is already proven (ERP R16,547.81 from `MD0003_2026-10-08.TXT`, variance R0.00); this request does not replace that file.
