@@ -267,7 +267,7 @@ table('Part 1B: Cylinder Deposit Financial Statement', ledger.filter((r) => r.cy
 
 md.push('## Part 2: Cylinder (CYL) Custody - Physical Asset Tracker');
 md.push('');
-md.push('Net quantity = invoiced less credited, de-duplicated DB lines (see `data/db_sku_classification.json`). **ASSERTED** from DB: the ingest coverage gate (`npm run debtors:ingest-check -- --debtor COF001`) was not run in this session, so custody conclusions are not yet gated.');
+md.push('Net quantity = invoiced less credited, de-duplicated DB lines (see `data/db_sku_classification.json`). Quantities are ASSERTED from DB (the TXT carries no quantities), but every invoice and credit note behind them was matched to the TXT by document and amount (see `reports/COF001_DB_COVERAGE_2026-10-16.md`). The script gate `debtors:ingest-check` has not been run, so custody is not formally gated.');
 md.push('');
 md.push('| SKU | Net qty | Template rate (ASSUMED) | Exposure at rate |');
 md.push('| :--- | ---: | ---: | ---: |');
@@ -299,7 +299,8 @@ md.push(`| Balance chain across extracts (rows and file boundaries) | ${problems
 md.push(`| Per-row bridge 1A + 1B = ERP balance | ${Math.abs(bridgeVariance) < 0.01 ? 'Holds on all rows' : 'Breaks - see problems'} | PROVEN |`);
 md.push(`| TXT rows by type | ${Object.entries(txtTypeCounts).map(([k, v]) => `${k}: ${v}`).join('; ')} | PROVEN - TXT |`);
 md.push(`| DB header rows by type (for coverage comparison) | ${Object.entries(db.db_header_row_counts).map(([k, v]) => `${k}: ${v}`).join('; ')} | ASSERTED - DB |`);
-md.push(`| Invoice rows: TXT vs DB | TXT ${fullLedger.filter((r) => r.type === 'Invoice').length} rows; DB ${db.db_header_row_counts.Invoice} rows | Not reconciled per document; ingest gate not run | UNRECONCILED |`);
+md.push('| Invoices and credit notes: TXT vs DB (document level) | All 231 invoices and 92 credit notes found in DB with matching amounts; 3 dated one day later in DB | PROVEN - `reports/COF001_DB_COVERAGE_2026-10-16.md` |');
+md.push('| Payments and bank entries: TXT vs DB | 4 payments absent from DB; 5 payments and 1 Bank UD differ in amount | UNRECONCILED - no effect on routing (TXT-authoritative) |');
 md.push(`| Credit-note rows whose EMPTY marker routes to 1A | ${emptyNot1B.length} rows | ${emptyNot1B.length ? 'Review: EMPTY ref but SKU rule says gas' : 'PROVEN - none'} |`);
 md.push(`| Cylinder-lane rows without an EMPTY marker in the ERP reference | ${cyl1BNoEmpty.length} rows | Expected: routing is SKU-based (user rule), not ERP-reference-based |`);
 md.push(`| Document number used on more than one row (invoice or credit note) | ${duplicateKeys.length} keys | ${duplicateKeys.length ? 'Review: ' + duplicateKeys.map(([k, n]) => `${k} x${n}`).join(', ') : 'PROVEN - none'} |`);
@@ -315,7 +316,7 @@ if (emptyNot1B.length) {
 md.push('### Findings for review');
 md.push('');
 md.push('- **DB line duplication:** raw DB lines double-count six of the nine mixed documents (for example 00045528: 14,800.38 raw vs 7,400.19 in the TXT). The split uses de-duplicated lines (same rule as the generator), which tie to the TXT.');
-md.push(`- **DB row count exceeds the extracts:** DB has ${db.db_header_row_counts.Invoice} invoice and ${db.db_header_row_counts.Payment} payment rows; the four extracts have ${fullLedger.filter((r) => r.type === 'Invoice').length} and ${fullLedger.filter((r) => r.type === 'Payment').length}. The TXT chain ties to the ERP balance, so the statement is unaffected, but Part 2 custody (DB-only) may include documents outside the ERP extracts.`);
+md.push('- **DB row count vs extracts:** the DB holds more header rows than the TXT (317 invoice rows vs 231) but they are duplicate copies of the same documents; distinct DB documents equal the matched TXT documents. See `reports/COF001_DB_COVERAGE_2026-10-16.md`.');
 md.push(`- **EMPTY marker vs SKU rule:** ${cyl1BNoEmpty.length} cylinder-routed rows carry no EMPTY marker in the ERP reference. A reference-based generator would send them to 1A, so the SKU rule changes the answer here.`);
 md.push('- **Charges without cylinder SKUs:** lines such as `SM CYL RENTAL` (00049204) and rental lines 00041576 to 00041579 contain no cylinder SKU, so the SKU rule routes them to 1A. Confirm that is the intended treatment.');
 md.push(`- **1B vs custody:** 1B closes at ${fmt(close1B)} and custody exposure at template rates is ${fmt(custodyExposure)}. The statement does not reconcile deposits to custody quantities.`);
@@ -323,7 +324,7 @@ md.push('');
 md.push('### Not done in this run');
 md.push('');
 md.push('- `npm run debtors:reconcile-v5` / `reconcile_debtor_v5_from_txt.mjs` was not run: it needs `DATABASE_URL`, which is not set in this session. This report applies the same routing rules from the Supabase connector, and the generator should be re-run once the connection string is available.');
-md.push('- Ingest coverage gate (`debtors:ingest-check`) not run, so Part 2 is ASSERTED, not gated.');
+md.push('- Script ingest gate (`debtors:ingest-check`) not run; document coverage was checked manually via Supabase instead.');
 md.push('- Workspace fixture `src/features/debtor-position-workspace/data/fixtures/COF001.v5.json` not produced.');
 md.push('');
 if (problems.length) {

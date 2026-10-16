@@ -1,5 +1,5 @@
 {
-  "source": "Supabase project oqhpxnaadahohwkslive, account_no = 'COF001', queried 2026-10-15 (transaction_items, vw_clean_transactions)",
+  "source": "Supabase project oqhpxnaadahohwkslive, account_no = 'COF001', queried 2026-10-15, replayed identical 2026-10-16 (transaction_items, vw_clean_transactions)",
   "cyl_skus": ["9.1", "14.1", "19.1", "S.1", "D.1"],
   "routing_rule": "Invoice / Crd Note with only cylinder SKU lines -> 1B; with no cylinder SKU lines -> 1A; with both -> line-level split (cylinder lines to 1B, other lines to 1A). Payments -> 1A.",
   "db_routing_counts_doc_level": {

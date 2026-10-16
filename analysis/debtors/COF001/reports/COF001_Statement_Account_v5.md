@@ -529,7 +529,7 @@ Mixed documents split at line level: 9 documents (12420, 12454, 38976, 39076, 39
 
 ## Part 2: Cylinder (CYL) Custody - Physical Asset Tracker
 
-Net quantity = invoiced less credited, de-duplicated DB lines (see `data/db_sku_classification.json`). **ASSERTED** from DB: the ingest coverage gate (`npm run debtors:ingest-check -- --debtor COF001`) was not run in this session, so custody conclusions are not yet gated.
+Net quantity = invoiced less credited, de-duplicated DB lines (see `data/db_sku_classification.json`). Quantities are ASSERTED from DB (the TXT carries no quantities), but every invoice and credit note behind them was matched to the TXT by document and amount (see `reports/COF001_DB_COVERAGE_2026-10-16.md`). The script gate `debtors:ingest-check` has not been run, so custody is not formally gated.
 
 | SKU | Net qty | Template rate (ASSUMED) | Exposure at rate |
 | :--- | ---: | ---: | ---: |
@@ -563,7 +563,8 @@ Negative net quantities mean credits exceed invoices in the ledger for that SKU.
 | Per-row bridge 1A + 1B = ERP balance | Holds on all rows | PROVEN |
 | TXT rows by type | Crd Note: 92; Invoice: 231; Payment: 152; Bank UD: 3; Journal: 1; Bank XFer: 1 | PROVEN - TXT |
 | DB header rows by type (for coverage comparison) | Invoice: 317; Crd Note: 132; Payment: 263; Bank UD: 7; Bank XFer: 1; Journal: 1 | ASSERTED - DB |
-| Invoice rows: TXT vs DB | TXT 231 rows; DB 317 rows | Not reconciled per document; ingest gate not run | UNRECONCILED |
+| Invoices and credit notes: TXT vs DB (document level) | All 231 invoices and 92 credit notes found in DB with matching amounts; 3 dated one day later in DB | PROVEN - `reports/COF001_DB_COVERAGE_2026-10-16.md` |
+| Payments and bank entries: TXT vs DB | 4 payments absent from DB; 5 payments and 1 Bank UD differ in amount | UNRECONCILED - no effect on routing (TXT-authoritative) |
 | Credit-note rows whose EMPTY marker routes to 1A | 0 rows | PROVEN - none |
 | Cylinder-lane rows without an EMPTY marker in the ERP reference | 58 rows | Expected: routing is SKU-based (user rule), not ERP-reference-based |
 | Document number used on more than one row (invoice or credit note) | 0 keys | PROVEN - none |
@@ -571,7 +572,7 @@ Negative net quantities mean credits exceed invoices in the ledger for that SKU.
 ### Findings for review
 
 - **DB line duplication:** raw DB lines double-count six of the nine mixed documents (for example 00045528: 14,800.38 raw vs 7,400.19 in the TXT). The split uses de-duplicated lines (same rule as the generator), which tie to the TXT.
-- **DB row count exceeds the extracts:** DB has 317 invoice and 263 payment rows; the four extracts have 231 and 152. The TXT chain ties to the ERP balance, so the statement is unaffected, but Part 2 custody (DB-only) may include documents outside the ERP extracts.
+- **DB row count vs extracts:** the DB holds more header rows than the TXT (317 invoice rows vs 231) but they are duplicate copies of the same documents; distinct DB documents equal the matched TXT documents. See `reports/COF001_DB_COVERAGE_2026-10-16.md`.
 - **EMPTY marker vs SKU rule:** 58 cylinder-routed rows carry no EMPTY marker in the ERP reference. A reference-based generator would send them to 1A, so the SKU rule changes the answer here.
 - **Charges without cylinder SKUs:** lines such as `SM CYL RENTAL` (00049204) and rental lines 00041576 to 00041579 contain no cylinder SKU, so the SKU rule routes them to 1A. Confirm that is the intended treatment.
 - **1B vs custody:** 1B closes at -7,774.00 and custody exposure at template rates is -7,992.50. The statement does not reconcile deposits to custody quantities.
@@ -579,7 +580,7 @@ Negative net quantities mean credits exceed invoices in the ledger for that SKU.
 ### Not done in this run
 
 - `npm run debtors:reconcile-v5` / `reconcile_debtor_v5_from_txt.mjs` was not run: it needs `DATABASE_URL`, which is not set in this session. This report applies the same routing rules from the Supabase connector, and the generator should be re-run once the connection string is available.
-- Ingest coverage gate (`debtors:ingest-check`) not run, so Part 2 is ASSERTED, not gated.
+- Script ingest gate (`debtors:ingest-check`) not run; document coverage was checked manually via Supabase instead.
 - Workspace fixture `src/features/debtor-position-workspace/data/fixtures/COF001.v5.json` not produced.
 
 ---
