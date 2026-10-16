@@ -1,0 +1,13 @@
+{
+  "channel": "supabase-connector (execute_sql), read-only SELECT, operator-authorised in this session 2026-10-16",
+  "project": "oqhpxnaadahohwkslive",
+  "table": "transaction_headers",
+  "filter": "account_no in ('COF001','COF002') and ltrim(doc_no,'0') in ('29492','30219','31096','32598','32615','37735','29493','29503','29505','44819','44825','44826')",
+  "sql": "with r as (select id, entry_type, period, account_no, doc_no, ref_no, description, batch_ref, tx_date, amount_excl, flag from transaction_headers where account_no in ('COF001','COF002') and ltrim(doc_no,'0') in ('29492','30219','31096','32598','32615','37735','29493','29503','29505','44819','44825','44826') order by doc_no, entry_type, id), j as (select coalesce(json_agg(row_to_json(r)),'[]'::json)::text as t from r) select md5(t) as md5, length(t) as len, t as rows_json from j",
+  "md5": "42b4d3360da559fa7590fd2c0111ed8a",
+  "len": 3796,
+  "rows": 18,
+  "rowsFile": "headers.rows.json",
+  "verification": "rows file transcribed from the connector output; md5sum and byte length of the saved file equal the server-side md5 and len (checked 2026-10-16)",
+  "note": "Ad hoc read-only query, not a pipeline script, so analysis/debtors/shared/scripts/db_replay/record_capture.mjs was not used. A first unfiltered query (all accounts, 14412 chars, md5 0f3b17b7d05a87f1f357b21bd919b078) showed that docs 29493, 29503, 29505, 44819, 44825, 44826 and 30219 have no COF001/COF002 header; the colliding doc numbers belong to other accounts' invoices. That larger result was not saved."
+}
