@@ -1,6 +1,6 @@
 # ERP export request — COF002 (and COF001 at the same instant) — 16 Oct 2026
 
-**DRAFT for posting by the operator / main session. Not posted by the drafting (analyst) session; Linear untouched.**
+**POSTED 2026-10-16 as Linear ADM-138 (assigned to Sharmin, related to ADM-135) at the operator's request; sections 1 and 2 plus the missing-header re-ingest (30219, 29646). Section 3 (bank lines) stays with the operator.**
 **To:** ERP agent / @Sharmin  **From:** Louis (operator), drafted by Claude Code (COF002 2024 analyst session)
 **Why:** COF002 (COFFEEBERRY-HILTON) has only undated year-split and CURRENT enquiry files (branch `claude/exciting-lamport-rvb277`, commit `fd8a268`). Three of the four fail D21 intake, and none is dated (`docs/previews/2026-10-16_COF002_2024_analysis.md`, section 2). We need dated, verified exports so COF001 and COF002 can be compared at the same instant.
 
