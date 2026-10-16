@@ -13,7 +13,8 @@ class Client {
   async query(sql, params = []) {
     const [from, account] = params;
     if (account !== 'COF001') throw new Error(`snapshot only holds COF001, got ${account}`);
-    if (from < '2026-01-01') throw new Error(`snapshot starts 2026-01-01, requested ${from}`);
+    const validFrom = snap.validFrom || '2026-01-01';
+    if (from < validFrom) throw new Error(`snapshot starts ${validFrom}, requested ${from}`);
     if (sql.includes("debt_group = 'CYL'") && sql.includes('SELECT tx_date')) {
       return { rows: snap.cylQty.filter((r) => r.tx_date >= from) };
     }

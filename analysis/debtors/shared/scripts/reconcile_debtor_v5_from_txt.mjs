@@ -222,7 +222,10 @@ function parseArgs() {
 
 const round2 = (n) => Math.round(Number(n) * 100) / 100;
 const fmt = (n) =>
-  Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  (Math.abs(Number(n)) < 0.005 ? 0 : Number(n)).toLocaleString('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
 
 function parseCsvLine(line) {
   const out = [];
@@ -290,6 +293,17 @@ function parseTxtRows(filePath) {
     });
   }
   return { rows, headerBalance };
+}
+
+// Optional `periodEnd` (ISO date) in config: keep only TXT rows dated on or before it, and take the
+// closing check balance from the ERP running balance on the last such row in file order (the TXT
+// header balance only describes the end of the whole extract).
+function loadTxt(cfg) {
+  const parsed = parseTxtRows(cfg.txtPath);
+  if (!cfg.periodEnd) return parsed;
+  const rows = parsed.rows.filter((r) => r.iso <= cfg.periodEnd);
+  if (!rows.length) throw new Error(`No TXT rows on or before periodEnd ${cfg.periodEnd}`);
+  return { rows, headerBalance: rows.at(-1).erp_balance };
 }
 
 function splitRowAmount(r, docSplit, cfg) {
@@ -464,7 +478,7 @@ async function buildPart2(client, cfg) {
     bucket[c.stock_no] = (bucket[c.stock_no] || 0) + c.qty;
   }
 
-  const { rows } = parseTxtRows(cfg.txtPath);
+  const { rows } = loadTxt(cfg);
   const ratificationInvCn = (cfg.ratificationRows || []).filter((r) => r.is_ratification);
   const periodRows = [
     ...rows.filter(
@@ -539,7 +553,7 @@ async function buildPart2(client, cfg) {
 async function main() {
   const debtorCode = parseArgs();
   const cfg = loadConfig(debtorCode);
-  const { rows, headerBalance } = parseTxtRows(cfg.txtPath);
+  const { rows, headerBalance } = loadTxt(cfg);
   const allRows = mergeRatificationRows(rows, cfg.ratificationRows);
 
   const client = new pg.Client(pgClientOptions());

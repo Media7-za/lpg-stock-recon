@@ -17,8 +17,8 @@ const ROOT = path.resolve(here, '../../../..');
 const ACCT = path.join(ROOT, 'analysis/debtors/COF001');
 const SUFFIX = process.argv.includes('--suffix') ? process.argv[process.argv.indexOf('--suffix') + 1] : '';
 const REPORT = path.join(ACCT, `reports/COF001_Statement_Account_v5${SUFFIX}.md`);
-const snapshotPath = path.join(ACCT, 'data/db_snapshot_2026.json');
 const cfg = JSON.parse(fs.readFileSync(path.join(ACCT, `config/statement_v5${SUFFIX}.json`), 'utf8'));
+const snapshotPath = path.join(ACCT, cfg.dbSnapshot || 'data/db_snapshot_2026.json');
 const snap = JSON.parse(fs.readFileSync(snapshotPath, 'utf8'));
 const r2 = (n) => Math.round(n * 100) / 100;
 
@@ -45,7 +45,8 @@ for (const line of txt.split('\n')) {
   const f = [...line.matchAll(/"([^"]*)"/g)].map((m) => m[1]);
   if (f.length < 11 || !/^\d+$/.test(f[0]) || !f[4].includes('/')) continue;
   const [dd, mm, yyyy] = f[4].split('/');
-  if (`${yyyy}-${mm}-${dd}` < cfg.periodStart || (f[3] !== 'Invoice' && f[3] !== 'Crd Note')) continue;
+  const iso = `${yyyy}-${mm}-${dd}`;
+  if (iso < cfg.periodStart || (cfg.periodEnd && iso > cfg.periodEnd) || (f[3] !== 'Invoice' && f[3] !== 'Crd Note')) continue;
   checked += 1;
   const k = `${f[2].replace(/^0+/, '')}|${f[3]}`;
   if (!split.has(k)) bad.push(`${k}: no lane data`);
@@ -71,19 +72,45 @@ run(
 );
 
 // 4. Internal review notes (stripped from customer exports with the INTERNAL_ONLY block).
+// Items depend on which documents fall inside the statement window.
+const inWindow = (iso) => iso >= cfg.periodStart && (!cfg.periodEnd || iso <= cfg.periodEnd);
+const rentalDocs = [
+  ...(inWindow('2025-03-18') ? ['41576 to 41579 (R250.00 each, Mar 2025)'] : []),
+  ...(inWindow('2026-02-11') ? ['49204 (`SM CYL RENTAL`, R6,960.00, Feb 2026)'] : []),
+];
+const has15558 = inWindow('2026-08-26');
+const items = [];
+items.push(
+  `**Lane rule.** Invoices and credit notes are routed by cylinder SKU lines (9.1, 14.1, 19.1, S.1, D.1): cylinder-only documents go to 1B, documents with none go to 1A, and mixed documents are split by line.${
+    rentalDocs.length
+      ? ` This differs from the database view's \`debt_group\` for rental-only lines: ${rentalDocs.join(' and ')} ${rentalDocs.length > 1 ? 'have' : 'has'} no cylinder SKU, so ${rentalDocs.length > 1 ? 'they sit' : 'it sits'} in 1A. Under the view's grouping ${rentalDocs.length > 1 ? 'they' : 'it'} would be in 1B. Please confirm.`
+      : ''
+  }`,
+);
+if (has15558) {
+  items.push(
+    '**Documents not yet in the database (lane ASSUMED).** The 2026-10-16 ERP extract adds 15803 (Crd Note -3,002.83), 15804 (Crd Note -15,697.50) and 53619 (Invoice +18,700.33). The database has no lines for them. 15803 and 15804 equal the gas and cylinder parts of 15558 exactly, so they are routed 1A and 1B. 53619 equals 15558 in total and is assumed to reverse it line for line (1A +3,002.83, 1B +15,697.50). If 53619 was wholly gas, 1A would be R15,697.50 higher and 1B R15,697.50 lower; the combined balance would not change. Replace with database lines once ingested.',
+    '**Net effect of the 15558 correction.** 15558 (-18,700.33) is reversed by 53619 (+18,700.33) and re-issued as 15803 + 15804 (-18,700.33). The ERP closing balance is unchanged at R-16,256.52.',
+    '**Custody (Part 2).** Quantities come from the database and have no lines for 53619 or 15804. If 53619 reverses 15558 and 15804 re-issues it, they cancel and the closing quantities are unchanged.',
+  );
+}
+if (cfg.periodStart < '2026-01-01') {
+  items.push(
+    '**Late-posted documents.** Four payments dated 2023-2024 (24732, 30219, 29646, 29696; R31,131.01 in total) and a journal/payment pair dated 14 Nov and 11 Dec 2024 (44844, 476) appear in the current ERP extract after 2025 entries. Statements are built by document date, so they are included in the opening balance. The ERP balance shown at the time (for example R23,095.09 after payment 35877 on 30 Dec 2024) did not include them.',
+  );
+}
+items.push(
+  `**Database coverage.** All invoices and credit notes in the window were matched to the database by document and amount (see \`reports/COF001_DB_COVERAGE_2026-10-16.md\`).${inWindow('2026-05-05') ? ' Three documents in May 2026 are dated one day later in the database (14854, 50513, 50515).' : ''}`,
+  `**Generator run.** The shared generator was run unchanged (except as noted) against \`${cfg.dbSnapshot || 'data/db_snapshot_2026.json'}\` (rows pulled from Supabase on 2026-10-16) because \`DATABASE_URL\` is not set in cloud sessions. Fixes made to the shared generator: the TXT header balance regex accepts a minus sign, so credit balances no longer read as NaN; an optional \`periodEnd\` limits the window and takes the closing check from the ERP running balance on the last row inside it.`,
+  '**Not run.** `npm run debtors:ingest-check -- --debtor COF001` (needs `DATABASE_URL`).',
+);
 const notes = `<!-- INTERNAL_ONLY_START -->
 
 ## Review Notes (internal)
 
 *Added by \`COF001/scripts/run_v5_statement.mjs\`; the tables above are shared-generator output.*
 
-1. **Lane rule.** Invoices and credit notes are routed by cylinder SKU lines (9.1, 14.1, 19.1, S.1, D.1): cylinder-only documents go to 1B, documents with none go to 1A, and mixed documents are split by line. This differs from the database view's \`debt_group\` for rental-only lines: 49204 (\`SM CYL RENTAL\`, R6,960.00, Feb 2026) has no cylinder SKU, so it sits in 1A. Under the view's grouping it would be in 1B. Please confirm.
-2. **Documents not yet in the database (lane ASSUMED).** The 2026-10-16 ERP extract adds 15803 (Crd Note -3,002.83), 15804 (Crd Note -15,697.50) and 53619 (Invoice +18,700.33). The database has no lines for them. 15803 and 15804 equal the gas and cylinder parts of 15558 exactly, so they are routed 1A and 1B. 53619 equals 15558 in total and is assumed to reverse it line for line (1A +3,002.83, 1B +15,697.50). If 53619 was wholly gas, 1A would be R15,697.50 higher and 1B R15,697.50 lower; the combined balance would not change. Replace with database lines once ingested.
-3. **Net effect of the 15558 correction.** 15558 (-18,700.33) is reversed by 53619 (+18,700.33) and re-issued as 15803 + 15804 (-18,700.33). The ERP closing balance is unchanged at R-16,256.52.
-4. **Custody (Part 2).** Quantities come from the database and have no lines for 53619 or 15804. If 53619 reverses 15558 and 15804 re-issues it, they cancel and the closing quantities are unchanged.
-5. **Database coverage.** All 2026 invoices and credit notes were matched to the database by document and amount (see \`reports/COF001_DB_COVERAGE_2026-10-16.md\`). Three documents are dated one day later in the database (14854, 50513, 50515).
-6. **Generator run.** The shared generator was run unchanged against \`data/db_snapshot_2026.json\` (rows pulled from Supabase on 2026-10-16) because \`DATABASE_URL\` is not set in cloud sessions. One fix was made to the shared generator: the TXT header balance regex now accepts a minus sign, so credit balances no longer read as NaN.
-7. **Not run.** \`npm run debtors:ingest-check -- --debtor COF001\` (needs \`DATABASE_URL\`).
+${items.map((t, i) => `${i + 1}. ${t}`).join('\n')}
 
 `;
 let md = fs.readFileSync(REPORT, 'utf8');
