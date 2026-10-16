@@ -1,0 +1,68 @@
+{
+  "debtorCode": "COF001",
+  "note": "Operator rulings recorded verbatim from the operator's reply of 2026-10-16 to the COF001 ruling pack (docs/previews/2026-10-14_COF001_onboarding.md section 8). Recorded by the analyst session; decisions are the operator's. Append only. Tie approvals (Q5) are in payment_pattern_overrides.json projectionLocks L0001 to L0014.",
+  "rulings": [
+    {
+      "id": "Q1",
+      "date": "2026-10-16",
+      "operator_words": "16256.52 is the correct balance",
+      "ruling": "The ERP balance of record is -R16,256.52 (customer in credit), as at the last row 2026-09-09 of raw/COF001_COMBINED.TXT. The portfolio-list figure R7,958.38 is not the balance.",
+      "tripwires": [
+        "a dated ADM-135 export whose CURRENT BALANCE differs from -16256.52",
+        "the ERP agent's correction of credit note 15558 (Q2) changing the balance"
+      ]
+    },
+    {
+      "id": "Q2",
+      "date": "2026-10-16",
+      "operator_words": "No. The ERP Agent is fixing this now",
+      "ruling": "Credit note 15558 (2026-08-26, -R18,700.33, DN#22890-EMPTY) is NOT a valid posting. The ERP agent is correcting it. Nothing is reversed or removed in the repo: the current files still show it, so the -16256.52 above reflects the ERP before that fix.",
+      "tripwires": [
+        "the corrected, dated ADM-135 export arrives",
+        "the corrected export changes the balance, the credit note or the Bank XFer 7473 (+R3,002.33, 2026-09-09)"
+      ],
+      "status": "open: ERP agent upload 2026-10-16 shows 15558 reversed by invoice 53619 and re-issued as 15803/15804 (raw/Enquiry/COF001_UNDATED_post_fix_window.TXT); balance unchanged; awaiting operator confirmation and dated full export"
+    },
+    {
+      "id": "Q3",
+      "date": "2026-10-16",
+      "operator_words": "Yes",
+      "ruling": "Interim D21 exception accepted: the undated, EXCLUDE: ALLOCATION DETAIL files COF001_2023/2024/2025/CURRENT/COMBINED.TXT (from branch claude/eager-mccarthy-vsfs1u) may be used until the dated ADM-135 export replaces them.",
+      "tripwires": [
+        "the dated ADM-135 export arrives (replace and rebuild)"
+      ]
+    },
+    {
+      "id": "Q5",
+      "date": "2026-10-16",
+      "operator_words": "Accept",
+      "ruling": "All 14 probable ties approved: T0009, T0030, T0050, T0056, T0070, T0077 to T0084, T0219. Recorded as locks L0001 to L0014 in payment_pattern_overrides.json.",
+      "tripwires": [
+        "an allocation-detail export tagging any of these documents to a different invoice",
+        "re-issue or reversal of any document in these ties"
+      ]
+    },
+    {
+      "id": "Q6",
+      "date": "2026-10-16",
+      "operator_words": "No",
+      "ruling": "No COF001/COF002 payer family. COF001 and COF002 stay separate accounts, not netted.",
+      "tripwires": [
+        "an operator ruling grouping them",
+        "a remittance advice covering both accounts"
+      ]
+    },
+    {
+      "id": "Q4",
+      "date": "2026-10-16",
+      "operator_words": "Re-ingest group A, exception for group B",
+      "ruling": "Group A (payments 24732, 30219, 29646, 29696) to be re-ingested into the database: request drafted in docs/requests/2026-10-16_cof001_reingest_request.md, not yet done. Group B (Bank UD 32615, 40294, 42621): ratified exception, config/ingest_exceptions.json ING-COF001-001 to 003.",
+      "tripwires": [
+        "the DB receives the group A headers (clears the gap)",
+        "a dated export shows a different amount or type for any of the 7 documents"
+      ],
+      "status": "group B done; group A open: awaiting re-ingest"
+    }
+  ],
+  "held": []
+}

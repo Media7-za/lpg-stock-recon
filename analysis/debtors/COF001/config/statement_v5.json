@@ -1,0 +1,24 @@
+{
+  "debtorCode": "COF001",
+  "debtorName": "COFFEEBERRY-CASCADES",
+  "txtPath": "analysis/debtors/COF001/raw/COF001_COMBINED.TXT",
+  "periodStart": "2022-03-01",
+  "combinedBf": 0.0,
+  "bfSourceNote": "COF001_COMBINED.TXT line 14 BALANCE B/F 0.00 (first row 01/03/2022; CURRENT BALANCE -16256.52, 481 rows, last row 09/09/2026). Copied unchanged from branch claude/eager-mccarthy-vsfs1u. Operator instruction 2026-10-16: use the ERP TXT files from that branch only. Exception to D21 naming: the files are undated (export date unknown; last row 2026-09-09), so they are not \"current\" under D21 and must be replaced by the dated ADM-135 export when it arrives.",
+  "cylOpeningFinancial": 0.0,
+  "paymentLane": "LPG",
+  "cylOpeningQty": {
+    "14.1": 0,
+    "19.1": 0,
+    "9.1": 0,
+    "D.1": 0,
+    "S.1": 0
+  },
+  "skuRates": {
+    "14.1": 632.5,
+    "19.1": 690,
+    "9.1": 517.5,
+    "D.1": 1207.5,
+    "S.1": 1207.5
+  }
+}

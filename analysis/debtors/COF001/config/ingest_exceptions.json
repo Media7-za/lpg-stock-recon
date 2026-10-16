@@ -1,0 +1,37 @@
+{
+  "exceptions": [
+    {
+      "exception_id": "ING-COF001-001",
+      "doc_no": "32615",
+      "entry_type": "Bank UD",
+      "classification": "DOCUMENT_TYPE_UNRESOLVED",
+      "allowed_use": ["financial_balance_from_txt", "custody", "sku_analysis", "allocation"],
+      "blocked_use": [],
+      "reason": "Operator ruling 2026-10-16 (COF001 Q4, 'exception for group B'): Bank UD +R8,512.36 (2024-08-03, STAT:105) is paired on the TXT with Payment 32615 -R8,512.36 (STAT:106); the pair nets R0.00 and carries no stock lines. Same treatment as SA0001 ING-SA0001-002. Tripwires: the DB later receives a header for it; a dated export shows a different amount or type.",
+      "ratified_by": "operator",
+      "ratified_at": "2026-10-16"
+    },
+    {
+      "exception_id": "ING-COF001-002",
+      "doc_no": "40294",
+      "entry_type": "Bank UD",
+      "classification": "DOCUMENT_TYPE_UNRESOLVED",
+      "allowed_use": ["financial_balance_from_txt", "custody", "sku_analysis", "allocation"],
+      "blocked_use": [],
+      "reason": "Operator ruling 2026-10-16 (COF001 Q4, 'exception for group B'): Bank UD +R6,446.60 (2025-07-22, STAT:117) is paired on the TXT with Payment 40294 -R6,446.60; the pair nets R0.00 and carries no stock lines. Same treatment as SA0001 ING-SA0001-002. Tripwires: the DB later receives a header for it; a dated export shows a different amount or type.",
+      "ratified_by": "operator",
+      "ratified_at": "2026-10-16"
+    },
+    {
+      "exception_id": "ING-COF001-003",
+      "doc_no": "42621",
+      "entry_type": "Bank UD",
+      "classification": "DOCUMENT_TYPE_UNRESOLVED",
+      "allowed_use": ["financial_balance_from_txt", "custody", "sku_analysis", "allocation"],
+      "blocked_use": [],
+      "reason": "Operator ruling 2026-10-16 (COF001 Q4, 'exception for group B'): Bank UD +R7,360.82 (2025-12-09, STAT:122) is paired on the TXT with Payment 42621 -R7,360.82; the pair nets R0.00 and carries no stock lines. Same treatment as SA0001 ING-SA0001-002. Tripwires: the DB later receives a header for it; a dated export shows a different amount or type.",
+      "ratified_by": "operator",
+      "ratified_at": "2026-10-16"
+    }
+  ]
+}

@@ -1,0 +1,580 @@
+{
+  "debtor": "COF001",
+  "registry_version": 1,
+  "overrides": [],
+  "projectionLocks": {
+    "schema": 1,
+    "closes": [],
+    "locks": [
+      {
+        "lock_id": "L0001",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "exact",
+          "net": 0,
+          "reason": "Operator ruling 2026-10-16 (COF001 ruling pack Q5, \"Accept\"): approve all 14 probable ties listed in Appendix A of reports/COF001_Open_Items_v5.md (CN_DN_PAIR x5, CN_AMOUNT_DATE x8, BATCH_SUM x1). Evidence: matcher v5 rules on the operator-directed undated ERP TXT (raw/COF001_COMBINED.TXT, no allocation detail). Tripwires: the dated ADM-135 allocation-detail export tagging any of these documents to a different invoice; a re-issue or reversal of any document in these ties; a fresh ERP export whose balance differs from -16256.52.",
+          "approvedBy": "Louis (operator)",
+          "session": "unrecorded",
+          "approvedTie": {
+            "tie_id": "T0009",
+            "rule": "CN_DN_PAIR",
+            "docs": [
+              "Invoice 16090",
+              "Crd Note 4214"
+            ]
+          }
+        },
+        "members": [
+          {
+            "key": "16090|Invoice|LPG|2022-10-18|4463.99",
+            "doc": "16090",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2022-10-18",
+            "amount": 4463.99
+          },
+          {
+            "key": "4214|Crd Note|LPG|2022-10-22|-4463.99",
+            "doc": "4214",
+            "entry_type": "Crd Note",
+            "lane": "LPG",
+            "date": "2022-10-22",
+            "amount": -4463.99
+          }
+        ],
+        "createdAt": "2026-10-16T10:36:50.603Z"
+      },
+      {
+        "lock_id": "L0002",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "exact",
+          "net": 0,
+          "reason": "Operator ruling 2026-10-16 (COF001 ruling pack Q5, \"Accept\"): approve all 14 probable ties listed in Appendix A of reports/COF001_Open_Items_v5.md (CN_DN_PAIR x5, CN_AMOUNT_DATE x8, BATCH_SUM x1). Evidence: matcher v5 rules on the operator-directed undated ERP TXT (raw/COF001_COMBINED.TXT, no allocation detail). Tripwires: the dated ADM-135 allocation-detail export tagging any of these documents to a different invoice; a re-issue or reversal of any document in these ties; a fresh ERP export whose balance differs from -16256.52.",
+          "approvedBy": "Louis (operator)",
+          "session": "unrecorded",
+          "approvedTie": {
+            "tie_id": "T0030",
+            "rule": "CN_DN_PAIR",
+            "docs": [
+              "Invoice 39076",
+              "Crd Note 11492"
+            ]
+          }
+        },
+        "members": [
+          {
+            "key": "39076|Invoice|CYL|2024-12-14|6037.50",
+            "doc": "39076",
+            "entry_type": "Invoice",
+            "lane": "CYL",
+            "date": "2024-12-14",
+            "amount": 6037.5
+          },
+          {
+            "key": "11492|Crd Note|CYL|2024-12-17|-6037.50",
+            "doc": "11492",
+            "entry_type": "Crd Note",
+            "lane": "CYL",
+            "date": "2024-12-17",
+            "amount": -6037.5
+          }
+        ],
+        "createdAt": "2026-10-16T10:36:50.603Z"
+      },
+      {
+        "lock_id": "L0003",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "exact",
+          "net": 0,
+          "reason": "Operator ruling 2026-10-16 (COF001 ruling pack Q5, \"Accept\"): approve all 14 probable ties listed in Appendix A of reports/COF001_Open_Items_v5.md (CN_DN_PAIR x5, CN_AMOUNT_DATE x8, BATCH_SUM x1). Evidence: matcher v5 rules on the operator-directed undated ERP TXT (raw/COF001_COMBINED.TXT, no allocation detail). Tripwires: the dated ADM-135 allocation-detail export tagging any of these documents to a different invoice; a re-issue or reversal of any document in these ties; a fresh ERP export whose balance differs from -16256.52.",
+          "approvedBy": "Louis (operator)",
+          "session": "unrecorded",
+          "approvedTie": {
+            "tie_id": "T0050",
+            "rule": "CN_DN_PAIR",
+            "docs": [
+              "Invoice 45529",
+              "Crd Note 13191"
+            ]
+          }
+        },
+        "members": [
+          {
+            "key": "45529|Invoice|CYL|2025-08-09|8625.00",
+            "doc": "45529",
+            "entry_type": "Invoice",
+            "lane": "CYL",
+            "date": "2025-08-09",
+            "amount": 8625
+          },
+          {
+            "key": "13191|Crd Note|CYL|2025-08-11|-8625.00",
+            "doc": "13191",
+            "entry_type": "Crd Note",
+            "lane": "CYL",
+            "date": "2025-08-11",
+            "amount": -8625
+          }
+        ],
+        "createdAt": "2026-10-16T10:36:50.603Z"
+      },
+      {
+        "lock_id": "L0004",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "exact",
+          "net": 0,
+          "reason": "Operator ruling 2026-10-16 (COF001 ruling pack Q5, \"Accept\"): approve all 14 probable ties listed in Appendix A of reports/COF001_Open_Items_v5.md (CN_DN_PAIR x5, CN_AMOUNT_DATE x8, BATCH_SUM x1). Evidence: matcher v5 rules on the operator-directed undated ERP TXT (raw/COF001_COMBINED.TXT, no allocation detail). Tripwires: the dated ADM-135 allocation-detail export tagging any of these documents to a different invoice; a re-issue or reversal of any document in these ties; a fresh ERP export whose balance differs from -16256.52.",
+          "approvedBy": "Louis (operator)",
+          "session": "unrecorded",
+          "approvedTie": {
+            "tie_id": "T0056",
+            "rule": "CN_DN_PAIR",
+            "docs": [
+              "Invoice 46820",
+              "Crd Note 13599"
+            ]
+          }
+        },
+        "members": [
+          {
+            "key": "46820|Invoice|CYL|2025-10-01|7590.00",
+            "doc": "46820",
+            "entry_type": "Invoice",
+            "lane": "CYL",
+            "date": "2025-10-01",
+            "amount": 7590
+          },
+          {
+            "key": "13599|Crd Note|CYL|2025-10-03|-7590.00",
+            "doc": "13599",
+            "entry_type": "Crd Note",
+            "lane": "CYL",
+            "date": "2025-10-03",
+            "amount": -7590
+          }
+        ],
+        "createdAt": "2026-10-16T10:36:50.603Z"
+      },
+      {
+        "lock_id": "L0005",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "exact",
+          "net": 0,
+          "reason": "Operator ruling 2026-10-16 (COF001 ruling pack Q5, \"Accept\"): approve all 14 probable ties listed in Appendix A of reports/COF001_Open_Items_v5.md (CN_DN_PAIR x5, CN_AMOUNT_DATE x8, BATCH_SUM x1). Evidence: matcher v5 rules on the operator-directed undated ERP TXT (raw/COF001_COMBINED.TXT, no allocation detail). Tripwires: the dated ADM-135 allocation-detail export tagging any of these documents to a different invoice; a re-issue or reversal of any document in these ties; a fresh ERP export whose balance differs from -16256.52.",
+          "approvedBy": "Louis (operator)",
+          "session": "unrecorded",
+          "approvedTie": {
+            "tie_id": "T0070",
+            "rule": "CN_DN_PAIR",
+            "docs": [
+              "Invoice 50274",
+              "Crd Note 14768"
+            ]
+          }
+        },
+        "members": [
+          {
+            "key": "50274|Invoice|CYL|2026-04-17|7072.50",
+            "doc": "50274",
+            "entry_type": "Invoice",
+            "lane": "CYL",
+            "date": "2026-04-17",
+            "amount": 7072.5
+          },
+          {
+            "key": "14768|Crd Note|CYL|2026-04-19|-7072.50",
+            "doc": "14768",
+            "entry_type": "Crd Note",
+            "lane": "CYL",
+            "date": "2026-04-19",
+            "amount": -7072.5
+          }
+        ],
+        "createdAt": "2026-10-16T10:36:50.603Z"
+      },
+      {
+        "lock_id": "L0006",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "exact",
+          "net": 0,
+          "reason": "Operator ruling 2026-10-16 (COF001 ruling pack Q5, \"Accept\"): approve all 14 probable ties listed in Appendix A of reports/COF001_Open_Items_v5.md (CN_DN_PAIR x5, CN_AMOUNT_DATE x8, BATCH_SUM x1). Evidence: matcher v5 rules on the operator-directed undated ERP TXT (raw/COF001_COMBINED.TXT, no allocation detail). Tripwires: the dated ADM-135 allocation-detail export tagging any of these documents to a different invoice; a re-issue or reversal of any document in these ties; a fresh ERP export whose balance differs from -16256.52.",
+          "approvedBy": "Louis (operator)",
+          "session": "unrecorded",
+          "approvedTie": {
+            "tie_id": "T0077",
+            "rule": "CN_AMOUNT_DATE",
+            "docs": [
+              "Invoice 12420",
+              "Crd Note 3283"
+            ]
+          }
+        },
+        "members": [
+          {
+            "key": "12420|Invoice|CYL|2022-03-01|1035.00",
+            "doc": "12420",
+            "entry_type": "Invoice",
+            "lane": "CYL",
+            "date": "2022-03-01",
+            "amount": 1035
+          },
+          {
+            "key": "3283|Crd Note|CYL|2022-03-01|-1035.00",
+            "doc": "3283",
+            "entry_type": "Crd Note",
+            "lane": "CYL",
+            "date": "2022-03-01",
+            "amount": -1035
+          }
+        ],
+        "createdAt": "2026-10-16T10:36:50.603Z"
+      },
+      {
+        "lock_id": "L0007",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "exact",
+          "net": 0,
+          "reason": "Operator ruling 2026-10-16 (COF001 ruling pack Q5, \"Accept\"): approve all 14 probable ties listed in Appendix A of reports/COF001_Open_Items_v5.md (CN_DN_PAIR x5, CN_AMOUNT_DATE x8, BATCH_SUM x1). Evidence: matcher v5 rules on the operator-directed undated ERP TXT (raw/COF001_COMBINED.TXT, no allocation detail). Tripwires: the dated ADM-135 allocation-detail export tagging any of these documents to a different invoice; a re-issue or reversal of any document in these ties; a fresh ERP export whose balance differs from -16256.52.",
+          "approvedBy": "Louis (operator)",
+          "session": "unrecorded",
+          "approvedTie": {
+            "tie_id": "T0078",
+            "rule": "CN_AMOUNT_DATE",
+            "docs": [
+              "Invoice 12454",
+              "Crd Note 3292"
+            ]
+          }
+        },
+        "members": [
+          {
+            "key": "12454|Invoice|CYL|2022-03-04|1725.00",
+            "doc": "12454",
+            "entry_type": "Invoice",
+            "lane": "CYL",
+            "date": "2022-03-04",
+            "amount": 1725
+          },
+          {
+            "key": "3292|Crd Note|CYL|2022-03-04|-1725.00",
+            "doc": "3292",
+            "entry_type": "Crd Note",
+            "lane": "CYL",
+            "date": "2022-03-04",
+            "amount": -1725
+          }
+        ],
+        "createdAt": "2026-10-16T10:36:50.603Z"
+      },
+      {
+        "lock_id": "L0008",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "exact",
+          "net": 0,
+          "reason": "Operator ruling 2026-10-16 (COF001 ruling pack Q5, \"Accept\"): approve all 14 probable ties listed in Appendix A of reports/COF001_Open_Items_v5.md (CN_DN_PAIR x5, CN_AMOUNT_DATE x8, BATCH_SUM x1). Evidence: matcher v5 rules on the operator-directed undated ERP TXT (raw/COF001_COMBINED.TXT, no allocation detail). Tripwires: the dated ADM-135 allocation-detail export tagging any of these documents to a different invoice; a re-issue or reversal of any document in these ties; a fresh ERP export whose balance differs from -16256.52.",
+          "approvedBy": "Louis (operator)",
+          "session": "unrecorded",
+          "approvedTie": {
+            "tie_id": "T0079",
+            "rule": "CN_AMOUNT_DATE",
+            "docs": [
+              "Invoice 14866",
+              "Crd Note 3784"
+            ]
+          }
+        },
+        "members": [
+          {
+            "key": "14866|Invoice|CYL|2022-08-03|2990.00",
+            "doc": "14866",
+            "entry_type": "Invoice",
+            "lane": "CYL",
+            "date": "2022-08-03",
+            "amount": 2990
+          },
+          {
+            "key": "3784|Crd Note|CYL|2022-08-03|-2990.00",
+            "doc": "3784",
+            "entry_type": "Crd Note",
+            "lane": "CYL",
+            "date": "2022-08-03",
+            "amount": -2990
+          }
+        ],
+        "createdAt": "2026-10-16T10:36:50.603Z"
+      },
+      {
+        "lock_id": "L0009",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "exact",
+          "net": 0,
+          "reason": "Operator ruling 2026-10-16 (COF001 ruling pack Q5, \"Accept\"): approve all 14 probable ties listed in Appendix A of reports/COF001_Open_Items_v5.md (CN_DN_PAIR x5, CN_AMOUNT_DATE x8, BATCH_SUM x1). Evidence: matcher v5 rules on the operator-directed undated ERP TXT (raw/COF001_COMBINED.TXT, no allocation detail). Tripwires: the dated ADM-135 allocation-detail export tagging any of these documents to a different invoice; a re-issue or reversal of any document in these ties; a fresh ERP export whose balance differs from -16256.52.",
+          "approvedBy": "Louis (operator)",
+          "session": "unrecorded",
+          "approvedTie": {
+            "tie_id": "T0080",
+            "rule": "CN_AMOUNT_DATE",
+            "docs": [
+              "Invoice 16091",
+              "Crd Note 4195"
+            ]
+          }
+        },
+        "members": [
+          {
+            "key": "16091|Invoice|LPG|2022-10-18|9485.98",
+            "doc": "16091",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2022-10-18",
+            "amount": 9485.98
+          },
+          {
+            "key": "4195|Crd Note|LPG|2022-10-18|-9485.98",
+            "doc": "4195",
+            "entry_type": "Crd Note",
+            "lane": "LPG",
+            "date": "2022-10-18",
+            "amount": -9485.98
+          }
+        ],
+        "createdAt": "2026-10-16T10:36:50.603Z"
+      },
+      {
+        "lock_id": "L0010",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "exact",
+          "net": 0,
+          "reason": "Operator ruling 2026-10-16 (COF001 ruling pack Q5, \"Accept\"): approve all 14 probable ties listed in Appendix A of reports/COF001_Open_Items_v5.md (CN_DN_PAIR x5, CN_AMOUNT_DATE x8, BATCH_SUM x1). Evidence: matcher v5 rules on the operator-directed undated ERP TXT (raw/COF001_COMBINED.TXT, no allocation detail). Tripwires: the dated ADM-135 allocation-detail export tagging any of these documents to a different invoice; a re-issue or reversal of any document in these ties; a fresh ERP export whose balance differs from -16256.52.",
+          "approvedBy": "Louis (operator)",
+          "session": "unrecorded",
+          "approvedTie": {
+            "tie_id": "T0081",
+            "rule": "CN_AMOUNT_DATE",
+            "docs": [
+              "Invoice 17465",
+              "Crd Note 4561"
+            ]
+          }
+        },
+        "members": [
+          {
+            "key": "17465|Invoice|LPG|2023-02-03|7605.58",
+            "doc": "17465",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2023-02-03",
+            "amount": 7605.58
+          },
+          {
+            "key": "4561|Crd Note|LPG|2023-02-03|-7605.58",
+            "doc": "4561",
+            "entry_type": "Crd Note",
+            "lane": "LPG",
+            "date": "2023-02-03",
+            "amount": -7605.58
+          }
+        ],
+        "createdAt": "2026-10-16T10:36:50.603Z"
+      },
+      {
+        "lock_id": "L0011",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "exact",
+          "net": 0,
+          "reason": "Operator ruling 2026-10-16 (COF001 ruling pack Q5, \"Accept\"): approve all 14 probable ties listed in Appendix A of reports/COF001_Open_Items_v5.md (CN_DN_PAIR x5, CN_AMOUNT_DATE x8, BATCH_SUM x1). Evidence: matcher v5 rules on the operator-directed undated ERP TXT (raw/COF001_COMBINED.TXT, no allocation detail). Tripwires: the dated ADM-135 allocation-detail export tagging any of these documents to a different invoice; a re-issue or reversal of any document in these ties; a fresh ERP export whose balance differs from -16256.52.",
+          "approvedBy": "Louis (operator)",
+          "session": "unrecorded",
+          "approvedTie": {
+            "tie_id": "T0082",
+            "rule": "CN_AMOUNT_DATE",
+            "docs": [
+              "Invoice 38976",
+              "Crd Note 11452"
+            ]
+          }
+        },
+        "members": [
+          {
+            "key": "38976|Invoice|CYL|2024-12-11|1552.50",
+            "doc": "38976",
+            "entry_type": "Invoice",
+            "lane": "CYL",
+            "date": "2024-12-11",
+            "amount": 1552.5
+          },
+          {
+            "key": "11452|Crd Note|CYL|2024-12-11|-1552.50",
+            "doc": "11452",
+            "entry_type": "Crd Note",
+            "lane": "CYL",
+            "date": "2024-12-11",
+            "amount": -1552.5
+          }
+        ],
+        "createdAt": "2026-10-16T10:36:50.603Z"
+      },
+      {
+        "lock_id": "L0012",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "exact",
+          "net": 0,
+          "reason": "Operator ruling 2026-10-16 (COF001 ruling pack Q5, \"Accept\"): approve all 14 probable ties listed in Appendix A of reports/COF001_Open_Items_v5.md (CN_DN_PAIR x5, CN_AMOUNT_DATE x8, BATCH_SUM x1). Evidence: matcher v5 rules on the operator-directed undated ERP TXT (raw/COF001_COMBINED.TXT, no allocation detail). Tripwires: the dated ADM-135 allocation-detail export tagging any of these documents to a different invoice; a re-issue or reversal of any document in these ties; a fresh ERP export whose balance differs from -16256.52.",
+          "approvedBy": "Louis (operator)",
+          "session": "unrecorded",
+          "approvedTie": {
+            "tie_id": "T0083",
+            "rule": "CN_AMOUNT_DATE",
+            "docs": [
+              "Invoice 39609",
+              "Crd Note 11625"
+            ]
+          }
+        },
+        "members": [
+          {
+            "key": "39609|Invoice|CYL|2025-01-06|7072.50",
+            "doc": "39609",
+            "entry_type": "Invoice",
+            "lane": "CYL",
+            "date": "2025-01-06",
+            "amount": 7072.5
+          },
+          {
+            "key": "11625|Crd Note|CYL|2025-01-06|-7072.50",
+            "doc": "11625",
+            "entry_type": "Crd Note",
+            "lane": "CYL",
+            "date": "2025-01-06",
+            "amount": -7072.5
+          }
+        ],
+        "createdAt": "2026-10-16T10:36:50.603Z"
+      },
+      {
+        "lock_id": "L0013",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "exact",
+          "net": 0,
+          "reason": "Operator ruling 2026-10-16 (COF001 ruling pack Q5, \"Accept\"): approve all 14 probable ties listed in Appendix A of reports/COF001_Open_Items_v5.md (CN_DN_PAIR x5, CN_AMOUNT_DATE x8, BATCH_SUM x1). Evidence: matcher v5 rules on the operator-directed undated ERP TXT (raw/COF001_COMBINED.TXT, no allocation detail). Tripwires: the dated ADM-135 allocation-detail export tagging any of these documents to a different invoice; a re-issue or reversal of any document in these ties; a fresh ERP export whose balance differs from -16256.52.",
+          "approvedBy": "Louis (operator)",
+          "session": "unrecorded",
+          "approvedTie": {
+            "tie_id": "T0084",
+            "rule": "CN_AMOUNT_DATE",
+            "docs": [
+              "Invoice 39968",
+              "Crd Note 11718"
+            ]
+          }
+        },
+        "members": [
+          {
+            "key": "39968|Invoice|CYL|2025-01-17|8107.50",
+            "doc": "39968",
+            "entry_type": "Invoice",
+            "lane": "CYL",
+            "date": "2025-01-17",
+            "amount": 8107.5
+          },
+          {
+            "key": "11718|Crd Note|CYL|2025-01-17|-8107.50",
+            "doc": "11718",
+            "entry_type": "Crd Note",
+            "lane": "CYL",
+            "date": "2025-01-17",
+            "amount": -8107.5
+          }
+        ],
+        "createdAt": "2026-10-16T10:36:50.603Z"
+      },
+      {
+        "lock_id": "L0014",
+        "close_id": null,
+        "status": "approved",
+        "rule": "OPERATOR_RULING",
+        "ruling": {
+          "treatment": "exact",
+          "net": 0,
+          "reason": "Operator ruling 2026-10-16 (COF001 ruling pack Q5, \"Accept\"): approve all 14 probable ties listed in Appendix A of reports/COF001_Open_Items_v5.md (CN_DN_PAIR x5, CN_AMOUNT_DATE x8, BATCH_SUM x1). Evidence: matcher v5 rules on the operator-directed undated ERP TXT (raw/COF001_COMBINED.TXT, no allocation detail). Tripwires: the dated ADM-135 allocation-detail export tagging any of these documents to a different invoice; a re-issue or reversal of any document in these ties; a fresh ERP export whose balance differs from -16256.52.",
+          "approvedBy": "Louis (operator)",
+          "session": "unrecorded",
+          "approvedTie": {
+            "tie_id": "T0219",
+            "rule": "BATCH_SUM",
+            "docs": [
+              "Payment 40757",
+              "Invoice 45528"
+            ]
+          }
+        },
+        "members": [
+          {
+            "key": "40757|Payment|LPG|2025-08-18|-7400.19",
+            "doc": "40757",
+            "entry_type": "Payment",
+            "lane": "LPG",
+            "date": "2025-08-18",
+            "amount": -7400.19
+          },
+          {
+            "key": "45528|Invoice|LPG|2025-08-09|1362.69",
+            "doc": "45528",
+            "entry_type": "Invoice",
+            "lane": "LPG",
+            "date": "2025-08-09",
+            "amount": 1362.69
+          },
+          {
+            "key": "45528|Invoice|CYL|2025-08-09|6037.50",
+            "doc": "45528",
+            "entry_type": "Invoice",
+            "lane": "CYL",
+            "date": "2025-08-09",
+            "amount": 6037.5
+          }
+        ],
+        "createdAt": "2026-10-16T10:36:50.603Z"
+      }
+    ],
+    "voids": []
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "debtorCode": "COF001",
+  "clientName": "COFFEEBERRY-CASCADES",
+  "status": "active",
+  "reconState": "pending",
+  "financials": {
+    "totalOutstanding": -16256.52,
+    "lastInvoiceDate": null,
+    "lastPaymentDate": null,
+    "agedDebt180Plus": 0
+  },
+  "collections": {
+    "actionRequired": false,
+    "actionType": null,
+    "dateSent": null,
+    "deadlineDate": null,
+    "notes": "ERP CURRENT BALANCE -R16,256.52 (PROVEN from raw/COF001_COMBINED.TXT header, last row 2026-09-09; undated file, operator-directed use). The portfolio list figure R7,958.38 is not the ledger end. COF002 (COFFEEBERRY-HILTON) is a different account: not merged, not netted.",
+    "nextAction": "operator rules P1-P4; dated ADM-135 export; group A re-ingest (H-028 to H-030)",
+    "nextActionDate": null
+  },
+  "history": [
+    {
+      "date": "2026-10-14",
+      "event": "Initialized micro-project tracking (analyst session, branch claude/cof001-analysis). No per-account ERP export exists on origin or in the repo, so no projection was built and the ERP balance is NOT proven (variance unverified). Request for a dated COF001 DEBENQ export drafted in docs/requests/2026-10-14_cof001_erp_export_request.md (not posted). Config scaffolded with portfolio skuRates (option B). See docs/previews/2026-10-14_COF001_onboarding.md and docs/handoffs/2026-10-14_COF001.md."
+    },
+    {
+      "date": "2026-10-16",
+      "event": "Operator instruction: use the ERP TXT files from branch claude/eager-mccarthy-vsfs1u only. Filed unchanged under raw/ (COF001_2023/2024/2025/CURRENT/COMBINED.TXT). Intake check (analyst, ad hoc script in session scratch, not a repo generator): running-balance chain 0 breaks on all files; COMBINED last balance = header CURRENT BALANCE = TOTAL TRANSACTIONS = -16256.52; UD 0.00. Undated names and EXCLUDE: ALLOCATION DETAIL header are D21 exceptions, replaced when the dated ADM-135 export arrives. Config set from COMBINED (B/F 0.00 at 2022-03-01). reconcile_debtor_v5_from_txt.mjs NOT run: needs the database (DATABASE_URL or authorised connector replay), not authorised in this session. The other branch's db_sku_classification.json and statement were NOT used."
+    },
+    {
+      "date": "2026-10-16",
+      "event": "Operator authorised read-only connector replay for COF001. v5 generator, ingest check, matcher and open-items renderer run on raw/COF001_COMBINED.TXT (connector-sourced, db_replay/2026-10-16/, md5-verified). ERP variance R0.00, sub-ledger tie R0.00, open-items proof HOLDS (ERP -16256.52). Ingest coverage PARTIAL (7 gaps), custody/SKU/allocation blocked, output reviewOnly; 14 payments unallocated, 14 probable ties pending operator. No locks, reconState stays pending, no release. See docs/previews/2026-10-14_COF001_onboarding.md section 8."
+    },
+    {
+      "date": "2026-10-16",
+      "event": "Operator rulings on the COF001 pack: Q1 -16256.52 is the correct balance; Q2 credit note 15558 not valid, ERP agent fixing (open); Q3 interim D21 exception accepted; Q5 all 14 probable ties approved (locks L0001 to L0014); Q6 no COF001/COF002 payer family; Q4 (7 ingest gaps) explained, not decided. Recorded in config/operator_rulings.json and config/payment_pattern_overrides.json. Matcher rebuilt: 219 confirmed, 0 probable, proof HOLDS, variance R0.00; still reviewOnly (ingest coverage partial). reconState remains pending."
+    },
+    {
+      "date": "2026-10-16",
+      "event": "Operator Q4: re-ingest group A (payments 24732, 30219, 29646, 29696; -R31,131.01), exception for group B (Bank UD 32615, 40294, 42621 = config/ingest_exceptions.json ING-COF001-001..003). Ingest gaps 7 to 4; custody/SKU/allocation still blocked, outputs still reviewOnly until group A is re-ingested (request drafted, not posted: docs/requests/2026-10-16_cof001_reingest_request.md). ERP-agent upload filed unchanged as raw/Enquiry/COF001_UNDATED_post_fix_window.TXT (window, undated, not the statement TXT): credit note 15558 reversed by invoice 53619 and re-issued as 15803/15804; balance unchanged -16256.52. Rebuilt from the existing replay captures: ERP variance R0.00, proof HOLDS, 14 locks applied."
+    },
+    {
+      "date": "2026-10-16",
+      "event": "Workflow audit against the debtor skill pipeline: ingestGate populated from reports/COF001_INGEST_COVERAGE_2026-10-16.json; HUMAN_TASKS H-028 to H-030 queued; Evidence Exchange manifest evidence_exchange/COF001/turn-001; D21 intake check committed (scripts/d21_intake_check.mjs) - year-split files COF001_2023/2024/2025.TXT FAIL D21 (header is current balance, last balance is year-end) and were moved to raw/Enquiry/; statement TXT COF001_COMBINED.TXT passes. debtors:tag-check: NOT_DERIVABLE_FROM_TXT, PATTERN_ONLY (no release)."
+    }
+  ],
+  "ingestGate": {
+    "status": "fail",
+    "ingestFreshness": "current",
+    "ingestCoverage": "partial",
+    "displayStatus": "CURRENT_PARTIAL",
+    "asAt": "2026-10-16",
+    "reportPath": "reports/COF001_INGEST_COVERAGE_2026-10-16.json",
+    "ingestBlockedScopes": [
+      "custody",
+      "sku_analysis",
+      "allocation"
+    ],
+    "exceptions": [
+      {
+        "exception_id": "ING-COF001-001..003",
+        "doc_nos": [
+          "32615",
+          "40294",
+          "42621"
+        ],
+        "ratified_by": "operator",
+        "ratified_at": "2026-10-16"
+      }
+    ]
+  }
+}
