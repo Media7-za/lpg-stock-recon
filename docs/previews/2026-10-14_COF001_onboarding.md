@@ -112,3 +112,34 @@ The database (a copy of ERP exports) holds a header row per document. For these 
 - **Q4 operator ruling:** "Re-ingest group A, exception for group B." Group B (Bank UD 32615, 40294, 42621) recorded as exceptions ING-COF001-001 to 003 in `config/ingest_exceptions.json` (SA0001 precedent). Group A (payments 24732, 30219, 29646, 29696; -R31,131.01) needs a data re-ingest that the analyst cannot do; request drafted in `docs/requests/2026-10-16_cof001_reingest_request.md` (not posted). Group A stays a gap, so custody/SKU/allocation stay blocked and outputs stay review-only until the re-ingest.
 - **Upload `COF001.TXT` (ERP fix, Q2).** Filed unchanged as `raw/Enquiry/COF001_UNDATED_post_fix_window.TXT`. Not used as the statement TXT: undated, not full history (B/F -R1,076.02 = balance after payment 45480 on 2026-07-31, ASSUMED from the main ledger), sorted by document number. Checks (PROVEN, ad hoc): running-balance chain 0 breaks; last balance = header = TOTAL TRANSACTIONS = -R16,256.52; UD 0.00; the 8 documents it shares with `COF001_COMBINED.TXT` have identical dates and amounts; 3 new documents net R0.00: invoice 53619 (+R18,700.33) reverses credit note 15558 (-R18,700.33), and credit notes 15803 (-R3,002.83, DN#22890) and 15804 (-R15,697.50, DN#22890) re-issue it as the two split lines. **Balance unchanged at -R16,256.52.** Credit note 15558 is still in the ledger (reversed, not deleted).
 - **Open for the operator:** (a) is the reversal-plus-reissue what the ERP agent intended as the Q2 fix? (b) the dated full-history export (ADM-135) is still needed to rebuild, because the generators need full history; I will not splice the window into the old file.
+
+---
+
+## 11. Correction and the 14 unallocated payments (2026-10-16, after operator feedback)
+
+**Correction (amends sections 8 Q3 and 10, and the handoff):** I wrongly listed "allocation detail from the ERP" as something the 14 unallocated payments were waiting for. ERP allocations are unreliable (business_rules §3; `debenq_open_invoices.mjs`); reconstructing allocation from ledger evidence is the matcher's job and the operator's ruling. The dated full-history export (ADM-135) is still wanted to replace the undated interim files, but allocation detail is **not** a blocker for these payments. The "EXCLUDE: ALLOCATION DETAIL" header stays an accepted D21 exception.
+
+**Evidence search (ad hoc exact-sum search over the matcher's residual; PROVEN arithmetic on `data/v5_projection.json` and `data/projection_matches.json`).** Subsets of up to 4 unallocated payments against up to 4 open invoices, cent-exact. Only two structures exist; nothing else sums:
+
+| Proposal | Payments | Open invoices | Amount | Basis |
+| :-- | :-- | :-- | --: | :-- |
+| **P1** rentals | 37628, 37629, 37630, 37631 (2025-03-19, STAT:113, R250 each) | 41576, 41577, 41578, 41579 (2025-03-18, cylinder rental D/N 11836 FEB/MAR, 12851 FEB/MARCH) | R1,000.00 | four equal payments the day after four equal invoices; the four are interchangeable, so it is a set tie, not 1:1. The matcher leaves it open because payments post to the LPG lane and the invoices are CYL lane |
+| **P2** 2023 batch | 23445 (2023-05-18, STAT:91, R8,827.62) + 23395 (2023-08-14, STAT:94, R4,449.02) | 22252 (2023-07-12, R7,596.15) + 23258 (2023-08-08, R5,680.49) | R13,276.64 | exact batch sum; 23445 predates invoice 22252 by two months, so it would be an advance payment |
+
+Both are accepted by `approve_tie.mjs` in `--dry-run` (P1 via `--payment ... --deposits ...`, P2 via `--payment ... --invoices ...`, treatment `exact`, would be L0015 each). **Nothing applied**: they need your ruling. Tripwires if approved: a dated export or remittance tagging any of these to different documents.
+
+**What is left after P1 and P2 (not resolvable by exact sums):**
+
+| Item | Detail |
+| :-- | :-- |
+| 8 payments | 44844 R7,224.65; 29492 R7,628.30; 38270 R9,070.63; 39144 R6,446.60; 35877 R9,649.56; 36509 R8,715.19; 36512 R7,224.65; 42636 R517.50 = **R56,477.08** |
+| Open LPG invoices | 39311, 41238, 41562, 42614, 42875, 43287 = R39,847.89 |
+| Result | Payments exceed open LPG invoices by about R16.6k (R56,477.08 - R39,847.89 = R16,629.19), i.e. the account is in credit on the gas lane. This is consistent with the -R16.4k gas-lane close and is not a matcher failure |
+
+Observations for review (not conclusions): payments 44844 and 36512 (R7,224.65) and 29492 (R7,628.30) each equal an invoice that is already settled by another payment (38158/38734/38735 and 30276); an ERP Journal 476 (+R7,224.65, 2024-12-11) offsets one of them; payment 30219 (R7,628.30) is one of the group A payments missing from the database. These are candidates for duplicate or advance payments, treated as customer credit (`customer_credit`) unless you say otherwise.
+
+**Questions for the operator**
+- **P1:** approve the four rental payments against the four rental invoices (set tie)?
+- **P2:** approve the 2023 batch tie?
+- **P3:** for the remaining 8 payments (R56,477.08), approve treating them as `customer_credit` (account in credit on the gas lane) or instruct otherwise per payment?
+- **P4:** Journal 476 (+R7,224.65, 2024-12-11): is it a reversal of payment 44844?
