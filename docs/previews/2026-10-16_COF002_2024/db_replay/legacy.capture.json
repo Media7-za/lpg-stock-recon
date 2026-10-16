@@ -1,0 +1,12 @@
+{
+  "channel": "supabase-connector (execute_sql), read-only SELECT, operator-authorised in this session 2026-10-16 (second replay: 'Yes, run the replay for those invoices')",
+  "project": "oqhpxnaadahohwkslive",
+  "table": "transaction_headers",
+  "filter": "account_no in ('COF001','COF002') and (ltrim(doc_no,'0') in (...) or ltrim(ref_no,'0') in (...)) for 30276, 30007, 15669, 17260, 22838, 15919, 16394, 16179, 40384",
+  "sql": "with r as (select id, entry_type, period, account_no, doc_no, ref_no, description, batch_ref, tx_date, amount_excl, flag from transaction_headers where account_no in ('COF001','COF002') and (ltrim(doc_no,'0') in ('30276','30007','15669','17260','22838','15919','16394','16179','40384') or ltrim(ref_no,'0') in ('30276','30007','15669','17260','22838','15919','16394','16179','40384')) order by tx_date, doc_no, entry_type, id), j as (select coalesce(json_agg(row_to_json(r)),'[]'::json)::text as t from r) select md5(t) as md5, length(t) as len, t as rows_json from j",
+  "md5": "92659e4992670aff5b550dba2a8d57aa",
+  "len": 4408,
+  "rows": 21,
+  "rowsFile": "legacy.rows.json",
+  "verification": "rows file transcribed from the connector output; md5sum and byte length of the saved file equal the server-side md5 and len (checked 2026-10-16)"
+}
