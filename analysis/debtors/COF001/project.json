@@ -28,6 +28,10 @@
     {
       "date": "2026-10-16",
       "event": "Operator authorised read-only connector replay for COF001. v5 generator, ingest check, matcher and open-items renderer run on raw/COF001_COMBINED.TXT (connector-sourced, db_replay/2026-10-16/, md5-verified). ERP variance R0.00, sub-ledger tie R0.00, open-items proof HOLDS (ERP -16256.52). Ingest coverage PARTIAL (7 gaps), custody/SKU/allocation blocked, output reviewOnly; 14 payments unallocated, 14 probable ties pending operator. No locks, reconState stays pending, no release. See docs/previews/2026-10-14_COF001_onboarding.md section 8."
+    },
+    {
+      "date": "2026-10-16",
+      "event": "Operator rulings on the COF001 pack: Q1 -16256.52 is the correct balance; Q2 credit note 15558 not valid, ERP agent fixing (open); Q3 interim D21 exception accepted; Q5 all 14 probable ties approved (locks L0001 to L0014); Q6 no COF001/COF002 payer family; Q4 (7 ingest gaps) explained, not decided. Recorded in config/operator_rulings.json and config/payment_pattern_overrides.json. Matcher rebuilt: 219 confirmed, 0 probable, proof HOLDS, variance R0.00; still reviewOnly (ingest coverage partial). reconState remains pending."
     }
   ]
 }

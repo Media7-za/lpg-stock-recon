@@ -76,3 +76,31 @@ So the ERP balance **is proven at variance R0.00 on this file**, but the stateme
 - **Q5 (14 probable ties, Appendix A of the open-items report).** Approve or reject; analyst did not approve any.
 - **Q6 (D21 interim exception).** Accept the undated, allocation-detail-excluded files until ADM-135 lands?
 - **Q7 (COF001/COF002).** Still separate, not netted; payer-family ruling only if you want one.
+
+---
+
+## 9. Operator rulings 2026-10-16 (recorded in `config/operator_rulings.json` and `config/payment_pattern_overrides.json`)
+
+| Q | Ruling | Effect |
+| :-- | :-- | :-- |
+| Q1 | -R16,256.52 is the correct balance | Balance of record; portfolio R7,958.38 retired |
+| Q2 | Credit note 15558 is NOT valid; ERP agent is fixing it | Open: await corrected dated export; nothing changed in the repo |
+| Q3 | Interim D21 exception accepted | Undated files stay in use until ADM-135 lands |
+| Q5 | "Accept": 14 probable ties approved | Locks L0001 to L0014; matcher now 219 confirmed, 0 probable; proof still HOLDS (R-16,256.52, variance R0.00) |
+| Q6 | No payer family | COF001 and COF002 stay separate |
+| Q4 | **Not decided** | Explanation below |
+
+Rebuilt after the locks: `data/projection_matches.json`, `reports/COF001_Open_Items_v5.md`, customer preview (now 50 open rows, was 79). Still `reviewOnly` (ingest coverage partial). The 14 unallocated payments (R-67,751.39) are unchanged.
+
+### Q4 explained: the 7 ingest gaps
+The database (a copy of ERP exports) holds a header row per document. For these 7 documents the statement TXT has the row but the database has no header, so the checker blocks custody, SKU and allocation conclusions. The money balance is unaffected (it comes from the TXT).
+
+| Group | Documents | What it is | Amounts (PROVEN from the TXT) |
+| :-- | :-- | :-- | :-- |
+| A. Payments missing from the database | 24732 (2023-09-29), 30219 (2024-03-12), 29646 (2024-03-20), 29696 (2024-03-25) | Real customer payments (STAT 95, 101, 101, 101) with no DB header | -R6,625.90, -R7,628.30, -R8,390.33, -R8,486.48 = **-R31,131.01** |
+| B. Bank UD documents | 32615 (2024-08-03), 40294 (2025-07-22), 42621 (2025-12-09) | A Bank UD (undeposited payment) posting paired with a Payment of the same number and amount on the same day; each pair nets R0.00 | +R8,512.36, +R6,446.60, +R7,360.82 against equal payments |
+
+- **Option 1, re-ingest.** Ask the data/ERP agent to re-run the HEADERS sync so the DB carries these 7 headers. For group A this is the real fix: those 4 payments are cash that allocation cannot use until the database sees them. For group B the checker cannot classify the type `Bank UD` at all (`DOCUMENT_TYPE_UNRESOLVED`), so a re-sync alone may not clear it; that is a rule gap in the shared checker, not missing data.
+- **Option 2, ratified exception.** The operator records the documents in `config/ingest_exceptions.json` with a reason; the checker then counts them as `RATIFIED_EXCEPTION` and unblocks the lane. It is a conclusion the operator signs (the DB lacks these but the TXT is the authority), not an inference of mine. Reasonable for group B (zero net, no cylinder lines). Weaker for group A, because allocation of R31,131.01 of payments would then proceed on the TXT alone, with no DB header.
+- **Analyst recommendation (not a ruling):** re-ingest group A (4 payments); for group B choose between an exception and a checker fix (a portfolio-wide change to `ingest_coverage_classifier.mjs` is doctrine-adjacent, so it would be staged `PROPOSED — NOT RATIFIED`, not done here). Either way custody/SKU/allocation stay blocked until you choose, and the corrected ADM-135 export may change these documents anyway, so waiting for it before ratifying anything is also sensible.
+- Tripwires for any exception: the DB later receives these headers; the dated export shows a different amount or type for any of the 7.

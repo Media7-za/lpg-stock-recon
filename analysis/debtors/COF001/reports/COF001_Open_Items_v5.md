@@ -1,7 +1,7 @@
 # Open Items Statement: COFFEEBERRY-CASCADES (COF001) — Internal
 **Period:** from 01 Mar 2022 to 09 Sept 2026 &nbsp;|&nbsp; **Balance due:** R-16,256.52
 **Status:** matcher v5 RATIFIED 2026-10-10 (`PROPOSED_Projection_Matching_Locks.md`); probable ties are proposals until approved · generated 2026-10-16 by `render_open_items.mjs`
-**Sources:** `analysis/debtors/COF001/data/v5_projection.json` (TXT sha256 `af6fa321fa8c…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (205 confirmed / 14 probable ties) · **REVIEW ONLY:** ingestCoverage partial
+**Sources:** `analysis/debtors/COF001/data/v5_projection.json` (TXT sha256 `af6fa321fa8c…`, DB channel `supabase-connector-replay`) · `data/projection_matches.json` (219 confirmed / 0 probable ties) · **REVIEW ONLY:** ingestCoverage partial
 **Locks:** no period closed yet
 
 ---
@@ -198,30 +198,35 @@
 
 ## Appendix A: Probable ties (review required, not locked)
 
-| Tie | Rule | Documents | Variance (R) | Note |
-| :--- | :--- | :--- | ---: | :--- |
-| T0009 | CN_DN_PAIR | Invoice 16090, Crd Note 4214 | — | CN 4 day(s) after invoice |
-| T0030 | CN_DN_PAIR | Invoice 39076, Crd Note 11492 | — | CN 3 day(s) after invoice |
-| T0050 | CN_DN_PAIR | Invoice 45529, Crd Note 13191 | — | CN 2 day(s) after invoice |
-| T0056 | CN_DN_PAIR | Invoice 46820, Crd Note 13599 | — | CN 2 day(s) after invoice |
-| T0070 | CN_DN_PAIR | Invoice 50274, Crd Note 14768 | — | CN 2 day(s) after invoice |
-| T0077 | CN_AMOUNT_DATE | Invoice 12420, Crd Note 3283 | — | CN 0 day(s) after invoice |
-| T0078 | CN_AMOUNT_DATE | Invoice 12454, Crd Note 3292 | — | CN 0 day(s) after invoice |
-| T0079 | CN_AMOUNT_DATE | Invoice 14866, Crd Note 3784 | — | CN 0 day(s) after invoice |
-| T0080 | CN_AMOUNT_DATE | Invoice 16091, Crd Note 4195 | — | CN 0 day(s) after invoice |
-| T0081 | CN_AMOUNT_DATE | Invoice 17465, Crd Note 4561 | — | CN 0 day(s) after invoice |
-| T0082 | CN_AMOUNT_DATE | Invoice 38976, Crd Note 11452 | — | CN 0 day(s) after invoice |
-| T0083 | CN_AMOUNT_DATE | Invoice 39609, Crd Note 11625 | — | CN 0 day(s) after invoice |
-| T0084 | CN_AMOUNT_DATE | Invoice 39968, Crd Note 11718 | — | CN 0 day(s) after invoice |
-| T0219 | BATCH_SUM | Payment 40757, Invoice 45528 | 0.00 |  |
+_None._
 
 ## Appendix B: Confirmed ties by rule
 
 | Rule | Ties |
 | :--- | ---: |
+| LOCKED | 14 |
 | UD_CLEARING | 3 |
 | CN_DN_PAIR | 68 |
 | EXACT_SINGLE | 134 |
 
 Full tie list: `data/projection_matches.json`.
+
+## Appendix D: Operator rulings applied (approved locks)
+
+| Lock | Treatment | Documents | Net (R) | Ruling |
+| :--- | :--- | :--- | ---: | :--- |
+| L0001 | exact | Invoice 16090, Crd Note 4214 | 0.00 | Operator ruling 2026-10-16 (COF001 ruling pack Q5, "Accept"): approve all 14 probable ties listed in Appendix A of reports/COF001_Open_Items_v5.md (CN_DN_PAIR x5, CN_AMOUNT_DATE x8, BATCH_SUM x1). Evidence: matcher v5 rules on the operator-directed undated ERP TXT (raw/COF001_COMBINED.TXT, no allocation detail). Tripwires: the dated ADM-135 allocation-detail export tagging any of these documents to a different invoice; a re-issue or reversal of any document in these ties; a fresh ERP export whose balance differs from -16256.52. |
+| L0002 | exact | Invoice 39076, Crd Note 11492 | 0.00 | Operator ruling 2026-10-16 (COF001 ruling pack Q5, "Accept"): approve all 14 probable ties listed in Appendix A of reports/COF001_Open_Items_v5.md (CN_DN_PAIR x5, CN_AMOUNT_DATE x8, BATCH_SUM x1). Evidence: matcher v5 rules on the operator-directed undated ERP TXT (raw/COF001_COMBINED.TXT, no allocation detail). Tripwires: the dated ADM-135 allocation-detail export tagging any of these documents to a different invoice; a re-issue or reversal of any document in these ties; a fresh ERP export whose balance differs from -16256.52. |
+| L0003 | exact | Invoice 45529, Crd Note 13191 | 0.00 | Operator ruling 2026-10-16 (COF001 ruling pack Q5, "Accept"): approve all 14 probable ties listed in Appendix A of reports/COF001_Open_Items_v5.md (CN_DN_PAIR x5, CN_AMOUNT_DATE x8, BATCH_SUM x1). Evidence: matcher v5 rules on the operator-directed undated ERP TXT (raw/COF001_COMBINED.TXT, no allocation detail). Tripwires: the dated ADM-135 allocation-detail export tagging any of these documents to a different invoice; a re-issue or reversal of any document in these ties; a fresh ERP export whose balance differs from -16256.52. |
+| L0004 | exact | Invoice 46820, Crd Note 13599 | 0.00 | Operator ruling 2026-10-16 (COF001 ruling pack Q5, "Accept"): approve all 14 probable ties listed in Appendix A of reports/COF001_Open_Items_v5.md (CN_DN_PAIR x5, CN_AMOUNT_DATE x8, BATCH_SUM x1). Evidence: matcher v5 rules on the operator-directed undated ERP TXT (raw/COF001_COMBINED.TXT, no allocation detail). Tripwires: the dated ADM-135 allocation-detail export tagging any of these documents to a different invoice; a re-issue or reversal of any document in these ties; a fresh ERP export whose balance differs from -16256.52. |
+| L0005 | exact | Invoice 50274, Crd Note 14768 | 0.00 | Operator ruling 2026-10-16 (COF001 ruling pack Q5, "Accept"): approve all 14 probable ties listed in Appendix A of reports/COF001_Open_Items_v5.md (CN_DN_PAIR x5, CN_AMOUNT_DATE x8, BATCH_SUM x1). Evidence: matcher v5 rules on the operator-directed undated ERP TXT (raw/COF001_COMBINED.TXT, no allocation detail). Tripwires: the dated ADM-135 allocation-detail export tagging any of these documents to a different invoice; a re-issue or reversal of any document in these ties; a fresh ERP export whose balance differs from -16256.52. |
+| L0006 | exact | Invoice 12420, Crd Note 3283 | 0.00 | Operator ruling 2026-10-16 (COF001 ruling pack Q5, "Accept"): approve all 14 probable ties listed in Appendix A of reports/COF001_Open_Items_v5.md (CN_DN_PAIR x5, CN_AMOUNT_DATE x8, BATCH_SUM x1). Evidence: matcher v5 rules on the operator-directed undated ERP TXT (raw/COF001_COMBINED.TXT, no allocation detail). Tripwires: the dated ADM-135 allocation-detail export tagging any of these documents to a different invoice; a re-issue or reversal of any document in these ties; a fresh ERP export whose balance differs from -16256.52. |
+| L0007 | exact | Invoice 12454, Crd Note 3292 | 0.00 | Operator ruling 2026-10-16 (COF001 ruling pack Q5, "Accept"): approve all 14 probable ties listed in Appendix A of reports/COF001_Open_Items_v5.md (CN_DN_PAIR x5, CN_AMOUNT_DATE x8, BATCH_SUM x1). Evidence: matcher v5 rules on the operator-directed undated ERP TXT (raw/COF001_COMBINED.TXT, no allocation detail). Tripwires: the dated ADM-135 allocation-detail export tagging any of these documents to a different invoice; a re-issue or reversal of any document in these ties; a fresh ERP export whose balance differs from -16256.52. |
+| L0008 | exact | Invoice 14866, Crd Note 3784 | 0.00 | Operator ruling 2026-10-16 (COF001 ruling pack Q5, "Accept"): approve all 14 probable ties listed in Appendix A of reports/COF001_Open_Items_v5.md (CN_DN_PAIR x5, CN_AMOUNT_DATE x8, BATCH_SUM x1). Evidence: matcher v5 rules on the operator-directed undated ERP TXT (raw/COF001_COMBINED.TXT, no allocation detail). Tripwires: the dated ADM-135 allocation-detail export tagging any of these documents to a different invoice; a re-issue or reversal of any document in these ties; a fresh ERP export whose balance differs from -16256.52. |
+| L0009 | exact | Invoice 16091, Crd Note 4195 | 0.00 | Operator ruling 2026-10-16 (COF001 ruling pack Q5, "Accept"): approve all 14 probable ties listed in Appendix A of reports/COF001_Open_Items_v5.md (CN_DN_PAIR x5, CN_AMOUNT_DATE x8, BATCH_SUM x1). Evidence: matcher v5 rules on the operator-directed undated ERP TXT (raw/COF001_COMBINED.TXT, no allocation detail). Tripwires: the dated ADM-135 allocation-detail export tagging any of these documents to a different invoice; a re-issue or reversal of any document in these ties; a fresh ERP export whose balance differs from -16256.52. |
+| L0010 | exact | Invoice 17465, Crd Note 4561 | 0.00 | Operator ruling 2026-10-16 (COF001 ruling pack Q5, "Accept"): approve all 14 probable ties listed in Appendix A of reports/COF001_Open_Items_v5.md (CN_DN_PAIR x5, CN_AMOUNT_DATE x8, BATCH_SUM x1). Evidence: matcher v5 rules on the operator-directed undated ERP TXT (raw/COF001_COMBINED.TXT, no allocation detail). Tripwires: the dated ADM-135 allocation-detail export tagging any of these documents to a different invoice; a re-issue or reversal of any document in these ties; a fresh ERP export whose balance differs from -16256.52. |
+| L0011 | exact | Invoice 38976, Crd Note 11452 | 0.00 | Operator ruling 2026-10-16 (COF001 ruling pack Q5, "Accept"): approve all 14 probable ties listed in Appendix A of reports/COF001_Open_Items_v5.md (CN_DN_PAIR x5, CN_AMOUNT_DATE x8, BATCH_SUM x1). Evidence: matcher v5 rules on the operator-directed undated ERP TXT (raw/COF001_COMBINED.TXT, no allocation detail). Tripwires: the dated ADM-135 allocation-detail export tagging any of these documents to a different invoice; a re-issue or reversal of any document in these ties; a fresh ERP export whose balance differs from -16256.52. |
+| L0012 | exact | Invoice 39609, Crd Note 11625 | 0.00 | Operator ruling 2026-10-16 (COF001 ruling pack Q5, "Accept"): approve all 14 probable ties listed in Appendix A of reports/COF001_Open_Items_v5.md (CN_DN_PAIR x5, CN_AMOUNT_DATE x8, BATCH_SUM x1). Evidence: matcher v5 rules on the operator-directed undated ERP TXT (raw/COF001_COMBINED.TXT, no allocation detail). Tripwires: the dated ADM-135 allocation-detail export tagging any of these documents to a different invoice; a re-issue or reversal of any document in these ties; a fresh ERP export whose balance differs from -16256.52. |
+| L0013 | exact | Invoice 39968, Crd Note 11718 | 0.00 | Operator ruling 2026-10-16 (COF001 ruling pack Q5, "Accept"): approve all 14 probable ties listed in Appendix A of reports/COF001_Open_Items_v5.md (CN_DN_PAIR x5, CN_AMOUNT_DATE x8, BATCH_SUM x1). Evidence: matcher v5 rules on the operator-directed undated ERP TXT (raw/COF001_COMBINED.TXT, no allocation detail). Tripwires: the dated ADM-135 allocation-detail export tagging any of these documents to a different invoice; a re-issue or reversal of any document in these ties; a fresh ERP export whose balance differs from -16256.52. |
+| L0014 | exact | Payment 40757, Invoice 45528 | 0.00 | Operator ruling 2026-10-16 (COF001 ruling pack Q5, "Accept"): approve all 14 probable ties listed in Appendix A of reports/COF001_Open_Items_v5.md (CN_DN_PAIR x5, CN_AMOUNT_DATE x8, BATCH_SUM x1). Evidence: matcher v5 rules on the operator-directed undated ERP TXT (raw/COF001_COMBINED.TXT, no allocation detail). Tripwires: the dated ADM-135 allocation-detail export tagging any of these documents to a different invoice; a re-issue or reversal of any document in these ties; a fresh ERP export whose balance differs from -16256.52. |
 
