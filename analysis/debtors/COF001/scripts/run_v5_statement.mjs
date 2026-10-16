@@ -5,7 +5,7 @@
  * answered from data/db_snapshot_2026.json instead of a live pg connection (DATABASE_URL is not
  * available in cloud sessions). Re-run the shared generator directly when DATABASE_URL is set.
  *
- * Usage: node analysis/debtors/COF001/scripts/run_v5_statement.mjs
+ * Usage: node analysis/debtors/COF001/scripts/run_v5_statement.mjs [--suffix _Aug2026]
  */
 import fs from 'fs';
 import path from 'path';
@@ -15,9 +15,10 @@ import { fileURLToPath } from 'url';
 const here = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(here, '../../../..');
 const ACCT = path.join(ROOT, 'analysis/debtors/COF001');
-const REPORT = path.join(ACCT, 'reports/COF001_Statement_Account_v5.md');
+const SUFFIX = process.argv.includes('--suffix') ? process.argv[process.argv.indexOf('--suffix') + 1] : '';
+const REPORT = path.join(ACCT, `reports/COF001_Statement_Account_v5${SUFFIX}.md`);
 const snapshotPath = path.join(ACCT, 'data/db_snapshot_2026.json');
-const cfg = JSON.parse(fs.readFileSync(path.join(ACCT, 'config/statement_v5.json'), 'utf8'));
+const cfg = JSON.parse(fs.readFileSync(path.join(ACCT, `config/statement_v5${SUFFIX}.json`), 'utf8'));
 const snap = JSON.parse(fs.readFileSync(snapshotPath, 'utf8'));
 const r2 = (n) => Math.round(n * 100) / 100;
 
@@ -64,6 +65,7 @@ run(
     'analysis/debtors/shared/scripts/reconcile_debtor_v5_from_txt.mjs',
     '--debtor',
     'COF001',
+    ...(SUFFIX ? ['--suffix', SUFFIX] : []),
   ],
   { DATABASE_URL: 'snapshot://cof001', COF001_DB_SNAPSHOT: snapshotPath },
 );

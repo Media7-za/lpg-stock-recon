@@ -166,8 +166,12 @@ ${scenario.assumption}
 `;
 }
 
+// Optional `--suffix _Tag`: alternate period statement (config/statement_v5_Tag.json ->
+// reports/CODE_Statement_Account_v5_Tag.md). No workspace fixture is written for suffixed runs.
+const SUFFIX = process.argv.includes('--suffix') ? process.argv[process.argv.indexOf('--suffix') + 1] : '';
+
 function loadConfig(debtorCode) {
-  const configPath = path.join(ROOT, 'analysis/debtors', debtorCode, 'config/statement_v5.json');
+  const configPath = path.join(ROOT, 'analysis/debtors', debtorCode, `config/statement_v5${SUFFIX}.json`);
   if (!fs.existsSync(configPath)) {
     throw new Error(
       `Missing config: ${configPath}\nCopy from analysis/debtors/shared/templates/statement_v5_config.template.json`,
@@ -196,7 +200,7 @@ function loadConfig(debtorCode) {
     ratificationRows,
     reportPath: path.join(
       ROOT,
-      `analysis/debtors/${debtorCode}/reports/${debtorCode}_Statement_Account_v5.md`,
+      `analysis/debtors/${debtorCode}/reports/${debtorCode}_Statement_Account_v5${SUFFIX}.md`,
     ),
     fixturePath: path.join(
       ROOT,
@@ -729,8 +733,10 @@ ${custodyBlockedNote}
       txtSource: txtRel,
     },
   };
-  fs.mkdirSync(path.dirname(cfg.fixturePath), { recursive: true });
-  fs.writeFileSync(cfg.fixturePath, `${JSON.stringify(fixture, null, 2)}\n`);
+  if (!SUFFIX) {
+    fs.mkdirSync(path.dirname(cfg.fixturePath), { recursive: true });
+    fs.writeFileSync(cfg.fixturePath, `${JSON.stringify(fixture, null, 2)}\n`);
+  }
 
   console.log(`[${cfg.debtorCode}] TXT header: R${fmt(headerBalance)}`);
   console.log(`[${cfg.debtorCode}] Part 1A LPG close: R${fmt(finalLpg)}`);
