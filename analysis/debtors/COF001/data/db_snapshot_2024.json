@@ -1,0 +1,363 @@
+{
+ "source": "Supabase project oqhpxnaadahohwkslive, vw_clean_transactions, account_no = COF001, tx_date 2024-01-01 to 2024-12-31, queried 2026-10-16 via the Supabase connector. Same de-duplication as reconcile_debtor_v5_from_txt.mjs; lane classified by the five cylinder SKUs per operator rule, not the view debt_group.",
+ "validFrom": "2024-01-01",
+ "validTo": "2024-12-31",
+ "split": [
+  {
+   "doc_no": "10298",
+   "entry_type": "Crd Note",
+   "debt_group": "LPG",
+   "s": -4794.87
+  },
+  {
+   "doc_no": "11452",
+   "entry_type": "Crd Note",
+   "debt_group": "CYL",
+   "s": -1552.5
+  },
+  {
+   "doc_no": "11492",
+   "entry_type": "Crd Note",
+   "debt_group": "CYL",
+   "s": -6037.5
+  },
+  {
+   "doc_no": "11573",
+   "entry_type": "Crd Note",
+   "debt_group": "CYL",
+   "s": -7590
+  },
+  {
+   "doc_no": "28389",
+   "entry_type": "Invoice",
+   "debt_group": "LPG",
+   "s": 8022.4
+  },
+  {
+   "doc_no": "28747",
+   "entry_type": "Invoice",
+   "debt_group": "LPG",
+   "s": 8302.16
+  },
+  {
+   "doc_no": "29248",
+   "entry_type": "Invoice",
+   "debt_group": "LPG",
+   "s": 8581.1
+  },
+  {
+   "doc_no": "29536",
+   "entry_type": "Invoice",
+   "debt_group": "LPG",
+   "s": 7550.67
+  },
+  {
+   "doc_no": "30007",
+   "entry_type": "Invoice",
+   "debt_group": "LPG",
+   "s": 8390.33
+  },
+  {
+   "doc_no": "30276",
+   "entry_type": "Invoice",
+   "debt_group": "LPG",
+   "s": 7628.3
+  },
+  {
+   "doc_no": "30571",
+   "entry_type": "Invoice",
+   "debt_group": "LPG",
+   "s": 3051.32
+  },
+  {
+   "doc_no": "30576",
+   "entry_type": "Invoice",
+   "debt_group": "LPG",
+   "s": 8486.48
+  },
+  {
+   "doc_no": "30890",
+   "entry_type": "Invoice",
+   "debt_group": "LPG",
+   "s": 8486.48
+  },
+  {
+   "doc_no": "30918",
+   "entry_type": "Invoice",
+   "debt_group": "LPG",
+   "s": 8486.48
+  },
+  {
+   "doc_no": "31431",
+   "entry_type": "Invoice",
+   "debt_group": "LPG",
+   "s": 7589.65
+  },
+  {
+   "doc_no": "31699",
+   "entry_type": "Invoice",
+   "debt_group": "LPG",
+   "s": 853.84
+  },
+  {
+   "doc_no": "31803",
+   "entry_type": "Invoice",
+   "debt_group": "LPG",
+   "s": 7589.65
+  },
+  {
+   "doc_no": "32280",
+   "entry_type": "Invoice",
+   "debt_group": "LPG",
+   "s": 8339.36
+  },
+  {
+   "doc_no": "32727",
+   "entry_type": "Invoice",
+   "debt_group": "LPG",
+   "s": 8339.36
+  },
+  {
+   "doc_no": "33245",
+   "entry_type": "Invoice",
+   "debt_group": "LPG",
+   "s": 7485.79
+  },
+  {
+   "doc_no": "33254",
+   "entry_type": "Invoice",
+   "debt_group": "LPG",
+   "s": 8026.93
+  },
+  {
+   "doc_no": "33790",
+   "entry_type": "Invoice",
+   "debt_group": "LPG",
+   "s": 8026.93
+  },
+  {
+   "doc_no": "34412",
+   "entry_type": "Invoice",
+   "debt_group": "LPG",
+   "s": 7705.92
+  },
+  {
+   "doc_no": "34418",
+   "entry_type": "Invoice",
+   "debt_group": "LPG",
+   "s": 7705.92
+  },
+  {
+   "doc_no": "34831",
+   "entry_type": "Invoice",
+   "debt_group": "LPG",
+   "s": 7437.11
+  },
+  {
+   "doc_no": "35371",
+   "entry_type": "Invoice",
+   "debt_group": "LPG",
+   "s": 7974.73
+  },
+  {
+   "doc_no": "36047",
+   "entry_type": "Invoice",
+   "debt_group": "LPG",
+   "s": 7168.3
+  },
+  {
+   "doc_no": "36109",
+   "entry_type": "Invoice",
+   "debt_group": "LPG",
+   "s": 7369.88
+  },
+  {
+   "doc_no": "36265",
+   "entry_type": "Invoice",
+   "debt_group": "LPG",
+   "s": 7902.65
+  },
+  {
+   "doc_no": "36358",
+   "entry_type": "Invoice",
+   "debt_group": "LPG",
+   "s": 4794.87
+  },
+  {
+   "doc_no": "36863",
+   "entry_type": "Invoice",
+   "debt_group": "LPG",
+   "s": 7902.65
+  },
+  {
+   "doc_no": "37197",
+   "entry_type": "Invoice",
+   "debt_group": "LPG",
+   "s": 7150.13
+  },
+  {
+   "doc_no": "37530",
+   "entry_type": "Invoice",
+   "debt_group": "LPG",
+   "s": 7954.53
+  },
+  {
+   "doc_no": "37967",
+   "entry_type": "Invoice",
+   "debt_group": "LPG",
+   "s": 7954.53
+  },
+  {
+   "doc_no": "38158",
+   "entry_type": "Invoice",
+   "debt_group": "LPG",
+   "s": 7224.65
+  },
+  {
+   "doc_no": "38585",
+   "entry_type": "Invoice",
+   "debt_group": "LPG",
+   "s": 812.79
+  },
+  {
+   "doc_no": "38734",
+   "entry_type": "Invoice",
+   "debt_group": "LPG",
+   "s": 7224.65
+  },
+  {
+   "doc_no": "38735",
+   "entry_type": "Invoice",
+   "debt_group": "LPG",
+   "s": 7224.65
+  },
+  {
+   "doc_no": "38976",
+   "entry_type": "Invoice",
+   "debt_group": "CYL",
+   "s": 1552.5
+  },
+  {
+   "doc_no": "38976",
+   "entry_type": "Invoice",
+   "debt_group": "LPG",
+   "s": 848.53
+  },
+  {
+   "doc_no": "39076",
+   "entry_type": "Invoice",
+   "debt_group": "CYL",
+   "s": 6037.5
+  },
+  {
+   "doc_no": "39076",
+   "entry_type": "Invoice",
+   "debt_group": "LPG",
+   "s": 7542.39
+  },
+  {
+   "doc_no": "39311",
+   "entry_type": "Invoice",
+   "debt_group": "CYL",
+   "s": 7590
+  },
+  {
+   "doc_no": "39311",
+   "entry_type": "Invoice",
+   "debt_group": "LPG",
+   "s": 8390.92
+  },
+  {
+   "doc_no": "7772",
+   "entry_type": "Crd Note",
+   "debt_group": "LPG",
+   "s": -3051.32
+  },
+  {
+   "doc_no": "7906",
+   "entry_type": "Crd Note",
+   "debt_group": "LPG",
+   "s": -8486.48
+  },
+  {
+   "doc_no": "8895",
+   "entry_type": "Crd Note",
+   "debt_group": "LPG",
+   "s": -7485.79
+  },
+  {
+   "doc_no": "9450",
+   "entry_type": "Crd Note",
+   "debt_group": "LPG",
+   "s": -7705.92
+  }
+ ],
+ "cylQty": [
+  {
+   "tx_date": "2024-12-11",
+   "doc_no": "11452",
+   "entry_type": "Crd Note",
+   "stock_no": "9.1",
+   "qty": -3
+  },
+  {
+   "tx_date": "2024-12-11",
+   "doc_no": "38976",
+   "entry_type": "Invoice",
+   "stock_no": "9.1",
+   "qty": 3
+  },
+  {
+   "tx_date": "2024-12-14",
+   "doc_no": "39076",
+   "entry_type": "Invoice",
+   "stock_no": "S.1",
+   "qty": 5
+  },
+  {
+   "tx_date": "2024-12-17",
+   "doc_no": "11492",
+   "entry_type": "Crd Note",
+   "stock_no": "S.1",
+   "qty": -5
+  },
+  {
+   "tx_date": "2024-12-23",
+   "doc_no": "11573",
+   "entry_type": "Crd Note",
+   "stock_no": "9.1",
+   "qty": -3
+  },
+  {
+   "tx_date": "2024-12-23",
+   "doc_no": "11573",
+   "entry_type": "Crd Note",
+   "stock_no": "S.1",
+   "qty": -5
+  },
+  {
+   "tx_date": "2024-12-23",
+   "doc_no": "39311",
+   "entry_type": "Invoice",
+   "stock_no": "9.1",
+   "qty": 3
+  },
+  {
+   "tx_date": "2024-12-23",
+   "doc_no": "39311",
+   "entry_type": "Invoice",
+   "stock_no": "S.1",
+   "qty": 5
+  }
+ ],
+ "openQty": {
+  "19.1": -1,
+  "9.1": 2,
+  "D.1": 5,
+  "S.1": -5
+ },
+ "assumedDocs": {
+  "note": "none in this period",
+  "split": []
+ }
+}

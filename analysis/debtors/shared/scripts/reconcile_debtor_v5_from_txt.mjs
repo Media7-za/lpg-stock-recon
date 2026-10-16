@@ -303,7 +303,10 @@ function loadTxt(cfg) {
   if (!cfg.periodEnd) return parsed;
   const rows = parsed.rows.filter((r) => r.iso <= cfg.periodEnd);
   if (!rows.length) throw new Error(`No TXT rows on or before periodEnd ${cfg.periodEnd}`);
-  return { rows, headerBalance: rows.at(-1).erp_balance };
+  // `erpClosingBalance` (optional) overrides the last-row ERP balance when documents posted after the
+  // window were dated inside it, so the last in-window row's running balance is not a closing balance.
+  const headerBalance = cfg.erpClosingBalance ?? rows.at(-1).erp_balance;
+  return { rows, headerBalance: Number(headerBalance) };
 }
 
 function splitRowAmount(r, docSplit, cfg) {

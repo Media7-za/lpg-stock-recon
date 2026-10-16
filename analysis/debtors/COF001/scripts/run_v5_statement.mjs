@@ -99,6 +99,7 @@ if (cfg.periodStart < '2026-01-01') {
     '**Late-posted documents.** Four payments dated 2023-2024 (24732, 30219, 29646, 29696; R31,131.01 in total) and a journal/payment pair dated 14 Nov and 11 Dec 2024 (44844, 476) appear in the current ERP extract after 2025 entries. Statements are built by document date, so they are included in the opening balance. The ERP balance shown at the time (for example R23,095.09 after payment 35877 on 30 Dec 2024) did not include them.',
   );
 }
+if (cfg.erpClosingNote) items.push(`**Closing check.** ${cfg.erpClosingNote}`);
 items.push(
   `**Database coverage.** All invoices and credit notes in the window were matched to the database by document and amount (see \`reports/COF001_DB_COVERAGE_2026-10-16.md\`).${inWindow('2026-05-05') ? ' Three documents in May 2026 are dated one day later in the database (14854, 50513, 50515).' : ''}`,
   `**Generator run.** The shared generator was run unchanged (except as noted) against \`${cfg.dbSnapshot || 'data/db_snapshot_2026.json'}\` (rows pulled from Supabase on 2026-10-16) because \`DATABASE_URL\` is not set in cloud sessions. Fixes made to the shared generator: the TXT header balance regex accepts a minus sign, so credit balances no longer read as NaN; an optional \`periodEnd\` limits the window and takes the closing check from the ERP running balance on the last row inside it.`,
