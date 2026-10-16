@@ -46,3 +46,33 @@ Verify per D21 (chain, header CURRENT BALANCE, TOTAL TRANSACTIONS, UD gap) -> fi
 
 ## 7. Provisional extract (added after PM message)
 `analysis/debtors/COF001/data/provisional/COF001_shared_dump_extract_ASSUMED.csv` (171 rows, filtered only, ASSUMED; see README there). No first-pass generator run was possible without inventing a B/F, so none was run.
+
+---
+
+## 8. UPDATE 2026-10-16 — generators run on the operator-directed ERP files (supersedes the section 1 verdict where it differs)
+
+**Inputs (operator instruction 2026-10-16: ERP TXT files from `claude/eager-mccarthy-vsfs1u` only):** `analysis/debtors/COF001/raw/COF001_COMBINED.TXT` (481 rows, B/F 0.00 at 2022-03-01, last row 2026-09-09; sha256 prefix `af6fa321fa8c`). D21 status: chain 0 breaks, last balance = header CURRENT BALANCE = TOTAL TRANSACTIONS = -R16,256.52, UD 0.00 (**PROVEN**, ad hoc intake script, session scratch). **Exceptions:** file is undated and carries `EXCLUDE: ALLOCATION DETAIL`; interim use by operator instruction until the dated ADM-135 export replaces it. DB: connector replay, operator-authorised 2026-10-16 (read-only SELECT, md5-verified captures in `analysis/debtors/COF001/data/db_replay/2026-10-16/`), output is **connector-sourced**.
+
+| Result | Value | Tag / artifact |
+| :-- | --: | :-- |
+| ERP CURRENT BALANCE (customer in credit) | -R16,256.52 | PROVEN `raw/COF001_COMBINED.TXT` header |
+| Portfolio list figure | R7,958.38 | ASSERTED, **does not match**; equals the intermediate running balance on 2026-07-08 (ASSUMED explanation) |
+| v5 Part 1A LPG / Part 1B CYL close | -R16,442.52 / +R186.00 | PROVEN `reports/COF001_Statement_Account_v5.md` |
+| ERP variance (1A+1B vs header) | **R0.00** | PROVEN `reconcile_debtor_v5_from_txt.mjs` |
+| Sub-ledger tie variance | R0.00 | PROVEN same run |
+| Open-items proof (B/F + open rows + tie rounding R0.02 = ERP) | **R0.00, HOLDS** (LPG -R10,405.02; CYL -R5,851.50) | PROVEN `reports/COF001_Open_Items_v5.md` |
+| Matcher | 219 ties (205 confirmed, 14 probable); 149 payments, **14 unallocated** | `data/projection_matches.json` |
+| Ingest coverage | **partial**: 7 gaps (payments 24732, 30219, 29646, 29696 `MISSING_HEADER`; Bank UD 32615, 40294, 42621 `DOCUMENT_TYPE_UNRESOLVED`); custody, SKU and allocation **BLOCKED** | `reports/COF001_INGEST_COVERAGE_2026-10-16.md` |
+| Output status | **REVIEW ONLY** (ingest coverage partial); not a release copy | |
+| Custody exposure at option B rates | -R8,280.00 (not gated, ASSERTED) | statement Part 2 |
+
+So the ERP balance **is proven at variance R0.00 on this file**, but the statement is review-only, the matcher leaves many unmatched items, and nothing here is a customer release. **No release, no send, `reconState` left `pending`, no locks.**
+
+### Ruling pack (questions for the operator; nothing decided here)
+- **Q1 (balance of record).** Portfolio list R7,958.38 vs ledger -R16,256.52 at 2026-09-09. Which is current? Either confirm the ledger or have the dated ADM-135 export settle it. Tripwire: dated export with a different last balance.
+- **Q2 (credit note 15558, 2026-08-26, -R18,700.33, DN#22890-EMPTY).** Posted against DN#22890 whose invoices total R3,284.35 (LPG) + R4,657.50 (EMPTY invoices 52750/52751); split 1A -R3,002.83, 1B -R15,697.50 (7x 9.1 and 10x S.1 returned in the DB lines). Followed by Bank XFer +R3,002.33 on 2026-09-09 (STAT 130). Is it a valid posting, or an ERP error to be reversed? Drives most of the credit position. Not for the analyst to rule.
+- **Q3 (unallocated payments, R-67,751.39 across 15 items in the matcher residual).** Needs allocation detail (ADM-135 asks for it) before ruling; list in `projection_matches.json` `unallocatedPayments`.
+- **Q4 (7 ingest gaps).** Re-ingest or ratified exception? Until then custody/SKU/allocation conclusions stay blocked.
+- **Q5 (14 probable ties, Appendix A of the open-items report).** Approve or reject; analyst did not approve any.
+- **Q6 (D21 interim exception).** Accept the undated, allocation-detail-excluded files until ADM-135 lands?
+- **Q7 (COF001/COF002).** Still separate, not netted; payer-family ruling only if you want one.

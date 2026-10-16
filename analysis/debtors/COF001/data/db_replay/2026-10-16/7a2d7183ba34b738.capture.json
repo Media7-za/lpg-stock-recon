@@ -1,0 +1,12 @@
+{
+  "key": "7a2d7183ba34b738",
+  "channel": "supabase-connector-replay",
+  "supabaseProject": "oqhpxnaadahohwkslive",
+  "capturedAt": "2026-10-16T10:24:21.339Z",
+  "md5": "8726297c8e9c211f0eb9a8d7ffdbb8d5",
+  "len": 142,
+  "rowCount": 2,
+  "sql": "\n      SELECT file_type, MAX(created_at)::timestamptz AS latest\n      FROM sync_logs\n      GROUP BY file_type",
+  "params": [],
+  "captureSql": "SELECT md5(t) AS md5, length(t) AS len, t AS rows_json\nFROM (SELECT coalesce(jsonb_agg(q)::text, '[]') AS t FROM (\nSELECT file_type, MAX(created_at)::timestamptz AS latest\n      FROM sync_logs\n      GROUP BY file_type\n) q) x"
+}

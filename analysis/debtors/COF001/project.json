@@ -24,6 +24,10 @@
     {
       "date": "2026-10-16",
       "event": "Operator instruction: use the ERP TXT files from branch claude/eager-mccarthy-vsfs1u only. Filed unchanged under raw/ (COF001_2023/2024/2025/CURRENT/COMBINED.TXT). Intake check (analyst, ad hoc script in session scratch, not a repo generator): running-balance chain 0 breaks on all files; COMBINED last balance = header CURRENT BALANCE = TOTAL TRANSACTIONS = -16256.52; UD 0.00. Undated names and EXCLUDE: ALLOCATION DETAIL header are D21 exceptions, replaced when the dated ADM-135 export arrives. Config set from COMBINED (B/F 0.00 at 2022-03-01). reconcile_debtor_v5_from_txt.mjs NOT run: needs the database (DATABASE_URL or authorised connector replay), not authorised in this session. The other branch's db_sku_classification.json and statement were NOT used."
+    },
+    {
+      "date": "2026-10-16",
+      "event": "Operator authorised read-only connector replay for COF001. v5 generator, ingest check, matcher and open-items renderer run on raw/COF001_COMBINED.TXT (connector-sourced, db_replay/2026-10-16/, md5-verified). ERP variance R0.00, sub-ledger tie R0.00, open-items proof HOLDS (ERP -16256.52). Ingest coverage PARTIAL (7 gaps), custody/SKU/allocation blocked, output reviewOnly; 14 payments unallocated, 14 probable ties pending operator. No locks, reconState stays pending, no release. See docs/previews/2026-10-14_COF001_onboarding.md section 8."
     }
   ]
 }
