@@ -13,8 +13,8 @@
 | ingestFreshness | `current` |
 | ingestCoverage | `partial` |
 | Documents in TXT (period) | 480 |
-| Healthy / expected | 473 |
-| Gaps | 7 |
+| Healthy / expected | 476 |
+| Gaps | 4 |
 | DB-only (not in TXT) | 0 |
 
 ## Gate result
@@ -34,9 +34,6 @@
 | 30219 | Payment | 2024-03-12 | MISSING_HEADER | custody, sku_analysis, allocation |
 | 29646 | Payment | 2024-03-20 | MISSING_HEADER | custody, sku_analysis, allocation |
 | 29696 | Payment | 2024-03-25 | MISSING_HEADER | custody, sku_analysis, allocation |
-| 32615 | Bank UD | 2024-08-03 | DOCUMENT_TYPE_UNRESOLVED | custody, sku_analysis, allocation |
-| 40294 | Bank UD | 2025-07-22 | DOCUMENT_TYPE_UNRESOLVED | custody, sku_analysis, allocation |
-| 42621 | Bank UD | 2025-12-09 | DOCUMENT_TYPE_UNRESOLVED | custody, sku_analysis, allocation |
 
 ## Doctrine
 

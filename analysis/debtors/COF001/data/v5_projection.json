@@ -3,7 +3,7 @@
   "status": "RATIFIED 2026-10-10 (PROPOSED_Projection_Matching_Locks.md, projection builder)",
   "debtorCode": "COF001",
   "generatedBy": "reconcile_debtor_v5_from_txt.mjs",
-  "generatedAt": "2026-10-16T10:25:58.395Z",
+  "generatedAt": "2026-10-16T10:50:28.333Z",
   "source": {
     "txtPath": "analysis/debtors/COF001/raw/COF001_COMBINED.TXT",
     "txtSha256": "af6fa321fa8c511a52d6911bf69e22e701ebf4bae661dbf7f3c49654c351108f",

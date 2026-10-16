@@ -32,6 +32,10 @@
     {
       "date": "2026-10-16",
       "event": "Operator rulings on the COF001 pack: Q1 -16256.52 is the correct balance; Q2 credit note 15558 not valid, ERP agent fixing (open); Q3 interim D21 exception accepted; Q5 all 14 probable ties approved (locks L0001 to L0014); Q6 no COF001/COF002 payer family; Q4 (7 ingest gaps) explained, not decided. Recorded in config/operator_rulings.json and config/payment_pattern_overrides.json. Matcher rebuilt: 219 confirmed, 0 probable, proof HOLDS, variance R0.00; still reviewOnly (ingest coverage partial). reconState remains pending."
+    },
+    {
+      "date": "2026-10-16",
+      "event": "Operator Q4: re-ingest group A (payments 24732, 30219, 29646, 29696; -R31,131.01), exception for group B (Bank UD 32615, 40294, 42621 = config/ingest_exceptions.json ING-COF001-001..003). Ingest gaps 7 to 4; custody/SKU/allocation still blocked, outputs still reviewOnly until group A is re-ingested (request drafted, not posted: docs/requests/2026-10-16_cof001_reingest_request.md). ERP-agent upload filed unchanged as raw/Enquiry/COF001_UNDATED_post_fix_window.TXT (window, undated, not the statement TXT): credit note 15558 reversed by invoice 53619 and re-issued as 15803/15804; balance unchanged -16256.52. Rebuilt from the existing replay captures: ERP variance R0.00, proof HOLDS, 14 locks applied."
     }
   ]
 }

@@ -2,12 +2,12 @@
   "status": "matcher v5 RATIFIED 2026-10-10 (PROPOSED_Projection_Matching_Locks.md); probable ties stay proposals until approved",
   "debtorCode": "COF001",
   "generatedBy": "match_projection.mjs",
-  "generatedAt": "2026-10-16T10:36:50.724Z",
+  "generatedAt": "2026-10-16T10:50:28.453Z",
   "projection": {
     "path": "analysis/debtors/COF001/data/v5_projection.json",
     "txtSha256": "af6fa321fa8c511a52d6911bf69e22e701ebf4bae661dbf7f3c49654c351108f",
     "dbChannel": "supabase-connector-replay",
-    "generatedAt": "2026-10-16T10:25:58.395Z"
+    "generatedAt": "2026-10-16T10:50:28.333Z"
   },
   "reviewOnly": true,
   "reviewOnlyReasons": [

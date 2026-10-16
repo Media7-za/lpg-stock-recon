@@ -1,6 +1,6 @@
 {
   "account_no": "COF001",
-  "generated_at": "2026-10-16T10:25:51.706Z",
+  "generated_at": "2026-10-16T10:50:27.720Z",
   "statement_txt": "analysis/debtors/COF001/raw/COF001_COMBINED.TXT",
   "period_start": "2022-03-01",
   "txt_as_at": "2026-09-09",
@@ -11,8 +11,8 @@
   "display_status": "CURRENT_PARTIAL",
   "summary": {
     "documents_in_txt": 480,
-    "healthy": 473,
-    "gaps": 7,
+    "healthy": 476,
+    "gaps": 4,
     "db_only": 0
   },
   "gates": {
@@ -3248,13 +3248,11 @@
       "header_present": true,
       "lines_present": false,
       "required_ingest_shape": "unresolved",
-      "classification": "DOCUMENT_TYPE_UNRESOLVED",
-      "blocks": [
-        "custody",
-        "sku_analysis",
-        "allocation"
-      ],
-      "exception": null
+      "classification": "RATIFIED_EXCEPTION",
+      "blocks": [],
+      "exception": {
+        "exception_id": "ING-COF001-001"
+      }
     },
     {
       "doc_no": "32620",
@@ -4974,13 +4972,11 @@
       "header_present": true,
       "lines_present": false,
       "required_ingest_shape": "unresolved",
-      "classification": "DOCUMENT_TYPE_UNRESOLVED",
-      "blocks": [
-        "custody",
-        "sku_analysis",
-        "allocation"
-      ],
-      "exception": null
+      "classification": "RATIFIED_EXCEPTION",
+      "blocks": [],
+      "exception": {
+        "exception_id": "ING-COF001-002"
+      }
     },
     {
       "doc_no": "40294",
@@ -5706,13 +5702,11 @@
       "header_present": true,
       "lines_present": false,
       "required_ingest_shape": "unresolved",
-      "classification": "DOCUMENT_TYPE_UNRESOLVED",
-      "blocks": [
-        "custody",
-        "sku_analysis",
-        "allocation"
-      ],
-      "exception": null
+      "classification": "RATIFIED_EXCEPTION",
+      "blocks": [],
+      "exception": {
+        "exception_id": "ING-COF001-003"
+      }
     },
     {
       "doc_no": "42621",
