@@ -4,7 +4,7 @@
   "status": "active",
   "reconState": "pending",
   "financials": {
-    "totalOutstanding": 7958.38,
+    "totalOutstanding": -16256.52,
     "lastInvoiceDate": null,
     "lastPaymentDate": null,
     "agedDebt180Plus": 0
@@ -14,12 +14,16 @@
     "actionType": null,
     "dateSent": null,
     "deadlineDate": null,
-    "notes": "Onboarding scaffold only. totalOutstanding R7,958.38 is ASSERTED from analysis/debtors/shared/data/portfolio_candidates.csv (not proven; no per-account ERP export). COF002 (COFFEEBERRY-HILTON) is a different account: not merged, not netted, not a payer family without an operator ruling."
+    "notes": "ERP CURRENT BALANCE -R16,256.52 (PROVEN from raw/COF001_COMBINED.TXT header, last row 2026-09-09; undated file, operator-directed use). The portfolio list figure R7,958.38 is not the ledger end. COF002 (COFFEEBERRY-HILTON) is a different account: not merged, not netted."
   },
   "history": [
     {
       "date": "2026-10-14",
       "event": "Initialized micro-project tracking (analyst session, branch claude/cof001-analysis). No per-account ERP export exists on origin or in the repo, so no projection was built and the ERP balance is NOT proven (variance unverified). Request for a dated COF001 DEBENQ export drafted in docs/requests/2026-10-14_cof001_erp_export_request.md (not posted). Config scaffolded with portfolio skuRates (option B). See docs/previews/2026-10-14_COF001_onboarding.md and docs/handoffs/2026-10-14_COF001.md."
+    },
+    {
+      "date": "2026-10-16",
+      "event": "Operator instruction: use the ERP TXT files from branch claude/eager-mccarthy-vsfs1u only. Filed unchanged under raw/ (COF001_2023/2024/2025/CURRENT/COMBINED.TXT). Intake check (analyst, ad hoc script in session scratch, not a repo generator): running-balance chain 0 breaks on all files; COMBINED last balance = header CURRENT BALANCE = TOTAL TRANSACTIONS = -16256.52; UD 0.00. Undated names and EXCLUDE: ALLOCATION DETAIL header are D21 exceptions, replaced when the dated ADM-135 export arrives. Config set from COMBINED (B/F 0.00 at 2022-03-01). reconcile_debtor_v5_from_txt.mjs NOT run: needs the database (DATABASE_URL or authorised connector replay), not authorised in this session. The other branch's db_sku_classification.json and statement were NOT used."
     }
   ]
 }
