@@ -76,3 +76,32 @@ Biggest accounts in the class: CS0035 (809 rows), PMB001 (421), CS0027 (194), UC
 **Revised Edit 2 clause (PROPOSED, supersedes the previous one):** for invoices use `amount_excl + tax_amount` (verify against `SUM(line_total)` where line detail exists; 75 invoices are inclusive-ratio). For credit notes classify: ratio 15/115 = inclusive (use `amount_excl`); ratio 0.15 = ex-tax (add tax); **any other ratio = unclassified, take the figure from `vw_clean_transactions` line totals or the statement ledger, never from the header.** Nothing applied.
 
 **Still open / unfinished:** verify the mixed-VAT reading on 5 to 10 documents from CS0035, MD0003 and BU0002 against `vw_clean_transactions` line tax codes (one more read-only query, needs your go-ahead as it widens beyond header rows); then decide Edits 1 and 2. This does not affect COF001/COF002, whose credit notes classify cleanly.
+
+---
+
+## Amendment 2026-10-17 (third): the "other" class is mostly the 14% VAT era; the "mixed VAT" reading in the second amendment is withdrawn for those rows (operator authorised Supabase reads; line-level check on CS0035, MD0003, BU0002; connector-sourced, ASSERTED)
+
+South African VAT was 14% until 31 March 2018 and 15% after. Sample of 15 credit notes and 15 invoices from CS0035, MD0003 and BU0002 against `transaction_items` (line tax code and line tax):
+- Every sampled 2016-2018 document has **all lines tax code 1 (taxed)** and line tax equal to the header tax. Invoices: header tax = 14% of the ex-tax amount, line net = header amount (e.g. BU0002 invoice 238: 5,158.40 + 722.18). Credit notes: header `amount_excl` is the **inclusive** figure and tax = 14/114 of it (e.g. MD0003 CN 224: header -342.00, tax -42.00, line net -300.00).
+- One sample was genuinely different: BU0002 invoice 46951 (2025-10-08): header 20,128.98 + 2,756.85 but line net 40,257.96 and line tax 5,513.70 (exactly 2x the header, i.e. duplicated item rows), with both tax-0 and taxed lines (a real mixed-rate document).
+
+Rate-aware classification of all headers (all accounts):
+
+| Entry | Class | Rows | Accounts |
+| :-- | :-- | --: | --: |
+| Crd Note | inclusive 15% | 13,114 | 445 |
+| Crd Note | ex-tax 15% | 3,982 | 226 |
+| Crd Note | inclusive 14% | 429 (427 before 2018-04) | 73 |
+| Crd Note | **other** | **31** | 8 |
+| Crd Note | zero tax | 1,370 | 136 |
+| Invoice | ex-tax 15% | 59,745 | 637 |
+| Invoice | ex-tax 14% | 2,886 (2,868 before 2018-04) | 126 |
+| Invoice | inclusive 15% / 14% | 75 / 37 | 29 / 10 |
+| Invoice | **other** | **171** | 25 |
+| Invoice | zero tax | 866 | 111 |
+
+So the truly unclassified class is **31 credit notes and 171 invoices** (was 460 and 3,094), most dated 2025-07 to 2026-10 and likely genuinely mixed-rate or duplicated-item documents. The 2,908 "just under 15%" invoices are 14% VAT documents.
+
+**Revised rule (PROPOSED, supersedes the previous clauses; nothing applied):** classify a header by `abs(tax_amount)/abs(amount_excl)` against four values: 0.15 and 0.14 = ex-tax (add the tax), 15/115 and 14/114 = inclusive (use `amount_excl`, do not add tax), tolerance 0.002. Anything else (31 credit notes, 171 invoices) = unclassified: use line totals from `vw_clean_transactions` or the statement ledger, never the header. Invoices remain overwhelmingly ex-tax; credit notes are inclusive before 2025-03 and mixed afterwards.
+
+**Not yet done:** the 202 unclassified rows were not checked line by line beyond BU0002 invoice 46951; the duplicated-item pattern (line totals exactly 2x the header) is a possible ingest finding for the ERP/data agent, unverified beyond one document.
