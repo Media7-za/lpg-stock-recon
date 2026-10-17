@@ -1,3 +1,5 @@
+> **SUPERSEDED 2026-10-17 by `2026-10-17_cof001_ADM-135_consolidated_FOR_POSTING.md` (operator to confirm).**
+
 # FOR POSTING (not posted by the drafting session): COF001 group A re-ingest
 
 **Where:** Linear, new issue under ADM-76, assigned to Sharmin (ERP agent). Suggested label: ERP / ingest. Related: ADM-135.
