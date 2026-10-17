@@ -1,0 +1,11 @@
+{
+  "channel": "supabase-connector (execute_sql), read-only SELECT, within the operator's authorisation for these documents (2026-10-17 follow-up: exact amounts)",
+  "project": "oqhpxnaadahohwkslive",
+  "table": "transaction_headers",
+  "sql": "with r as (select id, entry_type, account_no, doc_no, ref_no, tx_date, amount_excl, tax_amount, round(amount_excl+tax_amount,2) as amount_incl, flag from transaction_headers where account_no in ('COF001','COF002') and ltrim(doc_no,'0') in ('30276','30007','29492','31096','40384','15669','15919','16179','16394','17260','22838','4076','4274','5689') and not (entry_type='Payment' and ref_no in ('Alloc','Recon')) and (entry_type in ('Invoice','Crd Note') or ltrim(doc_no,'0') in ('29492')) order by account_no, tx_date, doc_no, id), j as (select coalesce(json_agg(row_to_json(r)),'[]'::json)::text as t from r) select md5(t) as md5, length(t) as len, t as rows_json from j",
+  "md5": "371226057525ef07dd3aa542aeeb6ed2",
+  "len": 2714,
+  "rows": 14,
+  "rowsFile": "amounts.rows.json",
+  "verification": "rows file transcribed from the connector output; md5sum and byte length equal the server-side md5 and len"
+}
