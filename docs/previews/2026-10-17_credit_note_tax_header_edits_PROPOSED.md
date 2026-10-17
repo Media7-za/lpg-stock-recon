@@ -23,3 +23,31 @@ Reopen if a portfolio-wide classification shows credit-note headers in other acc
 
 ## Not in scope
 The allocation-detail skill edits (`2026-10-16_allocation_detail_rule_skill_edits_PROPOSED.md`) are separate and untouched.
+
+---
+
+## Amendment 2026-10-17: portfolio-wide classification (operator "yes, run it across all accounts"; connector-sourced read-only SELECT, ASSERTED; supersedes the "COF001/COF002 only, unproven elsewhere" caveat above)
+
+Class by `abs(tax_amount)/abs(amount_excl)`: ex-tax = 0.15, inclusive = 15/115, zero = no tax or amount, other = anything else. All accounts in `transaction_headers`.
+
+| Entry | Class | Rows | Accounts | Dated before 2025-03 | From 2025-03 |
+| :-- | :-- | --: | --: | --: | --: |
+| Crd Note | inclusive | 13,114 | 445 | 10,262 | 2,852 |
+| Crd Note | ex-tax | 3,982 | 226 | **3** | 3,979 |
+| Crd Note | other | 460 | 78 | 429 | 31 |
+| Crd Note | zero | 1,370 | 136 | 1,295 | 75 |
+| Invoice | ex-tax | 59,745 | 637 | 37,892 | 21,853 |
+| Invoice | inclusive | 75 | 29 | 59 | 16 |
+| Invoice | other | 3,094 | 140 | 2,953 | 141 |
+| Invoice | zero | 866 | 111 | 199 | 667 |
+
+What it supports:
+- **Edit 1 holds portfolio-wide for credit notes dated before 2025-03**: 10,262 inclusive against 3 ex-tax. The COF001/COF002 observation is the portfolio pattern, not a quirk of those accounts.
+- **The 2025-03 boundary is not clean.** After it, ex-tax rows dominate (3,979) but 2,852 credit notes are still inclusive (the inclusive twin of a pair, or an unpaired inclusive row). Edit 1's wording "from 2025-03 a credit note appears as an ex-tax row" should read: "from 2025-03 ex-tax rows are the majority and inclusive rows still occur, so the ratio test always applies."
+- **Invoices are ex-tax in 59,745 of ~63,800 rows; 75 inclusive**, so Edit 2's `amount_excl + tax_amount` for invoices is safe in most cases but not guaranteed (the 75, plus 3,094 `other`).
+- **The ratio test falls through on 460 credit notes and 3,094 invoices (`other`)**, likely mixed or zero-rated VAT lines. **Edit 2's CASE as drafted would add tax to those**, which may be wrong. Until their nature is known, the CASE should return "unclassified, check line totals / ledger" for `other` instead of guessing. Not investigated: one more query by account would be needed.
+- Zero-tax rows (1,370 credit notes, 866 invoices): nothing to compensate.
+
+**Revised Edit 2 clause (PROPOSED, replaces the CASE above):** `CASE WHEN class = inclusive THEN amount_excl WHEN class = ex-tax THEN amount_excl + tax_amount WHEN class = zero THEN amount_excl ELSE NULL /* unclassified: use SUM(line_total) from vw_clean_transactions or the ledger */ END`.
+
+Operator decision still needed on both edits; nothing applied.
