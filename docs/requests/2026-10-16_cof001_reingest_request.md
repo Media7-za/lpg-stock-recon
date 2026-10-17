@@ -1,3 +1,5 @@
+> **SUPERSEDED 2026-10-17 by `2026-10-17_cof001_group_a_reingest_FOR_POSTING.md` (posting version).**
+
 # Re-ingest request — COF001 payments missing from the database (16 Oct 2026)
 
 **DRAFT for posting by the main session / operator. Not posted by the drafting (analyst) session.**
