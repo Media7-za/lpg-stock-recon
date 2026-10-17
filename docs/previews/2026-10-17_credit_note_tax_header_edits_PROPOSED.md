@@ -51,3 +51,28 @@ What it supports:
 **Revised Edit 2 clause (PROPOSED, replaces the CASE above):** `CASE WHEN class = inclusive THEN amount_excl WHEN class = ex-tax THEN amount_excl + tax_amount WHEN class = zero THEN amount_excl ELSE NULL /* unclassified: use SUM(line_total) from vw_clean_transactions or the ledger */ END`.
 
 Operator decision still needed on both edits; nothing applied.
+
+---
+
+## Amendment 2026-10-17 (second): what the "other" class is (operator "sure"; connector-sourced read-only SELECTs, ASSERTED; refines the revised Edit 2 clause above)
+
+Rows with non-zero tax that fit neither 15% nor 15/115 (3,554 rows: 460 credit notes, 3,094 invoices).
+
+| Entry | Pattern | Rows | Accounts | Amount range |
+| :-- | :-- | --: | --: | :-- |
+| Invoice | tax 13.25% to 14.78% of the amount (just under 15%) | 2,908 | 129 | 35.09 to 27,486.50; only 12 under R100, so **not small-amount rounding** |
+| Invoice | tax 0.48% to 12.83% | 185 | 25 | 91.52 to 34,896.89 |
+| Invoice | within 2c of 15% | 1 | 1 | 0.09 |
+| Credit note | tax 1.43% to 12.28% (below 13.04%) | 458 | 77 | 140.00 to 14,817.39 |
+| Credit note | tax 14.48% | 2 | 1 | 1,729.56 |
+
+Biggest accounts in the class: CS0035 (809 rows), PMB001 (421), CS0027 (194), UC0000 (157), NT0001 (134), MD0003 (100), EL0001 (97), BU0002 (97). Recent examples: BU0002 invoice 53567 (34,896.89 + 3,616.40 = 10.4%), SHW001 invoice 50805 (7.8%), KYL001 invoice 51024 (2.1%).
+
+**Reading (inference, not verified against the line items):**
+- These look like documents with **mixed VAT rates** (part zero-rated lines), not a third storage convention. Invoices in this class are ex-tax headers with partial VAT, so `amount_excl + tax_amount` stays right for them.
+- **For credit notes below 13.04% the ratio cannot tell inclusive from ex-tax**: a mixed credit note stored inclusive and one stored ex-tax both land under the pure-rate ratios. 429 of the 460 are dated before 2025-03, where the portfolio default is inclusive (10,262 against 3 ex-tax), but that is a default, not proof.
+- 2,908 invoices sitting just under 15% need an explanation we do not have (mostly standard-rated with a small zero-rated part is the likeliest).
+
+**Revised Edit 2 clause (PROPOSED, supersedes the previous one):** for invoices use `amount_excl + tax_amount` (verify against `SUM(line_total)` where line detail exists; 75 invoices are inclusive-ratio). For credit notes classify: ratio 15/115 = inclusive (use `amount_excl`); ratio 0.15 = ex-tax (add tax); **any other ratio = unclassified, take the figure from `vw_clean_transactions` line totals or the statement ledger, never from the header.** Nothing applied.
+
+**Still open / unfinished:** verify the mixed-VAT reading on 5 to 10 documents from CS0035, MD0003 and BU0002 against `vw_clean_transactions` line tax codes (one more read-only query, needs your go-ahead as it widens beyond header rows); then decide Edits 1 and 2. This does not affect COF001/COF002, whose credit notes classify cleanly.
