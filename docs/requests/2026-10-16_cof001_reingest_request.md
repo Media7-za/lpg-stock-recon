@@ -17,3 +17,7 @@
 **Also noted from the 16 Oct upload (ERP fix for credit note 15558):** the window extract shows 15558 (-R18,700.33) reversed by new invoice 53619 (+R18,700.33) and re-issued as credit notes 15803 (-R3,002.83, DN#22890) and 15804 (-R15,697.50, DN#22890); balance unchanged at -R16,256.52. We still need the **dated full-history export** (ADM-135) to rebuild; the window extract is undated and has no history.
 
 Nothing in the ERP is modified by this request.
+
+## Branch
+
+Start your session from `claude/payment-matching-mechanisms-4h34be` and commit only dated raw exports (`<CODE>_<YYYY-MM-DD>.TXT`) to that branch, under `analysis/debtors/<CODE>/raw/`. Do not start from `main` or from another branch, and do not commit analysis or statement work there; analysis sessions use their own task branch and the PM merges it. If you cannot push to that branch, say so on the Linear ticket.

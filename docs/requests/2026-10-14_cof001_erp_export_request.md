@@ -25,3 +25,7 @@ ADM-79 Google Drive folder (https://drive.google.com/drive/folders/1Pdy9jg-HGFgH
 
 ## Reference
 `docs/previews/2026-10-14_COF001_onboarding.md`.
+
+## Branch
+
+Start your session from `claude/payment-matching-mechanisms-4h34be` and commit only dated raw exports (`<CODE>_<YYYY-MM-DD>.TXT`) to that branch, under `analysis/debtors/<CODE>/raw/`. Do not start from `main` or from another branch, and do not commit analysis or statement work there; analysis sessions use their own task branch and the PM merges it. If you cannot push to that branch, say so on the Linear ticket.

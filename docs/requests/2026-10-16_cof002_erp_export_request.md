@@ -36,3 +36,7 @@ Bank statement lines for **STAT 101, 102, 105 and 106**: the lines of R7,628.30 
 
 ## Delivery and use
 Drive folder ADM-79 or a direct upload. On receipt: D21 verification with `analysis/debtors/COF001/scripts/d21_intake_check.mjs`, then repoint the input paths in `docs/previews/2026-10-16_COF002_2024/cof002_2024_crosspost_search.mjs` at the dated files, re-run it and update the COF002 preview. No allocation detail is requested and nothing in the ERP is modified.
+
+## Branch
+
+Start your session from `claude/payment-matching-mechanisms-4h34be` and commit only dated raw exports (`<CODE>_<YYYY-MM-DD>.TXT`) to that branch, under `analysis/debtors/<CODE>/raw/`. Do not start from `main` or from another branch, and do not commit analysis or statement work there; analysis sessions use their own task branch and the PM merges it. If you cannot push to that branch, say so on the Linear ticket.
