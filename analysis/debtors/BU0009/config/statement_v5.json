@@ -1,0 +1,24 @@
+{
+  "debtorCode": "BU0009",
+  "debtorName": "IMPENDLE WHOLESALE 2025",
+  "txtPath": "analysis/debtors/BU0009/raw/BU0009_ACCOUNT_ENQUIRY.TXT",
+  "periodStart": "2026-01-01",
+  "combinedBf": 31638.03,
+  "bfSourceNote": "BU0009_ACCOUNT_ENQUIRY.TXT line 127 — running balance R31,638.03 before first 2026 row (line 128, Bank UD 06/01/2026)",
+  "cylOpeningFinancial": 0.0,
+  "paymentLane": "LPG",
+  "cylOpeningQty": {
+    "14.1": 0,
+    "19.1": 0,
+    "9.1": 0,
+    "D.1": 0,
+    "S.1": 0
+  },
+  "skuRates": {
+    "14.1": 575,
+    "19.1": 690,
+    "9.1": 517.5,
+    "D.1": 1150,
+    "S.1": 1150
+  }
+}
