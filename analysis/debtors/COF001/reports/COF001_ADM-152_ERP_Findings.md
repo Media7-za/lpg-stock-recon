@@ -66,3 +66,9 @@ Task 1 is incomplete, so one short follow-up was posted on ADM-152: page 2 of 45
 ADM-152 comments, 2026-10-18:
 - `8825ac47-2505-4e09-b0c4-a62412dd86e0`: "Answer to task 1"
 - `32765328-e9e3-48f4-826c-6b41b32be1dc`: "Task 1, follow-up"
+
+## Task 1 follow-up (received 2026-10-18, typed in the liaison session)
+
+- **Page 2 of 45528.** "there was nothing on page 2". ASSERTED (the ERP side's typed statement, no screenshot). Invoice 45528 therefore has only the two lines on page 1.
+- **Audit trail.** Not yet answered. The ERP side asked what the request meant, so it was re-explained in plain terms; see the ADM-152 comment of the same date. If FINCON keeps no edit history, that answer is recorded as "not available", and the decision moves to task 2 (delivery note DN#20080).
+- **Interim H3 assumption:** still neither confirmed nor broken.
