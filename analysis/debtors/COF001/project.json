@@ -42,6 +42,10 @@
     {
       "date": "2026-10-16",
       "event": "Workflow audit against the debtor skill pipeline: ingestGate populated from reports/COF001_INGEST_COVERAGE_2026-10-16.json; HUMAN_TASKS H-028 to H-030 queued; Evidence Exchange manifest evidence_exchange/COF001/turn-001; D21 intake check committed (scripts/d21_intake_check.mjs) - year-split files COF001_2023/2024/2025.TXT FAIL D21 (header is current balance, last balance is year-end) and were moved to raw/Enquiry/; statement TXT COF001_COMBINED.TXT passes. debtors:tag-check: NOT_DERIVABLE_FROM_TXT, PATTERN_ONLY (no release)."
+    },
+    {
+      "date": "2026-10-18",
+      "event": "Operator ruling L1 (config/operator_rulings.json): cylinder rental charges (stock 3112; COF001 docs 41576-41579 R250 each, 49204 R6,960) belong in the GAS lane, not the cylinder lane; lane mismatch between payment and invoice is itself a flag to check. Not yet applied: the shared generator has no lane-override key (database debt_group decides lanes); staged PROPOSED in docs/previews/2026-10-18_COF001_rental_lane_effect.md. With rentals in 1A: 1A -8,482.52, 1B -7,774.00 (ERP -16,256.52 unchanged)."
     }
   ],
   "ingestGate": {

@@ -62,6 +62,19 @@
         "a dated export shows a different amount or type for any of the 7 documents"
       ],
       "status": "group B done; group A open: awaiting re-ingest"
+    },
+    {
+      "id": "L1",
+      "date": "2026-10-18",
+      "operator_words": "The matcher left them open partly because the payments post to the gas lane and the invoices sit on the cylinder lane. That mismatch itself says someone should check. Cylinder Rentals should be handled in tbe gas lane not cylinder lane",
+      "ruling": "Cylinder rental charges (stock 3112, SURE-MIX / SM CYL RENTAL) belong in the GAS lane (Part 1A), not the cylinder deposit lane (Part 1B). COF001 documents: 41576, 41577, 41578, 41579 (R250.00 each, 2025-03-18) and 49204 (R6,960.00, 2026-02-11), R7,960.00 in total. A lane mismatch between a payment and an invoice is itself a signal to check, not only a reason for the matcher to leave them open.",
+      "status": "ruled; NOT yet applied in the generator: the shared v5 generator has no lane-override key (lanes come from database debt_group), so this needs a generator change (staged PROPOSED in docs/previews/2026-10-18_COF001_rental_lane_effect.md). Until then COF001 1A/1B figures in this branch still carry the rentals in 1B.",
+      "scope": "COF001 documents above. Whether the same applies to COF002 rentals (41580-41583) and portfolio-wide is for the operator.",
+      "tripwires": [
+        "a rental document whose lines include a cylinder deposit SKU (9.1, 14.1, 19.1, S.1, D.1)",
+        "the operator rules otherwise for a specific rental",
+        "a new stock number for rentals appears"
+      ]
     }
   ],
   "held": []
