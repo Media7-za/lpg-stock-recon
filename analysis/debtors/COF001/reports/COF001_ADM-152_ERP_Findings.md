@@ -80,3 +80,21 @@ ADM-152 comments, 2026-10-18:
 - **What it could not prove:** whether line 2 was changed, because FINCON keeps no edit history.
 - **Interim H3 assumption:** neither confirmed nor broken.
 - **Next:** task 2, delivery note DN#20080 (fulls delivered and empties collected, by size).
+
+---
+
+## Operator ruling relayed by the parent session (2026-10-18 22:24Z)
+
+- **The ruling.** The operator ruled that invoice 45528 was incorrect, and so was its selling price. **H3 is now operator-confirmed.**
+  - The source is the parent session `session_01PETzS3tSogSeziSVM1u665`, by cross-session message. This liaison session did not see the ruling directly. Its record is on the parent's side.
+  - The confirmation rests on the operator's judgement, not on FINCON evidence. FINCON proved only the stored S.1 line (task 1), and it has no edit history.
+- **The correction is a separate ticket.** [ADM-158](https://linear.app/p2p-marketplace/issue/ADM-158/cof001-correct-invoice-45528-48kg-gas-billed-as-deposit-wrong-price) is a child of ADM-151, assigned to Sharmin, and was verified to exist on 2026-10-18. It covers:
+  - a credit note for S.1 × 5;
+  - a 48kg gas invoice at the correct price;
+  - a write-off of the R1,776.24 gas credit against the shortfall.
+  
+  None of this is filed here.
+- **Effect on ADM-152.** Task 2 (DN#20080) is no longer decisive. It is optional corroboration only.
+- **Tripwires that still apply.** These would contradict the ruling and go back to the operator:
+  - DN#20080 shows no 48kg fulls delivered;
+  - a site count shows five 48kg cylinders above the float.
