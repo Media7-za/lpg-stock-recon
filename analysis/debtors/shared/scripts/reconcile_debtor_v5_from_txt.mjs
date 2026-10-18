@@ -200,14 +200,33 @@ function loadConfig(debtorCode) {
     }
   }
   const preWindowQuarantineTotal = Math.round(preWindowQuarantine.reduce((sum, q) => sum + Number(q.amount), 0) * 100) / 100;
+  // Optional `laneOverridesFile`: SKU lines moved between 1A and 1B by operator decision. Lines dated before the
+  // window move the opening balances (and Part 2 opening qty); lines inside it are applied to the line split.
+  const laneOverrides = (
+    cfg.laneOverridesFile
+      ? JSON.parse(fs.readFileSync(path.join(ROOT, 'analysis/debtors', debtorCode, cfg.laneOverridesFile), 'utf8')).items || []
+      : []
+  ).filter((o) => !cfg.periodEnd || o.date <= cfg.periodEnd);
+  const preWindowOverrides = laneOverrides.filter((o) => o.date < cfg.periodStart);
+  const cylOpeningQty = { ...(cfg.cylOpeningQty || Object.fromEntries(SKUS.map((s) => [s, 0]))) };
+  let overrideCylShift = 0;
+  for (const o of preWindowOverrides) {
+    const { cyl, qty } = laneOverrideShift(o);
+    overrideCylShift += cyl;
+    if (SKUS.includes(o.stock_no)) cylOpeningQty[o.stock_no] = (cylOpeningQty[o.stock_no] || 0) + qty;
+  }
+  const cylOpeningAdjusted = Math.round((cylOpeningFinancial + overrideCylShift) * 100) / 100;
   const ratificationScenario = loadRatificationScenario(cfg);
   const ratificationRows = ratificationScenario ? buildRatificationRows(ratificationScenario) : [];
   return {
     ...cfg,
     txtPath,
     combinedBf,
-    cylOpeningFinancial,
-    lpgOpeningBf: Math.round((combinedBf - cylOpeningFinancial - preWindowQuarantineTotal) * 100) / 100,
+    cylOpeningFinancial: cylOpeningAdjusted,
+    cylOpeningFinancialConfig: cylOpeningFinancial,
+    laneOverrides,
+    preWindowOverrides,
+    lpgOpeningBf: Math.round((combinedBf - cylOpeningAdjusted - preWindowQuarantineTotal) * 100) / 100,
     paymentLane: cfg.paymentLane || 'LPG',
     ratificationScenario,
     ratificationRows,
@@ -221,8 +240,17 @@ function loadConfig(debtorCode) {
       `src/features/debtor-position-workspace/data/fixtures/${debtorCode}.v5.json`,
     ),
     skuRates: cfg.skuRates || { '14.1': 575, '19.1': 690, '9.1': 517.5, 'D.1': 1150, 'S.1': 1150 },
-    cylOpeningQty: cfg.cylOpeningQty || Object.fromEntries(SKUS.map((s) => [s, 0])),
+    cylOpeningQty,
   };
+}
+
+// Change to the CYL lane (amount) and to Part 2 custody (qty) when a lane override moves a line.
+function laneOverrideShift(o) {
+  const amount = Number(o.amount);
+  const qty = Number(o.qty || 0);
+  if (o.fromLane === 'CYL' && o.toLane === 'LPG') return { cyl: -amount, lpg: amount, qty: -qty };
+  if (o.fromLane === 'LPG' && o.toLane === 'CYL') return { cyl: amount, lpg: -amount, qty: SKUS.includes(o.stock_no) ? qty : 0 };
+  throw new Error(`Lane override ${o.entry_type} ${o.doc_no} ${o.stock_no}: fromLane/toLane must be CYL→LPG or LPG→CYL`);
 }
 
 function parseArgs() {
@@ -433,7 +461,14 @@ function buildPart1Split(rows, cfg, docSplit) {
     // lane split is inferred (not in the database) are flagged via optional `assumedLaneDocs` in config.
     const isSplit = Math.abs(lpg) >= 0.01 && Math.abs(cyl) >= 0.01;
     const isAssumed = (cfg.assumedLaneDocs || []).includes(`${r.clean_doc}|${r.entry_type}`);
-    const noteParts = [isSplit ? `split of R${fmt(r.amount)}` : null, isAssumed ? 'lane assumed' : null].filter(Boolean);
+    const overrides = (cfg.laneOverrides || []).filter(
+      (o) => o.date >= cfg.periodStart && `${o.doc_no}|${o.entry_type}` === `${r.clean_doc}|${r.entry_type}`,
+    );
+    const noteParts = [
+      isSplit ? `split of R${fmt(r.amount)}` : null,
+      isAssumed ? 'lane assumed' : null,
+      ...overrides.map((o) => `${o.stock_no} R${fmt(o.amount)} moved to ${o.toLane === 'LPG' ? '1A' : '1B'}, lane override ${o.status || ''}`.trim()),
+    ].filter(Boolean);
     financial.push({
       ...r,
       doc_note: noteParts.length ? ` *(${noteParts.join('; ')})*` : '',
@@ -522,6 +557,14 @@ async function buildPart2(client, cfg) {
     const bucket = cylLookup.get(docKey);
     bucket[c.stock_no] = (bucket[c.stock_no] || 0) + c.qty;
   }
+  for (const o of (cfg.laneOverrides || []).filter((x) => x.date >= cfg.periodStart)) {
+    const { qty } = laneOverrideShift(o);
+    if (!qty) continue;
+    const key = `${o.doc_no}|${o.entry_type}`;
+    if (!cylLookup.has(key)) cylLookup.set(key, {});
+    const bucket = cylLookup.get(key);
+    bucket[o.stock_no] = (bucket[o.stock_no] || 0) + qty;
+  }
 
   const { rows } = loadTxt(cfg);
   const ratificationInvCn = (cfg.ratificationRows || []).filter((r) => r.is_ratification);
@@ -608,6 +651,14 @@ async function main() {
   for (const [k, v] of buildRatificationDocSplit(cfg.ratificationRows)) {
     docSplit.set(k, v);
   }
+  for (const o of cfg.laneOverrides.filter((x) => x.date >= cfg.periodStart)) {
+    const key = `${o.doc_no}|${o.entry_type}`;
+    const bucket = docSplit.get(key);
+    if (!bucket) throw new Error(`Lane override ${key}: no line split in the database for this document`);
+    const { cyl, lpg } = laneOverrideShift(o);
+    bucket.cyl = round2(bucket.cyl + cyl);
+    bucket.lpg = round2(bucket.lpg + lpg);
+  }
   const { sections: part2, currentCyl } = await buildPart2(client, cfg);
   await client.end();
 
@@ -672,6 +723,14 @@ ${quarantinedRows
         .map((r) => `${r.entry_type.toLowerCase()} ${r.clean_doc} (${displayDate(r.iso)}, R${fmt(r.amount)})`)
         .join('; ')}, dated before this period; the combined opening B/F above is the ERP figure.`
     : '';
+  const overrideHeader = cfg.preWindowOverrides.length
+    ? `\n**Lane override adjustment:** opening 1B is R${fmt(cfg.cylOpeningFinancialConfig)} per config, adjusted for ${cfg.preWindowOverrides
+        .map((o) => `${o.entry_type.toLowerCase()} ${o.doc_no} ${o.stock_no} ×${o.qty} (${displayDate(o.date)}, R${fmt(o.amount)}) moved to ${o.toLane === 'LPG' ? '1A' : '1B'} (${o.status})`)
+        .join('; ')}; opening 1A moves by the same amount. Record: \`${cfg.laneOverridesFile}\`.`
+    : '';
+  const overrideLegend = financial.some((r) => (r.doc_note || '').includes('lane override'))
+    ? ` \`lane override\` marks a line moved between 1A and 1B by operator decision (record: \`${cfg.laneOverridesFile}\`).`
+    : '';
   const quarantineSummary = quarantinedRows.length
     ? `\n**Quarantined documents (held aside):** R${fmt(quarantinedTotal)}  \n**ERP balance excluding quarantined documents:** R${fmt(erpExpected)}  `
     : '';
@@ -679,7 +738,7 @@ ${quarantinedRows
   const md = `# Statement of Account: ${cfg.debtorName} (${cfg.debtorCode}) - Version 5 (Sub-Ledger Position Statement)
 **Period:** ${periodStartLabel} → ${periodEndLabel} &nbsp;|&nbsp; **Account:** ${cfg.debtorCode}
 **Combined Opening B/F:** R${fmt(cfg.combinedBf)} (ERP verified — source: \`${txtRel}\` ${cfg.bfSourceNote || ''})
-**LPG Opening B/F (1A):** R${fmt(cfg.lpgOpeningBf)} &nbsp;|&nbsp; **CYL Opening B/F (1B):** R${fmt(cfg.cylOpeningFinancial)}${preWindowHeader}
+**LPG Opening B/F (1A):** R${fmt(cfg.lpgOpeningBf)} &nbsp;|&nbsp; **CYL Opening B/F (1B):** R${fmt(cfg.cylOpeningFinancial)}${preWindowHeader}${overrideHeader}
 **Payment routing:** ${cfg.paymentLane} lane (payments post to Part 1A unless configured otherwise)
 **Last regenerated:** ${new Date().toISOString().slice(0, 10)} from ERP TXT (\`reconcile_debtor_v5_from_txt.mjs\`)${cfg.ratificationScenario ? ' · **Ratification scenario active**' : ''}
 
@@ -688,14 +747,14 @@ ${quarantinedRows
 ${ratificationSection}
 
 ## Part 1A: LPG Gas Financial Statement
-*Gas fill invoices, credit notes, and payments since ${periodStartLabel}. Payments route to this sub-ledger per debtor config (\`paymentLane: ${cfg.paymentLane}\`).${laneLegend}*
+*Gas fill invoices, credit notes, and payments since ${periodStartLabel}. Payments route to this sub-ledger per debtor config (\`paymentLane: ${cfg.paymentLane}\`).${laneLegend}${overrideLegend}*
 
 ${part1a.length ? part1a.join('\n\n---\n\n') : '_No LPG activity in period._'}
 
 ---
 
 ## Part 1B: Cylinder Deposit Financial Statement
-*Cylinder deposit charges and reversals (\`-EMPTY\` / \`EMPTIES\` refs). Paired inv+CN rows remain visible; net-zero pairs are expected for standard deliveries.${laneLegend}*
+*Cylinder deposit charges and reversals (\`-EMPTY\` / \`EMPTIES\` refs). Paired inv+CN rows remain visible; net-zero pairs are expected for standard deliveries.${laneLegend}${overrideLegend}*
 
 ${part1b.length ? part1b.join('\n\n---\n\n') : '_No CYL deposit activity in period._'}
 

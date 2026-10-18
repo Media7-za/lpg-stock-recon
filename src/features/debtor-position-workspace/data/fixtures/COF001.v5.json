@@ -7,18 +7,18 @@
   },
   "version": "v5",
   "workspaceStatus": "pending_review",
-  "lastGeneratedAt": "2026-10-18T17:23:23.400Z",
+  "lastGeneratedAt": "2026-10-18T19:07:59.914Z",
   "source": "analysis/debtors/COF001/raw/COF001_COMBINED.TXT",
   "financialPosition": {
-    "lpgGasDebt": -854.22,
-    "cylinderFinancialBalance": -7774,
+    "lpgGasDebt": 5183.28,
+    "cylinderFinancialBalance": -13811.5,
     "totalDebtorBalance": -8628.22,
     "erpStatedBalance": -16256.52,
     "erpVariance": 0,
     "subLedgerVariance": 0
   },
   "custodyPosition": {
-    "totalCustodyExposure": -7992.5,
+    "totalCustodyExposure": -13742.5,
     "lines": [
       {
         "sku": "19.1",
@@ -44,14 +44,14 @@
       {
         "sku": "S.1",
         "label": "S.1",
-        "qty": -15,
+        "qty": -20,
         "depositRate": 1150,
-        "exposure": -17250
+        "exposure": -23000
       }
     ]
   },
   "reconciliationPosition": {
-    "cylinderVariance": 218.5,
+    "cylinderVariance": -69,
     "erpVariance": 0,
     "subLedgerVariance": 0,
     "exceptions": [

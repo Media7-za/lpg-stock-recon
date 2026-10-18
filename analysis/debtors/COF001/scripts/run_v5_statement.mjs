@@ -115,6 +115,14 @@ if (cfg.quarantineFile) {
     );
   }
 }
+if (cfg.laneOverridesFile) {
+  const o = JSON.parse(fs.readFileSync(path.join(ACCT, cfg.laneOverridesFile), 'utf8')).items;
+  for (const i of o.filter((x) => !cfg.periodEnd || x.date <= cfg.periodEnd)) {
+    items.push(
+      `**Lane override: ${i.entry_type.toLowerCase()} ${i.doc_no} ${i.stock_no} ×${i.qty} (${i.date}, R${i.amount.toLocaleString('en-US', { minimumFractionDigits: 2 })}) treated as ${i.toLane === 'LPG' ? 'gas (1A)' : 'cylinder (1B)'}, ${i.status}.** ${i.decision}; operator, ${i.decidedOn}. Basis: ${i.basis} Effect: ${i.effect} ${i.notTreatedAs} ${i.date < cfg.periodStart ? 'The line is dated before this period, so the opening 1B balance and the Part 2 opening quantity are adjusted; the combined opening B/F is unchanged.' : 'The line is inside this period and is routed in the tables above.'} Pending: ${i.pendingEvidence} Reopen when: ${i.reopenWhen.join(' ')}`,
+    );
+  }
+}
 if (cfg.erpClosingNote) items.push(`**Closing check.** ${cfg.erpClosingNote}`);
 items.push(
   `**Database coverage.** All invoices and credit notes in the window were matched to the database by document and amount (see \`reports/COF001_DB_COVERAGE_2026-10-16.md\`).${inWindow('2026-05-05') ? ' Three documents in May 2026 are dated one day later in the database (14854, 50513, 50515).' : ''}`,

@@ -23,5 +23,6 @@
   },
   "periodEnd": "2025-12-31",
   "dbSnapshot": "data/db_snapshot_2025.json",
-  "quarantineFile": "config/quarantine.json"
+  "quarantineFile": "config/quarantine.json",
+  "laneOverridesFile": "config/lane_overrides.json"
 }

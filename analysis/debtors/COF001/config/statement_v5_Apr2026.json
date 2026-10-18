@@ -5,7 +5,7 @@
   "periodStart": "2026-04-01",
   "combinedBf": -1076.02,
   "bfSourceNote": "ERP running balance after the last March 2026 row (payment 43758, 24 Mar 2026), COF001_CURRENT.TXT line 157",
-  "cylOpeningFinancial": 7406.0,
+  "cylOpeningFinancial": 7406,
   "paymentLane": "LPG",
   "cylOpeningQty": {
     "14.1": 0,
@@ -22,6 +22,7 @@
     "S.1": 1150
   },
   "quarantineFile": "config/quarantine.json",
+  "laneOverridesFile": "config/lane_overrides.json",
   "assumedLaneDocs": [
     "15803|Crd Note",
     "15804|Crd Note",
