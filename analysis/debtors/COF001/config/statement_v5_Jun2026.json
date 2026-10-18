@@ -20,5 +20,6 @@
     "9.1": 517.5,
     "D.1": 1150,
     "S.1": 1150
-  }
+  },
+  "quarantineFile": "config/quarantine.json"
 }

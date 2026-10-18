@@ -22,5 +22,6 @@
     "S.1": 1150
   },
   "periodEnd": "2025-12-31",
-  "dbSnapshot": "data/db_snapshot_2025.json"
+  "dbSnapshot": "data/db_snapshot_2025.json",
+  "quarantineFile": "config/quarantine.json"
 }

@@ -191,6 +191,15 @@ function loadConfig(debtorCode) {
   const quarantined = cfg.quarantineFile
     ? JSON.parse(fs.readFileSync(path.join(ROOT, 'analysis/debtors', debtorCode, cfg.quarantineFile), 'utf8')).items || []
     : [];
+  // A quarantined payment dated before the window is already inside the ERP opening balance;
+  // take it out of the opening 1A balance (documents dated inside the window are held aside by loadTxt).
+  const preWindowQuarantine = quarantined.filter((q) => q.date < cfg.periodStart);
+  for (const q of preWindowQuarantine) {
+    if (q.lane === 'CYL' || !PAYMENT_TYPES.has(q.entry_type)) {
+      throw new Error(`Quarantined ${q.entry_type} ${q.doc_no} dated before the window: only LPG-lane payments are supported`);
+    }
+  }
+  const preWindowQuarantineTotal = Math.round(preWindowQuarantine.reduce((sum, q) => sum + Number(q.amount), 0) * 100) / 100;
   const ratificationScenario = loadRatificationScenario(cfg);
   const ratificationRows = ratificationScenario ? buildRatificationRows(ratificationScenario) : [];
   return {
@@ -198,7 +207,7 @@ function loadConfig(debtorCode) {
     txtPath,
     combinedBf,
     cylOpeningFinancial,
-    lpgOpeningBf: Math.round((combinedBf - cylOpeningFinancial) * 100) / 100,
+    lpgOpeningBf: Math.round((combinedBf - cylOpeningFinancial - preWindowQuarantineTotal) * 100) / 100,
     paymentLane: cfg.paymentLane || 'LPG',
     ratificationScenario,
     ratificationRows,
@@ -315,20 +324,25 @@ function loadTxt(cfg) {
     headerBalance = Number(cfg.erpClosingBalance ?? rows.at(-1).erp_balance);
   }
   // Quarantined documents stay in the ERP balance but are held aside from the sub-ledgers.
+  // In-window documents are removed from the rows; documents dated before the window are checked
+  // against the TXT and reported (their effect is taken out of the opening balance in loadConfig).
   const quarantinedRows = [];
+  const quarantinedPre = [];
   for (const q of cfg.quarantined || []) {
-    if (q.date < cfg.periodStart || (cfg.periodEnd && q.date > cfg.periodEnd)) {
-      throw new Error(`Quarantined ${q.entry_type} ${q.doc_no} (${q.date}) is outside the statement window`);
-    }
+    if (cfg.periodEnd && q.date > cfg.periodEnd) continue; // after the window: not part of this statement
     const clean = String(q.doc_no).replace(/^0+/, '');
-    const idx = rows.findIndex(
-      (r) => r.clean_doc === clean && r.entry_type === q.entry_type && r.iso === q.date && Math.abs(r.amount - q.amount) < 0.005,
-    );
+    const matches = (r) =>
+      r.clean_doc === clean && r.entry_type === q.entry_type && r.iso === q.date && Math.abs(r.amount - q.amount) < 0.005;
+    const idx = rows.findIndex(matches);
     if (idx < 0) throw new Error(`Quarantined ${q.entry_type} ${q.doc_no} (${q.date}, ${q.amount}) not found in TXT`);
-    quarantinedRows.push({ ...rows[idx], quarantine: q });
-    rows = rows.filter((_, i) => i !== idx);
+    if (q.date < cfg.periodStart) {
+      quarantinedPre.push({ ...rows[idx], quarantine: q });
+    } else {
+      quarantinedRows.push({ ...rows[idx], quarantine: q });
+      rows = rows.filter((_, i) => i !== idx);
+    }
   }
-  return { rows, headerBalance, quarantinedRows };
+  return { rows, headerBalance, quarantinedRows, quarantinedPre };
 }
 
 function splitRowAmount(r, docSplit, cfg) {
@@ -578,7 +592,8 @@ async function buildPart2(client, cfg) {
 async function main() {
   const debtorCode = parseArgs();
   const cfg = loadConfig(debtorCode);
-  const { rows, headerBalance, quarantinedRows } = loadTxt(cfg);
+  const { rows, headerBalance, quarantinedRows: quarantinedInWindow, quarantinedPre } = loadTxt(cfg);
+  const quarantinedRows = [...quarantinedPre, ...quarantinedInWindow].sort((a, b) => a.iso.localeCompare(b.iso));
   const allRows = mergeRatificationRows(rows, cfg.ratificationRows);
 
   const client = new pg.Client(pgClientOptions());
@@ -634,10 +649,15 @@ ${quarantinedRows
   .map((r) => `| ${r.date_str || displayDate(r.iso)} | ${r.entry_type} | ${r.clean_doc} | ${fmt(r.amount)} | ${cfg.paymentLane === 'CYL' ? '1B' : '1A'} | ${r.quarantine.decision} (${r.quarantine.decidedOn}) |`)
   .join('\n')}
 
-*Held aside from Part 1A and 1B and the running balances above, pending review. They remain in the ERP balance, so the bridge shows them as a reconciling line. Record: \`${cfg.quarantineFile}\`.*
+*Held aside from Part 1A and 1B and the running balances above, pending review (documents dated before this period are excluded from the opening balances). They remain in the ERP balance, so the bridge shows them as a reconciling line. Record: \`${cfg.quarantineFile}\`.*
 
 ---
 `
+    : '';
+  const preWindowHeader = quarantinedPre.length
+    ? `\n**Quarantine adjustment:** opening 1A excludes quarantined ${quarantinedPre
+        .map((r) => `${r.entry_type.toLowerCase()} ${r.clean_doc} (${displayDate(r.iso)}, R${fmt(r.amount)})`)
+        .join('; ')}, dated before this period; the combined opening B/F above is the ERP figure.`
     : '';
   const quarantineSummary = quarantinedRows.length
     ? `\n**Quarantined documents (held aside):** R${fmt(quarantinedTotal)}  \n**ERP balance excluding quarantined documents:** R${fmt(erpExpected)}  `
@@ -646,7 +666,7 @@ ${quarantinedRows
   const md = `# Statement of Account: ${cfg.debtorName} (${cfg.debtorCode}) - Version 5 (Sub-Ledger Position Statement)
 **Period:** ${periodStartLabel} → ${periodEndLabel} &nbsp;|&nbsp; **Account:** ${cfg.debtorCode}
 **Combined Opening B/F:** R${fmt(cfg.combinedBf)} (ERP verified — source: \`${txtRel}\` ${cfg.bfSourceNote || ''})
-**LPG Opening B/F (1A):** R${fmt(cfg.lpgOpeningBf)} &nbsp;|&nbsp; **CYL Opening B/F (1B):** R${fmt(cfg.cylOpeningFinancial)}
+**LPG Opening B/F (1A):** R${fmt(cfg.lpgOpeningBf)} &nbsp;|&nbsp; **CYL Opening B/F (1B):** R${fmt(cfg.cylOpeningFinancial)}${preWindowHeader}
 **Payment routing:** ${cfg.paymentLane} lane (payments post to Part 1A unless configured otherwise)
 **Last regenerated:** ${new Date().toISOString().slice(0, 10)} from ERP TXT (\`reconcile_debtor_v5_from_txt.mjs\`)${cfg.ratificationScenario ? ' · **Ratification scenario active**' : ''}
 
@@ -745,7 +765,8 @@ ${custodyBlockedNote}
     workspaceStatus:
       Math.abs(erpVariance) < 0.02 &&
       Math.abs(subLedgerVariance) < 0.02 &&
-      Math.abs(cylVariance) < 1
+      Math.abs(cylVariance) < 1 &&
+      quarantinedRows.length === 0
         ? 'clean'
         : 'pending_review',
     lastGeneratedAt: new Date().toISOString(),
@@ -785,6 +806,9 @@ ${custodyBlockedNote}
           : []),
         ...(Math.abs(subLedgerVariance) >= 0.02
           ? [{ type: 'VARIANCE', basis: 'ASSERTED', status: 'open', description: 'Part 1A + 1B closing does not tie to combined running balance' }]
+          : []),
+        ...(quarantinedRows.length
+          ? [{ type: 'OTHER', basis: 'ASSERTED', status: 'open', description: `Quarantined documents held aside from 1A/1B: ${quarantinedRows.map((r) => `${r.entry_type} ${r.clean_doc}`).join(', ')}` }]
           : []),
         ...(Math.abs(cylVariance) >= 1
           ? [{ type: 'CUSTODY', basis: 'ASSERTED', status: 'open', description: 'Part 1B financial vs Part 2 custody — check DB ingest vs TXT' }]

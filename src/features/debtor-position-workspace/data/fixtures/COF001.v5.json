@@ -7,12 +7,12 @@
   },
   "version": "v5",
   "workspaceStatus": "pending_review",
-  "lastGeneratedAt": "2026-10-16T10:48:49.178Z",
+  "lastGeneratedAt": "2026-10-18T16:38:41.751Z",
   "source": "analysis/debtors/COF001/raw/COF001_COMBINED.TXT",
   "financialPosition": {
-    "lpgGasDebt": -8482.52,
+    "lpgGasDebt": -854.22,
     "cylinderFinancialBalance": -7774,
-    "totalDebtorBalance": -16256.52,
+    "totalDebtorBalance": -8628.22,
     "erpStatedBalance": -16256.52,
     "erpVariance": 0,
     "subLedgerVariance": 0
@@ -55,6 +55,12 @@
     "erpVariance": 0,
     "subLedgerVariance": 0,
     "exceptions": [
+      {
+        "type": "OTHER",
+        "basis": "ASSERTED",
+        "status": "open",
+        "description": "Quarantined documents held aside from 1A/1B: Payment 29492"
+      },
       {
         "type": "CUSTODY",
         "basis": "ASSERTED",

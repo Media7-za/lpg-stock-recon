@@ -69,11 +69,24 @@ md = open(src, encoding="utf-8").read()
 # The shared exporter reads its header box from "Opening Balance B/F:" and "Combined Closing Balance"
 # labels. v5 uses different labels, so work on a temporary copy with those labels (the statement
 # markdown itself is not changed) and without the raw HTML comment markers.
-md = re.sub(
-    r"\*\*Combined Opening B/F:\*\* (R-?[\d,.]+) \(ERP verified[^\n]*",
-    r"**Opening Balance B/F:** \1 (combined, ERP verified)",
-    md,
+adj = re.search(
+    r"\*\*LPG Opening B/F \(1A\):\*\* R(-?[\d,.]+).*?\*\*CYL Opening B/F \(1B\):\*\* R(-?[\d,.]+)", md
 )
+if "**Quarantine adjustment:**" in md and adj:
+    # sub-ledger opening excludes the quarantined document(s): show that as the header opening
+    total = float(adj.group(1).replace(",", "")) + float(adj.group(2).replace(",", ""))
+    opening = "R{:,.2f}".format(round(total, 2))
+    md = re.sub(
+        r"\*\*Combined Opening B/F:\*\* R-?[\d,.]+ \(ERP verified[^\n]*",
+        lambda m: "**Opening Balance B/F:** " + opening + " (combined, excl. quarantined documents)",
+        md,
+    )
+else:
+    md = re.sub(
+        r"\*\*Combined Opening B/F:\*\* (R-?[\d,.]+) \(ERP verified[^\n]*",
+        r"**Opening Balance B/F:** \1 (combined, ERP verified)",
+        md,
+    )
 md = md.replace("**Reconstructed Balance (1A + 1B):**", "**Combined Closing Balance:**")
 md = re.sub(r"^<!--.*?-->\s*$", "", md, flags=re.MULTILINE)
 md = re.sub(r"\s*<!--.*?-->", "", md)

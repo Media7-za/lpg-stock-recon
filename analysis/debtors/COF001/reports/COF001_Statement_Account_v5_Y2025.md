@@ -1,9 +1,10 @@
 # Statement of Account: COFFEEBERRY-CASCADES (COF001) - Version 5 (Sub-Ledger Position Statement)
 **Period:** Jan 2025 → Dec 2025 &nbsp;|&nbsp; **Account:** COF001
 **Combined Opening B/F:** R-8,035.92 (ERP verified — source: `analysis/debtors/COF001/raw/COF001_COMBINED.TXT` sum of all ERP documents dated before 1 Jan 2025 in the current extracts (includes four payments posted late; see Review Notes))
-**LPG Opening B/F (1A):** R-8,886.92 &nbsp;|&nbsp; **CYL Opening B/F (1B):** R851.00
+**LPG Opening B/F (1A):** R-1,258.62 &nbsp;|&nbsp; **CYL Opening B/F (1B):** R851.00
+**Quarantine adjustment:** opening 1A excludes quarantined payment 29492 (18 Apr 2024, R-7,628.30), dated before this period; the combined opening B/F above is the ERP figure.
 **Payment routing:** LPG lane (payments post to Part 1A unless configured otherwise)
-**Last regenerated:** 2026-10-16 from ERP TXT (`reconcile_debtor_v5_from_txt.mjs`)
+**Last regenerated:** 2026-10-18 from ERP TXT (`reconcile_debtor_v5_from_txt.mjs`)
 
 ---
 
@@ -16,15 +17,15 @@
 
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
-| **01 Jan** | **Opening Balance** | — | | **-8,886.92** |
-| 06 Jan 2025 | Invoice | 39608 | 8,146.82 | -740.10 |
-| 17 Jan 2025 | Invoice | 39944 | 8,715.19 | 7,975.09 |
-| 20 Jan 2025 | Payment | 36190 | -8,146.82 | -171.73 |
-| 22 Jan 2025 | Payment | 36950 | -8,715.19 | -8,886.92 |
-| 29 Jan 2025 | Invoice | 40252 | 8,146.82 | -740.10 |
-| 29 Jan 2025 | Invoice | 40274 | 632.50 | -107.60 |
-| 31 Jan 2025 | Payment | 36509 | -8,715.19 | -8,822.79 |
-| 31 Jan 2025 | Payment | 36512 | -7,224.65 | -16,047.44 |
+| **01 Jan** | **Opening Balance** | — | | **-1,258.62** |
+| 06 Jan 2025 | Invoice | 39608 | 8,146.82 | 6,888.20 |
+| 17 Jan 2025 | Invoice | 39944 | 8,715.19 | 15,603.39 |
+| 20 Jan 2025 | Payment | 36190 | -8,146.82 | 7,456.57 |
+| 22 Jan 2025 | Payment | 36950 | -8,715.19 | -1,258.62 |
+| 29 Jan 2025 | Invoice | 40252 | 8,146.82 | 6,888.20 |
+| 29 Jan 2025 | Invoice | 40274 | 632.50 | 7,520.70 |
+| 31 Jan 2025 | Payment | 36509 | -8,715.19 | -1,194.49 |
+| 31 Jan 2025 | Payment | 36512 | -7,224.65 | -8,419.14 |
 
 ---
 
@@ -32,14 +33,14 @@
 
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
-| **01 Feb** | **Opening Balance** | — | | **-16,047.44** |
-| 05 Feb 2025 | Payment | 36658 | -8,146.82 | -24,194.26 |
-| 05 Feb 2025 | Payment | 36659 | -632.50 | -24,826.76 |
-| 07 Feb 2025 | Invoice | 40536 | 974.05 | -23,852.71 |
-| 07 Feb 2025 | Invoice | 40553 | 7,638.42 | -16,214.29 |
-| 12 Feb 2025 | Payment | 36799 | -7,638.42 | -23,852.71 |
-| 12 Feb 2025 | Payment | 36800 | -974.05 | -24,826.76 |
-| 24 Feb 2025 | Invoice | 40942 | 8,784.18 | -16,042.58 |
+| **01 Feb** | **Opening Balance** | — | | **-8,419.14** |
+| 05 Feb 2025 | Payment | 36658 | -8,146.82 | -16,565.96 |
+| 05 Feb 2025 | Payment | 36659 | -632.50 | -17,198.46 |
+| 07 Feb 2025 | Invoice | 40536 | 974.05 | -16,224.41 |
+| 07 Feb 2025 | Invoice | 40553 | 7,638.42 | -8,585.99 |
+| 12 Feb 2025 | Payment | 36799 | -7,638.42 | -16,224.41 |
+| 12 Feb 2025 | Payment | 36800 | -974.05 | -17,198.46 |
+| 24 Feb 2025 | Invoice | 40942 | 8,784.18 | -8,414.28 |
 
 ---
 
@@ -47,21 +48,21 @@
 
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
-| **01 Mar** | **Opening Balance** | — | | **-16,042.58** |
-| 05 Mar 2025 | Invoice | 41238 | 7,638.42 | -8,404.16 |
-| 18 Mar 2025 | Invoice | 41562 | 8,211.30 | -192.86 |
-| 18 Mar 2025 | Invoice | 41576 | 250.00 | 57.14 |
-| 18 Mar 2025 | Invoice | 41577 | 250.00 | 307.14 |
-| 18 Mar 2025 | Invoice | 41578 | 250.00 | 557.14 |
-| 18 Mar 2025 | Invoice | 41579 | 250.00 | 807.14 |
-| 19 Mar 2025 | Payment | 37628 | -250.00 | 557.14 |
-| 19 Mar 2025 | Payment | 37629 | -250.00 | 307.14 |
-| 19 Mar 2025 | Payment | 37630 | -250.00 | 57.14 |
-| 19 Mar 2025 | Payment | 37631 | -250.00 | -192.86 |
-| 19 Mar 2025 | Payment | 37633 | -8,784.18 | -8,977.04 |
-| 31 Mar 2025 | Invoice | 41869 | 1,505.01 | -7,472.03 |
-| 31 Mar 2025 | Invoice | 41870 | 838.35 | -6,633.68 |
-| 31 Mar 2025 | Crd Note | 12159 | -1,505.01 | -8,138.69 |
+| **01 Mar** | **Opening Balance** | — | | **-8,414.28** |
+| 05 Mar 2025 | Invoice | 41238 | 7,638.42 | -775.86 |
+| 18 Mar 2025 | Invoice | 41562 | 8,211.30 | 7,435.44 |
+| 18 Mar 2025 | Invoice | 41576 | 250.00 | 7,685.44 |
+| 18 Mar 2025 | Invoice | 41577 | 250.00 | 7,935.44 |
+| 18 Mar 2025 | Invoice | 41578 | 250.00 | 8,185.44 |
+| 18 Mar 2025 | Invoice | 41579 | 250.00 | 8,435.44 |
+| 19 Mar 2025 | Payment | 37628 | -250.00 | 8,185.44 |
+| 19 Mar 2025 | Payment | 37629 | -250.00 | 7,935.44 |
+| 19 Mar 2025 | Payment | 37630 | -250.00 | 7,685.44 |
+| 19 Mar 2025 | Payment | 37631 | -250.00 | 7,435.44 |
+| 19 Mar 2025 | Payment | 37633 | -8,784.18 | -1,348.74 |
+| 31 Mar 2025 | Invoice | 41869 | 1,505.01 | 156.27 |
+| 31 Mar 2025 | Invoice | 41870 | 838.35 | 994.62 |
+| 31 Mar 2025 | Crd Note | 12159 | -1,505.01 | -510.39 |
 
 ---
 
@@ -69,15 +70,15 @@
 
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
-| **01 Apr** | **Opening Balance** | — | | **-8,138.69** |
-| 02 Apr 2025 | Invoice | 41930 | 9,070.63 | 931.94 |
-| 07 Apr 2025 | Invoice | 42061 | 1,495.06 | 2,427.00 |
-| 07 Apr 2025 | Crd Note | 12218 | -1,495.06 | 931.94 |
-| 10 Apr 2025 | Payment | 38217 | -9,070.63 | -8,138.69 |
-| 14 Apr 2025 | Invoice | 42260 | 7,475.29 | -663.40 |
-| 15 Apr 2025 | Payment | 38270 | -9,070.63 | -9,734.03 |
-| 23 Apr 2025 | Payment | 38242 | -7,475.29 | -17,209.32 |
-| 29 Apr 2025 | Invoice | 42614 | 560.65 | -16,648.67 |
+| **01 Apr** | **Opening Balance** | — | | **-510.39** |
+| 02 Apr 2025 | Invoice | 41930 | 9,070.63 | 8,560.24 |
+| 07 Apr 2025 | Invoice | 42061 | 1,495.06 | 10,055.30 |
+| 07 Apr 2025 | Crd Note | 12218 | -1,495.06 | 8,560.24 |
+| 10 Apr 2025 | Payment | 38217 | -9,070.63 | -510.39 |
+| 14 Apr 2025 | Invoice | 42260 | 7,475.29 | 6,964.90 |
+| 15 Apr 2025 | Payment | 38270 | -9,070.63 | -2,105.73 |
+| 23 Apr 2025 | Payment | 38242 | -7,475.29 | -9,581.02 |
+| 29 Apr 2025 | Invoice | 42614 | 560.65 | -9,020.37 |
 
 ---
 
@@ -85,10 +86,10 @@
 
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
-| **01 May** | **Opening Balance** | — | | **-16,648.67** |
-| 03 May 2025 | Invoice | 42748 | 8,596.58 | -8,052.09 |
-| 07 May 2025 | Invoice | 42875 | 7,475.29 | -576.80 |
-| 23 May 2025 | Invoice | 43287 | 7,571.31 | 6,994.51 |
+| **01 May** | **Opening Balance** | — | | **-9,020.37** |
+| 03 May 2025 | Invoice | 42748 | 8,596.58 | -423.79 |
+| 07 May 2025 | Invoice | 42875 | 7,475.29 | 7,051.50 |
+| 23 May 2025 | Invoice | 43287 | 7,571.31 | 14,622.81 |
 
 ---
 
@@ -96,14 +97,14 @@
 
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
-| **01 Jun** | **Opening Balance** | — | | **6,994.51** |
-| 02 Jun 2025 | Payment | 39144 | -6,446.60 | 547.91 |
-| 06 Jun 2025 | Invoice | 43671 | 8,423.08 | 8,970.99 |
-| 17 Jun 2025 | Invoice | 44011 | 7,386.51 | 16,357.50 |
-| 18 Jun 2025 | Payment | 39402 | -7,386.51 | 8,970.99 |
-| 20 Jun 2025 | Payment | 39533 | -8,423.08 | 547.91 |
-| 26 Jun 2025 | Invoice | 44264 | 830.97 | 1,378.88 |
-| 30 Jun 2025 | Invoice | 44348 | 7,386.51 | 8,765.39 |
+| **01 Jun** | **Opening Balance** | — | | **14,622.81** |
+| 02 Jun 2025 | Payment | 39144 | -6,446.60 | 8,176.21 |
+| 06 Jun 2025 | Invoice | 43671 | 8,423.08 | 16,599.29 |
+| 17 Jun 2025 | Invoice | 44011 | 7,386.51 | 23,985.80 |
+| 18 Jun 2025 | Payment | 39402 | -7,386.51 | 16,599.29 |
+| 20 Jun 2025 | Payment | 39533 | -8,423.08 | 8,176.21 |
+| 26 Jun 2025 | Invoice | 44264 | 830.97 | 9,007.18 |
+| 30 Jun 2025 | Invoice | 44348 | 7,386.51 | 16,393.69 |
 
 ---
 
@@ -111,15 +112,15 @@
 
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
-| **01 Jul** | **Opening Balance** | — | | **8,765.39** |
-| 02 Jul 2025 | Payment | 39817 | -830.97 | 7,934.42 |
-| 10 Jul 2025 | Invoice | 44729 | 8,630.23 | 16,564.65 |
-| 17 Jul 2025 | Payment | 40148 | -8,630.23 | 7,934.42 |
-| 22 Jul 2025 | Bank UD | 40294 | 6,446.60 | 14,381.02 |
-| 22 Jul 2025 | Payment | 40294 | -6,446.60 | 7,934.42 |
-| 22 Jul 2025 | Payment | 41416 | -7,386.51 | 547.91 |
-| 26 Jul 2025 | Invoice | 45143 | 7,267.54 | 7,815.45 |
-| 31 Jul 2025 | Payment | 40427 | -7,267.54 | 547.91 |
+| **01 Jul** | **Opening Balance** | — | | **16,393.69** |
+| 02 Jul 2025 | Payment | 39817 | -830.97 | 15,562.72 |
+| 10 Jul 2025 | Invoice | 44729 | 8,630.23 | 24,192.95 |
+| 17 Jul 2025 | Payment | 40148 | -8,630.23 | 15,562.72 |
+| 22 Jul 2025 | Bank UD | 40294 | 6,446.60 | 22,009.32 |
+| 22 Jul 2025 | Payment | 40294 | -6,446.60 | 15,562.72 |
+| 22 Jul 2025 | Payment | 41416 | -7,386.51 | 8,176.21 |
+| 26 Jul 2025 | Invoice | 45143 | 7,267.54 | 15,443.75 |
+| 31 Jul 2025 | Payment | 40427 | -7,267.54 | 8,176.21 |
 
 ---
 
@@ -127,11 +128,11 @@
 
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
-| **01 Aug** | **Opening Balance** | — | | **547.91** |
-| 09 Aug 2025 | Invoice | 45528 | 1,362.69 | 1,910.60 |
-| 18 Aug 2025 | Payment | 40757 | -7,400.19 | -5,489.59 |
-| 25 Aug 2025 | Invoice | 45883 | 7,124.02 | 1,634.43 |
-| 26 Aug 2025 | Payment | 40923 | -7,124.02 | -5,489.59 |
+| **01 Aug** | **Opening Balance** | — | | **8,176.21** |
+| 09 Aug 2025 | Invoice | 45528 | 1,362.69 | 9,538.90 |
+| 18 Aug 2025 | Payment | 40757 | -7,400.19 | 2,138.71 |
+| 25 Aug 2025 | Invoice | 45883 | 7,124.02 | 9,262.73 |
+| 26 Aug 2025 | Payment | 40923 | -7,124.02 | 2,138.71 |
 
 ---
 
@@ -139,15 +140,15 @@
 
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
-| **01 Sep** | **Opening Balance** | — | | **-5,489.59** |
-| 02 Sept 2025 | Invoice | 46071 | 8,459.80 | 2,970.21 |
-| 05 Sept 2025 | Payment | 41162 | -8,459.80 | -5,489.59 |
-| 15 Sept 2025 | Invoice | 46375 | 6,847.27 | 1,357.68 |
-| 15 Sept 2025 | Invoice | 46379 | 6,847.27 | 8,204.95 |
-| 15 Sept 2025 | Crd Note | 13464 | -6,847.27 | 1,357.68 |
-| 19 Sept 2025 | Payment | 41285 | -8,596.58 | -7,238.90 |
-| 23 Sept 2025 | Invoice | 46829 | 838.35 | -6,400.55 |
-| 25 Sept 2025 | Payment | 41478 | -838.35 | -7,238.90 |
+| **01 Sep** | **Opening Balance** | — | | **2,138.71** |
+| 02 Sept 2025 | Invoice | 46071 | 8,459.80 | 10,598.51 |
+| 05 Sept 2025 | Payment | 41162 | -8,459.80 | 2,138.71 |
+| 15 Sept 2025 | Invoice | 46375 | 6,847.27 | 8,985.98 |
+| 15 Sept 2025 | Invoice | 46379 | 6,847.27 | 15,833.25 |
+| 15 Sept 2025 | Crd Note | 13464 | -6,847.27 | 8,985.98 |
+| 19 Sept 2025 | Payment | 41285 | -8,596.58 | 389.40 |
+| 23 Sept 2025 | Invoice | 46829 | 838.35 | 1,227.75 |
+| 25 Sept 2025 | Payment | 41478 | -838.35 | 389.40 |
 
 ---
 
@@ -155,14 +156,14 @@
 
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
-| **01 Oct** | **Opening Balance** | — | | **-7,238.90** |
-| 01 Oct 2025 | Invoice | 46819 | 7,617.59 | 378.69 |
-| 02 Oct 2025 | Payment | 41578 | -6,847.27 | -6,468.58 |
-| 13 Oct 2025 | Invoice | 47064 | 6,847.27 | 378.69 |
-| 20 Oct 2025 | Payment | 41949 | -7,617.59 | -7,238.90 |
-| 20 Oct 2025 | Payment | 41950 | -6,847.27 | -14,086.17 |
-| 21 Oct 2025 | Payment | 41952 | -838.35 | -14,924.52 |
-| 27 Oct 2025 | Invoice | 47335 | 7,360.82 | -7,563.70 |
+| **01 Oct** | **Opening Balance** | — | | **389.40** |
+| 01 Oct 2025 | Invoice | 46819 | 7,617.59 | 8,006.99 |
+| 02 Oct 2025 | Payment | 41578 | -6,847.27 | 1,159.72 |
+| 13 Oct 2025 | Invoice | 47064 | 6,847.27 | 8,006.99 |
+| 20 Oct 2025 | Payment | 41949 | -7,617.59 | 389.40 |
+| 20 Oct 2025 | Payment | 41950 | -6,847.27 | -6,457.87 |
+| 21 Oct 2025 | Payment | 41952 | -838.35 | -7,296.22 |
+| 27 Oct 2025 | Invoice | 47335 | 7,360.82 | 64.60 |
 
 ---
 
@@ -170,12 +171,12 @@
 
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
-| **01 Nov** | **Opening Balance** | — | | **-7,563.70** |
-| 04 Nov 2025 | Invoice | 47504 | 838.35 | -6,725.35 |
-| 07 Nov 2025 | Payment | 42145 | -7,360.82 | -14,086.17 |
-| 14 Nov 2025 | Payment | 42236 | -838.35 | -14,924.52 |
-| 17 Nov 2025 | Invoice | 47706 | 7,484.10 | -7,440.42 |
-| 20 Nov 2025 | Payment | 42322 | -7,484.10 | -14,924.52 |
+| **01 Nov** | **Opening Balance** | — | | **64.60** |
+| 04 Nov 2025 | Invoice | 47504 | 838.35 | 902.95 |
+| 07 Nov 2025 | Payment | 42145 | -7,360.82 | -6,457.87 |
+| 14 Nov 2025 | Payment | 42236 | -838.35 | -7,296.22 |
+| 17 Nov 2025 | Invoice | 47706 | 7,484.10 | 187.88 |
+| 20 Nov 2025 | Payment | 42322 | -7,484.10 | -7,296.22 |
 
 ---
 
@@ -183,15 +184,15 @@
 
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
-| **01 Dec** | **Opening Balance** | — | | **-14,924.52** |
-| 03 Dec 2025 | Invoice | 48067 | 7,484.10 | -7,440.42 |
-| 09 Dec 2025 | Bank UD | 42621 | 7,360.82 | -79.60 |
-| 09 Dec 2025 | Payment | 42621 | -7,360.82 | -7,440.42 |
-| 09 Dec 2025 | Payment | 42635 | -7,484.10 | -14,924.52 |
-| 11 Dec 2025 | Invoice | 48216 | 6,757.63 | -8,166.89 |
-| 17 Dec 2025 | Payment | 42636 | -517.50 | -8,684.39 |
-| 17 Dec 2025 | Payment | 42637 | -6,757.63 | -15,442.02 |
-| 22 Dec 2025 | Invoice | 48422 | 7,264.46 | -8,177.56 |
+| **01 Dec** | **Opening Balance** | — | | **-7,296.22** |
+| 03 Dec 2025 | Invoice | 48067 | 7,484.10 | 187.88 |
+| 09 Dec 2025 | Bank UD | 42621 | 7,360.82 | 7,548.70 |
+| 09 Dec 2025 | Payment | 42621 | -7,360.82 | 187.88 |
+| 09 Dec 2025 | Payment | 42635 | -7,484.10 | -7,296.22 |
+| 11 Dec 2025 | Invoice | 48216 | 6,757.63 | -538.59 |
+| 17 Dec 2025 | Payment | 42636 | -517.50 | -1,056.09 |
+| 17 Dec 2025 | Payment | 42637 | -6,757.63 | -7,813.72 |
+| 22 Dec 2025 | Invoice | 48422 | 7,264.46 | -549.26 |
 
 ---
 
@@ -353,11 +354,23 @@
 
 | Component | Closing (R) |
 | :--- | ---: |
-| Part 1A — LPG Gas | -8,177.56 |
+| Part 1A — LPG Gas | -549.26 |
 | Part 1B — CYL Deposits | 7,406.00 |
-| **Combined (1A + 1B)** | **-771.56** |
+| **Combined (1A + 1B)** | **6,856.74** |
 | ERP `CURRENT BALANCE` (TXT header) | -771.56 |
-| **Variance (Combined − ERP)** | **0.00** |
+| Less: quarantined documents held aside | -7,628.30 |
+| **ERP balance excluding quarantined documents** | **6,856.74** |
+| **Variance (Combined − ERP excl. quarantine)** | **0.00** |
+
+---
+
+## Quarantined Documents (held aside)
+
+| Date | Entry Type | Doc # | Amount (R) | Would post to | Decision |
+| :--- | :--- | :--- | ---: | :--- | :--- |
+| 18 Apr 2024 | Payment | 29492 | -7,628.30 | 1A | QUARANTINED (2026-10-18) |
+
+*Held aside from Part 1A and 1B and the running balances above, pending review (documents dated before this period are excluded from the opening balances). They remain in the ERP balance, so the bridge shows them as a reconciling line. Record: `config/quarantine.json`.*
 
 ---
 
@@ -538,9 +551,10 @@
 
 1. **Lane rule.** Invoices and credit notes are routed by cylinder SKU lines (9.1, 14.1, 19.1, S.1, D.1): cylinder-only documents go to 1B, documents with none go to 1A, and mixed documents are split by line. This differs from the database view's `debt_group` for rental-only lines: 41576 to 41579 (R250.00 each, Mar 2025) has no cylinder SKU, so it sits in 1A. Under the view's grouping it would be in 1B. Please confirm.
 2. **Late-posted documents.** Four payments dated 2023-2024 (24732, 30219, 29646, 29696; R31,131.01 in total) and a journal/payment pair dated 14 Nov and 11 Dec 2024 (44844, 476) appear in the current ERP extract after 2025 entries. Statements are built by document date, so they are included in the opening balance. The ERP balance shown at the time (for example R23,095.09 after payment 35877 on 30 Dec 2024) did not include them.
-3. **Database coverage.** All invoices and credit notes in the window were matched to the database by document and amount (see `reports/COF001_DB_COVERAGE_2026-10-16.md`).
-4. **Generator run.** The shared generator was run unchanged (except as noted) against `data/db_snapshot_2025.json` (rows pulled from Supabase on 2026-10-16) because `DATABASE_URL` is not set in cloud sessions. Fixes made to the shared generator: the TXT header balance regex accepts a minus sign, so credit balances no longer read as NaN; an optional `periodEnd` limits the window and takes the closing check from the ERP running balance on the last row inside it.
-5. **Not run.** `npm run debtors:ingest-check -- --debtor COF001` (needs `DATABASE_URL`).
+3. **Quarantined payment 29492 (2024-04-18, R-7,628.30).** Quarantined by the operator on 2026-10-18; reason not stated. Initial observation (partly superseded by the update below): ASSERTED from TXT: payment 30219 (12 Mar 2024, -7,628.30) was posted for the same amount against invoice 30276 (9 Mar 2024, 7,628.30). With 29492 also posted, the account is R7,628.28 in credit from 18 Apr 2024 until later invoices absorb it. Not confirmed as a duplicate. Held aside: excluded from Part 1A and 1B and from running balances. Still included in the ERP balance, so the bridge shows it as a reconciling line. Not treated as a cylinder-deposit payment (business_rules.md sections 3 and 4): no allocation to the cylinder ledger and no cylinder write-off. **Update 2026-10-18 (ASSERTED - database evidence (bank and ERP reconciliation tables), not confirmed against the ERP).** Payment 29492 appears to belong to COF002 (COFFEEBERRY-HILTON, bank name 'Coffeeberry Avenues'), not COF001. It was posted to COF001 against COF001 invoice 30276, which payment 30219 had already settled. Evidence: Bank credit 2024-04-18, R7,628.30, described 'Magtape Credit Coffeeberry Avenues 00031096' (bank_transactions, status MATCHED). 31096 is a COF002 invoice dated 2024-04-08 for R7,628.30. That bank credit is approved-matched (EXACT_AMOUNT_DATE) to ERP entry refDoc 00029492 (STAT:102), whose ERP description is 'MAGTAPE CREDIT COFFEEBERRY AVE'. The earlier bank credit 2024-03-12, R7,628.30, described 'Magtape Credit Coffeeberry Cascades 00030276', is the COF001 receipt that payment 30219 recorded for invoice 30276. In the database, transaction_headers shows 29492 with reference 00030276 (COF001's invoice). No payment of R7,628.30 exists on COF002, and every other COF002 invoice from 15 Feb to 15 Jun 2024 has a same-amount payment within days; 31096 does not. The 'observation' above (29492 as a second payment of the same invoice by COF001) is not supported by the bank data: the two R7,628.30 receipts came from two different payers. Not checked: COF002's ERP statement (no TXT in the repo): whether invoice 31096 is still open there, or was settled another way. Whether the ERP has since reposted or reversed 29492. The quarantine on COF001 stands as a hold-aside until the ERP reposts 29492 to COF002. COF002 would then show invoice 31096 paid. This statement is quarantine-adjusted (the payment is dated before this period, so the opening 1A balance excludes it); a statement whose config does not set `quarantineFile` is not adjusted. Reopen when: The ERP reverses, refunds or reallocates payment 29492. Bank statement evidence shows only one receipt of 7,628.30 for invoice 30276, or shows 29492 belongs to another invoice. The operator rules that 29492 is a cylinder-deposit payment (business_rules.md sections 3 and 4 then apply). Payment 30219 is itself reversed or reallocated.
+4. **Database coverage.** All invoices and credit notes in the window were matched to the database by document and amount (see `reports/COF001_DB_COVERAGE_2026-10-16.md`).
+5. **Generator run.** The shared generator was run unchanged (except as noted) against `data/db_snapshot_2025.json` (rows pulled from Supabase on 2026-10-16) because `DATABASE_URL` is not set in cloud sessions. Fixes made to the shared generator: the TXT header balance regex accepts a minus sign, so credit balances no longer read as NaN; an optional `periodEnd` limits the window and takes the closing check from the ERP running balance on the last row inside it.
+6. **Not run.** `npm run debtors:ingest-check -- --debtor COF001` (needs `DATABASE_URL`).
 
 <!-- DEBTOR_POSITION_WORKSPACE_START -->
 
@@ -550,9 +564,9 @@
 
 | Component | Amount |
 |---|---:|
-| LPG Gas Debt (Part 1A close) | R-8,177.56 |
+| LPG Gas Debt (Part 1A close) | R-549.26 |
 | Cylinder Financial Balance (Part 1B close) | R7,406.00 |
-| **Total Debtor Balance** | **R-771.56** |
+| **Total Debtor Balance** | **R6,856.74** |
 
 ### 2. Custody Position
 
@@ -569,10 +583,12 @@
 | Check | Financial | Custody | Variance |
 |---|---:|---:|---:|
 | Cylinder Position (1B vs custody) | R7,406.00 | R6,612.50 | R793.50 |
-| Sub-ledger tie (1A + 1B vs combined) | R-771.56 | — | R0.00 |
+| Sub-ledger tie (1A + 1B vs combined) | R6,856.74 | — | R0.00 |
 
 **ERP Combined Balance (TXT header):** R-771.56  
-**Reconstructed Balance (1A + 1B):** R-771.56  
+**Quarantined documents (held aside):** R-7,628.30  
+**ERP balance excluding quarantined documents:** R6,856.74  
+**Reconstructed Balance (1A + 1B):** R6,856.74  
 **Variance:** R0.00
 
 <!-- DEBTOR_POSITION_WORKSPACE_END -->
