@@ -1,0 +1,37 @@
+{
+  "schemaNote": "Operator rulings for COF002 (COFFEEBERRY-HILTON). A ruling is a decision, not a draft; do not tidy it away. Created on claude/cof002-2024-analysis only to hold this one ruling; the rest of analysis/debtors/COF002/ (project.json, statements) lives on origin/claude/exciting-lamport-rvb277 and has NOT been scaffolded here. Nothing in this file changes any ERP data, statement or balance of record.",
+  "rulings": [
+    {
+      "id": "COF002-R001",
+      "decidedBy": "operator (Louis), as relayed in the operator's message of this session on 2026-10-18; verbatim wording is a summary by another answer and was not seen by the analyst session directly",
+      "decidedOn": "2026-10-18",
+      "status": "PENDING_QUERIES",
+      "ruling": "The R7,628.30 receipt that moves is COF001 payment 30219 (2024-03-12, STAT:101), not 29492. The ERP agent reverses 30219 in COF001 and re-posts it to COF002, against the unpaid COF002 invoice 31096 (2024-04-08, R7,628.30). Nothing else changes.",
+      "basis": "Operator ruling. NOT proven by the analysis: the ledger alone favoured 29492 on timing (30219 is dated 27 days before invoice 31096, COF002 normally pays 2 to 10 days after delivery; 29492 is dated 10 days after). ERP payment tags carry no evidential weight (business_rules.md sections 3 and 15). The analyst did not rank the two receipts.",
+      "recordedAsPendingUntil": [
+        "the ERP agent's document header facts for 30219 (customer account, entered-by, entered date, last changed), which has no database header",
+        "the STAT:101 bank line for R7,628.30 (payer, reference, value date) and the STAT:102 line",
+        "the operator's own further queries"
+      ],
+      "executionOwner": "ERP agent (Sharmin). The analyst session cannot reverse or re-post anything. Draft request: docs/requests/2026-10-18_cof002_receipt_30219_move_request.md (drafted, NOT posted).",
+      "effects": {
+        "COF001": "If 30219 leaves COF001 the balance of record moves from -16,256.52 to -8,628.22 (arithmetic, ASSERTED). This reopens the operator's earlier COF001 ruling that -16,256.52 is correct (COF001 Q1): it must be reopened explicitly, not left as a side effect.",
+        "COF001_quarantine": "COF001 config/quarantine.json (branch claude/eager-mccarthy-vsfs1u, decided 2026-10-18) holds payment 29492 aside as the R7,628.30 extra. If 30219 is the receipt that moves, that quarantine rests on the wrong document and may need to change. Separate COF001 decision for the operator; nothing changed here.",
+        "COF002": "COF002 balance of record 15,646.26 (dated export 2026-10-17) would become 8,017.96; the standing balance of 1,813.02 would become -5,815.28 (preview section 14). ASSERTED arithmetic only.",
+        "suspect_B": "The R8,512.36 receipt (COF002 37735 and 32598, COF001 32615) is NOT covered by this ruling. It stays open and unranked."
+      },
+      "notDone": [
+        "No ERP change, no Linear posting, no customer contact, no statement or release for either account. Both accounts stay review-only until corrected dated exports arrive.",
+        "No change to COF001 config, quarantine, project.json or portfolio_candidates.csv."
+      ],
+      "tripwires": [
+        "The STAT:101 or STAT:102 bank line, or a remittance, shows the R7,628.30 receipt belongs to COF001 invoice 30276 (then 30219 does not move).",
+        "The bank evidence shows only one R7,628.30 receipt, or shows 29492 rather than 30219 is the extra one.",
+        "The ERP agent's header facts show 30219 was keyed to COF001 legitimately, or that 29492 or 30219 was already re-posted or reversed.",
+        "A dated full-history COF001/COF002 export from the same sitting shows different amounts, dates or accounts for 30219, 29492 or 31096.",
+        "The operator reopens COF001 Q1 (balance of record), the 29492 quarantine, or the COF001/COF002 no-payer-family ruling (Q6).",
+        "Suspect B (R8,512.36) is resolved in a way that changes the COF002 standing balance (preview section 14 scenarios)."
+      ]
+    }
+  ]
+}
