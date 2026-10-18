@@ -82,6 +82,18 @@
  *   A tie touching a row whose split_basis is not confirmable (HEADER_FALLBACK, P10)
  *   is downgraded to PROBABLE.
  *
+ * PROPOSED rules from the COF001/COF002 sessions (2026-10-18; PROPOSED, NOT RATIFIED; every one is
+ * OFF unless the account's config `matcherRules` or a preview option turns it on, and all of them
+ * produce PROBABLE ties only, which the operator approves via approve_tie):
+ *   rentalGasLane   cylinder-RENTAL invoices (lane CYL, ref reads RENT/RENTAL as a word) are payment
+ *                   targets like gas invoices (operator ruling COF001 L1, 2026-10-18: rentals are gas).
+ *   poolSum         POOL_SUM: 2–3 unallocated payments together settle 1–4 open invoices, possibly short
+ *                   by up to poolShortfallMax in total (the customer paid a little short).
+ *   cnShortPay      CN_SHORT_PAY: an invoice and a same-DN credit note leave a remainder that one free
+ *                   payment equals exactly (invoice credited short, remainder paid later).
+ *   reportLaneMismatch (report only, on unless false) lists leftover payments whose exact sum exists
+ *                   only against cylinder-lane invoices (a human check; no tie is made).
+ *
  * Not yet implemented (later build steps): locks / period close (P5–P6), mirror carry
  * for monthly batch payers (opt-in, P4), settlement discount (P9), remittance evidence
  * (P11), payerGroup (P8), pre-window lookback (P7).
@@ -136,14 +148,32 @@ function combos(arr, k, start = 0, acc = [], out = []) {
   return out;
 }
 
+const RENTAL_RE = /\bRENT(AL)?\b/i;
+
 export function matchProjection(projection, rules = RULES, evidence = null, locks = null) {
   const rows = projection.rows;
+  // PROPOSED rule switches (see header). Read with explicit defaults so RULES (and every committed
+  // projection_matches.json that embeds it) stays unchanged for accounts that do not opt in.
+  const ext = {
+    rentalGasLane: rules.rentalGasLane === true,
+    poolSum: rules.poolSum === true,
+    poolMaxPayments: rules.poolMaxPayments ?? 2,
+    poolMaxInvoices: rules.poolMaxInvoices ?? 4,
+    poolShortfallMax: rules.poolShortfallMax ?? 0,
+    poolWindowDays: rules.poolWindowDays ?? 120,
+    cnShortPay: rules.cnShortPay === true,
+    cnShortPayWindowDays: rules.cnShortPayWindowDays ?? 365,
+    reportLaneMismatch: rules.reportLaneMismatch !== false,
+  };
+  const isRental = (r) => ext.rentalGasLane && r.lane === 'CYL' && r.kind === 'invoice' && RENTAL_RE.test(r.ref_no || '');
   const tiedRow = new Map(); // row_id -> tie_id
   const ties = [];
   const addTie = (rule, confidence, members, extra = {}) => {
     const tie_id = `T${String(ties.length + 1).padStart(4, '0')}`;
     let conf = confidence;
     if (conf === 'CONFIRMED' && members.some((r) => !r.confirmable)) conf = 'PROBABLE';
+    const reclassified = members.filter(isRental);
+    if (reclassified.length && conf === 'CONFIRMED') conf = 'PROBABLE'; // a lane ruling is not a ledger fact
     const net = round2(members.reduce((s, r) => s + r.amount, 0)) || 0; // never -0
     const inClosedPeriod = Boolean(closedThrough) && rule !== 'LOCKED' && members.every((r) => r.date <= closedThrough);
     ties.push({
@@ -154,6 +184,7 @@ export function matchProjection(projection, rules = RULES, evidence = null, lock
       docs: [...new Set(members.map((r) => `${r.entry_type} ${r.clean_doc}`))],
       net,
       ...(inClosedPeriod ? { inClosedPeriod: true } : {}),
+      ...(reclassified.length ? { laneReclassified: [...new Set(reclassified.map((r) => `${r.entry_type} ${r.clean_doc}`))] } : {}),
       ...extra,
     });
     for (const r of members) tiedRow.set(r.row_id, tie_id);
@@ -455,7 +486,7 @@ export function matchProjection(projection, rules = RULES, evidence = null, lock
   // 3. Payments against open invoice targets (LPG + OTHER of one invoice doc)
   const targets = new Map(); // clean_doc -> { doc, date, rows, amount }
   for (const r of invoiceRows) {
-    if (!rules.paymentTargetLanes.includes(r.lane) || !free(r)) continue;
+    if ((!rules.paymentTargetLanes.includes(r.lane) && !isRental(r)) || !free(r)) continue;
     if (!targets.has(r.clean_doc)) targets.set(r.clean_doc, { doc: r.clean_doc, date: r.date, rows: [], amount: 0 });
     const t = targets.get(r.clean_doc);
     t.rows.push(r);
@@ -647,6 +678,90 @@ export function matchProjection(projection, rules = RULES, evidence = null, lock
   };
   batchSum();
 
+  // 4b. POOL_SUM (PROPOSED, off): several unallocated payments settle a set of open invoices together,
+  // possibly short by up to poolShortfallMax in total (COF001: 38270 + 39144 vs 42614 + 42875 + 43287, short
+  // R90.02). Invoices must be dated on/before the last payment and within poolWindowDays of the first.
+  // Always PROBABLE; the shortfall stays open inside the tie net.
+  const poolCandidates = [];
+  const poolSum = () => {
+    const tol = rules.exactTolerance;
+    const pays = payments.filter((p) => free(p) && -p.amount > tol);
+    const invTargets = [...targets.values()].filter((t) => t.amount > 0 && t.rows.every(free));
+    const cands = [];
+    for (let np = 2; np <= ext.poolMaxPayments; np++) {
+      for (const pset of combos(pays, np)) {
+        const A = round2(pset.reduce((s, p) => s - p.amount, 0));
+        const firstP = pset.reduce((d, p) => (p.date < d ? p.date : d), pset[0].date);
+        const lastP = pset.reduce((d, p) => (p.date > d ? p.date : d), pset[0].date);
+        const elig = invTargets
+          .filter((t) => t.date <= lastP && days(t.date, firstP) <= ext.poolWindowDays)
+          .sort((a, b) => b.date.localeCompare(a.date))
+          .slice(0, rules.combinationPool);
+        for (let ni = 1; ni <= ext.poolMaxInvoices; ni++) {
+          for (const iset of combos(elig, ni)) {
+            const total = round2(iset.reduce((s, t) => s + t.amount, 0));
+            const shortfall = round2(total - A);
+            if (shortfall < -tol || shortfall > ext.poolShortfallMax + tol) continue;
+            cands.push({ pset, iset, A, total, shortfall });
+          }
+        }
+      }
+    }
+    // A pool with a shortfall is ambiguous by nature (at R100 tolerance, coincidences are common), so a pool
+    // is tied only when NO other candidate shares a row with it. Ambiguous pools are not tied; they are
+    // listed in `poolCandidates` for a human (and evidence) to decide.
+    const rowIdsOf = (c) => [...c.pset.map((p) => p.row_id), ...c.iset.flatMap((t) => t.rows.map((r) => r.row_id))];
+    const idsOf = cands.map(rowIdsOf);
+    const byRow = new Map();
+    idsOf.forEach((ids, i) => ids.forEach((id) => byRow.set(id, [...(byRow.get(id) || []), i])));
+    cands.forEach((c, i) => {
+      const conflicts = new Set(idsOf[i].flatMap((id) => byRow.get(id)).filter((j) => j !== i));
+      if (conflicts.size === 0) {
+        addTie('POOL_SUM', 'PROBABLE', [...c.pset, ...c.iset.flatMap((t) => t.rows)], {
+          payments: c.pset.map((p) => ({ doc: p.clean_doc, date: p.date, amount: round2(-p.amount) })),
+          invoices: c.iset.map((t) => ({ doc: t.doc, date: t.date, amount: t.amount })),
+          shortfall: c.shortfall,
+        });
+      } else if (poolCandidates.length < 20) {
+        poolCandidates.push({
+          payments: c.pset.map((p) => ({ doc: p.clean_doc, date: p.date, amount: round2(-p.amount) })),
+          invoices: c.iset.map((t) => ({ doc: t.doc, date: t.date, amount: t.amount })),
+          shortfall: c.shortfall,
+          conflictingCandidates: conflicts.size,
+        });
+      }
+    });
+  };
+  if (ext.poolSum) poolSum();
+
+  // 4c. CN_SHORT_PAY (PROPOSED, off): an invoice credited short by a same-DN credit note (same lane) leaves a
+  // remainder; one free payment (any lane) that equals the remainder exactly, on/after the invoice and within
+  // cnShortPayWindowDays, settles it (COF001: invoice 44730 + CN 12956 + payment 42636 = R0.00).
+  // Only a unique credit note and a unique payment qualify. Always PROBABLE.
+  const cnShortPay = () => {
+    const tol = rules.exactTolerance;
+    for (const inv of invoiceRows) {
+      if (!free(inv) || inv.amount <= 0 || !dnNumber(inv.ref_no)) continue;
+      const dn = dnNumber(inv.ref_no);
+      const cns = cnRows.filter(
+        (c) => free(c) && c.lane === inv.lane && dnNumber(c.ref_no) === dn && c.date >= inv.date && -c.amount < inv.amount - tol,
+      );
+      if (cns.length !== 1) continue;
+      const remainder = round2(inv.amount + cns[0].amount);
+      const pc = payments.filter(
+        (p) => free(p) && Math.abs(-p.amount - remainder) <= tol && p.date >= inv.date && days(inv.date, p.date) <= ext.cnShortPayWindowDays,
+      );
+      if (pc.length !== 1) continue;
+      addTie('CN_SHORT_PAY', 'PROBABLE', [inv, cns[0], pc[0]], {
+        lane: inv.lane,
+        remainder,
+        payment: { doc: pc[0].clean_doc, date: pc[0].date, amount: round2(-pc[0].amount), lane: pc[0].lane },
+        ...(pc[0].lane !== inv.lane ? { laneCrossing: `${pc[0].lane} payment settles a ${inv.lane} remainder` } : {}),
+      });
+    }
+  };
+  if (ext.cnShortPay) cnShortPay();
+
   // 5. CYL_EXCHANGE: zero-sum stretches of the unpaired cylinder deposit chain.
   if (rules.cylExchange) {
     const chain = rows
@@ -718,6 +833,38 @@ export function matchProjection(projection, rules = RULES, evidence = null, lock
     }
   }
 
+
+  // LANE_MISMATCH report (report only, no tie): leftover payments whose exact sum exists only against
+  // cylinder-lane invoices. A human checks them (operator, COF001 2026-10-18: a lane mismatch is a flag).
+  const laneMismatchCandidates = [];
+  if (ext.reportLaneMismatch) {
+    const tol = rules.exactTolerance;
+    const cylFree = rows
+      .filter((r) => free(r) && r.kind === 'invoice' && r.lane === 'CYL' && r.amount > 0)
+      .sort((a, b) => b.date.localeCompare(a.date))
+      .slice(0, rules.combinationPool);
+    for (const p of payments) {
+      if (!free(p) || -p.amount <= tol) continue;
+      const A = round2(-p.amount);
+      const elig = cylFree.filter((r) => r.date <= p.date);
+      let hit = null;
+      for (let k = 1; k <= 3 && !hit; k++) {
+        for (const set of combos(elig, k)) {
+          if (Math.abs(A - round2(set.reduce((s, r) => s + r.amount, 0))) <= tol) {
+            hit = set;
+            break;
+          }
+        }
+      }
+      if (hit) {
+        laneMismatchCandidates.push({
+          payment: { doc: p.clean_doc, date: p.date, amount: A, lane: p.lane },
+          cylInvoices: hit.map((r) => ({ doc: r.clean_doc, date: r.date, amount: r.amount, ref: r.ref_no })),
+        });
+      }
+    }
+  }
+
   for (const p of payments) if (free(p)) unallocated.push(p.row_id);
 
   // Proof: B/F + Σ untied rows + Σ tie nets = closing combined (and the ERP header).
@@ -776,5 +923,7 @@ export function matchProjection(projection, rules = RULES, evidence = null, lock
       : null,
     ties,
     unallocatedPayments: unallocated,
+    ...(laneMismatchCandidates.length ? { laneMismatchCandidates } : {}),
+    ...(poolCandidates.length ? { poolCandidates } : {}),
   };
 }

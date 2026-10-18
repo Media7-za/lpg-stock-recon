@@ -11,6 +11,19 @@ import { buildRemittanceEvidence } from './remittance_evidence.mjs';
 import { effectiveLocks } from './locks.mjs';
 import { parseDebenqWithRunning } from './debenq_open_invoices.mjs';
 
+/** Config `matcherRules` keys an account may set (PROPOSED rules, all off by default; see projection_matcher.mjs). */
+export const MATCHER_RULE_KEYS = [
+  'rentalGasLane',
+  'poolSum',
+  'poolMaxPayments',
+  'poolMaxInvoices',
+  'poolShortfallMax',
+  'poolWindowDays',
+  'cnShortPay',
+  'cnShortPayWindowDays',
+  'reportLaneMismatch',
+];
+
 export function registryPath(acct) {
   return path.join(acct, 'config/payment_pattern_overrides.json');
 }
@@ -119,7 +132,11 @@ export function matchAccount(root, code, options = {}) {
   const locks = reg.supported ? effectiveLocks(reg.registry) : null;
   if (locks && options.dropLocks) locks.locks = locks.locks.filter((l) => !String(l.ruling?.reason || '').includes(options.dropLocks));
   const cadenceRules = cfg?.payerCadence === 'monthly_batch' ? { monthSumConfidence: 'PROBABLE' } : null;
-  const rules = options.rules || cadenceRules ? { ...RULES, ...(cadenceRules || {}), ...(options.rules || {}) } : undefined;
+  // Per-account matcher profile (config entry, not a fork): only whitelisted PROPOSED rule switches.
+  const cfgRules = {};
+  for (const k of MATCHER_RULE_KEYS) if (cfg?.matcherRules && k in cfg.matcherRules) cfgRules[k] = cfg.matcherRules[k];
+  const hasCfgRules = Object.keys(cfgRules).length > 0;
+  const rules = options.rules || cadenceRules || hasCfgRules ? { ...RULES, ...(cadenceRules || {}), ...cfgRules, ...(options.rules || {}) } : undefined;
   const result = matchProjection(projection, rules, hasEvidence ? evidence : null, locks);
 
   const reviewOnlyReasons = [];

@@ -511,3 +511,126 @@ test('R1 (off by default): a same-DN pair 3 days apart stays PROBABLE unless cnR
   const otherLane = matchProjection(mk([row({ doc: 'I3', date: '2026-01-02', ref: 'DN#500-EMPTY', lane: 'CYL', amount: 100 })]), { ...RULES, cnRivalFreeMaxDays: 5 });
   assert.equal(otherLane.ties.find((t) => t.docs.includes('Invoice I1')).confidence, 'CONFIRMED');
 });
+
+// ---- PROPOSED rules from the COF001/COF002 sessions (2026-10-18): all OFF by default, PROBABLE only ----
+
+const rentalRows = () => [
+  row({ doc: '41576', date: '2025-03-18', amount: 250, lane: 'CYL', ref: 'D/N 11836 RENTAL FEB' }),
+  row({ doc: '41577', date: '2025-03-18', amount: 250, lane: 'CYL', ref: 'D/N 11836 MAR RENTAL' }),
+  row({ doc: '37628', type: 'Payment', date: '2025-03-19', amount: -250, ref: 'TRANSF | STAT:113' }),
+  row({ doc: '37629', type: 'Payment', date: '2025-03-19', amount: -250, ref: 'TRANSF | STAT:113' }),
+];
+
+test('rentalGasLane (off): rental payments stay unallocated and are reported as a lane-mismatch candidate', () => {
+  const res = matchProjection(projection(rentalRows()));
+  assert.equal(res.ties.length, 0);
+  assert.equal(res.residual.unallocatedPayments.count, 2);
+  assert.ok(res.laneMismatchCandidates?.length >= 1);
+  assert.equal(res.laneMismatchCandidates[0].cylInvoices[0].doc, '41576');
+});
+
+test('rentalGasLane (on): CYL rental invoices become payment targets; ties are PROBABLE and flagged', () => {
+  const res = matchProjection(projection(rentalRows()), { ...RULES, rentalGasLane: true });
+  assert.equal(res.ties.length, 2);
+  for (const t of res.ties) {
+    assert.equal(t.confidence, 'PROBABLE');
+    assert.ok(t.laneReclassified?.length);
+  }
+  assert.equal(res.residual.unallocatedPayments.count, 0);
+  assert.equal(res.proof.holds, true);
+});
+
+test('rentalGasLane (on): a CYL invoice that is not a rental stays out of payment targets', () => {
+  const rows = [
+    row({ doc: '50001', date: '2025-03-18', amount: 250, lane: 'CYL', ref: 'DN#1 CURRENT DEPOSIT' }),
+    row({ doc: '37700', type: 'Payment', date: '2025-03-19', amount: -250 }),
+  ];
+  const res = matchProjection(projection(rows), { ...RULES, rentalGasLane: true });
+  assert.equal(res.ties.length, 0);
+});
+
+test('poolSum (on): two payments settle three invoices exactly; default leaves them open', () => {
+  const rows = [
+    row({ doc: '22252', date: '2023-07-12', amount: 7596.15 }),
+    row({ doc: '23258', date: '2023-08-08', amount: 5680.49 }),
+    row({ doc: '23445', type: 'Payment', date: '2023-05-18', amount: -8827.62 }),
+    row({ doc: '23395', type: 'Payment', date: '2023-08-14', amount: -4449.02 }),
+  ];
+  const off = matchProjection(projection(rows));
+  assert.equal(off.ties.length, 0);
+  const on = matchProjection(projection(rows), { ...RULES, poolSum: true });
+  assert.equal(on.ties.length, 1);
+  assert.equal(on.ties[0].rule, 'POOL_SUM');
+  assert.equal(on.ties[0].confidence, 'PROBABLE');
+  assert.equal(on.ties[0].shortfall, 0);
+  assert.equal(on.residual.unallocatedPayments.count, 0);
+});
+
+test('poolSum: a pool with a shortfall is tied only when unique; an ambiguous pool is listed, not tied', () => {
+  const unique = [
+    row({ doc: '1', date: '2025-04-29', amount: 560.65 }),
+    row({ doc: '2', date: '2025-05-07', amount: 7475.29 }),
+    row({ doc: '3', date: '2025-05-23', amount: 7571.31 }),
+    row({ doc: '10', type: 'Payment', date: '2025-04-15', amount: -9070.63 }),
+    row({ doc: '11', type: 'Payment', date: '2025-06-02', amount: -6446.6 }),
+  ];
+  const r1 = matchProjection(projection(unique), { ...RULES, poolSum: true, poolShortfallMax: 100 });
+  assert.equal(r1.ties.length, 1);
+  assert.equal(r1.ties[0].shortfall, 90.02);
+  // add an invoice that makes a second pool fit within the shortfall: both candidates share payment 11
+  const ambiguous = [...unique, row({ doc: '4', date: '2025-03-05', amount: 7638.42 }), row({ doc: '12', type: 'Payment', date: '2025-01-31', amount: -8715.19 })];
+  const r2 = matchProjection(projection(ambiguous), { ...RULES, poolSum: true, poolShortfallMax: 100 });
+  assert.equal(r2.ties.filter((t) => t.rule === 'POOL_SUM').length, 0);
+  assert.ok(r2.poolCandidates?.length >= 2);
+});
+
+test('poolSum: invoices outside the window or dated after the last payment are not used', () => {
+  const rows = [
+    row({ doc: '1', date: '2022-01-01', amount: 1000 }),
+    row({ doc: '2', date: '2025-08-01', amount: 500 }),
+    row({ doc: '10', type: 'Payment', date: '2025-05-01', amount: -900 }),
+    row({ doc: '11', type: 'Payment', date: '2025-05-20', amount: -600 }),
+  ];
+  const res = matchProjection(projection(rows), { ...RULES, poolSum: true, poolShortfallMax: 100 });
+  assert.equal(res.ties.length, 0);
+});
+
+test('cnShortPay (on): invoice credited short by a same-DN credit note, remainder paid later by one payment', () => {
+  const rows = [
+    row({ doc: '44730', date: '2025-07-10', amount: 8625, lane: 'CYL', ref: 'DN#12190-EMPTY' }),
+    row({ doc: '12956', type: 'Crd Note', date: '2025-07-11', amount: -8107.5, lane: 'CYL', ref: 'DN#12190-EMPTY' }),
+    row({ doc: '42636', type: 'Payment', date: '2025-12-17', amount: -517.5, ref: 'TRANSF | STAT:122' }),
+  ];
+  const off = matchProjection(projection(rows));
+  assert.equal(off.ties.filter((t) => t.rule === 'CN_SHORT_PAY').length, 0);
+  const on = matchProjection(projection(rows), { ...RULES, cnShortPay: true });
+  const t = on.ties.find((x) => x.rule === 'CN_SHORT_PAY');
+  assert.ok(t);
+  assert.equal(t.confidence, 'PROBABLE');
+  assert.equal(t.net, 0);
+  assert.equal(t.remainder, 517.5);
+  assert.match(t.laneCrossing, /LPG payment settles a CYL remainder/);
+});
+
+test('cnShortPay: two equal payments or two matching credit notes make it ambiguous, so nothing is tied', () => {
+  const base = [
+    row({ doc: '44730', date: '2025-07-10', amount: 8625, lane: 'CYL', ref: 'DN#12190-EMPTY' }),
+    row({ doc: '12956', type: 'Crd Note', date: '2025-07-11', amount: -8107.5, lane: 'CYL', ref: 'DN#12190-EMPTY' }),
+  ];
+  const twoPays = [...base, row({ doc: '1', type: 'Payment', date: '2025-08-01', amount: -517.5 }), row({ doc: '2', type: 'Payment', date: '2025-08-02', amount: -517.5 })];
+  assert.equal(matchProjection(projection(twoPays), { ...RULES, cnShortPay: true }).ties.filter((t) => t.rule === 'CN_SHORT_PAY').length, 0);
+  const twoCns = [...base, row({ doc: '12957', type: 'Crd Note', date: '2025-07-12', amount: -8107.5, lane: 'CYL', ref: 'DN#12190' }), row({ doc: '1', type: 'Payment', date: '2025-08-01', amount: -517.5 })];
+  assert.equal(matchProjection(projection(twoCns), { ...RULES, cnShortPay: true }).ties.filter((t) => t.rule === 'CN_SHORT_PAY').length, 0);
+});
+
+test('new rules do not change default output: RULES is untouched and unrelated accounts tie as before', () => {
+  assert.equal('rentalGasLane' in RULES, false);
+  assert.equal('poolSum' in RULES, false);
+  const rows = [
+    row({ doc: '1', date: '2025-01-01', amount: 100 }),
+    row({ doc: '9', type: 'Payment', date: '2025-01-05', amount: -100 }),
+  ];
+  const a = matchProjection(projection(rows));
+  const b = matchProjection(projection(rows), { ...RULES, rentalGasLane: true, poolSum: true, cnShortPay: true });
+  assert.deepEqual(a.ties.map((t) => [t.rule, t.confidence]), b.ties.map((t) => [t.rule, t.confidence]));
+});
