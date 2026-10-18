@@ -43,3 +43,11 @@ None new. ADM-149 handoff P1/P2 (`docs/handoffs/2026-10-18.md` §4) still stand,
 ## 5. Tripwires
 
 The pack's hypothesis table holds them; the decisive ones: S.1 keyed on purpose on 45528, DN#20080 showing no 48kg fulls, a site count of five extra 48kg cylinders, or any FINCON credit note / invoice against 45528 or DN#20080.
+
+## 6. Context from the parent session (2026-10-18 19:09Z)
+
+- **The operator has assumed H3 while ADM-152 is open.** The COF001 v5 statements now treat 45528's S.1 × 5 line (R6,037.50) as 48kg gas.
+- **Where it is recorded.** It is an ASSUMED lane override in `analysis/debtors/COF001/config/lane_overrides.json` on branch `claude/eager-mccarthy-vsfs1u`, and the record lists its reopen conditions.
+- **What every findings report must say.** State plainly whether the ERP answer confirms or breaks that assumption.
+- **When to recommend removing the override.** If an answer breaks it, or FINCON issues any correction document against 45528 or DN#20080, recommend to the operator that the override be removed. Do not edit that branch.
+- **Delivery format.** The operator asked for ERP requests one task at a time, short and simple. Task 1 is a shortened version of turn 1 (45528 line screenshot and audit trail).
