@@ -1,0 +1,29 @@
+{
+  "debtorCode": "COF001",
+  "debtorName": "COFFEEBERRY-CASCADES",
+  "txtPath": "analysis/debtors/COF001/raw/COF001_COMBINED.TXT",
+  "periodStart": "2024-01-01",
+  "combinedBf": 851.02,
+  "bfSourceNote": "sum of all ERP documents dated before 1 Jan 2024 in the current extracts; equals the ERP row balance R7,476.92 after the last 2023 row (COF001_2024.TXT line 85) less late-posted payment 24732 (R6,625.90)",
+  "cylOpeningFinancial": 851.0,
+  "paymentLane": "LPG",
+  "cylOpeningQty": {
+    "14.1": 0,
+    "19.1": -1,
+    "9.1": 2,
+    "D.1": 5,
+    "S.1": -5
+  },
+  "skuRates": {
+    "14.1": 575,
+    "19.1": 690,
+    "9.1": 517.5,
+    "D.1": 1150,
+    "S.1": 1150
+  },
+  "periodEnd": "2024-12-31",
+  "dbSnapshot": "data/db_snapshot_2024.json",
+  "erpClosingBalance": -8035.92,
+  "erpClosingNote": "The ERP closing balance by document date at 31 Dec 2024 is R-8,035.92: the ERP row balance of R23,095.09 after the last 2024 entry (payment 35877, 30 Dec 2024, COF001_2025.TXT line 70) less R31,131.01 of documents dated up to that day but posted later (payments 24732, 30219, 29646, 29696; payment 44844 and journal 476 net to zero). The statement closing is compared with this figure.",
+  "quarantineFile": "config/quarantine.json"
+}

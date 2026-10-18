@@ -1,0 +1,76 @@
+{
+  "debtorCode": "COF001",
+  "debtorName": "COFFEEBERRY-CASCADES",
+  "period": {
+    "from": "2026-01-01",
+    "to": "2026-09-09"
+  },
+  "version": "v5",
+  "workspaceStatus": "pending_review",
+  "lastGeneratedAt": "2026-10-18T19:07:59.914Z",
+  "source": "analysis/debtors/COF001/raw/COF001_COMBINED.TXT",
+  "financialPosition": {
+    "lpgGasDebt": 5183.28,
+    "cylinderFinancialBalance": -13811.5,
+    "totalDebtorBalance": -8628.22,
+    "erpStatedBalance": -16256.52,
+    "erpVariance": 0,
+    "subLedgerVariance": 0
+  },
+  "custodyPosition": {
+    "totalCustodyExposure": -13742.5,
+    "lines": [
+      {
+        "sku": "19.1",
+        "label": "19kg",
+        "qty": -1,
+        "depositRate": 690,
+        "exposure": -690
+      },
+      {
+        "sku": "9.1",
+        "label": "9kg",
+        "qty": -3,
+        "depositRate": 517.5,
+        "exposure": -1552.5
+      },
+      {
+        "sku": "D.1",
+        "label": "D.1",
+        "qty": 10,
+        "depositRate": 1150,
+        "exposure": 11500
+      },
+      {
+        "sku": "S.1",
+        "label": "S.1",
+        "qty": -20,
+        "depositRate": 1150,
+        "exposure": -23000
+      }
+    ]
+  },
+  "reconciliationPosition": {
+    "cylinderVariance": -69,
+    "erpVariance": 0,
+    "subLedgerVariance": 0,
+    "exceptions": [
+      {
+        "type": "OTHER",
+        "basis": "ASSERTED",
+        "status": "open",
+        "description": "Quarantined documents held aside from 1A/1B: Payment 29492"
+      },
+      {
+        "type": "CUSTODY",
+        "basis": "ASSERTED",
+        "status": "open",
+        "description": "Part 1B financial vs Part 2 custody — check DB ingest vs TXT"
+      }
+    ]
+  },
+  "artifacts": {
+    "statementMarkdown": "analysis/debtors/COF001/reports/COF001_Statement_Account_v5.md",
+    "txtSource": "analysis/debtors/COF001/raw/COF001_COMBINED.TXT"
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "schemaNote": "Operator quarantine decisions for COF001. A quarantined document stays in the ERP balance but is held aside from Part 1A/1B and the running balances of any statement whose config sets quarantineFile to this file. The bridge carries it as an explicit reconciling line. Statements that do not opt in are not adjusted.",
+  "items": [
+    {
+      "doc_no": "29492",
+      "entry_type": "Payment",
+      "date": "2024-04-18",
+      "amount": -7628.3,
+      "lane": "LPG",
+      "decision": "QUARANTINED",
+      "decidedBy": "operator",
+      "decidedOn": "2026-10-18",
+      "instruction": "Quarantine payment 29492, 18 Apr 2024, -7,628.30 (statement running balance -7,628.28).",
+      "reasonStated": "none given by the operator",
+      "observation": "ASSERTED from TXT: payment 30219 (12 Mar 2024, -7,628.30) was posted for the same amount against invoice 30276 (9 Mar 2024, 7,628.30). With 29492 also posted, the account is R7,628.28 in credit from 18 Apr 2024 until later invoices absorb it. Not confirmed as a duplicate.",
+      "treatment": "Held aside: excluded from Part 1A and 1B and from running balances. Still included in the ERP balance, so the bridge shows it as a reconciling line.",
+      "notTreatedAs": "Not treated as a cylinder-deposit payment (business_rules.md sections 3 and 4): no allocation to the cylinder ledger and no cylinder write-off.",
+      "reopenWhen": [
+        "The ERP reverses, refunds or reallocates payment 29492.",
+        "Bank statement evidence shows only one receipt of 7,628.30 for invoice 30276, or shows 29492 belongs to another invoice.",
+        "The operator rules that 29492 is a cylinder-deposit payment (business_rules.md sections 3 and 4 then apply).",
+        "Payment 30219 is itself reversed or reallocated."
+      ],
+      "findings": [
+        {
+          "date": "2026-10-18",
+          "status": "ASSERTED - database evidence (bank and ERP reconciliation tables), not confirmed against the ERP",
+          "summary": "Payment 29492 appears to belong to COF002 (COFFEEBERRY-HILTON, bank name 'Coffeeberry Avenues'), not COF001. It was posted to COF001 against COF001 invoice 30276, which payment 30219 had already settled.",
+          "evidence": [
+            "Bank credit 2024-04-18, R7,628.30, described 'Magtape Credit Coffeeberry Avenues 00031096' (bank_transactions, status MATCHED). 31096 is a COF002 invoice dated 2024-04-08 for R7,628.30.",
+            "That bank credit is approved-matched (EXACT_AMOUNT_DATE) to ERP entry refDoc 00029492 (STAT:102), whose ERP description is 'MAGTAPE CREDIT COFFEEBERRY AVE'.",
+            "The earlier bank credit 2024-03-12, R7,628.30, described 'Magtape Credit Coffeeberry Cascades 00030276', is the COF001 receipt that payment 30219 recorded for invoice 30276.",
+            "In the database, transaction_headers shows 29492 with reference 00030276 (COF001's invoice). No payment of R7,628.30 exists on COF002, and every other COF002 invoice from 15 Feb to 15 Jun 2024 has a same-amount payment within days; 31096 does not."
+          ],
+          "supersedes": "The 'observation' above (29492 as a second payment of the same invoice by COF001) is not supported by the bank data: the two R7,628.30 receipts came from two different payers.",
+          "notChecked": [
+            "COF002's ERP statement (no TXT in the repo): whether invoice 31096 is still open there, or was settled another way.",
+            "Whether the ERP has since reposted or reversed 29492."
+          ],
+          "implication": "The quarantine on COF001 stands as a hold-aside until the ERP reposts 29492 to COF002. COF002 would then show invoice 31096 paid.",
+          "addedReopenWhen": "The ERP reposts 29492 to COF002 (lift the COF001 quarantine; the COF001 ERP balance then excludes it)."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "schemaNote": "Operator lane overrides for COF001. Each item moves one SKU line of an invoice or credit note from its SKU-rule lane to the other lane, for every statement whose config sets laneOverridesFile to this file. Lines dated inside the window are routed directly; lines dated before it adjust the opening 1A/1B balances and the Part 2 custody opening. The combined balance never changes. The ERP documents are not changed; when the ERP corrects them, remove the item and regenerate.",
+  "items": [
+    {
+      "doc_no": "45528",
+      "entry_type": "Invoice",
+      "date": "2025-08-09",
+      "stock_no": "S.1",
+      "qty": 5,
+      "amount": 6037.5,
+      "fromLane": "CYL",
+      "toLane": "LPG",
+      "status": "ASSUMED",
+      "decision": "TREAT AS GAS (wrong stock code)",
+      "decidedBy": "operator",
+      "decidedOn": "2026-10-18",
+      "instruction": "In the meantime assume the S.1 line on 45528 is 48kg gas keyed with the deposit code, and amend the v5 statements accordingly.",
+      "basis": "ASSERTED (database lines, ADM-149 report analysis/debtors/COF001/reports/COF001_ADM-149_45528_Deposit_Investigation.md on branch claude/adm-149-cof001-45528, rechecked by the parent session 2026-10-18): every other COF001 48kg delivery Jun-Sep 2025 bills S01 x5 (48kg gas) on the main invoice, while DN#20080 bills none; the -EMPTY pair 45529/13191 records 5 x 48kg empties swapped; COF002 invoice 45486 (7 Aug 2025) billed the same 9kg line R1,362.69 plus 5 x S.4 48kg gas. Not confirmed by the ERP.",
+      "effect": "Moves R6,037.50 from Part 1B to Part 1A and removes S.1 +5 from Part 2 custody. Combined balance unchanged. Payment 40757 (R7,400.19) then pays a gas-only invoice in full.",
+      "notTreatedAs": "No credit note or rebill is assumed: the possible R1,086.52 to R1,230.04 undercharge on 48kg gas is not added to any statement.",
+      "pendingEvidence": "Linear ADM-152 (FINCON line audit of 45528, signed DN#20080, stock movements 9 Aug 2025).",
+      "reopenWhen": [
+        "The FINCON line audit shows S.1 was keyed on purpose on 45528 (for example a sale of cylinders).",
+        "Signed DN#20080 shows no 48kg fulls delivered.",
+        "A site count shows five 48kg cylinders above the agreed float.",
+        "The ERP issues any credit note or invoice against 45528 or DN#20080 (then remove this override so the correction is not counted twice).",
+        "A dated full export (ADM-135) shows different lines for 45528."
+      ]
+    }
+  ]
+}

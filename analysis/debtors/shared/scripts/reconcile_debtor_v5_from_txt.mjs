@@ -166,8 +166,12 @@ ${scenario.assumption}
 `;
 }
 
+// Optional `--suffix _Tag`: alternate period statement (config/statement_v5_Tag.json ->
+// reports/CODE_Statement_Account_v5_Tag.md). No workspace fixture is written for suffixed runs.
+const SUFFIX = process.argv.includes('--suffix') ? process.argv[process.argv.indexOf('--suffix') + 1] : '';
+
 function loadConfig(debtorCode) {
-  const configPath = path.join(ROOT, 'analysis/debtors', debtorCode, 'config/statement_v5.json');
+  const configPath = path.join(ROOT, 'analysis/debtors', debtorCode, `config/statement_v5${SUFFIX}.json`);
   if (!fs.existsSync(configPath)) {
     throw new Error(
       `Missing config: ${configPath}\nCopy from analysis/debtors/shared/templates/statement_v5_config.template.json`,
@@ -183,28 +187,70 @@ function loadConfig(debtorCode) {
   }
   const cylOpeningFinancial = Number(cfg.cylOpeningFinancial ?? 0);
   const combinedBf = Number(cfg.combinedBf);
+  // Optional `quarantineFile` (path relative to the debtor folder): documents held aside from 1A/1B.
+  const quarantined = cfg.quarantineFile
+    ? JSON.parse(fs.readFileSync(path.join(ROOT, 'analysis/debtors', debtorCode, cfg.quarantineFile), 'utf8')).items || []
+    : [];
+  // A quarantined payment dated before the window is already inside the ERP opening balance;
+  // take it out of the opening 1A balance (documents dated inside the window are held aside by loadTxt).
+  const preWindowQuarantine = quarantined.filter((q) => q.date < cfg.periodStart);
+  for (const q of preWindowQuarantine) {
+    if (q.lane === 'CYL' || !PAYMENT_TYPES.has(q.entry_type)) {
+      throw new Error(`Quarantined ${q.entry_type} ${q.doc_no} dated before the window: only LPG-lane payments are supported`);
+    }
+  }
+  const preWindowQuarantineTotal = Math.round(preWindowQuarantine.reduce((sum, q) => sum + Number(q.amount), 0) * 100) / 100;
+  // Optional `laneOverridesFile`: SKU lines moved between 1A and 1B by operator decision. Lines dated before the
+  // window move the opening balances (and Part 2 opening qty); lines inside it are applied to the line split.
+  const laneOverrides = (
+    cfg.laneOverridesFile
+      ? JSON.parse(fs.readFileSync(path.join(ROOT, 'analysis/debtors', debtorCode, cfg.laneOverridesFile), 'utf8')).items || []
+      : []
+  ).filter((o) => !cfg.periodEnd || o.date <= cfg.periodEnd);
+  const preWindowOverrides = laneOverrides.filter((o) => o.date < cfg.periodStart);
+  const cylOpeningQty = { ...(cfg.cylOpeningQty || Object.fromEntries(SKUS.map((s) => [s, 0]))) };
+  let overrideCylShift = 0;
+  for (const o of preWindowOverrides) {
+    const { cyl, qty } = laneOverrideShift(o);
+    overrideCylShift += cyl;
+    if (SKUS.includes(o.stock_no)) cylOpeningQty[o.stock_no] = (cylOpeningQty[o.stock_no] || 0) + qty;
+  }
+  const cylOpeningAdjusted = Math.round((cylOpeningFinancial + overrideCylShift) * 100) / 100;
   const ratificationScenario = loadRatificationScenario(cfg);
   const ratificationRows = ratificationScenario ? buildRatificationRows(ratificationScenario) : [];
   return {
     ...cfg,
     txtPath,
     combinedBf,
-    cylOpeningFinancial,
-    lpgOpeningBf: Math.round((combinedBf - cylOpeningFinancial) * 100) / 100,
+    cylOpeningFinancial: cylOpeningAdjusted,
+    cylOpeningFinancialConfig: cylOpeningFinancial,
+    laneOverrides,
+    preWindowOverrides,
+    lpgOpeningBf: Math.round((combinedBf - cylOpeningAdjusted - preWindowQuarantineTotal) * 100) / 100,
     paymentLane: cfg.paymentLane || 'LPG',
     ratificationScenario,
     ratificationRows,
+    quarantined,
     reportPath: path.join(
       ROOT,
-      `analysis/debtors/${debtorCode}/reports/${debtorCode}_Statement_Account_v5.md`,
+      `analysis/debtors/${debtorCode}/reports/${debtorCode}_Statement_Account_v5${SUFFIX}.md`,
     ),
     fixturePath: path.join(
       ROOT,
       `src/features/debtor-position-workspace/data/fixtures/${debtorCode}.v5.json`,
     ),
     skuRates: cfg.skuRates || { '14.1': 575, '19.1': 690, '9.1': 517.5, 'D.1': 1150, 'S.1': 1150 },
-    cylOpeningQty: cfg.cylOpeningQty || Object.fromEntries(SKUS.map((s) => [s, 0])),
+    cylOpeningQty,
   };
+}
+
+// Change to the CYL lane (amount) and to Part 2 custody (qty) when a lane override moves a line.
+function laneOverrideShift(o) {
+  const amount = Number(o.amount);
+  const qty = Number(o.qty || 0);
+  if (o.fromLane === 'CYL' && o.toLane === 'LPG') return { cyl: -amount, lpg: amount, qty: -qty };
+  if (o.fromLane === 'LPG' && o.toLane === 'CYL') return { cyl: amount, lpg: -amount, qty: SKUS.includes(o.stock_no) ? qty : 0 };
+  throw new Error(`Lane override ${o.entry_type} ${o.doc_no} ${o.stock_no}: fromLane/toLane must be CYL→LPG or LPG→CYL`);
 }
 
 function parseArgs() {
@@ -218,7 +264,10 @@ function parseArgs() {
 
 const round2 = (n) => Math.round(Number(n) * 100) / 100;
 const fmt = (n) =>
-  Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  (Math.abs(Number(n)) < 0.005 ? 0 : Number(n)).toLocaleString('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
 
 function parseCsvLine(line) {
   const out = [];
@@ -263,7 +312,7 @@ function isCylRef(ref) {
 
 function parseTxtRows(filePath) {
   const txt = fs.readFileSync(filePath, 'utf8');
-  const headerBalance = Number(txt.match(/CURRENT BALANCE:","([0-9.]+)"/)?.[1]);
+  const headerBalance = Number(txt.match(/CURRENT BALANCE:","(-?[0-9.]+)"/)?.[1]);
   const rows = [];
   for (const line of txt.split('\n')) {
     if (!line.startsWith('"') || line.includes('LINE","PERIOD')) continue;
@@ -286,6 +335,42 @@ function parseTxtRows(filePath) {
     });
   }
   return { rows, headerBalance };
+}
+
+// Optional `periodEnd` (ISO date) in config: keep only TXT rows dated on or before it, and take the
+// closing check balance from the ERP running balance on the last such row in file order (the TXT
+// header balance only describes the end of the whole extract).
+function loadTxt(cfg) {
+  const parsed = parseTxtRows(cfg.txtPath);
+  let rows = parsed.rows;
+  let headerBalance = parsed.headerBalance;
+  if (cfg.periodEnd) {
+    rows = rows.filter((r) => r.iso <= cfg.periodEnd);
+    if (!rows.length) throw new Error(`No TXT rows on or before periodEnd ${cfg.periodEnd}`);
+    // `erpClosingBalance` (optional) overrides the last-row ERP balance when documents posted after the
+    // window were dated inside it, so the last in-window row's running balance is not a closing balance.
+    headerBalance = Number(cfg.erpClosingBalance ?? rows.at(-1).erp_balance);
+  }
+  // Quarantined documents stay in the ERP balance but are held aside from the sub-ledgers.
+  // In-window documents are removed from the rows; documents dated before the window are checked
+  // against the TXT and reported (their effect is taken out of the opening balance in loadConfig).
+  const quarantinedRows = [];
+  const quarantinedPre = [];
+  for (const q of cfg.quarantined || []) {
+    if (cfg.periodEnd && q.date > cfg.periodEnd) continue; // after the window: not part of this statement
+    const clean = String(q.doc_no).replace(/^0+/, '');
+    const matches = (r) =>
+      r.clean_doc === clean && r.entry_type === q.entry_type && r.iso === q.date && Math.abs(r.amount - q.amount) < 0.005;
+    const idx = rows.findIndex(matches);
+    if (idx < 0) throw new Error(`Quarantined ${q.entry_type} ${q.doc_no} (${q.date}, ${q.amount}) not found in TXT`);
+    if (q.date < cfg.periodStart) {
+      quarantinedPre.push({ ...rows[idx], quarantine: q });
+    } else {
+      quarantinedRows.push({ ...rows[idx], quarantine: q });
+      rows = rows.filter((_, i) => i !== idx);
+    }
+  }
+  return { rows, headerBalance, quarantinedRows, quarantinedPre };
 }
 
 function splitRowAmount(r, docSplit, cfg) {
@@ -340,7 +425,7 @@ function buildLaneSections(financial, lane, openingBf, amountKey, runningKey) {
     for (const r of rows) {
       const ratNote = r.is_ratification ? ' *(ratification)*' : '';
       lines.push(
-        `| ${r.date_str} | ${r.entry_type} | ${r.clean_doc}${ratNote} | ${fmt(r[amountKey])} | ${fmt(r[runningKey])} |`,
+        `| ${r.date_str} | ${r.entry_type} | ${r.clean_doc}${ratNote}${r.doc_note || ''} | ${fmt(r[amountKey])} | ${fmt(r[runningKey])} |`,
       );
     }
     sections.push(lines.join('\n'));
@@ -372,8 +457,21 @@ function buildPart1Split(rows, cfg, docSplit) {
     runningLpg = round2(runningLpg + lpg);
     runningCyl = round2(runningCyl + cyl);
 
+    // Mixed gas/deposit documents appear in both lane tables with only that lane's part; documents whose
+    // lane split is inferred (not in the database) are flagged via optional `assumedLaneDocs` in config.
+    const isSplit = Math.abs(lpg) >= 0.01 && Math.abs(cyl) >= 0.01;
+    const isAssumed = (cfg.assumedLaneDocs || []).includes(`${r.clean_doc}|${r.entry_type}`);
+    const overrides = (cfg.laneOverrides || []).filter(
+      (o) => o.date >= cfg.periodStart && `${o.doc_no}|${o.entry_type}` === `${r.clean_doc}|${r.entry_type}`,
+    );
+    const noteParts = [
+      isSplit ? `split of R${fmt(r.amount)}` : null,
+      isAssumed ? 'lane assumed' : null,
+      ...overrides.map((o) => `${o.stock_no} R${fmt(o.amount)} moved to ${o.toLane === 'LPG' ? '1A' : '1B'}, lane override ${o.status || ''}`.trim()),
+    ].filter(Boolean);
     financial.push({
       ...r,
+      doc_note: noteParts.length ? ` *(${noteParts.join('; ')})*` : '',
       month_key: monthKey(r.iso),
       date_str: displayDate(r.iso),
       lpg_amount: lpg,
@@ -459,8 +557,16 @@ async function buildPart2(client, cfg) {
     const bucket = cylLookup.get(docKey);
     bucket[c.stock_no] = (bucket[c.stock_no] || 0) + c.qty;
   }
+  for (const o of (cfg.laneOverrides || []).filter((x) => x.date >= cfg.periodStart)) {
+    const { qty } = laneOverrideShift(o);
+    if (!qty) continue;
+    const key = `${o.doc_no}|${o.entry_type}`;
+    if (!cylLookup.has(key)) cylLookup.set(key, {});
+    const bucket = cylLookup.get(key);
+    bucket[o.stock_no] = (bucket[o.stock_no] || 0) + qty;
+  }
 
-  const { rows } = parseTxtRows(cfg.txtPath);
+  const { rows } = loadTxt(cfg);
   const ratificationInvCn = (cfg.ratificationRows || []).filter((r) => r.is_ratification);
   const periodRows = [
     ...rows.filter(
@@ -535,7 +641,8 @@ async function buildPart2(client, cfg) {
 async function main() {
   const debtorCode = parseArgs();
   const cfg = loadConfig(debtorCode);
-  const { rows, headerBalance } = parseTxtRows(cfg.txtPath);
+  const { rows, headerBalance, quarantinedRows: quarantinedInWindow, quarantinedPre } = loadTxt(cfg);
+  const quarantinedRows = [...quarantinedPre, ...quarantinedInWindow].sort((a, b) => a.iso.localeCompare(b.iso));
   const allRows = mergeRatificationRows(rows, cfg.ratificationRows);
 
   const client = new pg.Client(pgClientOptions());
@@ -543,6 +650,14 @@ async function main() {
   const docSplit = await fetchDocLineSplit(client, cfg);
   for (const [k, v] of buildRatificationDocSplit(cfg.ratificationRows)) {
     docSplit.set(k, v);
+  }
+  for (const o of cfg.laneOverrides.filter((x) => x.date >= cfg.periodStart)) {
+    const key = `${o.doc_no}|${o.entry_type}`;
+    const bucket = docSplit.get(key);
+    if (!bucket) throw new Error(`Lane override ${key}: no line split in the database for this document`);
+    const { cyl, lpg } = laneOverrideShift(o);
+    bucket.cyl = round2(bucket.cyl + cyl);
+    bucket.lpg = round2(bucket.lpg + lpg);
   }
   const { sections: part2, currentCyl } = await buildPart2(client, cfg);
   await client.end();
@@ -553,7 +668,9 @@ async function main() {
     docSplit,
   );
 
-  const erpVariance = round2(finalCombined - headerBalance);
+  const quarantinedTotal = round2(quarantinedRows.reduce((sum, r) => sum + r.amount, 0));
+  const erpExpected = round2(headerBalance - quarantinedTotal);
+  const erpVariance = round2(finalCombined - erpExpected);
   const subLedgerVariance = round2(finalLpg + finalCyl - finalCombined);
 
   const custodyLines = SKUS.map((sku) => ({
@@ -577,10 +694,51 @@ async function main() {
   const custodyBlockedNote = buildCustodyBlockedNote(coverage);
   const ratificationSection = buildRatificationSection(cfg.ratificationScenario, erpVariance);
 
+  const laneLegend =
+    (financial.some((r) => (r.doc_note || '').includes('split'))
+      ? ' Documents marked `(split of …)` are mixed gas and deposit documents; the amount shown is this lane\'s part of that total.'
+      : '') +
+    (financial.some((r) => (r.doc_note || '').includes('lane assumed'))
+      ? ' `(lane assumed)` means the document is not yet in the database, so its gas/cylinder split is inferred from its amount, not proven.'
+      : '');
+  const quarantineBridgeRows = quarantinedRows.length
+    ? `\n| Less: quarantined documents held aside | ${fmt(quarantinedTotal)} |\n| **ERP balance excluding quarantined documents** | **${fmt(erpExpected)}** |`
+    : '';
+  const quarantineSection = quarantinedRows.length
+    ? `## Quarantined Documents (held aside)
+
+| Date | Entry Type | Doc # | Amount (R) | Would post to | Decision |
+| :--- | :--- | :--- | ---: | :--- | :--- |
+${quarantinedRows
+  .map((r) => `| ${r.date_str || displayDate(r.iso)} | ${r.entry_type} | ${r.clean_doc} | ${fmt(r.amount)} | ${cfg.paymentLane === 'CYL' ? '1B' : '1A'} | ${r.quarantine.decision} (${r.quarantine.decidedOn}) |`)
+  .join('\n')}
+
+*Held aside from Part 1A and 1B and the running balances above, pending review (documents dated before this period are excluded from the opening balances). They remain in the ERP balance, so the bridge shows them as a reconciling line. Record: \`${cfg.quarantineFile}\`.*
+
+---
+`
+    : '';
+  const preWindowHeader = quarantinedPre.length
+    ? `\n**Quarantine adjustment:** opening 1A excludes quarantined ${quarantinedPre
+        .map((r) => `${r.entry_type.toLowerCase()} ${r.clean_doc} (${displayDate(r.iso)}, R${fmt(r.amount)})`)
+        .join('; ')}, dated before this period; the combined opening B/F above is the ERP figure.`
+    : '';
+  const overrideHeader = cfg.preWindowOverrides.length
+    ? `\n**Lane override adjustment:** opening 1B is R${fmt(cfg.cylOpeningFinancialConfig)} per config, adjusted for ${cfg.preWindowOverrides
+        .map((o) => `${o.entry_type.toLowerCase()} ${o.doc_no} ${o.stock_no} ×${o.qty} (${displayDate(o.date)}, R${fmt(o.amount)}) moved to ${o.toLane === 'LPG' ? '1A' : '1B'} (${o.status})`)
+        .join('; ')}; opening 1A moves by the same amount. Record: \`${cfg.laneOverridesFile}\`.`
+    : '';
+  const overrideLegend = financial.some((r) => (r.doc_note || '').includes('lane override'))
+    ? ` \`lane override\` marks a line moved between 1A and 1B by operator decision (record: \`${cfg.laneOverridesFile}\`).`
+    : '';
+  const quarantineSummary = quarantinedRows.length
+    ? `\n**Quarantined documents (held aside):** R${fmt(quarantinedTotal)}  \n**ERP balance excluding quarantined documents:** R${fmt(erpExpected)}  `
+    : '';
+
   const md = `# Statement of Account: ${cfg.debtorName} (${cfg.debtorCode}) - Version 5 (Sub-Ledger Position Statement)
 **Period:** ${periodStartLabel} → ${periodEndLabel} &nbsp;|&nbsp; **Account:** ${cfg.debtorCode}
 **Combined Opening B/F:** R${fmt(cfg.combinedBf)} (ERP verified — source: \`${txtRel}\` ${cfg.bfSourceNote || ''})
-**LPG Opening B/F (1A):** R${fmt(cfg.lpgOpeningBf)} &nbsp;|&nbsp; **CYL Opening B/F (1B):** R${fmt(cfg.cylOpeningFinancial)}
+**LPG Opening B/F (1A):** R${fmt(cfg.lpgOpeningBf)} &nbsp;|&nbsp; **CYL Opening B/F (1B):** R${fmt(cfg.cylOpeningFinancial)}${preWindowHeader}${overrideHeader}
 **Payment routing:** ${cfg.paymentLane} lane (payments post to Part 1A unless configured otherwise)
 **Last regenerated:** ${new Date().toISOString().slice(0, 10)} from ERP TXT (\`reconcile_debtor_v5_from_txt.mjs\`)${cfg.ratificationScenario ? ' · **Ratification scenario active**' : ''}
 
@@ -589,14 +747,14 @@ async function main() {
 ${ratificationSection}
 
 ## Part 1A: LPG Gas Financial Statement
-*Gas fill invoices, credit notes, and payments since ${periodStartLabel}. Payments route to this sub-ledger per debtor config (\`paymentLane: ${cfg.paymentLane}\`).*
+*Gas fill invoices, credit notes, and payments since ${periodStartLabel}. Payments route to this sub-ledger per debtor config (\`paymentLane: ${cfg.paymentLane}\`).${laneLegend}${overrideLegend}*
 
 ${part1a.length ? part1a.join('\n\n---\n\n') : '_No LPG activity in period._'}
 
 ---
 
 ## Part 1B: Cylinder Deposit Financial Statement
-*Cylinder deposit charges and reversals (\`-EMPTY\` / \`EMPTIES\` refs). Paired inv+CN rows remain visible; net-zero pairs are expected for standard deliveries.*
+*Cylinder deposit charges and reversals (\`-EMPTY\` / \`EMPTIES\` refs). Paired inv+CN rows remain visible; net-zero pairs are expected for standard deliveries.${laneLegend}${overrideLegend}*
 
 ${part1b.length ? part1b.join('\n\n---\n\n') : '_No CYL deposit activity in period._'}
 
@@ -609,11 +767,12 @@ ${part1b.length ? part1b.join('\n\n---\n\n') : '_No CYL deposit activity in peri
 | Part 1A — LPG Gas | ${fmt(finalLpg)} |
 | Part 1B — CYL Deposits | ${fmt(finalCyl)} |
 | **Combined (1A + 1B)** | **${fmt(finalLpg + finalCyl)}** |
-| ERP \`CURRENT BALANCE\` (TXT header) | ${fmt(headerBalance)} |
-| **Variance (Combined − ERP)** | **${fmt(erpVariance)}** |
+| ERP \`CURRENT BALANCE\` (TXT header) | ${fmt(headerBalance)} |${quarantineBridgeRows}
+| **Variance (Combined − ERP${quarantinedRows.length ? ' excl. quarantine' : ''})** | **${fmt(erpVariance)}** |
 
 ---
 
+${quarantineSection}
 ${ingestGateSection}
 
 ## Part 2: Cylinder (CYL) Ledger (Physical Asset Tracker)
@@ -650,7 +809,7 @@ ${custodyLines.length ? custodyLines.map((l) => `| ${l.label} | ${l.qty} | R${fm
 | Cylinder Position (1B vs custody) | R${fmt(finalCyl)} | R${fmt(totalCustodyExposure)} | R${fmt(cylVariance)} |
 | Sub-ledger tie (1A + 1B vs combined) | R${fmt(finalCombined)} | — | R${fmt(subLedgerVariance)} |
 ${custodyBlockedNote}
-**ERP Combined Balance (TXT header):** R${fmt(headerBalance)}  
+**ERP Combined Balance (TXT header):** R${fmt(headerBalance)}  ${quarantineSummary}
 **Reconstructed Balance (1A + 1B):** R${fmt(finalCombined)}  
 **Variance:** R${fmt(erpVariance)}
 
@@ -678,7 +837,8 @@ ${custodyBlockedNote}
     workspaceStatus:
       Math.abs(erpVariance) < 0.02 &&
       Math.abs(subLedgerVariance) < 0.02 &&
-      Math.abs(cylVariance) < 1
+      Math.abs(cylVariance) < 1 &&
+      quarantinedRows.length === 0
         ? 'clean'
         : 'pending_review',
     lastGeneratedAt: new Date().toISOString(),
@@ -719,6 +879,9 @@ ${custodyBlockedNote}
         ...(Math.abs(subLedgerVariance) >= 0.02
           ? [{ type: 'VARIANCE', basis: 'ASSERTED', status: 'open', description: 'Part 1A + 1B closing does not tie to combined running balance' }]
           : []),
+        ...(quarantinedRows.length
+          ? [{ type: 'OTHER', basis: 'ASSERTED', status: 'open', description: `Quarantined documents held aside from 1A/1B: ${quarantinedRows.map((r) => `${r.entry_type} ${r.clean_doc}`).join(', ')}` }]
+          : []),
         ...(Math.abs(cylVariance) >= 1
           ? [{ type: 'CUSTODY', basis: 'ASSERTED', status: 'open', description: 'Part 1B financial vs Part 2 custody — check DB ingest vs TXT' }]
           : []),
@@ -729,8 +892,10 @@ ${custodyBlockedNote}
       txtSource: txtRel,
     },
   };
-  fs.mkdirSync(path.dirname(cfg.fixturePath), { recursive: true });
-  fs.writeFileSync(cfg.fixturePath, `${JSON.stringify(fixture, null, 2)}\n`);
+  if (!SUFFIX) {
+    fs.mkdirSync(path.dirname(cfg.fixturePath), { recursive: true });
+    fs.writeFileSync(cfg.fixturePath, `${JSON.stringify(fixture, null, 2)}\n`);
+  }
 
   console.log(`[${cfg.debtorCode}] TXT header: R${fmt(headerBalance)}`);
   console.log(`[${cfg.debtorCode}] Part 1A LPG close: R${fmt(finalLpg)}`);
