@@ -8,7 +8,11 @@
 
 ## 1. Resume Here
 
-**Waiting on:** Sharmin's answers on Linear ADM-152, as comments headed "Answer to turn N" (N = 1-4). Check with `list_comments` on ADM-152. Turns 1 and 2 are decisive.
+**Waiting on:** "Answer to task 1 follow-up" on ADM-152: page 2 of 45528 and its audit trail.
+
+- **Task 1 so far.** Page 1 was received 2026-10-18 and filed; see `analysis/debtors/COF001/reports/COF001_ADM-152_ERP_Findings.md`. It proves the stored lines (S.1 × 5 @ R1,207.50 incl VAT) but does not separate the hypotheses.
+- **Tasks are now sent one at a time, short.** After task 1 comes task 2 (DN#20080 and the stock movements on 9 Aug 2025), then the empties documents, then the bank lines.
+- **Turns 2-4 are still posted on ADM-152 in long form.** I asked the operator whether to delete them; no answer yet.
 
 **Turn pack:** `docs/requests/2026-10-18_ADM-152_erp_turns.md` (turn text, Linear comment ids, and the hypothesis/tripwire map for each answer).
 
