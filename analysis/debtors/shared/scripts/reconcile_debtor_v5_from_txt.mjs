@@ -195,8 +195,8 @@ function loadConfig(debtorCode) {
   // take it out of the opening 1A balance (documents dated inside the window are held aside by loadTxt).
   const preWindowQuarantine = quarantined.filter((q) => q.date < cfg.periodStart);
   for (const q of preWindowQuarantine) {
-    if (q.lane === 'CYL' || !PAYMENT_TYPES.has(q.entry_type)) {
-      throw new Error(`Quarantined ${q.entry_type} ${q.doc_no} dated before the window: only LPG-lane payments are supported`);
+    if (q.lane === 'CYL' || !(PAYMENT_TYPES.has(q.entry_type) || q.entry_type === 'Carry')) {
+      throw new Error(`Quarantined ${q.entry_type} ${q.doc_no} dated before the window: only LPG-lane payments and carries are supported`);
     }
   }
   const preWindowQuarantineTotal = Math.round(preWindowQuarantine.reduce((sum, q) => sum + Number(q.amount), 0) * 100) / 100;
@@ -358,6 +358,19 @@ function loadTxt(cfg) {
   const quarantinedPre = [];
   for (const q of cfg.quarantined || []) {
     if (cfg.periodEnd && q.date > cfg.periodEnd) continue; // after the window: not part of this statement
+    // A `Carry` item holds aside part of the 1A balance rather than one TXT document. Inside the window it
+    // posts an offsetting 1A row on its date; before the window loadConfig takes it out of the opening 1A.
+    if (q.entry_type === 'Carry') {
+      if (q.lane === 'CYL') throw new Error(`Quarantined carry ${q.doc_no}: only LPG-lane carries are supported`);
+      const carry = { lineNo: 0, doc_no: String(q.doc_no), clean_doc: String(q.doc_no), entry_type: 'Carry', iso: q.date, ref_no: '', amount: round2(q.amount), erp_balance: null, is_cyl_only: false };
+      if (q.date < cfg.periodStart) {
+        quarantinedPre.push({ ...carry, quarantine: q });
+      } else {
+        quarantinedRows.push({ ...carry, quarantine: q });
+        rows.push({ ...carry, entry_type: 'Carry held aside', amount: round2(-q.amount) });
+      }
+      continue;
+    }
     const clean = String(q.doc_no).replace(/^0+/, '');
     const matches = (r) =>
       r.clean_doc === clean && r.entry_type === q.entry_type && r.iso === q.date && Math.abs(r.amount - q.amount) < 0.005;

@@ -41,6 +41,29 @@
           "addedReopenWhen": "The ERP reposts 29492 to COF002 (lift the COF001 quarantine; the COF001 ERP balance then excludes it)."
         }
       ]
+    },
+    {
+      "doc_no": "CARRY-1A-2025-12",
+      "entry_type": "Carry",
+      "date": "2025-12-17",
+      "amount": -1776.24,
+      "lane": "LPG",
+      "decision": "QUARANTINED",
+      "decidedBy": "operator",
+      "decidedOn": "2026-10-18",
+      "instruction": "Quarantine this -1,776.24 with a note and a Linear task for the ERP agent to write this off against that shortfall (the underbilling on invoice 45528).",
+      "reasonStated": "Operator ruling 2026-10-18: invoice 45528 was incorrect and so was the selling price; the standing gas credit is to be written off against that shortfall in the ERP.",
+      "observation": "ASSERTED (reports/COF001_1A_Carry_Trace.md, amount pairing, not the ERP allocation): the 1A credit carried from 17 Dec 2025 into 2026 is made of (1) the excess of payment 35877 (30 Dec 2024, R9,649.56) over the gas part of invoice 39311 (R8,390.92): -1,258.64, see ADM-150; (2) net -0.10 from the Jan-Jul 2025 pairings; (3) payment 42636 (17 Dec 2025, -517.50, ERP ref 44730), which paid the one 9kg deposit left uncredited by credit note 12956 and therefore sits in 1A while that deposit stays in 1B. The statements show -1,776.22 at that point; the 0.02 difference is ERP rounding on otherwise exact pairs and is left in 1A.",
+      "treatment": "Held aside: a carry, not a single document. From 17 Dec 2025 the generator takes R-1,776.24 out of Part 1A (an offsetting row inside the window, or out of the opening 1A balance for later windows). It stays in the ERP balance, so the bridge shows it as a reconciling line.",
+      "notTreatedAs": "Not a refund to the customer, not a cylinder-deposit payment and not yet a write-off: nothing is written off until the ERP posts it. Holding 42636 aside leaves the R517.50 deposit on 44730 showing in Part 1B although the customer paid it; the ERP write-off should settle both.",
+      "linkedTask": "Linear ADM-158 (child of ADM-151): correct invoice 45528 and write off the credit against the shortfall.",
+      "shortfallNote": "The 45528 shortfall is not yet quantified by the ERP. At the July / 7 Aug 2025 48kg gas price (R7,267.54 for 5) it is R1,230.04; at the 25 Aug price (R7,124.02) it is R1,086.52. Either way the credit (R1,776.24) exceeds it by R546.20 to R689.72; the operator decides how any remainder is treated.",
+      "reopenWhen": [
+        "The ERP posts the write-off or the 45528 correction documents (then remove this item and the 45528 lane override so nothing is counted twice).",
+        "ADM-150 explains payment 35877 differently (for example an exact-sum match, or money belonging to another account).",
+        "The operator rules on the R517.50 deposit on 44730 / payment 42636 separately.",
+        "The ERP shortfall for 45528 differs materially from R1,086.52 to R1,230.04."
+      ]
     }
   ]
 }

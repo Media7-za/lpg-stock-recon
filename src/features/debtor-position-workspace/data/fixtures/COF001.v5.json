@@ -7,12 +7,12 @@
   },
   "version": "v5",
   "workspaceStatus": "pending_review",
-  "lastGeneratedAt": "2026-10-18T19:07:59.914Z",
+  "lastGeneratedAt": "2026-10-18T22:24:35.259Z",
   "source": "analysis/debtors/COF001/raw/COF001_COMBINED.TXT",
   "financialPosition": {
-    "lpgGasDebt": 5183.28,
+    "lpgGasDebt": 6959.52,
     "cylinderFinancialBalance": -13811.5,
-    "totalDebtorBalance": -8628.22,
+    "totalDebtorBalance": -6851.98,
     "erpStatedBalance": -16256.52,
     "erpVariance": 0,
     "subLedgerVariance": 0
@@ -59,7 +59,7 @@
         "type": "OTHER",
         "basis": "ASSERTED",
         "status": "open",
-        "description": "Quarantined documents held aside from 1A/1B: Payment 29492"
+        "description": "Quarantined documents held aside from 1A/1B: Payment 29492, Carry CARRY-1A-2025-12"
       },
       {
         "type": "CUSTODY",

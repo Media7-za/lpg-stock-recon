@@ -129,7 +129,7 @@
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
 | **01 Aug** | **Opening Balance** | — | | **8,176.21** |
-| 09 Aug 2025 | Invoice | 45528 *(S.1 R6,037.50 moved to 1A, lane override ASSUMED)* | 7,400.19 | 15,576.40 |
+| 09 Aug 2025 | Invoice | 45528 *(S.1 R6,037.50 moved to 1A, lane override OPERATOR CONFIRMED)* | 7,400.19 | 15,576.40 |
 | 18 Aug 2025 | Payment | 40757 | -7,400.19 | 8,176.21 |
 | 25 Aug 2025 | Invoice | 45883 | 7,124.02 | 15,300.23 |
 | 26 Aug 2025 | Payment | 40923 | -7,124.02 | 8,176.21 |
@@ -192,7 +192,8 @@
 | 11 Dec 2025 | Invoice | 48216 | 6,757.63 | 5,498.91 |
 | 17 Dec 2025 | Payment | 42636 | -517.50 | 4,981.41 |
 | 17 Dec 2025 | Payment | 42637 | -6,757.63 | -1,776.22 |
-| 22 Dec 2025 | Invoice | 48422 | 7,264.46 | 5,488.24 |
+| 17 Dec 2025 | Carry held aside | CARRY-1A-2025-12 | 1,776.24 | 0.02 |
+| 22 Dec 2025 | Invoice | 48422 | 7,264.46 | 7,264.48 |
 
 ---
 
@@ -353,12 +354,12 @@
 
 | Component | Closing (R) |
 | :--- | ---: |
-| Part 1A — LPG Gas | 5,488.24 |
+| Part 1A — LPG Gas | 7,264.48 |
 | Part 1B — CYL Deposits | 1,368.50 |
-| **Combined (1A + 1B)** | **6,856.74** |
+| **Combined (1A + 1B)** | **8,632.98** |
 | ERP `CURRENT BALANCE` (TXT header) | -771.56 |
-| Less: quarantined documents held aside | -7,628.30 |
-| **ERP balance excluding quarantined documents** | **6,856.74** |
+| Less: quarantined documents held aside | -9,404.54 |
+| **ERP balance excluding quarantined documents** | **8,632.98** |
 | **Variance (Combined − ERP excl. quarantine)** | **0.00** |
 
 ---
@@ -368,6 +369,7 @@
 | Date | Entry Type | Doc # | Amount (R) | Would post to | Decision |
 | :--- | :--- | :--- | ---: | :--- | :--- |
 | 18 Apr 2024 | Payment | 29492 | -7,628.30 | 1A | QUARANTINED (2026-10-18) |
+| 17 Dec 2025 | Carry | CARRY-1A-2025-12 | -1,776.24 | 1A | QUARANTINED (2026-10-18) |
 
 *Held aside from Part 1A and 1B and the running balances above, pending review (documents dated before this period are excluded from the opening balances). They remain in the ERP balance, so the bridge shows them as a reconciling line. Record: `config/quarantine.json`.*
 
@@ -549,11 +551,12 @@
 
 1. **Lane rule.** Invoices and credit notes are routed by cylinder SKU lines (9.1, 14.1, 19.1, S.1, D.1): cylinder-only documents go to 1B, documents with none go to 1A, and mixed documents are split by line. This differs from the database view's `debt_group` for rental-only lines: 41576 to 41579 (R250.00 each, Mar 2025) has no cylinder SKU, so it sits in 1A. Under the view's grouping it would be in 1B. Please confirm.
 2. **Late-posted documents.** Four payments dated 2023-2024 (24732, 30219, 29646, 29696; R31,131.01 in total) and a journal/payment pair dated 14 Nov and 11 Dec 2024 (44844, 476) appear in the current ERP extract after 2025 entries. Statements are built by document date, so they are included in the opening balance. The ERP balance shown at the time (for example R23,095.09 after payment 35877 on 30 Dec 2024) did not include them.
-3. **Quarantined payment 29492 (2024-04-18, R-7,628.30).** Quarantined by the operator on 2026-10-18; reason not stated. Initial observation (partly superseded by the update below): ASSERTED from TXT: payment 30219 (12 Mar 2024, -7,628.30) was posted for the same amount against invoice 30276 (9 Mar 2024, 7,628.30). With 29492 also posted, the account is R7,628.28 in credit from 18 Apr 2024 until later invoices absorb it. Not confirmed as a duplicate. Held aside: excluded from Part 1A and 1B and from running balances. Still included in the ERP balance, so the bridge shows it as a reconciling line. Not treated as a cylinder-deposit payment (business_rules.md sections 3 and 4): no allocation to the cylinder ledger and no cylinder write-off. **Update 2026-10-18 (ASSERTED - database evidence (bank and ERP reconciliation tables), not confirmed against the ERP).** Payment 29492 appears to belong to COF002 (COFFEEBERRY-HILTON, bank name 'Coffeeberry Avenues'), not COF001. It was posted to COF001 against COF001 invoice 30276, which payment 30219 had already settled. Evidence: Bank credit 2024-04-18, R7,628.30, described 'Magtape Credit Coffeeberry Avenues 00031096' (bank_transactions, status MATCHED). 31096 is a COF002 invoice dated 2024-04-08 for R7,628.30. That bank credit is approved-matched (EXACT_AMOUNT_DATE) to ERP entry refDoc 00029492 (STAT:102), whose ERP description is 'MAGTAPE CREDIT COFFEEBERRY AVE'. The earlier bank credit 2024-03-12, R7,628.30, described 'Magtape Credit Coffeeberry Cascades 00030276', is the COF001 receipt that payment 30219 recorded for invoice 30276. In the database, transaction_headers shows 29492 with reference 00030276 (COF001's invoice). No payment of R7,628.30 exists on COF002, and every other COF002 invoice from 15 Feb to 15 Jun 2024 has a same-amount payment within days; 31096 does not. The 'observation' above (29492 as a second payment of the same invoice by COF001) is not supported by the bank data: the two R7,628.30 receipts came from two different payers. Not checked: COF002's ERP statement (no TXT in the repo): whether invoice 31096 is still open there, or was settled another way. Whether the ERP has since reposted or reversed 29492. The quarantine on COF001 stands as a hold-aside until the ERP reposts 29492 to COF002. COF002 would then show invoice 31096 paid. This statement is quarantine-adjusted (the payment is dated before this period, so the opening 1A balance excludes it); a statement whose config does not set `quarantineFile` is not adjusted. Reopen when: The ERP reverses, refunds or reallocates payment 29492. Bank statement evidence shows only one receipt of 7,628.30 for invoice 30276, or shows 29492 belongs to another invoice. The operator rules that 29492 is a cylinder-deposit payment (business_rules.md sections 3 and 4 then apply). Payment 30219 is itself reversed or reallocated.
-4. **Lane override: invoice 45528 S.1 ×5 (2025-08-09, R6,037.50) treated as gas (1A), ASSUMED.** TREAT AS GAS (wrong stock code); operator, 2026-10-18. Basis: ASSERTED (database lines, ADM-149 report analysis/debtors/COF001/reports/COF001_ADM-149_45528_Deposit_Investigation.md on branch claude/adm-149-cof001-45528, rechecked by the parent session 2026-10-18): every other COF001 48kg delivery Jun-Sep 2025 bills S01 x5 (48kg gas) on the main invoice, while DN#20080 bills none; the -EMPTY pair 45529/13191 records 5 x 48kg empties swapped; COF002 invoice 45486 (7 Aug 2025) billed the same 9kg line R1,362.69 plus 5 x S.4 48kg gas. Not confirmed by the ERP. Effect: Moves R6,037.50 from Part 1B to Part 1A and removes S.1 +5 from Part 2 custody. Combined balance unchanged. Payment 40757 (R7,400.19) then pays a gas-only invoice in full. No credit note or rebill is assumed: the possible R1,086.52 to R1,230.04 undercharge on 48kg gas is not added to any statement. The line is inside this period and is routed in the tables above. Pending: Linear ADM-152 (FINCON line audit of 45528, signed DN#20080, stock movements 9 Aug 2025). Reopen when: The FINCON line audit shows S.1 was keyed on purpose on 45528 (for example a sale of cylinders). Signed DN#20080 shows no 48kg fulls delivered. A site count shows five 48kg cylinders above the agreed float. The ERP issues any credit note or invoice against 45528 or DN#20080 (then remove this override so the correction is not counted twice). A dated full export (ADM-135) shows different lines for 45528.
-5. **Database coverage.** All invoices and credit notes in the window were matched to the database by document and amount (see `reports/COF001_DB_COVERAGE_2026-10-16.md`).
-6. **Generator run.** The shared generator was run unchanged (except as noted) against `data/db_snapshot_2025.json` (rows pulled from Supabase on 2026-10-16) because `DATABASE_URL` is not set in cloud sessions. Fixes made to the shared generator: the TXT header balance regex accepts a minus sign, so credit balances no longer read as NaN; an optional `periodEnd` limits the window and takes the closing check from the ERP running balance on the last row inside it.
-7. **Not run.** `npm run debtors:ingest-check -- --debtor COF001` (needs `DATABASE_URL`).
+3. **Quarantined payment 29492 (2024-04-18, R-7,628.30).** Quarantined by the operator on 2026-10-18; reason not stated. Initial observation (partly superseded by the update below): ASSERTED from TXT: payment 30219 (12 Mar 2024, -7,628.30) was posted for the same amount against invoice 30276 (9 Mar 2024, 7,628.30). With 29492 also posted, the account is R7,628.28 in credit from 18 Apr 2024 until later invoices absorb it. Not confirmed as a duplicate. Held aside: excluded from Part 1A and 1B and from running balances. Still included in the ERP balance, so the bridge shows it as a reconciling line. Not treated as a cylinder-deposit payment (business_rules.md sections 3 and 4): no allocation to the cylinder ledger and no cylinder write-off. **Update 2026-10-18 (ASSERTED - database evidence (bank and ERP reconciliation tables), not confirmed against the ERP).** Payment 29492 appears to belong to COF002 (COFFEEBERRY-HILTON, bank name 'Coffeeberry Avenues'), not COF001. It was posted to COF001 against COF001 invoice 30276, which payment 30219 had already settled. Evidence: Bank credit 2024-04-18, R7,628.30, described 'Magtape Credit Coffeeberry Avenues 00031096' (bank_transactions, status MATCHED). 31096 is a COF002 invoice dated 2024-04-08 for R7,628.30. That bank credit is approved-matched (EXACT_AMOUNT_DATE) to ERP entry refDoc 00029492 (STAT:102), whose ERP description is 'MAGTAPE CREDIT COFFEEBERRY AVE'. The earlier bank credit 2024-03-12, R7,628.30, described 'Magtape Credit Coffeeberry Cascades 00030276', is the COF001 receipt that payment 30219 recorded for invoice 30276. In the database, transaction_headers shows 29492 with reference 00030276 (COF001's invoice). No payment of R7,628.30 exists on COF002, and every other COF002 invoice from 15 Feb to 15 Jun 2024 has a same-amount payment within days; 31096 does not. The 'observation' above (29492 as a second payment of the same invoice by COF001) is not supported by the bank data: the two R7,628.30 receipts came from two different payers. Not checked: COF002's ERP statement (no TXT in the repo): whether invoice 31096 is still open there, or was settled another way. Whether the ERP has since reposted or reversed 29492. The quarantine on COF001 stands as a hold-aside until the ERP reposts 29492 to COF002. COF002 would then show invoice 31096 paid. This statement is quarantine-adjusted (the item is dated before this period, so the opening 1A balance excludes it); a statement whose config does not set `quarantineFile` is not adjusted. Reopen when: The ERP reverses, refunds or reallocates payment 29492. Bank statement evidence shows only one receipt of 7,628.30 for invoice 30276, or shows 29492 belongs to another invoice. The operator rules that 29492 is a cylinder-deposit payment (business_rules.md sections 3 and 4 then apply). Payment 30219 is itself reversed or reallocated.
+4. **Quarantined carry CARRY-1A-2025-12 (2025-12-17, R-1,776.24).** Quarantined by the operator on 2026-10-18; reason: Operator ruling 2026-10-18: invoice 45528 was incorrect and so was the selling price; the standing gas credit is to be written off against that shortfall in the ERP. The 45528 shortfall is not yet quantified by the ERP. At the July / 7 Aug 2025 48kg gas price (R7,267.54 for 5) it is R1,230.04; at the 25 Aug price (R7,124.02) it is R1,086.52. Either way the credit (R1,776.24) exceeds it by R546.20 to R689.72; the operator decides how any remainder is treated. Task: Linear ADM-158 (child of ADM-151): correct invoice 45528 and write off the credit against the shortfall. ASSERTED (reports/COF001_1A_Carry_Trace.md, amount pairing, not the ERP allocation): the 1A credit carried from 17 Dec 2025 into 2026 is made of (1) the excess of payment 35877 (30 Dec 2024, R9,649.56) over the gas part of invoice 39311 (R8,390.92): -1,258.64, see ADM-150; (2) net -0.10 from the Jan-Jul 2025 pairings; (3) payment 42636 (17 Dec 2025, -517.50, ERP ref 44730), which paid the one 9kg deposit left uncredited by credit note 12956 and therefore sits in 1A while that deposit stays in 1B. The statements show -1,776.22 at that point; the 0.02 difference is ERP rounding on otherwise exact pairs and is left in 1A. Held aside: a carry, not a single document. From 17 Dec 2025 the generator takes R-1,776.24 out of Part 1A (an offsetting row inside the window, or out of the opening 1A balance for later windows). It stays in the ERP balance, so the bridge shows it as a reconciling line. Not a refund to the customer, not a cylinder-deposit payment and not yet a write-off: nothing is written off until the ERP posts it. Holding 42636 aside leaves the R517.50 deposit on 44730 showing in Part 1B although the customer paid it; the ERP write-off should settle both. This statement is quarantine-adjusted; a statement whose config does not set `quarantineFile` is not adjusted. Reopen when: The ERP posts the write-off or the 45528 correction documents (then remove this item and the 45528 lane override so nothing is counted twice). ADM-150 explains payment 35877 differently (for example an exact-sum match, or money belonging to another account). The operator rules on the R517.50 deposit on 44730 / payment 42636 separately. The ERP shortfall for 45528 differs materially from R1,086.52 to R1,230.04.
+5. **Lane override: invoice 45528 S.1 ×5 (2025-08-09, R6,037.50) treated as gas (1A), OPERATOR CONFIRMED.** TREAT AS GAS (wrong stock code); operator, 2026-10-18. Basis: ASSERTED (database lines, ADM-149 report analysis/debtors/COF001/reports/COF001_ADM-149_45528_Deposit_Investigation.md on branch claude/adm-149-cof001-45528, rechecked by the parent session 2026-10-18): every other COF001 48kg delivery Jun-Sep 2025 bills S01 x5 (48kg gas) on the main invoice, while DN#20080 bills none; the -EMPTY pair 45529/13191 records 5 x 48kg empties swapped; COF002 invoice 45486 (7 Aug 2025) billed the same 9kg line R1,362.69 plus 5 x S.4 48kg gas. Not confirmed by the ERP. Effect: Moves R6,037.50 from Part 1B to Part 1A and removes S.1 +5 from Part 2 custody. Combined balance unchanged. Payment 40757 (R7,400.19) then pays a gas-only invoice in full. No credit note or rebill is assumed: the possible R1,086.52 to R1,230.04 undercharge on 48kg gas is not added to any statement. The line is inside this period and is routed in the tables above. Pending: Superseded 2026-10-18 by the operator ruling. Was: Linear ADM-152 (FINCON line audit of 45528, signed DN#20080, stock movements 9 Aug 2025). Reopen when: The FINCON line audit shows S.1 was keyed on purpose on 45528 (for example a sale of cylinders). Signed DN#20080 shows no 48kg fulls delivered. A site count shows five 48kg cylinders above the agreed float. The ERP issues any credit note or invoice against 45528 or DN#20080 (then remove this override so the correction is not counted twice). A dated full export (ADM-135) shows different lines for 45528.
+6. **Database coverage.** All invoices and credit notes in the window were matched to the database by document and amount (see `reports/COF001_DB_COVERAGE_2026-10-16.md`).
+7. **Generator run.** The shared generator was run unchanged (except as noted) against `data/db_snapshot_2025.json` (rows pulled from Supabase on 2026-10-16) because `DATABASE_URL` is not set in cloud sessions. Fixes made to the shared generator: the TXT header balance regex accepts a minus sign, so credit balances no longer read as NaN; an optional `periodEnd` limits the window and takes the closing check from the ERP running balance on the last row inside it.
+8. **Not run.** `npm run debtors:ingest-check -- --debtor COF001` (needs `DATABASE_URL`).
 
 <!-- DEBTOR_POSITION_WORKSPACE_START -->
 
@@ -563,9 +566,9 @@
 
 | Component | Amount |
 |---|---:|
-| LPG Gas Debt (Part 1A close) | R5,488.24 |
+| LPG Gas Debt (Part 1A close) | R7,264.48 |
 | Cylinder Financial Balance (Part 1B close) | R1,368.50 |
-| **Total Debtor Balance** | **R6,856.74** |
+| **Total Debtor Balance** | **R8,632.98** |
 
 ### 2. Custody Position
 
@@ -582,12 +585,12 @@
 | Check | Financial | Custody | Variance |
 |---|---:|---:|---:|
 | Cylinder Position (1B vs custody) | R1,368.50 | R862.50 | R506.00 |
-| Sub-ledger tie (1A + 1B vs combined) | R6,856.74 | — | R0.00 |
+| Sub-ledger tie (1A + 1B vs combined) | R8,632.98 | — | R0.00 |
 
 **ERP Combined Balance (TXT header):** R-771.56  
-**Quarantined documents (held aside):** R-7,628.30  
-**ERP balance excluding quarantined documents:** R6,856.74  
-**Reconstructed Balance (1A + 1B):** R6,856.74  
+**Quarantined documents (held aside):** R-9,404.54  
+**ERP balance excluding quarantined documents:** R8,632.98  
+**Reconstructed Balance (1A + 1B):** R8,632.98  
 **Variance:** R0.00
 
 <!-- DEBTOR_POSITION_WORKSPACE_END -->
