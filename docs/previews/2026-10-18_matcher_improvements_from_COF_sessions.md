@@ -28,7 +28,7 @@ Files: `analysis/debtors/shared/scripts/projection_matcher.mjs`, `match_account.
 - Per-account switch: `config/statement_v5.json` key `matcherRules` (whitelisted keys only, `MATCHER_RULE_KEYS` in `match_account.mjs`). This is the "config profile, not a fork" the ratified doctrine allows. **No account's config was changed.**
 - All new ties are PROBABLE (the operator approves via `approve_tie`), never CONFIRMED; any tie touching a reclassified rental row is forced PROBABLE.
 - A pool with a shortfall is tied only when **no other candidate shares a row**; otherwise it is listed, not tied.
-- Tests: 8 new in `projection_matcher.test.mjs` (default off, on, ambiguity, window, uniqueness, RULES untouched). All 172 shared-script tests pass (the suite is run with `node --test analysis/debtors/shared/scripts/*.test.mjs`).
+- Tests: 9 new in `projection_matcher.test.mjs` (default off, on, ambiguity, window, uniqueness, RULES untouched). All 181 shared-script tests pass (172 before) (the suite is run with `node --test analysis/debtors/shared/scripts/*.test.mjs`).
 
 ## 3. Benchmark (matcher preview with every new rule on; nothing written)
 
