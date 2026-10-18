@@ -397,7 +397,7 @@ function buildLaneSections(financial, lane, openingBf, amountKey, runningKey) {
     for (const r of rows) {
       const ratNote = r.is_ratification ? ' *(ratification)*' : '';
       lines.push(
-        `| ${r.date_str} | ${r.entry_type} | ${r.clean_doc}${ratNote} | ${fmt(r[amountKey])} | ${fmt(r[runningKey])} |`,
+        `| ${r.date_str} | ${r.entry_type} | ${r.clean_doc}${ratNote}${r.doc_note || ''} | ${fmt(r[amountKey])} | ${fmt(r[runningKey])} |`,
       );
     }
     sections.push(lines.join('\n'));
@@ -429,8 +429,14 @@ function buildPart1Split(rows, cfg, docSplit) {
     runningLpg = round2(runningLpg + lpg);
     runningCyl = round2(runningCyl + cyl);
 
+    // Mixed gas/deposit documents appear in both lane tables with only that lane's part; documents whose
+    // lane split is inferred (not in the database) are flagged via optional `assumedLaneDocs` in config.
+    const isSplit = Math.abs(lpg) >= 0.01 && Math.abs(cyl) >= 0.01;
+    const isAssumed = (cfg.assumedLaneDocs || []).includes(`${r.clean_doc}|${r.entry_type}`);
+    const noteParts = [isSplit ? `split of R${fmt(r.amount)}` : null, isAssumed ? 'lane assumed' : null].filter(Boolean);
     financial.push({
       ...r,
+      doc_note: noteParts.length ? ` *(${noteParts.join('; ')})*` : '',
       month_key: monthKey(r.iso),
       date_str: displayDate(r.iso),
       lpg_amount: lpg,
@@ -637,6 +643,13 @@ async function main() {
   const custodyBlockedNote = buildCustodyBlockedNote(coverage);
   const ratificationSection = buildRatificationSection(cfg.ratificationScenario, erpVariance);
 
+  const laneLegend =
+    (financial.some((r) => (r.doc_note || '').includes('split'))
+      ? ' Documents marked `(split of …)` are mixed gas and deposit documents; the amount shown is this lane\'s part of that total.'
+      : '') +
+    (financial.some((r) => (r.doc_note || '').includes('lane assumed'))
+      ? ' `(lane assumed)` means the document is not yet in the database, so its gas/cylinder split is inferred from its amount, not proven.'
+      : '');
   const quarantineBridgeRows = quarantinedRows.length
     ? `\n| Less: quarantined documents held aside | ${fmt(quarantinedTotal)} |\n| **ERP balance excluding quarantined documents** | **${fmt(erpExpected)}** |`
     : '';
@@ -675,14 +688,14 @@ ${quarantinedRows
 ${ratificationSection}
 
 ## Part 1A: LPG Gas Financial Statement
-*Gas fill invoices, credit notes, and payments since ${periodStartLabel}. Payments route to this sub-ledger per debtor config (\`paymentLane: ${cfg.paymentLane}\`).*
+*Gas fill invoices, credit notes, and payments since ${periodStartLabel}. Payments route to this sub-ledger per debtor config (\`paymentLane: ${cfg.paymentLane}\`).${laneLegend}*
 
 ${part1a.length ? part1a.join('\n\n---\n\n') : '_No LPG activity in period._'}
 
 ---
 
 ## Part 1B: Cylinder Deposit Financial Statement
-*Cylinder deposit charges and reversals (\`-EMPTY\` / \`EMPTIES\` refs). Paired inv+CN rows remain visible; net-zero pairs are expected for standard deliveries.*
+*Cylinder deposit charges and reversals (\`-EMPTY\` / \`EMPTIES\` refs). Paired inv+CN rows remain visible; net-zero pairs are expected for standard deliveries.${laneLegend}*
 
 ${part1b.length ? part1b.join('\n\n---\n\n') : '_No CYL deposit activity in period._'}
 

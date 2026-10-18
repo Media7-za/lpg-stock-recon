@@ -11,7 +11,7 @@
 
 
 ## Part 1A: LPG Gas Financial Statement
-*Gas fill invoices, credit notes, and payments since Apr 2026. Payments route to this sub-ledger per debtor config (`paymentLane: LPG`).*
+*Gas fill invoices, credit notes, and payments since Apr 2026. Payments route to this sub-ledger per debtor config (`paymentLane: LPG`). Documents marked `(split of …)` are mixed gas and deposit documents; the amount shown is this lane's part of that total. `(lane assumed)` means the document is not yet in the database, so its gas/cylinder split is inferred from its amount, not proven.*
 
 ### April 2026
 
@@ -68,9 +68,9 @@
 | **01 Aug** | **Opening Balance** | — | | **-853.72** |
 | 20 Aug 2026 | Invoice | 52691 | 3,284.35 | 2,430.63 |
 | 24 Aug 2026 | Payment | 45896 | -3,284.35 | -853.72 |
-| 26 Aug 2026 | Invoice | 53619 | 3,002.83 | 2,149.11 |
-| 26 Aug 2026 | Crd Note | 15558 | -3,002.83 | -853.72 |
-| 26 Aug 2026 | Crd Note | 15803 | -3,002.83 | -3,856.55 |
+| 26 Aug 2026 | Invoice | 53619 *(split of R18,700.33; lane assumed)* | 3,002.83 | 2,149.11 |
+| 26 Aug 2026 | Crd Note | 15558 *(split of R-18,700.33)* | -3,002.83 | -853.72 |
+| 26 Aug 2026 | Crd Note | 15803 *(lane assumed)* | -3,002.83 | -3,856.55 |
 
 ---
 
@@ -84,7 +84,7 @@
 ---
 
 ## Part 1B: Cylinder Deposit Financial Statement
-*Cylinder deposit charges and reversals (`-EMPTY` / `EMPTIES` refs). Paired inv+CN rows remain visible; net-zero pairs are expected for standard deliveries.*
+*Cylinder deposit charges and reversals (`-EMPTY` / `EMPTIES` refs). Paired inv+CN rows remain visible; net-zero pairs are expected for standard deliveries. Documents marked `(split of …)` are mixed gas and deposit documents; the amount shown is this lane's part of that total. `(lane assumed)` means the document is not yet in the database, so its gas/cylinder split is inferred from its amount, not proven.*
 
 ### April 2026
 
@@ -141,9 +141,9 @@
 | 20 Aug 2026 | Invoice | 52751 | 2,932.50 | 12,063.50 |
 | 20 Aug 2026 | Crd Note | 15531 | -1,725.00 | 10,338.50 |
 | 20 Aug 2026 | Crd Note | 15532 | -2,415.00 | 7,923.50 |
-| 26 Aug 2026 | Invoice | 53619 | 15,697.50 | 23,621.00 |
-| 26 Aug 2026 | Crd Note | 15558 | -15,697.50 | 7,923.50 |
-| 26 Aug 2026 | Crd Note | 15804 | -15,697.50 | -7,774.00 |
+| 26 Aug 2026 | Invoice | 53619 *(split of R18,700.33; lane assumed)* | 15,697.50 | 23,621.00 |
+| 26 Aug 2026 | Crd Note | 15558 *(split of R-18,700.33)* | -15,697.50 | 7,923.50 |
+| 26 Aug 2026 | Crd Note | 15804 *(lane assumed)* | -15,697.50 | -7,774.00 |
 
 ---
 

@@ -10,7 +10,7 @@
 
 
 ## Part 1A: LPG Gas Financial Statement
-*Gas fill invoices, credit notes, and payments since Jan 2024. Payments route to this sub-ledger per debtor config (`paymentLane: LPG`).*
+*Gas fill invoices, credit notes, and payments since Jan 2024. Payments route to this sub-ledger per debtor config (`paymentLane: LPG`). Documents marked `(split of …)` are mixed gas and deposit documents; the amount shown is this lane's part of that total.*
 
 ### January 2024
 
@@ -176,29 +176,29 @@
 | 02 Dec 2024 | Invoice | 38735 | 7,224.65 | 7,224.67 |
 | 11 Dec 2024 | Journal | 476 | 7,224.65 | 14,449.32 |
 | 11 Dec 2024 | Payment | 35898 | -7,224.65 | 7,224.67 |
-| 11 Dec 2024 | Invoice | 38976 | 848.53 | 8,073.20 |
+| 11 Dec 2024 | Invoice | 38976 *(split of R2,401.03)* | 848.53 | 8,073.20 |
 | 11 Dec 2024 | Payment | 39454 | -7,224.65 | 848.55 |
-| 14 Dec 2024 | Invoice | 39076 | 7,542.39 | 8,390.94 |
+| 14 Dec 2024 | Invoice | 39076 *(split of R13,579.89)* | 7,542.39 | 8,390.94 |
 | 23 Dec 2024 | Payment | 35887 | -7,542.39 | 848.55 |
 | 23 Dec 2024 | Payment | 35888 | -848.53 | 0.02 |
-| 23 Dec 2024 | Invoice | 39311 | 8,390.92 | 8,390.94 |
+| 23 Dec 2024 | Invoice | 39311 *(split of R15,980.92)* | 8,390.92 | 8,390.94 |
 | 30 Dec 2024 | Payment | 35877 | -9,649.56 | -1,258.62 |
 
 ---
 
 ## Part 1B: Cylinder Deposit Financial Statement
-*Cylinder deposit charges and reversals (`-EMPTY` / `EMPTIES` refs). Paired inv+CN rows remain visible; net-zero pairs are expected for standard deliveries.*
+*Cylinder deposit charges and reversals (`-EMPTY` / `EMPTIES` refs). Paired inv+CN rows remain visible; net-zero pairs are expected for standard deliveries. Documents marked `(split of …)` are mixed gas and deposit documents; the amount shown is this lane's part of that total.*
 
 ### December 2024
 
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
 | **01 Dec** | **Opening Balance** | — | | **851.00** |
-| 11 Dec 2024 | Invoice | 38976 | 1,552.50 | 2,403.50 |
+| 11 Dec 2024 | Invoice | 38976 *(split of R2,401.03)* | 1,552.50 | 2,403.50 |
 | 11 Dec 2024 | Crd Note | 11452 | -1,552.50 | 851.00 |
-| 14 Dec 2024 | Invoice | 39076 | 6,037.50 | 6,888.50 |
+| 14 Dec 2024 | Invoice | 39076 *(split of R13,579.89)* | 6,037.50 | 6,888.50 |
 | 17 Dec 2024 | Crd Note | 11492 | -6,037.50 | 851.00 |
-| 23 Dec 2024 | Invoice | 39311 | 7,590.00 | 8,441.00 |
+| 23 Dec 2024 | Invoice | 39311 *(split of R15,980.92)* | 7,590.00 | 8,441.00 |
 | 23 Dec 2024 | Crd Note | 11573 | -7,590.00 | 851.00 |
 
 ---

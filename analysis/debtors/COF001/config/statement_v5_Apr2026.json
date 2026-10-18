@@ -21,5 +21,10 @@
     "D.1": 1150,
     "S.1": 1150
   },
-  "quarantineFile": "config/quarantine.json"
+  "quarantineFile": "config/quarantine.json",
+  "assumedLaneDocs": [
+    "15803|Crd Note",
+    "15804|Crd Note",
+    "53619|Invoice"
+  ]
 }

@@ -32,6 +32,14 @@ function run(args, env = {}) {
 // 1. Combine and chain-check the TXT extracts.
 run([path.join(here, 'prepare_inputs.mjs')]);
 
+// The config's assumedLaneDocs flag must match the documents the snapshot marks as assumed (and that fall in the window).
+const assumedInSnapshot = snap.assumedDocs.split.map((a) => `${a.doc_no}|${a.entry_type}`).filter((v, i, a) => a.indexOf(v) === i);
+const assumedInConfig = cfg.assumedLaneDocs || [];
+if (JSON.stringify([...assumedInSnapshot].sort()) !== JSON.stringify([...assumedInConfig].sort())) {
+  console.error(`assumedLaneDocs ${JSON.stringify(assumedInConfig)} does not match snapshot assumed documents ${JSON.stringify(assumedInSnapshot)}`);
+  process.exit(1);
+}
+
 // 2. Every invoice / credit note in the period must split into lanes that add up to its TXT amount.
 const txt = fs.readFileSync(path.join(ROOT, cfg.txtPath), 'utf8');
 const split = new Map();

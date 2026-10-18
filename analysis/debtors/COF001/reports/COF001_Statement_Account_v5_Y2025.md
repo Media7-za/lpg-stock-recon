@@ -11,7 +11,7 @@
 
 
 ## Part 1A: LPG Gas Financial Statement
-*Gas fill invoices, credit notes, and payments since Jan 2025. Payments route to this sub-ledger per debtor config (`paymentLane: LPG`).*
+*Gas fill invoices, credit notes, and payments since Jan 2025. Payments route to this sub-ledger per debtor config (`paymentLane: LPG`). Documents marked `(split of …)` are mixed gas and deposit documents; the amount shown is this lane's part of that total.*
 
 ### January 2025
 
@@ -72,8 +72,8 @@
 | :--- | :--- | :--- | ---: | ---: |
 | **01 Apr** | **Opening Balance** | — | | **-510.39** |
 | 02 Apr 2025 | Invoice | 41930 | 9,070.63 | 8,560.24 |
-| 07 Apr 2025 | Invoice | 42061 | 1,495.06 | 10,055.30 |
-| 07 Apr 2025 | Crd Note | 12218 | -1,495.06 | 8,560.24 |
+| 07 Apr 2025 | Invoice | 42061 *(split of R2,702.56)* | 1,495.06 | 10,055.30 |
+| 07 Apr 2025 | Crd Note | 12218 *(split of R-2,702.56)* | -1,495.06 | 8,560.24 |
 | 10 Apr 2025 | Payment | 38217 | -9,070.63 | -510.39 |
 | 14 Apr 2025 | Invoice | 42260 | 7,475.29 | 6,964.90 |
 | 15 Apr 2025 | Payment | 38270 | -9,070.63 | -2,105.73 |
@@ -129,7 +129,7 @@
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
 | **01 Aug** | **Opening Balance** | — | | **8,176.21** |
-| 09 Aug 2025 | Invoice | 45528 | 1,362.69 | 9,538.90 |
+| 09 Aug 2025 | Invoice | 45528 *(split of R7,400.19)* | 1,362.69 | 9,538.90 |
 | 18 Aug 2025 | Payment | 40757 | -7,400.19 | 2,138.71 |
 | 25 Aug 2025 | Invoice | 45883 | 7,124.02 | 9,262.73 |
 | 26 Aug 2025 | Payment | 40923 | -7,124.02 | 2,138.71 |
@@ -197,7 +197,7 @@
 ---
 
 ## Part 1B: Cylinder Deposit Financial Statement
-*Cylinder deposit charges and reversals (`-EMPTY` / `EMPTIES` refs). Paired inv+CN rows remain visible; net-zero pairs are expected for standard deliveries.*
+*Cylinder deposit charges and reversals (`-EMPTY` / `EMPTIES` refs). Paired inv+CN rows remain visible; net-zero pairs are expected for standard deliveries. Documents marked `(split of …)` are mixed gas and deposit documents; the amount shown is this lane's part of that total.*
 
 ### January 2025
 
@@ -244,8 +244,8 @@
 | **01 Apr** | **Opening Balance** | — | | **851.00** |
 | 02 Apr 2025 | Invoice | 41931 | 8,625.00 | 9,476.00 |
 | 02 Apr 2025 | Crd Note | 12176 | -8,625.00 | 851.00 |
-| 07 Apr 2025 | Invoice | 42061 | 1,207.50 | 2,058.50 |
-| 07 Apr 2025 | Crd Note | 12218 | -1,207.50 | 851.00 |
+| 07 Apr 2025 | Invoice | 42061 *(split of R2,702.56)* | 1,207.50 | 2,058.50 |
+| 07 Apr 2025 | Crd Note | 12218 *(split of R-2,702.56)* | -1,207.50 | 851.00 |
 | 14 Apr 2025 | Invoice | 42261 | 6,037.50 | 6,888.50 |
 | 14 Apr 2025 | Crd Note | 12273 | -6,037.50 | 851.00 |
 | 29 Apr 2025 | Invoice | 42615 | 1,035.00 | 1,886.00 |
@@ -298,7 +298,7 @@
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
 | **01 Aug** | **Opening Balance** | — | | **1,368.50** |
-| 09 Aug 2025 | Invoice | 45528 | 6,037.50 | 7,406.00 |
+| 09 Aug 2025 | Invoice | 45528 *(split of R7,400.19)* | 6,037.50 | 7,406.00 |
 | 09 Aug 2025 | Invoice | 45529 | 8,625.00 | 16,031.00 |
 | 11 Aug 2025 | Crd Note | 13191 | -8,625.00 | 7,406.00 |
 | 25 Aug 2025 | Invoice | 45884 | 6,037.50 | 13,443.50 |
