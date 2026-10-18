@@ -19,7 +19,8 @@ Tags: **PROVEN** = an ERP screenshot or export, with its path; **ASSERTED** = th
 
 | Task | Asked | Received | Decides |
 | :--- | :--- | :--- | :--- |
-| 1 | 45528 lines + audit trail | 2026-10-18: page 1 of the printed invoice. **No audit trail. Page 2 not sent.** | Not yet. The decisive part (audit trail) is still outstanding. |
+| 1 | 45528 lines + audit trail | 2026-10-18: page 1 (PROVEN); page 2 empty (ASSERTED); no history available (ASSERTED) | **Closed, undecided.** Stored code is S.1; no audit trail exists. |
+| 2 | DN#20080 delivered / collected by size | Sent 2026-10-18 | **Decisive** |
 
 ---
 
@@ -72,3 +73,10 @@ ADM-152 comments, 2026-10-18:
 - **Page 2 of 45528.** "there was nothing on page 2". ASSERTED (the ERP side's typed statement, no screenshot). Invoice 45528 therefore has only the two lines on page 1.
 - **Audit trail.** Not yet answered. The ERP side asked what the request meant, so it was re-explained in plain terms; see the ADM-152 comment of the same date. If FINCON keeps no edit history, that answer is recorded as "not available", and the decision moves to task 2 (delivery note DN#20080).
 - **Interim H3 assumption:** still neither confirmed nor broken.
+- **Audit trail answer (2026-10-18):** "no history available". ASSERTED (the ERP side's typed statement). FINCON gives no record of whether line 2 was first saved as S01, S.4 or S.1. **Item 1 of ADM-152 is closed without deciding the question.** The decisive evidence is now task 2 (delivery note DN#20080).
+
+**Task 1 closed.**
+- **What it proved:** the stored lines (PROVEN) and that page 2 was empty (ASSERTED).
+- **What it could not prove:** whether line 2 was changed, because FINCON keeps no edit history.
+- **Interim H3 assumption:** neither confirmed nor broken.
+- **Next:** task 2, delivery note DN#20080 (fulls delivered and empties collected, by size).
