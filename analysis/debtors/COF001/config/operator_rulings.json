@@ -75,6 +75,22 @@
         "the operator rules otherwise for a specific rental",
         "a new stock number for rentals appears"
       ]
+    },
+    {
+      "id": "Q7",
+      "date": "2026-10-18",
+      "operator_words": "invoice 45528 was indeed incorrect and so was the selling price. 2. Quaraintine this -1,776.24 with a note and a linear task for the erp agent to write this off against that shortfall. / The 45528 price shortfall, use R1,776.24",
+      "ruling": "(a) Invoice 45528 (9 Aug 2025) was incorrect: wrong stock code (S.1 x5) and wrong selling price. (b) Quarantine the 1A credit carry of R1,776.24 (carry after payment 42636, 17 Dec 2025; ledger shows -1,776.22, 2c ERP rounding) and have the ERP agent write it off against the 45528 price shortfall. The operator set R1,776.24 as the shortfall figure; our own estimate was R1,086.52 to R1,230.04 (ASSERTED, ADM-149 analysis) and is superseded for this purpose.",
+      "status": "ruled; ERP task raised as Linear ADM-157 (child of ADM-135, assigned to Sharmin). NOT yet applied in the generator: the carry is not a document, so quarantine.json (documents only) cannot hold it. Staged PROPOSED: carry-type hold-aside. Statements on this branch are unchanged.",
+      "basis": "ASSERTED: analysis/debtors/COF001/reports/COF001_1A_Carry_Trace.md on main (carry = payment 35877 overpayment R1,258.64 + deposit payment 42636 R517.50). Not confirmed in the ERP.",
+      "scope": "COF001 only.",
+      "tripwires": [
+        "the ERP posts the write-off (record document numbers, lift the hold-aside, re-ingest)",
+        "the ERP will only accept R1,776.22, or rejects the write-off",
+        "the operator revises the shortfall figure after the FINCON line audit (ADM-152)",
+        "payment 35877 or 42636 is reversed or reallocated",
+        "an ERP credit note or rebill is issued against 45528 (then do not count the correction twice)"
+      ]
     }
   ],
   "held": []
