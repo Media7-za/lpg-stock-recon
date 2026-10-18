@@ -99,6 +99,14 @@ if (cfg.periodStart < '2026-01-01') {
     '**Late-posted documents.** Four payments dated 2023-2024 (24732, 30219, 29646, 29696; R31,131.01 in total) and a journal/payment pair dated 14 Nov and 11 Dec 2024 (44844, 476) appear in the current ERP extract after 2025 entries. Statements are built by document date, so they are included in the opening balance. The ERP balance shown at the time (for example R23,095.09 after payment 35877 on 30 Dec 2024) did not include them.',
   );
 }
+if (cfg.quarantineFile) {
+  const q = JSON.parse(fs.readFileSync(path.join(ACCT, cfg.quarantineFile), 'utf8')).items;
+  for (const i of q) {
+    items.push(
+      `**Quarantined ${i.entry_type.toLowerCase()} ${i.doc_no} (${i.date}, R${i.amount.toLocaleString('en-US', { minimumFractionDigits: 2 })}).** Quarantined by the operator on ${i.decidedOn}; reason not stated. ${i.observation} ${i.treatment} ${i.notTreatedAs} Only statements that opt in via \`quarantineFile\` are adjusted: the 2025, 2026 and other-window statements still include this payment in their opening balances. Reopen when: ${i.reopenWhen.join(' ')}`,
+    );
+  }
+}
 if (cfg.erpClosingNote) items.push(`**Closing check.** ${cfg.erpClosingNote}`);
 items.push(
   `**Database coverage.** All invoices and credit notes in the window were matched to the database by document and amount (see \`reports/COF001_DB_COVERAGE_2026-10-16.md\`).${inWindow('2026-05-05') ? ' Three documents in May 2026 are dated one day later in the database (14854, 50513, 50515).' : ''}`,

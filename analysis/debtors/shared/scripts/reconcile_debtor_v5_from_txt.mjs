@@ -187,6 +187,10 @@ function loadConfig(debtorCode) {
   }
   const cylOpeningFinancial = Number(cfg.cylOpeningFinancial ?? 0);
   const combinedBf = Number(cfg.combinedBf);
+  // Optional `quarantineFile` (path relative to the debtor folder): documents held aside from 1A/1B.
+  const quarantined = cfg.quarantineFile
+    ? JSON.parse(fs.readFileSync(path.join(ROOT, 'analysis/debtors', debtorCode, cfg.quarantineFile), 'utf8')).items || []
+    : [];
   const ratificationScenario = loadRatificationScenario(cfg);
   const ratificationRows = ratificationScenario ? buildRatificationRows(ratificationScenario) : [];
   return {
@@ -198,6 +202,7 @@ function loadConfig(debtorCode) {
     paymentLane: cfg.paymentLane || 'LPG',
     ratificationScenario,
     ratificationRows,
+    quarantined,
     reportPath: path.join(
       ROOT,
       `analysis/debtors/${debtorCode}/reports/${debtorCode}_Statement_Account_v5${SUFFIX}.md`,
@@ -300,13 +305,30 @@ function parseTxtRows(filePath) {
 // header balance only describes the end of the whole extract).
 function loadTxt(cfg) {
   const parsed = parseTxtRows(cfg.txtPath);
-  if (!cfg.periodEnd) return parsed;
-  const rows = parsed.rows.filter((r) => r.iso <= cfg.periodEnd);
-  if (!rows.length) throw new Error(`No TXT rows on or before periodEnd ${cfg.periodEnd}`);
-  // `erpClosingBalance` (optional) overrides the last-row ERP balance when documents posted after the
-  // window were dated inside it, so the last in-window row's running balance is not a closing balance.
-  const headerBalance = cfg.erpClosingBalance ?? rows.at(-1).erp_balance;
-  return { rows, headerBalance: Number(headerBalance) };
+  let rows = parsed.rows;
+  let headerBalance = parsed.headerBalance;
+  if (cfg.periodEnd) {
+    rows = rows.filter((r) => r.iso <= cfg.periodEnd);
+    if (!rows.length) throw new Error(`No TXT rows on or before periodEnd ${cfg.periodEnd}`);
+    // `erpClosingBalance` (optional) overrides the last-row ERP balance when documents posted after the
+    // window were dated inside it, so the last in-window row's running balance is not a closing balance.
+    headerBalance = Number(cfg.erpClosingBalance ?? rows.at(-1).erp_balance);
+  }
+  // Quarantined documents stay in the ERP balance but are held aside from the sub-ledgers.
+  const quarantinedRows = [];
+  for (const q of cfg.quarantined || []) {
+    if (q.date < cfg.periodStart || (cfg.periodEnd && q.date > cfg.periodEnd)) {
+      throw new Error(`Quarantined ${q.entry_type} ${q.doc_no} (${q.date}) is outside the statement window`);
+    }
+    const clean = String(q.doc_no).replace(/^0+/, '');
+    const idx = rows.findIndex(
+      (r) => r.clean_doc === clean && r.entry_type === q.entry_type && r.iso === q.date && Math.abs(r.amount - q.amount) < 0.005,
+    );
+    if (idx < 0) throw new Error(`Quarantined ${q.entry_type} ${q.doc_no} (${q.date}, ${q.amount}) not found in TXT`);
+    quarantinedRows.push({ ...rows[idx], quarantine: q });
+    rows = rows.filter((_, i) => i !== idx);
+  }
+  return { rows, headerBalance, quarantinedRows };
 }
 
 function splitRowAmount(r, docSplit, cfg) {
@@ -556,7 +578,7 @@ async function buildPart2(client, cfg) {
 async function main() {
   const debtorCode = parseArgs();
   const cfg = loadConfig(debtorCode);
-  const { rows, headerBalance } = loadTxt(cfg);
+  const { rows, headerBalance, quarantinedRows } = loadTxt(cfg);
   const allRows = mergeRatificationRows(rows, cfg.ratificationRows);
 
   const client = new pg.Client(pgClientOptions());
@@ -574,7 +596,9 @@ async function main() {
     docSplit,
   );
 
-  const erpVariance = round2(finalCombined - headerBalance);
+  const quarantinedTotal = round2(quarantinedRows.reduce((sum, r) => sum + r.amount, 0));
+  const erpExpected = round2(headerBalance - quarantinedTotal);
+  const erpVariance = round2(finalCombined - erpExpected);
   const subLedgerVariance = round2(finalLpg + finalCyl - finalCombined);
 
   const custodyLines = SKUS.map((sku) => ({
@@ -597,6 +621,27 @@ async function main() {
   const ingestGateSection = buildIngestGateSection(coverage, cfg.debtorCode);
   const custodyBlockedNote = buildCustodyBlockedNote(coverage);
   const ratificationSection = buildRatificationSection(cfg.ratificationScenario, erpVariance);
+
+  const quarantineBridgeRows = quarantinedRows.length
+    ? `\n| Less: quarantined documents held aside | ${fmt(quarantinedTotal)} |\n| **ERP balance excluding quarantined documents** | **${fmt(erpExpected)}** |`
+    : '';
+  const quarantineSection = quarantinedRows.length
+    ? `## Quarantined Documents (held aside)
+
+| Date | Entry Type | Doc # | Amount (R) | Would post to | Decision |
+| :--- | :--- | :--- | ---: | :--- | :--- |
+${quarantinedRows
+  .map((r) => `| ${r.date_str || displayDate(r.iso)} | ${r.entry_type} | ${r.clean_doc} | ${fmt(r.amount)} | ${cfg.paymentLane === 'CYL' ? '1B' : '1A'} | ${r.quarantine.decision} (${r.quarantine.decidedOn}) |`)
+  .join('\n')}
+
+*Held aside from Part 1A and 1B and the running balances above, pending review. They remain in the ERP balance, so the bridge shows them as a reconciling line. Record: \`${cfg.quarantineFile}\`.*
+
+---
+`
+    : '';
+  const quarantineSummary = quarantinedRows.length
+    ? `\n**Quarantined documents (held aside):** R${fmt(quarantinedTotal)}  \n**ERP balance excluding quarantined documents:** R${fmt(erpExpected)}  `
+    : '';
 
   const md = `# Statement of Account: ${cfg.debtorName} (${cfg.debtorCode}) - Version 5 (Sub-Ledger Position Statement)
 **Period:** ${periodStartLabel} → ${periodEndLabel} &nbsp;|&nbsp; **Account:** ${cfg.debtorCode}
@@ -630,11 +675,12 @@ ${part1b.length ? part1b.join('\n\n---\n\n') : '_No CYL deposit activity in peri
 | Part 1A — LPG Gas | ${fmt(finalLpg)} |
 | Part 1B — CYL Deposits | ${fmt(finalCyl)} |
 | **Combined (1A + 1B)** | **${fmt(finalLpg + finalCyl)}** |
-| ERP \`CURRENT BALANCE\` (TXT header) | ${fmt(headerBalance)} |
-| **Variance (Combined − ERP)** | **${fmt(erpVariance)}** |
+| ERP \`CURRENT BALANCE\` (TXT header) | ${fmt(headerBalance)} |${quarantineBridgeRows}
+| **Variance (Combined − ERP${quarantinedRows.length ? ' excl. quarantine' : ''})** | **${fmt(erpVariance)}** |
 
 ---
 
+${quarantineSection}
 ${ingestGateSection}
 
 ## Part 2: Cylinder (CYL) Ledger (Physical Asset Tracker)
@@ -671,7 +717,7 @@ ${custodyLines.length ? custodyLines.map((l) => `| ${l.label} | ${l.qty} | R${fm
 | Cylinder Position (1B vs custody) | R${fmt(finalCyl)} | R${fmt(totalCustodyExposure)} | R${fmt(cylVariance)} |
 | Sub-ledger tie (1A + 1B vs combined) | R${fmt(finalCombined)} | — | R${fmt(subLedgerVariance)} |
 ${custodyBlockedNote}
-**ERP Combined Balance (TXT header):** R${fmt(headerBalance)}  
+**ERP Combined Balance (TXT header):** R${fmt(headerBalance)}  ${quarantineSummary}
 **Reconstructed Balance (1A + 1B):** R${fmt(finalCombined)}  
 **Variance:** R${fmt(erpVariance)}
 

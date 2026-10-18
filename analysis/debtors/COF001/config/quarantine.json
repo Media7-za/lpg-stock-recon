@@ -1,0 +1,26 @@
+{
+  "schemaNote": "Operator quarantine decisions for COF001. A quarantined document stays in the ERP balance but is held aside from Part 1A/1B and the running balances of any statement whose config sets quarantineFile to this file. The bridge carries it as an explicit reconciling line. Statements that do not opt in are not adjusted.",
+  "items": [
+    {
+      "doc_no": "29492",
+      "entry_type": "Payment",
+      "date": "2024-04-18",
+      "amount": -7628.3,
+      "lane": "LPG",
+      "decision": "QUARANTINED",
+      "decidedBy": "operator",
+      "decidedOn": "2026-10-18",
+      "instruction": "Quarantine payment 29492, 18 Apr 2024, -7,628.30 (statement running balance -7,628.28).",
+      "reasonStated": "none given by the operator",
+      "observation": "ASSERTED from TXT: payment 30219 (12 Mar 2024, -7,628.30) was posted for the same amount against invoice 30276 (9 Mar 2024, 7,628.30). With 29492 also posted, the account is R7,628.28 in credit from 18 Apr 2024 until later invoices absorb it. Not confirmed as a duplicate.",
+      "treatment": "Held aside: excluded from Part 1A and 1B and from running balances. Still included in the ERP balance, so the bridge shows it as a reconciling line.",
+      "notTreatedAs": "Not treated as a cylinder-deposit payment (business_rules.md sections 3 and 4): no allocation to the cylinder ledger and no cylinder write-off.",
+      "reopenWhen": [
+        "The ERP reverses, refunds or reallocates payment 29492.",
+        "Bank statement evidence shows only one receipt of 7,628.30 for invoice 30276, or shows 29492 belongs to another invoice.",
+        "The operator rules that 29492 is a cylinder-deposit payment (business_rules.md sections 3 and 4 then apply).",
+        "Payment 30219 is itself reversed or reallocated."
+      ]
+    }
+  ]
+}
