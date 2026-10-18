@@ -1,0 +1,74 @@
+{
+  "source": "Supabase project oqhpxnaadahohwkslive, read-only queries through the Supabase connector, 2026-10-18 (ADM-150 session). Transcribed from connector output into this file; connector-sourced snapshot, tag ASSERTED as a copy of the database (the database itself is not the amount authority; the ERP TXT is).",
+  "queries": {
+    "lines": "DISTINCT ON (doc_no, entry_type, stock_no, category, line_total) over vw_clean_transactions, account COF001, Invoice and Crd Note, tx_date 2024-09-01..2025-02-28; lines summed per document.",
+    "paymentSlices": "DISTINCT rows of transaction_headers (entry_type, doc_no, ref_no, batch_ref, tx_date, amount_excl) for COF001 payment documents 23445, 32620, 33627, 35877, 40294, 42889 and slices tagged to 34831 / 41238 / 48422; exact duplicates across source files collapsed.",
+    "bank": "bank_transactions CREDIT rows whose description contains 'Coffeeberry Cascades' for 2023-05..2025-01 and per-month row counts 2023-01..2026-03 (all accounts)."
+  },
+  "lines": {
+    "36863|Invoice": {"date": "2024-10-01", "lines": [["9.3", 3, 799.16], ["S01", 5, 7103.49]]},
+    "37197|Invoice": {"date": "2024-10-10", "lines": [["S.4", 5, 7150.13]]},
+    "37530|Invoice": {"date": "2024-10-23", "lines": [["9.4", 3, 804.40], ["S.4", 5, 7150.13]]},
+    "37967|Invoice": {"date": "2024-11-05", "lines": [["9.4", 3, 804.40], ["S.4", 5, 7150.13]]},
+    "38158|Invoice": {"date": "2024-11-11", "lines": [["S.4", 5, 7224.65]]},
+    "38585|Invoice": {"date": "2024-11-26", "lines": [["9.4", 3, 812.79]]},
+    "38734|Invoice": {"date": "2024-12-02", "lines": [["S.4", 5, 7224.65]]},
+    "38735|Invoice": {"date": "2024-12-02", "lines": [["S.4", 5, 7224.65]]},
+    "11452|Crd Note": {"date": "2024-12-11", "lines": [["9.1", -3, -1552.50]]},
+    "38976|Invoice": {"date": "2024-12-11", "lines": [["9.1", 3, 1552.50], ["9.4", 3, 848.53]]},
+    "39076|Invoice": {"date": "2024-12-14", "lines": [["S.1", 5, 6037.50], ["S.4", 5, 7542.39]]},
+    "11492|Crd Note": {"date": "2024-12-17", "lines": [["S.1", -5, -6037.50]]},
+    "11573|Crd Note": {"date": "2024-12-23", "lines": [["9.1", -3, -1552.50], ["S.1", -5, -6037.50]]},
+    "39311|Invoice": {"date": "2024-12-23", "lines": [["9.1", 3, 1552.50], ["901", 3, 848.53], ["S.1", 5, 6037.50], ["S01", 5, 7542.39]]},
+    "11625|Crd Note": {"date": "2025-01-06", "lines": [["9.1", -2, -1035.00], ["S.1", -5, -6037.50]]},
+    "39608|Invoice": {"date": "2025-01-06", "lines": [["901", 2, 568.38], ["S01", 5, 7578.44]]},
+    "39609|Invoice": {"date": "2025-01-06", "lines": [["9.1", 2, 1035.00], ["S.1", 5, 6037.50]]},
+    "11718|Crd Note": {"date": "2025-01-17", "lines": [["9.1", -4, -2070.00], ["S.1", -5, -6037.50]]},
+    "39944|Invoice": {"date": "2025-01-17", "lines": [["901", 4, 1136.75], ["S01", 5, 7578.44]]},
+    "39968|Invoice": {"date": "2025-01-17", "lines": [["9.1", 4, 2070.00], ["S.1", 5, 6037.50]]},
+    "11780|Crd Note": {"date": "2025-01-29", "lines": [["9.1", -2, -1035.00], ["S.1", -5, -6037.50]]},
+    "40252|Invoice": {"date": "2025-01-29", "lines": [["901", 2, 568.37], ["S01", 5, 7578.45]]},
+    "40253|Invoice": {"date": "2025-01-29", "lines": [["9.1", 2, 1035.00], ["S.1", 5, 6037.50]]},
+    "40274|Invoice": {"date": "2025-01-29", "lines": [["MSM.S", 1, 632.50]]}
+  },
+  "invoiceHeaders": {
+    "39311": {"amount_excl": 13896.45, "tax_amount": 2084.47},
+    "11573": {"amount_excl": -7590.00, "tax_amount": -990.00, "ref_no": "00039311"},
+    "34831": {"date": "2024-08-01", "amount_excl": 6467.05, "tax_amount": 970.06, "description": "D/N 9362"},
+    "41238": {"date": "2025-03-05", "amount_excl": 6642.10, "tax_amount": 996.32, "description": "DN#11727"},
+    "48422": {"date": "2025-12-22", "amount_excl": 6316.92, "tax_amount": 947.54, "description": "DN#21434"}
+  },
+  "paymentSlices": {
+    "35877": {"date": "2024-12-30", "batch": "STAT:110", "slices": [["39311", -8390.92, "DRTX2025.TXT"], ["34831", -851.02, "DRTX2025.TXT"], ["41238", -407.62, "DTRX2603.TXT"], ["Alloc", -1258.64, "DRTX2025.TXT"], ["Alloc", 1258.64, "DRTX2025.TXT"]]},
+    "32620": {"date": "2024-08-05", "batch": "STAT:106", "slices": [["34831", -6586.09, ""], ["12454", -0.02, ""], ["13956", -598.00, ""], ["16770", 92.00, ""], ["17259", -389.58, ""], ["17259", -300.42, ""], ["23253", -690.00, ""], ["23259", 1035.00, ""], ["Alloc", -6630.67, ""], ["Alloc", 6630.67, ""], ["Alloc", -806.44, ""], ["Alloc", 806.44, ""]]},
+    "23445": {"date": "2023-05-18", "batch": "STAT: 91", "slices": [["22252", -7596.15, ""], ["23258", -1231.47, ""]]},
+    "33627": {"date": "2024-09-18", "batch": "STAT:107", "slices": [["36265", -3107.78, ""], ["36358", -4794.87, ""]]},
+    "42889": {"date": "2026-01-05", "batch": "STAT:122", "slices": [["48422", -6856.74, ""], ["", -407.72, "flag N"]]},
+    "40294": {"date": "2025-07-22", "batch": "STAT:117", "slices": [["43287", -22.91, ""], ["44348", -6015.97, ""], ["48422", -407.72, ""], ["Alloc", -6446.60, ""], ["Alloc", 6446.60, ""], ["Alloc", -430.63, ""], ["Alloc", 430.63, ""]]},
+    "40294|Bank UD": {"date": "2025-07-22", "batch": "STAT:117", "slices": [["43287", 430.63, ""], ["44348", 6015.97, ""]]},
+    "36950": {"date": "2025-01-22", "batch": "STAT:111", "note": "only the slice tagged 41238 was captured", "slices": [["41238", -7230.80, ""]]}
+  },
+  "legacyResiduals": {
+    "note": "Pre-2024 cylinder documents that payment 32620 slices touch (transaction_headers, invoice + credit note headers incl. VAT). Captured to show what the 851.02 net of 32620's non-34831 slices points at.",
+    "docs": {"12454": "Invoice 2022-03-04 9,318.62 / CN 3292 -1,950.00 / Pmt 13232 -7,593.60", "13956": "Invoice 2022-06-11 4,784.00 / CN 3685 -676.00 / CN 3687 -4,056.00", "16770": "Invoice 2022-12-09 D/N 2686 EMPTIES 1,794.00 / CN 4362 -1,352.00 / CN 4376 -780.00", "17259": "Invoice 2022-12-16 D/N 2808 EMPTIES 1,380.00 / CN 4489 -780.00", "23253": "Invoice 2023-08-10 D/N 5586 EMPTIES 2,415.00 / CN 5835 -1,950.00", "23259": "Invoice 2023-08-08 D/N 5584 EMPTIES 2,070.00 / CN 5827 -3,510.00"}
+  },
+  "bankMonthsPresent": ["2023-01","2023-02","2023-03","2023-04","2023-05","2023-06","2023-07","2023-08","2023-09","2023-10","2023-11","2023-12","2024-01","2024-02","2024-03","2024-04","2024-05","2024-06","2024-07","2024-08","2024-10","2024-12","2025-01","2025-12","2026-01","2026-02","2026-03"],
+  "bankMonthNotes": {"2024-08": "last row 2024-08-30", "2024-12": "last row 2024-12-30", "2025-01": "last row 2025-01-30", "2025-12": "6 rows, all 2025-12-31", "2026-01": "6 rows, 2026-01-30..31"},
+  "bankCascades": [
+    ["2023-05-02", 8827.62, "00019400", "MATCHED"],
+    ["2023-05-18", 8827.62, "00019400", "MATCHED"],
+    ["2023-08-14", 4449.02, "00023258", "MATCHED"],
+    ["2024-08-05", 7437.11, "00034831", "EXCEPTION"],
+    ["2024-08-22", 7974.73, "00035371", "EXCEPTION"],
+    ["2024-10-07", 7902.65, "00036863", "UNMATCHED"],
+    ["2024-10-15", 7150.13, "00037197", "UNMATCHED"],
+    ["2024-10-28", 7954.53, "00037530", "UNMATCHED"],
+    ["2024-12-11", 7224.65, "00038734", "UNMATCHED"],
+    ["2024-12-11", 7224.65, "00038735", "UNMATCHED"],
+    ["2024-12-23", 848.53, "00038976", "UNMATCHED"],
+    ["2024-12-23", 7542.39, "00039076", "UNMATCHED"],
+    ["2024-12-30", 9649.56, "00039311", "UNMATCHED"],
+    ["2025-01-20", 8146.82, "00039608", "MATCHED"],
+    ["2025-01-22", 8715.19, "00039944", "MATCHED"]
+  ]
+}
