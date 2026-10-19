@@ -28,5 +28,16 @@
     "15803|Crd Note",
     "15804|Crd Note",
     "53619|Invoice"
+  ],
+  "openingItems": [
+    {
+      "lane": "LPG",
+      "doc_no": "48422",
+      "entry_type": "Invoice",
+      "date": "2025-12-22",
+      "amount": 7264.46,
+      "ref": "DN#21434",
+      "note": "paid by payment 42889 on 5 Jan 2026"
+    }
   ]
 }

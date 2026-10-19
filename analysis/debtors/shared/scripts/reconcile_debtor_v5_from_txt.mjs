@@ -489,7 +489,20 @@ function splitRowAmount(r, docSplit, cfg) {
   return { lpg: r.amount, cyl: 0 };
 }
 
-function buildLaneSections(financial, lane, openingBf, amountKey, runningKey) {
+// Optional memo lines under the first opening balance: documents dated before the window that are still open
+// at its start (config `openingItems`, checked against the TXT in main). Memo only; running balances are unchanged.
+function openingMemoLines(items, openingBf) {
+  if (!items?.length) return [];
+  const listed = round2(items.reduce((sum, i) => sum + Number(i.amount), 0));
+  const lines = items.map(
+    (i) => `| | *Open at start: ${i.entry_type.toLowerCase()} ${i.doc_no} (${displayDate(i.date)}${i.ref ? `, ${i.ref}` : ''})${i.note ? `; ${i.note}` : ''}* | ${i.doc_no} | *${fmt(i.amount)}* | |`,
+  );
+  const rest = round2(openingBf - listed);
+  if (Math.abs(rest) >= 0.005) lines.push(`| | *Rest of opening balance${Math.abs(rest) < 1 ? ' (ERP rounding)' : ''}* | — | *${fmt(rest)}* | |`);
+  return lines;
+}
+
+function buildLaneSections(financial, lane, openingBf, amountKey, runningKey, openingItems = []) {
   const filtered = financial.filter((r) => Math.abs(r[amountKey]) >= 0.01);
   const byMonth = new Map();
   for (const r of filtered) {
@@ -511,6 +524,7 @@ function buildLaneSections(financial, lane, openingBf, amountKey, runningKey) {
       '| Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |',
       '| :--- | :--- | :--- | ---: | ---: |',
       `| **01 ${mk.slice(0, 3)}** | **Opening Balance** | — | | **${fmt(monthOpening)}** |`,
+      ...(sections.length === 0 ? openingMemoLines(openingItems, openingBf) : []),
     ];
     for (const r of rows) {
       const ratNote = r.is_ratification ? ` *(${r.note_label || 'ratification'})*` : '';
@@ -572,13 +586,15 @@ function buildPart1Split(rows, cfg, docSplit) {
     });
   }
 
-  const part1a = buildLaneSections(financial, 'lpg', cfg.lpgOpeningBf, 'lpg_amount', 'running_lpg');
+  const memo = (lane) => (cfg.openingItems || []).filter((i) => (i.lane || 'LPG') === lane);
+  const part1a = buildLaneSections(financial, 'lpg', cfg.lpgOpeningBf, 'lpg_amount', 'running_lpg', memo('LPG'));
   const part1b = buildLaneSections(
     financial,
     'cyl',
     cfg.cylOpeningFinancial,
     'cyl_amount',
     'running_cyl',
+    memo('CYL'),
   );
 
   const finalCombined = financial.length
@@ -733,6 +749,11 @@ async function main() {
   const cfg = loadConfig(debtorCode);
   const { rows, headerBalance, quarantinedRows: quarantinedInWindow, quarantinedPre, cancelledRows } = loadTxt(cfg);
   const quarantinedRows = [...quarantinedPre, ...quarantinedInWindow].sort((a, b) => a.iso.localeCompare(b.iso));
+  for (const i of cfg.openingItems || []) {
+    const clean = String(i.doc_no).replace(/^0+/, '');
+    const ok = rows.some((r) => r.clean_doc === clean && r.entry_type === i.entry_type && r.iso === i.date && Math.abs(r.amount - Number(i.amount)) < 0.005);
+    if (!ok || i.date >= cfg.periodStart) throw new Error(`Opening item ${i.entry_type} ${i.doc_no} (${i.date}, ${i.amount}) not found in TXT before the window`);
+  }
   const allRows = mergeRatificationRows(rows, cfg.ratificationRows);
 
   const client = new pg.Client(pgClientOptions());

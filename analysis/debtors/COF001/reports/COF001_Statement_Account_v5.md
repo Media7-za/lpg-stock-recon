@@ -19,6 +19,8 @@
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
 | **01 Jan** | **Opening Balance** | — | | **7,264.48** |
+| | *Open at start: invoice 48422 (22 Dec 2025, DN#21434); paid by payment 42889 on 5 Jan 2026* | 48422 | *7,264.46* | |
+| | *Rest of opening balance (ERP rounding)* | — | *0.02* | |
 | 05 Jan 2026 | Payment | 42889 | -7,264.46 | 0.02 |
 | 07 Jan 2026 | Invoice | 48651 | 1,734.29 | 1,734.31 |
 | 12 Jan 2026 | Payment | 42997 | -1,734.29 | 0.02 |
