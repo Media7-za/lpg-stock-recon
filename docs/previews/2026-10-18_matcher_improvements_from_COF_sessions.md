@@ -61,6 +61,7 @@ Tag: PROVEN for the arithmetic above (reproducible with `match_account.mjs` and 
 | 7 | Promote the COF001 `untied_payment_search.mjs` to a shared script (the new rules now cover exact structures, so shrink it to ambiguity and shortfall reporting); update `SKILL_Untied_Payment_Evidence.md` v2 to point at the matcher output first | tooling/skill | small | This report |
 | 8 | `approve_tie.mjs` forms for payment + journal and for a pure customer credit | tooling | small | None |
 | 9 | Make the lane override a first-class generator setting (`laneOverrides` per account) instead of SKU-only routing | generator | small | After item 2 |
+| 10 | Bank-narrative evidence: bank credits name the invoice and customer (130 of 133 Coffeeberry rows carry a document number). Would resolve 35877 (invoice 39311) and 29492 (COF002 invoice 31096), flag the double credit on 34681, and check CONFIRMED amount ties for matches that look right but are wrong. Needs an ERP bank-ledger table (`docs/requests/2026-10-19_erp_bank_ledger_dev_request.md`) | evidence source | medium | Dev team table; operator approval |
 
 ## 6. Decisions needed from the operator (nothing below is applied)
 
