@@ -1,8 +1,9 @@
 # Statement of Account: COFFEEBERRY-CASCADES (COF001) - Version 5 (Sub-Ledger Position Statement)
 **Period:** Jan 2026 → Oct 2026 &nbsp;|&nbsp; **Account:** COF001
 **Combined Opening B/F:** R-771.56 (ERP verified — source: `analysis/debtors/COF001/raw/COF001_COMBINED.TXT` ERP running balance after the last 2025 row (doc 48423, 22 Dec 2025), COF001_CURRENT.TXT line 129)
-**LPG Opening B/F (1A):** R-549.26 &nbsp;|&nbsp; **CYL Opening B/F (1B):** R7,406.00
+**LPG Opening B/F (1A):** R-549.26 &nbsp;|&nbsp; **CYL Opening B/F (1B):** R7,955.26
 **Quarantine adjustment:** opening 1A excludes quarantined payment 29492 (18 Apr 2024, R-7,628.30), dated before this period; the combined opening B/F above is the ERP figure.
+**Projection adjustment:** opening balances include projected invoice PROJ-INV-19.1-2025-03 (01 Mar 2025, R549.26, 1B), dated before this period; combined opening with projection R-222.30.
 **Payment routing:** LPG lane (payments post to Part 1A unless configured otherwise)
 **Last regenerated:** 2026-10-19 from ERP TXT (`reconcile_debtor_v5_from_txt.mjs`) · **Ratification scenario active**
 
@@ -12,14 +13,15 @@
 
 **ID:** `ADM158-PROJECTION` · **Status:** PROJECTED - not posted (Linear ADM-158, assigned to the ERP agent)
 
-Projection requested by the operator on 2026-10-19: the statement as if ADM-158 were done. Starting point: the ERP as it stands (no lane override, so 45528's S.1 line is back in 1B; the R-1,776.24 gas credit is not held aside). The ERP then posts a credit note for 45528's S.1 x5 (R-6,037.50, 1B) and an invoice for 5 x 48kg gas (R+7,267.54, 1A, at the July / 7 Aug 2025 price; ASSUMED, the ERP sets the price). Writing the R1,776.24 credit off against the R1,230.04 shortfall is an allocation, not a new document, so it does not move any balance: the gas lane simply nets the new invoice against the credit, leaving R546.20 of credit for the operator to decide. Projected posting date 19 Oct 2026 (ASSUMED).
+Projection requested by the operator on 2026-10-19: the statement as if ADM-158 were done. Starting point: the ERP as it stands (no lane override, so 45528's S.1 line is back in 1B; the R-1,776.24 gas credit is not held aside). The ERP then posts a credit note for 45528's S.1 x5 (R-6,037.50, 1B) and an invoice for 5 x 48kg gas (R+7,267.54, 1A, at the July / 7 Aug 2025 price; ASSUMED, the ERP sets the price). Writing the R1,776.24 credit off against the R1,230.04 shortfall is an allocation, not a new document, so it does not move any balance: the gas lane simply nets the new invoice against the credit, leaving R546.20 of credit for the operator to decide. Projected posting date 19 Oct 2026 (ASSUMED). Added 2026-10-19 by the operator: an invoice for 1 x 19.1 (19kg cylinder deposit) at R549.26, dated 1 Mar 2025, also to be passed to the ERP under ADM-158. It is dated before this statement window, so it moves the opening 1B balance (+549.26) and the opening 19kg quantity (+1).
 
 | Projected document | Date | Amount (R) | Lane | Basis |
 | :--- | :--- | ---: | :--- | :--- |
+| Invoice PROJ-INV-19.1-2025-03 | 2025-03-01 | 549.26 | 1B | Operator instruction 2026-10-19: invoice 1 x 19.1 (19kg cylinder deposit) @ R549.26, dated 1 Mar 2025. Price taken as incl VAT, as FINCON prints unit prices (ASSUMED). |
 | Crd Note PROJ-CN-45528 | 2026-10-19 | -6,037.50 | 1B | Reverses 45528 line 2 (S.1 x5 @ R1,207.50 incl VAT), PROVEN amount from the FINCON print |
 | Invoice PROJ-INV-45528 | 2026-10-19 | 7,267.54 | 1A | 5 x 48kg gas @ R1,263.92 ex VAT (price on 44729, 10 Jul 2025, and COF002 45486, 7 Aug 2025); ASSUMED price |
 
-> **ERP variance expected:** the projected documents are not in the ERP TXT, so the combined balance differs from the ERP by **R1,230.04** until they are posted. At the 25 Aug 2025 price (R7,124.02) the projected gas invoice, the shortfall and the closing 1A and combined balances would all be R143.52 lower, and the remaining credit R689.72.
+> **ERP variance expected:** the projected documents are not in the ERP TXT, so the combined balance differs from the ERP by **R1,779.30** until they are posted. The expected ERP variance is the sum of the projected documents (19.1 invoice R549.26 + 45528 shortfall R1,230.04 = R1,779.30). At the 25 Aug 2025 price (R7,124.02) the projected gas invoice, the shortfall and the closing 1A and combined balances would all be R143.52 lower, and the remaining credit R689.72.
 
 ---
 
@@ -151,13 +153,13 @@ Projection requested by the operator on 2026-10-19: the statement as if ADM-158 
 
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
-| **01 Jan** | **Opening Balance** | — | | **7,406.00** |
-| 08 Jan 2026 | Invoice | 48682 | 1,552.50 | 8,958.50 |
-| 08 Jan 2026 | Crd Note | 14221 | -1,552.50 | 7,406.00 |
-| 12 Jan 2026 | Invoice | 48740 | 6,037.50 | 13,443.50 |
-| 13 Jan 2026 | Crd Note | 14252 | -6,037.50 | 7,406.00 |
-| 26 Jan 2026 | Invoice | 48939 | 6,555.00 | 13,961.00 |
-| 26 Jan 2026 | Crd Note | 14331 | -6,555.00 | 7,406.00 |
+| **01 Jan** | **Opening Balance** | — | | **7,955.26** |
+| 08 Jan 2026 | Invoice | 48682 | 1,552.50 | 9,507.76 |
+| 08 Jan 2026 | Crd Note | 14221 | -1,552.50 | 7,955.26 |
+| 12 Jan 2026 | Invoice | 48740 | 6,037.50 | 13,992.76 |
+| 13 Jan 2026 | Crd Note | 14252 | -6,037.50 | 7,955.26 |
+| 26 Jan 2026 | Invoice | 48939 | 6,555.00 | 14,510.26 |
+| 26 Jan 2026 | Crd Note | 14331 | -6,555.00 | 7,955.26 |
 
 ---
 
@@ -165,9 +167,9 @@ Projection requested by the operator on 2026-10-19: the statement as if ADM-158 
 
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
-| **01 Feb** | **Opening Balance** | — | | **7,406.00** |
-| 11 Feb 2026 | Invoice | 49194 | 7,072.50 | 14,478.50 |
-| 11 Feb 2026 | Crd Note | 14412 | -7,072.50 | 7,406.00 |
+| **01 Feb** | **Opening Balance** | — | | **7,955.26** |
+| 11 Feb 2026 | Invoice | 49194 | 7,072.50 | 15,027.76 |
+| 11 Feb 2026 | Crd Note | 14412 | -7,072.50 | 7,955.26 |
 
 ---
 
@@ -175,11 +177,11 @@ Projection requested by the operator on 2026-10-19: the statement as if ADM-158 
 
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
-| **01 Mar** | **Opening Balance** | — | | **7,406.00** |
-| 04 Mar 2026 | Invoice | 49555 | 7,072.50 | 14,478.50 |
-| 04 Mar 2026 | Crd Note | 14531 | -7,072.50 | 7,406.00 |
-| 18 Mar 2026 | Invoice | 49795 | 7,072.50 | 14,478.50 |
-| 18 Mar 2026 | Crd Note | 14613 | -7,072.50 | 7,406.00 |
+| **01 Mar** | **Opening Balance** | — | | **7,955.26** |
+| 04 Mar 2026 | Invoice | 49555 | 7,072.50 | 15,027.76 |
+| 04 Mar 2026 | Crd Note | 14531 | -7,072.50 | 7,955.26 |
+| 18 Mar 2026 | Invoice | 49795 | 7,072.50 | 15,027.76 |
+| 18 Mar 2026 | Crd Note | 14613 | -7,072.50 | 7,955.26 |
 
 ---
 
@@ -187,11 +189,11 @@ Projection requested by the operator on 2026-10-19: the statement as if ADM-158 
 
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
-| **01 Apr** | **Opening Balance** | — | | **7,406.00** |
-| 02 Apr 2026 | Invoice | 50063 | 7,590.00 | 14,996.00 |
-| 02 Apr 2026 | Crd Note | 14703 | -7,590.00 | 7,406.00 |
-| 17 Apr 2026 | Invoice | 50274 | 7,072.50 | 14,478.50 |
-| 19 Apr 2026 | Crd Note | 14768 | -7,072.50 | 7,406.00 |
+| **01 Apr** | **Opening Balance** | — | | **7,955.26** |
+| 02 Apr 2026 | Invoice | 50063 | 7,590.00 | 15,545.26 |
+| 02 Apr 2026 | Crd Note | 14703 | -7,590.00 | 7,955.26 |
+| 17 Apr 2026 | Invoice | 50274 | 7,072.50 | 15,027.76 |
+| 19 Apr 2026 | Crd Note | 14768 | -7,072.50 | 7,955.26 |
 
 ---
 
@@ -199,11 +201,11 @@ Projection requested by the operator on 2026-10-19: the statement as if ADM-158 
 
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
-| **01 May** | **Opening Balance** | — | | **7,406.00** |
-| 05 May 2026 | Invoice | 50515 | 7,590.00 | 14,996.00 |
-| 05 May 2026 | Crd Note | 14854 | -7,590.00 | 7,406.00 |
-| 21 May 2026 | Invoice | 50809 | 7,590.00 | 14,996.00 |
-| 21 May 2026 | Crd Note | 14939 | -7,590.00 | 7,406.00 |
+| **01 May** | **Opening Balance** | — | | **7,955.26** |
+| 05 May 2026 | Invoice | 50515 | 7,590.00 | 15,545.26 |
+| 05 May 2026 | Crd Note | 14854 | -7,590.00 | 7,955.26 |
+| 21 May 2026 | Invoice | 50809 | 7,590.00 | 15,545.26 |
+| 21 May 2026 | Crd Note | 14939 | -7,590.00 | 7,955.26 |
 
 ---
 
@@ -211,9 +213,9 @@ Projection requested by the operator on 2026-10-19: the statement as if ADM-158 
 
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
-| **01 Jun** | **Opening Balance** | — | | **7,406.00** |
-| 23 Jun 2026 | Invoice | 51373 | 6,555.00 | 13,961.00 |
-| 24 Jun 2026 | Crd Note | 15113 | -6,555.00 | 7,406.00 |
+| **01 Jun** | **Opening Balance** | — | | **7,955.26** |
+| 23 Jun 2026 | Invoice | 51373 | 6,555.00 | 14,510.26 |
+| 24 Jun 2026 | Crd Note | 15113 | -6,555.00 | 7,955.26 |
 
 ---
 
@@ -221,11 +223,11 @@ Projection requested by the operator on 2026-10-19: the statement as if ADM-158 
 
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
-| **01 Jul** | **Opening Balance** | — | | **7,406.00** |
-| 08 Jul 2026 | Invoice | 51706 | 7,072.50 | 14,478.50 |
-| 09 Jul 2026 | Crd Note | 15227 | -7,072.50 | 7,406.00 |
-| 22 Jul 2026 | Invoice | 52015 | 7,590.00 | 14,996.00 |
-| 23 Jul 2026 | Crd Note | 15312 | -7,590.00 | 7,406.00 |
+| **01 Jul** | **Opening Balance** | — | | **7,955.26** |
+| 08 Jul 2026 | Invoice | 51706 | 7,072.50 | 15,027.76 |
+| 09 Jul 2026 | Crd Note | 15227 | -7,072.50 | 7,955.26 |
+| 22 Jul 2026 | Invoice | 52015 | 7,590.00 | 15,545.26 |
+| 23 Jul 2026 | Crd Note | 15312 | -7,590.00 | 7,955.26 |
 
 ---
 
@@ -233,12 +235,12 @@ Projection requested by the operator on 2026-10-19: the statement as if ADM-158 
 
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
-| **01 Aug** | **Opening Balance** | — | | **7,406.00** |
-| 20 Aug 2026 | Invoice | 52750 | 1,725.00 | 9,131.00 |
-| 20 Aug 2026 | Invoice | 52751 | 2,932.50 | 12,063.50 |
-| 20 Aug 2026 | Crd Note | 15531 | -1,725.00 | 10,338.50 |
-| 20 Aug 2026 | Crd Note | 15532 | -2,415.00 | 7,923.50 |
-| 26 Aug 2026 | Crd Note | 15804 *(lane assumed)* | -15,697.50 | -7,774.00 |
+| **01 Aug** | **Opening Balance** | — | | **7,955.26** |
+| 20 Aug 2026 | Invoice | 52750 | 1,725.00 | 9,680.26 |
+| 20 Aug 2026 | Invoice | 52751 | 2,932.50 | 12,612.76 |
+| 20 Aug 2026 | Crd Note | 15531 | -1,725.00 | 10,887.76 |
+| 20 Aug 2026 | Crd Note | 15532 | -2,415.00 | 8,472.76 |
+| 26 Aug 2026 | Crd Note | 15804 *(lane assumed)* | -15,697.50 | -7,224.74 |
 
 ---
 
@@ -246,8 +248,8 @@ Projection requested by the operator on 2026-10-19: the statement as if ADM-158 
 
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
-| **01 Oct** | **Opening Balance** | — | | **-7,774.00** |
-| 19 Oct 2026 | Crd Note | PROJ-CN-45528 *(projected)* | -6,037.50 | -13,811.50 |
+| **01 Oct** | **Opening Balance** | — | | **-7,224.74** |
+| 19 Oct 2026 | Crd Note | PROJ-CN-45528 *(projected)* | -6,037.50 | -13,262.24 |
 
 ---
 
@@ -256,12 +258,12 @@ Projection requested by the operator on 2026-10-19: the statement as if ADM-158 
 | Component | Closing (R) |
 | :--- | ---: |
 | Part 1A — LPG Gas | 6,413.32 |
-| Part 1B — CYL Deposits | -13,811.50 |
-| **Combined (1A + 1B)** | **-7,398.18** |
+| Part 1B — CYL Deposits | -13,262.24 |
+| **Combined (1A + 1B)** | **-6,848.92** |
 | ERP `CURRENT BALANCE` (TXT header) | -16,256.52 |
 | Less: quarantined documents held aside | -7,628.30 |
 | **ERP balance excluding quarantined documents** | **-8,628.22** |
-| **Variance (Combined − ERP excl. quarantine)** | **1,230.04** |
+| **Variance (Combined − ERP excl. quarantine)** | **1,779.30** |
 
 ---
 
@@ -298,104 +300,104 @@ Projection requested by the operator on 2026-10-19: the statement as if ADM-158 
 ### January 2026
 | Date | Entry Type | Doc # | 14kg Qty | 19kg Qty | 9kg Qty | D.1 Qty | S.1 Qty |
 | :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: |
-| **01 Jan** | **Opening Balance** | — | **0** | **-1** | **3** | **10** | **-5** |
+| **01 Jan** | **Opening Balance** | — | **0** | **0** | **3** | **10** | **-5** |
 | 08 Jan 2026 | Invoice | 48682 | 0 | 0 | +3 | 0 | 0 |
 | 08 Jan 2026 | Crd Note | 14221 | 0 | 0 | -3 | 0 | 0 |
 | 12 Jan 2026 | Invoice | 48740 | 0 | 0 | 0 | +5 | 0 |
 | 13 Jan 2026 | Crd Note | 14252 | 0 | 0 | 0 | -5 | 0 |
 | 26 Jan 2026 | Invoice | 48939 | 0 | 0 | +1 | 0 | +5 |
 | 26 Jan 2026 | Crd Note | 14331 | 0 | 0 | -1 | 0 | -5 |
-| **End Jan** | **Closing Balance** | — | **0** | **-1** | **3** | **10** | **-5** |
+| **End Jan** | **Closing Balance** | — | **0** | **0** | **3** | **10** | **-5** |
 
 ---
 
 ### February 2026
 | Date | Entry Type | Doc # | 14kg Qty | 19kg Qty | 9kg Qty | D.1 Qty | S.1 Qty |
 | :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: |
-| **01 Feb** | **Opening Balance** | — | **0** | **-1** | **3** | **10** | **-5** |
+| **01 Feb** | **Opening Balance** | — | **0** | **0** | **3** | **10** | **-5** |
 | 11 Feb 2026 | Invoice | 49194 | 0 | 0 | +2 | 0 | +5 |
 | 11 Feb 2026 | Crd Note | 14412 | 0 | 0 | -2 | 0 | -5 |
-| **End Feb** | **Closing Balance** | — | **0** | **-1** | **3** | **10** | **-5** |
+| **End Feb** | **Closing Balance** | — | **0** | **0** | **3** | **10** | **-5** |
 
 ---
 
 ### March 2026
 | Date | Entry Type | Doc # | 14kg Qty | 19kg Qty | 9kg Qty | D.1 Qty | S.1 Qty |
 | :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: |
-| **01 Mar** | **Opening Balance** | — | **0** | **-1** | **3** | **10** | **-5** |
+| **01 Mar** | **Opening Balance** | — | **0** | **0** | **3** | **10** | **-5** |
 | 04 Mar 2026 | Invoice | 49555 | 0 | 0 | +2 | 0 | +5 |
 | 04 Mar 2026 | Crd Note | 14531 | 0 | 0 | -2 | 0 | -5 |
 | 18 Mar 2026 | Invoice | 49795 | 0 | 0 | +2 | 0 | +5 |
 | 18 Mar 2026 | Crd Note | 14613 | 0 | 0 | -2 | 0 | -5 |
-| **End Mar** | **Closing Balance** | — | **0** | **-1** | **3** | **10** | **-5** |
+| **End Mar** | **Closing Balance** | — | **0** | **0** | **3** | **10** | **-5** |
 
 ---
 
 ### April 2026
 | Date | Entry Type | Doc # | 14kg Qty | 19kg Qty | 9kg Qty | D.1 Qty | S.1 Qty |
 | :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: |
-| **01 Apr** | **Opening Balance** | — | **0** | **-1** | **3** | **10** | **-5** |
+| **01 Apr** | **Opening Balance** | — | **0** | **0** | **3** | **10** | **-5** |
 | 02 Apr 2026 | Invoice | 50063 | 0 | 0 | +3 | 0 | +5 |
 | 02 Apr 2026 | Crd Note | 14703 | 0 | 0 | -3 | 0 | -5 |
 | 17 Apr 2026 | Invoice | 50274 | 0 | 0 | +2 | 0 | +5 |
 | 19 Apr 2026 | Crd Note | 14768 | 0 | 0 | -2 | 0 | -5 |
-| **End Apr** | **Closing Balance** | — | **0** | **-1** | **3** | **10** | **-5** |
+| **End Apr** | **Closing Balance** | — | **0** | **0** | **3** | **10** | **-5** |
 
 ---
 
 ### May 2026
 | Date | Entry Type | Doc # | 14kg Qty | 19kg Qty | 9kg Qty | D.1 Qty | S.1 Qty |
 | :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: |
-| **01 May** | **Opening Balance** | — | **0** | **-1** | **3** | **10** | **-5** |
+| **01 May** | **Opening Balance** | — | **0** | **0** | **3** | **10** | **-5** |
 | 05 May 2026 | Invoice | 50515 | 0 | 0 | +3 | 0 | +5 |
 | 05 May 2026 | Crd Note | 14854 | 0 | 0 | -3 | 0 | -5 |
 | 21 May 2026 | Invoice | 50809 | 0 | 0 | +3 | 0 | +5 |
 | 21 May 2026 | Crd Note | 14939 | 0 | 0 | -3 | 0 | -5 |
-| **End May** | **Closing Balance** | — | **0** | **-1** | **3** | **10** | **-5** |
+| **End May** | **Closing Balance** | — | **0** | **0** | **3** | **10** | **-5** |
 
 ---
 
 ### June 2026
 | Date | Entry Type | Doc # | 14kg Qty | 19kg Qty | 9kg Qty | D.1 Qty | S.1 Qty |
 | :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: |
-| **01 Jun** | **Opening Balance** | — | **0** | **-1** | **3** | **10** | **-5** |
+| **01 Jun** | **Opening Balance** | — | **0** | **0** | **3** | **10** | **-5** |
 | 23 Jun 2026 | Invoice | 51373 | 0 | 0 | +1 | 0 | +5 |
 | 24 Jun 2026 | Crd Note | 15113 | 0 | 0 | -1 | 0 | -5 |
-| **End Jun** | **Closing Balance** | — | **0** | **-1** | **3** | **10** | **-5** |
+| **End Jun** | **Closing Balance** | — | **0** | **0** | **3** | **10** | **-5** |
 
 ---
 
 ### July 2026
 | Date | Entry Type | Doc # | 14kg Qty | 19kg Qty | 9kg Qty | D.1 Qty | S.1 Qty |
 | :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: |
-| **01 Jul** | **Opening Balance** | — | **0** | **-1** | **3** | **10** | **-5** |
+| **01 Jul** | **Opening Balance** | — | **0** | **0** | **3** | **10** | **-5** |
 | 08 Jul 2026 | Invoice | 51706 | 0 | 0 | +2 | 0 | +5 |
 | 09 Jul 2026 | Crd Note | 15227 | 0 | 0 | -2 | 0 | -5 |
 | 22 Jul 2026 | Invoice | 52015 | 0 | 0 | +3 | 0 | +5 |
 | 23 Jul 2026 | Crd Note | 15312 | 0 | 0 | -3 | 0 | -5 |
-| **End Jul** | **Closing Balance** | — | **0** | **-1** | **3** | **10** | **-5** |
+| **End Jul** | **Closing Balance** | — | **0** | **0** | **3** | **10** | **-5** |
 
 ---
 
 ### August 2026
 | Date | Entry Type | Doc # | 14kg Qty | 19kg Qty | 9kg Qty | D.1 Qty | S.1 Qty |
 | :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: |
-| **01 Aug** | **Opening Balance** | — | **0** | **-1** | **3** | **10** | **-5** |
+| **01 Aug** | **Opening Balance** | — | **0** | **0** | **3** | **10** | **-5** |
 | 20 Aug 2026 | Invoice | 52750 | 0 | 0 | +1 | 0 | +1 |
 | 20 Aug 2026 | Invoice | 52751 | 0 | 0 | +1 | 0 | +2 |
 | 20 Aug 2026 | Crd Note | 15531 | 0 | 0 | -1 | 0 | -1 |
 | 20 Aug 2026 | Crd Note | 15532 | 0 | 0 | 0 | 0 | -2 |
 | 26 Aug 2026 | Crd Note | 15804 | 0 | 0 | -7 | 0 | -10 |
-| **End Aug** | **Closing Balance** | — | **0** | **-1** | **-3** | **10** | **-15** |
+| **End Aug** | **Closing Balance** | — | **0** | **0** | **-3** | **10** | **-15** |
 
 ---
 
 ### October 2026
 | Date | Entry Type | Doc # | 14kg Qty | 19kg Qty | 9kg Qty | D.1 Qty | S.1 Qty |
 | :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: |
-| **01 Oct** | **Opening Balance** | — | **0** | **-1** | **-3** | **10** | **-15** |
+| **01 Oct** | **Opening Balance** | — | **0** | **0** | **-3** | **10** | **-15** |
 | 19 Oct 2026 | Crd Note | PROJ-CN-45528 *(projected)* | 0 | 0 | 0 | 0 | -5 |
-| **End Oct** | **Closing Balance** | — | **0** | **-1** | **-3** | **10** | **-20** |
+| **End Oct** | **Closing Balance** | — | **0** | **0** | **-3** | **10** | **-20** |
 
 ---
 
@@ -423,31 +425,30 @@ Projection requested by the operator on 2026-10-19: the statement as if ADM-158 
 | Component | Amount |
 |---|---:|
 | LPG Gas Debt (Part 1A close) | R6,413.32 |
-| Cylinder Financial Balance (Part 1B close) | R-13,811.50 |
-| **Total Debtor Balance** | **R-7,398.18** |
+| Cylinder Financial Balance (Part 1B close) | R-13,262.24 |
+| **Total Debtor Balance** | **R-6,848.92** |
 
 ### 2. Custody Position
 
 | SKU | Net Returnable Qty | Deposit Rate | Custody Exposure |
 |---|---:|---:|---:|
-| 19kg | -1 | R690.00 | R-690.00 |
 | 9kg | -3 | R517.50 | R-1,552.50 |
 | D.1 | 10 | R1,150.00 | R11,500.00 |
 | S.1 | -20 | R1,150.00 | R-23,000.00 |
-| **Total** | **-14** | — | **R-13,742.50** |
+| **Total** | **-13** | — | **R-13,052.50** |
 
 ### 3. Reconciliation Position
 
 | Check | Financial | Custody | Variance |
 |---|---:|---:|---:|
-| Cylinder Position (1B vs custody) | R-13,811.50 | R-13,742.50 | R-69.00 |
-| Sub-ledger tie (1A + 1B vs combined) | R-7,398.18 | — | R0.00 |
+| Cylinder Position (1B vs custody) | R-13,262.24 | R-13,052.50 | R-209.74 |
+| Sub-ledger tie (1A + 1B vs combined) | R-6,848.92 | — | R0.00 |
 
 **ERP Combined Balance (TXT header):** R-16,256.52  
 **Quarantined documents (held aside):** R-7,628.30  
 **ERP balance excluding quarantined documents:** R-8,628.22  
-**Reconstructed Balance (1A + 1B):** R-7,398.18  
-**Variance:** R1,230.04
+**Reconstructed Balance (1A + 1B):** R-6,848.92  
+**Variance:** R1,779.30
 
 <!-- DEBTOR_POSITION_WORKSPACE_END -->
 <!-- INTERNAL_ONLY_END -->

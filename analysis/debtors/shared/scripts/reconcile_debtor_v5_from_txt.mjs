@@ -261,16 +261,30 @@ function loadConfig(debtorCode) {
     : [];
   const ratificationScenario = loadRatificationScenario(cfg);
   const ratificationRows = ratificationScenario ? buildRatificationRows(ratificationScenario) : [];
+  // Synthetic rows dated before the window move the opening balances (combined, the 1B lane if CYL, and
+  // the Part 2 opening quantities); rows inside the window are posted in the tables.
+  const preWindowRatification = ratificationRows.filter((r) => r.iso < cfg.periodStart);
+  let ratCombinedShift = 0;
+  let ratCylShift = 0;
+  for (const r of preWindowRatification) {
+    ratCombinedShift += r.amount;
+    if (r.is_cyl_only) ratCylShift += r.amount;
+    for (const [sku, qty] of Object.entries(r.cyl_qty || {})) cylOpeningQty[sku] = (cylOpeningQty[sku] || 0) + Number(qty);
+  }
+  const combinedOpening = Math.round((combinedBf + ratCombinedShift) * 100) / 100;
+  const cylOpeningWithRat = Math.round((cylOpeningAdjusted + ratCylShift) * 100) / 100;
   return {
     ...cfg,
     txtPath,
-    combinedBf,
-    cylOpeningFinancial: cylOpeningAdjusted,
+    combinedBf: combinedOpening,
+    combinedBfErp: combinedBf,
+    preWindowRatification,
+    cylOpeningFinancial: cylOpeningWithRat,
     cylOpeningFinancialConfig: cylOpeningFinancial,
     laneOverrides,
     preWindowOverrides,
     cancellations,
-    lpgOpeningBf: Math.round((combinedBf - cylOpeningAdjusted - preWindowQuarantineTotal) * 100) / 100,
+    lpgOpeningBf: Math.round((combinedOpening - cylOpeningWithRat - preWindowQuarantineTotal) * 100) / 100,
     paymentLane: cfg.paymentLane || 'LPG',
     ratificationScenario,
     ratificationRows,
@@ -643,7 +657,7 @@ async function buildPart2(client, cfg) {
   }
 
   const { rows } = loadTxt(cfg);
-  const ratificationInvCn = (cfg.ratificationRows || []).filter((r) => r.is_ratification);
+  const ratificationInvCn = (cfg.ratificationRows || []).filter((r) => r.is_ratification && r.iso >= cfg.periodStart);
   const periodRows = [
     ...rows.filter(
       (r) => r.iso >= cfg.periodStart && (r.entry_type === 'Invoice' || r.entry_type === 'Crd Note'),
@@ -827,8 +841,8 @@ ${cancelledRows
 
   const md = `# Statement of Account: ${cfg.debtorName} (${cfg.debtorCode}) - Version 5 (Sub-Ledger Position Statement)
 **Period:** ${periodStartLabel} → ${periodEndLabel} &nbsp;|&nbsp; **Account:** ${cfg.debtorCode}
-**Combined Opening B/F:** R${fmt(cfg.combinedBf)} (ERP verified — source: \`${txtRel}\` ${cfg.bfSourceNote || ''})
-**LPG Opening B/F (1A):** R${fmt(cfg.lpgOpeningBf)} &nbsp;|&nbsp; **CYL Opening B/F (1B):** R${fmt(cfg.cylOpeningFinancial)}${preWindowHeader}${overrideHeader}
+**Combined Opening B/F:** R${fmt(cfg.combinedBfErp)} (ERP verified — source: \`${txtRel}\` ${cfg.bfSourceNote || ''})
+**LPG Opening B/F (1A):** R${fmt(cfg.lpgOpeningBf)} &nbsp;|&nbsp; **CYL Opening B/F (1B):** R${fmt(cfg.cylOpeningFinancial)}${preWindowHeader}${overrideHeader}${cfg.preWindowRatification.length ? `\n**Projection adjustment:** opening balances include projected ${cfg.preWindowRatification.map((r) => `${r.entry_type.toLowerCase()} ${r.clean_doc} (${displayDate(r.iso)}, R${fmt(r.amount)}, ${r.is_cyl_only ? '1B' : '1A'})`).join('; ')}, dated before this period; combined opening with projection R${fmt(cfg.combinedBf)}.` : ''}
 **Payment routing:** ${cfg.paymentLane} lane (payments post to Part 1A unless configured otherwise)
 **Last regenerated:** ${new Date().toISOString().slice(0, 10)} from ERP TXT (\`reconcile_debtor_v5_from_txt.mjs\`)${cfg.ratificationScenario ? ' · **Ratification scenario active**' : ''}
 
