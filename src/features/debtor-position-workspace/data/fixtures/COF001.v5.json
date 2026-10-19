@@ -7,7 +7,7 @@
   },
   "version": "v5",
   "workspaceStatus": "pending_review",
-  "lastGeneratedAt": "2026-10-18T22:24:35.259Z",
+  "lastGeneratedAt": "2026-10-19T18:39:45.495Z",
   "source": "analysis/debtors/COF001/raw/COF001_COMBINED.TXT",
   "financialPosition": {
     "lpgGasDebt": 6959.52,

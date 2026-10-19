@@ -16,7 +16,7 @@ class Client {
     const validFrom = snap.validFrom || '2026-01-01';
     if (from < validFrom) throw new Error(`snapshot starts ${validFrom}, requested ${from}`);
     if (sql.includes("debt_group = 'CYL'") && sql.includes('SELECT tx_date')) {
-      return { rows: snap.cylQty.filter((r) => r.tx_date >= from) };
+      return { rows: [...snap.cylQty, ...(snap.assumedDocs?.cylQty || [])].filter((r) => r.tx_date >= from) };
     }
     if (sql.includes('GROUP BY doc_no, entry_type, debt_group')) {
       return { rows: [...snap.split, ...snap.assumedDocs.split] };

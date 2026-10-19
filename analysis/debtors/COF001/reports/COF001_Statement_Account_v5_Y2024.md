@@ -3,7 +3,7 @@
 **Combined Opening B/F:** R851.02 (ERP verified — source: `analysis/debtors/COF001/raw/COF001_COMBINED.TXT` sum of all ERP documents dated before 1 Jan 2024 in the current extracts; equals the ERP row balance R7,476.92 after the last 2023 row (COF001_2024.TXT line 85) less late-posted payment 24732 (R6,625.90))
 **LPG Opening B/F (1A):** R0.02 &nbsp;|&nbsp; **CYL Opening B/F (1B):** R851.00
 **Payment routing:** LPG lane (payments post to Part 1A unless configured otherwise)
-**Last regenerated:** 2026-10-18 from ERP TXT (`reconcile_debtor_v5_from_txt.mjs`)
+**Last regenerated:** 2026-10-19 from ERP TXT (`reconcile_debtor_v5_from_txt.mjs`)
 
 ---
 

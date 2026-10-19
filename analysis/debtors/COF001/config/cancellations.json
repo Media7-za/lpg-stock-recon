@@ -1,0 +1,23 @@
+{
+  "schemaNote": "Operator cancellation pairs for COF001. Each item names documents that cancel each other exactly (net 0.00). Statements whose config sets cancellationsFile to this file drop them from Part 1A, 1B and Part 2 and list them in a 'Cancelled documents' section. The ERP balance is unchanged because the pair nets to zero. Only pairs that fall wholly inside a statement window are removed.",
+  "items": [
+    {
+      "id": "CANCEL-2026-08-15558",
+      "documents": [
+        { "doc_no": "53619", "entry_type": "Invoice", "date": "2026-08-26", "amount": 18700.33 },
+        { "doc_no": "15558", "entry_type": "Crd Note", "date": "2026-08-26", "amount": -18700.33 }
+      ],
+      "decision": "CANCELLATION PAIR - removed from statement",
+      "decidedBy": "operator",
+      "decidedOn": "2026-10-19",
+      "instruction": "INV53619, CN15558 netts off as a cancelation. Remove from statement.",
+      "basis": "PROVEN (ERP TXT raw/COF001_COMBINED.TXT): 53619 +18,700.33 and 15558 -18,700.33, both dated 26/08/2026, net 0.00. 15558's lines are in the database (CYL 9.1 x7 + S.1 x10 = -15,697.50; LPG S.4 x2 = -3,002.83). 53619 has no database lines; the operator rules it cancels 15558. 15558 is re-issued as 15803 (gas, -3,002.83) and 15804 (cylinder, -15,697.50), which stay on the statement.",
+      "custodyNote": "15558's Part 2 quantities (9.1 -7, S.1 -10) leave with it. 15804 has no database lines, so its quantities are ASSUMED equal to 15558's cylinder part (same amount, R15,697.50) in data/db_snapshot_2026.json assumedDocs.cylQty; closing custody is unchanged.",
+      "reopenWhen": [
+        "53619's lines are ingested and do not mirror 15558 line for line.",
+        "The ERP reverses 53619 or 15558 individually, or either amount changes in a later extract.",
+        "15804's lines are ingested (replace the assumed custody quantities)."
+      ]
+    }
+  ]
+}

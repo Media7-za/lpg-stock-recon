@@ -95,7 +95,17 @@ items.push(
       : ''
   }`,
 );
-if (has15558) {
+if (has15558 && cfg.cancellationsFile) {
+  const c = JSON.parse(fs.readFileSync(path.join(ACCT, cfg.cancellationsFile), 'utf8')).items;
+  for (const i of c) {
+    items.push(
+      `**Cancellation pair ${i.id} (${i.documents.map((d) => `${d.entry_type.toLowerCase()} ${d.doc_no} R${Number(d.amount).toLocaleString('en-US', { minimumFractionDigits: 2 })}`).join(' / ')}) removed from this statement.** ${i.decision}; ${i.decidedBy}, ${i.decidedOn}. Basis: ${i.basis} ${i.custodyNote} Reopen when: ${i.reopenWhen.join(' ')}`,
+    );
+  }
+  items.push(
+    '**Documents not yet in the database (lane ASSUMED).** 15803 (Crd Note -3,002.83) and 15804 (Crd Note -15,697.50) re-issue the gas and cylinder parts of 15558 exactly, so they are routed 1A and 1B. The database has no lines for them (nor for 53619, now removed as a cancellation). Replace with database lines once ingested.',
+  );
+} else if (has15558) {
   items.push(
     '**Documents not yet in the database (lane ASSUMED).** The 2026-10-16 ERP extract adds 15803 (Crd Note -3,002.83), 15804 (Crd Note -15,697.50) and 53619 (Invoice +18,700.33). The database has no lines for them. 15803 and 15804 equal the gas and cylinder parts of 15558 exactly, so they are routed 1A and 1B. 53619 equals 15558 in total and is assumed to reverse it line for line (1A +3,002.83, 1B +15,697.50). If 53619 was wholly gas, 1A would be R15,697.50 higher and 1B R15,697.50 lower; the combined balance would not change. Replace with database lines once ingested.',
     '**Net effect of the 15558 correction.** 15558 (-18,700.33) is reversed by 53619 (+18,700.33) and re-issued as 15803 + 15804 (-18,700.33). The ERP closing balance is unchanged at R-16,256.52.',

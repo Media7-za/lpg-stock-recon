@@ -23,6 +23,7 @@
   },
   "quarantineFile": "config/quarantine.json",
   "laneOverridesFile": "config/lane_overrides.json",
+  "cancellationsFile": "config/cancellations.json",
   "assumedLaneDocs": [
     "15803|Crd Note",
     "15804|Crd Note",

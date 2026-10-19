@@ -216,6 +216,10 @@ function loadConfig(debtorCode) {
     if (SKUS.includes(o.stock_no)) cylOpeningQty[o.stock_no] = (cylOpeningQty[o.stock_no] || 0) + qty;
   }
   const cylOpeningAdjusted = Math.round((cylOpeningFinancial + overrideCylShift) * 100) / 100;
+  // Optional `cancellationsFile`: document pairs that cancel exactly (net 0.00), dropped from the statement.
+  const cancellations = cfg.cancellationsFile
+    ? JSON.parse(fs.readFileSync(path.join(ROOT, 'analysis/debtors', debtorCode, cfg.cancellationsFile), 'utf8')).items || []
+    : [];
   const ratificationScenario = loadRatificationScenario(cfg);
   const ratificationRows = ratificationScenario ? buildRatificationRows(ratificationScenario) : [];
   return {
@@ -226,6 +230,7 @@ function loadConfig(debtorCode) {
     cylOpeningFinancialConfig: cylOpeningFinancial,
     laneOverrides,
     preWindowOverrides,
+    cancellations,
     lpgOpeningBf: Math.round((combinedBf - cylOpeningAdjusted - preWindowQuarantineTotal) * 100) / 100,
     paymentLane: cfg.paymentLane || 'LPG',
     ratificationScenario,
@@ -383,7 +388,26 @@ function loadTxt(cfg) {
       rows = rows.filter((_, i) => i !== idx);
     }
   }
-  return { rows, headerBalance, quarantinedRows, quarantinedPre };
+  // Cancellation pairs wholly inside the window are removed from the rows (they net to 0.00, so the ERP
+  // balance needs no bridge line). Pairs wholly before the window are already netted in the opening balance.
+  const cancelledRows = [];
+  for (const c of cfg.cancellations || []) {
+    const inWindow = c.documents.map((d) => d.date >= cfg.periodStart && (!cfg.periodEnd || d.date <= cfg.periodEnd));
+    if (inWindow.every((x) => !x)) continue;
+    if (!inWindow.every(Boolean)) throw new Error(`Cancellation ${c.id} straddles the statement window`);
+    const net = round2(c.documents.reduce((sum, d) => sum + Number(d.amount), 0));
+    if (Math.abs(net) >= 0.01) throw new Error(`Cancellation ${c.id} does not net to zero (${net})`);
+    for (const d of c.documents) {
+      const clean = String(d.doc_no).replace(/^0+/, '');
+      const idx = rows.findIndex(
+        (r) => r.clean_doc === clean && r.entry_type === d.entry_type && r.iso === d.date && Math.abs(r.amount - Number(d.amount)) < 0.005,
+      );
+      if (idx < 0) throw new Error(`Cancelled ${d.entry_type} ${d.doc_no} (${d.date}, ${d.amount}) not found in TXT`);
+      cancelledRows.push({ ...rows[idx], cancellation: c });
+      rows = rows.filter((_, i) => i !== idx);
+    }
+  }
+  return { rows, headerBalance, quarantinedRows, quarantinedPre, cancelledRows };
 }
 
 function splitRowAmount(r, docSplit, cfg) {
@@ -654,7 +678,7 @@ async function buildPart2(client, cfg) {
 async function main() {
   const debtorCode = parseArgs();
   const cfg = loadConfig(debtorCode);
-  const { rows, headerBalance, quarantinedRows: quarantinedInWindow, quarantinedPre } = loadTxt(cfg);
+  const { rows, headerBalance, quarantinedRows: quarantinedInWindow, quarantinedPre, cancelledRows } = loadTxt(cfg);
   const quarantinedRows = [...quarantinedPre, ...quarantinedInWindow].sort((a, b) => a.iso.localeCompare(b.iso));
   const allRows = mergeRatificationRows(rows, cfg.ratificationRows);
 
@@ -731,6 +755,20 @@ ${quarantinedRows
 ---
 `
     : '';
+  const cancelledSection = cancelledRows.length
+    ? `## Cancelled Documents (removed from this statement)
+
+| Date | Entry Type | Doc # | Amount (R) | Pair | Decision |
+| :--- | :--- | :--- | ---: | :--- | :--- |
+${cancelledRows
+  .map((r) => `| ${displayDate(r.iso)} | ${r.entry_type} | ${r.clean_doc} | ${fmt(r.amount)} | ${r.cancellation.id} | ${r.cancellation.decision} (${r.cancellation.decidedBy}, ${r.cancellation.decidedOn}) |`)
+  .join('\n')}
+
+*Each pair cancels exactly (net R0.00), so it is left out of Part 1A, 1B and Part 2; the ERP balance is unchanged. Record: \`${cfg.cancellationsFile}\`.*
+
+---
+`
+    : '';
   const preWindowHeader = quarantinedPre.length
     ? `\n**Quarantine adjustment:** opening 1A excludes quarantined ${quarantinedPre
         .map((r) => `${r.entry_type.toLowerCase()} ${r.clean_doc} (${displayDate(r.iso)}, R${fmt(r.amount)})`)
@@ -786,7 +824,7 @@ ${part1b.length ? part1b.join('\n\n---\n\n') : '_No CYL deposit activity in peri
 ---
 
 ${quarantineSection}
-${ingestGateSection}
+${cancelledSection}${ingestGateSection}
 
 ## Part 2: Cylinder (CYL) Ledger (Physical Asset Tracker)
 *Cylinders tracked by physical count. Opening balances per \`config/statement_v5.json\`.${coverage?.gates?.custody === 'BLOCKED' ? ' **Gate: custody BLOCKED — see Ingest Gate above.**' : ''}*

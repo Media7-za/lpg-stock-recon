@@ -119,6 +119,11 @@
       { "doc_no": "15804", "entry_type": "Crd Note", "debt_group": "CYL", "s": -15697.5 },
       { "doc_no": "53619", "entry_type": "Invoice", "debt_group": "LPG", "s": 3002.83 },
       { "doc_no": "53619", "entry_type": "Invoice", "debt_group": "CYL", "s": 15697.5 }
+    ],
+    "cylQtyNote": "ASSUMED (added 2026-10-19 with the operator cancellation of 53619/15558, config/cancellations.json): 15804 re-issues the cylinder part of 15558 (R15,697.50 = 9.1 x7 + S.1 x10 at deposit rates), so its quantities are taken as 15558's. Replace with database lines when 15804 is ingested.",
+    "cylQty": [
+      { "tx_date": "2026-08-26", "doc_no": "15804", "entry_type": "Crd Note", "stock_no": "9.1", "qty": -7 },
+      { "tx_date": "2026-08-26", "doc_no": "15804", "entry_type": "Crd Note", "stock_no": "S.1", "qty": -10 }
     ]
   }
 }
