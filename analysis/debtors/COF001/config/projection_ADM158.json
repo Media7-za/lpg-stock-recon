@@ -8,7 +8,7 @@
       "status": "PROJECTED - not posted (Linear ADM-158, assigned to the ERP agent)",
       "requestedBy": "operator",
       "requestedOn": "2026-10-19",
-      "assumption": "Projection requested by the operator on 2026-10-19: the statement as if ADM-158 were done. Starting point: the ERP as it stands (no lane override, so 45528's S.1 line is back in 1B; the R-1,776.24 gas credit is not held aside). The ERP then posts a credit note for 45528's S.1 x5 (R-6,037.50, 1B) and an invoice for 5 x 48kg gas (R+7,267.54, 1A, at the July / 7 Aug 2025 price; ASSUMED, the ERP sets the price). Writing the R1,776.24 credit off against the R1,230.04 shortfall is an allocation, not a new document, so it does not move any balance: the gas lane simply nets the new invoice against the credit, leaving R546.20 of credit for the operator to decide. Projected posting date 19 Oct 2026 (ASSUMED). Added 2026-10-19 by the operator: an invoice for 1 x 19.1 (19kg cylinder deposit) at R549.26, dated 1 Mar 2025, also to be passed to the ERP under ADM-158. It is dated before this statement window, so it moves the opening 1B balance (+549.26) and the opening 19kg quantity (+1).",
+      "assumption": "Projection requested by the operator on 2026-10-19: the statement as if ADM-158 were done. Starting point: the ERP as it stands (no lane override, so 45528's S.1 line is back in 1B; the R-1,776.24 gas credit is not held aside). The ERP then posts a credit note for 45528's S.1 x5 (R-6,037.50, 1B) and an invoice for 5 x 48kg gas (R+7,267.54, 1A, at the July / 7 Aug 2025 price; ASSUMED, the ERP sets the price). Writing the R1,776.24 credit off against the R1,230.04 shortfall is an allocation, not a new document, so it does not move any balance: the gas lane simply nets the new invoice against the credit, leaving R546.20 of credit for the operator to decide. Projected posting date 19 Oct 2026 (ASSUMED). Added 2026-10-19 by the operator: an invoice for 1 x 19.1 (19kg cylinder deposit) at R549.26, dated 1 Mar 2025, also to be passed to the ERP under ADM-158. Operator ruling 2026-10-19: its value sits in the LPG lane (1A), while Part 2 counts it as one 19kg cylinder. It is dated before this statement window, so it moves the opening 1A balance (+549.26) and the opening 19kg quantity (+1).",
       "notes": "The expected ERP variance is the sum of the projected documents (19.1 invoice R549.26 + 45528 shortfall R1,230.04 = R1,779.30). At the 25 Aug 2025 price (R7,124.02) the projected gas invoice, the shortfall and the closing 1A and combined balances would all be R143.52 lower, and the remaining credit R689.72.",
       "rows": [
         {
@@ -16,11 +16,11 @@
           "entry_type": "Invoice",
           "iso": "2025-03-01",
           "amount": 549.26,
-          "lane": "CYL",
+          "lane": "LPG",
           "cylQty": {
             "19.1": 1
           },
-          "basis": "Operator instruction 2026-10-19: invoice 1 x 19.1 (19kg cylinder deposit) @ R549.26, dated 1 Mar 2025. Price taken as incl VAT, as FINCON prints unit prices (ASSUMED)."
+          "basis": "Operator instruction 2026-10-19: invoice 1 x 19.1 @ R549.26, dated 1 Mar 2025, valued in the LPG lane (1A) but counted in Part 2 as one 19kg cylinder (operator, 2026-10-19). Price taken as incl VAT, as FINCON prints unit prices (ASSUMED)."
         },
         {
           "doc_no": "PROJ-CN-45528",

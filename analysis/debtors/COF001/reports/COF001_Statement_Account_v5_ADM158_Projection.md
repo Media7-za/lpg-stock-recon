@@ -1,9 +1,9 @@
 # Statement of Account: COFFEEBERRY-CASCADES (COF001) - Version 5 (Sub-Ledger Position Statement)
 **Period:** Jan 2026 → Oct 2026 &nbsp;|&nbsp; **Account:** COF001
 **Combined Opening B/F:** R-771.56 (ERP verified — source: `analysis/debtors/COF001/raw/COF001_COMBINED.TXT` ERP running balance after the last 2025 row (doc 48423, 22 Dec 2025), COF001_CURRENT.TXT line 129)
-**LPG Opening B/F (1A):** R-549.26 &nbsp;|&nbsp; **CYL Opening B/F (1B):** R7,955.26
+**LPG Opening B/F (1A):** R0.00 &nbsp;|&nbsp; **CYL Opening B/F (1B):** R7,406.00
 **Quarantine adjustment:** opening 1A excludes quarantined payment 29492 (18 Apr 2024, R-7,628.30), dated before this period; the combined opening B/F above is the ERP figure.
-**Projection adjustment:** opening balances include projected invoice PROJ-INV-19.1-2025-03 (01 Mar 2025, R549.26, 1B), dated before this period; combined opening with projection R-222.30.
+**Projection adjustment:** opening balances include projected invoice PROJ-INV-19.1-2025-03 (01 Mar 2025, R549.26, 1A; Part 2 19.1 +1), dated before this period; combined opening with projection R-222.30.
 **Payment routing:** LPG lane (payments post to Part 1A unless configured otherwise)
 **Last regenerated:** 2026-10-19 from ERP TXT (`reconcile_debtor_v5_from_txt.mjs`) · **Ratification scenario active**
 
@@ -13,11 +13,11 @@
 
 **ID:** `ADM158-PROJECTION` · **Status:** PROJECTED - not posted (Linear ADM-158, assigned to the ERP agent)
 
-Projection requested by the operator on 2026-10-19: the statement as if ADM-158 were done. Starting point: the ERP as it stands (no lane override, so 45528's S.1 line is back in 1B; the R-1,776.24 gas credit is not held aside). The ERP then posts a credit note for 45528's S.1 x5 (R-6,037.50, 1B) and an invoice for 5 x 48kg gas (R+7,267.54, 1A, at the July / 7 Aug 2025 price; ASSUMED, the ERP sets the price). Writing the R1,776.24 credit off against the R1,230.04 shortfall is an allocation, not a new document, so it does not move any balance: the gas lane simply nets the new invoice against the credit, leaving R546.20 of credit for the operator to decide. Projected posting date 19 Oct 2026 (ASSUMED). Added 2026-10-19 by the operator: an invoice for 1 x 19.1 (19kg cylinder deposit) at R549.26, dated 1 Mar 2025, also to be passed to the ERP under ADM-158. It is dated before this statement window, so it moves the opening 1B balance (+549.26) and the opening 19kg quantity (+1).
+Projection requested by the operator on 2026-10-19: the statement as if ADM-158 were done. Starting point: the ERP as it stands (no lane override, so 45528's S.1 line is back in 1B; the R-1,776.24 gas credit is not held aside). The ERP then posts a credit note for 45528's S.1 x5 (R-6,037.50, 1B) and an invoice for 5 x 48kg gas (R+7,267.54, 1A, at the July / 7 Aug 2025 price; ASSUMED, the ERP sets the price). Writing the R1,776.24 credit off against the R1,230.04 shortfall is an allocation, not a new document, so it does not move any balance: the gas lane simply nets the new invoice against the credit, leaving R546.20 of credit for the operator to decide. Projected posting date 19 Oct 2026 (ASSUMED). Added 2026-10-19 by the operator: an invoice for 1 x 19.1 (19kg cylinder deposit) at R549.26, dated 1 Mar 2025, also to be passed to the ERP under ADM-158. Operator ruling 2026-10-19: its value sits in the LPG lane (1A), while Part 2 counts it as one 19kg cylinder. It is dated before this statement window, so it moves the opening 1A balance (+549.26) and the opening 19kg quantity (+1).
 
 | Projected document | Date | Amount (R) | Lane | Basis |
 | :--- | :--- | ---: | :--- | :--- |
-| Invoice PROJ-INV-19.1-2025-03 | 2025-03-01 | 549.26 | 1B | Operator instruction 2026-10-19: invoice 1 x 19.1 (19kg cylinder deposit) @ R549.26, dated 1 Mar 2025. Price taken as incl VAT, as FINCON prints unit prices (ASSUMED). |
+| Invoice PROJ-INV-19.1-2025-03 | 2025-03-01 | 549.26 | 1A | Operator instruction 2026-10-19: invoice 1 x 19.1 @ R549.26, dated 1 Mar 2025, valued in the LPG lane (1A) but counted in Part 2 as one 19kg cylinder (operator, 2026-10-19). Price taken as incl VAT, as FINCON prints unit prices (ASSUMED). |
 | Crd Note PROJ-CN-45528 | 2026-10-19 | -6,037.50 | 1B | Reverses 45528 line 2 (S.1 x5 @ R1,207.50 incl VAT), PROVEN amount from the FINCON print |
 | Invoice PROJ-INV-45528 | 2026-10-19 | 7,267.54 | 1A | 5 x 48kg gas @ R1,263.92 ex VAT (price on 44729, 10 Jul 2025, and COF002 45486, 7 Aug 2025); ASSUMED price |
 
@@ -33,16 +33,16 @@ Projection requested by the operator on 2026-10-19: the statement as if ADM-158 
 
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
-| **01 Jan** | **Opening Balance** | — | | **-549.26** |
-| 05 Jan 2026 | Payment | 42889 | -7,264.46 | -7,813.72 |
-| 07 Jan 2026 | Invoice | 48651 | 1,734.29 | -6,079.43 |
-| 12 Jan 2026 | Payment | 42997 | -1,734.29 | -7,813.72 |
-| 12 Jan 2026 | Invoice | 48739 | 6,757.63 | -1,056.09 |
-| 12 Jan 2026 | Invoice | 48745 | 838.35 | -217.74 |
-| 16 Jan 2026 | Payment | 43003 | -6,757.63 | -6,975.37 |
-| 16 Jan 2026 | Payment | 43004 | -838.35 | -7,813.72 |
-| 26 Jan 2026 | Invoice | 48936 | 7,054.95 | -758.77 |
-| 28 Jan 2026 | Payment | 43162 | -7,054.95 | -7,813.72 |
+| **01 Jan** | **Opening Balance** | — | | **0.00** |
+| 05 Jan 2026 | Payment | 42889 | -7,264.46 | -7,264.46 |
+| 07 Jan 2026 | Invoice | 48651 | 1,734.29 | -5,530.17 |
+| 12 Jan 2026 | Payment | 42997 | -1,734.29 | -7,264.46 |
+| 12 Jan 2026 | Invoice | 48739 | 6,757.63 | -506.83 |
+| 12 Jan 2026 | Invoice | 48745 | 838.35 | 331.52 |
+| 16 Jan 2026 | Payment | 43003 | -6,757.63 | -6,426.11 |
+| 16 Jan 2026 | Payment | 43004 | -838.35 | -7,264.46 |
+| 26 Jan 2026 | Invoice | 48936 | 7,054.95 | -209.51 |
+| 28 Jan 2026 | Payment | 43162 | -7,054.95 | -7,264.46 |
 
 ---
 
@@ -50,10 +50,10 @@ Projection requested by the operator on 2026-10-19: the statement as if ADM-158 
 
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
-| **01 Feb** | **Opening Balance** | — | | **-7,813.72** |
-| 11 Feb 2026 | Invoice | 49193 | 7,381.33 | -432.39 |
-| 11 Feb 2026 | Invoice | 49204 | 6,960.00 | 6,527.61 |
-| 18 Feb 2026 | Payment | 43374 | -7,381.33 | -853.72 |
+| **01 Feb** | **Opening Balance** | — | | **-7,264.46** |
+| 11 Feb 2026 | Invoice | 49193 | 7,381.33 | 116.87 |
+| 11 Feb 2026 | Invoice | 49204 | 6,960.00 | 7,076.87 |
+| 18 Feb 2026 | Payment | 43374 | -7,381.33 | -304.46 |
 
 ---
 
@@ -61,11 +61,11 @@ Projection requested by the operator on 2026-10-19: the statement as if ADM-158 
 
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
-| **01 Mar** | **Opening Balance** | — | | **-853.72** |
-| 04 Mar 2026 | Invoice | 49554 | 7,381.33 | 6,527.61 |
-| 11 Mar 2026 | Payment | 43653 | -7,381.33 | -853.72 |
-| 18 Mar 2026 | Invoice | 49794 | 7,432.90 | 6,579.18 |
-| 24 Mar 2026 | Payment | 43758 | -7,432.90 | -853.72 |
+| **01 Mar** | **Opening Balance** | — | | **-304.46** |
+| 04 Mar 2026 | Invoice | 49554 | 7,381.33 | 7,076.87 |
+| 11 Mar 2026 | Payment | 43653 | -7,381.33 | -304.46 |
+| 18 Mar 2026 | Invoice | 49794 | 7,432.90 | 7,128.44 |
+| 24 Mar 2026 | Payment | 43758 | -7,432.90 | -304.46 |
 
 ---
 
@@ -73,11 +73,11 @@ Projection requested by the operator on 2026-10-19: the statement as if ADM-158 
 
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
-| **01 Apr** | **Opening Balance** | — | | **-853.72** |
-| 02 Apr 2026 | Invoice | 50062 | 8,493.21 | 7,639.49 |
-| 09 Apr 2026 | Payment | 43966 | -8,493.21 | -853.72 |
-| 17 Apr 2026 | Invoice | 50273 | 8,206.92 | 7,353.20 |
-| 21 Apr 2026 | Payment | 44067 | -8,206.92 | -853.72 |
+| **01 Apr** | **Opening Balance** | — | | **-304.46** |
+| 02 Apr 2026 | Invoice | 50062 | 8,493.21 | 8,188.75 |
+| 09 Apr 2026 | Payment | 43966 | -8,493.21 | -304.46 |
+| 17 Apr 2026 | Invoice | 50273 | 8,206.92 | 7,902.46 |
+| 21 Apr 2026 | Payment | 44067 | -8,206.92 | -304.46 |
 
 ---
 
@@ -85,10 +85,10 @@ Projection requested by the operator on 2026-10-19: the statement as if ADM-158 
 
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
-| **01 May** | **Opening Balance** | — | | **-853.72** |
-| 05 May 2026 | Invoice | 50513 | 9,493.71 | 8,639.99 |
-| 11 May 2026 | Payment | 44300 | -9,493.71 | -853.72 |
-| 21 May 2026 | Invoice | 50808 | 9,671.37 | 8,817.65 |
+| **01 May** | **Opening Balance** | — | | **-304.46** |
+| 05 May 2026 | Invoice | 50513 | 9,493.71 | 9,189.25 |
+| 11 May 2026 | Payment | 44300 | -9,493.71 | -304.46 |
+| 21 May 2026 | Invoice | 50808 | 9,671.37 | 9,366.91 |
 
 ---
 
@@ -96,12 +96,12 @@ Projection requested by the operator on 2026-10-19: the statement as if ADM-158 
 
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
-| **01 Jun** | **Opening Balance** | — | | **8,817.65** |
-| 01 Jun 2026 | Payment | 44560 | -9,671.37 | -853.72 |
-| 09 Jun 2026 | Invoice | 51107 | 9,311.22 | 8,457.50 |
-| 15 Jun 2026 | Payment | 44753 | -9,311.22 | -853.72 |
-| 23 Jun 2026 | Invoice | 51372 | 8,683.50 | 7,829.78 |
-| 29 Jun 2026 | Payment | 44968 | -8,683.50 | -853.72 |
+| **01 Jun** | **Opening Balance** | — | | **9,366.91** |
+| 01 Jun 2026 | Payment | 44560 | -9,671.37 | -304.46 |
+| 09 Jun 2026 | Invoice | 51107 | 9,311.22 | 9,006.76 |
+| 15 Jun 2026 | Payment | 44753 | -9,311.22 | -304.46 |
+| 23 Jun 2026 | Invoice | 51372 | 8,683.50 | 8,379.04 |
+| 29 Jun 2026 | Payment | 44968 | -8,683.50 | -304.46 |
 
 ---
 
@@ -109,11 +109,11 @@ Projection requested by the operator on 2026-10-19: the statement as if ADM-158 
 
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
-| **01 Jul** | **Opening Balance** | — | | **-853.72** |
-| 08 Jul 2026 | Invoice | 51705 | 9,034.40 | 8,180.68 |
-| 15 Jul 2026 | Payment | 45209 | -9,034.40 | -853.72 |
-| 22 Jul 2026 | Invoice | 52014 | 9,349.56 | 8,495.84 |
-| 31 Jul 2026 | Payment | 45480 | -9,349.56 | -853.72 |
+| **01 Jul** | **Opening Balance** | — | | **-304.46** |
+| 08 Jul 2026 | Invoice | 51705 | 9,034.40 | 8,729.94 |
+| 15 Jul 2026 | Payment | 45209 | -9,034.40 | -304.46 |
+| 22 Jul 2026 | Invoice | 52014 | 9,349.56 | 9,045.10 |
+| 31 Jul 2026 | Payment | 45480 | -9,349.56 | -304.46 |
 
 ---
 
@@ -121,10 +121,10 @@ Projection requested by the operator on 2026-10-19: the statement as if ADM-158 
 
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
-| **01 Aug** | **Opening Balance** | — | | **-853.72** |
-| 20 Aug 2026 | Invoice | 52691 | 3,284.35 | 2,430.63 |
-| 24 Aug 2026 | Payment | 45896 | -3,284.35 | -853.72 |
-| 26 Aug 2026 | Crd Note | 15803 *(lane assumed)* | -3,002.83 | -3,856.55 |
+| **01 Aug** | **Opening Balance** | — | | **-304.46** |
+| 20 Aug 2026 | Invoice | 52691 | 3,284.35 | 2,979.89 |
+| 24 Aug 2026 | Payment | 45896 | -3,284.35 | -304.46 |
+| 26 Aug 2026 | Crd Note | 15803 *(lane assumed)* | -3,002.83 | -3,307.29 |
 
 ---
 
@@ -132,8 +132,8 @@ Projection requested by the operator on 2026-10-19: the statement as if ADM-158 
 
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
-| **01 Sep** | **Opening Balance** | — | | **-3,856.55** |
-| 09 Sept 2026 | Bank XFer | 7473 | 3,002.33 | -854.22 |
+| **01 Sep** | **Opening Balance** | — | | **-3,307.29** |
+| 09 Sept 2026 | Bank XFer | 7473 | 3,002.33 | -304.96 |
 
 ---
 
@@ -141,8 +141,8 @@ Projection requested by the operator on 2026-10-19: the statement as if ADM-158 
 
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
-| **01 Oct** | **Opening Balance** | — | | **-854.22** |
-| 19 Oct 2026 | Invoice | PROJ-INV-45528 *(projected)* | 7,267.54 | 6,413.32 |
+| **01 Oct** | **Opening Balance** | — | | **-304.96** |
+| 19 Oct 2026 | Invoice | PROJ-INV-45528 *(projected)* | 7,267.54 | 6,962.58 |
 
 ---
 
@@ -153,13 +153,13 @@ Projection requested by the operator on 2026-10-19: the statement as if ADM-158 
 
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
-| **01 Jan** | **Opening Balance** | — | | **7,955.26** |
-| 08 Jan 2026 | Invoice | 48682 | 1,552.50 | 9,507.76 |
-| 08 Jan 2026 | Crd Note | 14221 | -1,552.50 | 7,955.26 |
-| 12 Jan 2026 | Invoice | 48740 | 6,037.50 | 13,992.76 |
-| 13 Jan 2026 | Crd Note | 14252 | -6,037.50 | 7,955.26 |
-| 26 Jan 2026 | Invoice | 48939 | 6,555.00 | 14,510.26 |
-| 26 Jan 2026 | Crd Note | 14331 | -6,555.00 | 7,955.26 |
+| **01 Jan** | **Opening Balance** | — | | **7,406.00** |
+| 08 Jan 2026 | Invoice | 48682 | 1,552.50 | 8,958.50 |
+| 08 Jan 2026 | Crd Note | 14221 | -1,552.50 | 7,406.00 |
+| 12 Jan 2026 | Invoice | 48740 | 6,037.50 | 13,443.50 |
+| 13 Jan 2026 | Crd Note | 14252 | -6,037.50 | 7,406.00 |
+| 26 Jan 2026 | Invoice | 48939 | 6,555.00 | 13,961.00 |
+| 26 Jan 2026 | Crd Note | 14331 | -6,555.00 | 7,406.00 |
 
 ---
 
@@ -167,9 +167,9 @@ Projection requested by the operator on 2026-10-19: the statement as if ADM-158 
 
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
-| **01 Feb** | **Opening Balance** | — | | **7,955.26** |
-| 11 Feb 2026 | Invoice | 49194 | 7,072.50 | 15,027.76 |
-| 11 Feb 2026 | Crd Note | 14412 | -7,072.50 | 7,955.26 |
+| **01 Feb** | **Opening Balance** | — | | **7,406.00** |
+| 11 Feb 2026 | Invoice | 49194 | 7,072.50 | 14,478.50 |
+| 11 Feb 2026 | Crd Note | 14412 | -7,072.50 | 7,406.00 |
 
 ---
 
@@ -177,11 +177,11 @@ Projection requested by the operator on 2026-10-19: the statement as if ADM-158 
 
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
-| **01 Mar** | **Opening Balance** | — | | **7,955.26** |
-| 04 Mar 2026 | Invoice | 49555 | 7,072.50 | 15,027.76 |
-| 04 Mar 2026 | Crd Note | 14531 | -7,072.50 | 7,955.26 |
-| 18 Mar 2026 | Invoice | 49795 | 7,072.50 | 15,027.76 |
-| 18 Mar 2026 | Crd Note | 14613 | -7,072.50 | 7,955.26 |
+| **01 Mar** | **Opening Balance** | — | | **7,406.00** |
+| 04 Mar 2026 | Invoice | 49555 | 7,072.50 | 14,478.50 |
+| 04 Mar 2026 | Crd Note | 14531 | -7,072.50 | 7,406.00 |
+| 18 Mar 2026 | Invoice | 49795 | 7,072.50 | 14,478.50 |
+| 18 Mar 2026 | Crd Note | 14613 | -7,072.50 | 7,406.00 |
 
 ---
 
@@ -189,11 +189,11 @@ Projection requested by the operator on 2026-10-19: the statement as if ADM-158 
 
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
-| **01 Apr** | **Opening Balance** | — | | **7,955.26** |
-| 02 Apr 2026 | Invoice | 50063 | 7,590.00 | 15,545.26 |
-| 02 Apr 2026 | Crd Note | 14703 | -7,590.00 | 7,955.26 |
-| 17 Apr 2026 | Invoice | 50274 | 7,072.50 | 15,027.76 |
-| 19 Apr 2026 | Crd Note | 14768 | -7,072.50 | 7,955.26 |
+| **01 Apr** | **Opening Balance** | — | | **7,406.00** |
+| 02 Apr 2026 | Invoice | 50063 | 7,590.00 | 14,996.00 |
+| 02 Apr 2026 | Crd Note | 14703 | -7,590.00 | 7,406.00 |
+| 17 Apr 2026 | Invoice | 50274 | 7,072.50 | 14,478.50 |
+| 19 Apr 2026 | Crd Note | 14768 | -7,072.50 | 7,406.00 |
 
 ---
 
@@ -201,11 +201,11 @@ Projection requested by the operator on 2026-10-19: the statement as if ADM-158 
 
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
-| **01 May** | **Opening Balance** | — | | **7,955.26** |
-| 05 May 2026 | Invoice | 50515 | 7,590.00 | 15,545.26 |
-| 05 May 2026 | Crd Note | 14854 | -7,590.00 | 7,955.26 |
-| 21 May 2026 | Invoice | 50809 | 7,590.00 | 15,545.26 |
-| 21 May 2026 | Crd Note | 14939 | -7,590.00 | 7,955.26 |
+| **01 May** | **Opening Balance** | — | | **7,406.00** |
+| 05 May 2026 | Invoice | 50515 | 7,590.00 | 14,996.00 |
+| 05 May 2026 | Crd Note | 14854 | -7,590.00 | 7,406.00 |
+| 21 May 2026 | Invoice | 50809 | 7,590.00 | 14,996.00 |
+| 21 May 2026 | Crd Note | 14939 | -7,590.00 | 7,406.00 |
 
 ---
 
@@ -213,9 +213,9 @@ Projection requested by the operator on 2026-10-19: the statement as if ADM-158 
 
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
-| **01 Jun** | **Opening Balance** | — | | **7,955.26** |
-| 23 Jun 2026 | Invoice | 51373 | 6,555.00 | 14,510.26 |
-| 24 Jun 2026 | Crd Note | 15113 | -6,555.00 | 7,955.26 |
+| **01 Jun** | **Opening Balance** | — | | **7,406.00** |
+| 23 Jun 2026 | Invoice | 51373 | 6,555.00 | 13,961.00 |
+| 24 Jun 2026 | Crd Note | 15113 | -6,555.00 | 7,406.00 |
 
 ---
 
@@ -223,11 +223,11 @@ Projection requested by the operator on 2026-10-19: the statement as if ADM-158 
 
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
-| **01 Jul** | **Opening Balance** | — | | **7,955.26** |
-| 08 Jul 2026 | Invoice | 51706 | 7,072.50 | 15,027.76 |
-| 09 Jul 2026 | Crd Note | 15227 | -7,072.50 | 7,955.26 |
-| 22 Jul 2026 | Invoice | 52015 | 7,590.00 | 15,545.26 |
-| 23 Jul 2026 | Crd Note | 15312 | -7,590.00 | 7,955.26 |
+| **01 Jul** | **Opening Balance** | — | | **7,406.00** |
+| 08 Jul 2026 | Invoice | 51706 | 7,072.50 | 14,478.50 |
+| 09 Jul 2026 | Crd Note | 15227 | -7,072.50 | 7,406.00 |
+| 22 Jul 2026 | Invoice | 52015 | 7,590.00 | 14,996.00 |
+| 23 Jul 2026 | Crd Note | 15312 | -7,590.00 | 7,406.00 |
 
 ---
 
@@ -235,12 +235,12 @@ Projection requested by the operator on 2026-10-19: the statement as if ADM-158 
 
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
-| **01 Aug** | **Opening Balance** | — | | **7,955.26** |
-| 20 Aug 2026 | Invoice | 52750 | 1,725.00 | 9,680.26 |
-| 20 Aug 2026 | Invoice | 52751 | 2,932.50 | 12,612.76 |
-| 20 Aug 2026 | Crd Note | 15531 | -1,725.00 | 10,887.76 |
-| 20 Aug 2026 | Crd Note | 15532 | -2,415.00 | 8,472.76 |
-| 26 Aug 2026 | Crd Note | 15804 *(lane assumed)* | -15,697.50 | -7,224.74 |
+| **01 Aug** | **Opening Balance** | — | | **7,406.00** |
+| 20 Aug 2026 | Invoice | 52750 | 1,725.00 | 9,131.00 |
+| 20 Aug 2026 | Invoice | 52751 | 2,932.50 | 12,063.50 |
+| 20 Aug 2026 | Crd Note | 15531 | -1,725.00 | 10,338.50 |
+| 20 Aug 2026 | Crd Note | 15532 | -2,415.00 | 7,923.50 |
+| 26 Aug 2026 | Crd Note | 15804 *(lane assumed)* | -15,697.50 | -7,774.00 |
 
 ---
 
@@ -248,8 +248,8 @@ Projection requested by the operator on 2026-10-19: the statement as if ADM-158 
 
 | Date | Entry Type | Doc # | Amount (R) | Running Bal (R) |
 | :--- | :--- | :--- | ---: | ---: |
-| **01 Oct** | **Opening Balance** | — | | **-7,224.74** |
-| 19 Oct 2026 | Crd Note | PROJ-CN-45528 *(projected)* | -6,037.50 | -13,262.24 |
+| **01 Oct** | **Opening Balance** | — | | **-7,774.00** |
+| 19 Oct 2026 | Crd Note | PROJ-CN-45528 *(projected)* | -6,037.50 | -13,811.50 |
 
 ---
 
@@ -257,8 +257,8 @@ Projection requested by the operator on 2026-10-19: the statement as if ADM-158 
 
 | Component | Closing (R) |
 | :--- | ---: |
-| Part 1A — LPG Gas | 6,413.32 |
-| Part 1B — CYL Deposits | -13,262.24 |
+| Part 1A — LPG Gas | 6,962.58 |
+| Part 1B — CYL Deposits | -13,811.50 |
 | **Combined (1A + 1B)** | **-6,848.92** |
 | ERP `CURRENT BALANCE` (TXT header) | -16,256.52 |
 | Less: quarantined documents held aside | -7,628.30 |
@@ -424,8 +424,8 @@ Projection requested by the operator on 2026-10-19: the statement as if ADM-158 
 
 | Component | Amount |
 |---|---:|
-| LPG Gas Debt (Part 1A close) | R6,413.32 |
-| Cylinder Financial Balance (Part 1B close) | R-13,262.24 |
+| LPG Gas Debt (Part 1A close) | R6,962.58 |
+| Cylinder Financial Balance (Part 1B close) | R-13,811.50 |
 | **Total Debtor Balance** | **R-6,848.92** |
 
 ### 2. Custody Position
@@ -441,7 +441,7 @@ Projection requested by the operator on 2026-10-19: the statement as if ADM-158 
 
 | Check | Financial | Custody | Variance |
 |---|---:|---:|---:|
-| Cylinder Position (1B vs custody) | R-13,262.24 | R-13,052.50 | R-209.74 |
+| Cylinder Position (1B vs custody) | R-13,811.50 | R-13,052.50 | R-759.00 |
 | Sub-ledger tie (1A + 1B vs combined) | R-6,848.92 | — | R0.00 |
 
 **ERP Combined Balance (TXT header):** R-16,256.52  
