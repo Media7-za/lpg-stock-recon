@@ -8,6 +8,8 @@
 
 ## 1. Resume Here
 
+> **2026-10-19: ADM-152 is CLOSED (Done).** The operator ruled that 45528 was wrong (H3); the correction is in ADM-158. The remaining requests were withdrawn. Nothing is waiting on this lane. The text below is superseded and kept for the record. Reopen only on the tripwires in `analysis/debtors/COF001/reports/COF001_ADM-152_ERP_Findings.md` ("Closed 2026-10-19").
+
 **Waiting on:** "Answer to task 1 follow-up" on ADM-152: page 2 of 45528 and its audit trail.
 
 - **Task 1 so far.** Page 1 was received 2026-10-18 and filed; see `analysis/debtors/COF001/reports/COF001_ADM-152_ERP_Findings.md`. It proves the stored lines (S.1 × 5 @ R1,207.50 incl VAT) but does not separate the hypotheses.

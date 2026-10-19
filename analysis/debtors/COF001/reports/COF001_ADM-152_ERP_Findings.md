@@ -98,3 +98,17 @@ ADM-152 comments, 2026-10-18:
 - **Tripwires that still apply.** These would contradict the ruling and go back to the operator:
   - DN#20080 shows no 48kg fulls delivered;
   - a site count shows five 48kg cylinders above the float.
+
+---
+
+## Closed 2026-10-19 (operator decision in the liaison session)
+
+- **Withdrawn.** The operator chose to withdraw the outstanding requests and close ADM-152. Turns 2-4 and Task 2 are marked WITHDRAWN on Linear; their text is kept, struck through.
+- **Closed.** The closing comment is `384c300b-20c3-46dc-ae13-76aaff7eadd2`. ADM-152 is set to Done.
+- **Never asked.** DN#20080 counts; stock movements on 9 Aug 2025; the empties documents 45529/13191 and 44730/12956/DN#12190; the bank lines for 40757 and 42636.
+  - The R517.50 9kg deposit on 44730 (investigation report §5) therefore stays ASSUMED.
+  - The database bank gap for Feb-Nov 2025 stays open.
+- **Tripwires that reopen this:**
+  - any DN#20080 record showing no 48kg fulls delivered;
+  - a site count showing five 48kg cylinders above the float;
+  - ADM-158's correction documents differing from the ruling.
