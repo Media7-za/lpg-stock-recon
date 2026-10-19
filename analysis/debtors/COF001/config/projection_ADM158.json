@@ -1,0 +1,19 @@
+{
+  "schemaNote": "Projection scenarios for COF001. Synthetic documents only: nothing here is in the ERP. Used by config/statement_v5_ADM158_Projection.json, never by the live statements.",
+  "activeScenarioId": "ADM158-PROJECTION",
+  "scenarios": [
+    {
+      "id": "ADM158-PROJECTION",
+      "title": "ADM-158 posted: invoice 45528 corrected and the gas credit used against the shortfall",
+      "status": "PROJECTED - not posted (Linear ADM-158, assigned to the ERP agent)",
+      "requestedBy": "operator",
+      "requestedOn": "2026-10-19",
+      "assumption": "Projection requested by the operator on 2026-10-19: the statement as if ADM-158 were done. Starting point: the ERP as it stands (no lane override, so 45528's S.1 line is back in 1B; the R-1,776.24 gas credit is not held aside). The ERP then posts a credit note for 45528's S.1 x5 (R-6,037.50, 1B) and an invoice for 5 x 48kg gas (R+7,267.54, 1A, at the July / 7 Aug 2025 price; ASSUMED, the ERP sets the price). Writing the R1,776.24 credit off against the R1,230.04 shortfall is an allocation, not a new document, so it does not move any balance: the gas lane simply nets the new invoice against the credit, leaving R546.20 of credit for the operator to decide. Projected posting date 19 Oct 2026 (ASSUMED).",
+      "notes": "At the 25 Aug 2025 price (R7,124.02) the projected gas invoice, the shortfall and the closing 1A and combined balances would all be R143.52 lower, and the remaining credit R689.72.",
+      "rows": [
+        { "doc_no": "PROJ-CN-45528", "entry_type": "Crd Note", "iso": "2026-10-19", "amount": -6037.5, "lane": "CYL", "cylQty": { "S.1": -5 }, "basis": "Reverses 45528 line 2 (S.1 x5 @ R1,207.50 incl VAT), PROVEN amount from the FINCON print" },
+        { "doc_no": "PROJ-INV-45528", "entry_type": "Invoice", "iso": "2026-10-19", "amount": 7267.54, "lane": "LPG", "basis": "5 x 48kg gas @ R1,263.92 ex VAT (price on 44729, 10 Jul 2025, and COF002 45486, 7 Aug 2025); ASSUMED price" }
+      ]
+    }
+  ]
+}

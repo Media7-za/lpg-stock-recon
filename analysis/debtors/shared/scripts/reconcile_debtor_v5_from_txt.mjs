@@ -96,6 +96,26 @@ function loadRatificationScenario(cfg) {
 }
 
 function buildRatificationRows(scenario) {
+  // A scenario may list several synthetic documents in `rows` (projection of an ERP correction set).
+  if (Array.isArray(scenario.rows)) {
+    return scenario.rows.map((r) => ({
+      lineNo: 99999,
+      period: 'RAT',
+      doc_no: String(r.doc_no),
+      clean_doc: String(r.doc_no),
+      entry_type: r.entry_type,
+      iso: r.iso,
+      ref_no: r.ref_no || '',
+      amount: round2(r.amount),
+      erp_balance: null,
+      is_cyl_only: r.lane === 'CYL',
+      is_ratification: true,
+      ratification_id: scenario.id,
+      ratification_title: scenario.title,
+      cyl_qty: r.cylQty || {},
+      note_label: r.label || 'projected',
+    }));
+  }
   const erp = scenario.erpAction;
   const syn = scenario.v5Synthetic;
   const docNo = syn.doc_no;
@@ -149,6 +169,22 @@ function buildRatificationDocSplit(ratificationRows) {
 
 function buildRatificationSection(scenario, erpVariance) {
   if (!scenario) return '';
+  if (Array.isArray(scenario.rows)) {
+    return `## Projection Scenario (active)
+
+**ID:** \`${scenario.id}\` · **Status:** ${scenario.status}
+
+${scenario.assumption}
+
+| Projected document | Date | Amount (R) | Lane | Basis |
+| :--- | :--- | ---: | :--- | :--- |
+${scenario.rows.map((r) => `| ${r.entry_type} ${r.doc_no} | ${r.iso} | ${fmt(r.amount)} | ${r.lane === 'CYL' ? '1B' : '1A'} | ${r.basis || ''} |`).join('\n')}
+
+> **ERP variance expected:** the projected documents are not in the ERP TXT, so the combined balance differs from the ERP by **R${fmt(erpVariance)}** until they are posted.${scenario.notes ? ` ${scenario.notes}` : ''}
+
+---
+`;
+  }
   const erp = scenario.erpAction;
   return `## Ratification Scenario (active)
 
@@ -188,9 +224,12 @@ function loadConfig(debtorCode) {
   const cylOpeningFinancial = Number(cfg.cylOpeningFinancial ?? 0);
   const combinedBf = Number(cfg.combinedBf);
   // Optional `quarantineFile` (path relative to the debtor folder): documents held aside from 1A/1B.
-  const quarantined = cfg.quarantineFile
-    ? JSON.parse(fs.readFileSync(path.join(ROOT, 'analysis/debtors', debtorCode, cfg.quarantineFile), 'utf8')).items || []
-    : [];
+  // Optional `quarantineSkip` (item doc_no list): items in the quarantine file this statement does not hold aside.
+  const quarantined = (
+    cfg.quarantineFile
+      ? JSON.parse(fs.readFileSync(path.join(ROOT, 'analysis/debtors', debtorCode, cfg.quarantineFile), 'utf8')).items || []
+      : []
+  ).filter((q) => !(cfg.quarantineSkip || []).includes(String(q.doc_no)));
   // A quarantined payment dated before the window is already inside the ERP opening balance;
   // take it out of the opening 1A balance (documents dated inside the window are held aside by loadTxt).
   const preWindowQuarantine = quarantined.filter((q) => q.date < cfg.periodStart);
@@ -460,7 +499,7 @@ function buildLaneSections(financial, lane, openingBf, amountKey, runningKey) {
       `| **01 ${mk.slice(0, 3)}** | **Opening Balance** | — | | **${fmt(monthOpening)}** |`,
     ];
     for (const r of rows) {
-      const ratNote = r.is_ratification ? ' *(ratification)*' : '';
+      const ratNote = r.is_ratification ? ` *(${r.note_label || 'ratification'})*` : '';
       lines.push(
         `| ${r.date_str} | ${r.entry_type} | ${r.clean_doc}${ratNote}${r.doc_note || ''} | ${fmt(r[amountKey])} | ${fmt(r[runningKey])} |`,
       );
@@ -660,7 +699,7 @@ async function buildPart2(client, cfg) {
         return '0';
       });
       if (changeStrs.some((x) => x !== '0')) {
-        const ratNote = r.is_ratification ? ' *(ratification)*' : '';
+        const ratNote = r.is_ratification ? ` *(${r.note_label || 'ratification'})*` : '';
         lines.push(
           `| ${displayDate(r.iso)} | ${r.entry_type} | ${r.clean_doc}${ratNote} | ${changeStrs.join(' | ')} |`,
         );

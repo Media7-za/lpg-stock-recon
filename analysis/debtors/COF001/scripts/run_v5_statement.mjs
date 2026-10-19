@@ -118,7 +118,7 @@ if (cfg.periodStart < '2026-01-01') {
   );
 }
 if (cfg.quarantineFile) {
-  const q = JSON.parse(fs.readFileSync(path.join(ACCT, cfg.quarantineFile), 'utf8')).items;
+  const q = JSON.parse(fs.readFileSync(path.join(ACCT, cfg.quarantineFile), 'utf8')).items.filter((x) => !(cfg.quarantineSkip || []).includes(String(x.doc_no)));
   for (const i of q) {
     items.push(
       `**Quarantined ${i.entry_type.toLowerCase()} ${i.doc_no} (${i.date}, R${i.amount.toLocaleString('en-US', { minimumFractionDigits: 2 })}).** Quarantined by the operator on ${i.decidedOn}; ${i.reasonStated && !/^none/.test(i.reasonStated) ? `reason: ${i.reasonStated}` : 'reason not stated.'}${i.shortfallNote ? ` ${i.shortfallNote}` : ''}${i.linkedTask ? ` Task: ${i.linkedTask}` : ''} ${i.findings?.length ? `Initial observation (partly superseded by the update below): ${i.observation}` : i.observation} ${i.treatment} ${i.notTreatedAs}${(i.findings || []).map((f) => ` **Update ${f.date} (${f.status}).** ${f.summary} Evidence: ${f.evidence.join(' ')} ${f.supersedes} Not checked: ${f.notChecked.join(' ')} ${f.implication}`).join('')} This statement is quarantine-adjusted${i.date < cfg.periodStart ? ' (the item is dated before this period, so the opening 1A balance excludes it)' : ''}; a statement whose config does not set \`quarantineFile\` is not adjusted. Reopen when: ${i.reopenWhen.join(' ')}`,
@@ -133,6 +133,7 @@ if (cfg.laneOverridesFile) {
     );
   }
 }
+if (cfg.projectionNote) items.unshift(`**${cfg.projectionNote}** The projected documents are listed under "Projection Scenario" at the top; the bridge variance equals their net amount until the ERP posts them. Source: \`${cfg.ratificationScenariosPath}\`.`);
 if (cfg.erpClosingNote) items.push(`**Closing check.** ${cfg.erpClosingNote}`);
 items.push(
   `**Database coverage.** All invoices and credit notes in the window were matched to the database by document and amount (see \`reports/COF001_DB_COVERAGE_2026-10-16.md\`).${inWindow('2026-05-05') ? ' Three documents in May 2026 are dated one day later in the database (14854, 50513, 50515).' : ''}`,
