@@ -72,7 +72,7 @@ def enhance_html(html_content):
     # Extract closing balance by cleaning lines and matching labels
     for line in html_content.split('\n'):
         clean_line = re.sub(r'<[^>]+>', '', line)
-        if any(lbl in clean_line for lbl in ["Combined Account Balance", "Reconciled True Total Account Balance", "Combined Closing Balance", "Total Reconciled Balance"]):
+        if any(lbl in clean_line for lbl in ["Combined Account Balance", "Reconciled True Total Account Balance", "Combined Closing Balance", "Total Reconciled Balance", "Closing Balance (LPG gas)"]):
             m = re.search(r'(R\s*[\d,.-]+)', clean_line)
             if m:
                 closing_bal = m.group(1).strip()
