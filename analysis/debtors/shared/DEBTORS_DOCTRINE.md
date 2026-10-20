@@ -198,6 +198,75 @@ It therefore:
 
 **(6) Migration.** No existing debtor has `ingestGate` populated today. Validators must **warn**, not fail, on its absence for any pre-existing account; a hard failure applies only to a malformed-but-present object. Retroactively failing `debtors:sync` for the 13 accounts that never populated this field — including four already `reconState: complete` — is not an acceptable consequence of ratifying this schema.
 
+### D20 — Registers declare; discovery only contradicts (ratified 2026-09-29)
+
+*Amends:* §5 (staged registries) · *Implemented in:* `SKILL_REGISTRY.json` · `SCRIPT_REGISTRY.json` · `PORTFOLIO_ARTIFACT_INDEX.json` · `docs/REGISTERS_PLAN.md`
+
+**A register is authored, never generated from the thing it governs.** A register
+derived by scanning its own subject cannot detect that the subject has drifted — it
+absorbs every defect as normal. Discovery is therefore permitted only to
+**contradict** a declaration, never to build one. `SLICE_REGISTRY.json` already held
+this relationship to its slices; this ruling generalises it.
+
+Three registers are ratified under this principle:
+
+| Register | Governs | Artifact |
+| :--- | :--- | :--- |
+| Skills | Every agent skill file, its lane, canonical scope, negative scope, owned scripts, produced slices | `analysis/debtors/shared/SKILL_REGISTRY.json` |
+| Scripts | Scope, durability, owning slice, and entry point of every script | `analysis/debtors/shared/SCRIPT_REGISTRY.json` |
+| Account artifacts | Which account holds which slice instance, and whether it is stale | `analysis/debtors/shared/PORTFOLIO_ARTIFACT_INDEX.json` |
+
+Consequent rules:
+
+- **One skill name, one file.** A name declared by two files makes which one loads
+  depend on load order, which is a silent correctness hazard, not an untidiness.
+  `NAME_UNIQUE` is a **hard** gate.
+- **No unregistered skill file.** A skill added without registration is invisible to
+  discovery and therefore to governance. `NO_ORPHAN_FILES` is a **hard** gate.
+- **Cross-register references are foreign keys.** `produces_slices` resolves into
+  `SLICE_REGISTRY.json` and `owns_scripts` into `package.json`. A rename that breaks
+  them is the gate working, not the gate failing.
+- **The artifact index lives beside `project.json`, not inside it.** This ruling
+  therefore **does not** amend `PROJECT_SCHEMA.md`. Rationale: it keeps `project.json`
+  diffs clean and cannot break the `debtors:sync` path the whole portfolio depends on.
+- **Slice staleness reports; it does not fail.** A slice older than its `depends_on`
+  is surfaced, never fatal. Failing `debtors:sync` portfolio-wide on staleness would
+  repeat the migration mistake D19 §(6) exists to prevent.
+
+**Not ratified by this entry.** The payer-class taxonomy remains prose, duplicated in
+`SKILL_Debtors_Orchestrator.md` §4 and `DEBTORS_ORCHESTRATION_PRD.md` §6. Promoting it
+is a lane-routing change and stays open.
+
+**Tripwires.** A sixth skill root appears (defeats `NO_ORPHAN_FILES` silently); a
+`SLICE_REGISTRY.json` slice is renamed or removed; a skill gains or loses an owning
+script without the same commit updating the register.
+
+### D21 — ERP payment tags: chronology, provenance, and recorded false leads (ratified 2026-09-29)
+
+*Amends:* §5 (invoice tag coverage) · *Implemented in:* `.agents/skills/SKILL_ERP_Payment_Tag_Verification.md` · `check_invoice_tag_coverage.mjs` · `config/payment_tag_false_leads.json`
+
+§5 already holds that payment tagging is not canonical and that no open list may rest
+on it alone. This ruling names the two rejections that follow from it, so they are
+applied as procedure rather than rediscovered per session.
+
+- **`INVNO_TAG_CHRONOLOGY`.** A payment's `INVNO` tag may not close an invoice whose
+  `tx_date` is **after** the payment's. Such a tag is a prepay or placeholder pointer,
+  not a settlement. Rejection is unconditional under Order B; under Order A a customer
+  remittance naming the invoice still outranks it.
+- **`TAG_EVIDENCE_PROVENANCE`.** `allocation_edges.csv` rows that are wholly
+  `ERP_LEDGER`/`Probable` and form a dense date-ordered run inside an already-assumed
+  month are that assumption expanded into invoice rows. They may not be cited as
+  independent confirmation of the month they came from. This circularity produced a
+  retraction and counter-retraction in `JIM001_Exact_Sum_Bridge_Review_2026-09-13.md`.
+- **False leads are config, not memory.** A tag proven false is recorded in the
+  account's `config/payment_tag_false_leads.json` and **enforced** by
+  `npm run debtors:tag-check`. Per §5 idempotency, operator judgement that lives only
+  in a session does not survive regeneration.
+
+**Tripwires.** A customer remittance names a doc recorded as a false lead (Order A
+outranks — reopen that doc); allocation-edge provenance labelling changes such that
+`ERP_LEDGER`/`Probable` no longer identifies derived rows.
+
 ### Scoped-canonical implementation (do not duplicate here)
 
 | Topic | Constitutional home for implementation |
@@ -206,6 +275,8 @@ It therefore:
 | Invoice-linked payment→invoice matching | `analysis/debtors/shared/docs/ALLOCATION_DOCTRINE.md` + `SKILL_Payment_To_Invoice_Allocation.md` §3 |
 | Monthly batch payers (JIM001 class) | `analysis/skills/lpg-payment-pattern-analysis/SKILL.md` |
 | Settlement discount lane | Account doctrine (e.g. TWK002 v2) |
+| ERP payment tag verification (chronology, provenance, false leads) | `.agents/skills/SKILL_ERP_Payment_Tag_Verification.md` (see **D21**) |
+| Register schemas, gates, and sequencing | `analysis/debtors/shared/docs/REGISTERS_PLAN.md` (see **D20**) |
 
 ---
 
@@ -255,6 +326,20 @@ Full rules: `SKILL_Debtors_Orchestrator.md` §5.2 Epistemic bookkeeping.
 **Ratified 2026-07-26 (Turn 14b):** D16 (workbench `COMPLETE` is a UI state, not a reconciliation state — promotes `AR_Recon_Workflow.md` §19.2 from an application clause to constitutional rule, adds the dual-label display requirement) and D17 (collections gate requires a stated collectable balance and no blocking dispute or hold; age sets priority, not eligibility).
 
 **Ratified 2026-07-26 (Turn 14c):** D18 (collectable-balance and blocker contract in `PROJECT_SCHEMA.md`; projection validity separable from collections eligibility; blocked accounts remain visible, labelled `COLLECTIONS_BLOCKED`, with demand drafting prohibited).
+
+**Ratified 2026-09-29 (in-session, operator):** D20 (registers declare and discovery only contradicts; skills, scripts, and account artifacts each get a register; `NAME_UNIQUE` and `NO_ORPHAN_FILES` are hard gates; the artifact index lives beside `project.json` so `PROJECT_SCHEMA.md` is untouched; slice staleness reports rather than fails) and D21 (`INVNO_TAG_CHRONOLOGY` and `TAG_EVIDENCE_PROVENANCE` as named rejections; payment-tag false leads recorded in config and enforced by `debtors:tag-check`).
+
+> **Operator ratification, verbatim:** *"yes to all recommendations"* — 2026-09-29,
+> answering an enumerated list of decisions D1–D6 plus proposal P7 in
+> `docs/handoffs/2026-09-29.md` §4. D6 (payer-class taxonomy) was explicitly left open.
+>
+> **Vehicle deviation — flagged, not hidden.** §7 requires doctrine changes to
+> originate in the designated orchestration session and be applied by turn brief. This
+> session began as a **worker** session (BR0001 v5 Turn 1); the proposals were staged
+> here and the operator ratified them directly, without a turn brief. The ratifying
+> authority is correct (§7: *"ratified by the operator"*); the vehicle was not. Recorded
+> this way so the next orchestration session can confirm the entries rather than
+> discover them. Substance stands; procedure is noted.
 
 **Ratified 2026-07-26 (Turn B4):** D19 (`ingestGate` canonical but optional in `project.json`; `status` redefined as schema validity — not ingest health — to prevent it overlapping with `ingestFreshness`/`ingestCoverage`; absence never read as clearance for custody/SKU/allocation claims; no auto-population of `collections.blockers`; existing debtors migrate under a warning model, not retroactive failure). **Implementation pending** — `PROJECT_SCHEMA.md` promotion, and the `status` field in the already-shipped `validate_txt_db_coverage.mjs` (Turn B1, commit `269d8ce`), are not yet aligned to this ruling; see flag below.
 

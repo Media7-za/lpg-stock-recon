@@ -304,21 +304,39 @@ describe('evidence basis is reported, so a clean gate is read correctly', () => 
   test('with no remittance lines the basis is PATTERN_ONLY and the check is declared inert', () => {
     const res = analyse(rows, { headerBalance: 0 });
     assert.equal(res.evidence.basis, 'PATTERN_ONLY');
-    assert.deepEqual(res.evidence.checks_inert, ['REMITTANCE_CONTRADICTION']);
+    assert.ok(res.evidence.checks_inert.includes('REMITTANCE_CONTRADICTION'));
     assert.ok(!res.evidence.checks_run.includes('REMITTANCE_CONTRADICTION'));
     assert.match(res.evidence.note, /pattern|business rules/i);
   });
 
-  test('with remittance lines the basis is REMITTANCE_BACKED and nothing is inert', () => {
+  test('with remittance lines the basis is REMITTANCE_BACKED and that check is no longer inert', () => {
     const res = analyse(rows, {
       headerBalance: 0,
       remittanceDocs: new Map([['1000', { batches: ['BATCH-1'], sources: ['remittance_lines_2026.csv'] }]]),
     });
     assert.equal(res.evidence.basis, 'REMITTANCE_BACKED');
     assert.equal(res.evidence.remittance_invoice_docs, 1);
-    assert.deepEqual(res.evidence.checks_inert, []);
+    assert.ok(!res.evidence.checks_inert.includes('REMITTANCE_CONTRADICTION'));
     assert.ok(res.evidence.checks_run.includes('REMITTANCE_CONTRADICTION'));
     assert.equal(res.evidence.note, null);
+  });
+
+  test('an absent false-lead registry is declared inert, not silently treated as clean', () => {
+    // D21: no recorded false leads is not evidence there are none. The gate must
+    // say the check did not run rather than let an ALLOWED imply it did.
+    const res = analyse(rows, { headerBalance: 0 });
+    assert.ok(res.evidence.checks_inert.includes('FALSE_LEAD_REGISTRY'));
+    assert.ok(!res.evidence.checks_run.includes('FALSE_LEAD_REGISTRY'));
+  });
+
+  test('with both remittance lines and a false-lead registry loaded, nothing is inert', () => {
+    const res = analyse(rows, {
+      headerBalance: 0,
+      remittanceDocs: new Map([['1000', { batches: ['BATCH-1'], sources: ['r.csv'] }]]),
+      falseLeads: new Map([['7777', { invno: '7777', reason: 'prepay pointer' }]]),
+    });
+    assert.deepEqual(res.evidence.checks_inert, []);
+    assert.ok(res.evidence.checks_run.includes('FALSE_LEAD_REGISTRY'));
   });
 
   test('the invariant and staleness checks run under either basis', () => {
@@ -347,10 +365,150 @@ describe('ALLOWED is absence of contradiction, not proof', () => {
   test('no remedy sends the reader to remittance advices as the only route', () => {
     // Most accounts have none and never will, so a remedy that assumes them is
     // unactionable there.
+    // Two reasons are exempt because they can only fire when an advice exists:
+    // both are triggered by a remittance line naming the doc.
+    const adviceDriven = new Set([
+      'INVOICE_ON_REMITTANCE_STILL_OPEN',
+      'FALSE_LEAD_CONTRADICTED_BY_REMITTANCE',
+    ]);
     for (const [reason, text] of Object.entries(REMEDY)) {
-      if (reason === 'INVOICE_ON_REMITTANCE_STILL_OPEN') continue; // by definition advice-driven
+      if (adviceDriven.has(reason)) continue;
       assert.match(text, /pattern|business_rules\.md §15|authority order B/i, `${reason} must offer a pattern route`);
     }
+  });
+});
+
+describe('INVNO_TAG_CHRONOLOGY — a tag naming a later invoice cannot be settling it', () => {
+  // Doctrine D21. The MD0003 shape is the permanent fixture: payment slice 42440
+  // (2025-11-28) tags INVNO 48372, but invoice 48372 posts 2025-12-19. It is a
+  // prepay pointer, not a November settlement of a December invoice. This was
+  // caught by hand; any change that lets the shape pass unflagged is a regression.
+  const md0003 = [
+    invoice('48372', '2025-12-19', 5000),
+    taggedPayment('42440', '2025-11-28', '48372', -5000),
+  ];
+
+  test('detects the violation from the TXT alone, with no registry loaded', () => {
+    const res = analyse(md0003, { headerBalance: 5000 });
+    assert.equal(res.payment_tag_integrity.chronology_violations, 1);
+    const v = res.payment_tag_integrity.unrecorded[0];
+    assert.equal(v.settlement_doc, '42440');
+    assert.equal(v.tagged_invno, '48372');
+    assert.equal(v.invoice_iso, '2025-12-19');
+    assert.equal(v.settlement_iso, '2025-11-28');
+    assert.equal(v.days_early, 21);
+  });
+
+  test('an unrecorded violation forces REVIEW_REQUIRED, never ALLOWED', () => {
+    const res = analyse(md0003, { headerBalance: 5000 });
+    assert.equal(res.gate, 'REVIEW_REQUIRED');
+    assert.equal(res.payment_tag_integrity.status, 'REVIEW');
+  });
+
+  test('once recorded in the registry it is no longer unrecorded and stops forcing review', () => {
+    const res = analyse(md0003, {
+      headerBalance: 5000,
+      falseLeads: new Map([['48372', { invno: '48372', reason: 'prepay pointer', classification: 'PREPAY_POINTER' }]]),
+    });
+    assert.equal(res.payment_tag_integrity.chronology_violations, 1);
+    assert.equal(res.payment_tag_integrity.chronology_violations_recorded, 1);
+    assert.equal(res.payment_tag_integrity.chronology_violations_unrecorded, 0);
+    assert.equal(res.payment_tag_integrity.status, 'PASS');
+  });
+
+  test('a settlement tagging an EARLIER invoice is normal and is not flagged', () => {
+    const res = analyse(
+      [invoice('1000', '2026-01-10', 500), taggedPayment('9001', '2026-02-10', '1000', -500)],
+      { headerBalance: 0 },
+    );
+    assert.equal(res.payment_tag_integrity.chronology_violations, 0);
+    assert.equal(res.payment_tag_integrity.status, 'PASS');
+  });
+
+  test('a same-day settlement is not a violation', () => {
+    const res = analyse(
+      [invoice('1000', '2026-01-10', 500), taggedPayment('9001', '2026-01-10', '1000', -500)],
+      { headerBalance: 0 },
+    );
+    assert.equal(res.payment_tag_integrity.chronology_violations, 0);
+  });
+
+  test('a tag naming an invoice absent from the export is not guessed at', () => {
+    // No invoice row means no date to compare; inventing one would manufacture
+    // a violation or clear a real one.
+    const res = analyse([taggedPayment('9001', '2026-02-10', '4242', -500)], { headerBalance: 0 });
+    assert.equal(res.payment_tag_integrity.chronology_violations, 0);
+  });
+
+  test('credit notes are checked too, not just payments', () => {
+    const rows = [
+      invoice('2000', '2026-03-15', 800),
+      row({ docno: '7001', cleanDoc: '7001', entry: 'Crd Note', iso: '2026-02-01', invno: '2000', amount: -800 }),
+    ];
+    const res = analyse(rows, { headerBalance: 800 });
+    assert.equal(res.payment_tag_integrity.chronology_violations, 1);
+    assert.equal(res.payment_tag_integrity.unrecorded[0].settlement_entry, 'Crd Note');
+  });
+});
+
+describe('false-lead registry enforcement (D21 Gate 4)', () => {
+  const rows = [invoice('1000', '2026-01-10', 500), untaggedPayment('9001', '2026-02-10', -500)];
+
+  test('closing an invoice on a ratified false tag is BLOCKED', () => {
+    const res = analyse(rows, {
+      headerBalance: 0,
+      closedOverrides: [{ doc: '1000' }],
+      falseLeads: new Map([['1000', { invno: '1000', reason: 'placeholder reuse' }]]),
+    });
+    assert.equal(res.gate, 'BLOCKED');
+    assert.equal(res.blocking_reason, 'INVOICE_CLOSED_ON_FALSE_TAG');
+    assert.equal(res.payment_tag_integrity.status, 'BREACHED');
+    assert.equal(res.payment_tag_integrity.closed_on_false_tag.length, 1);
+  });
+
+  test('a false lead that closes nothing does not block', () => {
+    const res = analyse(rows, {
+      headerBalance: 0,
+      falseLeads: new Map([['7777', { invno: '7777', reason: 'unrelated' }]]),
+    });
+    assert.notEqual(res.blocking_reason, 'INVOICE_CLOSED_ON_FALSE_TAG');
+  });
+
+  test('a remittance naming a ratified false lead fires the tripwire and outranks it', () => {
+    // Authority order A: the advice wins, so the false-lead entry is what reopens.
+    const res = analyse(rows, {
+      headerBalance: 0,
+      falseLeads: new Map([['1000', { invno: '1000', reason: 'prepay pointer', tripwire: 'remittance for this batch' }]]),
+      remittanceDocs: new Map([['1000', { batches: ['B1'], sources: ['r.csv'] }]]),
+    });
+    assert.equal(res.gate, 'BLOCKED');
+    assert.equal(res.blocking_reason, 'FALSE_LEAD_CONTRADICTED_BY_REMITTANCE');
+    assert.equal(res.payment_tag_integrity.false_lead_contradicted_by_remittance.length, 1);
+  });
+
+  test('the remittance contradiction outranks a closure breach when both are present', () => {
+    // Both fire; the tripwire must surface because it invalidates the ratified
+    // entry the closure breach is measured against.
+    const res = analyse(rows, {
+      headerBalance: 0,
+      closedOverrides: [{ doc: '1000' }],
+      falseLeads: new Map([['1000', { invno: '1000', reason: 'prepay pointer' }]]),
+      remittanceDocs: new Map([['1000', { batches: ['B1'], sources: ['r.csv'] }]]),
+    });
+    assert.equal(res.blocking_reason, 'FALSE_LEAD_CONTRADICTED_BY_REMITTANCE');
+  });
+
+  test('every new blocking reason has a remedy', () => {
+    for (const reason of ['INVOICE_CLOSED_ON_FALSE_TAG', 'FALSE_LEAD_CONTRADICTED_BY_REMITTANCE']) {
+      assert.ok(REMEDY[reason], `${reason} must carry a remedy`);
+      assert.match(REMEDY[reason], /D21|remittance|supersede/i);
+    }
+  });
+
+  test('a remedy never tells the reader to delete a ratified entry', () => {
+    // Amendments append; superseded text is marked, never deleted.
+    assert.match(REMEDY.INVOICE_CLOSED_ON_FALSE_TAG, /Do not resolve this by deleting/i);
+    assert.match(REMEDY.FALSE_LEAD_CONTRADICTED_BY_REMITTANCE, /retain it, do not delete/i);
   });
 });
 

@@ -18,7 +18,7 @@
 | ERP behaviour observed | **Cash-only gross** — `TRANSF \| STAT 1xx` payments; amounts align to **LPG gas lines** (CYL deposit rows stripped) |
 | CYL/EMPTIES in comparison base | **No** — strip all `-EMPTY` / `EMPTY` suffix rows (JIM001 LPG-only rule; unlike TWK002) |
 
-**Orchestrator lane:** `position_recon` + stripped-gas payment pattern (`docs/JEN001_reconciliation_skill.md`).  
+**Orchestrator lane:** `position_recon` + stripped-gas payment pattern (`.agents/skills/SKILL_JEN001_Reconciliation.md`).  
 **Not applicable:** `settlement_discount` (TWK002), `allocation` (WO0001 ref_no-linked).
 
 ---
@@ -70,7 +70,7 @@ Every cylinder delivery produces a three-row ERP pattern (gas + deposit + deposi
 | **1** | **Bank deposit / remittance advice** (if available) | Canonical **cash** sign-off |
 | **2** | **Operator analysis** (`raw/JEN001_Final_Recon_Export.xlsx`) | Allocation hints — *not* substitute for Tier 1 |
 | **3** | **TXT export** (`raw/JEN001.TXT`) | ERP document headers, payments, running balance |
-| **4** | **Stripped gas statement** (`docs/JEN001_reconciliation_skill.md`) | LPG-only running balance cross-check |
+| **4** | **Stripped gas statement** (`.agents/skills/SKILL_JEN001_Reconciliation.md`) | LPG-only running balance cross-check |
 
 > **Gap (Turn 1):** No `raw/Remittances/` folder. Tier 1 evidence **missing** — Turn 2 pilot requires bank deposit detail or remittance PDF.
 
@@ -101,7 +101,7 @@ Do **not** populate discount overrides unless commercial terms change.
 
 | Skill | Applicability |
 | :--- | :--- |
-| `docs/JEN001_reconciliation_skill.md` | **Primary** — stripped gas statement, CYL ledger |
+| `.agents/skills/SKILL_JEN001_Reconciliation.md` | **Primary** — stripped gas statement, CYL ledger |
 | `debtors-analysis_Skill.md` | Graph states, exception taxonomy |
 | `lpg-payment-pattern-analysis` | Monthly/batch payment matching on **LPG-only** totals |
 | `SKILL_Payment_To_Invoice_Allocation.md` | **Partial** — amount-to-invoice matching; not ref_no-canonical |

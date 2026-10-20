@@ -22,9 +22,25 @@
     "actionType": null,
     "dateSent": null,
     "deadlineDate": null,
-    "nextAction": null,
+    "nextAction": "Rule on the 10 unrecorded INVNO_TAG_CHRONOLOGY violations — see the blocker below. Then H-021 (fresh DEBENQ/DTRX past 2026-08-03).",
     "nextActionDate": null,
-    "notes": "Turn 001 v5 from DEBENQ_CURRENT.TXT. Lane position_recon locked. D17 not met. Header CURRENT BALANCE vs running close is the UD identity — not a collectable. TXT last row 2026-08-03; DB has later invoices."
+    "notes": "Turn 001 v5 from DEBENQ_CURRENT.TXT. Lane position_recon locked. D17 not met. Header CURRENT BALANCE vs running close is the UD identity — not a collectable. TXT last row 2026-08-03; DB has later invoices. This is the only account in the portfolio whose export carries allocation detail and therefore the only one where D21 tag chronology can be tested — 10 violations found, none ruled on.",
+    "blockers": [
+      {
+        "type": "OTHER",
+        "status": "open",
+        "description": "10 unrecorded INVNO_TAG_CHRONOLOGY violations (D21): settlement rows naming invoices dated after them, so they cannot be paying those invoices. Worst is payment 38772 (2025-05-23, R-0.01) tagging invoice 48410 dated 2025-12-20 — 211 days early. Also 41598 (31d, 38d), 42549 x3 (8d, 9d, 10d), 38117 (14d), 37822 (4d), 39363 (1d), 40613 (1d). Each needs a ruling recorded in config/payment_tag_false_leads.json; a session-only decision does not survive regeneration. Does not change the financial close R20,061.51 — this is about which invoices the open list says are open.",
+        "source": "npm run debtors:tag-check -- --debtor GAS004",
+        "asAt": "2026-09-29"
+      },
+      {
+        "type": "STALE_SOURCE",
+        "status": "open",
+        "description": "The globalAgedDebtAsAt value of 2025-07-13 recorded in financials is contested and probably wrong by a year, which matters because agedDebt180Plus R20,061.49 is taken from that file's 120+ column. Two accounts now tie the snapshot to 13 July 2026: this account's own TXT running balance is exactly R20,061.51 on 13/07/2026 (DEBENQ_CURRENT.TXT line 676) against R26,633.43 on 13/07/2025, and BR0001 ties three ways to its 2026 statement. If the snapshot is 2026 then the ageing figure is 21 days stale, not 13 months. Do not correct the field here until the operator rules under H-032 — the vintage is portfolio-wide.",
+        "source": "analysis/debtors/shared/HUMAN_TASKS.md#H-032",
+        "asAt": "2026-09-29"
+      }
+    ]
   },
   "ingestGate": {
     "status": "pass",
@@ -40,6 +56,14 @@
     {
       "date": "2026-08-17",
       "event": "Turn 001: DEBENQ_2024/2025/CURRENT copied to raw/. v5 generated — combined 1A+1B = running close R20,061.51 (PROVEN); header CURRENT BALANCE R30,242.46 is running close excluding UD R-10,180.95. Ingest CURRENT_PARTIAL (10 missing headers). reconState in-progress. Family GAS002/GAS003/GAS010 noted, not merged. H-020 global + H-021 fresh DEBENQ/DTRX queued."
+    },
+    {
+      "date": "2026-09-29",
+      "event": "D21 payment tag integrity run against this account for the first time since the gate was ratified. PROVEN: 10 unrecorded INVNO_TAG_CHRONOLOGY violations, worst payment 38772 tagging invoice 48410 211 days before that invoice existed. Recorded as an open blocker rather than ruled on — classifying a tag as a false lead is an operator decision and belongs in config/payment_tag_false_leads.json. The gate value was already REVIEW_REQUIRED; what was missing was visibility, because the console printed only the STALE_OPEN findings. check_invoice_tag_coverage.mjs now prints the D21 result on both the single-account and portfolio paths, covered by check_invoice_tag_coverage.test.mjs. Financial close R20,061.51 unchanged — D21 is about which invoices the open list calls open, not about the account total."
+    },
+    {
+      "date": "2026-09-29",
+      "event": "Contested the globalAgedDebtAsAt value of 2025-07-13 that agedDebt180Plus R20,061.49 rests on. This account's own TXT puts the running balance at exactly R20,061.51 on 13/07/2026 (line 676) and R26,633.43 on 13/07/2025, so the global snapshot row matches 2026. BR0001 ties the same file three ways to 2026 rows. Neither the field nor agedDebt180Plus is changed here: the file's vintage is portfolio-wide and is queued for the operator as H-032. Superseded text is marked, not deleted."
     }
   ]
 }

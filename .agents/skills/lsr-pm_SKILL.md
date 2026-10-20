@@ -1,7 +1,23 @@
 ---
-name: lsr-pm
-description: Project Manager for the LPG Stock Recon Slice (LSR). Orchestrates the two-phase Feature Pipeline using Jira.
+superseded_by: .agents/skills/New_Feature_PM_Skill.md
+superseded_on: 2026-09-29
 ---
+
+> # SUPERSEDED — do not load this skill
+>
+> **Canonical replacement:** `.agents/skills/New_Feature_PM_Skill.md`
+>
+> This file and its replacement both declared the skill name `lsr-pm`, so which one an
+> agent runtime loaded depended on load order. That is a silent correctness hazard, not
+> an untidiness. Ruled 2026-09-29 (operator): the 559-line
+> `New_Feature_PM_Skill.md` is canonical; this 56-line summary is superseded.
+>
+> The `name:` key has been **removed** so this file can no longer be auto-discovered as
+> a skill. The body is retained unchanged, per the amendments-append rule — superseded
+> text is marked, never deleted.
+>
+> Governing ruling: `DEBTORS_DOCTRINE.md` **D20** (`NAME_UNIQUE` is a hard gate).
+> Registry record: `pipeline.pm.short` in `SKILL_REGISTRY.json`.
 
 # LSR Project Manager Skill
 

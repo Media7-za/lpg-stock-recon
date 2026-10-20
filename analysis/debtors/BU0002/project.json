@@ -1,0 +1,49 @@
+{
+  "debtorCode": "BU0002",
+  "clientName": "BULWER CASH STORE",
+  "status": "active",
+  "reconState": "pending",
+  "financials": {
+    "totalOutstanding": -18913.50,
+    "totalOutstandingNote": "ASSERTED — global aged-debt BU0002 row R-18,913.50 (analysis/debtors/Global Reports/130720251H45M.TXT). The account is in credit. No statement TXT exists in raw/, so there is no reconstructable Part 1A/1B bridge and no PROVEN anchor; this figure is a snapshot row, not a reconciled close. Do not promote to PROVEN without the statement TXT.",
+    "lastInvoiceDate": null,
+    "lastPaymentDate": null,
+    "agedDebt180Plus": 0.0,
+    "agedDebt180PlusNote": "ASSERTED — the global aged-debt BU0002 row carries the whole R-18,913.50 in CURRENT with 30/60/90/120+ all R0.00, so no positive balance sits beyond 180 days. Weaker than the same claim on BR0001 or IVE001: it rests solely on the global snapshot, which is provably incomplete for at least one other account (see IVE001 blocker), and there is no statement chronology here to corroborate it."
+  },
+  "collections": {
+    "actionRequired": false,
+    "actionType": null,
+    "dateSent": null,
+    "deadlineDate": null,
+    "nextAction": "Sources Agent H-031: export a BU0002 statement TXT into raw/ plus same-session DTRX headers and ITEMS lines covering at least 2026-07-13. Nothing downstream can start without it - config/statement_v5.json opening balances must be read from the TXT opening lines, never copied from a sibling account.",
+    "nextActionDate": null,
+    "notes": "Lane preliminary position_recon (STAT batches 122-127 in the DTRX sample, no settlement discount signal) - not locked, because no statement TXT header has been parsed. Portfolio hint is Tier B, defer, terms COD; status is recorded as active to match the portfolio convention for un-started accounts, not as a judgement that the account is being worked. ingestGate is deliberately absent: nothing has been ingested, and under D19 an absent gate is read identically to custody, sku_analysis and allocation all being blocked, which is the correct posture. Siblings BU0005, BU0003, BU0009 and HN0001 stay separate ledgers unless the operator rules otherwise. No collections action is possible or appropriate on a credit balance with no anchor. reports/BU0002_Onboarding_Status.md.",
+    "blockers": [
+      {
+        "type": "STALE_SOURCE",
+        "status": "open",
+        "description": "No authoritative statement TXT in raw/. DTRX headers cover 1,394 docs to 2026-06-27 with header/items sync 2026-07-01 and zero July 2026 documents, against a global snapshot dated later - so a missing-document manifest is expected once the TXT lands. Blocks the v5 bridge, the ingest coverage check, the workspace fixture, custody, SKU and allocation.",
+        "source": "reports/BU0002_Onboarding_Status.md",
+        "asAt": "2026-07-25"
+      },
+      {
+        "type": "OTHER",
+        "status": "open",
+        "description": "CN 14422 anomaly (Feb 2026): DETRANS shows a credit note of R-49,852.50 on ref DN/EMPTY against invoice 49216 of R28,865.00. Flag for operator review once a TXT manifest exists. Do not infer SKU or cylinder quantities from the credit note alone - DETRANS is a derived cache, not Tier-3 authority.",
+        "source": "reports/BU0002_Onboarding_Status.md",
+        "asAt": "2026-07-25"
+      }
+    ]
+  },
+  "history": [
+    {
+      "date": "2026-07-25",
+      "event": "Turn 001 scaffold: folder + config/statement_v5.json with opening balances left pending. No statement TXT in raw/. Lane preliminary position_recon (not locked). Global anchor R-18,913.50 recorded as reference only. reports/BU0002_Onboarding_Status.md."
+    },
+    {
+      "date": "2026-09-29",
+      "event": "project.json authored. The account had config/ and two reports since 2026-07-25 but no register entry, so it was invisible to debtors:sync, the dashboard and the D17/D18 gates. The gap was surfaced by Register 2 (analysis/debtors/shared/PORTFOLIO_ARTIFACT_INDEX.json reported portfolio.register absent for BU0002). The 2026-07-25 entry above is reconstructed from the dated artifacts on disk, not recorded live. Both financial figures are tagged ASSERTED, not PROVEN - the account has no statement TXT. Source export queued as H-031."
+    }
+  ]
+}

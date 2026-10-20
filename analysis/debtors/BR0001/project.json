@@ -1,0 +1,62 @@
+{
+  "debtorCode": "BR0001",
+  "clientName": "BRENELL  DESSERTS",
+  "status": "active",
+  "reconState": "in-progress",
+  "financials": {
+    "totalOutstanding": 20673.66,
+    "totalOutstandingNote": "PROVEN as-at 2026-07-20 — raw/BR0001P1TOP17.TXT header CURRENT BALANCE R20,673.66, reconstructed as Part 1A LPG R21,363.66 + Part 1B CYL R-690.00 with variance R0.00 (reports/BR0001_Statement_Account_v5.md). Independently corroborated by global aged-debt BR0001 row R14,602.63 plus the 13-20 Jul movement (CN 15282 R-4,830.00 + inv 51925 R6,071.03 + inv 51926 R4,830.00). PROVEN against its own source date only: the TXT last row is 2026-07-20, so this is not an assertion about exposure today.",
+    "lastInvoiceDate": "2026-07-20",
+    "lastPaymentDate": "2026-05-29",
+    "agedDebt180Plus": 0.0,
+    "agedDebt180PlusNote": "PROVEN — Part 1A running balance was R-4,783.46 (credit) on 2026-05-29 after payment 44464, so every rand of the R21,363.66 LPG close arises from invoices dated 2026-06-11 or later; Part 1B closes in credit at R-690.00. Nothing in the balance is 180 days old. Corroborated by the global aged-debt BR0001 row, whose 60/90/120+ buckets are all R0.00.",
+    "erpTxtClosing": 20673.66,
+    "erpTxtClosingAsOf": "2026-07-20",
+    "erpTxtSource": "raw/BR0001P1TOP17.TXT"
+  },
+  "collections": {
+    "actionRequired": false,
+    "actionType": null,
+    "dateSent": null,
+    "deadlineDate": null,
+    "nextAction": "Sources Agent H-030: fresh BR0001 statement TXT plus same-session DTRX headers and ITEMS lines covering past 2026-07-20, then re-run npm run debtors:ingest-check -- --debtor BR0001. Custody, SKU and allocation stay BLOCKED until then.",
+    "nextActionDate": null,
+    "notes": "Lane position_recon locked from the TXT (STAT batches 122-126, no settlement discount). Financial bridge PROVEN at R0.00; Part 2 custody sign-off BLOCKED by the ingest gate. Part 1B residual R-690.00 is ERP-intentional (CN 15140 reverses R5,520.00 against inv 51478 R4,830.00) and is not a bridge error. Cylinder position carries a R4,600.00 financial-vs-custody variance that cannot be closed while custody is blocked. Account is one of the eight EXCLUDE ALLOCATION DETAIL accounts under H-016 — invoice-level route is an open operator decision, not an export defect. No collections action proposed: the anchor is PROVEN only as-at 2026-07-20.",
+    "blockers": [
+      {
+        "type": "STALE_SOURCE",
+        "status": "open",
+        "description": "Ingest STALE_PARTIAL - DB header/items sync 2026-07-01 against TXT as-at 2026-07-20; 8 of 40 period documents missing both header and lines (51171, 51172, 15210, 51659, 51660, 15282, 51925, 51926). Blocks custody, sku_analysis and allocation. Does not change the financial close R20,673.66.",
+        "source": "reports/BR0001_INGEST_COVERAGE_2026-07-22.json",
+        "asAt": "2026-07-22"
+      },
+      {
+        "type": "UNRESOLVED_IDENTITY",
+        "status": "open",
+        "description": "Sibling BR0002 (BRENELL EMPTIES, R598.00 on the global aged-debt snapshot) is deliberately not merged into BR0001, so totalOutstanding here is single-code. Whether BR0002 belongs inside Part 1B or stays a separate ledger is an open operator question - do not aggregate without a ruling.",
+        "source": "analysis/debtors/Global Reports/130720251H45M.TXT",
+        "asAt": "2026-07-22"
+      }
+    ]
+  },
+  "ingestGate": {
+    "status": "pass",
+    "ingestFreshness": "stale",
+    "ingestCoverage": "partial",
+    "displayStatus": "STALE_PARTIAL",
+    "asAt": "2026-07-22",
+    "reportPath": "reports/BR0001_INGEST_COVERAGE_2026-07-22.json",
+    "ingestBlockedScopes": ["custody", "sku_analysis", "allocation"],
+    "exceptions": []
+  },
+  "history": [
+    {
+      "date": "2026-07-22",
+      "event": "raw/BR0001P1TOP17.TXT ingested (P1-P17, last row 2026-07-20). v5 statement composed: PROVEN Part 1A R21,363.66 + Part 1B R-690.00 = R20,673.66 = ERP CURRENT BALANCE, variance R0.00, sub-ledger tie R0.00. Lane position_recon locked from the TXT. Ingest STALE_PARTIAL - 8 INGEST_GAP docs; custody, SKU and allocation BLOCKED. reports/BR0001_Onboarding_Status.md."
+    },
+    {
+      "date": "2026-09-29",
+      "event": "project.json authored. The account had raw/, config/ and five reports since 2026-07-22 but no register entry, so it was invisible to debtors:sync, the dashboard and the D17/D18 gates. The gap was surfaced by Register 2 (analysis/debtors/shared/PORTFOLIO_ARTIFACT_INDEX.json reported portfolio.register absent for BR0001). The 2026-07-22 entry above is reconstructed from the dated artifacts on disk, not recorded live. agedDebt180Plus anchored to the statement's own chronology rather than the global snapshot. Custody refresh queued as H-030."
+    }
+  ]
+}

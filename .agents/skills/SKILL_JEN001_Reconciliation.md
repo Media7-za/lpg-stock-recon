@@ -1,4 +1,24 @@
+---
+name: jen001-reconciliation
+description: >-
+  Reconciliation skill for Jennings Gas (Jens Spoon Pty Ltd) using the Stripped Gas
+  Model — Part 1 LPG-only financial ledger with cylinder deposits stripped out, Part 2
+  quantity-only cylinder ledger. Use when reconciling JEN001, building its statement,
+  or checking the 9kg cylinder opening balance. Query account_no = 'JEN001' ONLY:
+  merging legacy JEN010 corrupts the physical cylinder opening balances. Not for any
+  other account. Settlement discount for this account lives in its own doctrine doc.
+---
+
 # Debtor Reconciliation Skill: Jennings Gas (JEN001 / JEN010)
+
+> **Relocated 2026-09-29** from `analysis/debtors/JEN001/docs/JEN001_reconciliation_skill.md`.
+> It held the JEN010 exclusion rule — which changes the 9kg physical opening balance
+> from `-1` to `+5` if ignored — while sitting outside every skill root, so no agent
+> runtime could discover it. Ruled under `DEBTORS_DOCTRINE.md` **D20** (operator
+> decision D3). Registry record: `jen001.recon`.
+>
+> `JEN001_Settlement_Discount_Doctrine_v1.md` cites this file as **Primary** evidence;
+> those references were updated with the move.
 
 **Account:** Jennings Gas — Jens Spoon Pty Ltd
 **ERP Codes:** `JEN001` (active), `JEN010` (legacy — LPG-only, standard gas)

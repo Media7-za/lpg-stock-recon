@@ -28,6 +28,7 @@ import {
   computeOpenInvoices,
   analyseInvoiceTagCoverage,
   loadRemittanceInvoiceDocs,
+  loadPaymentTagFalseLeads,
   displayDate,
   fmtAmount,
   GATE_MEANING,
@@ -114,6 +115,7 @@ export function checkDebtor(debtorCode, txtOverride) {
   const { headerBalance, balanceBf, excludesAllocationDetail, rows } = parseDebenqWithRunning(txtPath);
   const openInvoices = computeOpenInvoices(rows, closedOverrides);
   const remittanceDocs = loadRemittanceInvoiceDocs(debtorDir);
+  const falseLeads = loadPaymentTagFalseLeads(debtorDir);
   const analysis = analyseInvoiceTagCoverage({
     rows,
     openInvoices,
@@ -122,6 +124,7 @@ export function checkDebtor(debtorCode, txtOverride) {
     excludesAllocationDetail,
     closedOverrides,
     remittanceDocs,
+    falseLeads,
   });
 
   return {
@@ -130,6 +133,7 @@ export function checkDebtor(debtorCode, txtOverride) {
     statement_txt: path.relative(ROOT, txtPath),
     config_found: configFound,
     remittance_sources: remittanceDocs.size,
+    false_leads_registered: falseLeads.size,
     ...analysis,
   };
 }
@@ -185,6 +189,81 @@ function renderMarkdown(res) {
       '',
       'Concretely: the remittance-contradiction check did **not** run on this account, so a clean result below rests on arithmetic (the invariant) and an anomaly heuristic (staleness) alone. Neither can detect a settled invoice whose credit was untagged *and* whose absence does not break the account total. Establishing settlement here requires the pattern route — exact-sum month tests, the account’s established payment cadence, the business rules for that payer type, and operator ratification recorded in config.',
     );
+  }
+
+  L.push('', '---', '', '## Payment tag integrity (D21)', '');
+  const pti = res.payment_tag_integrity;
+  if (!pti) {
+    L.push('_Not evaluated._', '');
+  } else {
+    L.push(
+      `**Status:** ${pti.status === 'PASS' ? 'PASS' : `**${pti.status}**`}  `,
+      `**False leads registered:** ${pti.false_leads_loaded}  `,
+      `**Chronology violations:** ${pti.chronology_violations} (${pti.chronology_violations_recorded} already ruled on, **${pti.chronology_violations_unrecorded} unrecorded**)`,
+      '',
+      '`INVNO_TAG_CHRONOLOGY` — a settlement row naming an invoice dated *after* it cannot be paying that invoice; it is a prepay or placeholder pointer. This is derived from the TXT, not read from config, so it catches violations nobody has recorded yet.',
+      '',
+    );
+
+    if (pti.unrecorded.length) {
+      L.push(
+        '### Unrecorded chronology violations',
+        '',
+        'Each needs a ruling. If confirmed a false lead, append it to `config/payment_tag_false_leads.json` so it survives regeneration — a decision made only in a session does not.',
+        '',
+        '| Settlement | Type | Settled | Tags invoice | Invoice dated | Days early | Amount |',
+        '| :--- | :--- | :--- | :--- | :--- | ---: | ---: |',
+      );
+      for (const v of pti.unrecorded) {
+        L.push(
+          `| ${v.settlement_doc} | ${v.settlement_entry} | ${displayDate(v.settlement_iso)} | ${v.tagged_invno} | ${displayDate(v.invoice_iso)} | ${v.days_early} | R${fmtAmount(v.amount)} |`,
+        );
+      }
+      L.push('');
+    }
+
+    if (pti.closed_on_false_tag.length) {
+      L.push(
+        '### Closed on a false tag — blocking',
+        '',
+        'These invoices are carried as settled via `closedInvoiceOverrides`, but the account has already ratified the underlying tag as false.',
+        '',
+        '| Invoice | Classification | Ratified | Reason |',
+        '| :--- | :--- | :--- | :--- |',
+      );
+      for (const f of pti.closed_on_false_tag) {
+        L.push(
+          `| ${f.invno} | ${f.classification ?? '—'} | ${f.ratified_at ?? '—'} | ${(f.reason ?? '—').replace(/\|/g, '\\|')} |`,
+        );
+      }
+      L.push('');
+    }
+
+    if (pti.false_lead_contradicted_by_remittance.length) {
+      L.push(
+        '### Tripwire fired — remittance contradicts a ratified false lead',
+        '',
+        'A remittance outranks tag chronology (authority order A), so the false-lead entry is what must be reopened — not the remittance.',
+        '',
+        '| Invoice | Recorded reason | Tripwire as written |',
+        '| :--- | :--- | :--- |',
+      );
+      for (const f of pti.false_lead_contradicted_by_remittance) {
+        L.push(
+          `| ${f.invno} | ${(f.reason ?? '—').replace(/\|/g, '\\|')} | ${(f.tripwire ?? '—').replace(/\|/g, '\\|')} |`,
+        );
+      }
+      L.push('');
+    }
+
+    if (pti.status === 'PASS') {
+      L.push(
+        pti.false_leads_loaded
+          ? 'No unrecorded chronology violation, no closure resting on a ratified false lead, and no remittance contradicting one.'
+          : 'No chronology violation found. No false-lead registry exists for this account, so the registry check was inert — absence of recorded false leads is not evidence there are none.',
+        '',
+      );
+    }
   }
 
   L.push('', '---', '', '## Invariant', '');
@@ -259,6 +338,46 @@ function renderMarkdown(res) {
   return L.join('\n');
 }
 
+/**
+ * Console rendering of the D21 payment-tag-integrity result.
+ *
+ * Separate from renderMarkdown because the written report is not the only place
+ * the gate has to be legible. An unrecorded chronology violation is one of the
+ * two conditions that set the gate to REVIEW_REQUIRED, so an account with zero
+ * STALE_OPEN invoices and one bad tag used to print REVIEW_REQUIRED with nothing
+ * on screen explaining why. PASS is printed too: a gate that says nothing when
+ * it is satisfied is indistinguishable from a gate that never ran.
+ */
+export function d21ConsoleLines(res) {
+  const pti = res.payment_tag_integrity;
+  if (!pti) return [`[${res.debtor}] d21=NOT_EVALUATED — payment tag integrity was not assessed`];
+
+  const lines = [
+    `[${res.debtor}] d21=${pti.status} — chronology violations ${pti.chronology_violations} (${pti.chronology_violations_recorded} ruled on, ${pti.chronology_violations_unrecorded} unrecorded) · false leads registered ${pti.false_leads_loaded}${pti.false_leads_loaded ? '' : ' (registry check inert)'}`,
+  ];
+  for (const v of pti.unrecorded) {
+    lines.push(
+      `[${res.debtor}]   INVNO_TAG_CHRONOLOGY ${v.settlement_entry} ${v.settlement_doc} (${v.settlement_iso}, R${fmtAmount(v.amount)}) tags inv ${v.tagged_invno} dated ${v.invoice_iso} — ${v.days_early} day(s) early`,
+    );
+  }
+  if (pti.unrecorded.length) {
+    lines.push(
+      `[${res.debtor}]   Each needs a ruling. Confirmed false leads belong in config/payment_tag_false_leads.json — a decision made only in a session does not survive regeneration.`,
+    );
+  }
+  for (const f of pti.closed_on_false_tag) {
+    lines.push(
+      `[${res.debtor}]   INVOICE_CLOSED_ON_FALSE_TAG inv ${f.invno} is carried as settled via closedInvoiceOverrides, but its tag is a ratified false lead`,
+    );
+  }
+  for (const f of pti.false_lead_contradicted_by_remittance) {
+    lines.push(
+      `[${res.debtor}]   FALSE_LEAD_CONTRADICTED_BY_REMITTANCE inv ${f.invno} — a remittance outranks tag chronology; reopen the false-lead entry, not the remittance`,
+    );
+  }
+  return lines;
+}
+
 function runAll(args) {
   const results = [];
   for (const code of listDebtors()) {
@@ -273,12 +392,13 @@ function runAll(args) {
     return;
   }
 
-  console.log('debtor   gate                    cn-tag  pay-tag  evidence          open  flagged  invariant       blocking reason');
+  console.log('debtor   gate                    cn-tag  pay-tag  evidence          open  flagged  invariant       d21       bad-tags  blocking reason');
   for (const r of results) {
     const pct = (t) => (t.pct != null ? `${t.pct}%` : 'n/a');
     const flagged = r.counts.likely_paid + r.counts.stale_open + r.counts.unassessable;
+    const pti = r.payment_tag_integrity;
     console.log(
-      `${r.debtor.padEnd(8)} ${r.gate.padEnd(23)} ${pct(r.tagging.credit_note).padStart(6)}  ${pct(r.tagging.payment).padStart(6)}  ${r.evidence.basis.padEnd(16)}  ${String(r.invoices.length).padStart(4)}  ${String(flagged).padStart(7)}  ${r.invariant.status.padEnd(14)}  ${r.blocking_reason || ''}`,
+      `${r.debtor.padEnd(8)} ${r.gate.padEnd(23)} ${pct(r.tagging.credit_note).padStart(6)}  ${pct(r.tagging.payment).padStart(6)}  ${r.evidence.basis.padEnd(16)}  ${String(r.invoices.length).padStart(4)}  ${String(flagged).padStart(7)}  ${r.invariant.status.padEnd(14)}  ${(pti?.status ?? 'n/a').padEnd(8)}  ${String(pti?.chronology_violations_unrecorded ?? 0).padStart(8)}  ${r.blocking_reason || ''}`,
     );
   }
 
@@ -317,6 +437,24 @@ function runAll(args) {
     }
   }
 
+  const badTags = results.filter((r) => (r.payment_tag_integrity?.chronology_violations_unrecorded ?? 0) > 0);
+  if (badTags.length) {
+    const total = badTags.reduce((n, r) => n + r.payment_tag_integrity.chronology_violations_unrecorded, 0);
+    console.log(
+      `\nUnrecorded chronology violations (D21) — ${total} across ${badTags.length} account(s). A settlement row naming an invoice dated after it is a prepay or placeholder pointer, not a payment of that invoice:`,
+    );
+    for (const r of badTags) {
+      for (const v of r.payment_tag_integrity.unrecorded) {
+        console.log(
+          `  ${r.debtor} ${v.settlement_entry} ${v.settlement_doc} (${v.settlement_iso}, R${fmtAmount(v.amount)}) tags inv ${v.tagged_invno} dated ${v.invoice_iso} — ${v.days_early} day(s) early`,
+        );
+      }
+    }
+    console.log(
+      '  Each needs a ruling recorded in the account\'s config/payment_tag_false_leads.json. Derived from the TXT, so this list reappears until ruled on.',
+    );
+  }
+
   if (results.some((r) => r.gate === 'BLOCKED' || r.gate === 'NOT_DERIVABLE_FROM_TXT')) process.exitCode = 1;
 }
 
@@ -348,6 +486,7 @@ function main() {
       `[${res.debtor}] tagged: cn=${res.tagging.credit_note.tagged}/${res.tagging.credit_note.rows} pay=${res.tagging.payment.tagged}/${res.tagging.payment.rows} · open=${res.invoices.length} likely_paid=${res.counts.likely_paid} stale_open=${res.counts.stale_open} clear=${res.counts.clear} · invariant=${res.invariant.status}${res.invariant.overstated_by ? ` (over-stated by R${fmtAmount(res.invariant.overstated_by)})` : ''}`,
     );
     console.log(`[${res.debtor}] evidence=${res.evidence.basis}${res.evidence.note ? ` — ${res.evidence.note}` : ` (${res.evidence.remittance_invoice_docs} invoice docs on remittance advices)`}`);
+    for (const line of d21ConsoleLines(res)) console.log(line);
     if (res.blocking_reason) console.log(`[${res.debtor}] ${REMEDY[res.blocking_reason]}`);
     for (const inv of res.invoices.filter((i) => i.risk === 'LIKELY_PAID' || i.risk === 'STALE_OPEN')) {
       console.log(`[${res.debtor}]   ${inv.risk} inv ${inv.doc} (${inv.iso}, R${fmtAmount(inv.due)}) — ${inv.basis}`);

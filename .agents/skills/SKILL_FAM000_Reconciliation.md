@@ -1,4 +1,20 @@
+---
+name: fam000-reconciliation
+description: >-
+  Reconciliation skill for Family Gas, consolidated across ERP codes FAM000 (parent)
+  and FAM002 (child). Use when reconciling either code, building the FAM000 statement,
+  or investigating a FAM000/FAM002 variance. Carries two mandatory ERP bug bypasses —
+  header double-taxation on credit notes, and up to 18 credit notes hidden from the
+  printed statement — so never build this account from transaction_headers totals.
+  Do NOT query either ERP code in isolation. Not for any other account.
+---
+
 # Debtor Reconciliation Skill: Family Gas (FAM000 / FAM002)
+
+> **Relocated 2026-09-29** from `analysis/debtors/FAM000/docs/FAM000_reconciliation_skill.md`.
+> It held bug-bypass rules that exist nowhere else while sitting outside every skill
+> root, so no agent runtime could discover it. Ruled under `DEBTORS_DOCTRINE.md` **D20**
+> (operator decision D3). Registry record: `fam000.recon`.
 
 **Account:** Family Gas (Consolidated)
 **ERP Codes:** `FAM000` (parent / active), `FAM002` (child / active)
