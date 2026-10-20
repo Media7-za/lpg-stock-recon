@@ -1,0 +1,49 @@
+{
+  "debtorCode": "JES002",
+  "clientName": "JESMOND EMPTIES",
+  "status": "active",
+  "reconState": "pending",
+  "financials": {
+    "totalOutstanding": null,
+    "totalOutstandingNote": "UNVERIFIED — no account-level ERP statement TXT for JES002 in raw/. Do not quote a balance until one is provided. Sister code JES001 (2 ON JESMOND ROAD PTY LTD) is a separate account.",
+    "lastInvoiceDate": "2025-09-05",
+    "lastPaymentDate": null,
+    "erpTxtClosing": null,
+    "erpTxtClosingAsOf": null,
+    "erpTxtSource": null
+  },
+  "collections": {
+    "actionRequired": false,
+    "actionType": null,
+    "dateSent": null,
+    "deadlineDate": null,
+    "nextAction": "Obtain the ERP account statement TXT for JES002 (ACCNO JES002) and save to raw/. Then generate the v5 statement and confirm collection posture before any customer-facing output.",
+    "nextActionDate": null,
+    "notes": "Scaffold only (2026-10-20). Activity seen in the shared ERP RAW DATA extracts: 51 invoices across CURRENT.TXT and 2024.TXT (17 Oct 2023 to 5 Sep 2025), plus DETRANS.TXT and STTRANS.TXT entries dated 5 Sep 2025. Products: 9.1 9KG cylinder deposit, 9.4 9KG ORYX LPG, one 48KG SV cylinder deposit line. Most 2025 documents are reversed the same day by credit notes; treat the net position as unknown until the statement TXT arrives.",
+    "blockers": [
+      {
+        "type": "STALE_SOURCE",
+        "status": "open",
+        "description": "No account-level ERP statement TXT for JES002 in raw/. Balance, Part 1A/1B split and ingest coverage cannot be anchored.",
+        "source": "analysis/debtors/JES002/raw/",
+        "asAt": "2026-10-20"
+      }
+    ]
+  },
+  "ingestGate": {
+    "status": "unverified",
+    "ingestFreshness": "unverified",
+    "ingestCoverage": "unverified",
+    "displayStatus": "UNVERIFIED",
+    "asAt": "2026-10-20",
+    "reportPath": "reports/JES002_Onboarding_Status.md",
+    "ingestBlockedScopes": ["custody", "sku_analysis", "allocation"],
+    "exceptions": []
+  },
+  "history": [
+    {
+      "date": "2026-10-20",
+      "event": "Scaffold: folder analysis/debtors/JES002/ created with raw/, config/, data/, reports/ and project.json. No ERP statement TXT in raw/; balance unverified. Account identified from shared ERP RAW DATA extracts (ACCNO JES002, name JESMOND EMPTIES)."
+    }
+  ]
+}
