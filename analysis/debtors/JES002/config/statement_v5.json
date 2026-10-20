@@ -1,0 +1,24 @@
+{
+  "debtorCode": "JES002",
+  "debtorName": "JESMOND EMPTIES",
+  "txtPath": "analysis/debtors/JES002/raw/JES002_DEBENQ_CURRENT.TXT",
+  "periodStart": "2026-01-01",
+  "combinedBf": 8464.0,
+  "bfSourceNote": "TXT line 13 (BALANCE B/F 8464.00, PROVEN); equals running balance after the 05/09/2025 rows (doc 00046201, line 25). periodStart 2026-01-01 is ASSUMED (template default).",
+  "cylOpeningFinancial": 0,
+  "paymentLane": "LPG",
+  "cylOpeningQty": {
+    "14.1": 0,
+    "19.1": 0,
+    "9.1": 0,
+    "D.1": 0,
+    "S.1": 0
+  },
+  "skuRates": {
+    "14.1": 575,
+    "19.1": 690,
+    "9.1": 517.5,
+    "D.1": 1150,
+    "S.1": 1150
+  }
+}
