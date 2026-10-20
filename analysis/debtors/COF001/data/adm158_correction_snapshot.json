@@ -1,0 +1,21 @@
+{
+  "purpose": "ADM-158: FINCON correction documents for invoice 45528 / DN#20080, as loaded in Supabase",
+  "queried_at": "2026-10-20",
+  "project": "lpg-stock-recon (oqhpxnaadahohwkslive), read-only connector queries",
+  "tag": "ASSERTED (database rows; not yet tied to a COF001 DEBENQ TXT export)",
+  "queries": [
+    "select * from transaction_headers where account_no='COF001' and created_at > now() - interval '2 days' order by created_at desc",
+    "select ltrim(doc_no,'0') doc, entry_type, tx_date, stock_no, qty, retail_price, line_total, count(*) over (partition by doc_no, stock_no) copies from vw_clean_transactions where account_no='COF001' and ltrim(doc_no,'0') in ('15806','53671')"
+  ],
+  "headers": [
+    {"doc_no": "00015806", "entry_type": "Crd Note", "tx_date": "2025-08-09", "ref_no": "00045528", "description": "DN#20080", "amount_excl": -6434.95, "tax_amount": -965.24, "source_file": "DTRX1910.TXT", "created_at": "2026-10-20 09:28:59.582453+00"},
+    {"doc_no": "00053671", "entry_type": "Invoice", "tx_date": "2025-08-09", "ref_no": "00053671", "description": "DN#20080", "amount_excl": 7504.55, "tax_amount": 1125.68, "source_file": "DTRX1910.TXT", "created_at": "2026-10-20 09:28:59.582453+00"}
+  ],
+  "lines": [
+    {"doc": "15806", "type": "Crd Note", "stock_no": "9.4", "qty": -5, "retail_price": 236.99, "line_total": -1362.69},
+    {"doc": "15806", "type": "Crd Note", "stock_no": "S.1", "qty": -5, "retail_price": 1050.00, "line_total": -6037.50},
+    {"doc": "53671", "type": "Invoice", "stock_no": "9.4", "qty": 5, "retail_price": 236.99, "line_total": 1362.69},
+    {"doc": "53671", "type": "Invoice", "stock_no": "S.4", "qty": 5, "retail_price": 1263.92, "line_total": 7267.54}
+  ],
+  "totals_incl_vat": {"15806": -7400.19, "53671": 8630.23, "net": 1230.04}
+}
