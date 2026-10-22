@@ -47,13 +47,3 @@ Age is calculated from **invoice date** to 21 October 2026.
 | 53630 | 17 Oct 2026 | DN#24734 | 3,967.81 |
 | 53679 | 20 Oct 2026 | DN#24741-MKONDENI | 2,645.21 |
 | | | **Total open** | **40,445.18** |
-
----
-
-## Payment Status
-
-| Last Payment | Date | Amount (R) | Reference |
-| :--- | :--- | ---: | :--- |
-| September 2026 | 01 Oct 2026 | 13,305.47 | STAT:131 |
-
-**Next action:** Invoice payment due upon receipt. Please remit statement amount or advise payment date.
