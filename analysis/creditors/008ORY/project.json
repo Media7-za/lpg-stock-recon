@@ -77,6 +77,10 @@
     {
       "date": "2026-08-29",
       "event": "Operator ratified P9 (session lineage meta-inquiry close pattern): handoff session-index table + history pointer; dual-source search mandatory. docs/roles/session_closer.md §Meta-inquiry close."
+    },
+    {
+      "date": "2026-09-22",
+      "event": "PDP-31 (fingerprint-drift duplicate transaction_items rows) confirmed to include 007ORY (2,167 duplicate groups — 2025.TXT vs STTRANS2024.TXT) and 008ORY (1,562 duplicate groups — CURRENT.TXT vs CURRENT2307.TXT), verified live against oqhpxnaadahohwkslive. Not a new bug — same root cause already fixed at code level 2026-09-12 (commit 0ae67b3); only historical rows remain duplicated (row_count=2 uniformly, no growth since the fix). vw_clean_transactions' DISTINCT ON already masks this for downstream reports, confirmed by cross-checking deduped vs raw monthly LPG kg totals (raw ran 1.3x-2x high for Jan-May 2026, matched exactly from Jun 2026 onward). No fix action taken — existing draft analysis/debtors/shared/scripts/pdp31_dedup_transaction_items.sql already covers both accounts generically, DELETE still commented out pending explicit human sign-off. Cross-referenced in PDP-31 comment (https://media7.atlassian.net/browse/PDP-31). PROVEN."
     }
   ],
   "v5Statement": {
