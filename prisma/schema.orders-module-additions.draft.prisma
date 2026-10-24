@@ -1,0 +1,329 @@
+// ============================================================================
+// DRAFT — NOT applied, NOT merged into prisma/schema.prisma yet.
+// Phase 2 of Orders-Module -> LPG-Stock-Recon migration. For review only.
+// Revised 2026-08-22 per human decisions on the first draft — see the
+// "revision diff" in the report for exactly what changed.
+//
+// Corresponds 1:1 to migrations/20260822000000_add_orders_module_tables/migration.sql
+//
+// Confirmed design decisions (all confirmed by the human, not open anymore):
+//   - Int autoincrement PKs on all 13 new tables, NOT uuid — confirmed. The
+//     driver-mobile Edge Functions hard-code Number.isInteger() checks on
+//     driver_id/trip_id/delivery_id, and the (unseen) Flutter client almost
+//     certainly assumes numeric IDs too. Uuid PKs would break that contract.
+//   - FK columns pointing at commercial_customers.id are UUID (matches that
+//     table's existing PK type). FK columns pointing at products.id are TEXT
+//     (matches that table's existing PK type, a cuid string).
+//   - Table/column names: snake_case throughout — confirmed. Matches the
+//     dominant convention across the other 49 tables. This does mean
+//     `complete-stop`'s raw-SQL Edge Function needs its quoted identifiers
+//     rewritten in Phase 5 (see report) — accepted tradeoff.
+//   - OrderEvent (-> order_events) added as a 13th table in this revision,
+//     pulled forward from a later phase, because `complete-stop` writes to
+//     it directly and can't be ported without it existing.
+// ============================================================================
+
+model Route {
+  id        Int      @id @default(autoincrement())
+  name      String
+  code      String   @unique
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  areas     Area[]
+  trips     Trip[]
+
+  @@map("routes")
+}
+
+model Area {
+  id              Int      @id @default(autoincrement())
+  name            String
+  routeId         Int      @map("route_id")
+  defaultSequence Int?     @map("default_sequence")
+  active          Boolean  @default(true)
+  centerLat       Float?   @map("center_lat")
+  centerLng       Float?   @map("center_lng")
+  boundaryPolygon String?  @map("boundary_polygon")
+  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  route           Route    @relation(fields: [routeId], references: [id])
+  trips           Trip[]
+  // commercial_customers.area_id -> areas.id is a one-way FK (no back-relation
+  // declared here to avoid modifying the not-yet-modeled CommercialCustomer
+  // relation set beyond what's needed; add `customers CommercialCustomer[]`
+  // once CommercialCustomer is formally added to schema.prisma).
+
+  @@index([routeId])
+  @@map("areas")
+}
+
+model Vehicle {
+  id           Int      @id @default(autoincrement())
+  registration String   @unique
+  make         String?
+  model        String?
+  capacity     Int?
+  active       Boolean  @default(true)
+  notes        String?
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  trips        Trip[]
+
+  @@map("vehicles")
+}
+
+model Driver {
+  id              Int               @id @default(autoincrement())
+  name            String
+  phone           String
+  license         String?
+  active          Boolean           @default(true)
+  pinHash         String?           @map("pin_hash")
+  driverAuthTokens DriverAuthToken[]
+  trips           Trip[]
+  deliveryProofs  DeliveryProof[]
+
+  @@map("drivers")
+}
+
+model DriverAuthToken {
+  id        Int       @id @default(autoincrement())
+  driverId  Int       @map("driver_id")
+  token     String    @unique
+  expiresAt DateTime  @map("expires_at") @db.Timestamptz(6)
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  deviceId  String?   @map("device_id")
+  driver    Driver    @relation(fields: [driverId], references: [id])
+
+  @@index([token])
+  @@map("driver_auth_tokens")
+}
+
+model Order {
+  id                    Int          @id @default(autoincrement())
+  orderNumber           String       @unique @map("order_number")
+  customerId            String       @map("customer_id") @db.Uuid
+  orderDate             DateTime     @default(now()) @map("order_date") @db.Timestamptz(6)
+  orderType             String       @map("order_type")
+  status                String       @default("pending")
+  requestedDeliveryDate DateTime?    @map("requested_delivery_date") @db.Timestamptz(6)
+  priority              String       @default("normal")
+  specialInstructions   String?      @map("special_instructions")
+  createdBy             String?      @map("created_by")
+  createdAt             DateTime     @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt             DateTime     @updatedAt @map("updated_at") @db.Timestamptz(6)
+  deliveries            Delivery[]
+  orderItems            OrderItem[]
+  events                OrderEvent[]
+  // customer CommercialCustomer @relation(fields: [customerId], references: [id])
+  //   -- add once CommercialCustomer model exists in schema.prisma
+
+  @@index([customerId])
+  @@index([orderDate])
+  @@index([status])
+  @@map("orders")
+}
+
+model OrderItem {
+  id                Int            @id @default(autoincrement())
+  orderId           Int            @map("order_id")
+  productId         String         @map("product_id")
+  quantityOrdered   Int            @map("quantity_ordered")
+  quantityRemaining Int            @map("quantity_remaining")
+  notes             String?
+  order             Order          @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  deliveryItems     DeliveryItem[]
+  // product Product @relation(fields: [productId], references: [id])
+  //   -- add to the existing Product model once productId FK is wired
+
+  @@index([orderId])
+  @@index([productId])
+  @@map("order_items")
+}
+
+model OrderEvent {
+  // Added in this revision (pulled forward from a later phase) — required by
+  // `complete-stop`'s Edge Function audit-trail insert. Modeled directly on
+  // Orders-Module's original OrderEvent shape.
+  id        Int      @id @default(autoincrement())
+  orderId   Int      @map("order_id")
+  type      String
+  message   String
+  userId    String?  @map("user_id")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  metadata  Json?
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@map("order_events")
+}
+
+model Trip {
+  id                     Int        @id @default(autoincrement())
+  tripNumber             String     @unique @map("trip_number")
+  /// Nullable — Draft Trips are undated (see Orders-Module PRD-003B).
+  tripDate               DateTime?  @map("trip_date") @db.Timestamptz(6)
+  driverId               Int?       @map("driver_id")
+  routeId                Int?       @map("route_id")
+  vehicleId              Int        @map("vehicle_id")
+  status                 String     @default("planned")
+  startTime              DateTime?  @map("start_time") @db.Timestamptz(6)
+  endTime                DateTime?  @map("end_time") @db.Timestamptz(6)
+  notes                  String?
+  createdAt              DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
+  recommendationSnapshot Json?      @map("recommendation_snapshot")
+  stockConfirmed         Boolean    @default(false) @map("stock_confirmed")
+  deliveries             Delivery[]
+  driver                 Driver?    @relation(fields: [driverId], references: [id])
+  route                  Route?     @relation(fields: [routeId], references: [id])
+  vehicle                Vehicle    @relation(fields: [vehicleId], references: [id])
+
+  @@index([tripDate])
+  @@index([driverId])
+  @@index([routeId])
+  @@map("trips")
+}
+
+model Delivery {
+  id                   Int              @id @default(autoincrement())
+  tripId               Int?             @map("trip_id")
+  orderId              Int              @map("order_id")
+  deliveryNumber       Int?             @map("delivery_number")
+  customerId           String           @map("customer_id") @db.Uuid
+  deliveryNoteNumber   Int?             @map("delivery_note_number")
+  deliverySequence     Int?             @map("delivery_sequence")
+  status               String           @default("unassigned")
+  deliveryDate         DateTime?        @map("delivery_date") @db.Timestamptz(6)
+  actualDeliveryTime   DateTime?        @map("actual_delivery_time") @db.Timestamptz(6)
+  isPartialFulfillment Boolean          @default(false) @map("is_partial_fulfillment")
+  specialInstructions  String?          @map("special_instructions")
+  notes                String?
+  createdAt            DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt            DateTime         @updatedAt @map("updated_at") @db.Timestamptz(6)
+  arrivedAt             DateTime?        @map("arrived_at") @db.Timestamptz(6)
+  arrivalGpsLat         Float?           @map("arrival_gps_lat")
+  arrivalGpsLng         Float?           @map("arrival_gps_lng")
+  order                 Order            @relation(fields: [orderId], references: [id])
+  trip                  Trip?            @relation(fields: [tripId], references: [id])
+  deliveryItems         DeliveryItem[]
+  deliveryProof         DeliveryProof?
+  deliveryReturns       DeliveryReturn[]
+  // customer CommercialCustomer @relation(fields: [customerId], references: [id])
+  //   -- add once CommercialCustomer model exists in schema.prisma
+
+  @@index([tripId])
+  @@index([orderId])
+  @@index([customerId])
+  @@index([status])
+  @@map("deliveries")
+}
+
+model DeliveryItem {
+  id                    Int       @id @default(autoincrement())
+  deliveryId            Int       @map("delivery_id")
+  orderItemId           Int       @map("order_item_id")
+  productId             String    @map("product_id")
+  quantityToDeliver     Int       @map("quantity_to_deliver")
+  quantityDelivered     Int?      @map("quantity_delivered")
+  quantityReturnedEmpty Int?      @map("quantity_returned_empty")
+  notes                 String?
+  delivery              Delivery  @relation(fields: [deliveryId], references: [id], onDelete: Cascade)
+  orderItem             OrderItem @relation(fields: [orderItemId], references: [id])
+  // product Product @relation(fields: [productId], references: [id])
+
+  @@index([deliveryId])
+  @@index([orderItemId])
+  @@index([productId])
+  @@map("delivery_items")
+}
+
+model DeliveryReturn {
+  id                  Int      @id @default(autoincrement())
+  deliveryId          Int      @map("delivery_id")
+  productId           String   @map("product_id")
+  quantityReturned    Int      @map("quantity_returned")
+  returnCondition     String   @map("return_condition")
+  erpCreditNoteNumber String?  @map("erp_credit_note_number")
+  notes               String?
+  createdAt           DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  delivery            Delivery @relation(fields: [deliveryId], references: [id], onDelete: Cascade)
+  // product Product @relation(fields: [productId], references: [id])
+
+  @@index([deliveryId])
+  @@index([productId])
+  @@map("delivery_returns")
+}
+
+model DeliveryProof {
+  id                   Int       @id @default(autoincrement())
+  /// Unique — one proof record per delivery (business rule)
+  deliveryId           Int       @unique @map("delivery_id")
+  idempotencyKey       String?   @unique @map("idempotency_key")
+  signatureUrl         String?   @map("signature_url")
+  photos               String[]
+  arrivalGpsLat        Float?    @map("arrival_gps_lat")
+  arrivalGpsLng        Float?    @map("arrival_gps_lng")
+  completionGpsLat     Float?    @map("completion_gps_lat")
+  completionGpsLng     Float?    @map("completion_gps_lng")
+  deliveryStatus       String    @map("delivery_status")
+  failureReason        String?   @map("failure_reason")
+  failureCode          String?   @map("failure_code")
+  notes                String?
+  completedByDriverId  Int?      @map("completed_by_driver_id")
+  createdAt            DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  delivery             Delivery  @relation(fields: [deliveryId], references: [id])
+  completedByDriver    Driver?   @relation(fields: [completedByDriverId], references: [id])
+
+  @@index([idempotencyKey])
+  @@map("delivery_proofs")
+}
+
+// ============================================================================
+// Extension to the EXISTING Product model (already in schema.prisma) —
+// add these fields to the existing `model Product { ... @@map("products") }`
+// block, do not create a new model.
+// ============================================================================
+//   weight      Float?  @map("weight")
+//   tareWeight  Float?  @map("tare_weight")
+//   totalWeight Float?  @map("total_weight")
+//   sku         String? @unique @map("sku")
+//   orderItems      OrderItem[]
+//   deliveryItems   DeliveryItem[]
+//   deliveryReturns DeliveryReturn[]
+
+// ============================================================================
+// CommercialCustomer model does not exist yet in schema.prisma (it's part of
+// the 27-table drift found in Phase 1). It needs to be added in full — not
+// just the new columns — the next time `prisma db pull` is run and reconciled.
+// Sketch of the extended shape (existing 12 columns + this phase's additions):
+// ============================================================================
+// model CommercialCustomer {
+//   id                String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+//   customerName      String    @map("customer_name")
+//   customerLane      String?   @map("customer_lane")
+//   commercialStatus  String?   @map("commercial_status")
+//   primaryContact    String?   @map("primary_contact")
+//   notes             String?
+//   createdAt         DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+//   updatedAt         DateTime  @default(now()) @map("updated_at") @db.Timestamptz(6)
+//   avgCycleDays      Int?      @map("avg_cycle_days")
+//   lastOrderDate     DateTime? @map("last_order_date") @db.Timestamptz(6)
+//   lastOrderValue    Decimal?  @map("last_order_value")
+//   contactPhone      String?   @map("contact_phone")
+//   // --- new, this phase, all nullable ---
+//   address           String?
+//   lat               Float?
+//   lng               Float?
+//   googleMapsUrl     String?   @map("google_maps_url")
+//   areaId            Int?      @map("area_id")
+//   active            Boolean?
+//   area              Area?     @relation(fields: [areaId], references: [id])
+//   orders            Order[]
+//   deliveries        Delivery[]
+//   // NOTE: no `phone` field — the migrated app writes to `contactPhone`
+//   // (existing `contact_phone` column) instead. See revision notes.
+//   // NOTE: no `accountNumber` field — account numbers are read/written
+//   // through CommercialCustomerAccount (commercial_customer_accounts),
+//   // not a flat column here. See revision notes.
+//   // NOTE: `customerLane` above is left untouched — not merged with `area`.
+//
+//   @@map("commercial_customers")
+// }
